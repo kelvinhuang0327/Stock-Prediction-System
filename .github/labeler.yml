@@ -1,0 +1,51 @@
+"frontend":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "src/components/**"
+          - "src/app/**"
+
+"backend":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "src/lib/**"
+          - "src/analyzers/**"
+          - "src/validators/**"
+
+"tests":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "tests/**"
+          - "e2e/**"
+          - "**/*.test.ts"
+          - "**/*.test.py"
+
+"python":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "*.py"
+          - "scripts/*.py"
+
+"database":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "prisma/**"
+
+"docs":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "docs/**"
+          - "*.md"
+
+"config":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "*.config.*"
+          - "package.json"
+          - "tsconfig.json"
+
+"docker":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "Dockerfile"
+          - "docker-compose.yml"
+          - ".dockerignore"

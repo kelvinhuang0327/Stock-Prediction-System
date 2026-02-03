@@ -1,0 +1,79 @@
+name: OpenClaw Notify
+
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+  issues:
+    types: [opened]
+  pull_request:
+    types: [opened, closed]
+
+jobs:
+  notify-ci:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_run' }}
+    steps:
+      - name: Notify CI Result
+        run: |
+          STATUS="${{ github.event.workflow_run.conclusion }}"
+          if [ "$STATUS" = "failure" ]; then
+            EMOJI="❌"
+            MSG="CI Failed"
+          else
+            EMOJI="✅"
+            MSG="CI Passed"
+          fi
+          
+          curl -X POST "${{ secrets.OPENCLAW_WEBHOOK_URL }}" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"event\": \"ci_$STATUS\",
+              \"message\": \"$EMOJI $MSG on ${{ github.repository }}\",
+              \"repo\": \"${{ github.repository }}\",
+              \"branch\": \"${{ github.event.workflow_run.head_branch }}\",
+              \"run_id\": \"${{ github.event.workflow_run.id }}\",
+              \"url\": \"${{ github.event.workflow_run.html_url }}\"
+            }"
+
+  notify-issue:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'issues' }}
+    steps:
+      - name: Notify New Issue
+        run: |
+          curl -X POST "${{ secrets.OPENCLAW_WEBHOOK_URL }}" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"event\": \"new_issue\",
+              \"message\": \"📋 New Issue #${{ github.event.issue.number }}: ${{ github.event.issue.title }}\",
+              \"repo\": \"${{ github.repository }}\",
+              \"number\": \"${{ github.event.issue.number }}\",
+              \"title\": \"${{ github.event.issue.title }}\",
+              \"url\": \"${{ github.event.issue.html_url }}\"
+            }"
+
+  notify-pr:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' }}
+    steps:
+      - name: Notify PR Event
+        run: |
+          ACTION="${{ github.event.action }}"
+          if [ "$ACTION" = "opened" ]; then
+            MSG="🔀 New PR #${{ github.event.pull_request.number }}: ${{ github.event.pull_request.title }}"
+          elif [ "$ACTION" = "closed" ] && [ "${{ github.event.pull_request.merged }}" = "true" ]; then
+            MSG="🎉 PR #${{ github.event.pull_request.number }} merged!"
+          else
+            MSG="🔒 PR #${{ github.event.pull_request.number }} closed"
+          fi
+          
+          curl -X POST "${{ secrets.OPENCLAW_WEBHOOK_URL }}" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"event\": \"pr_$ACTION\",
+              \"message\": \"$MSG\",
+              \"repo\": \"${{ github.repository }}\",
+              \"number\": \"${{ github.event.pull_request.number }}\",
+              \"url\": \"${{ github.event.pull_request.html_url }}\"
+            }"
