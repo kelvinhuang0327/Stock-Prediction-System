@@ -175,9 +175,10 @@ export function useWatchlistData() {
                     const analysis: ScreeningResult = await res.json();
                     // Use server-provided calculatedScore if available, otherwise compute client-side
                     if (analysis.calculatedScore == null) {
+                        const revYoY = analysis.revenueYoY ?? 0;
                         const rawScore = analysis.isETF
                             ? (analysis.chipStrength / 100 * 50) + (analysis.technicalScore / 100 * 50)
-                            : (Math.min(analysis.revenueYoY, 50) / 30 * 40) + (analysis.chipStrength / 100 * 30) + (analysis.technicalScore / 100 * 30);
+                            : (Math.min(revYoY, 50) / 30 * 40) + (analysis.chipStrength / 100 * 30) + (analysis.technicalScore / 100 * 30);
                         analysis.calculatedScore = Math.round(Math.min(rawScore, 100));
                     }
                     newData[stock.symbol] = analysis;

@@ -10,7 +10,7 @@ export interface PortfolioItem extends Stock {
 export interface ScreeningResult {
     stockId: string;
     name: string;
-    revenueYoY: number;
+    revenueYoY: number | null;
     eps: number;
     chipStrength: number;
     technicalScore: number;
@@ -21,7 +21,7 @@ export interface ScreeningResult {
     isETF?: boolean;
     riskScore?: number;
     riskLevel?: 'Low' | 'Medium' | 'High';
-    // New rule-based analysis fields
+    // Rule-based analysis fields
     momentumScore?: number;
     overallScore?: number;
     recommendation?: '觀察' | '偏多' | '中性' | '偏空' | '資料不足';
@@ -32,7 +32,7 @@ export interface ScreeningResult {
     usedSources?: string[];
     missingSources?: string[];
     limitations?: string[];
-    dataCoverage?: { quotes: number; chips: number; revenue: number };
+    dataCoverage?: 'full' | 'limited' | 'insufficient';
     last_updated?: string | null;
 }
 
