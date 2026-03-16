@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { apiCache } from '@/lib/cache';
 
 /**
  * GET /api/rankings
  * 排行榜 API - 多維度股票排行
  * 
  * 不使用 mock 資料。若 DB 無資料，回傳空陣列 + 資料狀態。
+ * 回傳 coverage, sample_size, last_updated 給前端。
  */
 export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
@@ -13,17 +15,27 @@ export async function GET(request: NextRequest) {
     const sectorFilter = searchParams.get('sector') || '';
     const limit = parseInt(searchParams.get('limit') || '50');
 
+    const cacheKey = `rankings:${type}:${sectorFilter}:${limit}`;
+    const cached = apiCache.get<any>(cacheKey);
+    if (cached) return NextResponse.json(cached);
+
     try {
         const dbStocks = await fetchFromDB(type, sectorFilter, limit);
         const coverage = await getDataCoverage(type);
+        const lastUpdated = await getLastUpdated(type);
 
-        return NextResponse.json({
+        const response = {
             data: dbStocks || [],
             source: dbStocks && dbStocks.length > 0 ? 'database' : 'empty',
             type,
             coverage,
+            sample_size: dbStocks?.length || 0,
+            last_updated: lastUpdated,
             updatedAt: new Date().toISOString(),
-        });
+        };
+
+        apiCache.set(cacheKey, response, 180);
+        return NextResponse.json(response);
     } catch (error) {
         console.error('Rankings API error:', error);
         return NextResponse.json({
@@ -31,9 +43,22 @@ export async function GET(request: NextRequest) {
             source: 'error',
             type,
             coverage: { stocks: 0, total: 0, limitations: ['資料庫查詢失敗'] },
+            sample_size: 0,
+            last_updated: null,
             updatedAt: new Date().toISOString(),
         });
     }
+}
+
+async function getLastUpdated(type: string): Promise<string | null> {
+    try {
+        if (['foreign', 'trust', 'dealer'].includes(type)) {
+            const latest = await (prisma as any).institutionalChip.findFirst({ orderBy: { date: 'desc' }, select: { date: true } });
+            return latest?.date || null;
+        }
+        const latest = await prisma.stockQuote.findFirst({ orderBy: { date: 'desc' }, select: { date: true } });
+        return latest?.date || null;
+    } catch { return null; }
 }
 
 async function getDataCoverage(type: string) {
@@ -42,15 +67,16 @@ async function getDataCoverage(type: string) {
 
     if (['foreign', 'trust', 'dealer'].includes(type)) {
         const chipStocks = await (prisma as any).institutionalChip.groupBy({ by: ['stockId'] });
-        if (chipStocks.length < 20) {
-            limitations.push(`僅 ${chipStocks.length} 檔股票有法人買賣超資料`);
+        const chipDates = await (prisma as any).institutionalChip.groupBy({ by: ['date'] });
+        if (chipStocks.length < totalStocks * 0.5) {
+            limitations.push(`資料覆蓋率不足，排行榜僅基於目前可用樣本 (${chipStocks.length}/${totalStocks} 檔)`);
         }
-        return { stocks: chipStocks.length, total: totalStocks, limitations };
+        return { stocks: chipStocks.length, total: totalStocks, dates: chipDates.length, limitations };
     }
 
     const quoteStocks = await prisma.stockQuote.groupBy({ by: ['stockId'] });
-    if (quoteStocks.length < 50) {
-        limitations.push(`僅 ${quoteStocks.length} 檔股票有行情資料`);
+    if (quoteStocks.length < totalStocks * 0.5) {
+        limitations.push(`資料覆蓋率不足，排行榜僅基於目前可用樣本 (${quoteStocks.length}/${totalStocks} 檔)`);
     }
     return { stocks: quoteStocks.length, total: totalStocks, limitations };
 }
@@ -161,15 +187,15 @@ async function fetchFromDB(type: string, sectorFilter: string, limit: number) {
         }
 
         return Array.from(latestByName.values())
-            .filter(idx => idx.name !== '發行量加權股價指數')
+            .filter(idx => idx.name !== 'TAIEX' && idx.name !== '發行量加權股價指數')
             .map((idx: any) => ({
                 symbol: idx.name,
                 name: idx.name,
                 industry: idx.name,
-                price: idx.close,
+                price: idx.value,
                 change: idx.change,
-                changePercent: idx.close > 0 ? Math.round((idx.change / idx.close) * 10000) / 100 : null,
-                volume: idx.volume,
+                changePercent: idx.changePercent ?? (idx.value > 0 ? Math.round((idx.change / idx.value) * 10000) / 100 : null),
+                volume: null,
                 foreignBuy: null,
                 trustBuy: null,
                 dealerBuy: null,

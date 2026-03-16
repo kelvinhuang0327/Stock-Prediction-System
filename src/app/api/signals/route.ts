@@ -1,28 +1,38 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { apiCache } from '@/lib/cache';
 
 /**
  * GET /api/signals
  * 技術指標交易建議 API
  * 
  * 僅使用 DB 中的真實歷史行情計算。不使用 mock 資料。
- * 只會為有 ≥20 天報價資料的股票計算信號。
+ * 只會為有 ≥60 天報價資料的股票計算信號。
  */
 export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
     const limit = parseInt(searchParams.get('limit') || '30');
     const minStrength = parseInt(searchParams.get('minStrength') || '0');
 
+    const cacheKey = `signals:${limit}:${minStrength}`;
+    const cached = apiCache.get<any>(cacheKey);
+    if (cached) return NextResponse.json(cached);
+
     try {
         const { results, coverage } = await calculateFromDB(limit, minStrength);
-        return NextResponse.json({
+        const lastUpdated = await prisma.stockQuote.findFirst({ orderBy: { date: 'desc' }, select: { date: true } });
+        const response = {
             data: results,
             source: results.length > 0 ? 'database（TWSE 歷史行情資料）' : 'empty',
-            methodology: '依據 MA/RSI/MACD/KD/BB 等技術指標計算支撐壓力位與建議價位',
+            methodology: '依據 MA20/MA60/RSI/MACD 等技術指標計算支撐壓力位與建議價位',
             disclaimer: '以下為技術分析推估結果，僅供參考，不構成投資建議。實際交易請自行評估風險。',
             coverage,
+            sample_size: results.length,
+            last_updated: lastUpdated?.date || null,
             updatedAt: new Date().toISOString(),
-        });
+        };
+        apiCache.set(cacheKey, response, 300);
+        return NextResponse.json(response);
     } catch (error) {
         console.error('Signals API error:', error);
         return NextResponse.json({
@@ -30,7 +40,9 @@ export async function GET(request: NextRequest) {
             source: 'error',
             methodology: '',
             disclaimer: '',
-            coverage: { analyzed: 0, sufficient: 0, total: 0, minDays: 20, limitations: ['資料庫查詢失敗'] },
+            coverage: { analyzed: 0, sufficient: 0, total: 0, minDays: 60, limitations: ['資料庫查詢失敗'] },
+            sample_size: 0,
+            last_updated: null,
             updatedAt: new Date().toISOString(),
         });
     }
@@ -43,6 +55,9 @@ interface SignalResult {
     currentPrice: number;
     signal: 'BUY' | 'SELL' | 'HOLD' | 'WATCH';
     strength: number;
+    signalDate: string;
+    dataPeriod: string;
+    dataPoints: number;
     watchPrice: PriceLevel;
     buyPrice: PriceLevel;
     stopLoss: PriceLevel;
@@ -67,7 +82,8 @@ function calculateSignals(
     name: string,
     industry: string,
     currentPrice: number,
-    priceHistory: { close: number; high: number; low: number; volume: number }[]
+    priceHistory: { close: number; high: number; low: number; volume: number }[],
+    dateRange: { first: string; last: string; count: number }
 ): SignalResult | null {
     if (priceHistory.length < 20) return null;
 
@@ -211,6 +227,9 @@ function calculateSignals(
         currentPrice: r(currentPrice),
         signal,
         strength,
+        signalDate: dateRange.last,
+        dataPeriod: `${dateRange.first} ~ ${dateRange.last}`,
+        dataPoints: dateRange.count,
         watchPrice: {
             price: r(supportPrice * 1.01),
             methodology: `支撐位 (${r(supportPrice)}) 上方 1%，依據布林下軌/MA 計算`,
@@ -301,30 +320,39 @@ async function calculateFromDB(limit: number, minStrength: number): Promise<{ re
     const totalStocks = stocks.length;
     const results: SignalResult[] = [];
     let sufficientCount = 0;
+    const MIN_DAYS = 60;
 
     for (const stock of stocks) {
         const quotes = await prisma.stockQuote.findMany({
             where: { stockId: stock.id },
             orderBy: { date: 'desc' },
-            take: 60,
+            take: 250,
         });
 
-        if (quotes.length < 20) continue;
+        if (quotes.length < MIN_DAYS) continue;
         sufficientCount++;
 
-        const history = quotes.reverse().map(q => ({
+        const sorted = quotes.reverse();
+        const history = sorted.map(q => ({
             close: q.close,
             high: q.high,
             low: q.low,
             volume: q.volume,
         }));
 
+        const dateRange = {
+            first: sorted[0].date,
+            last: sorted[sorted.length - 1].date,
+            count: sorted.length,
+        };
+
         const result = calculateSignals(
             stock.id,
             stock.name,
             stock.industry || '',
             history[history.length - 1].close,
-            history
+            history,
+            dateRange
         );
 
         if (result && result.strength >= minStrength) {
@@ -334,7 +362,7 @@ async function calculateFromDB(limit: number, minStrength: number): Promise<{ re
 
     const limitations: string[] = [];
     if (sufficientCount < 20) {
-        limitations.push(`僅 ${sufficientCount} 檔股票有 ≥20 天歷史資料`);
+        limitations.push(`僅 ${sufficientCount} 檔股票有 ≥${MIN_DAYS} 天歷史資料`);
     }
     if (sufficientCount === 0) {
         limitations.push('無任何股票有足夠的歷史資料進行技術分析');
@@ -346,7 +374,7 @@ async function calculateFromDB(limit: number, minStrength: number): Promise<{ re
             analyzed: sufficientCount,
             sufficient: sufficientCount,
             total: totalStocks,
-            minDays: 20,
+            minDays: MIN_DAYS,
             limitations,
         },
     };

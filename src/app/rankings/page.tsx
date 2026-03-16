@@ -35,7 +35,9 @@ interface RankingResponse {
     data: RankingItem[];
     source: string;
     type: string;
-    coverage: { stocks: number; total: number; limitations: string[] };
+    coverage: { stocks: number; total: number; dates?: number; limitations: string[] };
+    sample_size: number;
+    last_updated: string | null;
     updatedAt: string;
 }
 
@@ -222,9 +224,15 @@ export default function RankingsPage() {
                 <DataStatusBar
                     mode={response.source === 'empty' || response.source === 'error' ? 'unavailable' : response.coverage?.limitations?.length > 0 ? 'limited' : 'full'}
                     coverage={response.coverage ? { stocks: response.coverage.stocks, total: response.coverage.total } : undefined}
-                    lastUpdated={new Date(response.updatedAt).toLocaleString('zh-TW')}
+                    lastUpdated={response.last_updated || new Date(response.updatedAt).toLocaleString('zh-TW')}
                     limitations={response.coverage?.limitations}
                 />
+            )}
+            {response && (
+                <div className="flex items-center gap-3 text-xs text-muted-foreground px-4">
+                    <span>樣本數：{response.sample_size} 檔</span>
+                    {response.last_updated && <span>最新資料日期：{response.last_updated}</span>}
+                </div>
             )}
 
             {/* Error */}

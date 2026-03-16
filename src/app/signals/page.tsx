@@ -33,6 +33,9 @@ interface SignalItem {
     currentPrice: number;
     signal: 'BUY' | 'SELL' | 'HOLD' | 'WATCH';
     strength: number;
+    signalDate?: string;
+    dataPeriod?: string;
+    dataPoints?: number;
     watchPrice: PriceLevel;
     buyPrice: PriceLevel;
     stopLoss: PriceLevel;
@@ -46,6 +49,8 @@ interface SignalResponse {
     methodology: string;
     disclaimer: string;
     coverage?: { analyzed: number; sufficient: number; total: number; minDays: number; limitations: string[] };
+    sample_size: number;
+    last_updated: string | null;
     updatedAt: string;
 }
 
@@ -227,13 +232,14 @@ export default function SignalsPage() {
                 <DataStatusBar
                     mode={response.source === 'empty' || response.source === 'error' ? 'unavailable' : response.coverage?.limitations?.length ? 'limited' : 'full'}
                     coverage={response.coverage ? { stocks: response.coverage.sufficient, total: response.coverage.total } : undefined}
-                    lastUpdated={new Date(response.updatedAt).toLocaleString('zh-TW')}
+                    lastUpdated={response.last_updated || new Date(response.updatedAt).toLocaleString('zh-TW')}
                     limitations={response.coverage?.limitations}
                 />
             )}
             {response && (
                 <div className="flex items-center gap-3 text-xs text-muted-foreground px-4">
                     <span>共 {filteredData.length} 支股票有交易信號</span>
+                    <span>樣本：{response.sample_size} 檔</span>
                     {response.coverage && response.coverage.sufficient > 0 && (
                         <span>（需 ≥{response.coverage.minDays} 天歷史資料才可分析）</span>
                     )}
@@ -278,6 +284,13 @@ export default function SignalsPage() {
                                         <div className="flex items-center gap-2 mb-2">
                                             <span className="font-bold text-lg">{item.symbol} {item.name}</span>
                                             <span className="text-xs text-muted-foreground">— 計算依據</span>
+                                        </div>
+
+                                        {/* Data period info */}
+                                        <div className="flex flex-wrap gap-3 text-xs text-muted-foreground mb-2">
+                                            {item.dataPeriod && <span>📅 資料區間：{item.dataPeriod}</span>}
+                                            {item.dataPoints && <span>📊 資料點數：{item.dataPoints} 天</span>}
+                                            {item.signalDate && <span>🔔 訊號日期：{item.signalDate}</span>}
                                         </div>
 
                                         {/* Price levels with methodology */}

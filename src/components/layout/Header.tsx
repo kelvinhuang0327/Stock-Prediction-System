@@ -9,8 +9,8 @@ export function Header() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     return (
-        <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-            <div className="container flex h-14 items-center px-4 md:px-6">
+        <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/70 shadow-lg">
+            <div className="container flex h-16 items-center px-4 md:px-6">
                 <div className="mr-4 hidden md:flex">
                     <Link href="/" className="mr-6 flex items-center space-x-2">
                         <span className="hidden font-bold sm:inline-block">
@@ -31,6 +31,30 @@ export function Header() {
                             Watchlist
                         </Link>
                         <Link
+                            href="/rankings"
+                            className="transition-colors hover:text-foreground/80 text-foreground/60"
+                        >
+                            Rankings
+                        </Link>
+                        <Link
+                            href="/institutional"
+                            className="transition-colors hover:text-foreground/80 text-foreground/60"
+                        >
+                            Institutional
+                        </Link>
+                        <Link
+                            href="/signals"
+                            className="transition-colors hover:text-foreground/80 text-foreground/60"
+                        >
+                            Signals
+                        </Link>
+                        <Link
+                            href="/backtest"
+                            className="transition-colors hover:text-foreground/80 text-foreground/60"
+                        >
+                            Backtest
+                        </Link>
+                        <Link
                             href="/screener"
                             className="transition-colors hover:text-foreground/80 text-foreground/60"
                         >
@@ -43,16 +67,16 @@ export function Header() {
                             Sectors
                         </Link>
                         <Link
+                            href="/asset-doubling"
+                            className="px-3 py-1.5 rounded-lg bg-primary/10 text-primary border border-primary/30 hover:bg-primary/20 transition-all hover:scale-105 hover:shadow-lg hover:shadow-primary/20"
+                        >
+                            Doubling assets
+                        </Link>
+                        <Link
                             href="/analysis"
                             className="transition-colors hover:text-foreground/80 text-foreground/60"
                         >
                             AI Analysis
-                        </Link>
-                        <Link
-                            href="/calendar"
-                            className="transition-colors hover:text-foreground/80 text-foreground/60"
-                        >
-                            Calendar
                         </Link>
                     </nav>
                 </div>
