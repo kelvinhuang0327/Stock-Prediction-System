@@ -21,6 +21,19 @@ export interface ScreeningResult {
     isETF?: boolean;
     riskScore?: number;
     riskLevel?: 'Low' | 'Medium' | 'High';
+    // New rule-based analysis fields
+    momentumScore?: number;
+    overallScore?: number;
+    recommendation?: '觀察' | '偏多' | '中性' | '偏空' | '資料不足';
+    summary?: string;
+    factors?: { name: string; value: number | string; impact: string; note: string }[];
+    dataPoints?: number;
+    samplePeriod?: string;
+    usedSources?: string[];
+    missingSources?: string[];
+    limitations?: string[];
+    dataCoverage?: { quotes: number; chips: number; revenue: number };
+    last_updated?: string | null;
 }
 
 /** DB-sourced quote snapshot from /api/watchlist */

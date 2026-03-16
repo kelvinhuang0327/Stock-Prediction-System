@@ -173,10 +173,14 @@ export function useWatchlistData() {
                 });
                 if (res.ok) {
                     const analysis: ScreeningResult = await res.json();
-                    const rawScore = analysis.isETF
-                        ? (analysis.chipStrength / 100 * 50) + (analysis.technicalScore / 100 * 50)
-                        : (Math.min(analysis.revenueYoY, 50) / 30 * 40) + (analysis.chipStrength / 100 * 30) + (analysis.technicalScore / 100 * 30);
-                    newData[stock.symbol] = { ...analysis, calculatedScore: Math.round(Math.min(rawScore, 100)) };
+                    // Use server-provided calculatedScore if available, otherwise compute client-side
+                    if (analysis.calculatedScore == null) {
+                        const rawScore = analysis.isETF
+                            ? (analysis.chipStrength / 100 * 50) + (analysis.technicalScore / 100 * 50)
+                            : (Math.min(analysis.revenueYoY, 50) / 30 * 40) + (analysis.chipStrength / 100 * 30) + (analysis.technicalScore / 100 * 30);
+                        analysis.calculatedScore = Math.round(Math.min(rawScore, 100));
+                    }
+                    newData[stock.symbol] = analysis;
                 }
             } catch (e) {
                 console.error(`Failed to analyze ${stock.symbol}`, e);

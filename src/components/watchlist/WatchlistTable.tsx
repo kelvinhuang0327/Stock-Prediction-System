@@ -138,8 +138,20 @@ function WatchlistRow({ row, onEditHoldings, onSetAlert, onRemove }: {
             {/* Reason */}
             <td className="p-4 hidden md:table-cell">
                 {analysis ? (
-                    <div className="text-[10px] text-muted-foreground max-w-[140px] truncate" title={analysis.reason}>
-                        {analysis.reason || '—'}
+                    <div className="space-y-0.5">
+                        {analysis.recommendation && (
+                            <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded inline-block ${
+                                analysis.recommendation === '偏多' ? 'bg-red-100 text-red-700 dark:bg-red-950/40 dark:text-red-400' :
+                                analysis.recommendation === '偏空' ? 'bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-400' :
+                                analysis.recommendation === '資料不足' ? 'bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400' :
+                                'bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400'
+                            }`}>
+                                {analysis.recommendation}
+                            </span>
+                        )}
+                        <div className="text-[10px] text-muted-foreground max-w-[160px] truncate" title={analysis.summary || analysis.reason}>
+                            {analysis.summary || analysis.reason || '—'}
+                        </div>
                     </div>
                 ) : (
                     <span className="text-xs text-muted-foreground">—</span>
