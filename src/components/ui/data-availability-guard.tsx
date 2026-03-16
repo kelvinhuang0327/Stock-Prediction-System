@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { AlertTriangle, Database, RefreshCw } from 'lucide-react';
+import { AlertTriangle, Database, RefreshCw, Clock, BarChart3 } from 'lucide-react';
 
 type Mode = 'full' | 'limited' | 'unavailable';
 
@@ -10,17 +10,18 @@ interface DataAvailabilityGuardProps {
   message: string;
   missing?: string[];
   children: React.ReactNode;
-  /** Show children in limited mode (with warning banner) */
   showInLimited?: boolean;
+}
+
+interface DataStatusBarProps {
+  mode: Mode;
+  coverage?: { stocks: number; total: number };
+  lastUpdated?: string;
+  limitations?: string[];
 }
 
 /**
  * DataAvailabilityGuard - 資料可用性守衛元件
- * 
- * 根據資料可用性等級決定是否渲染子元件：
- * - full: 正常渲染
- * - limited: 渲染但顯示警告橫幅
- * - unavailable: 顯示資料不足訊息，不渲染子元件
  */
 export function DataAvailabilityGuard({
   mode,
@@ -75,9 +76,48 @@ export function DataAvailabilityGuard({
   return <>{children}</>;
 }
 
-/**
- * DataUnavailable - 單一欄位的資料不可用提示
- */
+/** 資料狀態列 — 在頁面頂端顯示覆蓋率、最後更新時間、限制條件 */
+export function DataStatusBar({ mode, coverage, lastUpdated, limitations }: DataStatusBarProps) {
+  const modeColors = {
+    full: 'text-emerald-500',
+    limited: 'text-amber-500',
+    unavailable: 'text-red-500',
+  };
+  const modeLabels = {
+    full: '完整模式',
+    limited: '精簡模式',
+    unavailable: '資料不足',
+  };
+
+  return (
+    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 px-4 py-2 text-[10px] text-muted-foreground/60 border-b border-border/30">
+      <span className={`font-medium ${modeColors[mode]}`}>
+        {modeLabels[mode]}
+      </span>
+      {coverage && (
+        <span className="flex items-center gap-1">
+          <BarChart3 className="w-3 h-3" />
+          覆蓋 {coverage.stocks}/{coverage.total} 檔
+        </span>
+      )}
+      {lastUpdated && (
+        <span className="flex items-center gap-1">
+          <Clock className="w-3 h-3" />
+          最後更新: {lastUpdated}
+        </span>
+      )}
+      {limitations && limitations.length > 0 && (
+        <span className="flex items-center gap-1 text-amber-500/70">
+          <AlertTriangle className="w-3 h-3" />
+          {limitations[0]}
+          {limitations.length > 1 && ` (+${limitations.length - 1})`}
+        </span>
+      )}
+    </div>
+  );
+}
+
+/** 單一欄位的資料不可用提示 */
 export function DataUnavailable({ field }: { field?: string }) {
   return (
     <span className="text-muted-foreground/40 text-xs" title={field ? `${field} 資料不可用` : '資料不可用'}>
@@ -86,9 +126,7 @@ export function DataUnavailable({ field }: { field?: string }) {
   );
 }
 
-/**
- * DataSyncPrompt - 建議同步資料的提示
- */
+/** 建議同步資料的提示 */
 export function DataSyncPrompt({ dataSource }: { dataSource: string }) {
   return (
     <div className="flex items-center gap-2 text-xs text-muted-foreground/60 py-1">

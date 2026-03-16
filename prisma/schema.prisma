@@ -1,0 +1,254 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Stock {
+  id          String   @id // 股票代號
+  name        String // 股票名稱
+  shortName   String? // 簡稱
+  industry    String? // 產業別
+  listingDate String? // 上市日期 (TWSE returns string formatted dates usually)
+  capital     Float? // 實收資本額 (Changed to Float to avoid BigInt issues in JS/JSON serialization, or handle BigInt carefully)
+  shares      Float? // 發行股數
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  quotes             StockQuote[]
+  metrics            StockMetrics[]
+  newsEvents         NewsEvent[]
+  predictions        Prediction[]
+  institutionalChips InstitutionalChip[]
+  monthlyRevenues    MonthlyRevenue[]
+  financialReports   FinancialReport[]
+  watchlistItems     Watchlist[]
+}
+
+model Watchlist {
+  id         Int      @id @default(autoincrement())
+  stockId    String
+  entryPrice Float?
+  addedAt    DateTime @default(now())
+  note       String?
+
+  stock Stock @relation(fields: [stockId], references: [id])
+
+  @@unique([stockId])
+}
+
+model StockQuote {
+  id           Int      @id @default(autoincrement())
+  stockId      String // 股票代號
+  date         String // 交易日期 (YYYYMMDD or string format from API)
+  open         Float // 開盤價
+  high         Float // 最高價
+  low          Float // 最低價
+  close        Float // 收盤價
+  volume       Float // 成交量 (Shares) - using Float for safety with large numbers in JS
+  tradeValue   Float // 成交金額
+  change       Float // 漲跌
+  transactions Int // 成交筆數
+  createdAt    DateTime @default(now())
+
+  stock Stock @relation(fields: [stockId], references: [id])
+
+  @@unique([stockId, date])
+  @@index([stockId])
+  @@index([date])
+}
+
+model StockMetrics {
+  id            Int      @id @default(autoincrement())
+  stockId       String
+  date          String // Date string
+  pe            Float? // 本益比
+  pb            Float? // 股價淨值比
+  dividendYield Float? // 殖利率
+  createdAt     DateTime @default(now())
+
+  stock Stock @relation(fields: [stockId], references: [id])
+
+  @@unique([stockId, date])
+}
+
+model MarketIndex {
+  id            Int      @id @default(autoincrement())
+  name          String // 指數名稱
+  date          String // Date string
+  value         Float // 收盤指數
+  change        Float // 漲跌點數
+  changePercent Float // 漲跌百分比
+  createdAt     DateTime @default(now())
+
+  @@unique([name, date])
+}
+
+model SyncLog {
+  id          Int      @id @default(autoincrement())
+  endpoint    String // 同步端點 (e.g. stock_master, stock_quote)
+  status      String // success / failed / partial
+  records     Int // 同步筆數
+  duration    Int // 耗時(ms)
+  error       String? // 錯誤訊息
+  metadata    String? // JSON: extra info (e.g. stock coverage, date range)
+  syncedAt    DateTime @default(now())
+
+  @@index([endpoint, syncedAt])
+}
+
+model NewsEvent {
+  id             Int      @id @default(autoincrement())
+  stockId        String? // Optional relation to specific stock
+  title          String
+  summary        String?
+  url            String?
+  publishedAt    DateTime
+  source         String
+  sentimentScore Float? // -1.0 (Negative) to 1.0 (Positive)
+  createdAt      DateTime @default(now())
+
+  stock Stock? @relation(fields: [stockId], references: [id])
+
+  @@index([stockId])
+  @@index([publishedAt])
+}
+
+model Prediction {
+  id         Int    @id @default(autoincrement())
+  stockId    String
+  date       String // Prediction date (YYYYMMDD)
+  targetDate String // Predicted for date (YYYYMMDD)
+
+  // Scores
+  technicalScore Float // 0-100
+  newsScore      Float // 0-100
+  totalScore     Float // Weighted Average
+
+  // Metadata
+  signal     String // BUY, SELL, HOLD, CAUTION
+  confidence Float // 0-1.0
+  factors    String // JSON string detailing contributing factors
+
+  createdAt DateTime @default(now())
+
+  stock Stock @relation(fields: [stockId], references: [id])
+
+  @@unique([stockId, date, targetDate])
+  @@index([date])
+}
+
+model InstitutionalChip {
+  id          Int      @id @default(autoincrement())
+  stockId     String
+  date        String // YYYYMMDD
+  foreignBuy  Float // 外資買賣超
+  trustBuy    Float // 投信買賣超
+  dealerBuy   Float // 自營商買賣超
+  totalBuy    Float // 三大法人合計
+  holders400  Float? // 400張以上大戶持股比
+  holders1000 Float? // 1000張以上大戶持股比
+  createdAt   DateTime @default(now())
+
+  stock Stock @relation(fields: [stockId], references: [id])
+
+  @@unique([stockId, date])
+  @@index([date])
+}
+
+model MonthlyRevenue {
+  id        Int      @id @default(autoincrement())
+  stockId   String
+  year      Int
+  month     Int
+  revenue   Float
+  yoyGrowth Float? // YoY %
+  momGrowth Float? // MoM %
+  createdAt DateTime @default(now())
+
+  stock Stock @relation(fields: [stockId], references: [id])
+
+  @@unique([stockId, year, month])
+}
+
+model FinancialReport {
+  id              Int      @id @default(autoincrement())
+  stockId         String
+  year            Int
+  quarter         Int // 1-4
+  eps             Float
+  netIncome       Float
+  grossMargin     Float?
+  operatingMargin Float?
+  createdAt       DateTime @default(now())
+
+  stock Stock @relation(fields: [stockId], references: [id])
+
+  @@unique([stockId, year, quarter])
+}
+
+model PriceAlert {
+  id        Int      @id @default(autoincrement())
+  symbol    String
+  type      String // ABOVE, BELOW, PCT_UP, PCT_DOWN
+  target    Float
+  isActive  Boolean  @default(true)
+  triggered Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user String? // Optional user identifier if needed later
+}
+
+// Phase 1: Historical Doubling Stock Feature Database
+model DoublingFeatures {
+  id                Int    @id @default(autoincrement())
+  stockId           String // 股票代號
+  stockName         String // 股票名稱
+  doublingStartDate String // 起漲日期 (YYYYMMDD)
+  doublingEndDate   String // 達成翻倍日期 (YYYYMMDD)
+  doublingDays      Int // 翻倍所需天數
+  startPrice        Float // 起漲價格
+  peakPrice         Float // 最高價格
+  maxGain           Float // 最大漲幅 % (應 >= 100%)
+
+  // Pre-surge Technical Features (起漲前 20 天特徵)
+  preRevenueYoY        Float? // 起漲前營收年增率 %
+  preChipConcentration Float? // 籌碼集中度 (HHI)
+  preForeignHolding    Float? // 外資持股 %
+  preTrustHolding      Float? // 投信持股 %
+  preVolatility        Float? // 波動率 (ATR/Price)
+  preMomentum          Float? // 動能指標 (RSI)
+
+  // Feature Vector (JSON format)
+  featureVector String? // JSON: 完整 20 維特徵向量
+
+  // Metadata
+  detectedBy String? // 偵測方法 (scanner/manual/backtest)
+  notes      String? // 備註
+  createdAt  DateTime @default(now())
+
+  @@unique([stockId, doublingStartDate])
+  @@index([doublingEndDate])
+  @@index([maxGain])
+}
+
+model StrategySignal {
+  id           Int      @id @default(autoincrement())
+  stockId      String
+  date         String // YYYYMMDD
+  strategyName String
+  isSignal     Boolean
+  score        Float?
+  label        String? // e.g., "💎 潛力珍珠"
+  reason       String?
+  metadata     String? // JSON for evidence, RS, etc.
+  createdAt    DateTime @default(now())
+
+  @@unique([stockId, date, strategyName])
+  @@index([date])
+  @@index([isSignal])
+}
