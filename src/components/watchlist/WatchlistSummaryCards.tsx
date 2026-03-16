@@ -30,11 +30,12 @@ export function WatchlistSummaryCards({ summary }: Props) {
                 </div>
 
                 <div className="bg-card p-6 rounded-xl border shadow-sm flex flex-col justify-center">
-                    <div className="text-muted-foreground text-sm mb-1 uppercase tracking-wider font-bold">數據健康度</div>
+                    <div className="text-muted-foreground text-sm mb-1 uppercase tracking-wider font-bold">策略分析來源</div>
                     <div className="flex items-center gap-2">
-                        <div className="text-3xl font-black font-mono text-green-600">優</div>
-                        <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-bold">100% 同步</span>
+                        <div className="text-lg font-black font-mono text-blue-600">DB 計算</div>
+                        <span className="text-[10px] bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300 px-2 py-0.5 rounded-full font-bold">依實際資料</span>
                     </div>
+                    <span className="text-[10px] text-muted-foreground mt-1">策略評分依據資料覆蓋率，結果僅供參考</span>
                 </div>
             </div>
 

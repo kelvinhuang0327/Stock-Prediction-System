@@ -199,9 +199,10 @@ function ScoreCell({ analysis }: { analysis: ScreeningResult | null }) {
         );
     }
     const score = analysis.calculatedScore || 0;
+    const hasLimitedData = analysis.technicalScore === 0;
     return (
         <div className="flex flex-col items-center">
-            <span className={`text-lg font-black ${score >= 80 ? 'text-red-600' : 'text-amber-600'}`}>
+            <span className={`text-lg font-black ${hasLimitedData ? 'text-muted-foreground' : score >= 80 ? 'text-red-600' : 'text-amber-600'}`}>
                 {score}
             </span>
             <div className="flex gap-0.5 mt-1">
@@ -212,6 +213,7 @@ function ScoreCell({ analysis }: { analysis: ScreeningResult | null }) {
                     />
                 ))}
             </div>
+            {hasLimitedData && <span className="text-[8px] text-amber-500 mt-0.5">資料不足</span>}
         </div>
     );
 }

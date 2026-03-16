@@ -10,7 +10,7 @@ import { GlassCard } from '@/components/ui/glass-card';
 import { LoadingSpinner } from '@/components/ui/loading';
 import {
     FlaskConical, TrendingUp, TrendingDown, BarChart3,
-    ArrowRight, Calendar, AlertTriangle
+    ArrowRight, Calendar, AlertTriangle, Info, Scale
 } from 'lucide-react';
 
 interface EligibleStock {
@@ -59,6 +59,16 @@ interface BacktestResult {
     sample_size: number;
     last_updated: string | null;
     disclaimer: string;
+    benchmark?: {
+        buyAndHoldReturn: number;
+        marketReturn: number | null;
+        alphaVsBuyHold: number;
+        alphaVsMarket: number | null;
+        marketAvailable: boolean;
+        marketUnavailableReason?: string;
+    };
+    samplePeriod?: string;
+    dataLimitations?: string[];
 }
 
 const STRATEGIES = [
@@ -268,6 +278,31 @@ export default function BacktestPage() {
                                 <SummaryCard label="Sharpe" value={`${backtestResult.summary.sharpeRatio}`} />
                             </div>
 
+                            {/* Benchmark Comparison */}
+                            {backtestResult.benchmark && (
+                                <BenchmarkComparison
+                                    strategyReturn={backtestResult.summary.totalReturn}
+                                    benchmark={backtestResult.benchmark}
+                                />
+                            )}
+
+                            {/* Data Limitations */}
+                            {backtestResult.dataLimitations && backtestResult.dataLimitations.length > 0 && (
+                                <GlassCard className="p-4">
+                                    <div className="flex items-start gap-2">
+                                        <Info className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
+                                        <div>
+                                            <div className="text-xs font-medium text-blue-400 mb-1">資料限制</div>
+                                            <ul className="text-xs text-muted-foreground space-y-0.5">
+                                                {backtestResult.dataLimitations.map((l, i) => (
+                                                    <li key={i}>• {l}</li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </GlassCard>
+                            )}
+
                             {/* Period info */}
                             <div className="flex flex-wrap gap-4 text-xs text-muted-foreground px-1">
                                 <span className="flex items-center gap-1">
@@ -345,6 +380,87 @@ export default function BacktestPage() {
                 methodology="回測基於歷史資料模擬策略執行結果，不含交易成本與滑價"
                 warning="回測結果僅供研究參考，不代表未來績效。過去表現不保證未來報酬。"
             />
+        </div>
+    );
+}
+
+function BenchmarkComparison({ strategyReturn, benchmark }: {
+    strategyReturn: number;
+    benchmark: NonNullable<BacktestResult['benchmark']>;
+}) {
+    const outperformsBH = strategyReturn > benchmark.buyAndHoldReturn;
+    const outperformsMarket = benchmark.marketReturn !== null && strategyReturn > benchmark.marketReturn;
+
+    return (
+        <GlassCard className="p-4 space-y-3">
+            <div className="flex items-center gap-2 text-sm font-semibold">
+                <Scale className="w-4 h-4 text-primary" />
+                Benchmark 比較
+            </div>
+
+            {/* Comparison grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+                <CompareCard
+                    label="策略報酬"
+                    value={`${strategyReturn > 0 ? '+' : ''}${strategyReturn}%`}
+                    color={strategyReturn > 0 ? 'text-red-400' : 'text-green-400'}
+                />
+                <CompareCard
+                    label="Buy & Hold"
+                    value={`${benchmark.buyAndHoldReturn > 0 ? '+' : ''}${benchmark.buyAndHoldReturn}%`}
+                    color={benchmark.buyAndHoldReturn > 0 ? 'text-red-400' : 'text-green-400'}
+                    subtitle="同股同期持有"
+                />
+                <CompareCard
+                    label="Alpha vs B&H"
+                    value={`${benchmark.alphaVsBuyHold > 0 ? '+' : ''}${benchmark.alphaVsBuyHold}%`}
+                    color={benchmark.alphaVsBuyHold > 0 ? 'text-red-400' : 'text-green-400'}
+                />
+                {benchmark.marketAvailable && benchmark.marketReturn !== null ? (
+                    <>
+                        <CompareCard
+                            label="大盤報酬"
+                            value={`${benchmark.marketReturn > 0 ? '+' : ''}${benchmark.marketReturn}%`}
+                            color={benchmark.marketReturn > 0 ? 'text-red-400' : 'text-green-400'}
+                            subtitle="TAIEX 同期"
+                        />
+                        <CompareCard
+                            label="Alpha vs 大盤"
+                            value={`${benchmark.alphaVsMarket! > 0 ? '+' : ''}${benchmark.alphaVsMarket}%`}
+                            color={benchmark.alphaVsMarket! > 0 ? 'text-red-400' : 'text-green-400'}
+                        />
+                    </>
+                ) : (
+                    <div className="col-span-2 flex items-center gap-2 p-3 bg-muted/30 rounded-lg text-xs text-muted-foreground">
+                        <AlertTriangle className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                        {benchmark.marketUnavailableReason || '大盤 benchmark 不可用'}
+                    </div>
+                )}
+            </div>
+
+            {/* Interpretation */}
+            <div className="flex flex-wrap gap-2 text-xs">
+                <span className={`px-2 py-1 rounded-full font-medium ${outperformsBH ? 'bg-red-100 text-red-700 dark:bg-red-950/40 dark:text-red-400' : 'bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-400'}`}>
+                    {outperformsBH ? '✓ 策略優於 Buy & Hold' : '✗ 策略劣於 Buy & Hold'}
+                </span>
+                {benchmark.marketAvailable && benchmark.marketReturn !== null && (
+                    <span className={`px-2 py-1 rounded-full font-medium ${outperformsMarket ? 'bg-red-100 text-red-700 dark:bg-red-950/40 dark:text-red-400' : 'bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-400'}`}>
+                        {outperformsMarket ? '✓ 策略優於大盤' : '✗ 策略劣於大盤'}
+                    </span>
+                )}
+            </div>
+        </GlassCard>
+    );
+}
+
+function CompareCard({ label, value, color = 'text-foreground', subtitle }: {
+    label: string; value: string; color?: string; subtitle?: string;
+}) {
+    return (
+        <div className="p-2.5 bg-muted/20 rounded-lg text-center">
+            <div className="text-[10px] text-muted-foreground uppercase">{label}</div>
+            <div className={`text-base font-bold font-mono mt-0.5 ${color}`}>{value}</div>
+            {subtitle && <div className="text-[9px] text-muted-foreground mt-0.5">{subtitle}</div>}
         </div>
     );
 }

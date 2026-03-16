@@ -8,6 +8,7 @@ import { apiCache } from '@/lib/cache';
  * 
  * 僅使用 DB 真實歷史行情。不使用 mock 資料。
  * 需 ≥100 天資料才可回測。
+ * 含 Buy & Hold benchmark + Market benchmark (若 MarketIndex 可用)。
  */
 export async function POST(request: NextRequest) {
     let body: { symbol?: string; strategy?: string; months?: number };
@@ -47,12 +48,28 @@ export async function POST(request: NextRequest) {
 
         const dbResult = await backtestFromDB(symbol, strategy, months);
         if (dbResult) {
+            // Calculate benchmarks
+            const benchmark = await calculateBenchmarks(symbol, dbResult.period, dbResult.equityCurve);
+            const dataLimitations: string[] = [];
+            if (!benchmark.marketAvailable) {
+                dataLimitations.push('大盤指數歷史資料不足，無法提供市場 benchmark 比較');
+            }
+            if (dbResult.equityCurve.length < 250) {
+                dataLimitations.push(`回測期間僅 ${dbResult.equityCurve.length} 個交易日，統計意義有限`);
+            }
+            if (dbResult.trades.length < 5) {
+                dataLimitations.push(`策略僅產生 ${dbResult.trades.length} 筆交易，樣本數偏少`);
+            }
+
             const response = {
                 ...dbResult,
                 source: 'database（TWSE 歷史行情資料）',
                 coverage: { availableDays: quoteCount, requiredDays: 100 },
                 sample_size: quoteCount,
                 last_updated: dbResult.equityCurve[dbResult.equityCurve.length - 1]?.date || null,
+                benchmark,
+                samplePeriod: dbResult.period,
+                dataLimitations,
                 disclaimer: '回測結果基於歷史資料，不代表未來績效。不含交易成本與滑價。過去表現不保證未來報酬。',
             };
             apiCache.set(cacheKey, response, 600);
@@ -294,7 +311,7 @@ function runBacktest(
 async function backtestFromDB(symbol: string, strategy: string, months: number): Promise<BacktestResult | null> {
     const fromDate = new Date();
     fromDate.setMonth(fromDate.getMonth() - months);
-    const fromStr = fromDate.toISOString().slice(0, 10).replace(/-/g, '');
+    const fromStr = fromDate.toISOString().slice(0, 10); // YYYY-MM-DD (matches DB format)
 
     const quotes = await prisma.stockQuote.findMany({
         where: {
@@ -316,6 +333,75 @@ async function backtestFromDB(symbol: string, strategy: string, months: number):
     }));
 
     return runBacktest(symbol, strategy, history);
+}
+
+// ─── Benchmark Calculations ─────────────────────────────────────
+
+interface BenchmarkResult {
+    buyAndHoldReturn: number;
+    marketReturn: number | null;
+    alphaVsBuyHold: number;
+    alphaVsMarket: number | null;
+    marketAvailable: boolean;
+    marketUnavailableReason?: string;
+}
+
+async function calculateBenchmarks(
+    symbol: string,
+    period: string,
+    equityCurve: { date: string; value: number }[],
+): Promise<BenchmarkResult> {
+    if (equityCurve.length === 0) {
+        return { buyAndHoldReturn: 0, marketReturn: null, alphaVsBuyHold: 0, alphaVsMarket: null, marketAvailable: false, marketUnavailableReason: '無回測資料' };
+    }
+
+    const startDate = equityCurve[0].date;
+    const endDate = equityCurve[equityCurve.length - 1].date;
+    const strategyReturn = equityCurve[equityCurve.length - 1].value - 100; // equity starts at 100
+
+    // Buy & Hold: same stock, same period
+    const bhQuotes = await prisma.stockQuote.findMany({
+        where: { stockId: symbol, date: { gte: startDate, lte: endDate } },
+        orderBy: { date: 'asc' },
+        select: { close: true },
+    });
+
+    let buyAndHoldReturn = 0;
+    if (bhQuotes.length >= 2) {
+        const startPrice = bhQuotes[0].close;
+        const endPrice = bhQuotes[bhQuotes.length - 1].close;
+        buyAndHoldReturn = startPrice > 0 ? r(((endPrice - startPrice) / startPrice) * 100) : 0;
+    }
+
+    const alphaVsBuyHold = r(strategyReturn - buyAndHoldReturn);
+
+    // Market benchmark: TAIEX index, same period
+    const marketRecords = await prisma.marketIndex.findMany({
+        where: { name: 'TAIEX', date: { gte: startDate, lte: endDate } },
+        orderBy: { date: 'asc' },
+        select: { value: true },
+    });
+
+    let marketReturn: number | null = null;
+    let alphaVsMarket: number | null = null;
+    let marketAvailable = false;
+    let marketUnavailableReason: string | undefined;
+
+    if (marketRecords.length >= 2) {
+        const startVal = marketRecords[0].value;
+        const endVal = marketRecords[marketRecords.length - 1].value;
+        if (startVal > 0) {
+            marketReturn = r(((endVal - startVal) / startVal) * 100);
+            alphaVsMarket = r(strategyReturn - marketReturn);
+            marketAvailable = true;
+        }
+    } else {
+        marketUnavailableReason = marketRecords.length === 0
+            ? '大盤指數歷史資料不存在，無法計算市場 benchmark'
+            : `大盤指數僅有 ${marketRecords.length} 筆資料，不足以計算市場 benchmark`;
+    }
+
+    return { buyAndHoldReturn, marketReturn, alphaVsBuyHold, alphaVsMarket, marketAvailable, marketUnavailableReason };
 }
 
 // --- Helpers ---
