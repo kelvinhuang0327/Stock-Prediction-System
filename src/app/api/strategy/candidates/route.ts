@@ -69,9 +69,13 @@ export async function GET(request: NextRequest) {
   const cached = apiCache.get<CandidatesResponse>(cacheKey);
   if (cached) return NextResponse.json(cached);
 
+  // Reuse screen cache if available to avoid duplicate runScreen() computation
+  const screenCacheKey = `screen:${JSON.stringify(params)}`;
+
   try {
+    const cachedScreenResult = apiCache.get<Awaited<ReturnType<typeof runScreen>>>(screenCacheKey);
     const [screenResult, prevSnapshot] = await Promise.all([
-      runScreen(params),
+      cachedScreenResult ? Promise.resolve(cachedScreenResult) : runScreen(params).then(r => { apiCache.set(screenCacheKey, r, 180); return r; }),
       prisma.dailyCandidateSnapshot.findFirst({
         where: { snapshotDate: { lt: new Date().toISOString().split('T')[0] } },
         select: { snapshotDate: true },

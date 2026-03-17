@@ -16,6 +16,7 @@
  */
 
 import type { DailyAlertsResult, DailyAlert, AlertSeverity } from './DailyAlertEngine';
+import { APP_NAME, APP_DISCLAIMER } from '@/lib/config/app';
 
 // ─── Types ────────────────────────────────────────────────────────
 
@@ -56,7 +57,7 @@ export interface StructuredPayload {
   disclaimer: string;
 }
 
-const DISCLAIMER = 'Stock洞察平台 自動產生之研究摘要，僅供參考，不構成投資建議。';
+const DISCLAIMER = APP_DISCLAIMER;
 const SEVERITY_EMOJI: Record<AlertSeverity, string> = {
   warning: '⚠️',
   caution: '🔔',
@@ -67,7 +68,7 @@ const SEVERITY_EMOJI: Record<AlertSeverity, string> = {
 
 export function formatAsPlainText(result: DailyAlertsResult): PlainTextPayload {
   const lines: string[] = [
-    `📊 Stock洞察平台｜每日研究提醒 ${result.reportDate}`,
+    `📊 ${APP_NAME}｜每日研究提醒 ${result.reportDate}`,
     `市場環境: ${result.alerts.find(a => a.type === 'market_regime_changed') ? '環境轉變' : '維持穩定'}`,
     ``,
     result.summary,
@@ -115,7 +116,7 @@ export function formatAsMarkdown(result: DailyAlertsResult): MarkdownPayload {
   };
 
   const lines = [
-    `# Stock洞察平台｜每日研究提醒 ${result.reportDate}`,
+    `# ${APP_NAME}｜每日研究提醒 ${result.reportDate}`,
     ``,
     `> ${result.summary}`,
     ``,
@@ -162,7 +163,7 @@ export function formatAsMarkdown(result: DailyAlertsResult): MarkdownPayload {
 
   return {
     channel: 'email',
-    subject: `Stock洞察平台｜研究提醒 ${result.reportDate} [${overallLabel}] — ${result.alerts.length} 項提醒`,
+    subject: `${APP_NAME}｜研究提醒 ${result.reportDate} [${overallLabel}] — ${result.alerts.length} 項提醒`,
     body: lines.join('\n'),
   };
 }

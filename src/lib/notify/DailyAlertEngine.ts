@@ -16,6 +16,7 @@ import { prisma } from '@/lib/prisma';
 import { detectRegime } from '@/lib/market/MarketRegimeEngine';
 import { runScreen } from '@/lib/screen/StrategyScreenEngine';
 import { fuseBatch } from '@/lib/alpha/SignalFusionEngine';
+import { APP_NAME } from '@/lib/config/app';
 
 // ─── Public Types ─────────────────────────────────────────────────
 
@@ -356,7 +357,7 @@ function buildSummary(alerts: DailyAlert[], comparisonAvailable: boolean, regime
   if (riskEsc > 0) parts.push(`${riskEsc} 檔 watchlist 標的風險升高，建議留意。`);
   if (dataWarn > 0) parts.push(`${dataWarn} 項資料品質提醒，部分評分可信度有限。`);
   if (warnings.length === 0 && cautions.length === 0) parts.push('整體變化程度有限。');
-  parts.push('以上為系統研究提醒，不構成任何投資建議。');
+  parts.push(`以上為 ${APP_NAME} 研究提醒，不構成任何投資建議。`);
 
   return parts.join('');
 }

@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
     const maxItems = searchParams.has('maxItems') ? Number(searchParams.get('maxItems')) : 50;
     const includeDataWarnings = searchParams.get('includeDataWarnings') !== 'false';
 
-    const cacheKey = `daily-alerts:wl=${includeWatchlist}:ms=${minSeverity ?? 'all'}:max=${maxItems}:dw=${includeDataWarnings}`;
+    const cacheKey = `notify:daily:wl=${includeWatchlist}:ms=${minSeverity ?? 'all'}:max=${maxItems}:dw=${includeDataWarnings}`;
     const cached = apiCache.get(cacheKey);
     if (cached) return NextResponse.json(cached);
 

@@ -149,6 +149,10 @@ export default function SettingsPage() {
                                         className="bg-blue-500 text-white px-4 py-1.5 rounded-lg text-sm font-bold hover:bg-blue-600 transition-all">
                                         管理通知
                                     </a>
+                                    <a href="/settings/system"
+                                        className="bg-slate-500 text-white px-4 py-1.5 rounded-lg text-sm font-bold hover:bg-slate-600 transition-all">
+                                        系統健康
+                                    </a>
                                     <button
                                         onClick={handleTestNotify}
                                         disabled={notifying}
