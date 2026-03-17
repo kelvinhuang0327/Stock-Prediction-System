@@ -119,7 +119,7 @@ export async function GET(request: NextRequest) {
       if (currRank < prevRank) changeTags.push('bucket_downgraded');
       if (alphaDelta >= ALPHA_CHANGE_THRESHOLD) changeTags.push('alpha_improved');
       if (alphaDelta <= -ALPHA_CHANGE_THRESHOLD) changeTags.push('alpha_dropped');
-      if (prev.screenBucket !== 'Insufficient Data' && c.screenBucket === 'Insufficient Data') {
+      if (c.dataCoverage === 'insufficient' && prev.screenBucket !== 'Excluded') {
         changeTags.push('newly_insufficient');
       }
 
