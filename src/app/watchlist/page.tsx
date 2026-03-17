@@ -24,6 +24,9 @@ export default function WatchlistPage() {
         portfolioSummary,
         addStock, removeStock, updateHoldings,
         refreshAnalysis,
+        migrationStatus,
+        migrationMessage,
+        useDbSource,
     } = useWatchlistData();
 
     const { alerts, saveAlert, deleteAlert } = useWatchlistAlerts();
@@ -54,6 +57,9 @@ export default function WatchlistPage() {
                 isAnalyzing={isAnalyzing}
                 onRefresh={refreshAnalysis}
                 onAddStock={() => setIsAddDialogOpen(true)}
+                migrationStatus={migrationStatus}
+                migrationMessage={migrationMessage}
+                useDbSource={useDbSource}
             />
 
             <WatchlistSummaryCards summary={portfolioSummary} />

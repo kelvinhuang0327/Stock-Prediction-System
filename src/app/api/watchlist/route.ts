@@ -3,6 +3,10 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { apiCache } from '@/lib/cache';
 
+/**
+ * GET /api/watchlist
+ * Returns DB-backed watchlist with quote overlay.
+ */
 export async function GET() {
     const cacheKey = 'watchlist:list';
     const cached = apiCache.get<any>(cacheKey);
@@ -17,7 +21,7 @@ export async function GET() {
                         industry: true,
                         quotes: {
                             orderBy: { date: 'desc' },
-                            take: 6, // need ~5 days for weekly change
+                            take: 6,
                         }
                     }
                 }
@@ -49,6 +53,9 @@ export async function GET() {
                 name: item.stock.name,
                 industry: item.stock.industry || '',
                 entryPrice: item.entryPrice,
+                quantity: item.quantity,
+                note: item.note,
+                tags: item.tags,
                 currentPrice,
                 changePercent: item.entryPrice
                     ? ((currentPrice - item.entryPrice) / item.entryPrice) * 100
@@ -58,7 +65,7 @@ export async function GET() {
                 volume: currentVolume,
                 volumeChange: Math.round(volumeChange * 100) / 100,
                 addedAt: item.addedAt,
-                note: item.note,
+                updatedAt: item.updatedAt,
                 hasQuoteData,
                 lastQuoteDate: latestQuote?.date || null,
             };
@@ -84,11 +91,55 @@ export async function GET() {
     }
 }
 
+/**
+ * POST /api/watchlist
+ * Add a stock to watchlist or bulk-import from localStorage migration.
+ * Body: { stockId, entryPrice?, quantity?, note? }
+ *   or: { items: [{ stockId, entryPrice?, quantity?, note? }] } for bulk migration
+ */
 export async function POST(request: Request) {
     try {
         const body = await request.json();
-        const { stockId, entryPrice, note } = body;
 
+        // Bulk migration mode
+        if (body.items && Array.isArray(body.items)) {
+            const results = { migrated: 0, skipped: 0, errors: [] as string[] };
+            for (const item of body.items) {
+                if (!item.stockId) continue;
+                try {
+                    // Check stock exists in DB
+                    const stock = await prisma.stock.findUnique({ where: { id: item.stockId } });
+                    if (!stock) {
+                        results.skipped++;
+                        results.errors.push(`${item.stockId}: 股票不存在於資料庫`);
+                        continue;
+                    }
+                    await prisma.watchlist.upsert({
+                        where: { stockId: item.stockId },
+                        update: {
+                            entryPrice: item.entryPrice ?? undefined,
+                            quantity: item.quantity ?? undefined,
+                            note: item.note ?? undefined,
+                        },
+                        create: {
+                            stockId: item.stockId,
+                            entryPrice: item.entryPrice ?? null,
+                            quantity: item.quantity ?? null,
+                            note: item.note ?? null,
+                        },
+                    });
+                    results.migrated++;
+                } catch (e: any) {
+                    results.skipped++;
+                    results.errors.push(`${item.stockId}: ${e.message || 'unknown error'}`);
+                }
+            }
+            apiCache.invalidate('watchlist:');
+            return NextResponse.json({ success: true, ...results });
+        }
+
+        // Single add
+        const { stockId, entryPrice, quantity, note } = body;
         if (!stockId) {
             return NextResponse.json({ error: 'Stock ID is required' }, { status: 400 });
         }
@@ -96,22 +147,60 @@ export async function POST(request: Request) {
         const item = await prisma.watchlist.upsert({
             where: { stockId },
             update: {
-                entryPrice: entryPrice || undefined,
-                note: note || undefined,
-                addedAt: new Date()
+                entryPrice: entryPrice ?? undefined,
+                quantity: quantity ?? undefined,
+                note: note ?? undefined,
             },
             create: {
                 stockId,
-                entryPrice,
-                note
+                entryPrice: entryPrice ?? null,
+                quantity: quantity ?? null,
+                note: note ?? null,
             }
         });
 
-        // Invalidate cache
         apiCache.invalidate('watchlist:');
         return NextResponse.json(item);
     } catch (error) {
         console.error('Watchlist POST error:', error);
         return NextResponse.json({ error: 'Failed to add to watchlist' }, { status: 500 });
+    }
+}
+
+/**
+ * PATCH /api/watchlist
+ * Update holdings for a watchlist item.
+ * Body: { stockId, entryPrice?, quantity?, note?, tags? }
+ */
+export async function PATCH(request: Request) {
+    try {
+        const body = await request.json();
+        const { stockId, entryPrice, quantity, note, tags } = body;
+
+        if (!stockId) {
+            return NextResponse.json({ error: 'Stock ID is required' }, { status: 400 });
+        }
+
+        const existing = await prisma.watchlist.findUnique({ where: { stockId } });
+        if (!existing) {
+            return NextResponse.json({ error: 'Stock not in watchlist' }, { status: 404 });
+        }
+
+        const updateData: any = {};
+        if (entryPrice !== undefined) updateData.entryPrice = entryPrice;
+        if (quantity !== undefined) updateData.quantity = quantity;
+        if (note !== undefined) updateData.note = note;
+        if (tags !== undefined) updateData.tags = tags;
+
+        const updated = await prisma.watchlist.update({
+            where: { stockId },
+            data: updateData,
+        });
+
+        apiCache.invalidate('watchlist:');
+        return NextResponse.json(updated);
+    } catch (error) {
+        console.error('Watchlist PATCH error:', error);
+        return NextResponse.json({ error: 'Failed to update watchlist item' }, { status: 500 });
     }
 }

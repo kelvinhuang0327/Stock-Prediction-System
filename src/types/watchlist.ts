@@ -6,6 +6,28 @@ export interface PortfolioItem extends Stock {
     quantity?: number;
 }
 
+/** DB-backed watchlist item returned by GET /api/watchlist */
+export interface DbWatchlistItem {
+    id: number;
+    stockId: string;
+    name: string;
+    industry: string;
+    entryPrice: number | null;
+    quantity: number | null;
+    note: string | null;
+    tags: string | null;
+    currentPrice: number;
+    changePercent: number;
+    dailyChange: number;
+    weeklyChange: number;
+    volume: number;
+    volumeChange: number;
+    addedAt: string;
+    updatedAt: string;
+    hasQuoteData: boolean;
+    lastQuoteDate: string | null;
+}
+
 /** Strategy analysis result from /api/strategy/analyze */
 export interface ScreeningResult {
     stockId: string;
@@ -36,7 +58,7 @@ export interface ScreeningResult {
     last_updated?: string | null;
 }
 
-/** DB-sourced quote snapshot from /api/watchlist */
+/** DB-sourced quote snapshot from /api/watchlist (legacy compat) */
 export interface QuoteSnapshotViewModel {
     stockId: string;
     name: string;
@@ -49,9 +71,17 @@ export interface QuoteSnapshotViewModel {
 }
 
 export interface DbWatchlistResponse {
-    data: QuoteSnapshotViewModel[];
+    data: DbWatchlistItem[];
     last_updated: string | null;
     coverage: { total: number; withQuotes: number };
+}
+
+/** Migration result from bulk POST /api/watchlist */
+export interface MigrationResult {
+    success: boolean;
+    migrated: number;
+    skipped: number;
+    errors: string[];
 }
 
 /** Computed view model for each row in the watchlist table */
@@ -92,6 +122,15 @@ export interface SortConfig {
     key: string;
     dir: 'asc' | 'desc';
 }
+
+/** Migration status */
+export type MigrationStatus =
+    | 'idle'
+    | 'pending'     // localStorage has data, DB empty
+    | 'migrating'
+    | 'completed'
+    | 'failed'
+    | 'db-first';   // DB is primary, no migration needed
 
 export const WATCHLIST_VERSION = '2025.01.09.v2';
 

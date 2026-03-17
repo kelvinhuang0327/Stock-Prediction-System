@@ -31,9 +31,12 @@ model Stock {
 model Watchlist {
   id         Int      @id @default(autoincrement())
   stockId    String
-  entryPrice Float?
+  entryPrice Float?   // avgCost — average cost per share
+  quantity   Int?     // number of shares held
   addedAt    DateTime @default(now())
+  updatedAt  DateTime @updatedAt
   note       String?
+  tags       String?  // comma-separated tags for future use
 
   stock Stock @relation(fields: [stockId], references: [id])
 
