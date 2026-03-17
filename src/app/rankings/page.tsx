@@ -43,10 +43,19 @@ interface RankingResponse {
 
 interface AlphaItem {
     symbol: string;
+    name: string;
     alphaScore: number;
     recommendationBucket: string;
+    screenBucket: string;
     confidence: number;
-    factors: { name: string; value: string; impact: string; category: string }[];
+    technicalScore: number;
+    chipScore: number;
+    fundamentalScore: number;
+    riskLevel: string;
+    topFactors: string[];
+    keyRisks: string[];
+    whyIncluded: string;
+    summary: string;
     usedSources: string[];
     missingSources: string[];
     limitations: string[];
@@ -82,8 +91,12 @@ export default function RankingsPage() {
     const [alphaData, setAlphaData] = useState<AlphaItem[]>([]);
     const [alphaLoading, setAlphaLoading] = useState(false);
     const [alphaError, setAlphaError] = useState<string | null>(null);
+    const [screenMeta, setScreenMeta] = useState<{
+        regime: string; regimeConfidence: number; totalScanned: number; excludedCount: number;
+        appliedRegimeAdjustment: string; limitations: string[];
+    } | null>(null);
 
-    // Fetch alpha data when tab selected
+    // Fetch alpha data from screen API when tab selected
     React.useEffect(() => {
         if (activeTab !== 'alpha') return;
         let cancelled = false;
@@ -91,24 +104,19 @@ export default function RankingsPage() {
             setAlphaLoading(true);
             setAlphaError(null);
             try {
-                // Get top volume symbols from rankings to analyze
-                const rankRes = await fetch('/api/rankings?type=volume&limit=30');
-                if (!rankRes.ok) throw new Error('無法取得股票清單');
-                const rankData = await rankRes.json();
-                const symbols = (rankData.data || []).map((d: RankingItem) => d.symbol).filter(Boolean);
-                if (symbols.length === 0) { setAlphaData([]); setAlphaLoading(false); return; }
-
-                const fusionRes = await fetch('/api/alpha/fusion', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ symbols }),
-                });
-                if (!fusionRes.ok) throw new Error('Alpha 融合分析失敗');
-                const fusionData = await fusionRes.json();
+                const res = await fetch('/api/strategy/screen?maxResults=50');
+                if (!res.ok) throw new Error('候選股篩選失敗');
+                const data = await res.json();
                 if (!cancelled) {
-                    const items: AlphaItem[] = (fusionData.data || [])
-                        .sort((a: AlphaItem, b: AlphaItem) => b.alphaScore - a.alphaScore);
-                    setAlphaData(items);
+                    setAlphaData(data.candidates || []);
+                    setScreenMeta({
+                        regime: data.regime,
+                        regimeConfidence: data.regimeConfidence,
+                        totalScanned: data.totalScanned,
+                        excludedCount: data.excludedCount,
+                        appliedRegimeAdjustment: data.screenParams?.appliedRegimeAdjustment || '無',
+                        limitations: data.limitations || [],
+                    });
                 }
             } catch (e: unknown) {
                 if (!cancelled) setAlphaError(e instanceof Error ? e.message : '載入失敗');
@@ -335,7 +343,7 @@ export default function RankingsPage() {
 
             {/* Alpha Candidates */}
             {!alphaLoading && activeTab === 'alpha' && (
-                <AlphaCandidatesPanel data={alphaData} onRowClick={(s) => router.push(`/stock/${s}`)} />
+                <AlphaCandidatesPanel data={alphaData} meta={screenMeta} onRowClick={(s) => router.push(`/stock/${s}`)} />
             )}
 
             {/* Disclaimer */}
@@ -374,22 +382,11 @@ function getSortKey(tab: RankingType): string {
 
 // ─── Alpha Candidates Panel ─────────────────────────────────────
 
-const ALPHA_BUCKET_STYLE: Record<string, string> = {
-    'Strong Candidate': 'bg-red-100 text-red-700 dark:bg-red-950/40 dark:text-red-400',
-    'Watch': 'bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300',
-    'Neutral': 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400',
-    'Avoid': 'bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-400',
-    'Insufficient Data': 'bg-gray-50 text-gray-400 dark:bg-gray-900 dark:text-gray-500',
-};
-const ALPHA_BUCKET_LABEL: Record<string, string> = {
-    'Strong Candidate': '強勢候選',
-    'Watch': '值得觀察',
-    'Neutral': '中性',
-    'Avoid': '暫避',
-    'Insufficient Data': '資料不足',
-};
-
-function AlphaCandidatesPanel({ data, onRowClick }: { data: AlphaItem[]; onRowClick: (symbol: string) => void }) {
+function AlphaCandidatesPanel({ data, meta, onRowClick }: {
+    data: AlphaItem[];
+    meta: { regime: string; regimeConfidence: number; totalScanned: number; excludedCount: number; appliedRegimeAdjustment: string; limitations: string[] } | null;
+    onRowClick: (symbol: string) => void;
+}) {
     if (data.length === 0) {
         return (
             <GlassCard className="p-8 text-center text-muted-foreground">
@@ -400,23 +397,49 @@ function AlphaCandidatesPanel({ data, onRowClick }: { data: AlphaItem[]; onRowCl
         );
     }
 
+    const SCREEN_BUCKET_STYLE: Record<string, string> = {
+        'Strong Candidate': 'bg-red-100 text-red-700 dark:bg-red-950/40 dark:text-red-400',
+        'Watch': 'bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300',
+        'Neutral': 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400',
+    };
+    const SCREEN_BUCKET_LABEL: Record<string, string> = {
+        'Strong Candidate': '強勢候選',
+        'Watch': '值得觀察',
+        'Neutral': '中性',
+    };
+    const REGIME_EMOJI: Record<string, string> = { Bull: '🐂', Bear: '🐻', Sideways: '↔', Unknown: '❓' };
+
     return (
         <div className="space-y-3">
-            <div className="flex items-center gap-2 px-2 text-xs text-muted-foreground">
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>綜合技術面、籌碼面、基本面與市場環境的融合評分 — 候選研究用，非交易指令</span>
-            </div>
+            {/* Screen summary bar */}
+            {meta && (
+                <div className="flex flex-wrap items-center gap-3 px-2 text-xs text-muted-foreground">
+                    <span className="flex items-center gap-1">
+                        <Sparkles className="w-3.5 h-3.5" />
+                        掃描 {meta.totalScanned} 檔
+                    </span>
+                    <span>候選 {data.length} 檔</span>
+                    <span>排除 {meta.excludedCount} 檔</span>
+                    <span className="flex items-center gap-1">
+                        {REGIME_EMOJI[meta.regime] || '❓'} 市場：{meta.regime}（{meta.regimeConfidence}%）
+                    </span>
+                    <span>{meta.appliedRegimeAdjustment}</span>
+                </div>
+            )}
+
             <GlassCard className="overflow-x-auto">
                 <table className="w-full text-sm">
                     <thead>
                         <tr className="border-b border-border">
-                            <th className="p-3 text-left font-medium text-muted-foreground">排名</th>
+                            <th className="p-3 text-left font-medium text-muted-foreground w-10">#</th>
                             <th className="p-3 text-left font-medium text-muted-foreground">代號</th>
+                            <th className="p-3 text-left font-medium text-muted-foreground hidden sm:table-cell">名稱</th>
                             <th className="p-3 text-center font-medium text-muted-foreground">Alpha</th>
-                            <th className="p-3 text-center font-medium text-muted-foreground">評級</th>
-                            <th className="p-3 text-center font-medium text-muted-foreground">信心度</th>
-                            <th className="p-3 text-left font-medium text-muted-foreground hidden md:table-cell">主要因子</th>
-                            <th className="p-3 text-left font-medium text-muted-foreground hidden lg:table-cell">資料來源</th>
+                            <th className="p-3 text-center font-medium text-muted-foreground">類別</th>
+                            <th className="p-3 text-center font-medium text-muted-foreground">信心</th>
+                            <th className="p-3 text-center font-medium text-muted-foreground hidden md:table-cell">風險</th>
+                            <th className="p-3 text-left font-medium text-muted-foreground hidden lg:table-cell">原因</th>
+                            <th className="p-3 text-left font-medium text-muted-foreground hidden xl:table-cell">來源</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -426,8 +449,9 @@ function AlphaCandidatesPanel({ data, onRowClick }: { data: AlphaItem[]; onRowCl
                                 className="border-b border-border last:border-0 hover:bg-muted/20 cursor-pointer transition-colors"
                                 onClick={() => onRowClick(item.symbol)}
                             >
-                                <td className="p-3 font-mono text-muted-foreground">{idx + 1}</td>
+                                <td className="p-3 font-mono text-muted-foreground text-xs">{idx + 1}</td>
                                 <td className="p-3 font-mono font-medium text-primary">{item.symbol}</td>
+                                <td className="p-3 hidden sm:table-cell text-sm">{item.name}</td>
                                 <td className="p-3 text-center">
                                     <span className={`text-lg font-bold ${
                                         item.alphaScore >= 75 ? 'text-red-600' :
@@ -438,39 +462,46 @@ function AlphaCandidatesPanel({ data, onRowClick }: { data: AlphaItem[]; onRowCl
                                     </span>
                                 </td>
                                 <td className="p-3 text-center">
-                                    <span className={`text-xs font-medium px-2 py-1 rounded ${ALPHA_BUCKET_STYLE[item.recommendationBucket] || 'bg-gray-100 text-gray-500'}`}>
-                                        {ALPHA_BUCKET_LABEL[item.recommendationBucket] || item.recommendationBucket}
+                                    <span className={`text-[10px] font-medium px-2 py-1 rounded ${
+                                        SCREEN_BUCKET_STYLE[item.screenBucket] || 'bg-gray-100 text-gray-500'
+                                    }`}>
+                                        {SCREEN_BUCKET_LABEL[item.screenBucket] || item.screenBucket}
                                     </span>
                                 </td>
                                 <td className="p-3 text-center">
                                     <div className="flex items-center justify-center gap-1">
-                                        <div className="w-12 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                                        <div className="w-10 h-1.5 bg-gray-200 rounded-full overflow-hidden">
                                             <div
                                                 className={`h-full rounded-full ${item.confidence >= 60 ? 'bg-green-500' : item.confidence >= 30 ? 'bg-amber-500' : 'bg-gray-400'}`}
                                                 style={{ width: `${item.confidence}%` }}
                                             />
                                         </div>
-                                        <span className="text-xs text-muted-foreground">{item.confidence}%</span>
+                                        <span className="text-[10px] text-muted-foreground">{item.confidence}%</span>
                                     </div>
                                 </td>
-                                <td className="p-3 hidden md:table-cell">
-                                    <div className="flex flex-wrap gap-1">
-                                        {item.factors.slice(0, 3).map((f, i) => (
-                                            <span key={i} className="text-[10px] px-1.5 py-0.5 bg-muted/40 rounded" title={`${f.name}: ${f.value} (${f.impact})`}>
-                                                {f.name} {f.impact}
-                                            </span>
-                                        ))}
-                                    </div>
+                                <td className="p-3 text-center hidden md:table-cell">
+                                    <span className={`text-[10px] px-1.5 py-0.5 rounded ${
+                                        item.riskLevel === 'Low' ? 'bg-green-50 text-green-600 dark:bg-green-950/30' :
+                                        item.riskLevel === 'Medium' ? 'bg-amber-50 text-amber-600 dark:bg-amber-950/30' :
+                                        'bg-red-50 text-red-600 dark:bg-red-950/30'
+                                    }`}>
+                                        {item.riskLevel === 'Low' ? '低' : item.riskLevel === 'Medium' ? '中' : '高'}
+                                    </span>
                                 </td>
                                 <td className="p-3 hidden lg:table-cell">
-                                    <div className="flex gap-1">
+                                    <div className="text-[10px] text-muted-foreground max-w-[220px] truncate" title={item.whyIncluded}>
+                                        {item.whyIncluded}
+                                    </div>
+                                </td>
+                                <td className="p-3 hidden xl:table-cell">
+                                    <div className="flex gap-1 flex-wrap">
                                         {item.usedSources.map((s, i) => (
-                                            <span key={i} className="text-[10px] px-1 py-0.5 bg-green-50 text-green-600 rounded dark:bg-green-950/30">
+                                            <span key={i} className="text-[9px] px-1 py-0.5 bg-green-50 text-green-600 rounded dark:bg-green-950/30">
                                                 {s}
                                             </span>
                                         ))}
                                         {item.missingSources.map((s, i) => (
-                                            <span key={i} className="text-[10px] px-1 py-0.5 bg-gray-50 text-gray-400 rounded line-through dark:bg-gray-900">
+                                            <span key={i} className="text-[9px] px-1 py-0.5 bg-gray-50 text-gray-400 rounded line-through dark:bg-gray-900">
                                                 {s}
                                             </span>
                                         ))}
@@ -481,10 +512,18 @@ function AlphaCandidatesPanel({ data, onRowClick }: { data: AlphaItem[]; onRowCl
                     </tbody>
                 </table>
             </GlassCard>
+
+            {/* Limitations */}
+            {meta && meta.limitations.length > 0 && (
+                <div className="px-2 text-[10px] text-muted-foreground space-y-0.5">
+                    {meta.limitations.map((l, i) => <div key={i}>⚠ {l}</div>)}
+                </div>
+            )}
+
             <Disclaimer
-                source="SignalFusionEngine — 技術面 + 籌碼面 + 基本面 + 市場環境"
-                methodology="固定權重規則融合：技術 35%、籌碼 25%、基本面 25%、市場調整 15%。權重依資料可用性自動正規化。"
-                warning="Alpha 評分為候選研究參考，不構成投資建議。評分基於歷史與公開資料計算，不保證未來績效。"
+                source="StrategyScreenEngine — 技術面 + 籌碼面 + 基本面 + 市場環境"
+                methodology="候選池篩選：SignalFusionEngine 融合評分 → 門檻過濾 → 市場環境調整 → 分類。權重依資料可用性自動正規化。"
+                warning="候選股篩選結果為研究參考，不構成投資建議。評分基於規則計算與公開資料，不保證未來績效。"
             />
         </div>
     );

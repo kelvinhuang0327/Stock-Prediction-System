@@ -135,7 +135,8 @@ export function AssetDoublingPlan() {
                 });
                 if (!response.ok) throw new Error('Failed to fetch candidates');
                 const data = await response.json();
-                setCandidates(data);
+                // Support both new ScreenResult format and legacy array
+                setCandidates(Array.isArray(data) ? data : data.candidates || []);
             } catch (err: any) {
                 setError(err.message);
             } finally {
