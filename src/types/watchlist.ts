@@ -100,6 +100,10 @@ export interface WatchlistRowViewModel {
     hasQuoteData: boolean;
     // Analysis overlay
     analysis: ScreeningResult | null;
+    // Alpha fusion overlay
+    alphaScore?: number;
+    recommendationBucket?: string;
+    alphaConfidence?: number;
     // Computed portfolio
     marketValue: number;
     costBasis: number;

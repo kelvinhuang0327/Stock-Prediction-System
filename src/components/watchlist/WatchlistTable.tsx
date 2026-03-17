@@ -51,6 +51,7 @@ export function WatchlistTable({
                             <Th align="right" className="hidden lg:table-cell">週漲跌</Th>
                             <Th align="right" className="hidden lg:table-cell">量變化</Th>
                             <SortableTh align="center" className="bg-red-50/50" onClick={() => onSort('score')}>策略評分{sortIndicator('score')}</SortableTh>
+                            <SortableTh align="center" className="bg-purple-50/50 hidden md:table-cell" onClick={() => onSort('alphaScore')}>Alpha{sortIndicator('alphaScore')}</SortableTh>
                             <Th className="bg-red-50/50">策略訊號</Th>
                             <Th className="hidden md:table-cell">分析摘要</Th>
                             <Th align="right" className="hidden lg:table-cell">持有成本</Th>
@@ -130,6 +131,10 @@ function WatchlistRow({ row, onEditHoldings, onSetAlert, onRemove }: {
             {/* Score */}
             <td className="p-4 text-center bg-red-50/20">
                 <ScoreCell analysis={analysis} />
+            </td>
+            {/* Alpha Score */}
+            <td className="p-4 text-center bg-purple-50/20 hidden md:table-cell">
+                <AlphaScoreCell alphaScore={row.alphaScore} bucket={row.recommendationBucket} />
             </td>
             {/* Signal */}
             <td className="p-4 bg-red-50/20">
@@ -246,6 +251,43 @@ function SignalCell({ analysis }: { analysis: ScreeningResult | null }) {
             </span>
             <span className="text-[10px] text-muted-foreground truncate max-w-[120px]">
                 {analysis.riskLevel === 'High' ? '⚠️ 高波動警告' : '✅ 波動穩定'}
+            </span>
+        </div>
+    );
+}
+
+const BUCKET_STYLE: Record<string, string> = {
+    'Strong Candidate': 'bg-red-600 text-white',
+    'Watch': 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300',
+    'Neutral': 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400',
+    'Avoid': 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400',
+    'Insufficient Data': 'bg-gray-50 text-gray-400 dark:bg-gray-900 dark:text-gray-500',
+};
+const BUCKET_LABEL: Record<string, string> = {
+    'Strong Candidate': '強勢候選',
+    'Watch': '值得觀察',
+    'Neutral': '中性',
+    'Avoid': '暫避',
+    'Insufficient Data': '資料不足',
+};
+
+function AlphaScoreCell({ alphaScore, bucket }: { alphaScore?: number; bucket?: string }) {
+    if (alphaScore == null) {
+        return (
+            <div className="flex justify-center">
+                <div className="w-4 h-4 border-2 border-purple-200 border-t-purple-500 animate-spin rounded-full" />
+            </div>
+        );
+    }
+    const style = bucket ? BUCKET_STYLE[bucket] || 'bg-gray-100 text-gray-500' : 'bg-gray-100 text-gray-500';
+    const label = bucket ? BUCKET_LABEL[bucket] || bucket : '—';
+    return (
+        <div className="flex flex-col items-center gap-0.5">
+            <span className={`text-sm font-bold ${alphaScore >= 75 ? 'text-purple-600' : alphaScore >= 55 ? 'text-amber-600' : 'text-muted-foreground'}`}>
+                {alphaScore}
+            </span>
+            <span className={`text-[9px] font-medium px-1.5 py-0.5 rounded ${style}`}>
+                {label}
             </span>
         </div>
     );

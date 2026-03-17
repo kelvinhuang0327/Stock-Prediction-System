@@ -196,6 +196,10 @@ function filterAndSortRows(
                 va = a.analysis?.calculatedScore || 0;
                 vb = b.analysis?.calculatedScore || 0;
                 break;
+            case 'alphaScore':
+                va = a.alphaScore || 0;
+                vb = b.alphaScore || 0;
+                break;
             default: return 0;
         }
         return sort.dir === 'asc' ? va - vb : vb - va;
@@ -222,6 +226,9 @@ export function useWatchlistData() {
     // Analysis overlay
     const [analysisMap, setAnalysisMap] = useState<Record<string, ScreeningResult>>({});
     const [isAnalyzing, setIsAnalyzing] = useState(false);
+
+    // Alpha fusion overlay
+    const [alphaMap, setAlphaMap] = useState<Record<string, { alphaScore: number; recommendationBucket: string; confidence: number }>>({});
 
     // ── Init: try DB first, fallback to localStorage ──
     useEffect(() => {
@@ -389,6 +396,29 @@ export function useWatchlistData() {
             }));
         }
 
+        // Fetch alpha fusion scores (batch)
+        try {
+            const res = await fetch('/api/alpha/fusion', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ symbols }),
+            });
+            if (res.ok) {
+                const fusionRes = await res.json();
+                const newAlpha: Record<string, { alphaScore: number; recommendationBucket: string; confidence: number }> = {};
+                for (const item of fusionRes.data || []) {
+                    newAlpha[item.symbol] = {
+                        alphaScore: item.alphaScore,
+                        recommendationBucket: item.recommendationBucket,
+                        confidence: item.confidence,
+                    };
+                }
+                setAlphaMap(newAlpha);
+            }
+        } catch (e) {
+            console.error('Failed to fetch alpha fusion', e);
+        }
+
         setIsAnalyzing(false);
     }, [symbols, isLoaded, useDbSource]);
 
@@ -468,11 +498,21 @@ export function useWatchlistData() {
 
     // ── Derived: raw rows ──
     const rawRows: WatchlistRowViewModel[] = useMemo(() => {
+        let baseRows: WatchlistRowViewModel[];
         if (useDbSource) {
-            return dbItems.map(item => buildRowFromDb(item, analysisMap[item.stockId] || null));
+            baseRows = dbItems.map(item => buildRowFromDb(item, analysisMap[item.stockId] || null));
+        } else {
+            baseRows = localItems.map(s => buildRowFromLocal(s, analysisMap[s.symbol] || null));
         }
-        return localItems.map(s => buildRowFromLocal(s, analysisMap[s.symbol] || null));
-    }, [useDbSource, dbItems, localItems, analysisMap]);
+        // Overlay alpha fusion data
+        return baseRows.map(row => {
+            const alpha = alphaMap[row.symbol];
+            if (alpha) {
+                return { ...row, alphaScore: alpha.alphaScore, recommendationBucket: alpha.recommendationBucket, alphaConfidence: alpha.confidence };
+            }
+            return row;
+        });
+    }, [useDbSource, dbItems, localItems, analysisMap, alphaMap]);
 
     // ── Derived: sorted & filtered rows ──
     const rows = useMemo(
