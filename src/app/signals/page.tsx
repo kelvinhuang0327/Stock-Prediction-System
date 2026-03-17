@@ -13,6 +13,7 @@ import {
     Activity, TrendingUp, TrendingDown, Minus,
     ChevronDown, ChevronUp, Target, Info, Calculator
 } from 'lucide-react';
+import { MarketRegimeBar, MarketRegimeData } from '@/components/ui/market-regime';
 
 interface PriceLevel {
     price: number;
@@ -74,6 +75,7 @@ export default function SignalsPage() {
 
     const url = `/api/signals?limit=50`;
     const { data: response, loading, error, refetch } = useApiData<SignalResponse>(url);
+    const { data: regimeData } = useApiData<MarketRegimeData>('/api/market/regime');
 
     const filteredData = useMemo(() => {
         if (!response?.data) return [];
@@ -202,6 +204,9 @@ export default function SignalsPage() {
                     </div>
                 </div>
             </GlassCard>
+
+            {/* Market Regime Context */}
+            <MarketRegimeBar data={regimeData ?? null} />
 
             {/* Signal filters */}
             <div className="flex flex-wrap gap-2">

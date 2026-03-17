@@ -3,12 +3,23 @@
 import React from 'react';
 import { Zap } from 'lucide-react';
 import { PortfolioSummary } from '@/types/watchlist';
+import { useApiData } from '@/hooks/useApiData';
+import { MarketRegimeBadge, MarketRegimeData } from '@/components/ui/market-regime';
+
+const REGIME_SUMMARY: Record<string, string> = {
+    Bull: '目前大盤環境偏多，技術轉強訊號可信度較高',
+    Bear: '目前大盤偏空，買進訊號需保守解讀',
+    Sideways: '大盤盤整中，突破訊號需搭配量能確認',
+    Unknown: '市場環境資料不足，個股分析應保守解讀',
+};
 
 interface Props {
     summary: PortfolioSummary;
 }
 
 export function WatchlistSummaryCards({ summary }: Props) {
+    const { data: regimeData } = useApiData<MarketRegimeData>('/api/market/regime');
+
     return (
         <>
             {/* Daily Strategic Summary */}
@@ -30,12 +41,17 @@ export function WatchlistSummaryCards({ summary }: Props) {
                 </div>
 
                 <div className="bg-card p-6 rounded-xl border shadow-sm flex flex-col justify-center">
-                    <div className="text-muted-foreground text-sm mb-1 uppercase tracking-wider font-bold">策略分析來源</div>
-                    <div className="flex items-center gap-2">
-                        <div className="text-lg font-black font-mono text-blue-600">DB 計算</div>
-                        <span className="text-[10px] bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300 px-2 py-0.5 rounded-full font-bold">依實際資料</span>
-                    </div>
-                    <span className="text-[10px] text-muted-foreground mt-1">策略評分依據資料覆蓋率，結果僅供參考</span>
+                    <div className="text-muted-foreground text-sm mb-2 uppercase tracking-wider font-bold">市場環境</div>
+                    {regimeData ? (
+                        <div className="space-y-1.5">
+                            <MarketRegimeBadge regime={regimeData.regime} confidence={regimeData.confidence} />
+                            <div className="text-[10px] text-muted-foreground">
+                                {REGIME_SUMMARY[regimeData.regime] || REGIME_SUMMARY.Unknown}
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="text-sm text-muted-foreground">載入中...</div>
+                    )}
                 </div>
             </div>
 

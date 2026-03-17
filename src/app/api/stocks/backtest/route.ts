@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { apiCache } from '@/lib/cache';
+import { detectRegimeForPeriod } from '@/lib/market/MarketRegimeEngine';
 
 /**
  * POST /api/stocks/backtest
@@ -50,6 +51,16 @@ export async function POST(request: NextRequest) {
         if (dbResult) {
             // Calculate benchmarks
             const benchmark = await calculateBenchmarks(symbol, dbResult.period, dbResult.equityCurve);
+
+            // Detect market regime during backtest period
+            const periodDates = dbResult.period.split(' ~ ');
+            let marketRegime = null;
+            try {
+                if (periodDates.length === 2) {
+                    marketRegime = await detectRegimeForPeriod(periodDates[0], periodDates[1]);
+                }
+            } catch { /* regime unavailable — non-critical */ }
+
             const dataLimitations: string[] = [];
             if (!benchmark.marketAvailable) {
                 dataLimitations.push('大盤指數歷史資料不足，無法提供市場 benchmark 比較');
@@ -68,6 +79,7 @@ export async function POST(request: NextRequest) {
                 sample_size: quoteCount,
                 last_updated: dbResult.equityCurve[dbResult.equityCurve.length - 1]?.date || null,
                 benchmark,
+                marketRegime,
                 samplePeriod: dbResult.period,
                 dataLimitations,
                 disclaimer: '回測結果基於歷史資料，不代表未來績效。不含交易成本與滑價。過去表現不保證未來報酬。',

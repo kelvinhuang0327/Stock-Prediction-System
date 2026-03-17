@@ -12,6 +12,7 @@ import {
     FlaskConical, TrendingUp, TrendingDown, BarChart3,
     ArrowRight, Calendar, AlertTriangle, Info, Scale
 } from 'lucide-react';
+import { MarketRegimeSummaryCard, MarketRegimeData } from '@/components/ui/market-regime';
 
 interface EligibleStock {
     symbol: string;
@@ -69,6 +70,16 @@ interface BacktestResult {
     };
     samplePeriod?: string;
     dataLimitations?: string[];
+    marketRegime?: {
+        regime: 'Bull' | 'Bear' | 'Sideways' | 'Unknown';
+        confidence: number;
+        factors: { name: string; value: number | string | boolean; impact: string; note: string }[];
+        dataCoverage: string;
+        samplePeriod: string;
+        dataPoints: number;
+        last_updated: string | null;
+        limitations: string[];
+    } | null;
 }
 
 const STRATEGIES = [
@@ -283,6 +294,15 @@ export default function BacktestPage() {
                                 <BenchmarkComparison
                                     strategyReturn={backtestResult.summary.totalReturn}
                                     benchmark={backtestResult.benchmark}
+                                />
+                            )}
+
+                            {/* Market Regime Context */}
+                            {backtestResult.marketRegime && (
+                                <MarketRegimeSummaryCard
+                                    data={backtestResult.marketRegime as MarketRegimeData}
+                                    showFactors
+                                    contextLabel="回測期間市場環境"
                                 />
                             )}
 
