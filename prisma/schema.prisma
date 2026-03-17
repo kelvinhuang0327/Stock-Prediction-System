@@ -255,3 +255,56 @@ model StrategySignal {
   @@index([date])
   @@index([isSignal])
 }
+
+// ─── Daily Snapshot Tables ───────────────────────────────────────
+
+model DailyMarketSnapshot {
+  id               Int      @id @default(autoincrement())
+  snapshotDate     String // YYYY-MM-DD
+  regime           String // Bull / Bear / Sideways / Unknown
+  regimeConfidence Float
+  marketSummary    String? // JSON: full market summary
+  limitations      String? // JSON array
+  createdAt        DateTime @default(now())
+
+  @@unique([snapshotDate])
+  @@index([snapshotDate])
+}
+
+model DailyCandidateSnapshot {
+  id                   Int      @id @default(autoincrement())
+  snapshotDate         String // YYYY-MM-DD
+  symbol               String
+  name                 String?
+  alphaScore           Float
+  recommendationBucket String
+  confidence           Float
+  screenBucket         String
+  whyIncluded          String?
+  topFactors           String? // JSON array
+  keyRisks             String? // JSON array
+  dataCoverage         String?
+  createdAt            DateTime @default(now())
+
+  @@unique([snapshotDate, symbol])
+  @@index([snapshotDate])
+  @@index([symbol])
+}
+
+model DailyWatchlistSnapshot {
+  id                   Int      @id @default(autoincrement())
+  snapshotDate         String // YYYY-MM-DD
+  symbol               String
+  name                 String?
+  alphaScore           Float?
+  recommendationBucket String?
+  price                Float?
+  priceChangePercent   Float?
+  riskLevel            String?
+  dataCoverage         String?
+  createdAt            DateTime @default(now())
+
+  @@unique([snapshotDate, symbol])
+  @@index([snapshotDate])
+  @@index([symbol])
+}

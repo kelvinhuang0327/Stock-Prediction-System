@@ -10,6 +10,7 @@
 
 import { detectRegime, type MarketRegimeResult } from '@/lib/market/MarketRegimeEngine';
 import { runScreen, type ScreenResult, type ScreenCandidate } from '@/lib/screen/StrategyScreenEngine';
+import { buildComparison, type DailyComparison } from './DailySnapshotEngine';
 import { prisma } from '@/lib/prisma';
 
 // ─── Types ───────────────────────────────────────────────────────
@@ -21,6 +22,7 @@ export interface DailyReport {
   watchlistSummary: WatchlistSummary;
   riskSummary: RiskSummary;
   dataStatusSummary: DataStatusSummary;
+  comparison: DailyComparison | null;
   disclaimer: string;
   last_updated: string;
 }
@@ -157,16 +159,35 @@ export async function generateDailyReport(params?: ReportParams): Promise<DailyR
   const riskSummary = buildRiskSummary(regimeResult, screenResult, watchlistData);
   const dataStatusSummary = buildDataStatusSummary(regimeResult, screenResult, dbStats);
 
-  return {
-    reportDate: new Date().toISOString().split('T')[0],
+  // All candidates for comparison (strong + watch + all screen candidates)
+  const allCandidateDetails = [
+    ...candidateSummary.strongCandidates,
+    ...candidateSummary.watchCandidates,
+  ];
+
+  const reportDate = new Date().toISOString().split('T')[0];
+  const partialReport: DailyReport = {
+    reportDate,
     marketSummary,
     candidateSummary,
     watchlistSummary,
     riskSummary,
     dataStatusSummary,
+    comparison: null,
     disclaimer: DISCLAIMER,
     last_updated: new Date().toISOString(),
   };
+
+  // Build comparison from previous snapshot (if available)
+  const comparison = await buildComparison(partialReport, allCandidateDetails).catch((): DailyComparison => ({
+    comparisonAvailable: false,
+    previousSnapshotDate: null,
+    market: { available: false, previousDate: null, regimeChanged: false, previousRegime: null, currentRegime: marketSummary.regime, confidenceDelta: null, note: '比較功能暫時無法使用。' },
+    candidates: { available: false, previousDate: null, newStrongCandidates: [], removedStrongCandidates: [], bucketUpgrades: [], bucketDowngrades: [], note: '比較功能暫時無法使用。' },
+    watchlist: { available: false, previousDate: null, scoreImproved: [], scoreDropped: [], newlyInsufficientData: [], riskEscalated: [], note: '比較功能暫時無法使用。' },
+  }));
+
+  return { ...partialReport, comparison };
 }
 
 // ─── Market Summary ──────────────────────────────────────────────

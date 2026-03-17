@@ -10,6 +10,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { runAllSyncs, type SyncJob } from '@/lib/data/SyncScheduler';
 import { syncService } from '@/lib/services/syncService';
+import { createDailySnapshot } from '@/lib/report/DailySnapshotEngine';
 
 export const maxDuration = 300; // Allow up to 5 minutes
 export const dynamic = 'force-dynamic';
@@ -59,6 +60,16 @@ function buildDailySyncJobs(): SyncJob[] {
       execute: async () => {
         const result = await syncService.syncRealRevenue();
         return { records: typeof result === 'number' ? result : 0 };
+      },
+    },
+    {
+      endpoint: 'daily_snapshot',
+      priority: 6,
+      description: '每日快照 (市場、候選、自選)',
+      execute: async () => {
+        const result = await createDailySnapshot({ forceRefresh: false });
+        const records = (result.marketCreated ? 1 : 0) + result.candidatesCreated + result.watchlistCreated;
+        return { records, metadata: { success: result.success, limitations: result.limitations } };
       },
     },
   ];

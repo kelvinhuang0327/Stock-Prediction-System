@@ -8,7 +8,8 @@ import { Disclaimer } from '@/components/ui/disclaimer';
 import {
   FileText, TrendingUp, TrendingDown, Shield, Database,
   AlertTriangle, Eye, Star, Minus, ChevronDown, ChevronUp,
-  RefreshCw, Activity, Users
+  RefreshCw, Activity, Users, ArrowUpRight, ArrowDownRight,
+  GitCompare, Camera
 } from 'lucide-react';
 
 // ─── Types ───────────────────────────────────────────────────────
@@ -89,6 +90,39 @@ interface DailyReport {
   };
   disclaimer: string;
   last_updated: string;
+  comparison: DailyComparison | null;
+}
+
+interface DailyComparison {
+  comparisonAvailable: boolean;
+  previousSnapshotDate: string | null;
+  market: {
+    available: boolean;
+    previousDate: string | null;
+    regimeChanged: boolean;
+    previousRegime: string | null;
+    currentRegime: string;
+    confidenceDelta: number | null;
+    note: string;
+  };
+  candidates: {
+    available: boolean;
+    previousDate: string | null;
+    newStrongCandidates: Array<{ symbol: string; name: string; alphaScore: number }>;
+    removedStrongCandidates: Array<{ symbol: string; name: string; previousAlpha: number }>;
+    bucketUpgrades: Array<{ symbol: string; name: string; previousBucket: string; currentBucket: string; alphaDelta: number }>;
+    bucketDowngrades: Array<{ symbol: string; name: string; previousBucket: string; currentBucket: string; alphaDelta: number }>;
+    note: string;
+  };
+  watchlist: {
+    available: boolean;
+    previousDate: string | null;
+    scoreImproved: Array<{ symbol: string; name: string; previousAlpha: number | null; currentAlpha: number | null; alphaDelta: number | null }>;
+    scoreDropped: Array<{ symbol: string; name: string; previousAlpha: number | null; currentAlpha: number | null; alphaDelta: number | null }>;
+    newlyInsufficientData: string[];
+    riskEscalated: Array<{ symbol: string; name: string; previousRisk: string; currentRisk: string }>;
+    note: string;
+  };
 }
 
 // ─── Styles ──────────────────────────────────────────────────────
@@ -112,6 +146,31 @@ const RISK_STYLE: Record<string, { bg: string; text: string; label: string }> = 
 
 export default function DailyReportPage() {
   const { data: report, loading, error, refetch } = useApiData<DailyReport>('/api/report/daily');
+  const [snapshotLoading, setSnapshotLoading] = useState(false);
+  const [snapshotMsg, setSnapshotMsg] = useState<string | null>(null);
+
+  const createSnapshot = async () => {
+    setSnapshotLoading(true);
+    setSnapshotMsg(null);
+    try {
+      const res = await fetch('/api/report/snapshot', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ forceRefresh: false }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setSnapshotMsg(`快照已建立 (${data.snapshotDate})：市場 ${data.marketCreated ? '✓' : '—'}、候選 ${data.candidatesCreated} 筆、自選 ${data.watchlistCreated} 筆`);
+        refetch();
+      } else {
+        setSnapshotMsg(`快照建立失敗：${data.limitations?.join('；') ?? '未知錯誤'}`);
+      }
+    } catch {
+      setSnapshotMsg('快照建立失敗：網路錯誤');
+    } finally {
+      setSnapshotLoading(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -152,10 +211,22 @@ export default function DailyReportPage() {
             {report.reportDate} · 自動產生 · 僅供研究參考
           </p>
         </div>
-        <button onClick={refetch} className="self-start px-3 py-1.5 rounded-lg text-sm bg-primary/10 text-primary hover:bg-primary/20 transition-colors flex items-center gap-1">
-          <RefreshCw className="h-3.5 w-3.5" />更新報告
-        </button>
+        <div className="flex items-center gap-2 self-start">
+          <button onClick={createSnapshot} disabled={snapshotLoading} className="px-3 py-1.5 rounded-lg text-sm bg-amber-500/10 text-amber-600 dark:text-amber-400 hover:bg-amber-500/20 transition-colors flex items-center gap-1 disabled:opacity-50">
+            <Camera className="h-3.5 w-3.5" />{snapshotLoading ? '建立中...' : '建立快照'}
+          </button>
+          <button onClick={refetch} className="px-3 py-1.5 rounded-lg text-sm bg-primary/10 text-primary hover:bg-primary/20 transition-colors flex items-center gap-1">
+            <RefreshCw className="h-3.5 w-3.5" />更新報告
+          </button>
+        </div>
       </div>
+
+      {/* Snapshot message */}
+      {snapshotMsg && (
+        <div className="text-sm px-4 py-2 rounded-lg bg-muted/30 border border-border/30">
+          {snapshotMsg}
+        </div>
+      )}
 
       {/* Market Summary Card */}
       <MarketSummaryCard data={report.marketSummary} />
@@ -165,6 +236,9 @@ export default function DailyReportPage() {
 
       {/* Watchlist Summary Card */}
       <WatchlistSummaryCard data={report.watchlistSummary} />
+
+      {/* Comparison Cards */}
+      <ComparisonSection comparison={report.comparison} />
 
       {/* Risk Summary Card */}
       <RiskSummaryCard data={report.riskSummary} />
@@ -570,5 +644,214 @@ function LimitationsList({ items }: { items: string[] }) {
         ))}
       </ul>
     </div>
+  );
+}
+
+// ─── Comparison Section ──────────────────────────────────────────
+
+function ComparisonSection({ comparison }: { comparison: DailyComparison | null }) {
+  if (!comparison || !comparison.comparisonAvailable) {
+    return (
+      <GlassCard className="p-6">
+        <div className="flex items-center gap-2 mb-2">
+          <GitCompare className="h-5 w-5 text-primary" />
+          <h2 className="text-lg font-semibold">歷史比較</h2>
+        </div>
+        <p className="text-sm text-muted-foreground">
+          {comparison?.market?.note ?? '尚未建立每日快照，無法進行歷史比較。請點擊「建立快照」保存今日資料，下次報告即可比較。'}
+        </p>
+      </GlassCard>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-2">
+        <GitCompare className="h-5 w-5 text-primary" />
+        <h2 className="text-lg font-semibold">
+          歷史比較 <span className="text-sm font-normal text-muted-foreground">vs {comparison.previousSnapshotDate}</span>
+        </h2>
+      </div>
+
+      <MarketComparisonCard data={comparison.market} />
+      <CandidateComparisonCard data={comparison.candidates} />
+      <WatchlistComparisonCard data={comparison.watchlist} />
+    </div>
+  );
+}
+
+function MarketComparisonCard({ data }: { data: DailyComparison['market'] }) {
+  if (!data.available) return null;
+
+  return (
+    <GlassCard className="p-4">
+      <h3 className="text-sm font-semibold mb-2 flex items-center gap-1">
+        <Activity className="h-4 w-4 text-primary" /> 市場環境變化
+      </h3>
+      <p className="text-sm mb-2">{data.note}</p>
+      <div className="flex flex-wrap gap-3 text-xs">
+        {data.regimeChanged && (
+          <span className="px-2 py-1 rounded bg-amber-100 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400">
+            環境轉換: {data.previousRegime} → {data.currentRegime}
+          </span>
+        )}
+        {data.confidenceDelta !== null && Math.abs(data.confidenceDelta) >= 5 && (
+          <span className={`px-2 py-1 rounded ${data.confidenceDelta > 0 ? 'bg-green-100 dark:bg-green-950/30 text-green-700 dark:text-green-400' : 'bg-red-100 dark:bg-red-950/30 text-red-700 dark:text-red-400'}`}>
+            信心度 {data.confidenceDelta > 0 ? '+' : ''}{data.confidenceDelta.toFixed(0)}%
+          </span>
+        )}
+      </div>
+    </GlassCard>
+  );
+}
+
+function CandidateComparisonCard({ data }: { data: DailyComparison['candidates'] }) {
+  if (!data.available) return null;
+
+  const hasChanges = data.newStrongCandidates.length > 0 || data.removedStrongCandidates.length > 0 ||
+    data.bucketUpgrades.length > 0 || data.bucketDowngrades.length > 0;
+
+  return (
+    <GlassCard className="p-4">
+      <h3 className="text-sm font-semibold mb-2 flex items-center gap-1">
+        <Star className="h-4 w-4 text-primary" /> 候選池變化
+      </h3>
+      <p className="text-sm mb-2">{data.note}</p>
+
+      {hasChanges && (
+        <div className="space-y-2">
+          {data.newStrongCandidates.length > 0 && (
+            <div>
+              <span className="text-xs font-medium text-red-600 dark:text-red-400 flex items-center gap-1 mb-1">
+                <ArrowUpRight className="h-3 w-3" /> 新進 Strong Candidate
+              </span>
+              <div className="flex flex-wrap gap-1">
+                {data.newStrongCandidates.map(c => (
+                  <span key={c.symbol} className="text-xs px-2 py-0.5 rounded bg-red-50 dark:bg-red-950/20 text-red-700 dark:text-red-400">
+                    {c.symbol} {c.name} (α{c.alphaScore.toFixed(0)})
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {data.removedStrongCandidates.length > 0 && (
+            <div>
+              <span className="text-xs font-medium text-muted-foreground flex items-center gap-1 mb-1">
+                <ArrowDownRight className="h-3 w-3" /> 離開 Strong Candidate
+              </span>
+              <div className="flex flex-wrap gap-1">
+                {data.removedStrongCandidates.map(c => (
+                  <span key={c.symbol} className="text-xs px-2 py-0.5 rounded bg-muted/50">
+                    {c.symbol} {c.name}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {data.bucketUpgrades.length > 0 && (
+            <div>
+              <span className="text-xs font-medium text-green-600 dark:text-green-400 flex items-center gap-1 mb-1">
+                <ArrowUpRight className="h-3 w-3" /> Bucket 升級
+              </span>
+              <div className="flex flex-wrap gap-1">
+                {data.bucketUpgrades.map(c => (
+                  <span key={c.symbol} className="text-xs px-2 py-0.5 rounded bg-green-50 dark:bg-green-950/20 text-green-700 dark:text-green-400">
+                    {c.symbol} {c.name}: {c.previousBucket} → {c.currentBucket}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {data.bucketDowngrades.length > 0 && (
+            <div>
+              <span className="text-xs font-medium text-amber-600 dark:text-amber-400 flex items-center gap-1 mb-1">
+                <ArrowDownRight className="h-3 w-3" /> Bucket 降級
+              </span>
+              <div className="flex flex-wrap gap-1">
+                {data.bucketDowngrades.map(c => (
+                  <span key={c.symbol} className="text-xs px-2 py-0.5 rounded bg-amber-50 dark:bg-amber-950/20 text-amber-700 dark:text-amber-400">
+                    {c.symbol} {c.name}: {c.previousBucket} → {c.currentBucket}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </GlassCard>
+  );
+}
+
+function WatchlistComparisonCard({ data }: { data: DailyComparison['watchlist'] }) {
+  if (!data.available) return null;
+
+  const hasChanges = data.scoreImproved.length > 0 || data.scoreDropped.length > 0 ||
+    data.newlyInsufficientData.length > 0 || data.riskEscalated.length > 0;
+
+  return (
+    <GlassCard className="p-4">
+      <h3 className="text-sm font-semibold mb-2 flex items-center gap-1">
+        <Users className="h-4 w-4 text-primary" /> 自選清單變化
+      </h3>
+      <p className="text-sm mb-2">{data.note}</p>
+
+      {hasChanges && (
+        <div className="space-y-2">
+          {data.scoreImproved.length > 0 && (
+            <div>
+              <span className="text-xs font-medium text-red-600 dark:text-red-400 flex items-center gap-1 mb-1">
+                <ArrowUpRight className="h-3 w-3" /> 分數改善 (≥5分)
+              </span>
+              <div className="flex flex-wrap gap-1">
+                {data.scoreImproved.map(c => (
+                  <span key={c.symbol} className="text-xs px-2 py-0.5 rounded bg-red-50 dark:bg-red-950/20 text-red-700 dark:text-red-400">
+                    {c.symbol} {c.name} {c.alphaDelta !== null ? `(${c.alphaDelta > 0 ? '+' : ''}${c.alphaDelta.toFixed(0)})` : ''}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {data.scoreDropped.length > 0 && (
+            <div>
+              <span className="text-xs font-medium text-green-600 dark:text-green-400 flex items-center gap-1 mb-1">
+                <ArrowDownRight className="h-3 w-3" /> 分數下滑 (≥5分)
+              </span>
+              <div className="flex flex-wrap gap-1">
+                {data.scoreDropped.map(c => (
+                  <span key={c.symbol} className="text-xs px-2 py-0.5 rounded bg-green-50 dark:bg-green-950/20 text-green-700 dark:text-green-400">
+                    {c.symbol} {c.name} ({c.alphaDelta !== null ? c.alphaDelta.toFixed(0) : '?'})
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {data.riskEscalated.length > 0 && (
+            <div>
+              <span className="text-xs font-medium text-amber-600 dark:text-amber-400 flex items-center gap-1 mb-1">
+                <AlertTriangle className="h-3 w-3" /> 風險升高
+              </span>
+              <div className="flex flex-wrap gap-1">
+                {data.riskEscalated.map(c => (
+                  <span key={c.symbol} className="text-xs px-2 py-0.5 rounded bg-amber-50 dark:bg-amber-950/20 text-amber-700 dark:text-amber-400">
+                    {c.symbol} {c.name}: {c.previousRisk} → {c.currentRisk}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {data.newlyInsufficientData.length > 0 && (
+            <div className="text-xs text-muted-foreground">
+              新增資料不足：{data.newlyInsufficientData.join('、')}
+            </div>
+          )}
+        </div>
+      )}
+    </GlassCard>
   );
 }
