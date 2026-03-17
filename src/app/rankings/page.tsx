@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useApiData } from '@/hooks/useApiData';
 import { DataTable, ColumnDef } from '@/components/ui/data-table';
 import { Disclaimer } from '@/components/ui/disclaimer';
@@ -424,6 +425,9 @@ function AlphaCandidatesPanel({ data, meta, onRowClick }: {
                         {REGIME_EMOJI[meta.regime] || '❓'} 市場：{meta.regime}（{meta.regimeConfidence}%）
                     </span>
                     <span>{meta.appliedRegimeAdjustment}</span>
+                    <Link href="/candidates" className="ml-auto text-primary hover:underline flex items-center gap-1">
+                        完整研究頁 →
+                    </Link>
                 </div>
             )}
 
