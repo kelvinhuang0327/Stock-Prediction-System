@@ -24,14 +24,14 @@ const TEST_ALERTS_RESULT: DailyAlertsResult = {
   reportDate: new Date().toISOString().split('T')[0],
   comparisonAvailable: false,
   previousSnapshotDate: null,
-  summary: '【測試訊息】此為系統通知測試，非真實研究提醒。請確認您已收到此訊息。',
+  summary: '【測試訊息】此為 Stock洞察平台 通知測試，非真實研究提醒。請確認您已收到此訊息。',
   overallSeverity: 'info',
   alerts: [
     {
       type: 'data_quality_warning',
       severity: 'info',
-      title: '系統通知測試',
-      body: '此為 /api/notify/send/test 觸發的測試訊息。若您收到此通知，代表通知系統設定正常。',
+      title: 'Stock洞察平台｜通知系統測試',
+      body: '此為 /api/notify/send/test 觸發的測試訊息。若您收到此通知，代表 Stock洞察平台 通知設定正常。本訊息非真實分析結果。',
       basis: 'Test endpoint',
       comparisonBased: false,
     },

@@ -56,7 +56,7 @@ export interface StructuredPayload {
   disclaimer: string;
 }
 
-const DISCLAIMER = '本提醒為系統自動產生研究摘要，僅供參考，不構成投資建議。';
+const DISCLAIMER = 'Stock洞察平台 自動產生之研究摘要，僅供參考，不構成投資建議。';
 const SEVERITY_EMOJI: Record<AlertSeverity, string> = {
   warning: '⚠️',
   caution: '🔔',
@@ -67,7 +67,7 @@ const SEVERITY_EMOJI: Record<AlertSeverity, string> = {
 
 export function formatAsPlainText(result: DailyAlertsResult): PlainTextPayload {
   const lines: string[] = [
-    `📊 台股研究提醒 ${result.reportDate}`,
+    `📊 Stock洞察平台｜每日研究提醒 ${result.reportDate}`,
     `市場環境: ${result.alerts.find(a => a.type === 'market_regime_changed') ? '環境轉變' : '維持穩定'}`,
     ``,
     result.summary,
@@ -115,7 +115,7 @@ export function formatAsMarkdown(result: DailyAlertsResult): MarkdownPayload {
   };
 
   const lines = [
-    `# 台股每日研究提醒 ${result.reportDate}`,
+    `# Stock洞察平台｜每日研究提醒 ${result.reportDate}`,
     ``,
     `> ${result.summary}`,
     ``,
@@ -162,7 +162,7 @@ export function formatAsMarkdown(result: DailyAlertsResult): MarkdownPayload {
 
   return {
     channel: 'email',
-    subject: `台股研究提醒 ${result.reportDate} [${overallLabel}] — ${result.alerts.length} 項提醒`,
+    subject: `Stock洞察平台｜研究提醒 ${result.reportDate} [${overallLabel}] — ${result.alerts.length} 項提醒`,
     body: lines.join('\n'),
   };
 }
