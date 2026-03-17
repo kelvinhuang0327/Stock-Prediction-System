@@ -10,7 +10,8 @@ import { GlassCard } from '@/components/ui/glass-card';
 import { LoadingSpinner } from '@/components/ui/loading';
 import {
     FlaskConical, TrendingUp, TrendingDown, BarChart3,
-    ArrowRight, Calendar, AlertTriangle, Info, Scale
+    ArrowRight, Calendar, AlertTriangle, Info, Scale,
+    Shield, Filter, SlidersHorizontal
 } from 'lucide-react';
 import { MarketRegimeSummaryCard, MarketRegimeData } from '@/components/ui/market-regime';
 
@@ -80,6 +81,40 @@ interface BacktestResult {
         last_updated: string | null;
         limitations: string[];
     } | null;
+    // Regime-aware fields
+    regimeAware?: boolean;
+    regimeMode?: 'ignore' | 'filter_only' | 'position_adjust';
+    allowedRegimes?: string[] | null;
+    positionAdjustmentRules?: Record<string, number> | null;
+    regimeAwareResult?: {
+        trades: Trade[];
+        summary: BacktestResult['summary'];
+        equityCurve: { date: string; value: number }[];
+        methodology: string;
+    } | null;
+    regimeStats?: {
+        regime: string;
+        tradeCount: number;
+        winCount: number;
+        winRate: number;
+        totalReturn: number;
+        avgReturn: number;
+        tradingDays: number;
+    }[] | null;
+    performanceComparison?: {
+        baselineReturn: number;
+        baselineSharpe: number;
+        baselineMaxDrawdown: number;
+        baselineTrades: number;
+        regimeAwareReturn: number;
+        regimeAwareSharpe: number;
+        regimeAwareMaxDrawdown: number;
+        regimeAwareTrades: number;
+        deltaReturn: number;
+        deltaSharpe: number;
+        deltaMaxDrawdown: number;
+        deltaTrades: number;
+    } | null;
 }
 
 const STRATEGIES = [
@@ -99,16 +134,34 @@ export default function BacktestPage() {
     const [selectedStrategy, setSelectedStrategy] = useState('ma_cross');
     const [selectedMonths, setSelectedMonths] = useState(12);
 
+    // Regime-aware controls
+    const [regimeEnabled, setRegimeEnabled] = useState(false);
+    const [regimeMode, setRegimeMode] = useState<'filter_only' | 'position_adjust'>('filter_only');
+    const [allowedRegimes, setAllowedRegimes] = useState<string[]>(['Bull', 'Sideways']);
+
     const { data: eligibleRes, loading: loadingEligible } = useApiData<EligibleResponse>(
         '/api/stocks/backtest'
     );
-    const { post: executeBacktest, loading: loadingBacktest } = useApiPost<{ symbol: string; strategy: string; months: number }, BacktestResult>();
+    const { post: executeBacktest, loading: loadingBacktest } = useApiPost<Record<string, unknown>, BacktestResult>();
     const [backtestResult, setBacktestResult] = useState<BacktestResult | null>(null);
 
     const handleRunBacktest = async () => {
         if (!selectedStock) return;
-        const result = await executeBacktest('/api/stocks/backtest', { symbol: selectedStock, strategy: selectedStrategy, months: selectedMonths });
+        const payload: Record<string, unknown> = {
+            symbol: selectedStock,
+            strategy: selectedStrategy,
+            months: selectedMonths,
+            regimeMode: regimeEnabled ? regimeMode : 'ignore',
+            allowedRegimes: regimeEnabled ? allowedRegimes : undefined,
+        };
+        const result = await executeBacktest('/api/stocks/backtest', payload);
         if (result) setBacktestResult(result);
+    };
+
+    const toggleRegime = (regime: string) => {
+        setAllowedRegimes(prev =>
+            prev.includes(regime) ? prev.filter(r => r !== regime) : [...prev, regime]
+        );
     };
 
     const eligibleMode = !eligibleRes ? 'unavailable'
@@ -262,6 +315,88 @@ export default function BacktestPage() {
                 </div>
             </GlassCard>
 
+            {/* Regime-Aware Controls */}
+            <GlassCard className="p-4">
+                <div className="flex items-center gap-3 mb-3">
+                    <Shield className="w-4 h-4 text-primary" />
+                    <span className="text-sm font-semibold">市場環境過濾</span>
+                    <label className="ml-auto flex items-center gap-2 cursor-pointer text-sm">
+                        <input
+                            type="checkbox"
+                            checked={regimeEnabled}
+                            onChange={(e) => setRegimeEnabled(e.target.checked)}
+                            className="rounded"
+                        />
+                        啟用 Regime-Aware
+                    </label>
+                </div>
+
+                {regimeEnabled && (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-border">
+                        {/* Mode */}
+                        <div>
+                            <label className="text-xs text-muted-foreground block mb-1">過濾模式</label>
+                            <div className="flex gap-2">
+                                <button
+                                    onClick={() => setRegimeMode('filter_only')}
+                                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                                        regimeMode === 'filter_only'
+                                            ? 'bg-primary text-primary-foreground'
+                                            : 'bg-muted/20 text-muted-foreground hover:bg-muted/40'
+                                    }`}
+                                >
+                                    <Filter className="w-3 h-3" />
+                                    環境過濾
+                                </button>
+                                <button
+                                    onClick={() => setRegimeMode('position_adjust')}
+                                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                                        regimeMode === 'position_adjust'
+                                            ? 'bg-primary text-primary-foreground'
+                                            : 'bg-muted/20 text-muted-foreground hover:bg-muted/40'
+                                    }`}
+                                >
+                                    <SlidersHorizontal className="w-3 h-3" />
+                                    倉位調整
+                                </button>
+                            </div>
+                            <div className="text-[10px] text-muted-foreground mt-1">
+                                {regimeMode === 'filter_only'
+                                    ? '僅在允許的市場環境進場，其餘環境不開倉'
+                                    : 'Bull=100%, Sideways=50%, Bear=0%, Unknown=100%'}
+                            </div>
+                        </div>
+
+                        {/* Allowed regimes (for filter_only) */}
+                        {regimeMode === 'filter_only' && (
+                            <div>
+                                <label className="text-xs text-muted-foreground block mb-1">允許進場的環境</label>
+                                <div className="flex gap-2 flex-wrap">
+                                    {(['Bull', 'Sideways', 'Bear'] as const).map(regime => (
+                                        <button
+                                            key={regime}
+                                            onClick={() => toggleRegime(regime)}
+                                            className={`px-2.5 py-1 rounded text-xs font-medium transition-all ${
+                                                allowedRegimes.includes(regime)
+                                                    ? regime === 'Bull' ? 'bg-red-100 text-red-700 dark:bg-red-950/40 dark:text-red-400'
+                                                    : regime === 'Bear' ? 'bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-400'
+                                                    : 'bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300'
+                                                    : 'bg-muted/20 text-muted-foreground/50'
+                                            }`}
+                                        >
+                                            {regime === 'Bull' ? '🐂 多頭' : regime === 'Bear' ? '🐻 空頭' : '↔ 盤整'}
+                                        </button>
+                                    ))}
+                                </div>
+                                {allowedRegimes.length === 0 && (
+                                    <div className="text-[10px] text-amber-500 mt-1">⚠ 未選擇任何環境，將不會產生交易</div>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                )}
+            </GlassCard>
+
             {/* Backtest Results */}
             {loadingBacktest && (
                 <div className="flex flex-col items-center justify-center py-12 gap-3">
@@ -304,6 +439,16 @@ export default function BacktestPage() {
                                     showFactors
                                     contextLabel="回測期間市場環境"
                                 />
+                            )}
+
+                            {/* Regime-Aware Comparison */}
+                            {backtestResult.regimeAware && backtestResult.performanceComparison && (
+                                <RegimeAwareComparisonCard comparison={backtestResult.performanceComparison} regimeMode={backtestResult.regimeMode || 'filter_only'} />
+                            )}
+
+                            {/* Regime Breakdown Stats */}
+                            {backtestResult.regimeStats && backtestResult.regimeStats.length > 0 && (
+                                <RegimeBreakdownCard stats={backtestResult.regimeStats} />
                             )}
 
                             {/* Data Limitations */}
@@ -490,6 +635,157 @@ function SummaryCard({ label, value, color = 'text-foreground' }: { label: strin
         <GlassCard className="p-3 text-center">
             <div className="text-[10px] text-muted-foreground uppercase">{label}</div>
             <div className={`text-lg font-bold font-mono mt-1 ${color}`}>{value}</div>
+        </GlassCard>
+    );
+}
+
+// ─── Regime-Aware Comparison ────────────────────────────────────
+
+function RegimeAwareComparisonCard({ comparison, regimeMode }: {
+    comparison: NonNullable<BacktestResult['performanceComparison']>;
+    regimeMode: string;
+}) {
+    const isBetter = comparison.deltaReturn > 0;
+    const modeLabel = regimeMode === 'filter_only' ? '環境過濾' : '倉位調整';
+
+    return (
+        <GlassCard className="p-4 space-y-3">
+            <div className="flex items-center gap-2 text-sm font-semibold">
+                <Shield className="w-4 h-4 text-primary" />
+                Baseline vs Regime-Aware（{modeLabel}）
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div className="space-y-2">
+                    <div className="text-[10px] text-muted-foreground uppercase text-center">報酬率</div>
+                    <div className="grid grid-cols-2 gap-1">
+                        <CompactMetric label="Baseline" value={`${comparison.baselineReturn > 0 ? '+' : ''}${comparison.baselineReturn}%`} />
+                        <CompactMetric label="Regime" value={`${comparison.regimeAwareReturn > 0 ? '+' : ''}${comparison.regimeAwareReturn}%`} />
+                    </div>
+                    <DeltaBadge value={comparison.deltaReturn} suffix="%" />
+                </div>
+                <div className="space-y-2">
+                    <div className="text-[10px] text-muted-foreground uppercase text-center">Sharpe</div>
+                    <div className="grid grid-cols-2 gap-1">
+                        <CompactMetric label="Baseline" value={`${comparison.baselineSharpe}`} />
+                        <CompactMetric label="Regime" value={`${comparison.regimeAwareSharpe}`} />
+                    </div>
+                    <DeltaBadge value={comparison.deltaSharpe} />
+                </div>
+                <div className="space-y-2">
+                    <div className="text-[10px] text-muted-foreground uppercase text-center">最大回撤</div>
+                    <div className="grid grid-cols-2 gap-1">
+                        <CompactMetric label="Baseline" value={`-${comparison.baselineMaxDrawdown}%`} />
+                        <CompactMetric label="Regime" value={`-${comparison.regimeAwareMaxDrawdown}%`} />
+                    </div>
+                    <DeltaBadge value={-comparison.deltaMaxDrawdown} suffix="%" invert />
+                </div>
+                <div className="space-y-2">
+                    <div className="text-[10px] text-muted-foreground uppercase text-center">交易次數</div>
+                    <div className="grid grid-cols-2 gap-1">
+                        <CompactMetric label="Baseline" value={`${comparison.baselineTrades}`} />
+                        <CompactMetric label="Regime" value={`${comparison.regimeAwareTrades}`} />
+                    </div>
+                    <DeltaBadge value={comparison.deltaTrades} />
+                </div>
+            </div>
+
+            {/* Interpretation */}
+            <div className="flex flex-wrap gap-2 text-xs">
+                <span className={`px-2 py-1 rounded-full font-medium ${
+                    isBetter
+                        ? 'bg-red-100 text-red-700 dark:bg-red-950/40 dark:text-red-400'
+                        : 'bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-400'
+                }`}>
+                    {isBetter
+                        ? `✓ Regime-aware 策略報酬優於 baseline ${comparison.deltaReturn > 0 ? '+' : ''}${comparison.deltaReturn}%`
+                        : `✗ Regime-aware 策略報酬劣於 baseline ${comparison.deltaReturn}%`}
+                </span>
+                {comparison.deltaMaxDrawdown < 0 && (
+                    <span className="px-2 py-1 rounded-full font-medium bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-400">
+                        ↓ 最大回撤降低 {Math.abs(comparison.deltaMaxDrawdown)}%
+                    </span>
+                )}
+            </div>
+
+            <div className="text-[10px] text-muted-foreground">
+                ⚠ 比較結果基於歷史資料回測，不保證 regime-aware 策略在未來仍優於 baseline。兩種結果均僅供研究參考。
+            </div>
+        </GlassCard>
+    );
+}
+
+function CompactMetric({ label, value }: { label: string; value: string }) {
+    return (
+        <div className="text-center p-1.5 bg-muted/20 rounded">
+            <div className="text-[9px] text-muted-foreground">{label}</div>
+            <div className="text-xs font-bold font-mono">{value}</div>
+        </div>
+    );
+}
+
+function DeltaBadge({ value, suffix = '', invert = false }: { value: number; suffix?: string; invert?: boolean }) {
+    const isPositive = invert ? value < 0 : value > 0;
+    return (
+        <div className={`text-center text-[10px] font-medium ${
+            value === 0 ? 'text-muted-foreground' : isPositive ? 'text-red-500' : 'text-green-500'
+        }`}>
+            Δ {value > 0 ? '+' : ''}{value}{suffix}
+        </div>
+    );
+}
+
+// ─── Regime Breakdown ───────────────────────────────────────────
+
+const REGIME_CONFIG: Record<string, { emoji: string; label: string; color: string }> = {
+    Bull: { emoji: '🐂', label: '多頭', color: 'text-red-500' },
+    Bear: { emoji: '🐻', label: '空頭', color: 'text-green-500' },
+    Sideways: { emoji: '↔', label: '盤整', color: 'text-amber-500' },
+    Unknown: { emoji: '❓', label: '未知', color: 'text-muted-foreground' },
+};
+
+function RegimeBreakdownCard({ stats }: {
+    stats: NonNullable<BacktestResult['regimeStats']>;
+}) {
+    return (
+        <GlassCard className="p-4 space-y-3">
+            <div className="flex items-center gap-2 text-sm font-semibold">
+                <BarChart3 className="w-4 h-4 text-primary" />
+                市場環境分段績效
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {stats.map(s => {
+                    const cfg = REGIME_CONFIG[s.regime] || REGIME_CONFIG.Unknown;
+                    return (
+                        <div key={s.regime} className="p-3 bg-muted/20 rounded-lg space-y-1.5">
+                            <div className="flex items-center gap-1.5">
+                                <span>{cfg.emoji}</span>
+                                <span className={`text-xs font-semibold ${cfg.color}`}>{cfg.label}</span>
+                                <span className="text-[10px] text-muted-foreground ml-auto">{s.tradingDays} 天</span>
+                            </div>
+                            <div className="grid grid-cols-2 gap-x-2 gap-y-0.5 text-[10px]">
+                                <span className="text-muted-foreground">交易</span>
+                                <span className="text-right font-mono">{s.tradeCount}</span>
+                                <span className="text-muted-foreground">勝率</span>
+                                <span className="text-right font-mono">{s.winRate}%</span>
+                                <span className="text-muted-foreground">總報酬</span>
+                                <span className={`text-right font-mono font-medium ${s.totalReturn > 0 ? 'text-red-500' : s.totalReturn < 0 ? 'text-green-500' : ''}`}>
+                                    {s.totalReturn > 0 ? '+' : ''}{s.totalReturn}%
+                                </span>
+                                <span className="text-muted-foreground">平均</span>
+                                <span className={`text-right font-mono ${s.avgReturn > 0 ? 'text-red-500' : s.avgReturn < 0 ? 'text-green-500' : ''}`}>
+                                    {s.avgReturn > 0 ? '+' : ''}{s.avgReturn}%
+                                </span>
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
+
+            <div className="text-[10px] text-muted-foreground">
+                每筆交易依進場時市場環境歸類。市場環境基於 TAIEX 指數趨勢、動能、波動率判斷（模型推估，非確定分類）。
+            </div>
         </GlassCard>
     );
 }

@@ -375,3 +375,144 @@ export async function detectRegimeForPeriod(
         limitations,
     };
 }
+
+// ─── Rolling regime timeline (for backtest) ─────────────────────
+
+export interface RegimeTimelineEntry {
+    date: string;
+    regime: MarketRegime;
+    confidence: number;
+}
+
+/**
+ * Build a date→regime map for every trading date in a period.
+ * Uses rolling MA50/MA200 + momentum + volatility evaluated at each point.
+ * Evaluates every 5 trading days for performance, interpolating in between.
+ */
+export async function buildRegimeTimeline(
+    startDate: string,
+    endDate: string,
+): Promise<{ timeline: Map<string, RegimeTimelineEntry>; limitations: string[] }> {
+    // Fetch all TAIEX up to endDate (need prior 200 days for MA lookback)
+    const allRows = await prisma.marketIndex.findMany({
+        where: { name: 'TAIEX', date: { lte: endDate } },
+        orderBy: { date: 'asc' },
+        select: { date: true, value: true },
+    });
+
+    const limitations: string[] = [];
+    const timeline = new Map<string, RegimeTimelineEntry>();
+
+    if (allRows.length < 50) {
+        limitations.push(`MarketIndex 僅 ${allRows.length} 天歷史，無法建立 regime timeline`);
+        // Fill all dates with Unknown
+        for (const row of allRows) {
+            if (row.date >= startDate) {
+                timeline.set(row.date, { date: row.date, regime: 'Unknown', confidence: 0 });
+            }
+        }
+        return { timeline, limitations };
+    }
+
+    const prices = allRows.map(r => r.value);
+    const dates = allRows.map(r => r.date);
+
+    // Find the index where our period starts
+    let periodStartIdx = dates.findIndex(d => d >= startDate);
+    if (periodStartIdx < 0) periodStartIdx = dates.length;
+
+    let lastRegime: MarketRegime = 'Unknown';
+    let lastConfidence = 0;
+    const EVAL_INTERVAL = 5; // evaluate every 5 trading days
+
+    for (let i = periodStartIdx; i < dates.length; i++) {
+        const date = dates[i];
+
+        // Only full-evaluate at intervals or first point
+        if (i === periodStartIdx || (i - periodStartIdx) % EVAL_INTERVAL === 0) {
+            const sliceEnd = i + 1;
+            const pricesUpToNow = prices.slice(0, sliceEnd);
+            const currentPrice = pricesUpToNow[pricesUpToNow.length - 1];
+            const dataLen = pricesUpToNow.length;
+
+            let bullScore = 0;
+            let bearScore = 0;
+            let maxScore = 0;
+
+            // MA50
+            if (dataLen >= 50) {
+                const ma50Val = pricesUpToNow.slice(-50).reduce((a, b) => a + b, 0) / 50;
+                if (currentPrice > ma50Val) bullScore += 2; else bearScore += 2;
+                maxScore += 2;
+
+                // MA200
+                if (dataLen >= 200) {
+                    const ma200Val = pricesUpToNow.slice(-200).reduce((a, b) => a + b, 0) / 200;
+                    if (currentPrice > ma200Val) bullScore += 3; else bearScore += 3;
+                    maxScore += 3;
+                    // MA50 vs MA200
+                    if (ma50Val > ma200Val) bullScore += 2; else bearScore += 2;
+                    maxScore += 2;
+                }
+
+                // 20d momentum
+                if (dataLen >= 21) {
+                    const ret20 = ((currentPrice - pricesUpToNow[dataLen - 21]) / pricesUpToNow[dataLen - 21]) * 100;
+                    if (ret20 > 3) bullScore += 2;
+                    else if (ret20 < -3) bearScore += 2;
+                    else { bullScore += 1; bearScore += 1; }
+                    maxScore += 2;
+                }
+
+                // 60d momentum
+                if (dataLen >= 61) {
+                    const ret60 = ((currentPrice - pricesUpToNow[dataLen - 61]) / pricesUpToNow[dataLen - 61]) * 100;
+                    if (ret60 > 5) bullScore += 2;
+                    else if (ret60 < -5) bearScore += 2;
+                    else { bullScore += 1; bearScore += 1; }
+                    maxScore += 2;
+                }
+
+                // Volatility penalty
+                if (dataLen >= 21) {
+                    const rets = dailyReturns(pricesUpToNow.slice(-21));
+                    const vol = stddev(rets) * Math.sqrt(252) * 100;
+                    if (vol > 30) { bearScore += 1; maxScore += 1; }
+                }
+            }
+
+            // Determine regime
+            const bullRatio = maxScore > 0 ? bullScore / maxScore : 0;
+            const bearRatio = maxScore > 0 ? bearScore / maxScore : 0;
+
+            if (dataLen < 50) {
+                lastRegime = 'Unknown';
+                lastConfidence = 0;
+            } else if (bullRatio >= 0.7) {
+                lastRegime = 'Bull';
+                lastConfidence = Math.round(bullRatio * 100);
+            } else if (bearRatio >= 0.7) {
+                lastRegime = 'Bear';
+                lastConfidence = Math.round(bearRatio * 100);
+            } else {
+                lastRegime = 'Sideways';
+                lastConfidence = Math.round(Math.max(bullRatio, bearRatio) * 100);
+            }
+
+            if (dataLen < 200 && dataLen >= 50) {
+                lastConfidence = Math.round(lastConfidence * 0.6);
+            }
+        }
+
+        timeline.set(date, { date, regime: lastRegime, confidence: lastConfidence });
+    }
+
+    if (!allRows.some(r => r.date >= startDate)) {
+        limitations.push('回測期間無 MarketIndex 資料，regime 全部為 Unknown');
+    }
+    if (allRows.filter(r => r.date <= startDate).length < 200) {
+        limitations.push('回測起始前 MarketIndex 不足 200 天，早期 regime 判斷信心度較低');
+    }
+
+    return { timeline, limitations };
+}
