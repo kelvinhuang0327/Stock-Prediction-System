@@ -73,6 +73,12 @@ export function Header() {
                             Doubling assets
                         </Link>
                         <Link
+                            href="/alerts/daily"
+                            className="transition-colors hover:text-foreground/80 text-foreground/60"
+                        >
+                            Alerts
+                        </Link>
+                        <Link
                             href="/candidates"
                             className="transition-colors hover:text-foreground/80 text-foreground/60"
                         >
