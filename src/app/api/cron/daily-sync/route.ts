@@ -13,6 +13,7 @@ import { syncService } from '@/lib/services/syncService';
 import { createDailySnapshot } from '@/lib/report/DailySnapshotEngine';
 import { generateDailyAlerts } from '@/lib/notify/DailyAlertEngine';
 import { deliverAlerts } from '@/lib/notify/NotificationDeliveryEngine';
+import { DataRetentionService } from '@/lib/data/DataRetentionService';
 
 export const maxDuration = 300; // Allow up to 5 minutes
 export const dynamic = 'force-dynamic';
@@ -101,6 +102,41 @@ function buildDailySyncJobs(): SyncJob[] {
             deliverySkipped: skipped,
             deliveryFailed: failed,
             skippedReason: deliveryResult.skippedReason,
+          },
+        };
+      },
+    },
+    {
+      endpoint: 'daily_cleanup',
+      priority: 8,
+      description: '資料保留清理 (snapshots / delivery logs)',
+      execute: async () => {
+        // Run with dryRun=false to perform actual cleanup.
+        // Uses default policy: market=90d, candidates=60d, watchlist=60d, logs=90d.
+        // Minimum retention is always 30d (enforced in DataRetentionService).
+        const svc = new DataRetentionService({ dryRun: false });
+        const summary = await svc.runAll();
+
+        console.log(
+          `[CRON] cleanup: scanned=${summary.totalScanned} deleted=${summary.totalDeleted}` +
+          (summary.warnings.length > 0 ? ` warnings=${summary.warnings.join('; ')}` : '')
+        );
+
+        return {
+          records: summary.totalDeleted,
+          metadata: {
+            dryRun: summary.dryRun,
+            scanned: summary.totalScanned,
+            deleted: summary.totalDeleted,
+            skipped: summary.totalSkipped,
+            tableResults: summary.results.map(r => ({
+              table: r.table,
+              cutoff: r.cutoffDate,
+              scanned: r.scanned,
+              deleted: r.deleted,
+              error: r.error,
+            })),
+            warnings: summary.warnings,
           },
         };
       },
