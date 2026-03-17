@@ -91,26 +91,12 @@ export class WebhookDeliveryProvider implements DeliveryProvider {
   }
 }
 
-// ─── Email Provider (stub — not wired to SMTP yet) ────────────────
+// ─── Email Provider ───────────────────────────────────────────────
+// Re-export NodemailerEmailProvider as EmailDeliveryProvider so that
+// all existing callers (API routes, tests) continue to work unchanged.
 
-export class EmailDeliveryProvider implements DeliveryProvider {
-  readonly channel = 'email';
-  readonly payloadType = 'markdown' as const;
-  readonly target: string | null;
-
-  constructor(options?: { to?: string }) {
-    this.target = options?.to ?? process.env.NOTIFY_EMAIL_TO ?? null;
-  }
-
-  async send(_payload: string): Promise<DeliveryResult> {
-    if (!this.target) {
-      return { success: false, error: 'NOTIFY_EMAIL_TO not configured' };
-    }
-    // TODO: wire to Nodemailer / SendGrid / Resend
-    // For now return skipped so log shows "not yet implemented"
-    return { success: false, error: 'Email delivery not yet implemented. Configure SMTP provider.' };
-  }
-}
+export { NodemailerEmailProvider as EmailDeliveryProvider } from './EmailProvider';
+import { NodemailerEmailProvider as EmailDeliveryProvider } from './EmailProvider';
 
 // ─── LINE Text Provider (stub) ────────────────────────────────────
 

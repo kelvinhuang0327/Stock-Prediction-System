@@ -38,7 +38,8 @@ export function SmartScreener() {
             <div className="flex items-center justify-between mb-6">
                 <h3 className="font-bold text-lg flex items-center gap-2">
                     <Filter className="w-5 h-5 text-primary" />
-                    智慧選股 Smart Screener
+                    智慧選股
+                    <span className="text-xs bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 px-2 py-1 rounded">模擬數據</span>
                 </h3>
                 <button className="text-sm text-primary hover:underline flex items-center">
                     更多策略 <ChevronRight className="w-4 h-4" />

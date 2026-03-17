@@ -12,6 +12,7 @@ interface PriceAlertDialogProps {
 }
 
 export type PriceAlert = {
+    id?: number;
     symbol: string;
     type: 'above' | 'below' | 'change_up' | 'change_down';
     value: number;

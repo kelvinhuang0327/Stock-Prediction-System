@@ -9,6 +9,7 @@
 
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { getSmtpConfigStatus } from '@/lib/notify/EmailProvider';
 
 export const dynamic = 'force-dynamic';
 
@@ -42,12 +43,27 @@ interface ChannelInfo {
   configured: boolean;
   targetMasked: string | null;
   note?: string;
+  smtpHost?: string;
+  smtpPort?: number;
+  smtpSecure?: boolean;
 }
 
 function buildChannelInfo(): ChannelInfo[] {
   const webhookUrl = process.env.NOTIFY_WEBHOOK_URL ?? null;
   const emailTo = process.env.NOTIFY_EMAIL_TO ?? null;
   const lineToken = process.env.NOTIFY_LINE_TOKEN ?? null;
+  const smtp = getSmtpConfigStatus();
+
+  // Email is "configured" only when BOTH recipient AND SMTP are set
+  const emailConfigured = !!emailTo && smtp.smtpConfigured;
+
+  // Build a human-readable SMTP status note (no credentials exposed)
+  let emailNote: string | undefined;
+  if (emailTo && !smtp.smtpConfigured) {
+    emailNote = 'NOTIFY_EMAIL_TO 已設定，但 SMTP 尚未配置（需設定 NOTIFY_SMTP_HOST / USER / PASS）';
+  } else if (!emailTo) {
+    emailNote = '尚未設定收件人（NOTIFY_EMAIL_TO）';
+  }
 
   return [
     {
@@ -66,11 +82,15 @@ function buildChannelInfo(): ChannelInfo[] {
     },
     {
       channel: 'email',
-      label: 'Email',
-      payloadType: 'markdown',
-      configured: !!emailTo,
+      label: 'Email (Nodemailer / SMTP)',
+      payloadType: 'HTML email (markdown → HTML)',
+      configured: emailConfigured,
       targetMasked: emailTo ? maskEmail(emailTo) : null,
-      note: 'Email delivery not yet implemented — SMTP provider needed',
+      note: emailNote,
+      // Expose non-sensitive SMTP metadata for diagnostics
+      smtpHost: smtp.smtpHost ?? undefined,
+      smtpPort: smtp.smtpPort ?? undefined,
+      smtpSecure: smtp.smtpSecure ?? undefined,
     },
   ];
 }

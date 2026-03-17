@@ -24,21 +24,14 @@ export function SectorRotationMap() {
 
     const loadData = async () => {
         setLoading(true);
-        const data = await stockService.getSectors();
-
-        // Transform data for scatter plot
-        // X-axis: Relative Strength (momentum)
-        // Y-axis: Change Percent (performance)
-        // Size: Volume
-        const transformed = data.map(sector => ({
-            ...sector,
-            relativeStrength: Math.random() * 100 + 50, // Mock RS value
-            momentum: sector.changePercent + (Math.random() - 0.5) * 2,
-            size: sector.volume / 1000,
-        }));
-
-        setSectors(transformed);
-        setLoading(false);
+        try {
+            const data = await stockService.getSectors();
+            setSectors(data);
+        } catch (err) {
+            console.error("Failed to load sector data", err);
+        } finally {
+            setLoading(false);
+        }
     };
 
     if (loading) {
@@ -98,8 +91,9 @@ export function SectorRotationMap() {
                                                 <div>漲跌: <span className={data.changePercent >= 0 ? 'text-red-600' : 'text-green-600'}>
                                                     {data.changePercent > 0 ? '+' : ''}{data.changePercent.toFixed(2)}%
                                                 </span></div>
-                                                <div>相對強度: {data.relativeStrength.toFixed(1)}</div>
-                                                <div>成交量: {data.volume.toLocaleString()}</div>
+                                                <div>相對強度: {data.relativeStrength?.toFixed(1)}</div>
+                                                <div>成交量: {data.volume?.toLocaleString()}</div>
+                                                {data.topStockId && <div>領頭羊: {data.topStockId}</div>}
                                             </div>
                                         </div>
                                     );

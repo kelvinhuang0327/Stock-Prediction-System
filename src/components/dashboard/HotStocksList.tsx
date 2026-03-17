@@ -1,6 +1,9 @@
-import React from 'react';
+"use client";
+
+import React, { useEffect, useState } from 'react';
 import { ArrowUp, ArrowDown, TrendingUp, TrendingDown } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import Link from 'next/link';
 
 type Stock = {
     symbol: string;
@@ -12,28 +15,80 @@ type Stock = {
 };
 
 export function HotStocksList() {
-    // Mock data
-    const gainers: Stock[] = [
-        { symbol: '2330', name: '台積電', price: 580, change: 12, changePercent: 2.1, volume: 45000 },
-        { symbol: '2454', name: '聯發科', price: 950, change: 25, changePercent: 2.7, volume: 8500 },
-        { symbol: '2317', name: '鴻海', price: 105, change: 1.5, changePercent: 1.45, volume: 62000 },
-        { symbol: '3008', name: '大立光', price: 2350, change: 45, changePercent: 1.95, volume: 450 },
-        { symbol: '2303', name: '聯電', price: 48.5, change: 0.8, changePercent: 1.68, volume: 125000 },
-    ];
+    // For "Hot Stocks", usually we need a specific API. 
+    // Since we don't have a ranking API yet, let's pick some popular stocks.
+    // We can fetch their real-time data.
+    // We'll separate them into gainers/losers based on real-time change.
+    const [stocks, setStocks] = useState<Stock[]>([]);
 
-    const losers: Stock[] = [
-        { symbol: '2603', name: '長榮', price: 150, change: -3, changePercent: -1.9, volume: 25000 },
-        { symbol: '2609', name: '陽明', price: 45, change: -1.5, changePercent: -3.2, volume: 32000 },
-        { symbol: '2615', name: '萬海', price: 52, change: -1.2, changePercent: -2.25, volume: 18000 },
-        { symbol: '2308', name: '台達電', price: 320, change: -5, changePercent: -1.54, volume: 5600 },
-        { symbol: '1301', name: '台塑', price: 78, change: -0.5, changePercent: -0.64, volume: 12000 },
-    ];
+    useEffect(() => {
+        const fetchStocks = async () => {
+            try {
+                const listRes = await fetch('/api/stocks?limit=50');
+                if (listRes.ok) {
+                    const listJson = await listRes.json();
+                    const dbStocks = listJson.data.map((s: any) => ({
+                        symbol: s.symbol,
+                        name: s.name,
+                        price: s.price,
+                        change: s.change,
+                        changePercent: s.changePercent,
+                        volume: Math.round(s.volume / 1000)
+                    }));
+
+                    dbStocks.sort((a: Stock, b: Stock) => b.changePercent - a.changePercent);
+                    setStocks(dbStocks);
+                }
+            } catch (error) {
+                console.error("Failed to fetch hot stocks", error);
+            }
+        };
+
+        fetchStocks();
+    }, []);
+
+    const gainers = stocks.slice(0, 5);
+    const losers = [...stocks].sort((a, b) => a.changePercent - b.changePercent).slice(0, 5);
 
     return (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <StockTable title="強勢股排行" stocks={gainers} type="gainer" icon={<TrendingUp className="w-5 h-5 text-red-500" />} />
-            <StockTable title="弱勢股排行" stocks={losers} type="loser" icon={<TrendingDown className="w-5 h-5 text-green-500" />} />
+            <StockTable key="gainers" title="強勢股排行" stocks={gainers} type="gainer" icon={<TrendingUp className="w-5 h-5 text-red-500" />} />
+            <StockTable key="losers" title="弱勢股排行" stocks={losers} type="loser" icon={<TrendingDown className="w-5 h-5 text-green-500" />} />
         </div>
+    );
+}
+
+function PredictionBadge({ symbol }: { symbol: string }) {
+    const [signal, setSignal] = useState<string | null>(null);
+
+    useEffect(() => {
+        const fetchSignal = async () => {
+            try {
+                const res = await fetch(`/api/predictions/${symbol}`);
+                if (res.ok) {
+                    const data = await res.json();
+                    setSignal(data.signal);
+                }
+            } catch (e) {
+                // Silently fail
+            }
+        };
+        fetchSignal();
+    }, [symbol]);
+
+    if (!signal) return null;
+
+    const getColor = (s: string) => {
+        if (s === 'BUY') return 'bg-red-500 text-white';
+        if (s === 'SELL') return 'bg-green-500 text-white';
+        if (s === 'CAUTION') return 'bg-yellow-500 text-white';
+        return 'bg-muted text-muted-foreground';
+    };
+
+    return (
+        <Badge className={`${getColor(signal)} text-[8px] px-1 py-0 h-4 min-w-[32px] justify-center scale-90 origin-left`}>
+            {signal}
+        </Badge>
     );
 }
 
@@ -56,15 +111,22 @@ function StockTable({ title, stocks, type, icon }: { title: string; stocks: Stoc
                         </tr>
                     </thead>
                     <tbody>
-                        {stocks.map((stock) => {
+                        {stocks.length === 0 ? (
+                            <tr key="loading"><td colSpan={5} className="p-4 text-center text-muted-foreground">載入中...</td></tr>
+                        ) : stocks.map((stock, index) => {
                             const isPositive = stock.change >= 0;
                             const colorClass = isPositive ? 'text-red-600' : 'text-green-600';
 
                             return (
-                                <tr key={stock.symbol} className="border-b last:border-0 hover:bg-muted/50 transition-colors">
+                                <tr key={`${stock.symbol}-${index}`} className="border-b last:border-0 hover:bg-muted/50 transition-colors cursor-pointer group">
                                     <td className="p-3">
-                                        <div className="font-bold">{stock.name}</div>
-                                        <div className="text-xs text-muted-foreground font-mono">{stock.symbol}</div>
+                                        <Link href={`/stock/${stock.symbol}`} className="block">
+                                            <div className="flex items-center gap-2">
+                                                <div className="font-bold group-hover:text-primary transition-colors">{stock.name}</div>
+                                                <PredictionBadge symbol={stock.symbol} />
+                                            </div>
+                                            <div className="text-xs text-muted-foreground font-mono">{stock.symbol}</div>
+                                        </Link>
                                     </td>
                                     <td className={`p-3 text-right font-bold font-mono ${colorClass}`}>
                                         {stock.price}
@@ -77,7 +139,7 @@ function StockTable({ title, stocks, type, icon }: { title: string; stocks: Stoc
                                     </td>
                                     <td className={`p-3 text-right font-medium ${colorClass}`}>
                                         <Badge variant={isPositive ? "destructive" : "secondary"} className={`bg-opacity-10 hover:bg-opacity-20 text-xs ${isPositive ? 'bg-red-500 text-red-600' : 'bg-green-500 text-green-600'}`}>
-                                            {Math.abs(stock.changePercent)}%
+                                            {Math.abs(stock.changePercent).toFixed(2)}%
                                         </Badge>
                                     </td>
                                     <td className="p-3 text-right font-mono text-muted-foreground">

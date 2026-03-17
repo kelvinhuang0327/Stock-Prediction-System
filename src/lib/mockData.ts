@@ -69,25 +69,25 @@ export const SECTORS: Sector[] = [
 // Popular Taiwan Stocks
 export const POPULAR_STOCKS: Stock[] = [
     {
-        symbol: '2330', name: '台積電', price: 580, change: 12, changePercent: 2.1, volume: 45000, amount: 261,
-        open: 570, high: 585, low: 568, prevClose: 568,
-        marketCap: 15000000, pe: 18.5, pb: 5.2, dividendYield: 2.1, eps: 31.4, sector: 'semiconductor', industry: '半導體',
-        institutional: { foreign: 1250, trust: -300, dealer: 150 },
-        rsi: 65, macd: 1.5, ma20: 560, ma60: 540
+        symbol: '2330', name: '台積電', price: 1025, change: 15, changePercent: 1.48, volume: 32000, amount: 328,
+        open: 1010, high: 1030, low: 1005, prevClose: 1010,
+        marketCap: 26000000, pe: 28.5, pb: 8.2, dividendYield: 1.8, eps: 35.4, sector: 'semiconductor', industry: '半導體',
+        institutional: { foreign: 5250, trust: 800, dealer: 450 },
+        rsi: 68, macd: 5.5, ma20: 980, ma60: 940
     },
     {
-        symbol: '2454', name: '聯發科', price: 950, change: 25, changePercent: 2.7, volume: 8500, amount: 80,
-        open: 930, high: 960, low: 925, prevClose: 925,
-        marketCap: 1520000, pe: 16.2, pb: 4.8, dividendYield: 3.2, eps: 58.6, sector: 'semiconductor', industry: '半導體',
-        institutional: { foreign: 500, trust: 200, dealer: -50 },
-        rsi: 72, macd: 2.8, ma20: 920, ma60: 880
+        symbol: '2454', name: '聯發科', price: 1285, change: 35, changePercent: 2.79, volume: 5500, amount: 70,
+        open: 1250, high: 1295, low: 1245, prevClose: 1250,
+        marketCap: 2050000, pe: 18.2, pb: 5.8, dividendYield: 3.5, eps: 65.6, sector: 'semiconductor', industry: '半導體',
+        institutional: { foreign: 1200, trust: 500, dealer: 150 },
+        rsi: 72, macd: 8.8, ma20: 1220, ma60: 1150
     },
     {
-        symbol: '2317', name: '鴻海', price: 105, change: 1.5, changePercent: 1.45, volume: 62000, amount: 65,
-        open: 104, high: 106, low: 103.5, prevClose: 103.5,
-        marketCap: 1460000, pe: 12.3, pb: 1.8, dividendYield: 4.5, eps: 8.5, sector: 'electronics', industry: '電子',
-        institutional: { foreign: -800, trust: 150, dealer: 100 },
-        rsi: 58, macd: 0.5, ma20: 102, ma60: 100
+        symbol: '2317', name: '鴻海', price: 215, change: 4.5, changePercent: 2.14, volume: 95000, amount: 204,
+        open: 210.5, high: 216, low: 209, prevClose: 210.5,
+        marketCap: 2980000, pe: 15.3, pb: 2.8, dividendYield: 4.2, eps: 12.5, sector: 'electronics', industry: '電子',
+        institutional: { foreign: 3500, trust: 1200, dealer: 800 },
+        rsi: 75, macd: 4.5, ma20: 205, ma60: 185
     },
     { symbol: '3008', name: '大立光', price: 2350, change: 45, changePercent: 1.95, volume: 450, marketCap: 320000, pe: 22.1, pb: 6.5, dividendYield: 2.8, eps: 106.3, sector: 'electronics', industry: '光學', rsi: 45, macd: -5, ma20: 2380, ma60: 2400 },
     { symbol: '2303', name: '聯電', price: 48.5, change: 0.8, changePercent: 1.68, volume: 125000, marketCap: 605000, pe: 14.5, pb: 2.1, dividendYield: 3.5, eps: 3.34, sector: 'semiconductor', industry: '半導體', rsi: 62, macd: 0.2, ma20: 47.5, ma60: 46 },
@@ -101,6 +101,7 @@ export const POPULAR_STOCKS: Stock[] = [
     { symbol: '2412', name: '中華電', price: 123, change: 0.5, changePercent: 0.41, volume: 8900, marketCap: 955000, pe: 16.5, pb: 2.8, dividendYield: 4.2, eps: 7.45, sector: 'telecom', industry: '通信', rsi: 50, macd: 0.1, ma20: 122, ma60: 120 },
     { symbol: '2002', name: '中鋼', price: 28.5, change: 0.2, changePercent: 0.71, volume: 45000, marketCap: 360000, pe: 9.8, pb: 1.1, dividendYield: 4.5, eps: 2.91, sector: 'steel', industry: '鋼鐵', rsi: 46, macd: -0.1, ma20: 28.2, ma60: 29 },
     { symbol: '2886', name: '兆豐金', price: 38.2, change: -0.15, changePercent: -0.39, volume: 22000, marketCap: 485000, pe: 10.2, pb: 1.2, dividendYield: 5.8, eps: 3.75, sector: 'finance', industry: '金融', rsi: 53, macd: 0.2, ma20: 38, ma60: 37 },
+    { symbol: '0052', name: '富邦科技', price: 165, change: 2.5, changePercent: 1.54, volume: 1500, marketCap: 15000, pe: 0, pb: 0, dividendYield: 2.5, eps: 0, sector: 'semiconductor', industry: 'ETF' },
 ];
 
 // Generate more stocks for screener

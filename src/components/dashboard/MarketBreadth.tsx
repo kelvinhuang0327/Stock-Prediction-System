@@ -51,7 +51,8 @@ export function MarketBreadth() {
             <div className="bg-card rounded-xl shadow-sm border overflow-hidden">
                 <div className="p-4 border-b bg-muted/30 flex items-center gap-2">
                     <Activity className="w-5 h-5 text-primary" />
-                    <h3 className="font-bold text-lg">市場廣度 Market Breadth</h3>
+                    <h3 className="font-bold text-lg">市場廣度</h3>
+                    <span className="text-xs bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 px-2 py-1 rounded">模擬數據</span>
                 </div>
 
                 <div className="p-4">
@@ -105,8 +106,8 @@ export function MarketBreadth() {
                     {/* Foreign Investor */}
                     {foreignData && (
                         <div className={`rounded-lg p-4 border ${foreignData.trend === 'buying'
-                                ? 'bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-900'
-                                : 'bg-green-50 dark:bg-green-950/20 border-green-200 dark:border-green-900'
+                            ? 'bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-900'
+                            : 'bg-green-50 dark:bg-green-950/20 border-green-200 dark:border-green-900'
                             }`}>
                             <div className="flex items-center justify-between">
                                 <div>
@@ -131,7 +132,8 @@ export function MarketBreadth() {
             <div className="bg-card rounded-xl shadow-sm border overflow-hidden">
                 <div className="p-4 border-b bg-muted/30 flex items-center gap-2">
                     <TrendingUp className="w-5 h-5 text-primary" />
-                    <h3 className="font-bold text-lg">成交量排行 Volume Leaders</h3>
+                    <h3 className="font-bold text-lg">成交量排行</h3>
+                    <span className="text-xs bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 px-2 py-1 rounded">模擬數據</span>
                 </div>
                 <div className="overflow-x-auto">
                     <table className="w-full text-sm">

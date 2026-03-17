@@ -181,13 +181,15 @@ describe('DailyAlertEngine — generateDailyAlerts()', () => {
           symbol: '2330', name: '台積電', screenBucket: 'Strong Candidate',
           alphaScore: 80, confidence: 65, priceChangePercent: 2.1, closePrice: 580,
           riskLevel: 'medium', whyIncluded: '技術指標強勢', topFactors: [],
-          limitations: [], regime: 'Bull',
+          limitations: [], dataCoverage: 'full',
         }] as any,
         excluded: [], excludedCount: 0, totalScanned: 200,
-        regime: { regime: 'Bull', confidence: 75 } as any,
+        regime: { regime: 'Bull', confidence: 75, dataPoints: 250, limitations: [] } as any,
+        regimeConfidence: 75,
+        dataCoverageSummary: { full: 1, limited: 0, insufficient: 0 },
         screenParams: { minAlphaScore: 40, minConfidence: 15, respectMarketRegime: true, appliedRegimeAdjustment: '無調整' },
         limitations: [], disclaimer: '模型推估，非投資建議',
-        generatedAt: new Date().toISOString(),
+        last_updated: new Date().toISOString(),
       });
 
       const result = await generateDailyAlerts();
@@ -236,7 +238,7 @@ describe('DailyAlertEngine — generateDailyAlerts()', () => {
 
       const result = await generateDailyAlerts();
 
-      const regimeAlert = result.alerts.find(a => a.type === 'regime_changed');
+      const regimeAlert = result.alerts.find(a => a.type === 'market_regime_changed');
       if (regimeAlert) {
         expect(['warning', 'caution']).toContain(regimeAlert.severity);
       }

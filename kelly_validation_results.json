@@ -1,0 +1,20 @@
+{
+  "kelly": {
+    "total_return_pct": 100.1094211430992,
+    "sharpe_ratio": 8.538051893700676,
+    "max_drawdown_pct": 4.917588460675037,
+    "win_rate_pct": 57.99999999999999,
+    "avg_win_pct": 19.212555716869385,
+    "avg_loss_pct": 6.734822922802776,
+    "final_capital": 2001094.211430992
+  },
+  "fixed": {
+    "total_return_pct": 124.18853544405279,
+    "sharpe_ratio": 9.878461792604625,
+    "max_drawdown_pct": 5.004566665598399,
+    "win_rate_pct": 57.99999999999999,
+    "avg_win_pct": 19.212555716869385,
+    "avg_loss_pct": 6.734822922802776,
+    "final_capital": 2241885.354440528
+  }
+}

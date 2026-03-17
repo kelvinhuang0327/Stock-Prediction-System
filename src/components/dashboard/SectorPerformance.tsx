@@ -6,28 +6,73 @@ import { stockService } from '@/lib/stockService';
 import { Sector } from '@/lib/mockData';
 
 export function SectorPerformance() {
-    const [sectors, setSectors] = useState<Sector[]>([]);
+    const [sectors, setSectors] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
-    const [viewMode, setViewMode] = useState<'price' | 'revenue'>('price');
+    const [viewMode, setViewMode] = useState<'price' | 'revenue'>('price'); // 'revenue' will remain mock or be hidden
+
+    // Real-time Sector Mapping
+    const sectorMap = [
+        { code: 't01', name: '水泥' },
+        { code: 't02', name: '食品' },
+        { code: 't13', name: '電子' },
+        { code: 't17', name: '金融' },
+        { code: 't15', name: '航運' },
+        { code: 't28', name: '半導體' },
+        { code: 't26', name: '光電' },
+        { code: 't03', name: '塑膠' },
+        { code: 't11', name: '紡織' },
+        { code: 't10', name: '鋼鐵' },
+    ];
 
     useEffect(() => {
-        loadSectors();
+        const fetchSectors = async () => {
+            setLoading(true);
+
+            // Initial Fetch
+            await updateSectors();
+            setLoading(false);
+        };
+
+        fetchSectors();
+        const timer = setInterval(updateSectors, 5000);
+        return () => clearInterval(timer);
     }, []);
 
-    const loadSectors = async () => {
-        setLoading(true);
-        const data = await stockService.getSectors();
-        // Mock revenue data enhancement
-        const enhancedData = data.map(s => ({
-            ...s,
-            revenueYoy: (Math.random() - 0.3) * 20, // Mock YoY -30% to +70%
-            revenueMom: (Math.random() - 0.5) * 10  // Mock MoM -5% to +5%
+    const updateSectors = async () => {
+        const updates = await Promise.all(sectorMap.map(async (s) => {
+            try {
+                const res = await fetch(`/api/stocks/${s.code}/realtime`);
+                if (!res.ok) return null;
+                const json = await res.json();
+                const rt = json.data;
+                if (!rt) return null;
+
+                const price = rt.close > 0 ? rt.close : (rt.open > 0 ? rt.open : 0);
+                const prev = rt.prevClose || price;
+                const change = price - prev;
+                const changePercent = prev > 0 ? (change / prev) * 100 : 0;
+
+                return {
+                    id: s.code,
+                    name: s.name,
+                    price: price,
+                    changePercent: changePercent,
+                    stocks: 0, // Mock or fetch count?
+                    revenueYoy: (Math.random() - 0.2) * 20, // Keep mock for revenue view
+                    revenueMom: 0
+                };
+            } catch (e) {
+                return null;
+            }
         }));
-        setSectors(enhancedData);
-        setLoading(false);
+
+        const validSectors = updates.filter(s => s !== null);
+        if (validSectors.length > 0) {
+            setSectors(validSectors);
+        }
     };
 
-    if (loading) {
+    if (loading && sectors.length === 0) {
         return (
             <div className="bg-card rounded-xl shadow-sm border p-6">
                 <div className="animate-pulse space-y-4">
@@ -44,7 +89,7 @@ export function SectorPerformance() {
 
     // Sort sectors by performance
     const sortedSectors = [...sectors].sort((a, b) =>
-        viewMode === 'price' ? b.changePercent - a.changePercent : (b as any).revenueYoy - (a as any).revenueYoy
+        viewMode === 'price' ? b.changePercent - a.changePercent : b.revenueYoy - a.revenueYoy
     );
     const topPerformers = sortedSectors.slice(0, 3);
     const worstPerformers = sortedSectors.slice(-3).reverse();
@@ -54,7 +99,7 @@ export function SectorPerformance() {
             <div className="p-4 border-b bg-muted/30 flex justify-between items-center">
                 <h3 className="font-bold text-lg flex items-center gap-2">
                     {viewMode === 'price' ? <Activity className="w-5 h-5" /> : <DollarSign className="w-5 h-5" />}
-                    {viewMode === 'price' ? '類股表現 (Sector Performance)' : '營收熱圖 (Revenue Heatmap)'}
+                    {viewMode === 'price' ? '類股表現' : '營收熱圖'}
                 </h3>
                 <div className="flex bg-background rounded-lg border p-1">
                     <button
@@ -96,7 +141,7 @@ export function SectorPerformance() {
                                     {value > 0 ? '+' : ''}{value.toFixed(2)}%
                                 </div>
                                 <div className="text-xs text-muted-foreground mt-1 flex justify-between">
-                                    <span>{viewMode === 'price' ? `${sector.stocks} 檔` : 'YoY'}</span>
+                                    <span>{viewMode === 'price' ? `指數:${sector.price}` : 'YoY'}</span>
                                     {viewMode === 'revenue' && (
                                         <span className={sector.revenueMom > 0 ? 'text-red-500' : 'text-green-500'}>
                                             MoM {sector.revenueMom > 0 ? '+' : ''}{sector.revenueMom.toFixed(1)}%

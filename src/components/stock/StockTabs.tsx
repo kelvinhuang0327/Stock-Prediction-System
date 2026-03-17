@@ -7,13 +7,16 @@ import { Financials } from '@/components/stock/Financials';
 import { TechnicalAnalysis } from '@/components/stock/TechnicalAnalysis';
 import { StockComparison } from '@/components/stock/StockComparison';
 import { EventsCalendar } from '@/components/stock/EventsCalendar';
-import { BarChart3, LineChart, PieChart, FileText, Scale } from 'lucide-react';
+import { BacktestPanel } from '@/components/stock/BacktestPanel';
+import { BarChart3, LineChart, PieChart, FileText, Scale, FlaskConical } from 'lucide-react';
 
-export function StockTabs({ symbol }: { symbol: string }) {
+import { StockDataPoint } from '@/types/stock';
+
+export function StockTabs({ symbol, historicalData }: { symbol: string, historicalData?: StockDataPoint[] }) {
     return (
         <Tabs defaultValue="overview" className="w-full">
             <div className="overflow-x-auto pb-2">
-                <TabsList className="grid w-full min-w-[500px] grid-cols-5 lg:w-[750px]">
+                <TabsList className="grid w-full min-w-[600px] grid-cols-6 lg:w-[900px]">
                     <TabsTrigger value="overview" className="gap-2">
                         <BarChart3 className="w-4 h-4" /> 總覽
                     </TabsTrigger>
@@ -29,6 +32,9 @@ export function StockTabs({ symbol }: { symbol: string }) {
                     <TabsTrigger value="comparison" className="gap-2">
                         <Scale className="w-4 h-4" /> 同業比較
                     </TabsTrigger>
+                    <TabsTrigger value="backtest" className="gap-2">
+                        <FlaskConical className="w-4 h-4" /> 回測分析
+                    </TabsTrigger>
                 </TabsList>
             </div>
 
@@ -41,7 +47,7 @@ export function StockTabs({ symbol }: { symbol: string }) {
                         {/* Quick Technical Summary */}
                         <div className="bg-card p-4 rounded-lg border">
                             <h3 className="font-semibold mb-4">技術指標概況</h3>
-                            <TechnicalIndicators symbol={symbol} />
+                            <TechnicalIndicators symbol={symbol} data={historicalData} />
                         </div>
 
                         {/* Events Calendar (New Feature) */}
@@ -66,6 +72,10 @@ export function StockTabs({ symbol }: { symbol: string }) {
                 <div className="bg-card rounded-lg border p-6">
                     <StockComparison baseSymbol={symbol} />
                 </div>
+            </TabsContent>
+
+            <TabsContent value="backtest" className="mt-6">
+                <BacktestPanel symbol={symbol} />
             </TabsContent>
         </Tabs >
     );

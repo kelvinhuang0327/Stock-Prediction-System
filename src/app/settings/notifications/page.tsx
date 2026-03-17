@@ -43,6 +43,9 @@ interface ChannelStatus {
   configured: boolean;
   targetMasked: string | null;
   note?: string;
+  smtpHost?: string;
+  smtpPort?: number;
+  smtpSecure?: boolean;
   lastDelivery: LastDelivery | null;
 }
 
@@ -123,6 +126,14 @@ function ChannelCards({ channels, onTest }: {
           <div className="text-xs text-muted-foreground space-y-1">
             <div><span className="font-medium">目標：</span>{ch.targetMasked ?? '—'}</div>
             <div><span className="font-medium">格式：</span>{ch.payloadType}</div>
+            {/* Email: show SMTP host when configured */}
+            {ch.channel === 'email' && ch.smtpHost && (
+              <div>
+                <span className="font-medium">SMTP：</span>
+                {ch.smtpHost}:{ch.smtpPort ?? 587}
+                {ch.smtpSecure ? ' (SSL)' : ' (STARTTLS)'}
+              </div>
+            )}
           </div>
 
           {/* Note (e.g. email stub) */}
@@ -561,7 +572,8 @@ export default function NotificationsSettingsPage() {
         <ul className="space-y-0.5 list-disc list-inside">
           <li>通知設定透過環境變數控制（NOTIFY_WEBHOOK_URL / NOTIFY_LINE_TOKEN / NOTIFY_EMAIL_TO）</li>
           <li>Token / 完整 URL 不會顯示於此頁面，僅顯示遮罩摘要</li>
-          <li>Email 發送尚未實作，需接設 SMTP 或第三方 Email 服務</li>
+          <li>Email 使用 Nodemailer (SMTP)；需設定 NOTIFY_SMTP_HOST / NOTIFY_SMTP_USER / NOTIFY_SMTP_PASS</li>
+          <li>支援 Gmail (port 587 STARTTLS) 及 port 465 SSL；使用 Gmail 需開啟「應用程式密碼」</li>
           <li>所有通知內容均為研究摘要，不構成投資建議</li>
           <li>daily_alerts job 由 /api/cron/daily-sync 排程觸發（priority 7）</li>
         </ul>

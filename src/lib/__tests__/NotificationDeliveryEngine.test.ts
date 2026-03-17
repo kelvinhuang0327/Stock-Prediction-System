@@ -38,6 +38,7 @@ function makeAlertsResult(alertCount = 3): DailyAlertsResult {
       body: '候選股升級',
       symbol: `00${50 + i}`,
       basis: 'StrategyScreenEngine',
+      comparisonBased: true,
     })),
     comparisonAvailable: true,
     previousSnapshotDate: '2025-01-14',

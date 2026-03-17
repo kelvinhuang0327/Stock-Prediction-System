@@ -1,0 +1,33 @@
+# 基於官方 OpenClaw 鏡像
+FROM node:22-bookworm
+
+# 安裝 Python 與常用分析工具
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3 \
+    python3-pip \
+    python3-venv \
+    bash \
+    curl \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+# 安裝 Python 依賴（因應回測需求）
+RUN pip3 install --no-cache-dir --break-system-packages \
+    numpy \
+    pandas \
+    yfinance \
+    scikit-learn \
+    matplotlib
+
+# 下載 OpenClaw 原始碼並編譯 (或直接 COPY 構建內容)
+# 這裡簡化為直接使用 pnpm 安裝與構建
+RUN npm install -g pnpm
+WORKDIR /app
+RUN git clone https://github.com/openclaw/openclaw.git .
+RUN pnpm install && pnpm build
+
+# 設定工作目錄為開發區
+WORKDIR /app/workspace
+
+# 預設啟動 Gateway
+CMD ["node", "/app/dist/index.js", "gateway", "--bind", "lan"]

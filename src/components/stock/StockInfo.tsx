@@ -1,37 +1,120 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Badge } from '@/components/ui/badge';
-import { ArrowUp, ArrowDown, TrendingUp, TrendingDown, DollarSign, PieChart, Activity, Bell, Plus, Check } from 'lucide-react';
+import { ArrowUp, ArrowDown, TrendingUp, TrendingDown, DollarSign, PieChart, Activity, Bell, Plus, Check, RefreshCw } from 'lucide-react';
 import { PriceAlertDialog, PriceAlert } from '@/components/watchlist/PriceAlertDialog';
 import { AddStockDialog } from '@/components/watchlist/AddStockDialog';
-import { Stock } from '@/lib/mockData';
 
-export function StockInfo({ symbol }: { symbol: string }) {
-    // Mock data - In a real app, this would come from an API
-    const stock: Stock = {
-        symbol: symbol,
-        name: symbol === '2330' ? '台積電' : 'Sample Stock',
-        price: 580,
-        change: 12,
-        changePercent: 2.1,
-        volume: 25430, // 張
-        amount: 147.5, // 億
-        open: 570,
-        high: 585,
-        low: 568,
-        prevClose: 568,
-        // New Data Fields
-        pe: 18.5, // 本益比
-        pb: 4.2,  // 股價淨值比
-        dividendYield: 2.8,    // 殖利率
-        eps: 32.1,     // EPS
-        institutional: {
-            foreign: 1250, // 外資買賣超
-            trust: -300,   // 投信買賣超
-            dealer: 150,   // 自營商買賣超
+export interface StockInfoProps {
+    symbol: string;
+    data?: {
+        name: string;
+        price: number;
+        change: number;
+        changePercent: number;
+        volume: number; // Shares
+        amount: number; // Value
+        open: number;
+        high: number;
+        low: number;
+        prevClose: number;
+        pe?: number;
+        pb?: number;
+        dividendYield?: number;
+        eps?: number;
+        institutional?: {
+            foreign: number;
+            trust: number;
+            dealer: number;
         }
+    } | null;
+}
+
+export function StockInfo({ symbol, data }: StockInfoProps) {
+    // Initial state from props (Snapshot)
+    const [stats, setStats] = useState(data ? { ...data, symbol } : null);
+    const [isLive, setIsLive] = useState(false);
+    const [lastUpdated, setLastUpdated] = useState<string | null>(null);
+
+    // Initial fallback
+    const displayStats = stats || {
+        symbol: symbol,
+        name: 'Loading...',
+        price: 0,
+        change: 0,
+        changePercent: 0,
+        volume: 0,
+        amount: 0,
+        open: 0,
+        high: 0,
+        low: 0,
+        prevClose: 0,
+        pe: 0,
+        pb: 0,
+        dividendYield: 0,
+        eps: 0,
+        institutional: { foreign: 0, trust: 0, dealer: 0 }
     };
+
+    // Polling effect
+    useEffect(() => {
+        // If initial data provided, set stats
+        if (data) {
+            setStats({ ...data, symbol });
+            setLastUpdated(new Date().toLocaleTimeString());
+        }
+
+        const fetchRealTime = async () => {
+            try {
+                const res = await fetch(`/api/stocks/${symbol}/realtime`);
+                if (!res.ok) return;
+                const json = await res.json();
+                const rt = json.data;
+
+                if (rt) {
+                    setIsLive(true);
+                    setLastUpdated(rt.tradeTime || new Date().toLocaleTimeString());
+
+                    setStats(prev => {
+                        if (!prev) return prev;
+                        // Calculate change based on previous close (if available from snapshot)
+                        // Note: MIS API 'z' might be 0 if no recent trade, handle that
+                        const currentPrice = rt.close > 0 ? rt.close : (rt.bestBidPrice?.[0] || prev.price);
+
+                        // If we have no price, don't update
+                        if (currentPrice <= 0) return prev;
+
+                        const change = currentPrice - prev.prevClose;
+                        const changePercent = prev.prevClose > 0 ? (change / prev.prevClose) * 100 : 0;
+
+                        return {
+                            ...prev,
+                            price: currentPrice,
+                            change: change,
+                            changePercent: changePercent,
+                            // Volume in MIS is accumulated total volume
+                            volume: Math.round(rt.volume / 1000), // Convert to Sheets (Zhang)?? Wait, check unit. Usually MIS v is shares.
+                            open: rt.open > 0 ? rt.open : prev.open,
+                            high: rt.high > 0 ? rt.high : prev.high,
+                            low: rt.low > 0 ? rt.low : prev.low,
+                        };
+                    });
+                }
+            } catch (e) {
+                console.error("Realtime fetch failed", e);
+                setIsLive(false);
+            }
+        };
+
+        // Poll every 5 seconds
+        const timer = setInterval(fetchRealTime, 5000);
+
+        // Initial fetch
+        fetchRealTime();
+
+        return () => clearInterval(timer);
+    }, [symbol, data]); // Reset when symbol changes
 
     const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
     const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
@@ -39,15 +122,13 @@ export function StockInfo({ symbol }: { symbol: string }) {
 
     const handleAddAlert = (alert: PriceAlert) => {
         console.log('Alert added:', alert);
-        // In a real app, save to backend
     };
 
     const handleAddToWatchlist = () => {
         setIsInWatchlist(true);
-        // In a real app, save to backend
     };
 
-    const isPositive = stock.change >= 0;
+    const isPositive = displayStats.change >= 0;
     const colorClass = isPositive ? 'text-red-600' : 'text-green-600';
 
     return (
@@ -57,16 +138,21 @@ export function StockInfo({ symbol }: { symbol: string }) {
                 <div>
                     <div className="flex items-center gap-3">
                         <h1 className="text-3xl font-bold text-foreground">
-                            {stock.name}
+                            {displayStats.name}
                         </h1>
-                        <span className="text-2xl text-muted-foreground font-mono">{stock.symbol}</span>
+                        <span className="text-2xl text-muted-foreground font-mono">{displayStats.symbol}</span>
                         <Badge variant="outline" className="ml-2">半導體業</Badge>
-                        <Badge variant="secondary">上市</Badge>
+                        <Badge variant={isLive ? "destructive" : "secondary"} className={isLive ? "animate-pulse" : ""}>
+                            {isLive ? "LIVE" : "收盤"}
+                        </Badge>
                     </div>
                     <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
-                        <span className="flex items-center gap-1"><Activity className="w-4 h-4" /> 即時行情</span>
+                        <span className="flex items-center gap-1">
+                            {isLive ? <Activity className="w-4 h-4 text-red-500" /> : <RefreshCw className="w-4 h-4" />}
+                            {isLive ? "盤中即時" : "收盤行情"}
+                        </span>
                         <span>|</span>
-                        <span>更新時間: 13:30:00</span>
+                        <span>更新時間: {lastUpdated || '--:--:--'}</span>
                     </div>
                 </div>
 
@@ -102,14 +188,14 @@ export function StockInfo({ symbol }: { symbol: string }) {
                     </div>
 
                     <div className={`flex items-end gap-4 ${colorClass}`}>
-                        <div className="text-5xl font-bold tracking-tight font-mono">{stock.price}</div>
+                        <div className="text-5xl font-bold tracking-tight font-mono">{displayStats.price.toFixed(displayStats.price < 100 ? 2 : 1)}</div>
                         <div className="flex flex-col items-start mb-1">
                             <div className="flex items-center gap-1 text-xl font-bold">
                                 {isPositive ? <ArrowUp className="w-6 h-6" /> : <ArrowDown className="w-6 h-6" />}
-                                <span>{Math.abs(stock.change)}</span>
+                                <span>{Math.abs(displayStats.change).toFixed(2)}</span>
                             </div>
                             <div className="text-lg font-medium">
-                                ({Math.abs(stock.changePercent)}%)
+                                ({Math.abs(displayStats.changePercent).toFixed(2)}%)
                             </div>
                         </div>
                     </div>
@@ -118,12 +204,12 @@ export function StockInfo({ symbol }: { symbol: string }) {
 
             {/* Key Stats Grid */}
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 p-4 bg-muted/30 rounded-lg border">
-                <InfoItem label="成交量 (張)" value={stock.volume.toLocaleString()} />
-                <InfoItem label="成交值 (億)" value={stock.amount} />
-                <InfoItem label="開盤" value={stock.open} />
-                <InfoItem label="最高" value={stock.high} className="text-red-600" />
-                <InfoItem label="最低" value={stock.low} className="text-green-600" />
-                <InfoItem label="昨收" value={stock.prevClose} />
+                <InfoItem label="成交量 (張)" value={displayStats.volume.toLocaleString()} />
+                <InfoItem label="成交值 (億)" value={displayStats.amount?.toFixed(2) ?? '--'} />
+                <InfoItem label="開盤" value={displayStats.open ?? '--'} />
+                <InfoItem label="最高" value={displayStats.high ?? '--'} className="text-red-600" />
+                <InfoItem label="最低" value={displayStats.low ?? '--'} className="text-green-600" />
+                <InfoItem label="昨收" value={displayStats.prevClose ?? '--'} />
             </div>
 
             {/* Financial & Institutional Data */}
@@ -134,10 +220,10 @@ export function StockInfo({ symbol }: { symbol: string }) {
                         <DollarSign className="w-4 h-4" /> 基本面數據
                     </h3>
                     <div className="grid grid-cols-2 gap-3">
-                        <DetailCard label="本益比 (P/E)" value={stock.pe} subtext="倍" />
-                        <DetailCard label="股價淨值比 (P/B)" value={stock.pb} subtext="倍" />
-                        <DetailCard label="殖利率 (Yield)" value={`${stock.dividendYield}%`} highlight />
-                        <DetailCard label="EPS (近四季)" value={stock.eps} subtext="元" />
+                        <DetailCard label="本益比 (P/E)" value={displayStats.pe ?? '--'} subtext="倍" />
+                        <DetailCard label="股價淨值比 (P/B)" value={displayStats.pb ?? '--'} subtext="倍" />
+                        <DetailCard label="殖利率 (Yield)" value={displayStats.dividendYield ? `${displayStats.dividendYield}%` : '--'} highlight />
+                        <DetailCard label="EPS (近四季)" value={displayStats.eps ?? '--'} subtext="元" />
                     </div>
                 </div>
 
@@ -147,45 +233,27 @@ export function StockInfo({ symbol }: { symbol: string }) {
                         <PieChart className="w-4 h-4" /> 法人買賣超 (張)
                     </h3>
                     <div className="grid grid-cols-3 gap-3 h-full">
-                        <ChipCard title="外資" value={stock.institutional?.foreign || 0} />
-                        <ChipCard title="投信" value={stock.institutional?.trust || 0} />
-                        <ChipCard title="自營商" value={stock.institutional?.dealer || 0} />
+                        <ChipCard title="外資" value={displayStats.institutional?.foreign || 0} />
+                        <ChipCard title="投信" value={displayStats.institutional?.trust || 0} />
+                        <ChipCard title="自營商" value={displayStats.institutional?.dealer || 0} />
                     </div>
                 </div>
 
-                {/* Brokerage Targets (New Feature) */}
-                <div className="md:col-span-2 space-y-3">
+                {/* Brokerage Targets (Removed due to lack of real data source) */}
+                {/* <div className="md:col-span-2 space-y-3">
                     <h3 className="font-semibold flex items-center gap-2 text-foreground">
                         <TrendingUp className="w-4 h-4" /> 法人目標價 (Brokerage Targets)
                     </h3>
-                    <div className="bg-background rounded border p-4">
-                        <div className="flex items-center justify-between mb-2 text-sm">
-                            <span className="text-green-600 font-bold">最低 520</span>
-                            <span className="text-primary font-bold">平均 610</span>
-                            <span className="text-red-600 font-bold">最高 680</span>
-                        </div>
-                        <div className="relative h-4 bg-muted rounded-full overflow-hidden">
-                            {/* Range Bar */}
-                            <div className="absolute top-0 bottom-0 bg-primary/20" style={{ left: '10%', right: '10%' }} />
-                            {/* Current Price Marker */}
-                            <div
-                                className="absolute top-0 bottom-0 w-1 bg-foreground transform -translate-x-1/2"
-                                style={{ left: '40%' }} // (580 - 500) / (700 - 500) approx
-                            />
-                        </div>
-                        <div className="flex justify-between text-xs text-muted-foreground mt-1">
-                            <span>500</span>
-                            <span className="font-bold text-foreground">目前股價: {stock.price}</span>
-                            <span>700</span>
-                        </div>
+                    <div className="bg-background rounded border p-4 text-center text-muted-foreground text-sm">
+                        暫無法人目標價數據
                     </div>
-                </div>
+                </div> */}
             </div>
 
             <PriceAlertDialog
                 isOpen={isAlertDialogOpen}
                 onClose={() => setIsAlertDialogOpen(false)}
-                stock={stock}
+                stock={displayStats}
                 onSave={handleAddAlert}
             />
         </div>
