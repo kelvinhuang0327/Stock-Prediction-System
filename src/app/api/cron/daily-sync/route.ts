@@ -11,6 +11,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { runAllSyncs, type SyncJob } from '@/lib/data/SyncScheduler';
 import { syncService } from '@/lib/services/syncService';
 import { createDailySnapshot } from '@/lib/report/DailySnapshotEngine';
+import { generateDailyAlerts } from '@/lib/notify/DailyAlertEngine';
+import { deliverAlerts } from '@/lib/notify/NotificationDeliveryEngine';
 
 export const maxDuration = 300; // Allow up to 5 minutes
 export const dynamic = 'force-dynamic';
@@ -70,6 +72,37 @@ function buildDailySyncJobs(): SyncJob[] {
         const result = await createDailySnapshot({ forceRefresh: false });
         const records = (result.marketCreated ? 1 : 0) + result.candidatesCreated + result.watchlistCreated;
         return { records, metadata: { success: result.success, limitations: result.limitations } };
+      },
+    },
+    {
+      endpoint: 'daily_alerts',
+      priority: 7,
+      description: '每日提醒發送 (webhook / email / LINE)',
+      execute: async () => {
+        // Rules:
+        // - Always generate alerts (even if 0)
+        // - Only actually deliver if at least 1 alert exists (sendWhenEmpty=false)
+        //   OR if NOTIFY_SEND_EMPTY=true env is set
+        const sendWhenEmpty = process.env.NOTIFY_SEND_EMPTY === 'true';
+        const alertsResult = await generateDailyAlerts({ includeWatchlist: true, includeDataWarnings: true });
+        const deliveryResult = await deliverAlerts(alertsResult, { sendWhenEmpty, minAlerts: 0 });
+
+        const success = deliveryResult.channels.filter(c => c.status === 'success').length;
+        const skipped = deliveryResult.channels.filter(c => c.status === 'skipped').length;
+        const failed  = deliveryResult.channels.filter(c => c.status === 'failed').length;
+
+        return {
+          records: alertsResult.alerts.length,
+          metadata: {
+            alertCount: alertsResult.alerts.length,
+            overallSeverity: alertsResult.overallSeverity,
+            comparisonAvailable: alertsResult.comparisonAvailable,
+            deliverySuccess: success,
+            deliverySkipped: skipped,
+            deliveryFailed: failed,
+            skippedReason: deliveryResult.skippedReason,
+          },
+        };
       },
     },
   ];

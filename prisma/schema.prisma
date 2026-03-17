@@ -308,3 +308,24 @@ model DailyWatchlistSnapshot {
   @@index([snapshotDate])
   @@index([symbol])
 }
+
+// ─── Notification Delivery Log ───────────────────────────────────
+
+model NotificationDeliveryLog {
+  id          Int      @id @default(autoincrement())
+  channel     String   // webhook / email / line_text
+  target      String   // URL, email address, or identifier
+  payloadType String   // structured / markdown / plainText
+  status      String   // success / failed / skipped
+  errorMessage String? // error detail if failed
+  sentAt      DateTime @default(now())
+  retryCount  Int      @default(0)
+  alertCount  Int      @default(0) // number of alerts in payload
+  reportDate  String?  // YYYY-MM-DD the alerts refer to
+  metadata    String?  // JSON: extra context (severity, summary snippet)
+
+  @@index([sentAt])
+  @@index([channel])
+  @@index([status])
+  @@index([reportDate])
+}
