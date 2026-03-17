@@ -10,6 +10,7 @@ import { DataStatusBar, DataAvailabilityGuard } from '@/components/ui/data-avail
 import { GlassCard } from '@/components/ui/glass-card';
 import { Badge } from '@/components/ui/badge';
 import { LoadingSpinner } from '@/components/ui/loading';
+import { BucketBadge } from '@/components/ui/badges';
 import {
     TrendingUp, TrendingDown, BarChart3, Building2, Users,
     Briefcase, DollarSign, ArrowUpDown, Sparkles
@@ -398,16 +399,6 @@ function AlphaCandidatesPanel({ data, meta, onRowClick }: {
         );
     }
 
-    const SCREEN_BUCKET_STYLE: Record<string, string> = {
-        'Strong Candidate': 'bg-red-100 text-red-700 dark:bg-red-950/40 dark:text-red-400',
-        'Watch': 'bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300',
-        'Neutral': 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400',
-    };
-    const SCREEN_BUCKET_LABEL: Record<string, string> = {
-        'Strong Candidate': '強勢候選',
-        'Watch': '值得觀察',
-        'Neutral': '中性',
-    };
     const REGIME_EMOJI: Record<string, string> = { Bull: '🐂', Bear: '🐻', Sideways: '↔', Unknown: '❓' };
 
     return (
@@ -466,11 +457,7 @@ function AlphaCandidatesPanel({ data, meta, onRowClick }: {
                                     </span>
                                 </td>
                                 <td className="p-3 text-center">
-                                    <span className={`text-[10px] font-medium px-2 py-1 rounded ${
-                                        SCREEN_BUCKET_STYLE[item.screenBucket] || 'bg-gray-100 text-gray-500'
-                                    }`}>
-                                        {SCREEN_BUCKET_LABEL[item.screenBucket] || item.screenBucket}
-                                    </span>
+                                    <BucketBadge bucket={item.screenBucket} labelMode="chinese" size="md" />
                                 </td>
                                 <td className="p-3 text-center">
                                     <div className="flex items-center justify-center gap-1">

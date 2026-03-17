@@ -11,6 +11,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { APP_NAME } from '@/lib/config/app';
+import { StatusBadge } from '@/components/ui/badges';
 
 // ─── Types ────────────────────────────────────────────────────────
 
@@ -55,41 +56,16 @@ interface SystemHealth {
   knownLimitations: string[];
 }
 
-// ─── Badge helpers ────────────────────────────────────────────────
-
-function StatusBadge({ status }: { status: string }) {
-  const map: Record<string, string> = {
-    ok: 'bg-green-500/20 text-green-400 border-green-500/30',
-    degraded: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
-    critical: 'bg-red-500/20 text-red-400 border-red-500/30',
-    success: 'bg-green-500/20 text-green-400 border-green-500/30',
-    failed: 'bg-red-500/20 text-red-400 border-red-500/30',
-    skipped: 'bg-gray-500/20 text-gray-400 border-gray-500/30',
-    completed: 'bg-green-500/20 text-green-400 border-green-500/30',
-    error: 'bg-red-500/20 text-red-400 border-red-500/30',
-    A: 'bg-green-500/20 text-green-400 border-green-500/30',
-    B: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
-    C: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
-    D: 'bg-red-500/20 text-red-400 border-red-500/30',
-  };
-  const cls = map[status] ?? 'bg-gray-500/20 text-gray-400 border-gray-500/30';
-  return (
-    <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium border ${cls}`}>
-      {status}
-    </span>
-  );
-}
+// ─── Helpers ──────────────────────────────────────────────────────
 
 function FreshBadge({ fresh }: { fresh: boolean }) {
-  return fresh
-    ? <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium border bg-green-500/20 text-green-400 border-green-500/30">新鮮</span>
-    : <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium border bg-orange-500/20 text-orange-400 border-orange-500/30">過期</span>;
+  return <StatusBadge status={fresh ? 'fresh' : 'stale'} variant="glass"
+    label={fresh ? '新鮮' : '過期'} />;
 }
 
 function ConfiguredBadge({ configured }: { configured: boolean }) {
-  return configured
-    ? <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium border bg-green-500/20 text-green-400 border-green-500/30">configured</span>
-    : <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium border bg-gray-500/20 text-gray-400 border-gray-500/30">not configured</span>;
+  return <StatusBadge status={configured ? 'configured' : 'not configured'} variant="glass"
+    label={configured ? '已設定' : '未設定'} />;
 }
 
 function fmtTime(iso: string | null) {
@@ -165,7 +141,7 @@ export default function SystemSettingsPage() {
               <div className="flex-1">
                 <div className="flex items-center gap-3">
                   <span className="text-white font-semibold">整體狀態</span>
-                  <StatusBadge status={health.overallStatus} />
+                  <StatusBadge status={health.overallStatus} variant="glass" />
                 </div>
                 <p className="text-slate-400 text-xs mt-1">
                   最後更新：{fmtTime(health.generatedAt)} ｜ DB 大小：{health.dbSizeMb}
@@ -200,7 +176,7 @@ export default function SystemSettingsPage() {
                         <td className="px-4 py-3 text-slate-400">{ds.table}</td>
                         <td className="px-4 py-3 text-right text-slate-300">{ds.rowCount.toLocaleString()}</td>
                         <td className="px-4 py-3 text-slate-400">{ds.lastDate ?? '—'}</td>
-                        <td className="px-4 py-3 text-center"><StatusBadge status={ds.grade} /></td>
+                        <td className="px-4 py-3 text-center"><StatusBadge status={ds.grade} variant="glass" label={ds.grade} /></td>
                         <td className="px-4 py-3 text-center">
                           {ds.usable
                             ? <span className="text-green-400">✓</span>
@@ -253,7 +229,7 @@ export default function SystemSettingsPage() {
                           <td className="px-4 py-3 text-white font-mono text-xs">{s.jobType}</td>
                           <td className="px-4 py-3 text-slate-400">{fmtTime(s.lastRun)}</td>
                           <td className="px-4 py-3 text-center">
-                            <StatusBadge status={s.status ?? 'unknown'} />
+                            <StatusBadge status={s.status ?? 'unknown'} variant="glass" label={s.status ?? 'unknown'} />
                           </td>
                         </tr>
                       ))}
@@ -281,7 +257,7 @@ export default function SystemSettingsPage() {
                     <div className="text-xs text-slate-400 space-y-1">
                       <div className="flex items-center gap-2">
                         <span>上次狀態：</span>
-                        {ch.lastStatus ? <StatusBadge status={ch.lastStatus} /> : <span>—</span>}
+                        {ch.lastStatus ? <StatusBadge status={ch.lastStatus} variant="glass" label={ch.lastStatus} /> : <span>—</span>}
                       </div>
                       <div>上次發送：{fmtTime(ch.lastSentAt)}</div>
                     </div>

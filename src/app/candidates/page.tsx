@@ -17,6 +17,8 @@ import { useApiData } from '@/hooks/useApiData';
 import { GlassCard } from '@/components/ui/glass-card';
 import { LoadingSpinner } from '@/components/ui/loading';
 import { Disclaimer } from '@/components/ui/disclaimer';
+import { BucketBadge } from '@/components/ui/badges';
+import { LimitationBlock } from '@/components/ui/limitation-block';
 import {
   Search, SlidersHorizontal, TrendingUp, TrendingDown, Minus,
   AlertTriangle, ChevronDown, ChevronUp, ArrowUpDown, ArrowUp,
@@ -83,15 +85,6 @@ const REGIME_STYLE: Record<string, { bg: string; text: string; icon: React.React
   Bear:     { bg: 'bg-green-100 dark:bg-green-950/40', text: 'text-green-700 dark:text-green-400', icon: <TrendingDown className="h-4 w-4" /> },
   Sideways: { bg: 'bg-amber-100 dark:bg-amber-950/40', text: 'text-amber-700 dark:text-amber-300', icon: <Minus       className="h-4 w-4" /> },
   Unknown:  { bg: 'bg-gray-100 dark:bg-gray-800',     text: 'text-gray-600 dark:text-gray-400',  icon: <AlertTriangle className="h-4 w-4" /> },
-};
-
-const BUCKET_STYLE: Record<string, string> = {
-  'Strong Candidate': 'bg-red-100 text-red-700 dark:bg-red-950/40 dark:text-red-400',
-  'Watch':            'bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300',
-  'Neutral':          'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400',
-  'Excluded':         'bg-gray-50 text-gray-400 dark:bg-gray-900 dark:text-gray-500',
-  'Insufficient Data':'bg-gray-50 text-gray-400 dark:bg-gray-900 dark:text-gray-500',
-  'Avoid':            'bg-orange-100 text-orange-700 dark:bg-orange-950/40 dark:text-orange-400',
 };
 
 const COVERAGE_STYLE: Record<string, string> = {
@@ -381,16 +374,7 @@ export default function CandidatesPage() {
       )}
 
       {/* Limitations */}
-      {data.limitations.length > 0 && (
-        <GlassCard className="p-4">
-          <h3 className="text-xs font-medium text-muted-foreground mb-2 flex items-center gap-1">
-            <AlertTriangle className="h-3 w-3" /> 資料限制說明
-          </h3>
-          <ul className="text-xs text-muted-foreground space-y-0.5">
-            {data.limitations.map((l, i) => <li key={i}>• {l}</li>)}
-          </ul>
-        </GlassCard>
-      )}
+      <LimitationBlock items={data.limitations} />
 
       <Disclaimer
         warning={data.disclaimer}
@@ -509,9 +493,7 @@ function CandidateRow({ candidate: c, expanded, onToggle, comparisonAvailable }:
       </td>
       {/* Bucket */}
       <td className="px-3 py-2.5">
-        <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${BUCKET_STYLE[c.screenBucket] ?? ''}`}>
-          {c.screenBucket === 'Strong Candidate' ? 'Strong' : c.screenBucket}
-        </span>
+        <BucketBadge bucket={c.screenBucket} />
       </td>
       {/* Confidence */}
       <td className="px-3 py-2.5 text-sm text-muted-foreground">{c.confidence}%</td>

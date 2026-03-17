@@ -12,6 +12,8 @@ import { useApiData } from '@/hooks/useApiData';
 import { GlassCard } from '@/components/ui/glass-card';
 import { LoadingSpinner } from '@/components/ui/loading';
 import { Disclaimer } from '@/components/ui/disclaimer';
+import { AlertSeverityBadge } from '@/components/ui/badges';
+import { LimitationBlock } from '@/components/ui/limitation-block';
 import {
   Bell, AlertTriangle, Info, TrendingUp, TrendingDown,
   Shield, Database, RefreshCw, ChevronDown, ChevronUp, Minus
@@ -87,18 +89,6 @@ const TYPE_STYLE: Record<AlertType, { label: string; icon: React.ReactNode }> = 
   comparison_unavailable:   { label: '比較不可用', icon: <Minus className="h-3 w-3" /> },
 };
 
-const OVERALL_SEVERITY_STYLE: Record<AlertSeverity, string> = {
-  warning: 'bg-red-100 text-red-700 dark:bg-red-950/40 dark:text-red-400',
-  caution: 'bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300',
-  info:    'bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-400',
-};
-
-const SEVERITY_LABEL: Record<AlertSeverity, string> = {
-  warning: '⚠️ 注意',
-  caution: '🔶 提醒',
-  info:    'ℹ️ 一般',
-};
-
 // ─── Page ────────────────────────────────────────────────────────
 
 export default function AlertsPage() {
@@ -158,9 +148,7 @@ export default function AlertsPage() {
       {/* Summary card */}
       <GlassCard className="p-5">
         <div className="flex flex-col sm:flex-row sm:items-start gap-4">
-          <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium shrink-0 ${OVERALL_SEVERITY_STYLE[data.overallSeverity]}`}>
-            {SEVERITY_LABEL[data.overallSeverity]}
-          </span>
+          <AlertSeverityBadge severity={data.overallSeverity} />
           <p className="text-sm leading-relaxed">{data.summary}</p>
         </div>
 
@@ -231,16 +219,7 @@ export default function AlertsPage() {
       )}
 
       {/* Limitations */}
-      {data.limitations.length > 0 && (
-        <GlassCard className="p-4">
-          <h3 className="text-xs font-medium text-muted-foreground mb-2 flex items-center gap-1">
-            <AlertTriangle className="h-3 w-3" /> 資料限制說明
-          </h3>
-          <ul className="text-xs text-muted-foreground space-y-0.5">
-            {data.limitations.map((l, i) => <li key={i}>• {l}</li>)}
-          </ul>
-        </GlassCard>
-      )}
+      <LimitationBlock items={data.limitations} />
 
       <Disclaimer
         warning="本提醒為系統自動產生之研究摘要，不構成投資建議。所有提醒基於模型推估，不保證未來表現。"

@@ -18,6 +18,7 @@ import React, { useState, useCallback } from 'react';
 import { useApiData } from '@/hooks/useApiData';
 import { GlassCard } from '@/components/ui/glass-card';
 import { LoadingSpinner } from '@/components/ui/loading';
+import { StatusBadge } from '@/components/ui/badges';
 import {
   Bell, Webhook, Mail, CheckCircle2, XCircle, AlertTriangle,
   Minus, RefreshCw, Send, ChevronDown, ChevronUp,
@@ -81,26 +82,7 @@ interface TestResult {
   logId?: number;
 }
 
-// ─── Status badge helpers ─────────────────────────────────────────
-
-function StatusBadge({ status }: { status: string }) {
-  const styles: Record<string, string> = {
-    success:        'bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-400',
-    failed:         'bg-red-100 text-red-700 dark:bg-red-950/40 dark:text-red-400',
-    skipped:        'bg-gray-100 text-gray-600 dark:bg-gray-800/40 dark:text-gray-400',
-    configured:     'bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-400',
-    'not configured': 'bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400',
-  };
-  const label: Record<string, string> = {
-    success: '✓ 成功', failed: '✗ 失敗', skipped: '— 略過',
-    configured: '已設定', 'not configured': '未設定',
-  };
-  return (
-    <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${styles[status] ?? 'bg-muted/50 text-muted-foreground'}`}>
-      {label[status] ?? status}
-    </span>
-  );
-}
+// ─── Channel icon ─────────────────────────────────────────────────
 
 function ChannelIcon({ channel }: { channel: string }) {
   if (channel === 'webhook')   return <Webhook className="h-5 w-5" />;
