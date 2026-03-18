@@ -75,6 +75,43 @@ export interface StockDetailResponse {
     period: string | null;
     unavailableReason: string | null;
   };
+  /** Lightweight strategy backtest summary (from /api/stocks/backtest) */
+  backtestSummary: {
+    available: boolean;
+    strategy: string;
+    totalReturn: number | null;
+    buyAndHoldReturn: number | null;
+    alphaToBuyAndHold: number | null;
+    maxDrawdown: number | null;
+    totalTrades: number | null;
+    period: string | null;
+    dataPoints: number;
+    marketBenchmarkAvailable: boolean;
+    marketReturn: number | null;
+    regimeAwareAvailable: boolean;
+    regimeAwareReturn: number | null;
+    limitations: string[];
+    unavailableReason: string | null;
+  };
+  /** Snapshot comparison vs previous day */
+  comparison: {
+    available: boolean;
+    previousDate: string | null;
+    currentDate: string | null;
+    alphaDelta: number | null;
+    previousAlpha: number | null;
+    currentAlpha: number | null;
+    bucketChanged: boolean;
+    previousBucket: string | null;
+    currentBucket: string | null;
+    riskChanged: boolean;
+    previousRisk: string | null;
+    currentRisk: string | null;
+    dataCoverageChanged: boolean;
+    previousCoverage: string | null;
+    newlyInsufficient: boolean;
+    summaryNote: string;
+  };
   candidateCtx: {
     isCandidate: boolean;
     screenBucket: string | null;
@@ -304,6 +341,186 @@ export async function GET(
     label: watchlistRow?.label ?? null,
   };
 
+  // ── 7. Snapshot Comparison ────────────────────────────────────
+  let comparison: StockDetailResponse['comparison'] = {
+    available: false,
+    previousDate: null,
+    currentDate: null,
+    alphaDelta: null,
+    previousAlpha: null,
+    currentAlpha: null,
+    bucketChanged: false,
+    previousBucket: null,
+    currentBucket: null,
+    riskChanged: false,
+    previousRisk: null,
+    currentRisk: null,
+    dataCoverageChanged: false,
+    previousCoverage: null,
+    newlyInsufficient: false,
+    summaryNote: '尚無前日快照可供比較',
+  };
+  try {
+    const snapshots = await (prisma as any).dailyCandidateSnapshot.findMany({
+      orderBy: { date: 'desc' },
+      take: 2,
+    });
+    if (snapshots.length >= 2) {
+      const [todaySnap, prevSnap] = snapshots;
+      const todayList: any[] = (() => {
+        const raw = todaySnap.content;
+        const p = raw ? (typeof raw === 'string' ? JSON.parse(raw) : raw) : null;
+        return p?.candidates ?? p?.data ?? [];
+      })();
+      const prevList: any[] = (() => {
+        const raw = prevSnap.content;
+        const p = raw ? (typeof raw === 'string' ? JSON.parse(raw) : raw) : null;
+        return p?.candidates ?? p?.data ?? [];
+      })();
+
+      const todayEntry = todayList.find((c: any) => c.symbol === symbol);
+      const prevEntry = prevList.find((c: any) => c.symbol === symbol);
+
+      if (!prevEntry) {
+        comparison = {
+          ...comparison,
+          available: true,
+          previousDate: prevSnap.date,
+          currentDate: todaySnap.date,
+          summaryNote: '此股票在前日快照中不存在，可能為今日新進入分析池',
+        };
+      } else {
+        const todayAlpha: number | null = todayEntry?.alphaScore ?? null;
+        const prevAlpha: number | null = prevEntry.alphaScore ?? null;
+        const alphaDelta = todayAlpha !== null && prevAlpha !== null ? Math.round((todayAlpha - prevAlpha) * 10) / 10 : null;
+
+        const todayBucket: string | null = todayEntry?.screenBucket ?? null;
+        const prevBucket: string | null = prevEntry.screenBucket ?? null;
+        const bucketChanged = todayBucket !== prevBucket && todayBucket !== null && prevBucket !== null;
+
+        const todayRisk: string | null = todayEntry?.riskLevel ?? fusionSection?.riskLevel ?? null;
+        const prevRisk: string | null = prevEntry.riskLevel ?? null;
+        const riskChanged = todayRisk !== prevRisk && todayRisk !== null && prevRisk !== null;
+
+        const todayCoverage: string | null = todayEntry?.dataCoverage ?? dataCoverage;
+        const prevCoverage: string | null = prevEntry.dataCoverage ?? null;
+        const dataCoverageChanged = todayCoverage !== prevCoverage && prevCoverage !== null;
+        const newlyInsufficient = dataCoverageChanged && todayCoverage === 'insufficient';
+
+        // Build human-readable summary note
+        const notes: string[] = [];
+        if (alphaDelta !== null) {
+          if (alphaDelta > 0) notes.push(`Alpha 評分上升 ${alphaDelta} 分`);
+          else if (alphaDelta < 0) notes.push(`Alpha 評分下降 ${Math.abs(alphaDelta)} 分`);
+          else notes.push('Alpha 評分持平');
+        }
+        if (bucketChanged) notes.push(`建議級別由 ${prevBucket} 變為 ${todayBucket}`);
+        if (riskChanged) notes.push(`風險等級由 ${prevRisk} 變為 ${todayRisk}`);
+        if (newlyInsufficient) notes.push('資料覆蓋轉為不足，分析需保守解讀');
+        if (notes.length === 0) notes.push('與前日相比無重大變化');
+
+        comparison = {
+          available: true,
+          previousDate: prevSnap.date,
+          currentDate: todaySnap.date,
+          alphaDelta,
+          previousAlpha: prevAlpha,
+          currentAlpha: todayAlpha,
+          bucketChanged,
+          previousBucket: prevBucket,
+          currentBucket: todayBucket,
+          riskChanged,
+          previousRisk: prevRisk,
+          currentRisk: todayRisk,
+          dataCoverageChanged,
+          previousCoverage: prevCoverage,
+          newlyInsufficient,
+          summaryNote: notes.join('；'),
+        };
+      }
+    } else if (snapshots.length === 1) {
+      comparison = {
+        ...comparison,
+        available: false,
+        currentDate: snapshots[0].date,
+        summaryNote: '僅有一日快照，尚無前日資料可供比較',
+      };
+    }
+  } catch {
+    /* non-critical — comparison stays unavailable */
+  }
+
+  // ── 8. Backtest Summary (lightweight call to backtestFromDB logic) ─
+  let backtestSummary: StockDetailResponse['backtestSummary'] = {
+    available: false,
+    strategy: 'ma_cross',
+    totalReturn: null,
+    buyAndHoldReturn: null,
+    alphaToBuyAndHold: null,
+    maxDrawdown: null,
+    totalTrades: null,
+    period: null,
+    dataPoints,
+    marketBenchmarkAvailable: false,
+    marketReturn: null,
+    regimeAwareAvailable: false,
+    regimeAwareReturn: null,
+    limitations: [],
+    unavailableReason: dataPoints < 100 ? `歷史資料僅 ${dataPoints} 天，需 ≥100 天` : null,
+  };
+  if (dataPoints >= 100) {
+    try {
+      // Re-use the existing /api/stocks/backtest endpoint via internal fetch isn't possible in SSR
+      // Instead, call the backtestFromDB logic indirectly via a lightweight DB query
+      // We only need summary stats: use buyAndHoldReturn from backtestSection + augment with metadata
+      const backtestApiUrl = `${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/api/stocks/backtest`;
+      const btRes = await fetch(backtestApiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          symbol,
+          strategy: 'ma_cross',
+          months: 12,
+          regimeMode: 'filter',
+          allowedRegimes: ['Bull', 'Sideways'],
+        }),
+        signal: AbortSignal.timeout(8000),
+      }).catch(() => null);
+
+      if (btRes && btRes.ok) {
+        const btData = await btRes.json().catch(() => null);
+        if (btData && btData.summary) {
+          const s = btData.summary;
+          const bm = btData.benchmark;
+          backtestSummary = {
+            available: true,
+            strategy: 'ma_cross',
+            totalReturn: s.totalReturn ?? null,
+            buyAndHoldReturn: s.buyAndHoldReturn ?? backtestSection.buyAndHoldReturn,
+            alphaToBuyAndHold:
+              s.totalReturn !== null && s.buyAndHoldReturn !== null
+                ? Math.round((s.totalReturn - s.buyAndHoldReturn) * 100) / 100
+                : null,
+            maxDrawdown: s.maxDrawdown ?? null,
+            totalTrades: s.totalTrades ?? null,
+            period: btData.period ?? null,
+            dataPoints,
+            marketBenchmarkAvailable: bm?.marketAvailable ?? false,
+            marketReturn: bm?.marketReturn ?? null,
+            regimeAwareAvailable: btData.regimeAware ?? false,
+            regimeAwareReturn: btData.regimeAwareResult?.summary?.totalReturn ?? null,
+            limitations: btData.dataLimitations ?? [],
+            unavailableReason: null,
+          };
+        } else if (btData?.source === 'insufficient_data') {
+          backtestSummary.unavailableReason = btData.coverage?.message ?? '回測資料不足';
+        }
+      }
+    } catch {
+      backtestSummary.unavailableReason = '回測摘要暫時不可用';
+    }
+  }
+
   // ── Assemble ───────────────────────────────────────────────────
   const response: StockDetailResponse = {
     symbol,
@@ -319,6 +536,8 @@ export async function GET(
     fusion: fusionSection,
     signals: signalsSection,
     backtest: backtestSection,
+    backtestSummary,
+    comparison,
     candidateCtx,
     watchlistCtx,
     limitations,

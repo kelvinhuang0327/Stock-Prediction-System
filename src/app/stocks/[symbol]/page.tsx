@@ -352,37 +352,241 @@ function TechnicalSignalsSection({ signals }: { signals: StockDetailResponse['si
   );
 }
 
-function BacktestSection({ backtest, symbol }: { backtest: StockDetailResponse['backtest']; symbol: string }) {
+function BacktestSection({
+  backtest,
+  backtestSummary,
+  symbol,
+}: {
+  backtest: StockDetailResponse['backtest'];
+  backtestSummary: StockDetailResponse['backtestSummary'];
+  symbol: string;
+}) {
+  const [showLimitations, setShowLimitations] = useState(false);
+
   if (!backtest.available) {
-    return <SectionUnavailable reason={backtest.unavailableReason ?? '回測不可用'} />;
-  }
-  return (
-    <div className="space-y-4">
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-        <div className="p-3 rounded-lg bg-muted/10 border border-border/20 space-y-1">
-          <div className="text-xs text-muted-foreground">Buy & Hold 報酬（參考期間）</div>
-          <div className={`text-xl font-bold font-mono ${(backtest.buyAndHoldReturn ?? 0) >= 0 ? 'text-red-500' : 'text-green-500'}`}>
-            {backtest.buyAndHoldReturn !== null ? pct(backtest.buyAndHoldReturn) : '—'}
-          </div>
-          <div className="text-[10px] text-muted-foreground">計算方式：持有至今報酬率，無交易成本</div>
-        </div>
-        <div className="p-3 rounded-lg bg-muted/10 border border-border/20 space-y-1">
-          <div className="text-xs text-muted-foreground">歷史資料</div>
-          <div className="text-xl font-bold font-mono">{backtest.dataPoints} 天</div>
-          <div className="text-[10px] text-muted-foreground">資料期間：{backtest.period}</div>
-        </div>
-        <div className="p-3 rounded-lg bg-muted/10 border border-border/20 space-y-1 sm:col-span-1 col-span-2">
-          <div className="text-xs text-muted-foreground">完整策略回測</div>
-          <Link href={`/backtest?symbol=${symbol}`} className="inline-flex items-center gap-1 text-xs text-primary hover:underline">
-            前往回測頁 <ExternalLink className="h-3 w-3" />
+    return (
+      <div className="space-y-3">
+        <SectionUnavailable reason={backtest.unavailableReason ?? '回測不可用'} />
+        <div className="p-3 rounded-lg bg-muted/10 border border-border/20">
+          <div className="text-xs text-muted-foreground">歷史資料：{backtest.dataPoints} 天（需 ≥100 天才可回測）</div>
+          <Link href={`/backtest?symbol=${symbol}`} className="inline-flex items-center gap-1 text-xs text-primary hover:underline mt-1">
+            前往回測頁查看更多設定 <ExternalLink className="h-3 w-3" />
           </Link>
-          <div className="text-[10px] text-muted-foreground">支援 MA Cross / RSI / AssetDoubling 策略 + regime-aware</div>
         </div>
       </div>
+    );
+  }
+
+  const bs = backtestSummary;
+  const hasStrategy = bs.available && bs.totalReturn !== null;
+
+  return (
+    <div className="space-y-4">
+      {/* Strategy summary vs buy & hold */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        {hasStrategy ? (
+          <div className="p-3 rounded-lg bg-muted/10 border border-amber-200 dark:border-amber-800 space-y-1">
+            <div className="text-xs text-muted-foreground">策略報酬（MA Cross）</div>
+            <div className={`text-xl font-bold font-mono ${(bs.totalReturn ?? 0) >= 0 ? 'text-red-500' : 'text-green-500'}`}>
+              {bs.totalReturn !== null ? pct(bs.totalReturn) : '—'}
+            </div>
+            <div className="text-[10px] text-muted-foreground">策略：MA Cross，期間：{bs.period ?? backtest.period ?? '—'}</div>
+          </div>
+        ) : (
+          <div className="p-3 rounded-lg bg-muted/10 border border-border/20 space-y-1">
+            <div className="text-xs text-muted-foreground">策略回測</div>
+            <div className="text-sm text-muted-foreground">
+              {bs.unavailableReason ?? '暫時不可用'}
+            </div>
+          </div>
+        )}
+
+        <div className="p-3 rounded-lg bg-muted/10 border border-border/20 space-y-1">
+          <div className="text-xs text-muted-foreground">Buy & Hold 報酬</div>
+          <div className={`text-xl font-bold font-mono ${(bs.buyAndHoldReturn ?? backtest.buyAndHoldReturn ?? 0) >= 0 ? 'text-red-500' : 'text-green-500'}`}>
+            {(bs.buyAndHoldReturn ?? backtest.buyAndHoldReturn) !== null
+              ? pct(bs.buyAndHoldReturn ?? backtest.buyAndHoldReturn ?? 0)
+              : '—'}
+          </div>
+          <div className="text-[10px] text-muted-foreground">持有至今，無交易成本</div>
+        </div>
+
+        {hasStrategy && bs.alphaToBuyAndHold !== null ? (
+          <div className="p-3 rounded-lg bg-muted/10 border border-blue-200 dark:border-blue-800 space-y-1">
+            <div className="text-xs text-muted-foreground">策略 vs Buy & Hold</div>
+            <div className={`text-xl font-bold font-mono ${bs.alphaToBuyAndHold >= 0 ? 'text-blue-500' : 'text-orange-500'}`}>
+              {pct(bs.alphaToBuyAndHold)}
+            </div>
+            <div className="text-[10px] text-muted-foreground">Alpha over Buy & Hold</div>
+          </div>
+        ) : (
+          <div className="p-3 rounded-lg bg-muted/10 border border-border/20 space-y-1">
+            <div className="text-xs text-muted-foreground">歷史資料</div>
+            <div className="text-xl font-bold font-mono">{backtest.dataPoints} 天</div>
+            <div className="text-[10px] text-muted-foreground">期間：{backtest.period ?? '—'}</div>
+          </div>
+        )}
+      </div>
+
+      {/* Secondary stats row */}
+      {hasStrategy && (
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div className="p-3 rounded-lg bg-muted/10 border border-border/20 space-y-1">
+            <div className="text-xs text-muted-foreground">最大回撤</div>
+            <div className="text-base font-bold font-mono text-orange-500">
+              {bs.maxDrawdown !== null ? pct(bs.maxDrawdown) : '—'}
+            </div>
+          </div>
+          <div className="p-3 rounded-lg bg-muted/10 border border-border/20 space-y-1">
+            <div className="text-xs text-muted-foreground">交易次數</div>
+            <div className="text-base font-bold font-mono">{bs.totalTrades ?? '—'}</div>
+          </div>
+          <div className="p-3 rounded-lg bg-muted/10 border border-border/20 space-y-1">
+            <div className="text-xs text-muted-foreground">市場基準</div>
+            <div className="text-sm font-medium">
+              {bs.marketBenchmarkAvailable
+                ? <span className="text-green-500">可用 {bs.marketReturn !== null ? pct(bs.marketReturn) : ''}</span>
+                : <span className="text-muted-foreground">不可用</span>}
+            </div>
+          </div>
+          <div className="p-3 rounded-lg bg-muted/10 border border-border/20 space-y-1">
+            <div className="text-xs text-muted-foreground">Regime-Aware</div>
+            <div className="text-sm font-medium">
+              {bs.regimeAwareAvailable
+                ? <span className="text-green-500">可用 {bs.regimeAwareReturn !== null ? pct(bs.regimeAwareReturn) : ''}</span>
+                : <span className="text-muted-foreground">不可用</span>}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Limitations toggle */}
+      {bs.limitations.length > 0 && (
+        <div>
+          <button
+            onClick={() => setShowLimitations(v => !v)}
+            className="text-xs text-muted-foreground flex items-center gap-1 hover:text-foreground transition-colors"
+          >
+            {showLimitations ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
+            回測限制說明 ({bs.limitations.length})
+          </button>
+          {showLimitations && (
+            <ul className="mt-2 text-xs text-muted-foreground space-y-1 pl-4">
+              {bs.limitations.map((l, i) => <li key={i} className="list-disc">{l}</li>)}
+            </ul>
+          )}
+        </div>
+      )}
+
+      {/* Link to full backtest */}
+      <div className="p-3 rounded-lg bg-muted/10 border border-border/20 flex items-center justify-between">
+        <div className="text-xs text-muted-foreground">此為簡版摘要，支援策略參數調整、完整交易明細與 walk-forward 分析</div>
+        <Link
+          href={`/backtest?symbol=${symbol}`}
+          className="inline-flex items-center gap-1 text-xs text-primary hover:underline whitespace-nowrap ml-3"
+        >
+          前往完整回測 <ExternalLink className="h-3 w-3" />
+        </Link>
+      </div>
+
       <Disclaimer
-        warning="Buy & Hold 為簡化估算，未計交易成本。完整策略回測請使用回測頁。歷史績效不代表未來結果。"
+        warning="回測為歷史模擬，未計交易成本與滑點。歷史績效不代表未來結果，不構成投資建議。"
       />
     </div>
+  );
+}
+
+function ComparisonCard({ comparison }: { comparison: StockDetailResponse['comparison'] }) {
+  const [expanded, setExpanded] = useState(false);
+
+  if (!comparison.available) {
+    return (
+      <GlassCard className="p-4">
+        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+          <Info className="h-3.5 w-3.5 flex-shrink-0" />
+          <span>前日快照比較：{comparison.summaryNote}</span>
+        </div>
+      </GlassCard>
+    );
+  }
+
+  const { alphaDelta, bucketChanged, previousBucket, currentBucket, riskChanged, previousRisk, currentRisk,
+    newlyInsufficient, summaryNote, previousDate, currentDate, dataCoverageChanged, previousCoverage } = comparison;
+
+  const deltaColor = alphaDelta === null ? 'text-muted-foreground'
+    : alphaDelta > 0 ? 'text-red-500 dark:text-red-400'
+    : alphaDelta < 0 ? 'text-green-500 dark:text-green-400'
+    : 'text-muted-foreground';
+
+  return (
+    <GlassCard className="p-4 space-y-3">
+      <div className="flex items-center justify-between">
+        <h3 className="text-sm font-semibold flex items-center gap-2">
+          <Activity className="h-4 w-4 text-primary" />
+          今日 vs 前日快照比較
+          {newlyInsufficient && (
+            <span className="text-[10px] bg-orange-500/20 text-orange-500 px-1.5 py-0.5 rounded-full">資料轉為不足</span>
+          )}
+        </h3>
+        <button onClick={() => setExpanded(v => !v)} className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1">
+          {expanded ? <><ChevronUp className="h-3 w-3" />收合</> : <><ChevronDown className="h-3 w-3" />展開</>}
+        </button>
+      </div>
+
+      {/* Summary note */}
+      <p className="text-xs text-muted-foreground">{summaryNote}</p>
+
+      {/* Quick badges row */}
+      <div className="flex items-center gap-2 flex-wrap">
+        {alphaDelta !== null && (
+          <span className={`text-xs font-mono font-bold ${deltaColor}`}>
+            Alpha {alphaDelta > 0 ? '+' : ''}{alphaDelta}
+          </span>
+        )}
+        {bucketChanged && currentBucket && (
+          <span className="text-xs bg-blue-500/20 text-blue-500 px-1.5 py-0.5 rounded-full">
+            {previousBucket} → {currentBucket}
+          </span>
+        )}
+        {riskChanged && currentRisk && (
+          <span className="text-xs bg-amber-500/20 text-amber-500 px-1.5 py-0.5 rounded-full">
+            風險 {previousRisk} → {currentRisk}
+          </span>
+        )}
+        {dataCoverageChanged && (
+          <span className="text-xs bg-muted/30 text-muted-foreground px-1.5 py-0.5 rounded-full">
+            覆蓋率變化：{previousCoverage} → {comparison.previousCoverage !== comparison.previousCoverage ? 'changed' : ''}
+          </span>
+        )}
+      </div>
+
+      {/* Detail rows on expand */}
+      {expanded && (
+        <div className="space-y-2 border-t border-border/20 pt-3">
+          <div className="grid grid-cols-2 gap-2 text-xs">
+            <div>
+              <span className="text-muted-foreground">前日快照：</span>
+              <span>{previousDate ?? '—'}</span>
+            </div>
+            <div>
+              <span className="text-muted-foreground">今日快照：</span>
+              <span>{currentDate ?? '—'}</span>
+            </div>
+            <div>
+              <span className="text-muted-foreground">前日 Alpha：</span>
+              <span>{comparison.previousAlpha ?? '—'}</span>
+            </div>
+            <div>
+              <span className="text-muted-foreground">今日 Alpha：</span>
+              <span>{comparison.currentAlpha ?? '—'}</span>
+            </div>
+          </div>
+          <p className="text-[10px] text-muted-foreground">
+            快照比較基於 DailyCandidateSnapshot 資料。此為歷史觀察，非預測或買賣建議。
+          </p>
+        </div>
+      )}
+    </GlassCard>
   );
 }
 
@@ -526,7 +730,9 @@ export default function StockDetailPage() {
             <RegimeSection regime={data.regime} />
           </GlassCard>
 
-          {/* ── Tabs for remaining sections ── */}
+          {/* ── Section 2.5: Snapshot Comparison ── */}
+          <ComparisonCard comparison={data.comparison} />
+
           <div>
             <div className="flex gap-1 border-b border-border/30 mb-4 overflow-x-auto">
               {[
@@ -591,7 +797,7 @@ export default function StockDetailPage() {
                   回測概覽
                   <span className="text-xs font-normal text-muted-foreground ml-auto">歷史績效不代表未來</span>
                 </h2>
-                <BacktestSection backtest={data.backtest} symbol={symbol} />
+                <BacktestSection backtest={data.backtest} backtestSummary={data.backtestSummary} symbol={symbol} />
               </GlassCard>
             )}
 
