@@ -309,27 +309,21 @@ export async function GET(
     snapshotDate: null,
   };
   try {
+    // DailyCandidateSnapshot: one row per symbol per snapshotDate
     const snap = await (prisma as any).dailyCandidateSnapshot.findFirst({
-      orderBy: { date: 'desc' },
+      where: { symbol },
+      orderBy: { snapshotDate: 'desc' },
     });
     if (snap) {
-      const raw = snap.content;
-      const parsed = raw ? (typeof raw === 'string' ? JSON.parse(raw) : raw) : null;
-      const list: any[] = parsed?.candidates ?? parsed?.data ?? [];
-      const found = list.find((c: any) => c.symbol === symbol);
-      if (found) {
-        candidateCtx = {
-          isCandidate: true,
-          screenBucket: found.screenBucket ?? null,
-          whyIncluded: found.whyIncluded ?? null,
-          topFactors: found.topFactors ?? [],
-          keyRisks: found.keyRisks ?? [],
-          changeTags: found.changeTags ?? [],
-          snapshotDate: snap.date,
-        };
-      } else {
-        candidateCtx.snapshotDate = snap.date;
-      }
+      candidateCtx = {
+        isCandidate: true,
+        screenBucket: snap.screenBucket ?? null,
+        whyIncluded: snap.whyIncluded ?? null,
+        topFactors: snap.topFactors ? (typeof snap.topFactors === 'string' ? JSON.parse(snap.topFactors) : snap.topFactors) : [],
+        keyRisks: snap.keyRisks ? (typeof snap.keyRisks === 'string' ? JSON.parse(snap.keyRisks) : snap.keyRisks) : [],
+        changeTags: [],
+        snapshotDate: snap.snapshotDate,
+      };
     }
   } catch {
     /* non-critical */
@@ -364,89 +358,66 @@ export async function GET(
     summaryNote: '尚無前日快照可供比較',
   };
   try {
-    const snapshots = await (prisma as any).dailyCandidateSnapshot.findMany({
-      orderBy: { date: 'desc' },
+    // DailyCandidateSnapshot: per-symbol per-date rows — get last 2 dates for this symbol
+    const symSnapshots = await (prisma as any).dailyCandidateSnapshot.findMany({
+      where: { symbol },
+      orderBy: { snapshotDate: 'desc' },
       take: 2,
     });
-    if (snapshots.length >= 2) {
-      const [todaySnap, prevSnap] = snapshots;
-      const todayList: any[] = (() => {
-        const raw = todaySnap.content;
-        const p = raw ? (typeof raw === 'string' ? JSON.parse(raw) : raw) : null;
-        return p?.candidates ?? p?.data ?? [];
-      })();
-      const prevList: any[] = (() => {
-        const raw = prevSnap.content;
-        const p = raw ? (typeof raw === 'string' ? JSON.parse(raw) : raw) : null;
-        return p?.candidates ?? p?.data ?? [];
-      })();
+    if (symSnapshots.length >= 2) {
+      const [todayEntry, prevEntry] = symSnapshots;
 
-      const todayEntry = todayList.find((c: any) => c.symbol === symbol);
-      const prevEntry = prevList.find((c: any) => c.symbol === symbol);
+      const todayAlpha: number | null = todayEntry.alphaScore ?? null;
+      const prevAlpha: number | null = prevEntry.alphaScore ?? null;
+      const alphaDelta = todayAlpha !== null && prevAlpha !== null ? Math.round((todayAlpha - prevAlpha) * 10) / 10 : null;
 
-      if (!prevEntry) {
-        comparison = {
-          ...comparison,
-          available: true,
-          previousDate: prevSnap.date,
-          currentDate: todaySnap.date,
-          summaryNote: '此股票在前日快照中不存在，可能為今日新進入分析池',
-        };
-      } else {
-        const todayAlpha: number | null = todayEntry?.alphaScore ?? null;
-        const prevAlpha: number | null = prevEntry.alphaScore ?? null;
-        const alphaDelta = todayAlpha !== null && prevAlpha !== null ? Math.round((todayAlpha - prevAlpha) * 10) / 10 : null;
+      const todayBucket: string | null = todayEntry.screenBucket ?? null;
+      const prevBucket: string | null = prevEntry.screenBucket ?? null;
+      const bucketChanged = todayBucket !== prevBucket && todayBucket !== null && prevBucket !== null;
 
-        const todayBucket: string | null = todayEntry?.screenBucket ?? null;
-        const prevBucket: string | null = prevEntry.screenBucket ?? null;
-        const bucketChanged = todayBucket !== prevBucket && todayBucket !== null && prevBucket !== null;
+      const todayRisk: string | null = fusionSection?.riskLevel ?? null;
+      const prevRisk: string | null = null; // riskLevel not stored in snapshot schema
+      const riskChanged = false;
 
-        const todayRisk: string | null = todayEntry?.riskLevel ?? fusionSection?.riskLevel ?? null;
-        const prevRisk: string | null = prevEntry.riskLevel ?? null;
-        const riskChanged = todayRisk !== prevRisk && todayRisk !== null && prevRisk !== null;
+      const todayCoverage: string | null = todayEntry.dataCoverage ?? dataCoverage;
+      const prevCoverage: string | null = prevEntry.dataCoverage ?? null;
+      const dataCoverageChanged = todayCoverage !== prevCoverage && prevCoverage !== null;
+      const newlyInsufficient = dataCoverageChanged && todayCoverage === 'insufficient';
 
-        const todayCoverage: string | null = todayEntry?.dataCoverage ?? dataCoverage;
-        const prevCoverage: string | null = prevEntry.dataCoverage ?? null;
-        const dataCoverageChanged = todayCoverage !== prevCoverage && prevCoverage !== null;
-        const newlyInsufficient = dataCoverageChanged && todayCoverage === 'insufficient';
-
-        // Build human-readable summary note
-        const notes: string[] = [];
-        if (alphaDelta !== null) {
-          if (alphaDelta > 0) notes.push(`Alpha 評分上升 ${alphaDelta} 分`);
-          else if (alphaDelta < 0) notes.push(`Alpha 評分下降 ${Math.abs(alphaDelta)} 分`);
-          else notes.push('Alpha 評分持平');
-        }
-        if (bucketChanged) notes.push(`建議級別由 ${prevBucket} 變為 ${todayBucket}`);
-        if (riskChanged) notes.push(`風險等級由 ${prevRisk} 變為 ${todayRisk}`);
-        if (newlyInsufficient) notes.push('資料覆蓋轉為不足，分析需保守解讀');
-        if (notes.length === 0) notes.push('與前日相比無重大變化');
-
-        comparison = {
-          available: true,
-          previousDate: prevSnap.date,
-          currentDate: todaySnap.date,
-          alphaDelta,
-          previousAlpha: prevAlpha,
-          currentAlpha: todayAlpha,
-          bucketChanged,
-          previousBucket: prevBucket,
-          currentBucket: todayBucket,
-          riskChanged,
-          previousRisk: prevRisk,
-          currentRisk: todayRisk,
-          dataCoverageChanged,
-          previousCoverage: prevCoverage,
-          newlyInsufficient,
-          summaryNote: notes.join('；'),
-        };
+      const notes: string[] = [];
+      if (alphaDelta !== null) {
+        if (alphaDelta > 0) notes.push(`Alpha 評分上升 ${alphaDelta} 分`);
+        else if (alphaDelta < 0) notes.push(`Alpha 評分下降 ${Math.abs(alphaDelta)} 分`);
+        else notes.push('Alpha 評分持平');
       }
-    } else if (snapshots.length === 1) {
+      if (bucketChanged) notes.push(`建議級別由 ${prevBucket} 變為 ${todayBucket}`);
+      if (newlyInsufficient) notes.push('資料覆蓋轉為不足，分析需保守解讀');
+      if (notes.length === 0) notes.push('與前日快照相比無重大變化');
+
+      comparison = {
+        available: true,
+        previousDate: prevEntry.snapshotDate,
+        currentDate: todayEntry.snapshotDate,
+        alphaDelta,
+        previousAlpha: prevAlpha,
+        currentAlpha: todayAlpha,
+        bucketChanged,
+        previousBucket: prevBucket,
+        currentBucket: todayBucket,
+        riskChanged,
+        previousRisk: prevRisk,
+        currentRisk: todayRisk,
+        dataCoverageChanged,
+        previousCoverage: prevCoverage,
+        newlyInsufficient,
+        summaryNote: notes.join('；'),
+      };
+    } else if (symSnapshots.length === 1) {
       comparison = {
         ...comparison,
         available: false,
-        currentDate: snapshots[0].date,
-        summaryNote: '僅有一日快照，尚無前日資料可供比較',
+        currentDate: symSnapshots[0].snapshotDate,
+        summaryNote: '此股票僅有一日快照，尚無前日資料可供比較',
       };
     }
   } catch {
