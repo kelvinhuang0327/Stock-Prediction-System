@@ -346,7 +346,11 @@ export default function CandidatesPage() {
                       {expandedSymbol === c.symbol && (
                         <tr>
                           <td colSpan={10} className="px-4 pb-4 bg-muted/10">
-                            <CandidateDetailPanel candidate={c} />
+                            <CandidateDetailPanel
+                              candidate={c}
+                              regime={data.regime}
+                              regimeConfidence={data.regimeConfidence}
+                            />
                           </td>
                         </tr>
                       )}
@@ -561,11 +565,20 @@ function ScoreBar({ value }: { value: number }) {
 
 // ─── Candidate Detail Panel ──────────────────────────────────────
 
-function CandidateDetailPanel({ candidate: c }: { candidate: EnrichedCandidate }) {
+function CandidateDetailPanel({
+  candidate: c,
+  regime,
+  regimeConfidence,
+}: {
+  candidate: EnrichedCandidate;
+  regime: string;
+  regimeConfidence: number;
+}) {
   return (
-    <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      {/* Why included */}
-      <div className="p-3 rounded-lg bg-muted/20 border border-border/20">
+    <div className="mt-2 space-y-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {/* Why included */}
+        <div className="p-3 rounded-lg bg-muted/20 border border-border/20">
         <h4 className="text-xs font-medium mb-2 flex items-center gap-1">
           <Info className="h-3 w-3 text-primary" /> 為何列入候選
         </h4>
@@ -673,6 +686,208 @@ function CandidateDetailPanel({ candidate: c }: { candidate: EnrichedCandidate }
           <ul className="text-xs text-amber-600 dark:text-amber-400 space-y-0.5">
             {c.limitations.map((l, i) => <li key={i}>• {l}</li>)}
           </ul>
+        </div>
+      )}
+      </div>{/* end inner grid */}
+
+      {/* Research Committee */}
+      <ResearchCommitteePanel
+        candidate={c}
+        regime={regime}
+        regimeConfidence={regimeConfidence}
+      />
+    </div>
+  );
+}
+
+// ─── Research Committee Panel ─────────────────────────────────────
+
+type AgentStance = 'Bullish' | 'Neutral' | 'Bearish' | 'Insufficient';
+type Consensus = 'Positive' | 'Mixed' | 'Negative' | 'Insufficient';
+
+interface AgentView {
+  name: string;
+  stance: AgentStance;
+  confidence: number;
+  rationale: string;
+  limitations: string[];
+  missingSources: string[];
+}
+
+interface ResearchResult {
+  consensus: Consensus;
+  consensusConfidence: number;
+  viewpoints: AgentView[];
+  disagreementPoints: string[];
+  keyRisks: string[];
+  scenarioNotes: string[];
+  limitations: string[];
+  disclaimer: string;
+}
+
+const CONSENSUS_STYLE: Record<Consensus, { bg: string; text: string; label: string }> = {
+  Positive:    { bg: 'bg-red-100 dark:bg-red-950/40',    text: 'text-red-700 dark:text-red-400',    label: '多數偏多' },
+  Negative:    { bg: 'bg-green-100 dark:bg-green-950/40', text: 'text-green-700 dark:text-green-400', label: '多數偏空' },
+  Mixed:       { bg: 'bg-amber-100 dark:bg-amber-950/40', text: 'text-amber-700 dark:text-amber-300', label: '觀點分歧' },
+  Insufficient:{ bg: 'bg-gray-100 dark:bg-gray-800',      text: 'text-gray-600 dark:text-gray-400',  label: '資料不足' },
+};
+
+const STANCE_LABEL: Record<AgentStance, { label: string; cls: string }> = {
+  Bullish:     { label: '偏多', cls: 'text-red-600 dark:text-red-400' },
+  Neutral:     { label: '中性', cls: 'text-amber-600 dark:text-amber-300' },
+  Bearish:     { label: '偏空', cls: 'text-green-600 dark:text-green-400' },
+  Insufficient:{ label: '資料不足', cls: 'text-gray-500 dark:text-gray-400' },
+};
+
+const AGENT_DISPLAY: Record<string, string> = {
+  TechnicalAgent:    '技術面',
+  MarketAgent:       '市場環境',
+  ChipAgent:         '籌碼面',
+  FundamentalAgent:  '基本面',
+  CatalystAgent:     '催化因子',
+  RiskAgent:         '風險代理人',
+};
+
+function ResearchCommitteePanel({
+  candidate: c,
+  regime,
+  regimeConfidence,
+}: {
+  candidate: EnrichedCandidate;
+  regime: string;
+  regimeConfidence: number;
+}) {
+  const [result, setResult] = React.useState<ResearchResult | null>(null);
+  const [loading, setLoading] = React.useState(false);
+  const [err, setErr] = React.useState<string | null>(null);
+  const [expanded, setExpanded] = React.useState(false);
+
+  const load = React.useCallback(async () => {
+    if (result || loading) return;
+    setLoading(true);
+    setErr(null);
+    try {
+      const res = await fetch('/api/research/multi-agent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          symbol: c.symbol,
+          marketRegime: regime,
+          regimeConfidence,
+          alphaScore: c.alphaScore,
+          bucket: c.recommendationBucket,
+          confidence: c.confidence,
+          dataCoverage: c.dataCoverage,
+          technicalScore: c.technicalScore,
+          chipScore: c.chipScore,
+          fundamentalScore: c.fundamentalScore,
+          marketAdjustment: c.marketAdjustment,
+          usedSources: c.usedSources,
+          missingSources: c.missingSources,
+          limitations: c.limitations,
+        }),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data: ResearchResult = await res.json();
+      setResult(data);
+    } catch (e: unknown) {
+      setErr(e instanceof Error ? e.message : '無法載入研究委員會觀點');
+    } finally {
+      setLoading(false);
+    }
+  }, [c, regime, regimeConfidence, result, loading]);
+
+  // Auto-load on mount
+  React.useEffect(() => { load(); }, [load]);
+
+  const cs = result ? (CONSENSUS_STYLE[result.consensus] ?? CONSENSUS_STYLE.Insufficient) : null;
+
+  return (
+    <div className="rounded-lg border border-border/30 bg-muted/5 overflow-hidden">
+      {/* Header */}
+      <button
+        className="w-full flex items-center justify-between px-4 py-3 text-sm font-medium hover:bg-muted/10 transition-colors"
+        onClick={() => setExpanded((e) => !e)}
+      >
+        <span className="flex items-center gap-2">
+          <Eye className="h-4 w-4 text-primary" />
+          研究委員會觀點
+          <span className="text-xs text-muted-foreground font-normal">（模型推估，非交易建議）</span>
+        </span>
+        <div className="flex items-center gap-2">
+          {loading && <span className="text-xs text-muted-foreground">載入中...</span>}
+          {result && cs && (
+            <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${cs.bg} ${cs.text}`}>
+              {cs.label} · {result.consensusConfidence}%
+            </span>
+          )}
+          {expanded ? <ChevronUp className="h-3.5 w-3.5 text-muted-foreground" /> : <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />}
+        </div>
+      </button>
+
+      {expanded && (
+        <div className="px-4 pb-4 space-y-4 border-t border-border/20">
+          {err && (
+            <p className="text-xs text-amber-600 dark:text-amber-400 pt-3">⚠ {err}</p>
+          )}
+          {loading && (
+            <p className="text-xs text-muted-foreground pt-3">分析中，請稍候...</p>
+          )}
+          {result && (
+            <>
+              {/* Agent viewpoints grid */}
+              <div className="pt-3 grid grid-cols-2 md:grid-cols-3 gap-2">
+                {result.viewpoints.map((v) => {
+                  const sl = STANCE_LABEL[v.stance];
+                  return (
+                    <div key={v.name} className="p-2 rounded-lg bg-muted/20 border border-border/20 space-y-1">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-medium">{AGENT_DISPLAY[v.name] ?? v.name}</span>
+                        <span className={`text-xs font-medium ${sl.cls}`}>{sl.label}</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground leading-relaxed line-clamp-3">{v.rationale}</p>
+                      {v.stance === 'Insufficient' && v.missingSources.length > 0 && (
+                        <p className="text-xs text-amber-500">缺：{v.missingSources.join('、')}</p>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Key risks */}
+              {result.keyRisks.length > 0 && (
+                <div>
+                  <h5 className="text-xs font-medium text-amber-600 dark:text-amber-400 mb-1 flex items-center gap-1">
+                    <Shield className="h-3 w-3" /> 主要風險
+                  </h5>
+                  <ul className="space-y-0.5">
+                    {result.keyRisks.map((r, i) => (
+                      <li key={i} className="text-xs text-muted-foreground flex items-start gap-1">
+                        <span className="text-amber-500 shrink-0">⚠</span>{r}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Disagreement */}
+              {result.disagreementPoints.length > 0 && (
+                <div>
+                  <h5 className="text-xs font-medium text-muted-foreground mb-1">觀點分歧</h5>
+                  <ul className="space-y-0.5">
+                    {result.disagreementPoints.map((d, i) => (
+                      <li key={i} className="text-xs text-muted-foreground">• {d}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Disclaimer */}
+              <p className="text-xs text-muted-foreground/60 italic border-t border-border/20 pt-2">
+                {result.disclaimer}
+              </p>
+            </>
+          )}
         </div>
       )}
     </div>

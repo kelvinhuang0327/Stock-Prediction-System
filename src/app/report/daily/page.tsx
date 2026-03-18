@@ -231,6 +231,9 @@ export default function DailyReportPage() {
       {/* Market Summary Card */}
       <MarketSummaryCard data={report.marketSummary} />
 
+      {/* Multi-Agent Market Viewpoints */}
+      <MultiAgentMarketPanel marketSummary={report.marketSummary} />
+
       {/* Candidate Summary Card */}
       <CandidateSummaryCard data={report.candidateSummary} />
 
@@ -855,3 +858,168 @@ function WatchlistComparisonCard({ data }: { data: DailyComparison['watchlist'] 
     </GlassCard>
   );
 }
+
+// ─── Multi-Agent Market Panel ─────────────────────────────────────
+
+type AgentStance2 = 'Bullish' | 'Neutral' | 'Bearish' | 'Insufficient';
+type Consensus2 = 'Positive' | 'Mixed' | 'Negative' | 'Insufficient';
+
+interface AgentView2 {
+  name: string;
+  stance: AgentStance2;
+  confidence: number;
+  rationale: string;
+  limitations: string[];
+  missingSources: string[];
+}
+
+interface ResearchResult2 {
+  consensus: Consensus2;
+  consensusConfidence: number;
+  viewpoints: AgentView2[];
+  disagreementPoints: string[];
+  keyRisks: string[];
+  scenarioNotes: string[];
+  limitations: string[];
+  disclaimer: string;
+}
+
+const CONSENSUS_STYLE2: Record<Consensus2, { bg: string; text: string; label: string }> = {
+  Positive:     { bg: 'bg-red-100 dark:bg-red-950/40',    text: 'text-red-700 dark:text-red-400',    label: '多數偏多' },
+  Negative:     { bg: 'bg-green-100 dark:bg-green-950/40', text: 'text-green-700 dark:text-green-400', label: '多數偏空' },
+  Mixed:        { bg: 'bg-amber-100 dark:bg-amber-950/40', text: 'text-amber-700 dark:text-amber-300', label: '觀點分歧' },
+  Insufficient: { bg: 'bg-gray-100 dark:bg-gray-800',      text: 'text-gray-600 dark:text-gray-400',  label: '資料不足' },
+};
+
+const AGENT_DISPLAY2: Record<string, string> = {
+  TechnicalAgent:   '技術面',
+  MarketAgent:      '市場環境',
+  ChipAgent:        '籌碼面',
+  FundamentalAgent: '基本面',
+  CatalystAgent:    '催化因子',
+  RiskAgent:        '風險代理人',
+};
+
+const STANCE_LABEL2: Record<AgentStance2, { label: string; cls: string }> = {
+  Bullish:      { label: '偏多', cls: 'text-red-600 dark:text-red-400' },
+  Neutral:      { label: '中性', cls: 'text-amber-600 dark:text-amber-300' },
+  Bearish:      { label: '偏空', cls: 'text-green-600 dark:text-green-400' },
+  Insufficient: { label: '資料不足', cls: 'text-gray-500 dark:text-gray-400' },
+};
+
+function MultiAgentMarketPanel({ marketSummary }: { marketSummary: DailyReport['marketSummary'] }) {
+  const [result, setResult] = React.useState<ResearchResult2 | null>(null);
+  const [loading, setLoading] = React.useState(false);
+  const [err, setErr] = React.useState<string | null>(null);
+  const [open, setOpen] = React.useState(false);
+
+  const load = React.useCallback(async () => {
+    if (result || loading) return;
+    setLoading(true);
+    setErr(null);
+    try {
+      const res = await fetch('/api/research/multi-agent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          marketRegime: marketSummary.regime,
+          regimeConfidence: marketSummary.regimeConfidence,
+          alphaScore: 50,
+          bucket: 'Neutral',
+          confidence: marketSummary.regimeConfidence,
+          dataCoverage: marketSummary.limitations.length === 0 ? 'full' : 'limited',
+          technicalScore: 50,
+          chipScore: 50,
+          fundamentalScore: 50,
+          marketAdjustment: 0,
+          usedSources: ['market_index'],
+          missingSources: ['chip_data', 'revenue_data', 'event_data'],
+          limitations: marketSummary.limitations,
+        }),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data: ResearchResult2 = await res.json();
+      setResult(data);
+    } catch (e: unknown) {
+      setErr(e instanceof Error ? e.message : '無法載入多 Agent 市場觀點');
+    } finally {
+      setLoading(false);
+    }
+  }, [marketSummary, result, loading]);
+
+  const toggle = () => {
+    setOpen((v) => !v);
+    if (!open) load();
+  };
+
+  const cs = result ? (CONSENSUS_STYLE2[result.consensus] ?? CONSENSUS_STYLE2.Insufficient) : null;
+
+  return (
+    <GlassCard className="p-5">
+      <button className="w-full flex items-center justify-between" onClick={toggle}>
+        <div className="flex items-center gap-2">
+          <Users className="h-5 w-5 text-primary" />
+          <h2 className="text-base font-semibold">多 Agent 市場觀點</h2>
+          <span className="text-xs text-muted-foreground">（模型推估，非交易建議）</span>
+        </div>
+        <div className="flex items-center gap-2">
+          {loading && <span className="text-xs text-muted-foreground">載入中...</span>}
+          {result && cs && (
+            <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${cs.bg} ${cs.text}`}>
+              {cs.label} · 置信度 {result.consensusConfidence}%
+            </span>
+          )}
+          {open ? <ChevronUp className="h-4 w-4 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 text-muted-foreground" />}
+        </div>
+      </button>
+
+      {open && (
+        <div className="mt-4 space-y-4">
+          {err && <p className="text-sm text-amber-600 dark:text-amber-400">⚠ {err}</p>}
+          {loading && <p className="text-sm text-muted-foreground">分析中，請稍候...</p>}
+          {result && (
+            <>
+              {result.scenarioNotes.length > 0 && (
+                <div className="space-y-1">
+                  {result.scenarioNotes.map((n, i) => (
+                    <p key={i} className="text-sm text-muted-foreground">{n}</p>
+                  ))}
+                </div>
+              )}
+
+              <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
+                {result.viewpoints.map((v) => {
+                  const sl = STANCE_LABEL2[v.stance];
+                  return (
+                    <div key={v.name} className="text-center p-2 rounded-lg bg-muted/20 border border-border/20">
+                      <div className="text-xs text-muted-foreground">{AGENT_DISPLAY2[v.name] ?? v.name}</div>
+                      <div className={`text-xs font-medium mt-1 ${sl.cls}`}>{sl.label}</div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {result.keyRisks.length > 0 && (
+                <div>
+                  <h5 className="text-xs font-medium text-amber-600 dark:text-amber-400 mb-1">主要市場風險</h5>
+                  <ul className="space-y-0.5">
+                    {result.keyRisks.slice(0, 3).map((r, i) => (
+                      <li key={i} className="text-xs text-muted-foreground flex items-start gap-1">
+                        <span className="text-amber-500 shrink-0">⚠</span>{r}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              <p className="text-xs text-muted-foreground/60 italic border-t border-border/20 pt-2">
+                {result.disclaimer}
+              </p>
+            </>
+          )}
+        </div>
+      )}
+    </GlassCard>
+  );
+}
+
