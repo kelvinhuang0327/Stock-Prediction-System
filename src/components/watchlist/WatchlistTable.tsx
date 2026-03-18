@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { Trash2, Bell, Briefcase } from 'lucide-react';
 import { WatchlistRowViewModel, SortConfig, ScreeningResult } from '@/types/watchlist';
 
@@ -98,7 +99,9 @@ function WatchlistRow({ row, onEditHoldings, onSetAlert, onRemove }: {
 
     return (
         <tr className="border-b border-border last:border-0 hover:bg-muted/20 transition-colors">
-            <td className="p-4 font-medium font-mono">{row.symbol}</td>
+            <td className="p-4 font-medium font-mono">
+              <Link href={`/stocks/${row.symbol}`} className="text-primary hover:underline">{row.symbol}</Link>
+            </td>
             <td className="p-4 font-medium">{row.name}</td>
             <td className={`p-4 text-right font-bold font-mono ${colorClass}`}>{row.price}</td>
             <td className={`p-4 text-right font-medium ${colorClass}`}>

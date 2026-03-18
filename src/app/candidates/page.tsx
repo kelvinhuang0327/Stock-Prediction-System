@@ -13,6 +13,7 @@
  */
 
 import React, { useState, useMemo } from 'react';
+import Link from 'next/link';
 import { useApiData } from '@/hooks/useApiData';
 import { GlassCard } from '@/components/ui/glass-card';
 import { LoadingSpinner } from '@/components/ui/loading';
@@ -475,7 +476,7 @@ function CandidateRow({ candidate: c, expanded, onToggle, comparisonAvailable }:
       {/* Symbol / Name */}
       <td className="px-3 py-2.5">
         <div className="flex flex-col">
-          <span className="font-mono font-medium text-sm">{c.symbol}</span>
+          <Link href={`/stocks/${c.symbol}`} className="font-mono font-medium text-sm text-primary hover:underline">{c.symbol}</Link>
           <span className="text-xs text-muted-foreground truncate max-w-[120px]">{c.name}</span>
           {c.isETF && <span className="text-[10px] text-blue-600 dark:text-blue-400">ETF</span>}
         </div>

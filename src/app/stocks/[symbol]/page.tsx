@@ -1,0 +1,620 @@
+"use client";
+
+/**
+ * /stocks/[symbol] — Individual Stock Research Page
+ *
+ * Research-oriented drill-down page. NOT a trade execution or recommendation page.
+ * All scores are model estimates. Data limitations are clearly surfaced.
+ *
+ * Sections:
+ *   1. Stock Header    — symbol, price, data coverage, last updated
+ *   2. Market Context  — regime, confidence, summary
+ *   3. Analysis Summary — alphaScore, bucket, confidence, risk, summary
+ *   4. Score Breakdown  — sub-scores, weights, factors, risks, missing sources
+ *   5. Technical Signals — indicators, price levels with methodology
+ *   6. Backtest Snapshot — buy & hold return or unavailable notice
+ *   7. Candidate / Watchlist Context
+ *
+ * Degraded mode: any missing section shows a clear "unavailable" notice.
+ */
+
+import React, { useState } from 'react';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
+import { useApiData } from '@/hooks/useApiData';
+import { GlassCard } from '@/components/ui/glass-card';
+import { LoadingSpinner } from '@/components/ui/loading';
+import { Disclaimer } from '@/components/ui/disclaimer';
+import { LimitationBlock } from '@/components/ui/limitation-block';
+import { BucketBadge } from '@/components/ui/badges';
+import type { StockDetailResponse } from '@/app/api/stocks/[id]/detail/route';
+import {
+  TrendingUp, TrendingDown, Minus, AlertTriangle, BarChart3,
+  ChevronLeft, Database, Shield, Activity, Clock, CheckCircle2,
+  XCircle, Info, ExternalLink, Star, Bookmark,
+} from 'lucide-react';
+
+// ─── Helpers ─────────────────────────────────────────────────────
+
+function pct(n: number, decimals = 2): string {
+  return `${n >= 0 ? '+' : ''}${n.toFixed(decimals)}%`;
+}
+
+function priceColor(n: number): string {
+  if (n > 0) return 'text-red-500 dark:text-red-400';
+  if (n < 0) return 'text-green-500 dark:text-green-400';
+  return 'text-muted-foreground';
+}
+
+function regimeColor(r: string): string {
+  if (r === 'Bull') return 'text-red-500 dark:text-red-400';
+  if (r === 'Bear') return 'text-green-500 dark:text-green-400';
+  if (r === 'Sideways') return 'text-amber-500 dark:text-amber-400';
+  return 'text-muted-foreground';
+}
+
+function coverageBadge(cov: string, dp: number) {
+  const cls =
+    cov === 'full' ? 'bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-400' :
+    cov === 'limited' ? 'bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400' :
+    'bg-red-100 text-red-700 dark:bg-red-950/40 dark:text-red-400';
+  const label = cov === 'full' ? '完整' : cov === 'limited' ? '部分' : '不足';
+  return (
+    <span className={`inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full font-medium ${cls}`}>
+      <Database className="h-3 w-3" />
+      {label} ({dp}天)
+    </span>
+  );
+}
+
+function ScoreBar({ label, value, max = 100, color = 'bg-primary' }: { label: string; value: number; max?: number; color?: string }) {
+  const pct = Math.max(0, Math.min(100, (value / max) * 100));
+  return (
+    <div className="space-y-1">
+      <div className="flex justify-between text-xs">
+        <span className="text-muted-foreground">{label}</span>
+        <span className="font-medium">{value.toFixed(0)}</span>
+      </div>
+      <div className="h-1.5 rounded-full bg-muted/30">
+        <div className={`h-full rounded-full ${color}`} style={{ width: `${pct}%` }} />
+      </div>
+    </div>
+  );
+}
+
+function SectionUnavailable({ reason }: { reason: string }) {
+  return (
+    <div className="flex items-center gap-2 text-sm text-muted-foreground py-4 px-2">
+      <Info className="h-4 w-4 text-amber-500 shrink-0" />
+      <span>{reason}</span>
+    </div>
+  );
+}
+
+function IndicatorSignalIcon({ signal }: { signal: string }) {
+  if (signal === 'bullish') return <TrendingUp className="h-3.5 w-3.5 text-red-500" />;
+  if (signal === 'bearish') return <TrendingDown className="h-3.5 w-3.5 text-green-500" />;
+  return <Minus className="h-3.5 w-3.5 text-muted-foreground" />;
+}
+
+// ─── Section Components ──────────────────────────────────────────
+
+function HeaderSection({ d }: { d: StockDetailResponse }) {
+  return (
+    <GlassCard className="p-5">
+      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2">
+            <span className="font-mono text-xl font-bold tracking-wide">{d.symbol}</span>
+            {d.isETF && <span className="text-xs bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-400 px-1.5 py-0.5 rounded">ETF</span>}
+            {d.watchlistCtx.inWatchlist && <Bookmark className="h-4 w-4 text-amber-500" aria-label="已加入自選" />}
+            {d.candidateCtx.isCandidate && <Star className="h-4 w-4 text-yellow-500" aria-label="在候選池中" />}
+          </div>
+          <div className="text-lg font-semibold text-foreground/80">{d.name}</div>
+          {d.industry && <div className="text-xs text-muted-foreground">{d.industry}</div>}
+        </div>
+        <div className="text-right space-y-1">
+          {d.closePrice > 0 ? (
+            <>
+              <div className="text-2xl font-bold font-mono">{d.closePrice.toFixed(2)}</div>
+              <div className={`text-sm font-medium ${priceColor(d.priceChangePercent)}`}>
+                {d.priceChangePercent >= 0 ? <TrendingUp className="inline h-3.5 w-3.5 mr-1" /> : <TrendingDown className="inline h-3.5 w-3.5 mr-1" />}
+                {pct(d.priceChangePercent)} 昨收比
+              </div>
+            </>
+          ) : (
+            <div className="text-muted-foreground text-sm">無行情資料</div>
+          )}
+          <div className="flex items-center justify-end gap-2 flex-wrap">
+            {coverageBadge(d.dataCoverage, d.dataPoints)}
+            {d.lastUpdated && (
+              <span className="text-xs text-muted-foreground flex items-center gap-1">
+                <Clock className="h-3 w-3" />{d.lastUpdated}
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+    </GlassCard>
+  );
+}
+
+function RegimeSection({ regime }: { regime: StockDetailResponse['regime'] }) {
+  if (!regime) return <SectionUnavailable reason="市場環境資料不可用（TAIEX 歷史不足或分析引擎錯誤）" />;
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center gap-3 flex-wrap">
+        <span className={`text-2xl font-bold ${regimeColor(regime.regime)}`}>{regime.regime}</span>
+        <span className="text-sm text-muted-foreground">信心度 {regime.confidence}%</span>
+        <span className="text-xs text-muted-foreground bg-muted/20 px-2 py-0.5 rounded">{regime.samplePeriod}</span>
+        <span className="text-xs text-muted-foreground">{regime.dataPoints} 天資料</span>
+      </div>
+      <div className="text-xs text-muted-foreground">
+        <span className="font-medium">市場環境說明：</span>
+        {regime.regime === 'Bull' ? '目前大盤處於多頭趨勢，技術面偏正向。' :
+         regime.regime === 'Bear' ? '目前大盤處於空頭趨勢，建議謹慎評估持倉。' :
+         regime.regime === 'Sideways' ? '目前大盤盤整，方向不明，建議降低曝險。' :
+         '大盤環境判斷不足，建議保守解讀所有評分。'}
+      </div>
+      {regime.limitations.length > 0 && (
+        <LimitationBlock items={regime.limitations} compact />
+      )}
+    </div>
+  );
+}
+
+function AnalysisSummarySection({ fusion }: { fusion: StockDetailResponse['fusion'] }) {
+  if (!fusion) return <SectionUnavailable reason="綜合評分不可用（歷史資料不足或分析引擎暫時無法執行）" />;
+  return (
+    <div className="space-y-4">
+      <div className="flex flex-col sm:flex-row gap-4">
+        {/* Alpha score gauge */}
+        <div className="text-center space-y-1 min-w-[80px]">
+          <div className="text-4xl font-bold font-mono">{fusion.alphaScore.toFixed(0)}</div>
+          <div className="text-xs text-muted-foreground">AlphaScore</div>
+          <div className="text-xs text-muted-foreground">信心 {fusion.confidence}%</div>
+        </div>
+        {/* Badges */}
+        <div className="flex-1 space-y-2">
+          <div className="flex items-center gap-2 flex-wrap">
+            <BucketBadge bucket={fusion.recommendationBucket} />
+            <BucketBadge bucket={fusion.screenBucket} />
+            <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+              fusion.riskLevel === 'high' ? 'bg-red-100 text-red-700 dark:bg-red-950/40 dark:text-red-400' :
+              fusion.riskLevel === 'moderate' ? 'bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400' :
+              'bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-400'
+            }`}>
+              風險：{fusion.riskLevel}
+            </span>
+          </div>
+          {fusion.summary && (
+            <p className="text-sm text-foreground/80 leading-relaxed">{fusion.summary}</p>
+          )}
+          {fusion.whyIncluded && (
+            <p className="text-xs text-muted-foreground bg-muted/10 rounded px-2 py-1">
+              <span className="font-medium">評級依據：</span>{fusion.whyIncluded}
+            </p>
+          )}
+        </div>
+      </div>
+      {fusion.limitations.length > 0 && <LimitationBlock items={fusion.limitations} compact />}
+    </div>
+  );
+}
+
+function ScoreBreakdownSection({ fusion }: { fusion: StockDetailResponse['fusion'] }) {
+  if (!fusion) return <SectionUnavailable reason="分數細項不可用" />;
+  return (
+    <div className="space-y-5">
+      {/* Sub-scores */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {[
+          { label: '技術面', value: fusion.technicalScore, color: 'bg-blue-500' },
+          { label: '籌碼面', value: fusion.chipScore, color: 'bg-purple-500' },
+          { label: '基本面', value: fusion.fundamentalScore, color: 'bg-emerald-500' },
+          { label: '市場調整', value: fusion.marketAdjustment + 50, color: 'bg-amber-500' },
+        ].map(({ label, value, color }) => (
+          <div key={label} className="space-y-2 p-3 rounded-lg bg-muted/10 border border-border/20">
+            <div className="flex justify-between text-xs">
+              <span className="text-muted-foreground">{label}</span>
+            </div>
+            <div className="text-xl font-bold font-mono">{label === '市場調整' ? (fusion.marketAdjustment >= 0 ? '+' : '') + fusion.marketAdjustment.toFixed(1) : value.toFixed(0)}</div>
+            <ScoreBar label="" value={value} color={color} />
+          </div>
+        ))}
+      </div>
+
+      {/* Key factors */}
+      {fusion.topFactors.length > 0 && (
+        <div>
+          <h4 className="text-xs font-medium text-muted-foreground mb-2 flex items-center gap-1">
+            <TrendingUp className="h-3.5 w-3.5 text-red-500" />正向因子
+          </h4>
+          <ul className="space-y-1">
+            {fusion.topFactors.map((f, i) => (
+              <li key={i} className="text-xs flex items-start gap-1.5">
+                <CheckCircle2 className="h-3.5 w-3.5 text-red-400 shrink-0 mt-0.5" />
+                <span>{f}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Key risks */}
+      {fusion.keyRisks.length > 0 && (
+        <div>
+          <h4 className="text-xs font-medium text-muted-foreground mb-2 flex items-center gap-1">
+            <AlertTriangle className="h-3.5 w-3.5 text-amber-500" />主要風險
+          </h4>
+          <ul className="space-y-1">
+            {fusion.keyRisks.map((r, i) => (
+              <li key={i} className="text-xs flex items-start gap-1.5">
+                <XCircle className="h-3.5 w-3.5 text-amber-400 shrink-0 mt-0.5" />
+                <span>{r}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Sources */}
+      <div className="flex gap-4 text-xs flex-wrap">
+        {fusion.usedSources.length > 0 && (
+          <div>
+            <span className="text-muted-foreground font-medium">資料來源：</span>
+            {fusion.usedSources.join('、')}
+          </div>
+        )}
+        {fusion.missingSources.length > 0 && (
+          <div className="text-amber-600 dark:text-amber-400">
+            <span className="font-medium">缺失：</span>
+            {fusion.missingSources.join('、')}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function TechnicalSignalsSection({ signals }: { signals: StockDetailResponse['signals'] }) {
+  if (!signals) return <SectionUnavailable reason="技術指標不可用（歷史資料少於 20 天）" />;
+
+  const signalColor =
+    signals.signal === 'BUY' ? 'text-red-500 dark:text-red-400' :
+    signals.signal === 'SELL' ? 'text-green-500 dark:text-green-400' :
+    signals.signal === 'WATCH' ? 'text-amber-500 dark:text-amber-400' :
+    'text-muted-foreground';
+
+  return (
+    <div className="space-y-4">
+      {/* Signal summary */}
+      <div className="flex items-center gap-4 flex-wrap">
+        <span className={`text-2xl font-bold ${signalColor}`}>{signals.signal}</span>
+        <div className="flex items-center gap-2">
+          <div className="text-xs text-muted-foreground">訊號強度</div>
+          <div className="h-2 w-24 bg-muted/30 rounded-full overflow-hidden">
+            <div className="h-full bg-primary rounded-full" style={{ width: `${signals.strength}%` }} />
+          </div>
+          <div className="text-xs font-medium">{signals.strength}%</div>
+        </div>
+        <div className="text-xs text-muted-foreground">
+          資料區間：{signals.dataPeriod}（{signals.dataPoints} 天）
+        </div>
+      </div>
+
+      {/* Price levels */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        {[
+          { label: '觀察價', value: signals.watchPrice, cls: 'border-blue-200 dark:border-blue-800' },
+          { label: '建議進場參考', value: signals.buyPrice, cls: 'border-red-200 dark:border-red-800' },
+          { label: '風險控制參考', value: signals.stopLoss, cls: 'border-green-200 dark:border-green-800' },
+          { label: '目標壓力參考', value: signals.targetPrice, cls: 'border-purple-200 dark:border-purple-800' },
+        ].map(({ label, value, cls }) => (
+          <div key={label} className={`p-3 rounded-lg bg-muted/10 border ${cls} space-y-1`}>
+            <div className="text-xs text-muted-foreground">{label}</div>
+            <div className="text-base font-bold font-mono">{value.price.toFixed(2)}</div>
+            <div className="text-[10px] text-muted-foreground leading-tight">{value.methodology}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Indicators table */}
+      <div className="overflow-x-auto">
+        <table className="w-full text-xs">
+          <thead>
+            <tr className="text-muted-foreground border-b border-border/30">
+              <th className="text-left py-1.5 pr-3 font-medium">指標</th>
+              <th className="text-right py-1.5 pr-3 font-medium">數值</th>
+              <th className="text-center py-1.5 pr-3 font-medium">訊號</th>
+              <th className="text-left py-1.5 font-medium">說明</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-border/20">
+            {signals.indicators.map((ind, i) => (
+              <tr key={i}>
+                <td className="py-1.5 pr-3 font-mono font-medium">{ind.name}</td>
+                <td className="py-1.5 pr-3 text-right font-mono">{typeof ind.value === 'number' ? ind.value.toFixed(2) : ind.value}</td>
+                <td className="py-1.5 pr-3 text-center">
+                  <IndicatorSignalIcon signal={ind.signal} />
+                </td>
+                <td className="py-1.5 text-muted-foreground">{ind.description}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <Disclaimer
+        methodology="MA20/MA60/RSI/MACD/BB/KD/ATR 等技術指標規則計算"
+        warning="以上價位為技術指標推估，非買賣建議，不保證成立。"
+      />
+    </div>
+  );
+}
+
+function BacktestSection({ backtest, symbol }: { backtest: StockDetailResponse['backtest']; symbol: string }) {
+  if (!backtest.available) {
+    return <SectionUnavailable reason={backtest.unavailableReason ?? '回測不可用'} />;
+  }
+  return (
+    <div className="space-y-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        <div className="p-3 rounded-lg bg-muted/10 border border-border/20 space-y-1">
+          <div className="text-xs text-muted-foreground">Buy & Hold 報酬（參考期間）</div>
+          <div className={`text-xl font-bold font-mono ${(backtest.buyAndHoldReturn ?? 0) >= 0 ? 'text-red-500' : 'text-green-500'}`}>
+            {backtest.buyAndHoldReturn !== null ? pct(backtest.buyAndHoldReturn) : '—'}
+          </div>
+          <div className="text-[10px] text-muted-foreground">計算方式：持有至今報酬率，無交易成本</div>
+        </div>
+        <div className="p-3 rounded-lg bg-muted/10 border border-border/20 space-y-1">
+          <div className="text-xs text-muted-foreground">歷史資料</div>
+          <div className="text-xl font-bold font-mono">{backtest.dataPoints} 天</div>
+          <div className="text-[10px] text-muted-foreground">資料期間：{backtest.period}</div>
+        </div>
+        <div className="p-3 rounded-lg bg-muted/10 border border-border/20 space-y-1 sm:col-span-1 col-span-2">
+          <div className="text-xs text-muted-foreground">完整策略回測</div>
+          <Link href={`/backtest?symbol=${symbol}`} className="inline-flex items-center gap-1 text-xs text-primary hover:underline">
+            前往回測頁 <ExternalLink className="h-3 w-3" />
+          </Link>
+          <div className="text-[10px] text-muted-foreground">支援 MA Cross / RSI / AssetDoubling 策略 + regime-aware</div>
+        </div>
+      </div>
+      <Disclaimer
+        warning="Buy & Hold 為簡化估算，未計交易成本。完整策略回測請使用回測頁。歷史績效不代表未來結果。"
+      />
+    </div>
+  );
+}
+
+function ContextSection({ d }: { d: StockDetailResponse }) {
+  const { candidateCtx, watchlistCtx } = d;
+  const hasContext = candidateCtx.isCandidate || watchlistCtx.inWatchlist;
+
+  return (
+    <div className="space-y-4">
+      {/* Candidate context */}
+      <div className="p-3 rounded-lg bg-muted/10 border border-border/20 space-y-2">
+        <h4 className="text-xs font-medium flex items-center gap-1.5">
+          <Star className="h-3.5 w-3.5 text-yellow-500" />
+          候選池狀態
+        </h4>
+        {candidateCtx.isCandidate ? (
+          <>
+            <div className="flex items-center gap-2 flex-wrap">
+              <BucketBadge bucket={candidateCtx.screenBucket ?? ''} />
+              {candidateCtx.snapshotDate && (
+                <span className="text-xs text-muted-foreground">快照日期：{candidateCtx.snapshotDate}</span>
+              )}
+            </div>
+            {candidateCtx.whyIncluded && (
+              <p className="text-xs text-muted-foreground">{candidateCtx.whyIncluded}</p>
+            )}
+            {candidateCtx.changeTags.length > 0 && (
+              <div className="flex gap-1 flex-wrap">
+                {candidateCtx.changeTags.map((t, i) => (
+                  <span key={i} className="text-[10px] bg-muted/20 px-1.5 py-0.5 rounded">{t}</span>
+                ))}
+              </div>
+            )}
+          </>
+        ) : (
+          <p className="text-xs text-muted-foreground">
+            此股票目前不在候選池中
+            {candidateCtx.snapshotDate ? `（最新快照：${candidateCtx.snapshotDate}）` : ''}。
+            <Link href="/candidates" className="ml-1 text-primary hover:underline">查看所有候選股</Link>
+          </p>
+        )}
+      </div>
+
+      {/* Watchlist context */}
+      <div className="p-3 rounded-lg bg-muted/10 border border-border/20 space-y-2">
+        <h4 className="text-xs font-medium flex items-center gap-1.5">
+          <Bookmark className="h-3.5 w-3.5 text-amber-500" />
+          自選股狀態
+        </h4>
+        {watchlistCtx.inWatchlist ? (
+          <div className="grid grid-cols-2 gap-2 text-xs">
+            {watchlistCtx.holdingShares !== null && (
+              <div><span className="text-muted-foreground">持有股數：</span><span className="font-mono">{watchlistCtx.holdingShares.toLocaleString()}</span></div>
+            )}
+            {watchlistCtx.holdingCost !== null && (
+              <div><span className="text-muted-foreground">持有成本：</span><span className="font-mono">{watchlistCtx.holdingCost.toFixed(2)}</span></div>
+            )}
+            {watchlistCtx.label && (
+              <div><span className="text-muted-foreground">標籤：</span>{watchlistCtx.label}</div>
+            )}
+          </div>
+        ) : (
+          <p className="text-xs text-muted-foreground">
+            此股票不在自選清單中。
+            <Link href="/watchlist" className="ml-1 text-primary hover:underline">前往自選股頁</Link>
+          </p>
+        )}
+      </div>
+
+      {!hasContext && (
+        <p className="text-xs text-muted-foreground text-center py-2">此股票目前不在候選池或自選股中。</p>
+      )}
+    </div>
+  );
+}
+
+// ─── Main Page ───────────────────────────────────────────────────
+
+export default function StockDetailPage() {
+  const params = useParams();
+  const symbol = (params?.symbol as string ?? '').toUpperCase();
+
+  const { data, loading, error } = useApiData<StockDetailResponse>(
+    symbol ? `/api/stocks/${symbol}/detail` : null
+  );
+
+  const [activeTab, setActiveTab] = useState<'analysis' | 'signals' | 'backtest' | 'context'>('analysis');
+
+  if (!symbol) {
+    return <div className="p-8 text-center text-muted-foreground">無效的股票代號</div>;
+  }
+
+  return (
+    <div className="space-y-5 pb-10">
+      {/* Back navigation */}
+      <div className="flex items-center gap-2">
+        <Link href="/candidates" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors">
+          <ChevronLeft className="h-4 w-4" />候選股
+        </Link>
+        <span className="text-muted-foreground/50">/</span>
+        <Link href="/watchlist" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors">
+          自選股
+        </Link>
+        <span className="text-muted-foreground/50">/</span>
+        <span className="text-sm font-medium">{symbol}</span>
+      </div>
+
+      {/* Loading */}
+      {loading && (
+        <div className="flex items-center justify-center py-20">
+          <LoadingSpinner size="lg" />
+          <span className="ml-3 text-muted-foreground">載入個股研究資料中…</span>
+        </div>
+      )}
+
+      {/* Error */}
+      {error && !loading && (
+        <GlassCard className="p-6 text-center space-y-2">
+          <AlertTriangle className="h-8 w-8 text-amber-500 mx-auto" />
+          <p className="text-sm text-muted-foreground">無法載入 {symbol} 的研究資料</p>
+          <p className="text-xs text-muted-foreground">{error}</p>
+        </GlassCard>
+      )}
+
+      {data && !loading && (
+        <>
+          {/* ── Section 1: Header ── */}
+          <HeaderSection d={data} />
+
+          {/* ── Global limitations ── */}
+          {data.limitations.length > 0 && (
+            <LimitationBlock items={data.limitations} />
+          )}
+
+          {/* ── Section 2: Market Context ── */}
+          <GlassCard className="p-5 space-y-3">
+            <h2 className="text-sm font-semibold flex items-center gap-2">
+              <Activity className="h-4 w-4 text-primary" />
+              市場環境
+            </h2>
+            <RegimeSection regime={data.regime} />
+          </GlassCard>
+
+          {/* ── Tabs for remaining sections ── */}
+          <div>
+            <div className="flex gap-1 border-b border-border/30 mb-4 overflow-x-auto">
+              {[
+                { key: 'analysis', label: '綜合分析', icon: <BarChart3 className="h-3.5 w-3.5" /> },
+                { key: 'signals', label: '技術指標', icon: <Activity className="h-3.5 w-3.5" /> },
+                { key: 'backtest', label: '回測概覽', icon: <Shield className="h-3.5 w-3.5" /> },
+                { key: 'context', label: '持倉脈絡', icon: <Database className="h-3.5 w-3.5" /> },
+              ].map(({ key, label, icon }) => (
+                <button
+                  key={key}
+                  onClick={() => setActiveTab(key as any)}
+                  className={`inline-flex items-center gap-1.5 px-4 py-2 text-sm whitespace-nowrap border-b-2 transition-colors ${
+                    activeTab === key
+                      ? 'border-primary text-primary font-medium'
+                      : 'border-transparent text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  {icon}{label}
+                </button>
+              ))}
+            </div>
+
+            {/* ── Section 3 + 4: Analysis Summary + Score Breakdown ── */}
+            {activeTab === 'analysis' && (
+              <div className="space-y-4">
+                <GlassCard className="p-5 space-y-3">
+                  <h2 className="text-sm font-semibold flex items-center gap-2">
+                    <BarChart3 className="h-4 w-4 text-primary" />
+                    分析摘要
+                  </h2>
+                  <AnalysisSummarySection fusion={data.fusion} />
+                </GlassCard>
+                <GlassCard className="p-5 space-y-3">
+                  <h2 className="text-sm font-semibold flex items-center gap-2">
+                    <Shield className="h-4 w-4 text-primary" />
+                    分數細項
+                    <span className="text-xs font-normal text-muted-foreground ml-auto">模型推估 · 非投資建議</span>
+                  </h2>
+                  <ScoreBreakdownSection fusion={data.fusion} />
+                </GlassCard>
+              </div>
+            )}
+
+            {/* ── Section 5: Technical Signals ── */}
+            {activeTab === 'signals' && (
+              <GlassCard className="p-5 space-y-3">
+                <h2 className="text-sm font-semibold flex items-center gap-2">
+                  <Activity className="h-4 w-4 text-primary" />
+                  技術指標
+                  <span className="text-xs font-normal text-muted-foreground ml-auto">模型推估 · 非買賣建議</span>
+                </h2>
+                <TechnicalSignalsSection signals={data.signals} />
+              </GlassCard>
+            )}
+
+            {/* ── Section 6: Backtest ── */}
+            {activeTab === 'backtest' && (
+              <GlassCard className="p-5 space-y-3">
+                <h2 className="text-sm font-semibold flex items-center gap-2">
+                  <Shield className="h-4 w-4 text-primary" />
+                  回測概覽
+                  <span className="text-xs font-normal text-muted-foreground ml-auto">歷史績效不代表未來</span>
+                </h2>
+                <BacktestSection backtest={data.backtest} symbol={symbol} />
+              </GlassCard>
+            )}
+
+            {/* ── Section 7: Context ── */}
+            {activeTab === 'context' && (
+              <GlassCard className="p-5 space-y-3">
+                <h2 className="text-sm font-semibold flex items-center gap-2">
+                  <Database className="h-4 w-4 text-primary" />
+                  候選與自選脈絡
+                </h2>
+                <ContextSection d={data} />
+              </GlassCard>
+            )}
+          </div>
+
+          {/* ── Global disclaimer ── */}
+          <Disclaimer
+            source="TWSE 歷史行情（本機資料庫）、SignalFusionEngine、MarketRegimeEngine"
+            methodology="技術面/籌碼面/基本面規則加權，市場環境調整"
+            warning={data.disclaimer}
+            variant="detailed"
+          />
+        </>
+      )}
+    </div>
+  );
+}

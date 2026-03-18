@@ -65,7 +65,7 @@ export interface AlertParams {
 // ─── Constants ────────────────────────────────────────────────────
 
 const ALPHA_CHANGE_THRESHOLD = 5;
-const BUCKET_ORDER = ['Avoid', 'Insufficient Data', 'Neutral', 'Watch', 'Strong Candidate'];
+const BUCKET_ORDER: string[] = ['Excluded', 'Neutral', 'Watch', 'Strong Candidate'];
 const RISK_ORDER = ['low', 'moderate', 'elevated', 'high'];
 
 const SEVERITY_RANK: Record<AlertSeverity, number> = { info: 0, caution: 1, warning: 2 };
@@ -198,7 +198,7 @@ export async function generateDailyAlerts(params?: AlertParams): Promise<DailyAl
             comparisonBased: true,
           });
         } else if (currRank < prevRank) {
-          const severity = (c.screenBucket === 'Avoid' || c.screenBucket === 'Insufficient Data') ? 'caution' : 'info';
+          const severity = (c.screenBucket === 'Excluded') ? 'caution' : 'info';
           alerts.push({
             type: 'candidate_downgraded',
             severity,
@@ -239,7 +239,7 @@ export async function generateDailyAlerts(params?: AlertParams): Promise<DailyAl
         }
 
         // Newly insufficient data
-        if (prev.screenBucket !== 'Insufficient Data' && c.screenBucket === 'Insufficient Data') {
+        if (prev.screenBucket !== 'Excluded' && c.dataCoverage === 'insufficient') {
           alerts.push({
             type: 'newly_insufficient_data',
             severity: 'caution',
@@ -247,7 +247,7 @@ export async function generateDailyAlerts(params?: AlertParams): Promise<DailyAl
             body: `該股票今日已無足夠資料可進行評分（昨日為 ${prev.screenBucket}）。建議確認資料同步狀況。`,
             symbol: c.symbol,
             previousValue: prev.screenBucket,
-            currentValue: 'Insufficient Data',
+            currentValue: 'insufficient',
             basis: 'DailyCandidateSnapshot + StrategyScreenEngine',
             comparisonBased: true,
           });

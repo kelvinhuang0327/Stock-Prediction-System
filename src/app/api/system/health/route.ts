@@ -163,15 +163,15 @@ export async function GET() {
 
     // ── Recent sync jobs ──────────────────────────────────────────
     const syncLogs = await prisma.syncLog.findMany({
-      orderBy: { timestamp: 'desc' },
+      orderBy: { syncedAt: 'desc' },
       take: 10,
-      select: { jobType: true, status: true, timestamp: true },
+      select: { endpoint: true, status: true, syncedAt: true },
     });
 
     const syncMap = new Map<string, { lastRun: string; status: string }>();
     for (const log of syncLogs) {
-      if (!syncMap.has(log.jobType)) {
-        syncMap.set(log.jobType, { lastRun: log.timestamp, status: log.status });
+      if (!syncMap.has(log.endpoint)) {
+        syncMap.set(log.endpoint, { lastRun: log.syncedAt.toISOString(), status: log.status });
       }
     }
 

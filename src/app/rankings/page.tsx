@@ -334,7 +334,7 @@ export default function RankingsPage() {
                         if (activeTab === 'sector') {
                             router.push(`/sectors/${item.symbol}`);
                         } else {
-                            router.push(`/stock/${item.symbol}`);
+                            router.push(`/stocks/${item.symbol}`);
                         }
                     }}
                     getRowKey={(item) => item.symbol}
@@ -345,7 +345,7 @@ export default function RankingsPage() {
 
             {/* Alpha Candidates */}
             {!alphaLoading && activeTab === 'alpha' && (
-                <AlphaCandidatesPanel data={alphaData} meta={screenMeta} onRowClick={(s) => router.push(`/stock/${s}`)} />
+                <AlphaCandidatesPanel data={alphaData} meta={screenMeta} onRowClick={(s) => router.push(`/stocks/${s}`)} />
             )}
 
             {/* Disclaimer */}
