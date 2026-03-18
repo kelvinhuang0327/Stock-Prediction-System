@@ -126,6 +126,17 @@ function HeaderSection({ d }: { d: StockDetailResponse }) {
             <div className="text-muted-foreground text-sm">無行情資料</div>
           )}
           <div className="flex items-center justify-end gap-2 flex-wrap">
+            {d.coverageTier && (
+              <span className={`text-xs px-1.5 py-0.5 rounded font-medium border ${
+                d.coverageTier.tier === 'A'
+                  ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 border-emerald-300/50'
+                  : d.coverageTier.tier === 'B'
+                  ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-950/40 dark:text-yellow-400 border-yellow-300/50'
+                  : 'bg-gray-100 text-gray-600 dark:bg-gray-800/40 dark:text-gray-400 border-gray-300/50'
+              }`}>
+                Tier {d.coverageTier.tier}
+              </span>
+            )}
             {coverageBadge(d.dataCoverage, d.dataPoints)}
             {d.lastUpdated && (
               <span className="text-xs text-muted-foreground flex items-center gap-1">

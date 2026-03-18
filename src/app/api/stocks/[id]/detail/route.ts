@@ -17,6 +17,7 @@ import {
   calculateTechnicalSignals,
   type OHLCVBar,
 } from '@/lib/analysis/TechnicalSignalCalculator';
+import { getStockCoverage, type StockCoverage } from '@/lib/data/CoverageService';
 
 // ─── Response Types ─────────────────────────────────────────────
 
@@ -128,6 +129,7 @@ export interface StockDetailResponse {
     holdingCost: number | null;
     label: string | null;
   };
+  coverageTier: Pick<StockCoverage, 'tier' | 'tierLabel' | 'quoteDays' | 'hasChip' | 'capabilities' | 'limitations'>;
   limitations: string[];
   disclaimer: string;
   generatedAt: string;
@@ -147,7 +149,7 @@ export async function GET(
   const limitations: string[] = [];
 
   // ── 1. Base data ──────────────────────────────────────────────
-  const [stockRow, quoteRows, watchlistRow] = await Promise.all([
+  const [stockRow, quoteRows, watchlistRow, stockCoverage] = await Promise.all([
     prisma.stock.findUnique({ where: { id: symbol } }).catch(() => null),
     (prisma as any).stockQuote.findMany({
       where: { stockId: symbol },
@@ -155,6 +157,7 @@ export async function GET(
       take: 252,
     }).catch(() => [] as any[]),
     (prisma as any).watchlist.findFirst({ where: { stockId: symbol } }).catch(() => null),
+    getStockCoverage(symbol).catch(() => null),
   ]);
 
   const name: string = stockRow?.name ?? symbol;
@@ -540,6 +543,21 @@ export async function GET(
     comparison,
     candidateCtx,
     watchlistCtx,
+    coverageTier: {
+      tier: stockCoverage?.tier ?? 'C',
+      tierLabel: stockCoverage?.tierLabel ?? '受限分析 (Tier C)',
+      quoteDays: stockCoverage?.quoteDays ?? dataPoints,
+      hasChip: stockCoverage?.hasChip ?? false,
+      capabilities: stockCoverage?.capabilities ?? {
+        canBacktest: dataPoints >= 100,
+        canMA200: dataPoints >= 250,
+        canMA60: dataPoints >= 60,
+        canBasicSignals: dataPoints >= 20,
+        hasChipData: false,
+        chipFresh: false,
+      },
+      limitations: stockCoverage?.limitations ?? limitations,
+    },
     limitations,
     disclaimer:
       '本頁所有評分、訊號與分析為模型推估結果，僅供研究參考，不構成投資建議。所有結果基於規則計算，不保證未來績效。',
