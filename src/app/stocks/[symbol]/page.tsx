@@ -18,7 +18,7 @@
  * Degraded mode: any missing section shows a clear "unavailable" notice.
  */
 
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useApiData } from '@/hooks/useApiData';
@@ -31,7 +31,7 @@ import type { StockDetailResponse } from '@/app/api/stocks/[id]/detail/route';
 import {
   TrendingUp, TrendingDown, Minus, AlertTriangle, BarChart3,
   ChevronLeft, Database, Shield, Activity, Clock, CheckCircle2,
-  XCircle, Info, ExternalLink, Star, Bookmark,
+  XCircle, Info, ExternalLink, Star, Bookmark, Eye, Users, ChevronDown, ChevronUp,
 } from 'lucide-react';
 
 // ─── Helpers ─────────────────────────────────────────────────────
@@ -469,7 +469,7 @@ export default function StockDetailPage() {
     symbol ? `/api/stocks/${symbol}/detail` : null
   );
 
-  const [activeTab, setActiveTab] = useState<'analysis' | 'signals' | 'backtest' | 'context'>('analysis');
+  const [activeTab, setActiveTab] = useState<'analysis' | 'signals' | 'backtest' | 'context' | 'research'>('analysis');
 
   if (!symbol) {
     return <div className="p-8 text-center text-muted-foreground">無效的股票代號</div>;
@@ -533,6 +533,7 @@ export default function StockDetailPage() {
                 { key: 'analysis', label: '綜合分析', icon: <BarChart3 className="h-3.5 w-3.5" /> },
                 { key: 'signals', label: '技術指標', icon: <Activity className="h-3.5 w-3.5" /> },
                 { key: 'backtest', label: '回測概覽', icon: <Shield className="h-3.5 w-3.5" /> },
+                { key: 'research', label: '研究委員會', icon: <Users className="h-3.5 w-3.5" /> },
                 { key: 'context', label: '持倉脈絡', icon: <Database className="h-3.5 w-3.5" /> },
               ].map(({ key, label, icon }) => (
                 <button
@@ -604,6 +605,18 @@ export default function StockDetailPage() {
                 <ContextSection d={data} />
               </GlassCard>
             )}
+
+            {/* ── Section G: Multi-Agent Research ── */}
+            {activeTab === 'research' && (
+              <GlassCard className="p-5 space-y-3">
+                <h2 className="text-sm font-semibold flex items-center gap-2">
+                  <Users className="h-4 w-4 text-primary" />
+                  研究委員會觀點
+                  <span className="text-xs font-normal text-muted-foreground ml-auto">模型推估 · 非交易建議</span>
+                </h2>
+                <MultiAgentResearchSection data={data} />
+              </GlassCard>
+            )}
           </div>
 
           {/* ── Global disclaimer ── */}
@@ -615,6 +628,231 @@ export default function StockDetailPage() {
           />
         </>
       )}
+    </div>
+  );
+}
+
+// ─── Multi-Agent Research Section ────────────────────────────────
+
+type MAStance = 'Bullish' | 'Neutral' | 'Bearish' | 'Insufficient';
+type MAConsensus = 'Positive' | 'Mixed' | 'Negative' | 'Insufficient';
+
+interface MAAgentView {
+  name: string;
+  stance: MAStance;
+  confidence: number;
+  rationale: string;
+  limitations: string[];
+  missingSources: string[];
+}
+
+interface MAResearchResult {
+  consensus: MAConsensus;
+  consensusConfidence: number;
+  viewpoints: MAAgentView[];
+  disagreementPoints: string[];
+  keyRisks: string[];
+  scenarioNotes: string[];
+  limitations: string[];
+  disclaimer: string;
+}
+
+const MA_CONSENSUS_STYLE: Record<MAConsensus, { bg: string; text: string; label: string }> = {
+  Positive:     { bg: 'bg-red-100 dark:bg-red-950/40',     text: 'text-red-700 dark:text-red-400',    label: '多數偏多' },
+  Negative:     { bg: 'bg-green-100 dark:bg-green-950/40', text: 'text-green-700 dark:text-green-400', label: '多數偏空' },
+  Mixed:        { bg: 'bg-amber-100 dark:bg-amber-950/40', text: 'text-amber-700 dark:text-amber-300', label: '觀點分歧' },
+  Insufficient: { bg: 'bg-gray-100 dark:bg-gray-800',      text: 'text-gray-600 dark:text-gray-400',  label: '資料不足' },
+};
+
+const MA_AGENT_DISPLAY: Record<string, string> = {
+  TechnicalAgent:   '技術面',
+  MarketAgent:      '市場環境',
+  ChipAgent:        '籌碼面',
+  FundamentalAgent: '基本面',
+  CatalystAgent:    '催化因子',
+  RiskAgent:        '風險代理人',
+};
+
+const MA_STANCE_STYLE: Record<MAStance, { label: string; cls: string; dot: string }> = {
+  Bullish:      { label: '偏多', cls: 'text-red-600 dark:text-red-400',    dot: 'bg-red-500' },
+  Neutral:      { label: '中性', cls: 'text-amber-600 dark:text-amber-300', dot: 'bg-amber-500' },
+  Bearish:      { label: '偏空', cls: 'text-green-600 dark:text-green-400', dot: 'bg-green-500' },
+  Insufficient: { label: '資料不足', cls: 'text-gray-500 dark:text-gray-400', dot: 'bg-gray-400' },
+};
+
+function MultiAgentResearchSection({ data }: { data: StockDetailResponse }) {
+  const [result, setResult] = React.useState<MAResearchResult | null>(null);
+  const [loading, setLoading] = React.useState(false);
+  const [err, setErr] = React.useState<string | null>(null);
+  const [expandedAgent, setExpandedAgent] = React.useState<string | null>(null);
+
+  const load = useCallback(async () => {
+    if (result || loading) return;
+    if (!data.fusion && data.dataPoints < 20) {
+      setErr('資料不足 20 天，無法執行多 Agent 研究分析');
+      return;
+    }
+    setLoading(true);
+    setErr(null);
+    try {
+      const res = await fetch('/api/research/multi-agent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          symbol: data.symbol,
+          marketRegime: data.regime?.regime ?? 'Unknown',
+          regimeConfidence: data.regime?.confidence ?? 0,
+          alphaScore: data.fusion?.alphaScore ?? 50,
+          bucket: data.fusion?.recommendationBucket ?? 'Neutral',
+          confidence: data.fusion?.confidence ?? 0,
+          dataCoverage: data.dataCoverage,
+          technicalScore: data.fusion?.technicalScore ?? 50,
+          chipScore: data.fusion?.chipScore ?? 50,
+          fundamentalScore: data.fusion?.fundamentalScore ?? 50,
+          marketAdjustment: data.fusion?.marketAdjustment ?? 0,
+          usedSources: data.fusion?.usedSources ?? [],
+          missingSources: data.fusion?.missingSources ?? [],
+          limitations: [...(data.limitations ?? []), ...(data.fusion?.limitations ?? [])],
+        }),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const json: MAResearchResult = await res.json();
+      setResult(json);
+    } catch (e: unknown) {
+      setErr(e instanceof Error ? e.message : '研究委員會分析暫時不可用');
+    } finally {
+      setLoading(false);
+    }
+  }, [data, result, loading]);
+
+  // Auto-load on mount
+  React.useEffect(() => { load(); }, [load]);
+
+  if (loading) {
+    return (
+      <div className="flex items-center gap-2 py-4 text-muted-foreground">
+        <LoadingSpinner size="sm" />
+        <span className="text-sm">研究委員會分析中...</span>
+      </div>
+    );
+  }
+
+  if (err) {
+    return (
+      <div className="p-3 rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200/30">
+        <p className="text-xs text-amber-600 dark:text-amber-400">⚠ {err}</p>
+      </div>
+    );
+  }
+
+  if (!result) return null;
+
+  const cs = MA_CONSENSUS_STYLE[result.consensus] ?? MA_CONSENSUS_STYLE.Insufficient;
+
+  return (
+    <div className="space-y-5">
+      {/* Consensus header */}
+      <div className="flex items-center gap-3 flex-wrap">
+        <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium ${cs.bg} ${cs.text}`}>
+          <Eye className="h-3.5 w-3.5" />
+          委員會共識：{cs.label}
+        </span>
+        <span className="text-xs text-muted-foreground">置信度 {result.consensusConfidence}%</span>
+        <span className="text-xs text-muted-foreground/60 italic">模型推估，非投資建議</span>
+      </div>
+
+      {/* Scenario notes */}
+      {result.scenarioNotes.length > 0 && (
+        <div className="space-y-1.5">
+          <h4 className="text-xs font-medium text-muted-foreground">情境說明</h4>
+          {result.scenarioNotes.map((n, i) => (
+            <p key={i} className="text-sm text-muted-foreground leading-relaxed">{n}</p>
+          ))}
+        </div>
+      )}
+
+      {/* Agent viewpoints grid */}
+      <div>
+        <h4 className="text-xs font-medium text-muted-foreground mb-2">各維度觀點</h4>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+          {result.viewpoints.map((v) => {
+            const ss = MA_STANCE_STYLE[v.stance];
+            const isExpanded = expandedAgent === v.name;
+            return (
+              <div key={v.name} className="rounded-lg bg-muted/10 border border-border/20 overflow-hidden">
+                <button
+                  className="w-full flex items-start justify-between p-3 text-left hover:bg-muted/10 transition-colors"
+                  onClick={() => setExpandedAgent(isExpanded ? null : v.name)}
+                >
+                  <div className="flex items-center gap-2">
+                    <span className={`h-2 w-2 rounded-full shrink-0 mt-0.5 ${ss.dot}`} />
+                    <span className="text-xs font-medium">{MA_AGENT_DISPLAY[v.name] ?? v.name}</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className={`text-xs font-medium ${ss.cls}`}>{ss.label}</span>
+                    {isExpanded ? <ChevronUp className="h-3 w-3 text-muted-foreground" /> : <ChevronDown className="h-3 w-3 text-muted-foreground" />}
+                  </div>
+                </button>
+                {isExpanded && (
+                  <div className="px-3 pb-3 space-y-2 border-t border-border/10">
+                    <p className="text-xs text-muted-foreground leading-relaxed pt-2">{v.rationale}</p>
+                    {v.stance === 'Insufficient' && v.missingSources.length > 0 && (
+                      <p className="text-xs text-amber-500">資料缺口：{v.missingSources.join('、')}</p>
+                    )}
+                    {v.limitations.length > 0 && (
+                      <ul className="space-y-0.5">
+                        {v.limitations.map((l, i) => (
+                          <li key={i} className="text-[10px] text-muted-foreground/70">• {l}</li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Key risks */}
+      {result.keyRisks.length > 0 && (
+        <div>
+          <h4 className="text-xs font-medium text-amber-600 dark:text-amber-400 mb-1.5 flex items-center gap-1">
+            <Shield className="h-3.5 w-3.5" /> 主要風險
+          </h4>
+          <ul className="space-y-1">
+            {result.keyRisks.map((r, i) => (
+              <li key={i} className="text-xs text-muted-foreground flex items-start gap-1.5">
+                <span className="text-amber-500 shrink-0 mt-0.5">⚠</span>{r}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Disagreement points */}
+      {result.disagreementPoints.length > 0 && (
+        <div>
+          <h4 className="text-xs font-medium text-muted-foreground mb-1.5 flex items-center gap-1">
+            <Info className="h-3.5 w-3.5" /> 觀點分歧
+          </h4>
+          <ul className="space-y-1">
+            {result.disagreementPoints.map((d, i) => (
+              <li key={i} className="text-xs text-muted-foreground">• {d}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Limitations */}
+      {result.limitations.length > 0 && (
+        <LimitationBlock items={result.limitations.slice(0, 4)} />
+      )}
+
+      {/* Disclaimer */}
+      <p className="text-[10px] text-muted-foreground/50 italic border-t border-border/20 pt-2">
+        {result.disclaimer}
+      </p>
     </div>
   );
 }
