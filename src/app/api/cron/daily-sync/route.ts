@@ -57,6 +57,15 @@ function buildDailySyncJobs(): SyncJob[] {
       },
     },
     {
+      endpoint: 'institutional_chip',
+      priority: 5,
+      description: '三大法人買賣超 (InstitutionalChip)',
+      execute: async () => {
+        const result = await syncService.syncInstitutionalChip();
+        return { records: result.count, metadata: { date: result.date } };
+      },
+    },
+    {
       endpoint: 'monthly_revenue',
       priority: 5,
       description: '月營收',

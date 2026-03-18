@@ -16,6 +16,26 @@ export interface QualityReport {
   tables: TableQuality[];
   overallScore: number; // 0-100
   warnings: string[];
+  coverageSummary: CoverageSummary;
+}
+
+export interface CoverageSummary {
+  totalStocks: number;
+  stocksWithQuotes: number;
+  stocksGe250Days: number;  // supports MA200 + full backtest
+  stocksGe100Days: number;  // supports backtest
+  stocksGe60Days: number;   // supports MA60
+  stocksGe20Days: number;   // supports basic analysis
+  chipCoveredStocks: number;
+  chipDatesAvailable: number;
+  marketIndexDays: number;
+  taiexLatestDate: string | null;
+  quoteLatestDate: string | null;
+  chipLatestDate: string | null;
+  // Analysis engine eligibility
+  backtestEligible: number;   // ≥100 days quotes
+  fullAnalysisEligible: number; // ≥100 days + has chip data
+  chipAgentActive: boolean;   // chipCoveredStocks >= 20
 }
 
 export interface TableQuality {
@@ -132,19 +152,116 @@ export async function runQualityCheck(): Promise<QualityReport> {
     const indexDates = await prisma.marketIndex.findMany({ select: { date: true }, distinct: ['date'] });
     const dateFormats = countDateFormats(indexDates.map(i => i.date));
     const latestDate = findLatestDate(indexDates.map(i => i.date));
+    const staleDays = latestDate ? daysSince(latestDate) : 999;
+    const issues: string[] = [];
+    if (Object.keys(dateFormats).length > 1) issues.push('混合日期格式');
+    if (indexCount < 200) issues.push(`MarketIndex 僅 ${indexCount} 筆，Benchmark 比較可能受限`);
+    if (staleDays > 5) issues.push(`MarketIndex 已 ${staleDays} 天未更新`);
     tables.push({
       table: 'MarketIndex',
       rowCount: indexCount,
       stockCoverage: 0,
       dateFormats,
       latestDate,
-      staleDays: latestDate ? daysSince(latestDate) : 999,
+      staleDays,
       nullRates: {},
-      score: indexCount >= 200 ? 50 : indexCount >= 50 ? 30 : 10,
-      issues: Object.keys(dateFormats).length > 1 ? [`混合日期格式`] : [],
+      score: indexCount >= 500 ? 90 : indexCount >= 200 ? 70 : indexCount >= 50 ? 40 : 10,
+      issues,
     });
   } catch (e) {
     warnings.push(`MarketIndex check failed: ${e}`);
+  }
+
+  // === InstitutionalChip ===
+  try {
+    const chipCount = await (prisma as any).institutionalChip.count();
+    const chipDates = await (prisma as any).institutionalChip.findMany({ select: { date: true }, distinct: ['date'] });
+    const chipStocksGroups = await (prisma as any).institutionalChip.groupBy({ by: ['stockId'] });
+    const chipStocks = chipStocksGroups.length;
+    const dateFormats = countDateFormats((chipDates as { date: string }[]).map((r: { date: string }) => r.date));
+    const latestDate = findLatestDate((chipDates as { date: string }[]).map((r: { date: string }) => r.date));
+    const staleDays = latestDate ? daysSince(latestDate) : 999;
+
+    const issues: string[] = [];
+    if (chipCount === 0) {
+      issues.push('InstitutionalChip 完全無資料 — ChipAgent 將永遠輸出 Insufficient');
+    } else {
+      if (chipStocks < 20) issues.push(`僅 ${chipStocks} 檔股票有法人資料 (ChipScore 覆蓋率低)`);
+      if (staleDays > 5) issues.push(`法人資料已 ${staleDays} 天未更新`);
+      if (Object.keys(dateFormats).length > 1) issues.push('混合日期格式');
+    }
+
+    tables.push({
+      table: 'InstitutionalChip',
+      rowCount: chipCount,
+      stockCoverage: chipStocks,
+      dateFormats,
+      latestDate,
+      staleDays,
+      nullRates: {},
+      score: chipStocks >= 100 && staleDays <= 3 ? 90
+           : chipStocks >= 50 ? 70
+           : chipStocks >= 20 ? 50
+           : chipCount > 0 ? 30
+           : 0,
+      issues,
+    });
+  } catch (e) {
+    warnings.push(`InstitutionalChip check failed: ${e}`);
+  }
+
+  // === Build coverageSummary ===
+  const coverageSummary: CoverageSummary = {
+    totalStocks: 0,
+    stocksWithQuotes: 0,
+    stocksGe250Days: 0,
+    stocksGe100Days: 0,
+    stocksGe60Days: 0,
+    stocksGe20Days: 0,
+    chipCoveredStocks: 0,
+    chipDatesAvailable: 0,
+    marketIndexDays: 0,
+    taiexLatestDate: null,
+    quoteLatestDate: null,
+    chipLatestDate: null,
+    backtestEligible: 0,
+    fullAnalysisEligible: 0,
+    chipAgentActive: false,
+  };
+  try {
+    const totalStocks = await prisma.stock.count();
+    const quoteGroups = await prisma.stockQuote.groupBy({ by: ['stockId'], _count: { _all: true } });
+    const chipGroups = await (prisma as any).institutionalChip.groupBy({ by: ['stockId'] });
+    const chipSet = new Set((chipGroups as { stockId: string }[]).map((g: { stockId: string }) => g.stockId));
+
+    const stocksGe20 = quoteGroups.filter(g => g._count._all >= 20);
+    const stocksGe60 = quoteGroups.filter(g => g._count._all >= 60);
+    const stocksGe100 = quoteGroups.filter(g => g._count._all >= 100);
+    const stocksGe250 = quoteGroups.filter(g => g._count._all >= 250);
+    const withChipAndBacktest = stocksGe100.filter(g => chipSet.has(g.stockId));
+
+    const marketIndexCount = await prisma.marketIndex.count({ where: { name: 'TAIEX' } });
+    const latestIndexRow = await prisma.marketIndex.findFirst({ where: { name: 'TAIEX' }, orderBy: { date: 'desc' } });
+    const latestQuoteRow = await prisma.stockQuote.findFirst({ orderBy: { date: 'desc' } });
+    const latestChipRow = await (prisma as any).institutionalChip.findFirst({ orderBy: { date: 'desc' } });
+
+    coverageSummary.totalStocks = totalStocks;
+    coverageSummary.stocksWithQuotes = quoteGroups.length;
+    coverageSummary.stocksGe250Days = stocksGe250.length;
+    coverageSummary.stocksGe100Days = stocksGe100.length;
+    coverageSummary.stocksGe60Days = stocksGe60.length;
+    coverageSummary.stocksGe20Days = stocksGe20.length;
+    coverageSummary.chipCoveredStocks = chipGroups.length;
+    coverageSummary.chipDatesAvailable = (await (prisma as any).institutionalChip.findMany({ select: { date: true }, distinct: ['date'] })).length;
+    coverageSummary.marketIndexDays = marketIndexCount;
+    coverageSummary.taiexLatestDate = latestIndexRow?.date ?? null;
+    coverageSummary.quoteLatestDate = latestQuoteRow?.date ?? null;
+    coverageSummary.chipLatestDate = latestChipRow?.date ?? null;
+    coverageSummary.backtestEligible = stocksGe100.length;
+    coverageSummary.fullAnalysisEligible = withChipAndBacktest.length;
+    coverageSummary.chipAgentActive = chipGroups.length >= 20;
+  } catch (e) {
+    warnings.push(`coverageSummary failed: ${e}`);
   }
 
   const overallScore = tables.length > 0
@@ -156,6 +273,7 @@ export async function runQualityCheck(): Promise<QualityReport> {
     tables,
     overallScore,
     warnings,
+    coverageSummary,
   };
 }
 
