@@ -5,6 +5,7 @@ export type TaskStatus =
   | 'QUEUED'
   | 'RUNNING'
   | 'COMPLETED'
+  | 'PENDING_REVIEW'
   | 'FAILED'
   | 'FAILED_RATE_LIMIT'
   | 'REPLAN_REQUIRED'
@@ -225,6 +226,7 @@ export interface SchedulerState {
   schedulerEnabled: boolean;
   plannerProvider: PlannerProvider;
   workerProvider: WorkerProvider;
+  workerCopilotModel?: string;
   providerCooldowns?: Partial<Record<WorkerProvider, ProviderCooldownState>>;
   scheduleMinutes: number;
   nextPlannerRunAt: string | null;
@@ -234,7 +236,7 @@ export interface SchedulerState {
   updatedAt: string;
 }
 
-export const TERMINAL_TASK_STATUSES: readonly TaskStatus[] = ['COMPLETED', 'FAILED', 'FAILED_RATE_LIMIT', 'CANCELLED'];
+export const TERMINAL_TASK_STATUSES: readonly TaskStatus[] = ['COMPLETED', 'PENDING_REVIEW', 'FAILED', 'FAILED_RATE_LIMIT', 'CANCELLED'];
 
 export function isTerminalTaskStatus(status: TaskStatus): boolean {
   return TERMINAL_TASK_STATUSES.includes(status);

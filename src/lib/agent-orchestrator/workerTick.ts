@@ -16,6 +16,7 @@ import {
   saveSchedulerState,
 } from './storage';
 import { toFinalStatus, updateTaskRecord, writeTaskCompletionArtifacts } from './tasks';
+import { attemptAutoCommit } from './autoCommit';
 import { processCompletedOptimizationTaskFromFS } from '../autonomous/InsightIntegrationLayer';
 import type { ProviderCooldownState, TaskContract, TaskResult, WorkerTickOutcome } from './types';
 
@@ -59,6 +60,23 @@ function readActiveCooldown(state: Awaited<ReturnType<typeof loadSchedulerState>
     return null;
   }
   return cooldown;
+}
+
+async function applyAutoCommitIfEligible(
+  paths: Awaited<ReturnType<typeof loadSchedulerState>>['paths'],
+  index: Awaited<ReturnType<typeof loadTaskIndex>>,
+  task: NonNullable<ReturnType<typeof findFirstTaskByStatus>>,
+  gateResult: TaskResult,
+  finalStatus: string,
+): Promise<void> {
+  if (finalStatus !== 'COMPLETED') return;
+  const commitResult = attemptAutoCommit(task, gateResult);
+  if (!commitResult.committed) return;
+  await updateTaskRecord(paths, index, task.taskId, {
+    status: 'PENDING_REVIEW',
+    latestProgressSummary: `Auto-committed ${commitResult.committedFiles.length} file(s) (sha: ${commitResult.sha ?? 'unknown'}). Awaiting CTO review.`,
+    lastOutputAt: nowIso(),
+  });
 }
 
 async function finalizeWorkerRun(
@@ -139,6 +157,43 @@ function buildTaskProgressSummary(finalStatus: TaskResult['status'], provider: s
   return `Worker finished task but gate=${gateResult.gate_verdict}.`;
 }
 
+async function handleSingleActiveTask(
+  paths: Awaited<ReturnType<typeof loadSchedulerState>>['paths'],
+  state: Awaited<ReturnType<typeof loadSchedulerState>>['state'],
+  index: Awaited<ReturnType<typeof loadTaskIndex>>,
+  profile: Awaited<ReturnType<typeof loadProjectProfile>>,
+  startedAtIso: string,
+): Promise<WorkerTickOutcome | null> {
+  const activeTask = findFirstTaskByStatus(index, 'RUNNING');
+  if (!activeTask || !profile.worker_rules.single_active_task) return null;
+  if (
+    profile.worker_rules.finalize_on_permission_block &&
+    isStale(activeTask.lastOutputAt, profile.worker_rules.finalize_on_stale_output_minutes)
+  ) {
+    return finalizeStaleRunningTask(
+      paths,
+      state,
+      index,
+      activeTask,
+      startedAtIso,
+      profile.worker_rules.finalize_on_stale_output_minutes,
+    );
+  }
+  await finalizeWorkerRun(paths, state, startedAtIso, 'skipped', `Task #${activeTask.taskId} is already RUNNING.`, activeTask.taskId);
+  return { status: 'skipped', reason: 'already_running', taskId: activeTask.taskId };
+}
+
+function scheduleOptimizationInsights(
+  finalStatus: string,
+  task: NonNullable<ReturnType<typeof findFirstTaskByStatus>>,
+): void {
+  if (finalStatus !== 'COMPLETED') return;
+  if (task.plannerContext?.regimeState !== 'OPTIMIZATION') return;
+  const dedupeKey = (task.plannerContext as unknown as Record<string, unknown>)?.dedupeKey as string | undefined;
+  if (!dedupeKey) return;
+  processCompletedOptimizationTaskFromFS(dedupeKey).catch(() => { /* non-blocking */ });
+}
+
 export async function runWorkerTick(options: WorkerTickOptions = {}): Promise<WorkerTickOutcome> {
   const profile = await loadProjectProfile();
   const { paths, state } = await loadSchedulerState(profile);
@@ -165,25 +220,8 @@ export async function runWorkerTick(options: WorkerTickOptions = {}): Promise<Wo
     return { status: 'skipped', reason: 'provider_rate_limited', taskId: activeCooldown.lastTaskId };
   }
 
-  const activeTask = findFirstTaskByStatus(index, 'RUNNING');
-  if (activeTask && profile.worker_rules.single_active_task) {
-    if (
-      profile.worker_rules.finalize_on_permission_block &&
-      isStale(activeTask.lastOutputAt, profile.worker_rules.finalize_on_stale_output_minutes)
-    ) {
-      return finalizeStaleRunningTask(
-        paths,
-        state,
-        index,
-        activeTask,
-        startedAtIso,
-        profile.worker_rules.finalize_on_stale_output_minutes,
-      );
-    }
-
-    await finalizeWorkerRun(paths, state, startedAtIso, 'skipped', `Task #${activeTask.taskId} is already RUNNING.`, activeTask.taskId);
-    return { status: 'skipped', reason: 'already_running', taskId: activeTask.taskId };
-  }
+  const activeTaskResult = await handleSingleActiveTask(paths, state, index, profile, startedAtIso);
+  if (activeTaskResult) return activeTaskResult;
 
   const queuedTasks = index.tasks
     .filter((task) => task.status === 'QUEUED')
@@ -204,6 +242,7 @@ export async function runWorkerTick(options: WorkerTickOptions = {}): Promise<Wo
 
   const workerOutput = await runWorkerProvider({
     workerProvider: state.workerProvider,
+    workerCopilotModel: state.workerCopilotModel ?? '',
     taskId: task.taskId,
     promptPath: task.promptPath,
     contractPath: task.contractPath,
@@ -276,12 +315,10 @@ export async function runWorkerTick(options: WorkerTickOptions = {}): Promise<Wo
   });
 
   // Non-blocking: extract insights from optimization task output files
-  if (finalStatus === 'COMPLETED' && task.plannerContext?.regimeState === 'OPTIMIZATION') {
-    const dedupeKey = (task.plannerContext as unknown as Record<string, unknown>)?.dedupeKey as string | undefined;
-    if (dedupeKey) {
-      processCompletedOptimizationTaskFromFS(dedupeKey).catch(() => { /* non-blocking */ });
-    }
-  }
+  scheduleOptimizationInsights(finalStatus, task);
+
+  // Auto-commit: stage and commit changed code files when gate passes
+  await applyAutoCommitIfEligible(paths, index, task, gateResult, finalStatus);
 
   await finalizeWorkerRun(
     paths,
