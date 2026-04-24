@@ -1,0 +1,27 @@
+{
+  "task_id": 143,
+  "objective": "TRUE_EXHAUSTED follow-up recovery diagnostic",
+  "evidence": {
+    "audit_command": "node scripts/audit_learning_signals.js",
+    "audit_exit_code": 0,
+    "fullTradeCount": 4,
+    "requiredMinFullTrades": 5,
+    "delta_to_min": 1,
+    "signal_count": 51,
+    "time_exit_count": 21,
+    "SNR_percent": 71,
+    "setupDiversity": ["trend","rebound"],
+    "readme_log_path": "/tmp/audit_output_143.txt"
+  },
+  "generated_files": [
+    "runtime/agent_orchestrator/tasks/20260424/true_exhausted_diagnosis.md",
+    "runtime/agent_orchestrator/tasks/20260424/learning_data_gap_report.json",
+    "runtime/agent_orchestrator/tasks/20260424/recovery_execution_plan.json",
+    "runtime/agent_orchestrator/tasks/20260424/validation_rerun_checklist.md",
+    "runtime/agent_orchestrator/tasks/20260424/task_result_143.json",
+    "runtime/agent_orchestrator/tasks/20260424/changed_files_list.txt"
+  ],
+  "status": "evidence_collected",
+  "notes": "Audit run completed successfully; primary blocker is insufficient counted full trades (4/5). Recovery plan recommends probe campaign and promotion policy. If DB or runtime access were blocked, details would appear here.",
+  "timestamp": "2026-04-25T00:02:00+08:00"
+}
