@@ -1,0 +1,29 @@
+[
+  {
+    "id": "variant_a_momentum_probe",
+    "focus": "momentum (trend)",
+    "entry": "When 5-min EMA(5)>EMA(20) and breakout above recent high; signalScore>=0.6",
+    "exit": "target 4% OR stop -3% OR time-exit 7 days",
+    "sizing": "0.5% portfolio per trade, cap 2 concurrent",
+    "risk_control": "max drawdown per-day 2%, per-trade stop; promote probe to full after 2 consecutive positive probes",
+    "hypothesis": "Trend setups respond to momentum entries; smaller sizing reduces risk while allowing enough probes to run."
+  },
+  {
+    "id": "variant_b_reversion_probe",
+    "focus": "reversion (rebound)",
+    "entry": "When RSI(14)<30 && price below lower Bollinger band and mean-reversion oscillator confirms; signalScore>=0.65",
+    "exit": "target 6% OR stop -4% OR time-exit 10 days",
+    "sizing": "0.4% portfolio per trade, cap 2 concurrent",
+    "risk_control": "per-symbol cap 1 probe, promote after single strong probe with positive pnl and technicalEffective=true",
+    "hypothesis": "Rebound setups have higher per-trade PnL; slightly larger target and stop reflect mean reversion behaviour."
+  },
+  {
+    "id": "variant_c_combined_probe",
+    "focus": "hybrid (trend+rebound) diversification",
+    "entry": "Rule-based selection: if momentum strength>0.7 use variant_a entry, else if meanBias>0.5 use variant_b; enforce cross-checks",
+    "exit": "target 5% OR stop -3.5% OR time-exit 8 days",
+    "sizing": "0.45% portfolio per trade, cap 3 concurrent (max 2 per-focus)",
+    "risk_control": "diversify across symbols and setupTypes; auto-halt if probe loss rate >50% in last 10 probes",
+    "hypothesis": "Combining both focuses increases setupDiversity and reduces risk of low-sample bias; selection rule prioritizes strongest signal."
+  }
+]
