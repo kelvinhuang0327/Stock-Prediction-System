@@ -24,16 +24,56 @@ interface RunRecord {
 
 interface TaskRecord {
   taskId: number;
+  title?: string;
   dayKey: string;
   slug: string;
   status: string;
   plannerProvider: string;
   workerProvider: string;
+  createdAt?: string;
   lastOutputAt?: string | null;
   latestProgressSummary?: string | null;
   changedFilesCount?: number | null;
   completedAt?: string | null;
   durationMs?: number | null;
+  plannerContext?: {
+    taskType: string;
+    game: string | null;
+    dedupeKey: string;
+  } | null;
+}
+
+interface TaskDetail {
+  task: TaskRecord & {
+    promptPath?: string;
+    contractPath?: string;
+    resultPath?: string | null;
+    workerLogPath?: string | null;
+  };
+  contract?: {
+    objective: string;
+    scope?: string[];
+    constraints?: string[];
+    acceptance_tests?: string[];
+    required_outputs?: string[];
+    trigger_reason?: string;
+    background?: string;
+  } | null;
+  result?: {
+    gate_verdict: string;
+    gate_reason: string;
+    failure_provider?: string | null;
+    failure_reason?: string | null;
+    reset_hint?: string | null;
+    final_message?: string | null;
+    duration_seconds: number;
+    changed_files: string[];
+    acceptance_results: Array<{ name: string; passed: boolean; evidence: string }>;
+    next_action: string;
+  } | null;
+  promptContent?: string | null;
+  completedContent?: string | null;
+  workerLogTail?: string | null;
 }
 
 interface Summary {
@@ -88,6 +128,20 @@ function fmtDuration(ms?: number | null): string {
   return `${Math.floor(s / 60)}m${s % 60}s`;
 }
 
+function fmtDurationSec(sec?: number | null): string {
+  if (!sec) return '-';
+  if (sec < 60) return `${sec}s`;
+  return `${Math.floor(sec / 60)}m${sec % 60}s`;
+}
+
+function fmtDateTime(iso?: string | null): string {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return '—';
+  const pad = (n: number) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}/${pad(d.getMonth()+1)}/${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+}
+
 function useCountdown(nextRunAt: string | null | undefined): string {
   const [display, setDisplay] = useState('—');
 
@@ -139,6 +193,8 @@ export function OrchestratorControlPanel({
   const [taskStatus, setTaskStatus] = useState('');
   const [tasksLoading, setTasksLoading] = useState(false);
   const [selectedTask, setSelectedTask] = useState<TaskRecord | null>(null);
+  const [selectedTaskDetail, setSelectedTaskDetail] = useState<TaskDetail | null>(null);
+  const [detailLoading, setDetailLoading] = useState(false);
 
   // Run history
   const [runs, setRuns] = useState<RunRecord[]>([]);
@@ -180,6 +236,19 @@ export function OrchestratorControlPanel({
       if (data.ok) setRuns(data.runs ?? []);
     } finally {
       setRunsLoading(false);
+    }
+  }, []);
+
+  const selectTask = useCallback(async (t: TaskRecord) => {
+    setSelectedTask(t);
+    setSelectedTaskDetail(null);
+    setDetailLoading(true);
+    try {
+      const res = await fetch(`/api/orchestrator/tasks/${t.taskId}`);
+      const data = await res.json() as { ok: boolean; detail?: TaskDetail };
+      if (data.ok && data.detail) setSelectedTaskDetail(data.detail);
+    } catch { /* ignore */ } finally {
+      setDetailLoading(false);
     }
   }, []);
 
@@ -410,12 +479,12 @@ export function OrchestratorControlPanel({
             <thead>
               <tr className="text-slate-500 border-b border-slate-800">
                 <th className="text-left pb-1 pr-3">ID</th>
-                <th className="text-left pb-1 pr-3">日期</th>
-                <th className="text-left pb-1 pr-3">任務</th>
+                <th className="text-left pb-1 pr-3">Planner 發佈時間</th>
+                <th className="text-left pb-1 pr-3">標題</th>
                 <th className="text-left pb-1 pr-3">狀態</th>
-                <th className="text-left pb-1 pr-3">時長</th>
+                <th className="text-left pb-1 pr-3">耗時</th>
                 <th className="text-left pb-1 pr-3">異動檔案</th>
-                <th className="text-left pb-1">完成時間</th>
+                <th className="text-left pb-1">Worker 完成時間</th>
               </tr>
             </thead>
             <tbody>

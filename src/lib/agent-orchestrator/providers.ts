@@ -32,6 +32,7 @@ export interface PlannerDraft {
 
 export interface WorkerExecutionInput {
   workerProvider: WorkerProvider;
+  workerCopilotModel?: string;
   taskId: number;
   promptPath: string;
   contractPath: string;

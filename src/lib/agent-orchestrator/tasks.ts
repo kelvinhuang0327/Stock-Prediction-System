@@ -96,6 +96,7 @@ export async function createQueuedTask(
 
   const task: TaskRecord = {
     taskId,
+    title: input.objective,
     slug,
     dayKey,
     status: 'QUEUED',

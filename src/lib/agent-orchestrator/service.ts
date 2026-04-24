@@ -1,4 +1,5 @@
 import { fileExists, nowIso, readJsonFile, scheduleNextRunAt } from './common';
+import nodeFs from 'node:fs/promises';
 import { runPlannerTick } from './plannerTick';
 import { loadProjectProfile } from './profile';
 import {
@@ -110,10 +111,28 @@ export async function getOrchestratorTaskDetail(taskId: number) {
     ? await readJsonFile<TaskResult>(task.resultPath)
     : null;
 
+  // Read file contents (truncated to avoid huge payloads)
+  const promptContent = task.promptPath && (await fileExists(task.promptPath))
+    ? (await nodeFs.readFile(task.promptPath, 'utf-8').catch(() => null))
+    : null;
+  const completedContent = task.completedPath && (await fileExists(task.completedPath))
+    ? (await nodeFs.readFile(task.completedPath, 'utf-8').catch(() => null))
+    : null;
+  const workerLogTail = task.workerLogPath && (await fileExists(task.workerLogPath))
+    ? await (async () => {
+        const raw = await nodeFs.readFile(task.workerLogPath!, 'utf-8').catch(() => '');
+        const lines = raw.split('\n');
+        return lines.slice(-200).join('\n');
+      })()
+    : null;
+
   return {
     task,
     contract,
     result,
+    promptContent,
+    completedContent,
+    workerLogTail,
   };
 }
 

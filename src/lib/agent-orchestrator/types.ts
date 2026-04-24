@@ -171,6 +171,8 @@ export interface TaskMeta {
 
 export interface TaskRecord {
   taskId: number;
+  /** Human-readable title derived from contract.objective at task-creation time. */
+  title?: string;
   slug: string;
   dayKey: string;
   status: TaskStatus;

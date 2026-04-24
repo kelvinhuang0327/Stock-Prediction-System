@@ -671,3 +671,9 @@ model ClassifierCalibrationLog {
   @@index([classifiedAt])
   @@index([state])
 }
+
+model OrchestratorSetting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
