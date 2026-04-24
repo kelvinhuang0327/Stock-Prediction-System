@@ -1,0 +1,21 @@
+{
+  "version": "1.0",
+  "task_id": 141,
+  "slug": "8-hour-multi-domain-optimization-sprint",
+  "status": "RUNNING",
+  "gate_verdict": null,
+  "planner_provider": "codex",
+  "worker_provider": "copilot-daemon",
+  "created_at": "2026-04-24T15:40:05.379Z",
+  "updated_at": "2026-04-24T15:40:06.809Z",
+  "last_output_at": "2026-04-24T15:40:06.809Z",
+  "latest_progress_summary": "Worker claimed task and started execution.",
+  "planner_context": {
+    "taskType": "optimization_composite_8h",
+    "game": null,
+    "regimeState": "OPTIMIZATION",
+    "dedupeKey": "composite_8h_plan__2026-04-24",
+    "confidenceScore": null,
+    "regimeTaskType": "composite_8h_plan"
+  }
+}

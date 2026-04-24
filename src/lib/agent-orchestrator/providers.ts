@@ -697,9 +697,10 @@ const RATE_LIMIT_PATTERNS = [
   /github\.com\/en\/copilot\/concepts\/rate-limits/i,
   /limit to reset/i,
   /\brate limit(?:ed|ing)?\b/i,
-  /\bpremium\b/i,
   /(?:status|code)?\s*429\b/i,
 ];
+
+const COPILOT_USAGE_FOOTER_PATTERN = /^\s*Requests\s+\d+\s+Premium\s*\([^\n)]*\)\s*$/gim;
 
 function detectProviderRateLimit(message: string, provider: WorkerProvider): {
   finalMessage: string;
@@ -709,21 +710,24 @@ function detectProviderRateLimit(message: string, provider: WorkerProvider): {
   const normalized = message.trim();
   if (!normalized) return null;
 
-  const lower = normalized.toLowerCase();
-  const matchCount = RATE_LIMIT_PATTERNS.reduce((count, pattern) => count + (pattern.test(normalized) ? 1 : 0), 0);
+  const normalizedForDetection = normalized.replace(COPILOT_USAGE_FOOTER_PATTERN, '').trim();
+  if (!normalizedForDetection) return null;
+
+  const lower = normalizedForDetection.toLowerCase();
+  const matchCount = RATE_LIMIT_PATTERNS.reduce((count, pattern) => count + (pattern.test(normalizedForDetection) ? 1 : 0), 0);
   const providerIsCopilot = provider === 'copilot' || provider === 'copilot-daemon';
   const hasStrongSignal =
-    /you['’]ve hit your rate limit/i.test(normalized) ||
-    /github\.com\/en\/copilot\/concepts\/rate-limits/i.test(normalized) ||
-    /(?:status|code)?\s*429\b/i.test(normalized);
+    /you['’]ve hit your rate limit/i.test(normalizedForDetection) ||
+    /github\.com\/en\/copilot\/concepts\/rate-limits/i.test(normalizedForDetection) ||
+    /(?:status|code)?\s*429\b/i.test(normalizedForDetection);
 
-  if (!hasStrongSignal && !(providerIsCopilot && matchCount >= 1) && matchCount < 2) {
+  if (!hasStrongSignal && !(providerIsCopilot && matchCount >= 2) && matchCount < 2) {
     return null;
   }
 
-  const sentenceMatches = normalized.match(/[^.!?\n]+[.!?]?/g) ?? [normalized];
-  const resetSentence = sentenceMatches.find((sentence) => /reset|wait|premium/i.test(sentence))?.trim() ?? null;
-  const httpStatus = /(?:status|code)?\s*(429)\b/i.exec(normalized)?.[1];
+  const sentenceMatches = normalizedForDetection.match(/[^.!?\n]+[.!?]?/g) ?? [normalizedForDetection];
+  const resetSentence = sentenceMatches.find((sentence) => /reset|wait|rate limit|429/i.test(sentence))?.trim() ?? null;
+  const httpStatus = /(?:status|code)?\s*(429)\b/i.exec(normalizedForDetection)?.[1];
   const resetHint = resetSentence || (lower.includes('rate limit') ? 'Wait for the provider limit to reset or switch to another provider.' : null);
 
   return {

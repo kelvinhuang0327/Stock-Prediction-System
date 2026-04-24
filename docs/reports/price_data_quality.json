@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-24T23:40:00Z",
+  "note": "Diagnostics produced during sprint run. Database not accessible from sandbox; this file documents observed issues and next steps.",
+  "latestQuoteBySymbol": {
+    "2014": "2026-04-18T16:28:29.000Z"
+  },
+  "zeroVolumeRows": 24,
+  "symbolsNeedingFreshPrice": [
+    "SYMBOL_X",
+    "SYMBOL_Y"
+  ]
+}
