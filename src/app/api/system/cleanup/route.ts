@@ -7,6 +7,7 @@
  *   marketDays=N               — DailyMarketSnapshot retention (default: 90)
  *   candidateDays=N            — DailyCandidateSnapshot retention (default: 60)
  *   watchlistDays=N            — DailyWatchlistSnapshot retention (default: 60)
+ *   portfolioImpactDays=N      — PortfolioImpactSnapshot retention (default: 180)
  *   logDays=N                  — NotificationDeliveryLog retention (default: 90)
  *
  * Safety:
@@ -43,6 +44,9 @@ export async function GET(req: NextRequest) {
     dailyWatchlistSnapshot: searchParams.has('watchlistDays')
       ? parseInt(searchParams.get('watchlistDays')!, 10)
       : globalDays ?? DEFAULT_RETENTION_POLICY.dailyWatchlistSnapshot,
+    portfolioImpactSnapshot: searchParams.has('portfolioImpactDays')
+      ? parseInt(searchParams.get('portfolioImpactDays')!, 10)
+      : globalDays ?? DEFAULT_RETENTION_POLICY.portfolioImpactSnapshot,
     notificationDeliveryLog: searchParams.has('logDays')
       ? parseInt(searchParams.get('logDays')!, 10)
       : globalDays ?? DEFAULT_RETENTION_POLICY.notificationDeliveryLog,

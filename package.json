@@ -18,6 +18,21 @@
     "backtest": "ts-node src/lib/backtest/BacktestRunner.ts",
     "debug:twse": "ts-node src/lib/api/debug_twse_manual.ts",
     "debug:mis": "ts-node src/lib/api/debug_mis_manual.ts",
+    "autonomous:daily": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node -r tsconfig-paths/register scripts/run-autonomous-daily.ts",
+    "autonomous:monitor": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node -r tsconfig-paths/register scripts/run-autonomous-monitor.ts",
+    "autonomous:review": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node -r tsconfig-paths/register scripts/run-autonomous-review.ts",
+    "autonomous:learning": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node -r tsconfig-paths/register scripts/run-autonomous-learning.ts",
+    "autonomous:research": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node -r tsconfig-paths/register scripts/run-autonomous-research.ts",
+    "autonomous:scheduler": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node -r tsconfig-paths/register scripts/local-autonomous-scheduler.ts",
+    "orchestrator:validate-profile": "node scripts/validate-agent-profile.js",
+    "orchestrator:planner": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node -r tsconfig-paths/register scripts/run-orchestrator-planner.ts",
+    "orchestrator:worker": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node -r tsconfig-paths/register scripts/run-orchestrator-worker.ts",
+    "orchestrator:scheduler": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node -r tsconfig-paths/register scripts/local-agent-orchestrator-scheduler.ts",
+    "launchd:install": "bash deploy/launchd-orchestrator/install.sh",
+    "launchd:reload": "bash deploy/launchd-orchestrator/reload.sh",
+    "launchd:uninstall": "bash deploy/launchd-orchestrator/uninstall.sh",
+    "launchd:status": "bash deploy/launchd-orchestrator/status.sh",
+    "autonomous:fast-forward": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node -r tsconfig-paths/register scripts/run-fast-forward-simulation.ts",
     "db:push": "prisma db push",
     "db:studio": "prisma studio"
   },
@@ -53,6 +68,7 @@
     "prisma": "^5.22.0",
     "tailwindcss": "^4",
     "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5"
   }
 }

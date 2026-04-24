@@ -1,7 +1,74 @@
 import { prisma } from '../prisma';
-import { twseApi, StockQuote as TWSEQuote } from '../api/twseApi';
+import { twseApi } from '../api/twseApi';
+import { access, readFile } from 'node:fs/promises';
+import path from 'node:path';
+import {
+    upsertFinancialReports,
+    type RawFinancialReportInput,
+} from '@/lib/fundamental/FinancialReportSync';
 
 export const syncService = {
+    async syncFinancialReportsFromOpenApi() {
+        const start = Date.now();
+        try {
+            const rows = await twseApi.getQuarterlyFinancialReportsSummary();
+            if (rows.length === 0) {
+                await this.logSync('FinancialReports', 'success', 0, Date.now() - start, 'openapi financial report summary empty');
+                return {
+                    success: true,
+                    count: 0,
+                    source: 'openapi',
+                    limitations: ['TWSE 財報摘要端點目前回傳空資料。'],
+                };
+            }
+
+            const result = await upsertFinancialReports(
+                rows.map((row): RawFinancialReportInput => ({
+                    stockId: row.stockId,
+                    year: row.year,
+                    quarter: row.quarter,
+                    eps: row.eps,
+                    netIncome: row.netIncome,
+                    operatingIncome: row.operatingIncome,
+                })),
+            );
+            await this.logSync('FinancialReports', 'success', result.count, Date.now() - start, 'source=openapi:t187ap14_L');
+            return { success: true, count: result.count, source: 'openapi', limitations: result.limitations };
+        } catch (error) {
+            const message = String(error);
+            await this.logSync('FinancialReports', 'failed', 0, Date.now() - start, message);
+            return {
+                success: false,
+                count: 0,
+                source: 'openapi',
+                error,
+                limitations: ['TWSE 財報摘要同步失敗。'],
+            };
+        }
+    },
+
+    async resolveFinancialReportFilePath(filePath?: string): Promise<string | null> {
+        const candidates = [
+            filePath,
+            process.env.FINANCIAL_REPORTS_FILE,
+            path.join(process.cwd(), 'data', 'financial_reports.json'),
+            path.join(process.cwd(), 'data', 'fundamental', 'financial_reports.json'),
+            path.join(process.cwd(), 'datasets', 'financial_reports.json'),
+            path.join(process.cwd(), 'scripts', 'data', 'financial_reports.json'),
+        ].filter((item): item is string => Boolean(item));
+
+        for (const candidate of candidates) {
+            try {
+                await access(candidate);
+                return candidate;
+            } catch {
+                // Try next candidate.
+            }
+        }
+
+        return null;
+    },
+
     async logSync(endpoint: string, status: 'success' | 'failed', records: number, duration: number, error?: string) {
         try {
             await prisma.syncLog.create({
@@ -61,10 +128,10 @@ export const syncService = {
     async syncDailyQuotes() {
         const start = Date.now();
         try {
-            const quotes = await twseApi.getDailyStocks();
+            const snapshot = await twseApi.getLatestMarketSnapshot();
+            const quotes = snapshot.quotes;
             if (!quotes.length) throw new Error('No quotes fetched');
 
-            const dateStr = quotes[0].date; // Assuming all quotes are from same day
             let count = 0;
 
             // Ensure stocks exist first (optional, but good for referential integrity if enforced)
@@ -118,8 +185,8 @@ export const syncService = {
                 count++;
             }
 
-            await this.logSync('DailyQuotes', 'success', count, Date.now() - start);
-            return { success: true, count };
+            await this.logSync('DailyQuotes', 'success', count, Date.now() - start, `source=${snapshot.source};date=${snapshot.date}`);
+            return { success: true, count, source: snapshot.source, date: snapshot.date };
         } catch (error) {
             await this.logSync('DailyQuotes', 'failed', 0, Date.now() - start, String(error));
             console.error('Daily Quotes Sync Failed:', error);
@@ -138,8 +205,8 @@ export const syncService = {
             // Let's assume today's date for storage, or ideally fetch date from syncDailyQuotes first to get "market date".
 
             // Hack: fetch one quote to get the market date
-            const quotes = await twseApi.getDailyStocks();
-            const marketDate = quotes[0]?.date || new Date().toISOString().split('T')[0].replace(/-/g, '');
+            const snapshot = await twseApi.getLatestMarketSnapshot();
+            const marketDate = snapshot.date || new Date().toISOString().split('T')[0];
 
             let count = 0;
             for (const item of metrics) {
@@ -176,8 +243,8 @@ export const syncService = {
                 count++;
             }
 
-            await this.logSync('StockMetrics', 'success', count, Date.now() - start);
-            return { success: true, count };
+            await this.logSync('StockMetrics', 'success', count, Date.now() - start, `date=${marketDate}`);
+            return { success: true, count, date: marketDate };
         } catch (error) {
             await this.logSync('StockMetrics', 'failed', 0, Date.now() - start, String(error));
             console.error('Stock Metrics Sync Failed:', error);
@@ -188,14 +255,9 @@ export const syncService = {
     async syncMarketIndices() {
         const start = Date.now();
         try {
-            const indices = await twseApi.getMarketIndices();
-            // Same issue with date, usually MI_INDEX result includes date? 
-            // twseApi maps it. Let's assume we need to handle date. 
-            // indices from twseApi.ts model: MarketIndex { name, value, change, changePercent } - no date!
-            // I should update twseApi.ts or just invoke getDailyStocks to get market date.
-
-            const quotes = await twseApi.getDailyStocks();
-            const marketDate = quotes[0]?.date;
+            const snapshot = await twseApi.getLatestMarketSnapshot();
+            const indices = snapshot.indices;
+            const marketDate = snapshot.date;
 
             if (!marketDate) throw new Error("Could not determine market date");
 
@@ -224,8 +286,8 @@ export const syncService = {
                 count++;
             }
 
-            await this.logSync('MarketIndices', 'success', count, Date.now() - start);
-            return { success: true, count };
+            await this.logSync('MarketIndices', 'success', count, Date.now() - start, `source=${snapshot.source};date=${marketDate}`);
+            return { success: true, count, source: snapshot.source, date: marketDate };
         } catch (error) {
             await this.logSync('MarketIndices', 'failed', 0, Date.now() - start, String(error));
             console.error('Market Index Sync Failed:', error);
@@ -244,7 +306,7 @@ export const syncService = {
                 const year = parseInt(rev.month.slice(0, 3)) + 1911;
                 const month = parseInt(rev.month.slice(3));
 
-                await (prisma as any).monthlyRevenue.upsert({
+                await prisma.monthlyRevenue.upsert({
                     where: {
                         stockId_year_month: {
                             stockId: rev.code,
@@ -278,6 +340,44 @@ export const syncService = {
         }
     },
 
+    async syncFinancialReportsFromLocalFile(filePath?: string) {
+        const start = Date.now();
+        const targetPath = await this.resolveFinancialReportFilePath(filePath);
+        if (!targetPath) {
+            await this.logSync('FinancialReports', 'success', 0, Date.now() - start, 'local financial report dataset not found; fallback to openapi');
+            return this.syncFinancialReportsFromOpenApi();
+        }
+
+        try {
+            const raw = await readFile(targetPath, 'utf8');
+            const parsed = JSON.parse(raw);
+            const rows = Array.isArray(parsed)
+                ? parsed as RawFinancialReportInput[]
+                : Array.isArray(parsed?.reports)
+                    ? parsed.reports as RawFinancialReportInput[]
+                    : [];
+
+            if (rows.length === 0) {
+                await this.logSync('FinancialReports', 'success', 0, Date.now() - start, 'financial report dataset empty; fallback to openapi');
+                return this.syncFinancialReportsFromOpenApi();
+            }
+
+            const result = await upsertFinancialReports(rows);
+            await this.logSync('FinancialReports', 'success', result.count, Date.now() - start, `source=${targetPath}`);
+            return { success: true, count: result.count, source: 'local_file', limitations: result.limitations };
+        } catch (error) {
+            const message = String(error);
+            if (message.includes('ENOENT')) {
+                await this.logSync('FinancialReports', 'success', 0, Date.now() - start, 'local financial report dataset not found; fallback to openapi');
+                return this.syncFinancialReportsFromOpenApi();
+            }
+
+            await this.logSync('FinancialReports', 'failed', 0, Date.now() - start, message);
+            console.error('Financial Reports Sync Failed:', error);
+            return { success: false, count: 0, source: 'local_file', error, limitations: ['financial report 同步失敗。'] };
+        }
+    },
+
     /**
      * syncInstitutionalChip — 同步單日三大法人買賣超
      *
@@ -302,7 +402,10 @@ export const syncService = {
 
             if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
 
-            const data: any = await resp.json();
+            const data = await resp.json() as {
+                stat?: string;
+                data?: string[][];
+            };
             if (data?.stat !== 'OK' || !Array.isArray(data?.data) || data.data.length === 0) {
                 // Non-trading day or no data — not an error
                 await this.logSync('institutional_chip', 'success', 0, Date.now() - start,
@@ -333,7 +436,7 @@ export const syncService = {
                     const totalBuy   = clean(row[9]);  // 三大法人買賣超
 
                     upserts.push(
-                        (prisma as any).institutionalChip.upsert({
+                        prisma.institutionalChip.upsert({
                             where: { stockId_date: { stockId, date: isoDate } },
                             update: { foreignBuy, trustBuy, dealerBuy, totalBuy },
                             create: { stockId, date: isoDate, foreignBuy, trustBuy, dealerBuy, totalBuy },
@@ -365,6 +468,7 @@ export const syncService = {
         const metrics = await this.syncMetrics();
         const indices = await this.syncMarketIndices();
         const realRevenue = await this.syncRealRevenue();
+        const financialReports = await this.syncFinancialReportsFromLocalFile();
         const chip = await this.syncInstitutionalChip();
 
         return {
@@ -373,6 +477,7 @@ export const syncService = {
             metrics,
             indices,
             realRevenue,
+            financialReports,
             chip,
         };
     },

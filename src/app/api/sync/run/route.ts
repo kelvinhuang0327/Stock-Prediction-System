@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@/lib/error-utils';
 
 import { NextResponse } from 'next/server';
 import { syncService } from '@/lib/services/syncService';
@@ -18,9 +19,10 @@ export async function POST() {
         await syncService.syncMetrics();
         await syncService.syncMarketIndices();
         await syncService.syncRealRevenue(); // Fast
+        await syncService.syncFinancialReportsFromLocalFile();
 
         return NextResponse.json({ success: true, message: 'Daily Sync Completed', details: result });
-    } catch (error: any) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
+    } catch (error: unknown) {
+        return NextResponse.json({ error: getErrorMessage(error) }, { status: 500 });
     }
 }

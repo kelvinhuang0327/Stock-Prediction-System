@@ -55,6 +55,7 @@ export function WatchlistTable({
                             <SortableTh align="center" className="bg-purple-50/50 hidden md:table-cell" onClick={() => onSort('alphaScore')}>Alpha{sortIndicator('alphaScore')}</SortableTh>
                             <Th className="bg-red-50/50">策略訊號</Th>
                             <Th className="hidden md:table-cell">分析摘要</Th>
+                            <Th className="hidden lg:table-cell">持倉脈絡</Th>
                             <Th align="right" className="hidden lg:table-cell">持有成本</Th>
                             <Th align="right" className="bg-primary/5">庫存股數</Th>
                             <Th align="right" className="bg-primary/5">損益試算</Th>
@@ -163,6 +164,29 @@ function WatchlistRow({ row, onEditHoldings, onSetAlert, onRemove }: {
                     </div>
                 ) : (
                     <span className="text-xs text-muted-foreground">—</span>
+                )}
+            </td>
+            {/* Portfolio context */}
+            <td className="p-4 hidden lg:table-cell">
+                {row.portfolioImpact ? (
+                    <div className="space-y-1 max-w-[260px]">
+                        <div className="flex flex-wrap gap-1">
+                            <span className="text-[10px] px-1.5 py-0.5 rounded bg-primary/10 text-primary">
+                                {row.portfolioImpact.topicContext.topics[0]?.stage ?? 'unknown'}
+                            </span>
+                            <span className="text-[10px] px-1.5 py-0.5 rounded bg-muted/40 text-muted-foreground">
+                                {row.portfolioImpact.topicContext.topics[0]?.role ?? 'unclear'}
+                            </span>
+                            <span className="text-[10px] px-1.5 py-0.5 rounded bg-muted/40 text-muted-foreground">
+                                {row.portfolioImpact.regimeContext.regime}
+                            </span>
+                        </div>
+                        <p className="text-[10px] text-muted-foreground line-clamp-2" title={row.portfolioImpact.narrative}>
+                            {row.portfolioImpact.narrative}
+                        </p>
+                    </div>
+                ) : (
+                    <span className="text-xs text-muted-foreground">資料不足</span>
                 )}
             </td>
             {/* Portfolio columns */}

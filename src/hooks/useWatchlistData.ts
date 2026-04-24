@@ -15,6 +15,7 @@ import {
     DEFAULT_WATCHLIST,
     ScreeningResult,
 } from '@/types/watchlist';
+import type { PortfolioImpact } from '@/types/portfolio';
 
 const LS_KEY = 'tw-stock-watchlist';
 const LS_VERSION_KEY = 'tw-stock-watchlist-version';
@@ -229,6 +230,8 @@ export function useWatchlistData() {
 
     // Alpha fusion overlay
     const [alphaMap, setAlphaMap] = useState<Record<string, { alphaScore: number; recommendationBucket: string; confidence: number }>>({});
+    // Portfolio interpretation overlay
+    const [impactMap, setImpactMap] = useState<Record<string, PortfolioImpact>>({});
 
     // ── Init: try DB first, fallback to localStorage ──
     useEffect(() => {
@@ -292,7 +295,7 @@ export function useWatchlistData() {
                         setMigrationStatus('failed');
                         setMigrationMessage(`匯入失敗：${result.errors?.join(', ') || '未知錯誤'}，暫時使用本機資料`);
                     }
-                } catch (err) {
+                } catch {
                     if (cancelled) return;
                     setMigrationStatus('failed');
                     setMigrationMessage('資料庫連線失敗，暫時使用本機資料');
@@ -419,11 +422,33 @@ export function useWatchlistData() {
             console.error('Failed to fetch alpha fusion', e);
         }
 
+        // Fetch portfolio interpretation context (L2 + L3 explainability)
+        try {
+            const res = await fetch('/api/portfolio/impact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ symbols }),
+            });
+            if (res.ok) {
+                const impactRes = await res.json();
+                const nextMap: Record<string, PortfolioImpact> = {};
+                for (const item of impactRes.results || []) {
+                    if (item?.symbol) nextMap[item.symbol] = item as PortfolioImpact;
+                }
+                setImpactMap(nextMap);
+            }
+        } catch (e) {
+            console.error('Failed to fetch portfolio impact context', e);
+        }
+
         setIsAnalyzing(false);
     }, [symbols, isLoaded, useDbSource]);
 
     // Auto-fetch analysis on mount
-    useEffect(() => { refreshAnalysis(); }, [refreshAnalysis]);
+    useEffect(() => {
+        const id = setTimeout(() => { void refreshAnalysis(); }, 0);
+        return () => clearTimeout(id);
+    }, [refreshAnalysis]);
 
     // ── CRUD ──
     const addStock = useCallback(async (stock: Stock) => {
@@ -508,11 +533,17 @@ export function useWatchlistData() {
         return baseRows.map(row => {
             const alpha = alphaMap[row.symbol];
             if (alpha) {
-                return { ...row, alphaScore: alpha.alphaScore, recommendationBucket: alpha.recommendationBucket, alphaConfidence: alpha.confidence };
+                return {
+                    ...row,
+                    alphaScore: alpha.alphaScore,
+                    recommendationBucket: alpha.recommendationBucket,
+                    alphaConfidence: alpha.confidence,
+                    portfolioImpact: impactMap[row.symbol],
+                };
             }
-            return row;
+            return { ...row, portfolioImpact: impactMap[row.symbol] };
         });
-    }, [useDbSource, dbItems, localItems, analysisMap, alphaMap]);
+    }, [useDbSource, dbItems, localItems, analysisMap, alphaMap, impactMap]);
 
     // ── Derived: sorted & filtered rows ──
     const rows = useMemo(

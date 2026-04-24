@@ -36,6 +36,8 @@ const TEST_ALERTS_RESULT: DailyAlertsResult = {
       comparisonBased: false,
     },
   ],
+  eventAlerts: [],
+  eventAlertSummary: '測試模式未包含事件提醒。',
   limitations: ['此為測試訊息，非真實分析結果'],
   generatedAt: new Date().toISOString(),
 };

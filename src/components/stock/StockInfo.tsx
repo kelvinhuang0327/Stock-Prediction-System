@@ -68,7 +68,7 @@ export function StockInfo({ symbol, data }: StockInfoProps) {
         const fetchRealTime = async () => {
             try {
                 const res = await fetch(`/api/stocks/${symbol}/realtime`);
-                if (!res.ok) return;
+                if (!res?.ok) return;
                 const json = await res.json();
                 const rt = json.data;
 

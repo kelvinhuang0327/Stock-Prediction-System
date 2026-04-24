@@ -49,6 +49,16 @@ export interface ResearchInput {
   usedSources?: string[];
   /** Missing source names that caused score degradation */
   missingSources?: string[];
+  /** Event layer MVP summary count */
+  eventCount?: number;
+  eventTrustLevelSummary?: {
+    official: number;
+    mainstream: number;
+    secondary: number;
+    unknown: number;
+  };
+  recentThemes?: string[];
+  catalystSummary?: string;
   limitations?: string[];
 }
 
@@ -222,35 +232,63 @@ function fundamentalAgent(input: ResearchInput): AgentView {
 }
 
 function catalystAgent(input: ResearchInput): AgentView {
-  const missSrc = input.missingSources ?? [];
-  const hasCatalystData =
-    !missSrc.some((s) =>
-      s.toLowerCase().includes('event') ||
-      s.toLowerCase().includes('catalyst') ||
-      s.toLowerCase().includes('news')
-    ) &&
-    input.usedSources?.some((s) =>
-      s.toLowerCase().includes('event') || s.toLowerCase().includes('catalyst')
-    );
-
-  if (!hasCatalystData) {
+  if (typeof input.eventCount !== 'number') {
     return {
       name: 'CatalystAgent',
       stance: 'Insufficient',
       confidence: 0,
-      rationale: '事件/催化劑資料目前不可用（無法說會/法說摘要、重大訊息等），無法評估催化因子。',
-      limitations: ['需要公告、法說會、重大訊息資料', '目前系統尚未整合此類資料源'],
-      missingSources: ['event_data', 'announcement_data'],
+      rationale: '事件/催化劑資料尚未提供，無法評估催化因子強度。',
+      limitations: ['CatalystAgent 需要 eventCount / trustLevelSummary / catalystSummary'],
+      missingSources: ['event_data'],
     };
   }
 
-  // Placeholder path — currently catalyst data is always missing
+  if (input.eventCount <= 0) {
+    return {
+      name: 'CatalystAgent',
+      stance: 'Insufficient',
+      confidence: 0,
+      rationale: '近期無明確事件資料，催化劑面不足。',
+      limitations: ['事件層目前為 MVP，來源覆蓋有限'],
+      missingSources: ['event_data'],
+    };
+  }
+
+  if (input.eventCount <= 2) {
+    const themeHint = (input.recentThemes ?? []).slice(0, 2).join('、');
+    return {
+      name: 'CatalystAgent',
+      stance: 'Neutral',
+      confidence: 22,
+      rationale: `近期僅有零星事件，催化強度有限，暫不形成明確方向${themeHint ? `（主題：${themeHint}）` : ''}。`,
+      limitations: ['事件數量偏少，僅可作輔助解讀', '此判讀不構成投資建議'],
+      missingSources: [],
+    };
+  }
+
+  const trust = input.eventTrustLevelSummary;
+  const highTrust = (trust?.official ?? 0) + (trust?.mainstream ?? 0);
+  const lowTrust = (trust?.secondary ?? 0) + (trust?.unknown ?? 0);
+  const themeHint = (input.recentThemes ?? []).slice(0, 3).join('、');
+  const summaryHint = input.catalystSummary ? `摘要：${input.catalystSummary}` : '';
+
+  if (highTrust === 0 && lowTrust > 0) {
+    return {
+      name: 'CatalystAgent',
+      stance: 'Neutral',
+      confidence: 20,
+      rationale: `近期事件雖較集中，但來源多為次級/未分類，訊號可信度受限。${summaryHint}`,
+      limitations: ['事件來源可信度偏低，僅可作為研究補充', 'CatalystAgent 不可單獨作為決策依據'],
+      missingSources: [],
+    };
+  }
+
   return {
     name: 'CatalystAgent',
-    stance: 'Neutral',
-    confidence: 30,
-    rationale: '已識別部分催化因子，但資料完整性有限，請保守解讀。',
-    limitations: ['催化劑評估精確度受限於公開資訊完整性'],
+    stance: 'Bullish',
+    confidence: 32,
+    rationale: `近期事件較集中，且包含較高可信度來源，可能形成短期題材關注${themeHint ? `（主題：${themeHint}）` : ''}。${summaryHint}`,
+    limitations: ['事件層僅供研究解釋，不直接影響 alphaScore 或 screen', '事件摘要不代表漲跌保證，僅為低信心觀點'],
     missingSources: [],
   };
 }

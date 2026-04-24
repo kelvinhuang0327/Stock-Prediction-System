@@ -18,6 +18,41 @@ import {
   type OHLCVBar,
 } from '@/lib/analysis/TechnicalSignalCalculator';
 import { getStockCoverage, type StockCoverage } from '@/lib/data/CoverageService';
+import {
+  safeCandidateSnapshotLatest,
+  safeCandidateSnapshots,
+} from '@/lib/prisma-safe';
+import {
+  buildStockFundamentalSnapshot,
+  type StockFundamentalSnapshot,
+} from '@/lib/fundamentals/StockFundamentalSnapshot';
+import {
+  type StockPeerComparison,
+} from '@/lib/fundamentals/StockPeerComparison';
+import {
+  buildFinancialStructurePeerComparisonForSymbol,
+  buildCashflowLeverageMetricsFromReports,
+  buildCapitalEfficiencyMetricsFromResearchContext,
+  buildPeerComparisonForSymbol,
+} from '@/lib/fundamentals/FundamentalResearchService';
+import { buildFundamentalRiskOverlay } from '@/lib/fundamental/FundamentalRiskOverlayEngine';
+import {
+  buildCashflowLeverageOverlay,
+  type CashflowLeverageOverlay,
+} from '@/lib/fundamental/CashflowLeverageOverlayEngine';
+import {
+  buildCapitalEfficiencyOverlay,
+  type CapitalEfficiencyOverlay,
+} from '@/lib/fundamental/CapitalEfficiencyOverlayEngine';
+import type { FinancialStructurePeerComparison } from '@/lib/fundamental/FinancialStructurePeerComparisonEngine';
+import {
+  buildFullFundamentalComparisonMatrix,
+  type FullFundamentalComparisonMatrix,
+} from '@/lib/fundamental/FullFundamentalComparisonMatrixBuilder';
+import {
+  buildPeerPercentileDetailTable,
+  type PeerPercentileDetailTable,
+} from '@/lib/fundamental/PeerPercentileDetailTableBuilder';
 
 // ─── Response Types ─────────────────────────────────────────────
 
@@ -56,6 +91,13 @@ export interface StockDetailResponse {
     summary: string;
     limitations: string[];
   } | null;
+  fundamentals: StockFundamentalSnapshot;
+  peerComparison: StockPeerComparison | null;
+  cashflowLeverageOverlay: CashflowLeverageOverlay;
+  capitalEfficiencyOverlay: CapitalEfficiencyOverlay;
+  financialStructurePeerComparison: FinancialStructurePeerComparison | null;
+  fundamentalMatrix: FullFundamentalComparisonMatrix;
+  peerPercentileDetailTable: PeerPercentileDetailTable;
   signals: {
     signal: string;
     strength: number;
@@ -139,9 +181,10 @@ export interface StockDetailResponse {
 
 export async function GET(
   _req: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
-  const symbol = params.id.toUpperCase();
+  const { id } = await params;
+  const symbol = id.toUpperCase();
   const cacheKey = `stock:detail:${symbol}`;
   const cached = apiCache.get<StockDetailResponse>(cacheKey);
   if (cached) return NextResponse.json(cached);
@@ -149,21 +192,44 @@ export async function GET(
   const limitations: string[] = [];
 
   // ── 1. Base data ──────────────────────────────────────────────
-  const [stockRow, quoteRows, watchlistRow, stockCoverage] = await Promise.all([
+  const [
+    stockRow,
+    quoteRows,
+    watchlistRow,
+    stockCoverage,
+    revenueRows,
+    financialRows,
+    metricsRows,
+  ] = await Promise.all([
     prisma.stock.findUnique({ where: { id: symbol } }).catch(() => null),
-    (prisma as any).stockQuote.findMany({
+    prisma.stockQuote.findMany({
       where: { stockId: symbol },
       orderBy: { date: 'desc' },
       take: 252,
-    }).catch(() => [] as any[]),
-    (prisma as any).watchlist.findFirst({ where: { stockId: symbol } }).catch(() => null),
+    }).catch(() => []),
+    prisma.watchlist.findFirst({ where: { stockId: symbol } }).catch(() => null),
     getStockCoverage(symbol).catch(() => null),
+    prisma.monthlyRevenue.findMany({
+      where: { stockId: symbol },
+      orderBy: [{ year: 'desc' }, { month: 'desc' }],
+      take: 18,
+    }).catch(() => []),
+    prisma.financialReport.findMany({
+      where: { stockId: symbol },
+      orderBy: [{ year: 'desc' }, { quarter: 'desc' }],
+      take: 6,
+    }).catch(() => []),
+    prisma.stockMetrics.findMany({
+      where: { stockId: symbol },
+      orderBy: { date: 'desc' },
+      take: 3,
+    }).catch(() => []),
   ]);
 
   const name: string = stockRow?.name ?? symbol;
   const industry: string = stockRow?.industry ?? '';
   const isETF = /^00\d/.test(symbol) || (stockRow?.name?.includes('ETF') ?? false);
-  const sortedQuotes = [...(quoteRows as any[])].sort((a, b) => a.date.localeCompare(b.date));
+  const sortedQuotes = [...quoteRows].sort((a, b) => a.date.localeCompare(b.date));
   const dataPoints = sortedQuotes.length;
   const lastUpdated: string | null = dataPoints > 0 ? sortedQuotes[dataPoints - 1].date : null;
   const closePrice: number = dataPoints > 0 ? sortedQuotes[dataPoints - 1].close : 0;
@@ -172,6 +238,56 @@ export async function GET(
     prevClose > 0 ? Math.round(((closePrice - prevClose) / prevClose) * 10000) / 100 : 0;
   const dataCoverage: 'full' | 'limited' | 'insufficient' =
     dataPoints >= 200 ? 'full' : dataPoints >= 60 ? 'limited' : 'insufficient';
+  const fundamentalsSection = buildStockFundamentalSnapshot({
+    isETF,
+    monthlyRevenues: revenueRows,
+    financialReports: financialRows,
+    stockMetrics: metricsRows,
+  });
+  const peerComparison = await buildPeerComparisonForSymbol({
+    symbol,
+    name,
+    industry,
+  }).catch(() => null);
+  const financialStructurePeerComparison = await buildFinancialStructurePeerComparisonForSymbol({
+    symbol,
+    name,
+    industry,
+  }).catch(() => null);
+  const structureMetrics = buildCashflowLeverageMetricsFromReports(financialRows);
+  const cashflowLeverageOverlay = buildCashflowLeverageOverlay({
+    fundamentals: fundamentalsSection,
+    peerComparison,
+    metrics: structureMetrics,
+  });
+  const capitalEfficiencyOverlay = buildCapitalEfficiencyOverlay({
+    fundamentals: fundamentalsSection,
+    peerComparison,
+    cashflowLeverageOverlay,
+    metrics: buildCapitalEfficiencyMetricsFromResearchContext({
+      monthlyRevenues: revenueRows,
+      financialReports: financialRows,
+      structureMetrics,
+    }),
+  });
+  const overlay = buildFundamentalRiskOverlay({
+    fundamentals: fundamentalsSection,
+    peerComparison,
+  });
+  const fundamentalMatrix = buildFullFundamentalComparisonMatrix({
+    fundamentals: fundamentalsSection,
+    peerComparison,
+    overlay,
+    cashflowLeverageOverlay,
+    capitalEfficiencyOverlay,
+    financialStructurePeerComparison,
+  });
+  const peerPercentileDetailTable = buildPeerPercentileDetailTable({
+    fundamentals: fundamentalsSection,
+    peerComparison,
+    financialStructurePeerComparison,
+    fundamentalMatrix,
+  });
 
   if (dataPoints === 0) {
     limitations.push('此股票目前無歷史行情資料，所有分析均不可用');
@@ -241,7 +357,7 @@ export async function GET(
   let signalsSection: StockDetailResponse['signals'] = null;
   if (dataPoints >= 20) {
     try {
-      const bars: OHLCVBar[] = sortedQuotes.map((q: any) => ({
+      const bars: OHLCVBar[] = sortedQuotes.map((q) => ({
         close: q.close,
         high: q.high,
         low: q.low,
@@ -310,10 +426,7 @@ export async function GET(
   };
   try {
     // DailyCandidateSnapshot: one row per symbol per snapshotDate
-    const snap = await (prisma as any).dailyCandidateSnapshot.findFirst({
-      where: { symbol },
-      orderBy: { snapshotDate: 'desc' },
-    });
+    const snap = await safeCandidateSnapshotLatest(symbol);
     if (snap) {
       candidateCtx = {
         isCandidate: true,
@@ -332,10 +445,10 @@ export async function GET(
   // ── 6. Watchlist Context ───────────────────────────────────────
   const watchlistCtx: StockDetailResponse['watchlistCtx'] = {
     inWatchlist: !!watchlistRow,
-    watchlistId: watchlistRow?.id ?? null,
-    holdingShares: watchlistRow?.holdingShares ?? null,
-    holdingCost: watchlistRow?.holdingCost ?? null,
-    label: watchlistRow?.label ?? null,
+    watchlistId: watchlistRow?.id != null ? String(watchlistRow.id) : null,
+    holdingShares: watchlistRow?.quantity ?? null,
+    holdingCost: watchlistRow?.entryPrice ?? null,
+    label: null, // no label field in current schema
   };
 
   // ── 7. Snapshot Comparison ────────────────────────────────────
@@ -359,11 +472,7 @@ export async function GET(
   };
   try {
     // DailyCandidateSnapshot: per-symbol per-date rows — get last 2 dates for this symbol
-    const symSnapshots = await (prisma as any).dailyCandidateSnapshot.findMany({
-      where: { symbol },
-      orderBy: { snapshotDate: 'desc' },
-      take: 2,
-    });
+    const symSnapshots = await safeCandidateSnapshots(symbol, 2);
     if (symSnapshots.length >= 2) {
       const [todayEntry, prevEntry] = symSnapshots;
 
@@ -508,6 +617,13 @@ export async function GET(
     lastUpdated,
     regime: regimeSection,
     fusion: fusionSection,
+    fundamentals: fundamentalsSection,
+    peerComparison,
+    cashflowLeverageOverlay,
+    capitalEfficiencyOverlay,
+    financialStructurePeerComparison,
+    fundamentalMatrix,
+    peerPercentileDetailTable,
     signals: signalsSection,
     backtest: backtestSection,
     backtestSummary,

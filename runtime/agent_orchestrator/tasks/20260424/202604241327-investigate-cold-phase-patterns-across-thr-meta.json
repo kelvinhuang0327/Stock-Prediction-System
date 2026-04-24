@@ -1,0 +1,19 @@
+{
+  "version": "1.0",
+  "task_id": 130,
+  "slug": "investigate-cold-phase-patterns-across-thr",
+  "status": "COMPLETED",
+  "gate_verdict": "PASS",
+  "planner_provider": "codex",
+  "worker_provider": "copilot-daemon",
+  "created_at": "2026-04-24T13:27:45.232Z",
+  "updated_at": "2026-04-24T13:28:34.694Z",
+  "last_output_at": "2026-04-24T13:28:34.694Z",
+  "latest_progress_summary": "Worker finished task and gate passed.",
+  "planner_context": {
+    "taskType": "investigate_cold_phase_patterns_across_three_structured_focuses_",
+    "game": null,
+    "regimeState": null,
+    "dedupeKey": "investigate_cold_phase_patterns_across_three_structured_focuses_|GLOBAL|UNSPECIFIED"
+  }
+}

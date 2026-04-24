@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
     const startDateStr = startDate.toISOString().slice(0, 10).replace(/-/g, '');
 
     // Fetch historical data (point-in-time, chronological)
-    const quotes = await (prisma as any).stockQuote.findMany({
+    const quotes = await prisma.stockQuote.findMany({
       where: {
         stockId,
         date: { gte: startDateStr },
@@ -83,7 +83,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Convert to PriceBar format
-    const data: PriceBar[] = quotes.map((q: any) => ({
+    const data: PriceBar[] = quotes.map((q) => ({
       date: q.date,
       open: q.open,
       high: q.high,

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { twseApi, StockQuote } from '@/lib/api/twseApi';
+import { twseApi } from '@/lib/api/twseApi';
 
 // GET /api/stocks/[id]/history?months=6
 export async function GET(

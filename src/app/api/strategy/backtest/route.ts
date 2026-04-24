@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@/lib/error-utils';
 import { NextResponse } from 'next/server';
 import { doublingBacktestService } from '@/lib/services/DoublingBacktestService';
 
@@ -9,8 +10,8 @@ export async function GET(request: Request) {
     try {
         const results = await doublingBacktestService.runBacktest(days, horizon);
         return NextResponse.json(results);
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error('Backtest API error:', error);
-        return NextResponse.json({ error: error.message }, { status: 500 });
+        return NextResponse.json({ error: getErrorMessage(error) }, { status: 500 });
     }
 }

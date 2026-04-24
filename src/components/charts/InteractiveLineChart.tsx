@@ -11,14 +11,13 @@ import {
     CartesianGrid,
     Tooltip,
     ResponsiveContainer,
-    TooltipProps
 } from 'recharts';
 import { GlassCard } from '@/components/ui/glass-card';
 
 interface DataPoint {
     date: string;
     value: number;
-    [key: string]: any;
+    [key: string]: string | number;
 }
 
 interface InteractiveLineChartProps {
@@ -30,8 +29,21 @@ interface InteractiveLineChartProps {
     height?: number;
 }
 
+// Minimal payload shape that recharts passes to custom tooltip content
+interface TooltipPayloadItem {
+    name?: string;
+    value?: number | string;
+    color?: string;
+}
+
+interface CustomTooltipProps {
+    active?: boolean;
+    payload?: TooltipPayloadItem[];
+    label?: string | number;
+}
+
 // Custom glassmorphism tooltip
-const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>) => {
+const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
     if (!active || !payload || !payload.length) return null;
 
     return (

@@ -27,6 +27,14 @@ export async function POST(req: NextRequest): Promise<NextResponse<MultiAgentRes
   }
 
   // Validate required fields
+  const payload = body as Partial<ResearchInput> & {
+    symbol?: string | null;
+    eventCount?: number;
+    eventTrustLevelSummary?: ResearchInput['eventTrustLevelSummary'];
+    recentThemes?: string[];
+    catalystSummary?: string;
+  };
+
   const {
     symbol = null,
     marketRegime,
@@ -41,8 +49,12 @@ export async function POST(req: NextRequest): Promise<NextResponse<MultiAgentRes
     regimeConfidence,
     usedSources,
     missingSources,
+    eventCount,
+    eventTrustLevelSummary,
+    recentThemes,
+    catalystSummary,
     limitations,
-  } = body as any;
+  } = payload;
 
   if (
     marketRegime === undefined ||
@@ -75,6 +87,10 @@ export async function POST(req: NextRequest): Promise<NextResponse<MultiAgentRes
     marketAdjustment: Number(marketAdjustment),
     usedSources: Array.isArray(usedSources) ? usedSources : undefined,
     missingSources: Array.isArray(missingSources) ? missingSources : undefined,
+    eventCount: typeof eventCount === 'number' ? eventCount : undefined,
+    eventTrustLevelSummary: eventTrustLevelSummary ?? undefined,
+    recentThemes: Array.isArray(recentThemes) ? recentThemes : undefined,
+    catalystSummary: typeof catalystSummary === 'string' ? catalystSummary : undefined,
     limitations: Array.isArray(limitations) ? limitations : undefined,
   };
 

@@ -3,9 +3,9 @@ import { predictionEngine } from '@/lib/services/PredictionEngine';
 
 export async function GET(
     request: NextRequest,
-    { params }: { params: { symbol: string } }
+    { params }: { params: Promise<{ symbol: string }> }
 ) {
-    const symbol = params.symbol;
+    const { symbol } = await params;
 
     if (!symbol) {
         return NextResponse.json({ error: 'Symbol is required' }, { status: 400 });

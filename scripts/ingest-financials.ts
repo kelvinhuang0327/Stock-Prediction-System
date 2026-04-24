@@ -1,44 +1,87 @@
+import { upsertFinancialReports, type RawFinancialReportInput } from '../src/lib/fundamental/FinancialReportSync';
 import { prisma } from '../src/lib/prisma';
 
 async function ingestFinancials() {
-    console.log('--- Ingesting Mock Financial Data (Revenue & EPS) ---');
+    console.log('--- Ingesting Financial Data (research fixture / local seed) ---');
 
-    const stocks = ['2330', '2454', '2317', '2603', '2881', '3231', '2382'];
+    const reports: RawFinancialReportInput[] = [
+        {
+            stockId: '2330',
+            year: 2025,
+            quarter: 4,
+            eps: 9.2,
+            netIncome: 315000,
+            grossMargin: 54.1,
+            operatingMargin: 42.3,
+            operatingIncome: 428000,
+            operatingCashFlow: 505000,
+            capitalExpenditure: -180000,
+            cashAndCashEquivalents: 620000,
+            currentAssets: 980000,
+            inventory: 120000,
+            currentLiabilities: 420000,
+            totalAssets: 3950000,
+            totalLiabilities: 1380000,
+            totalDebt: 350000,
+            shortTermDebt: 90000,
+            longTermDebt: 260000,
+            interestExpense: 12000,
+        },
+        {
+            stockId: '2454',
+            year: 2025,
+            quarter: 4,
+            eps: 13.4,
+            netIncome: 168000,
+            grossMargin: 49.8,
+            operatingMargin: 25.6,
+            operatingIncome: 176000,
+            operatingCashFlow: 142000,
+            capitalExpenditure: -28000,
+            cashAndCashEquivalents: 205000,
+            currentAssets: 480000,
+            inventory: 36000,
+            currentLiabilities: 210000,
+            totalAssets: 1180000,
+            totalLiabilities: 395000,
+            totalDebt: 90000,
+            shortTermDebt: 25000,
+            longTermDebt: 65000,
+            interestExpense: 4500,
+        },
+        {
+            stockId: '2317',
+            year: 2025,
+            quarter: 4,
+            eps: 3.1,
+            netIncome: 62000,
+            grossMargin: 7.9,
+            operatingMargin: 3.2,
+            operatingCashFlow: 88000,
+            capitalExpenditure: -51000,
+            currentAssets: 640000,
+            inventory: 150000,
+            currentLiabilities: 510000,
+            totalAssets: 2680000,
+            totalLiabilities: 1760000,
+            shortTermDebt: 180000,
+            longTermDebt: 420000,
+        },
+    ];
 
-    for (const stockId of stocks) {
-        // 1. Monthly Revenue (Last 3 months)
-        const revenues = [
-            { year: 2025, month: 12, revenue: Math.random() * 50000 + 10000, yoyGrowth: Math.random() * 50 + 10 },
-            { year: 2025, month: 11, revenue: Math.random() * 50000 + 10000, yoyGrowth: Math.random() * 40 + 5 },
-            { year: 2025, month: 10, revenue: Math.random() * 50000 + 10000, yoyGrowth: Math.random() * 30 + 15 },
-        ];
-
-        for (const rev of revenues) {
-            await (prisma as any).monthlyRevenue.upsert({
-                where: { stockId_year_month: { stockId, year: rev.year, month: rev.month } },
-                update: rev,
-                create: { stockId, ...rev }
-            });
-        }
-
-        // 2. Financial Reports (EPS)
-        const reports = [
-            { year: 2025, quarter: 3, eps: Math.random() * 10 + 2, netIncome: Math.random() * 20000 },
-            { year: 2025, quarter: 2, eps: Math.random() * 8 + 1, netIncome: Math.random() * 15000 },
-        ];
-
-        for (const report of reports) {
-            await (prisma as any).financialReport.upsert({
-                where: { stockId_year_quarter: { stockId, year: report.year, quarter: report.quarter } },
-                update: report,
-                create: { stockId, ...report }
-            });
-        }
-
-        console.log(`Updated ${stockId} financial data.`);
+    const result = await upsertFinancialReports(reports);
+    console.log(`Upserted ${result.count} financial reports.`);
+    if (result.limitations.length > 0) {
+        console.log('Limitations:');
+        result.limitations.forEach((item) => console.log(`- ${item}`));
     }
-
-    console.log('Financial Ingestion Complete.');
 }
 
-ingestFinancials().catch(console.error);
+ingestFinancials()
+    .catch((error) => {
+        console.error(error);
+        process.exitCode = 1;
+    })
+    .finally(async () => {
+        await prisma.$disconnect();
+    });

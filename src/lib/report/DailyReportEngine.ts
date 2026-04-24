@@ -12,12 +12,32 @@ import { detectRegime, type MarketRegimeResult } from '@/lib/market/MarketRegime
 import { runScreen, type ScreenResult, type ScreenCandidate } from '@/lib/screen/StrategyScreenEngine';
 import { buildComparison, type DailyComparison } from './DailySnapshotEngine';
 import { prisma } from '@/lib/prisma';
+import type { TrustLevelSummary } from '@/lib/events/EventIngestionService';
+import { getMarketEventSummary } from '@/lib/events/EventSummaryEngine';
+import { generateTopicSurgeSummary, type TopicSurgeResult } from '@/lib/events/TopicSurgeEngine';
+import { generateTopicMomentum, type TopicMomentumResult } from '@/lib/events/TopicMomentumEngine';
+import { generateThemeDiffusion, type ThemeDiffusionResult } from '@/lib/events/ThemeDiffusionEngine';
+import { generateThemeLinkage, type ThemeLinkageResult } from '@/lib/events/ThemeLinkageEngine';
+import { generateSectorRelationGraph, type SectorRelationGraphResult } from '@/lib/events/SectorRelationGraphEngine';
+import { generateCrossMarketTheme, type CrossMarketThemeResult } from '@/lib/events/CrossMarketThemeEngine';
+import { generateSectorLinkageTimeline, type SectorLinkageTimelineResult } from '@/lib/events/SectorLinkageTimelineEngine';
+import {
+  buildSignalEffectivenessSummary,
+  evaluateAllSignals,
+} from '@/lib/signals/SignalEffectivenessEngine';
+import { buildAllSignalHistories } from '@/lib/signals/SignalHistoryBuilder';
+import type { SignalEffectivenessSummary } from '@/lib/signals/types';
 
 // ─── Types ───────────────────────────────────────────────────────
 
 export interface DailyReport {
   reportDate: string;
   marketSummary: MarketSummary;
+  eventSummary: EventSummary;
+  topicSummary: TopicSummary;
+  themeLinkageSummary: ThemeLinkageSummary;
+  crossMarketSummary: CrossMarketSummary;
+  signalReliabilitySummary: SignalEffectivenessSummary;
   candidateSummary: CandidateSummary;
   watchlistSummary: WatchlistSummary;
   riskSummary: RiskSummary;
@@ -25,6 +45,55 @@ export interface DailyReport {
   comparison: DailyComparison | null;
   disclaimer: string;
   last_updated: string;
+}
+
+export interface EventSummary {
+  eventCount: number;
+  rawCount: number;
+  dedupedCount: number;
+  recentThemes: string[];
+  catalystSummary: string;
+  sourceBreakdown: Record<string, number>;
+  trustLevelSummary: TrustLevelSummary;
+  limitations: string[];
+  dataCoverage: 'full' | 'limited' | 'insufficient';
+  recentEventTitles: string[];
+}
+
+export interface TopicSummary {
+  summary: string;
+  topics: TopicSurgeResult[];
+  trendItems: Array<{
+    topic: string;
+    momentum: TopicMomentumResult;
+    diffusion: ThemeDiffusionResult;
+    trustLevelSummary: string;
+  }>;
+  limitations: string[];
+  generatedAt: string;
+}
+
+export interface ThemeLinkageSummary {
+  summary: string;
+  items: Array<{
+    topic: string;
+    linkage: ThemeLinkageResult;
+    graph: SectorRelationGraphResult;
+  }>;
+  limitations: string[];
+  generatedAt: string;
+}
+
+export interface CrossMarketSummary {
+  summary: string;
+  items: Array<{
+    topic: string;
+    crossMarket: CrossMarketThemeResult;
+    timeline: SectorLinkageTimelineResult;
+    trustLevelSummary: string;
+  }>;
+  limitations: string[];
+  generatedAt: string;
 }
 
 export interface MarketSummary {
@@ -119,6 +188,22 @@ const DISCLAIMER = '本報告僅為系統自動產生之研究摘要，不構成
   '資料來源可能存在延遲或不完整，請搭配其他資訊審慎判斷。' +
   '投資有風險，使用者應自行承擔所有交易決策之責任。';
 
+function emptySignalReliabilitySummary(): SignalEffectivenessSummary {
+  return {
+    window: 5,
+    signals: [],
+    generatedAt: new Date().toISOString(),
+    dataNote: '訊號有效性研究資料暫時不可用。',
+    limitations: ['訊號有效性研究層無法執行，已降級'],
+  };
+}
+
+async function buildSignalReliabilitySummary(): Promise<SignalEffectivenessSummary> {
+  const histories = await buildAllSignalHistories(180);
+  const effectiveness = await evaluateAllSignals(histories, 5);
+  return buildSignalEffectivenessSummary(effectiveness, 5);
+}
+
 // ─── Engine ──────────────────────────────────────────────────────
 
 export async function generateDailyReport(params?: ReportParams): Promise<DailyReport> {
@@ -126,12 +211,12 @@ export async function generateDailyReport(params?: ReportParams): Promise<DailyR
   const candidateLimit = params?.candidateLimit ?? DEFAULT_CANDIDATE_LIMIT;
 
   // Run all data fetches in parallel
-  const [regimeResult, screenResult, watchlistData, dbStats] = await Promise.all([
+  const [regimeResult, screenResult, watchlistData, dbStats, marketEvent, topicSurge, signalReliabilitySummary] = await Promise.all([
     detectRegime().catch((): MarketRegimeResult => ({
       regime: 'Unknown' as const,
       confidence: 0,
       factors: [],
-      dataCoverage: 'unavailable',
+      dataCoverage: 'insufficient',
       samplePeriod: 'N/A',
       dataPoints: 0,
       last_updated: new Date().toISOString(),
@@ -144,16 +229,113 @@ export async function generateDailyReport(params?: ReportParams): Promise<DailyR
       excludedCount: 0,
       excluded: [],
       totalScanned: 0,
-      dataCoverageSummary: 'unavailable',
-      screenParams: {},
+      dataCoverageSummary: { full: 0, limited: 0, insufficient: 0 },
+      screenParams: {
+        minAlphaScore: 60,
+        minConfidence: 60,
+        respectMarketRegime: true,
+        appliedRegimeAdjustment: 'fallback',
+      },
       last_updated: new Date().toISOString(),
       limitations: ['StrategyScreenEngine 無法執行'],
+      disclaimer: '策略篩選暫時不可用，僅提供降級摘要。',
     })),
     includeWatchlist ? fetchWatchlistData() : Promise.resolve(null),
     fetchDataStats(),
+    getMarketEventSummary({ days: 1, limit: 50 }).catch(() => ({
+      summary: {
+        eventCount: 0,
+        rawCount: 0,
+        dedupedCount: 0,
+        recentThemes: [],
+        catalystSummary: '事件來源不可用',
+        sourceBreakdown: {},
+        trustLevelSummary: {
+          official: 0,
+          mainstream: 0,
+          secondary: 0,
+          unknown: 0,
+          dominant: 'mixed' as const,
+          note: '事件來源不可用',
+        },
+        limitations: ['事件來源抓取失敗，已降級為空資料'],
+        dataCoverage: 'insufficient' as const,
+        recentEventTitles: [],
+      },
+      source: 'empty' as const,
+    })),
+    generateTopicSurgeSummary({ days: 3, minSurgeLevel: 'watch', includeSymbols: true, maxTopics: 5 }).catch(() => ({
+      summary: '主題升溫資料暫時不可用',
+      topics: [],
+      limitations: ['TopicSurgeEngine 不可用，已降級'],
+      generatedAt: new Date().toISOString(),
+    })),
+    buildSignalReliabilitySummary().catch(() => emptySignalReliabilitySummary()),
   ]);
+  const trendItems = await Promise.all(
+    topicSurge.topics.slice(0, 3).map(async (topic) => {
+      const [momentum, diffusion] = await Promise.all([
+        generateTopicMomentum({ topic: topic.topic, days: 7, minCount: 0 }),
+        generateThemeDiffusion({ topic: topic.topic, days: 7, minCount: 0 }),
+      ]);
+      return {
+        topic: topic.topic,
+        momentum,
+        diffusion,
+        trustLevelSummary: topic.trustLevelSummary,
+      };
+    }),
+  ).catch(() => []);
+  const topicSummary: TopicSummary = {
+    ...topicSurge,
+    trendItems,
+    limitations: [...topicSurge.limitations, ...(trendItems.length === 0 ? ['主題趨勢資料不足或不可用'] : [])],
+  };
+  const linkageItems = await Promise.all(
+    topicSurge.topics.slice(0, 3).map(async (topic) => {
+      const [linkage, graph] = await Promise.all([
+        generateThemeLinkage({ topic: topic.topic, days: 7, minStrength: 'weak', includeSymbols: true }),
+        generateSectorRelationGraph({ topic: topic.topic, days: 7, minStrength: 1, includeSymbols: true }),
+      ]);
+      return { topic: topic.topic, linkage, graph };
+    }),
+  ).catch(() => []);
+  const themeLinkageSummary: ThemeLinkageSummary = {
+    summary:
+      linkageItems.length === 0
+        ? '主題連動資料不足或不可用。'
+        : `已分析 ${linkageItems.length} 個主題的連動與產業關聯，僅供研究脈絡觀察。`,
+    items: linkageItems,
+    limitations: linkageItems.length === 0 ? ['無可用主題連動資料'] : [],
+    generatedAt: new Date().toISOString(),
+  };
+  const crossMarketItems = await Promise.all(
+    topicSurge.topics.slice(0, 3).map(async (topic) => {
+      const [crossMarket, timeline] = await Promise.all([
+        generateCrossMarketTheme({ topic: topic.topic, days: 14, minBreadth: 1 }),
+        generateSectorLinkageTimeline({ topic: topic.topic, days: 14, minBreadth: 1 }),
+      ]);
+      return { topic: topic.topic, crossMarket, timeline, trustLevelSummary: topic.trustLevelSummary };
+    }),
+  ).catch(() => []);
+  const crossMarketSummary: CrossMarketSummary = {
+    summary:
+      crossMarketItems.length === 0
+        ? '主題跨板塊傳導資料不足或不可用。'
+        : `已追蹤 ${crossMarketItems.length} 個主題的跨板塊傳導與產業鏈時間序列，僅供研究觀察。`,
+    items: crossMarketItems,
+    limitations: crossMarketItems.length === 0 ? ['無可用主題跨板塊傳導資料'] : [],
+    generatedAt: new Date().toISOString(),
+  };
 
   const marketSummary = buildMarketSummary(regimeResult);
+  const eventSummary = {
+    ...marketEvent.summary,
+    limitations:
+      marketEvent.source === 'db'
+        ? marketEvent.summary.limitations
+        : [...marketEvent.summary.limitations, '目前使用即時來源 fallback，資料穩定性較低'],
+  };
   const candidateSummary = buildCandidateSummary(screenResult, candidateLimit);
   const watchlistSummary = buildWatchlistSummary(watchlistData);
   const riskSummary = buildRiskSummary(regimeResult, screenResult, watchlistData);
@@ -169,6 +351,11 @@ export async function generateDailyReport(params?: ReportParams): Promise<DailyR
   const partialReport: DailyReport = {
     reportDate,
     marketSummary,
+    eventSummary,
+    topicSummary,
+    themeLinkageSummary,
+    crossMarketSummary,
+    signalReliabilitySummary,
     candidateSummary,
     watchlistSummary,
     riskSummary,

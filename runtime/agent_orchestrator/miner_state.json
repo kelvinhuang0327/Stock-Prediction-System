@@ -1,0 +1,18 @@
+{
+  "version": "1.0",
+  "publishedDedupeKeys": {
+    "system_health__stale_quotes": "2026-04-24T03:20:59.010Z",
+    "system_health__stale_chips": "2026-04-24T03:53:07.267Z",
+    "system_health__stuck_trades": "2026-04-24T03:54:08.830Z",
+    "code_quality__large_files": "2026-04-24T03:55:46.295Z",
+    "code_quality__legacy_python_scripts": "2026-04-24T03:56:03.874Z",
+    "composite_8h_plan__2026-04-24": "2026-04-24T15:32:35.623Z"
+  },
+  "dailyQuota": {
+    "date": "2026-04-24",
+    "highRisk": 0,
+    "mediumRisk": 0,
+    "lowRisk": 5
+  },
+  "lastRunAt": "2026-04-24T15:32:35.623Z"
+}

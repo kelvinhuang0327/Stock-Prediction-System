@@ -70,6 +70,19 @@ export interface TWSERevenue {
     備註: string;
 }
 
+export interface TWSEFinancialReportSummary {
+    出表日期: string;
+    年度: string;
+    季別: string;
+    公司代號: string;
+    公司名稱: string;
+    產業別: string;
+    "基本每股盈餘(元)": string;
+    營業收入?: string;
+    營業利益?: string;
+    稅後淨利: string;
+}
+
 // Normalized data types for internal use
 export interface StockQuote {
     code: string;
@@ -113,6 +126,31 @@ export interface MarketIndex {
     changePercent: number;
 }
 
+interface LatestMarketSnapshot {
+    date: string;
+    quotes: StockQuote[];
+    indices: MarketIndex[];
+    source: 'openapi' | 'twse_website';
+}
+
+export interface MonthlyRevenueSummary {
+    code: string;
+    name: string;
+    month: string;
+    revenue: number;
+    yoyGrowth: number;
+    momGrowth: number;
+}
+
+export interface QuarterlyFinancialReportSummary {
+    stockId: string;
+    year: number;
+    quarter: number;
+    eps: number;
+    netIncome: number;
+    operatingIncome: number | null;
+}
+
 // API Base URL - using Next.js API route proxy to avoid CORS on client, direct URL on server
 const isServer = typeof window === 'undefined';
 const API_BASE = isServer ? 'https://openapi.twse.com.tw/v1' : '/api/twse';
@@ -130,6 +168,48 @@ const parseNullableNumber = (val: string | undefined): number | null => {
     const cleaned = val.replace(/,/g, '');
     const num = parseFloat(cleaned);
     return isNaN(num) ? null : num;
+};
+
+const stripHtml = (val: string | undefined): string => {
+    if (!val) return '';
+    return val.replace(/<[^>]*>/g, '').trim();
+};
+
+const parseTwseDateToIso = (input: string | undefined): string | null => {
+    if (!input) return null;
+    const raw = input.trim();
+    if (!raw) return null;
+
+    if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) return raw;
+
+    if (/^\d{8}$/.test(raw)) {
+        return `${raw.slice(0, 4)}-${raw.slice(4, 6)}-${raw.slice(6, 8)}`;
+    }
+
+    if (/^\d{7}$/.test(raw)) {
+        const year = Number(raw.slice(0, 3)) + 1911;
+        return `${year}-${raw.slice(3, 5)}-${raw.slice(5, 7)}`;
+    }
+
+    const slashParts = raw.split('/');
+    if (slashParts.length === 3) {
+        const [yearText, month, day] = slashParts;
+        const yearNum = Number(yearText);
+        if (!Number.isFinite(yearNum)) return null;
+        const year = yearText.length <= 3 ? yearNum + 1911 : yearNum;
+        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+    }
+
+    return null;
+};
+
+const isMarketDateStale = (dateIso: string | undefined, maxLagDays: number = 4): boolean => {
+    if (!dateIso) return true;
+    const dt = new Date(`${dateIso}T00:00:00+08:00`);
+    if (Number.isNaN(dt.getTime())) return true;
+    const now = new Date();
+    const diffDays = Math.floor((now.getTime() - dt.getTime()) / (24 * 60 * 60 * 1000));
+    return diffDays > maxLagDays;
 };
 
 class TWSEApiClient {
@@ -157,6 +237,128 @@ class TWSEApiClient {
         }
     }
 
+    private async fetchWebsiteDailyMarketSnapshot(dateYmd: string): Promise<LatestMarketSnapshot | null> {
+        const cacheKey = `website_snapshot_${dateYmd}`;
+        const cached = this.cache.get(cacheKey);
+        if (cached && Date.now() - cached.timestamp < this.cacheDuration) {
+            return cached.data as LatestMarketSnapshot;
+        }
+
+        const url = `https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX?date=${dateYmd}&type=ALLBUT0999&response=json`;
+        try {
+            const response = await fetch(url, {
+                headers: { 'User-Agent': 'Mozilla/5.0' },
+                signal: AbortSignal.timeout(20000),
+            });
+            if (!response.ok) return null;
+
+            const json = await response.json() as {
+                stat?: string;
+                date?: string;
+                tables?: Array<{ fields?: string[]; data?: string[][] }>;
+            };
+            if (json.stat !== 'OK' || !Array.isArray(json.tables)) return null;
+
+            const marketDate = parseTwseDateToIso(json.date ?? dateYmd);
+            if (!marketDate) return null;
+
+            const quoteTable = json.tables.find((table) =>
+                Array.isArray(table.fields) &&
+                table.fields.includes('證券代號') &&
+                table.fields.includes('收盤價')
+            );
+            const quotes: StockQuote[] = Array.isArray(quoteTable?.data)
+                ? quoteTable!.data
+                    .filter((row) => Array.isArray(row) && row.length >= 11)
+                    .map((row) => {
+                        const sign = stripHtml(row[9]);
+                        const rawChange = Math.abs(parseNumber(row[10]));
+                        const change = sign.includes('-') ? -rawChange : rawChange;
+                        return {
+                            code: row[0],
+                            name: row[1],
+                            date: marketDate,
+                            volume: parseNumber(row[2]),
+                            transactions: parseNumber(row[3]),
+                            tradeValue: parseNumber(row[4]),
+                            open: parseNumber(row[5]),
+                            high: parseNumber(row[6]),
+                            low: parseNumber(row[7]),
+                            close: parseNumber(row[8]),
+                            change,
+                        };
+                    })
+                : [];
+
+            const indexTables = json.tables.filter((table) =>
+                Array.isArray(table.fields) &&
+                table.fields.includes('收盤指數') &&
+                table.fields.some((field) => field.includes('指數')) &&
+                Array.isArray(table.data)
+            );
+            const indices: MarketIndex[] = indexTables.flatMap((table) =>
+                (table.data ?? [])
+                    .filter((row) => Array.isArray(row) && row.length >= 5)
+                    .map((row) => {
+                        const sign = stripHtml(row[2]);
+                        const rawChange = Math.abs(parseNumber(row[3]));
+                        const change = sign.includes('-') ? -rawChange : rawChange;
+                        return {
+                            name: row[0],
+                            value: parseNumber(row[1]),
+                            change,
+                            changePercent: parseNumber(row[4]),
+                        };
+                    })
+            );
+
+            if (quotes.length === 0) return null;
+
+            const snapshot: LatestMarketSnapshot = {
+                date: marketDate,
+                quotes,
+                indices,
+                source: 'twse_website',
+            };
+            this.cache.set(cacheKey, { data: snapshot, timestamp: Date.now() });
+            return snapshot;
+        } catch {
+            return null;
+        }
+    }
+
+    async getLatestMarketSnapshot(): Promise<LatestMarketSnapshot> {
+        const openapiQuotes = await this.getDailyStocks();
+        const openapiIndices = await this.getMarketIndices();
+        const openapiDate = openapiQuotes[0]?.date;
+        if (openapiQuotes.length > 0 && !isMarketDateStale(openapiDate)) {
+            return {
+                date: openapiDate,
+                quotes: openapiQuotes,
+                indices: openapiIndices,
+                source: 'openapi',
+            };
+        }
+
+        const today = new Date();
+        for (let lag = 0; lag <= 10; lag += 1) {
+            const d = new Date(today);
+            d.setDate(today.getDate() - lag);
+            const ymd = `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`;
+            const snapshot = await this.fetchWebsiteDailyMarketSnapshot(ymd);
+            if (snapshot?.quotes.length) {
+                return snapshot;
+            }
+        }
+
+        return {
+            date: openapiDate ?? '',
+            quotes: openapiQuotes,
+            indices: openapiIndices,
+            source: 'openapi',
+        };
+    }
+
     /**
      * Get daily trading data for all listed stocks
      * 上市個股日成交資訊
@@ -172,7 +374,7 @@ class TWSEApiClient {
         return data.map(item => ({
             code: item.Code,
             name: item.Name,
-            date: item.Date,
+            date: parseTwseDateToIso(item.Date) ?? item.Date,
             open: parseNumber(item.OpeningPrice),
             high: parseNumber(item.HighestPrice),
             low: parseNumber(item.LowestPrice),
@@ -365,13 +567,6 @@ class TWSEApiClient {
             // Using a CORS proxy if client-side, or direct if server-side.
             // Since we plan to call this from our API route (Server-side), direct fetch is fine.
 
-            const isServer = typeof window === 'undefined';
-            const baseUrl = isServer
-                ? 'https://www.twse.com.tw/rwd/zh/afterTrading/STOCK_DAY'
-                : '/api/proxy?url=' + encodeURIComponent('https://www.twse.com.tw/rwd/zh/afterTrading/STOCK_DAY');
-            // We don't have a generic proxy yet, so let's assumed this is called server-side OR we add a specific proxy route.
-            // For now, let's assume server-side usage via our new API endpoint.
-
             const url = `https://www.twse.com.tw/rwd/zh/afterTrading/STOCK_DAY?date=${dateStr}&stockNo=${code}&response=json`;
             console.log(`[TWSE API Debug] Fetching URL: ${url}`);
             console.log(`[TWSE API Debug] DateStr: ${dateStr}, Code: ${code}`);
@@ -453,7 +648,7 @@ class TWSEApiClient {
      * Get monthly revenue summary for all listed companies
      * 上市公司每月營業收入彙總表
      */
-    async getMonthlyRevenueSummary(): Promise<any[]> {
+    async getMonthlyRevenueSummary(): Promise<MonthlyRevenueSummary[]> {
         const data = await this.fetchWithCache<TWSERevenue[]>(
             '/opendata/t187ap05_L',
             'revenue_summary'
@@ -469,6 +664,41 @@ class TWSEApiClient {
             yoyGrowth: parseNumber(item["營業收入-去年同月增減(%)"]),
             momGrowth: parseNumber(item["營業收入-上月比較增減(%)"])
         }));
+    }
+
+    /**
+     * Get quarterly financial report summary for listed companies
+     * 上市公司簡明綜合損益表（摘要）
+     */
+    async getQuarterlyFinancialReportsSummary(): Promise<QuarterlyFinancialReportSummary[]> {
+        const data = await this.fetchWithCache<TWSEFinancialReportSummary[]>(
+            '/opendata/t187ap14_L',
+            'financial_report_summary'
+        );
+
+        if (!data || !Array.isArray(data)) return [];
+
+        return data
+            .map((item) => {
+                const rawYear = parseNumber(item.年度);
+                const year = rawYear < 1911 ? rawYear + 1911 : rawYear;
+                const quarter = parseNumber(item.季別);
+                const stockId = String(item.公司代號 ?? '').trim();
+                const eps = parseNullableNumber(item['基本每股盈餘(元)']);
+                const netIncome = parseNullableNumber(item.稅後淨利);
+                if (!stockId || !year || !quarter || eps === null || netIncome === null) {
+                    return null;
+                }
+                return {
+                    stockId,
+                    year,
+                    quarter,
+                    eps,
+                    netIncome,
+                    operatingIncome: parseNullableNumber(item.營業利益),
+                };
+            })
+            .filter((item): item is QuarterlyFinancialReportSummary => item !== null);
     }
 }
 

@@ -30,7 +30,7 @@ export async function GET(
 
                 if (json.stat === 'OK' && json.data && json.data.length > 0) {
                     // Find the stock in the data
-                    const stockData = json.data.find((row: any[]) => row[0] === symbol);
+                    const stockData = (json.data as string[][]).find((row) => row[0] === symbol);
 
                     if (stockData) {
                         // Parse institutional data
@@ -63,7 +63,7 @@ export async function GET(
                         });
                     }
                 }
-            } catch (err) {
+            } catch {
                 // Try next date
                 continue;
             }

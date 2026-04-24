@@ -14,11 +14,13 @@ import { createDailySnapshot } from '@/lib/report/DailySnapshotEngine';
 import { generateDailyAlerts } from '@/lib/notify/DailyAlertEngine';
 import { deliverAlerts } from '@/lib/notify/NotificationDeliveryEngine';
 import { DataRetentionService } from '@/lib/data/DataRetentionService';
+import { syncAndStoreEvents } from '@/lib/events/EventIngestionService';
+import { createPortfolioImpactSnapshot } from '@/lib/portfolio/PortfolioImpactSnapshotEngine';
 
 export const maxDuration = 300; // Allow up to 5 minutes
 export const dynamic = 'force-dynamic';
 
-function buildDailySyncJobs(): SyncJob[] {
+export function buildDailySyncJobs(): SyncJob[] {
   return [
     {
       endpoint: 'stock_master',
@@ -75,8 +77,32 @@ function buildDailySyncJobs(): SyncJob[] {
       },
     },
     {
-      endpoint: 'daily_snapshot',
+      endpoint: 'event_sync',
       priority: 6,
+      description: '事件資料同步 (RSS → NewsEvent)',
+      execute: async () => {
+        const result = await syncAndStoreEvents({
+          includeRss: true,
+          includeMock: false,
+          dryRun: false,
+          limit: 50,
+        });
+        return {
+          records: result.persist.inserted,
+          metadata: {
+            fetched: result.bundle.rawCount,
+            dedupedInMemory: result.bundle.dedupedCount,
+            persistedDuplicates: result.persist.skippedDuplicate,
+            persistFailed: result.persist.failed,
+            trust: result.bundle.trustLevelSummary,
+            limitations: result.bundle.limitations,
+          },
+        };
+      },
+    },
+    {
+      endpoint: 'daily_snapshot',
+      priority: 7,
       description: '每日快照 (市場、候選、自選)',
       execute: async () => {
         const result = await createDailySnapshot({ forceRefresh: false });
@@ -85,8 +111,44 @@ function buildDailySyncJobs(): SyncJob[] {
       },
     },
     {
+      endpoint: 'portfolio_snapshot_watchlist',
+      priority: 8,
+      description: '組合影響快照 (watchlist)',
+      execute: async () => {
+        const result = await createPortfolioImpactSnapshot({ scope: 'watchlist', forceRefresh: false });
+        return {
+          records: 1,
+          metadata: {
+            scope: 'watchlist',
+            created: result.created,
+            updated: result.updated,
+            snapshotDate: result.snapshot.snapshotDate,
+            limitations: result.snapshot.limitations,
+          },
+        };
+      },
+    },
+    {
+      endpoint: 'portfolio_snapshot_candidates',
+      priority: 8,
+      description: '組合影響快照 (candidates)',
+      execute: async () => {
+        const result = await createPortfolioImpactSnapshot({ scope: 'candidates', forceRefresh: false });
+        return {
+          records: 1,
+          metadata: {
+            scope: 'candidates',
+            created: result.created,
+            updated: result.updated,
+            snapshotDate: result.snapshot.snapshotDate,
+            limitations: result.snapshot.limitations,
+          },
+        };
+      },
+    },
+    {
       endpoint: 'daily_alerts',
-      priority: 7,
+      priority: 9,
       description: '每日提醒發送 (webhook / email / LINE)',
       execute: async () => {
         // Rules:
@@ -117,7 +179,7 @@ function buildDailySyncJobs(): SyncJob[] {
     },
     {
       endpoint: 'daily_cleanup',
-      priority: 8,
+      priority: 10,
       description: '資料保留清理 (snapshots / delivery logs)',
       execute: async () => {
         // Run with dryRun=false to perform actual cleanup.

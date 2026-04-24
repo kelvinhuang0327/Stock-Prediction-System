@@ -14,6 +14,12 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { apiCache } from '@/lib/cache';
+import {
+  safeChipCount,
+  safeRevenueCount,
+  safeDeliveryLogs,
+  safeDeliveryStatuses,
+} from '@/lib/prisma-safe';
 import fs from 'fs';
 import path from 'path';
 
@@ -72,8 +78,6 @@ export async function GET() {
   if (cached) return NextResponse.json(cached);
 
   try {
-    const today = new Date().toISOString().split('T')[0];
-    const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
     const twoDaysAgo = new Date(Date.now() - 2 * 86400000).toISOString().split('T')[0];
     const since24h = new Date(Date.now() - 86400000).toISOString();
 
@@ -98,8 +102,8 @@ export async function GET() {
       prisma.stock.count(),
       prisma.stockQuote.count(),
       prisma.stockQuote.aggregate({ _min: { date: true }, _max: { date: true } }),
-      (prisma as any).institutionalChip?.count().catch(() => 0) ?? Promise.resolve(0),
-      (prisma as any).monthlyRevenue?.count().catch(() => 0) ?? Promise.resolve(0),
+      safeChipCount(),
+      safeRevenueCount(),
     ]);
 
     const dataSources: DataSourceHealth[] = [
@@ -180,16 +184,12 @@ export async function GET() {
     }));
 
     // ── Notification channels (no secrets) ───────────────────────
-    const deliveryLogs = await (prisma as any).notificationDeliveryLog?.findMany({
-      orderBy: { sentAt: 'desc' },
-      take: 30,
-      select: { channel: true, status: true, sentAt: true },
-    }).catch(() => []) ?? [];
+    const deliveryLogs = await safeDeliveryLogs(30);
 
     const channelLastMap = new Map<string, { status: string; sentAt: string }>();
     for (const log of deliveryLogs) {
       if (!channelLastMap.has(log.channel)) {
-        channelLastMap.set(log.channel, { status: log.status, sentAt: log.sentAt });
+        channelLastMap.set(log.channel, { status: log.status, sentAt: log.sentAt instanceof Date ? log.sentAt.toISOString() : String(log.sentAt) });
       }
     }
 
@@ -212,10 +212,7 @@ export async function GET() {
     });
 
     // ── Last 24h delivery summary ─────────────────────────────────
-    const recent24h = await (prisma as any).notificationDeliveryLog?.findMany({
-      where: { sentAt: { gte: since24h } },
-      select: { status: true },
-    }).catch(() => []) ?? [];
+    const recent24h = await safeDeliveryStatuses(since24h);
 
     const last24hDelivery = { success: 0, failed: 0, skipped: 0 };
     for (const r of recent24h) {

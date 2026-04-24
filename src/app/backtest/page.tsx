@@ -9,8 +9,8 @@ import { Disclaimer } from '@/components/ui/disclaimer';
 import { GlassCard } from '@/components/ui/glass-card';
 import { LoadingSpinner } from '@/components/ui/loading';
 import {
-    FlaskConical, TrendingUp, TrendingDown, BarChart3,
-    ArrowRight, Calendar, AlertTriangle, Info, Scale,
+    FlaskConical, BarChart3,
+    Calendar, AlertTriangle, Info, Scale,
     Shield, Filter, SlidersHorizontal
 } from 'lucide-react';
 import { MarketRegimeSummaryCard, MarketRegimeData } from '@/components/ui/market-regime';

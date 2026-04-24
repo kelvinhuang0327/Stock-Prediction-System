@@ -20,7 +20,6 @@ model Stock {
 
   quotes             StockQuote[]
   metrics            StockMetrics[]
-  newsEvents         NewsEvent[]
   predictions        Prediction[]
   institutionalChips InstitutionalChip[]
   monthlyRevenues    MonthlyRevenue[]
@@ -104,20 +103,21 @@ model SyncLog {
 }
 
 model NewsEvent {
-  id             Int      @id @default(autoincrement())
-  stockId        String? // Optional relation to specific stock
+  id             String   @id @default(cuid())
   title          String
   summary        String?
-  url            String?
-  publishedAt    DateTime
   source         String
-  sentimentScore Float? // -1.0 (Negative) to 1.0 (Positive)
-  createdAt      DateTime @default(now())
+  trustLevel     String // official | mainstream | secondary | unknown
+  publishedAt    DateTime
+  relatedSymbols String // JSON string: string[]
+  relatedThemes  String // JSON string: string[]
+  rawUrl         String?
+  titleHash      String
+  ingestedAt     DateTime @default(now())
 
-  stock Stock? @relation(fields: [stockId], references: [id])
-
-  @@index([stockId])
   @@index([publishedAt])
+  @@index([titleHash])
+  @@index([source])
 }
 
 model Prediction {
@@ -328,4 +328,346 @@ model NotificationDeliveryLog {
   @@index([channel])
   @@index([status])
   @@index([reportDate])
+}
+
+model PortfolioImpactSnapshot {
+  id                  Int      @id @default(autoincrement())
+  snapshotDate        String   // YYYY-MM-DD
+  scope               String   // watchlist | candidates
+  symbols             String?  // JSON array: string[]
+  themeConcentration  String?  // JSON
+  sectorConcentration String?  // JSON
+  riskClusters        String?  // JSON
+  regimeExposure      String?  // JSON
+  summary             String?
+  limitations         String?  // JSON array
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@unique([snapshotDate, scope])
+  @@index([scope, snapshotDate])
+}
+
+// ─── Research Execution Layer ────────────────────────────────────
+
+model ResearchParameterSet {
+  id             Int       @id @default(autoincrement())
+  version        String    @unique
+  parameters     String    // JSON: parameter values
+  description    String?
+  activatedAt    DateTime  @default(now())
+  deactivatedAt  DateTime?
+  createdAt      DateTime  @default(now())
+
+  experimentRuns ExperimentRun[]
+}
+
+model ExperimentRun {
+  id               Int       @id @default(autoincrement())
+  experimentId     String
+  parameterSetId   Int?
+  status           String    // RUNNING | PARTIAL | VALIDATED | REJECTED | BLOCKED
+  previousStatus   String
+  evidenceLevel    String
+  findings         String?   // JSON array
+  metrics          String?   // JSON
+  blockers         String?   // JSON array
+  coverageSnapshot String?   // JSON
+  startedAt        DateTime  @default(now())
+  completedAt      DateTime?
+  durationMs       Int?
+  createdAt        DateTime  @default(now())
+
+  parameterSet             ResearchParameterSet?     @relation(fields: [parameterSetId], references: [id])
+  signalEffectivenessResults SignalEffectivenessResult[]
+  walkForwardResults       WalkForwardResult[]
+  regimeStratifiedResults  RegimeStratifiedResult[]
+
+  @@index([experimentId])
+  @@index([status])
+  @@index([startedAt])
+}
+
+model SignalEffectivenessResult {
+  id              Int      @id @default(autoincrement())
+  experimentRunId Int?
+  signalType      String
+  window          Int
+  sampleSize      Int
+  hitRate         Float
+  avgReturn       Float
+  excessReturn    Float
+  excessHitRate   Float?
+  volatility      Float
+  stabilityScore  Float
+  classification  String
+  brierLikeScore  Float?
+  regimeBreakdown String?  // JSON
+  persistence     String?  // JSON
+  limitations     String?  // JSON array
+  evaluatedAt     DateTime @default(now())
+
+  experimentRun ExperimentRun? @relation(fields: [experimentRunId], references: [id])
+
+  @@index([signalType])
+  @@index([evaluatedAt])
+  @@index([experimentRunId])
+}
+
+model WalkForwardResult {
+  id                    Int      @id @default(autoincrement())
+  experimentRunId       Int?
+  signalType            String
+  window                Int
+  hasSufficientData     Boolean
+  firstHalf             String   // JSON: WalkForwardPeriod
+  secondHalf            String   // JSON: WalkForwardPeriod
+  consistencyLabel      String   // STABLE | MIXED | UNSTABLE
+  hitRateDeviation      Float
+  classificationMatch   Boolean
+  excessReturnSignMatch Boolean
+  limitations           String?  // JSON array
+  evaluatedAt           DateTime @default(now())
+
+  experimentRun ExperimentRun? @relation(fields: [experimentRunId], references: [id])
+
+  @@index([signalType])
+  @@index([evaluatedAt])
+}
+
+model RegimeStratifiedResult {
+  id                      Int      @id @default(autoincrement())
+  experimentRunId         Int?
+  signalType              String
+  window                  Int
+  sampleSize              Int
+  overall                 String   // JSON: overall metrics
+  regimeBreakdown         String   // JSON
+  consistencyLabel        String   // REGIME_STABLE | REGIME_CONDITIONAL | REGIME_FRAGILE
+  dominantRegime          String?
+  fragileRegimes          String?  // JSON array
+  unknownRegimeFraction   Float
+  hasSufficientRegimeData Boolean
+  limitations             String?  // JSON array
+  evaluatedAt             DateTime @default(now())
+
+  experimentRun ExperimentRun? @relation(fields: [experimentRunId], references: [id])
+
+  @@index([signalType])
+  @@index([evaluatedAt])
+}
+
+// ─── Autonomous Pipeline Tables ───────────────────────────────────────────────
+// These tables exist in SQLite via raw SQL migrations. Registering here so the
+// Prisma client generates typed accessors for the autonomous trading pipeline.
+
+model JobRunLog {
+  id             Int       @id @default(autoincrement())
+  jobName        String
+  scheduledFor   DateTime
+  startedAt      DateTime?
+  finishedAt     DateTime?
+  status         String
+  runMode        String    @default("live_run")
+  triggerSource  String
+  idempotencyKey String    @unique
+  summary        String?
+  errorMessage   String?
+  metadata       String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@index([jobName, scheduledFor])
+  @@index([jobName, status])
+  @@index([jobName, startedAt])
+}
+
+model AutonomousResearchSnapshot {
+  id              Int      @id @default(autoincrement())
+  snapshotDate    String   @unique
+  marketState     String
+  sectorStrength  String?
+  candidateStocks String?
+  riskSignals     String?
+  topInsights     String?
+  dataCoverage    String
+  limitations     String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  proposals StrategyProposal[]
+  trades    SimulatedTrade[]
+  reviews   TradeReviewReport[]
+  journals  TradeJournalEntry[]
+}
+
+model StrategyProposal {
+  id                    Int      @id @default(autoincrement())
+  snapshotId            Int
+  symbol                String
+  setupType             String
+  thesis                String
+  entryCondition        String
+  invalidationCondition String
+  stopLossRule          String
+  takeProfitRule        String
+  positionSizing        Float
+  conviction            String
+  supportingSignals     String
+  riskFactors           String
+  researchSnapshotId    Int?
+  state                 String
+  decisionMeta          String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  snapshot AutonomousResearchSnapshot @relation(fields: [snapshotId], references: [id], onDelete: Cascade)
+  trade    SimulatedTrade?
+
+  @@index([snapshotId])
+  @@index([symbol])
+  @@index([state])
+}
+
+model SimulatedTrade {
+  id                 Int       @id @default(autoincrement())
+  proposalId         Int       @unique
+  snapshotId         Int
+  symbol             String
+  setupType          String
+  triggerTime        DateTime?
+  entryDate          String
+  entryPrice         Float
+  simulatedFillPrice Float
+  slippageModel      String
+  quantity           Int
+  marketContext      String
+  status             String
+  exitTime           DateTime?
+  exitPrice          Float?
+  pnlPct             Float?
+  pnlAmount          Float?
+  mfePct             Float?
+  maePct             Float?
+  holdingDays        Int?
+  exitReason         String?
+  stopHit            Boolean?
+  targetHit          Boolean?
+  triggerScore       Float?
+  tradeMode          String?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  proposal StrategyProposal           @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  snapshot AutonomousResearchSnapshot @relation(fields: [snapshotId], references: [id], onDelete: Cascade)
+  review   TradeReviewReport?
+  journal  TradeJournalEntry?
+
+  @@index([snapshotId])
+  @@index([symbol])
+  @@index([status])
+  @@index([tradeMode])
+}
+
+model TradeReviewReport {
+  id              Int      @id @default(autoincrement())
+  tradeId         Int      @unique
+  snapshotId      Int
+  triggerType     String
+  preTrade        String
+  result          String
+  analysis        String
+  issues          String
+  recommendations String
+  generatedAt     DateTime @default(now())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  trade    SimulatedTrade             @relation(fields: [tradeId], references: [id], onDelete: Cascade)
+  snapshot AutonomousResearchSnapshot @relation(fields: [snapshotId], references: [id], onDelete: Cascade)
+
+  @@index([snapshotId])
+}
+
+model TradeJournalEntry {
+  id                Int      @id @default(autoincrement())
+  tradeId           Int      @unique
+  snapshotId        Int
+  decisionReasoning String
+  executionDetail   String
+  lifecycle         String
+  researchSnapshot  String?
+  pnlPct            Float?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  trade    SimulatedTrade             @relation(fields: [tradeId], references: [id], onDelete: Cascade)
+  snapshot AutonomousResearchSnapshot @relation(fields: [snapshotId], references: [id], onDelete: Cascade)
+
+  @@index([snapshotId])
+}
+
+model StrategyLearningInsight {
+  id                    Int      @id @default(autoincrement())
+  generatedAt           String   @unique
+  summary               String
+  successPatterns       String?
+  failurePatterns       String?
+  adjustmentSuggestions String?
+  sourceCount           Int
+  limitations           String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
+
+model OptimizationInsightRecord {
+  id            Int      @id @default(autoincrement())
+  insightType   String   // score_bias | setup_imbalance | time_exit_dominance | data_quality_issue | indicator_insufficient | sector_misalignment
+  sourceTaskId  String   // dedupeKey of the optimization task that produced this insight
+  evidence      String   // JSON array of evidence strings
+  confidence    Float    // 0.0–1.0
+  severity      String   // low | medium | high
+  affectedScope String?  // JSON: { setupTypes: string[], symbols: string[] }
+  regimeContext String?  // market regime at extraction time: 'trending' | 'recovery' | '震盪' | 'defensive'
+  expiresAt     DateTime
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@unique([sourceTaskId, insightType])
+  @@index([insightType])
+  @@index([expiresAt])
+}
+
+model ClassifierThresholds {
+  id                    Int      @id @default(autoincrement())
+  coldWinRateMin        Float    @default(0.4)
+  saturationDeltaMax    Float    @default(0.03)
+  coldMinTrades         Int      @default(5)
+  weightWinRate         Float    @default(1.0)
+  weightTrendDelta      Float    @default(1.5)
+  weightDataCoverage    Float    @default(0.5)
+  totalClassifications  Int      @default(0)
+  correctClassifications Int     @default(0)
+  lastCalibratedAt      DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
+
+model ClassifierCalibrationLog {
+  id                 Int      @id @default(autoincrement())
+  classifiedAt       DateTime
+  state              String
+  confidenceScore    Float
+  confidenceLabel    String
+  reason             String?
+  featuresJson       String?
+  thresholdsJson     String?
+  outcomeVerifiedAt  DateTime?
+  outcomeState       String?
+  isCorrect          Boolean?
+  fpFnType           String?
+  thresholdAdjusted  Boolean  @default(false)
+  createdAt          DateTime @default(now())
+
+  @@index([classifiedAt])
+  @@index([state])
 }

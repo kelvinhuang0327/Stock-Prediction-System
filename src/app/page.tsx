@@ -4,12 +4,62 @@ import { NewsFeed } from "@/components/dashboard/NewsFeed";
 import { SectorPerformance } from "@/components/dashboard/SectorPerformance";
 import { MarketBreadth } from "@/components/dashboard/MarketBreadth";
 import { SmartScreener } from "@/components/dashboard/SmartScreener";
-import { HybridPrediction } from "@/components/analysis/HybridPrediction";
-import { BacktestStats } from "@/components/analysis/BacktestStats";
+import { ResearchOrientationBanner } from "@/components/research/ResearchOrientationBanner";
+import type { ReactNode } from "react";
+import Link from "next/link";
+import { ArrowRight, BarChart3, BookOpen, Search, Shield, Star } from "lucide-react";
 
 export default function Home() {
   return (
     <div className="space-y-8">
+      <section>
+        <ResearchOrientationBanner
+          title="先從哪裡開始"
+          statusLabel="研究入口"
+          tone="success"
+          summary="如果你是來研究股票，這個平台最自然的路徑是：先看每日報告，再看候選股或自選股，最後才進個股詳情做 drill-down。"
+          bullets={[
+            "每日報告適合先快速掃市場、事件、候選與風險。",
+            "候選股適合比較不同標的的相對強弱與理由。",
+            "個股詳情適合深挖 matrix、percentile 與 overlay，但資訊量最大。",
+          ]}
+          note="這裡是研究系統，不是單純的行情看板。先走對路徑，比先看更多數字重要。"
+        />
+      </section>
+
+      <section>
+        <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
+          <BookOpen className="h-6 w-6 text-primary" />
+          研究入口
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+          <ResearchShortcutCard
+            href="/report/daily"
+            title="每日研究報告"
+            desc="先看市場環境、候選動向、風險與研究覆蓋度。"
+            icon={<BarChart3 className="h-5 w-5" />}
+          />
+          <ResearchShortcutCard
+            href="/candidates"
+            title="候選股研究"
+            desc="比較強勢 / 觀察標的，查看理由、矩陣與 percentile。"
+            icon={<Star className="h-5 w-5" />}
+          />
+          <ResearchShortcutCard
+            href="/watchlist"
+            title="自選股觀察"
+            desc="看持股脈絡、風險集中度與持倉損益。"
+            icon={<Shield className="h-5 w-5" />}
+          />
+          <ResearchShortcutCard
+            href="/stocks/2330"
+            title="個股深挖"
+            desc="直接進入個股頁，查看完整研究矩陣與 drill-down。"
+            icon={<Search className="h-5 w-5" />}
+          />
+        </div>
+      </section>
+
       {/* 1. Market Overview at Top */}
       <section>
         <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
@@ -67,5 +117,36 @@ export default function Home() {
         <NewsFeed />
       </section>
     </div>
+  );
+}
+
+function ResearchShortcutCard({
+  href,
+  title,
+  desc,
+  icon,
+}: {
+  href: string;
+  title: string;
+  desc: string;
+  icon: ReactNode;
+}) {
+  return (
+    <Link
+      href={href}
+      className="group rounded-2xl border border-border/40 bg-background/70 p-4 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg hover:border-primary/30"
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className="space-y-2">
+          <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">
+            {icon}
+            研究入口
+          </div>
+          <h3 className="text-lg font-semibold">{title}</h3>
+          <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
+        </div>
+        <ArrowRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-1" />
+      </div>
+    </Link>
   );
 }

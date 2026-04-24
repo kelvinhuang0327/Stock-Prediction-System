@@ -5,11 +5,15 @@ import { useApiData } from '@/hooks/useApiData';
 import { GlassCard } from '@/components/ui/glass-card';
 import { LoadingSpinner } from '@/components/ui/loading';
 import { Disclaimer } from '@/components/ui/disclaimer';
+import { RelevantInsightsPanel } from '@/components/relevance/RelevantInsightsPanel';
+import { SignalReliabilitySummaryCard } from '@/components/signals/SignalReliabilitySummaryCard';
+import type { PortfolioDecisionSupport, PortfolioImpactSnapshotComparison } from '@/types/portfolio';
+import type { SignalEffectivenessSummary } from '@/lib/signals/types';
 import {
   FileText, TrendingUp, TrendingDown, Shield, Database,
   AlertTriangle, Eye, Star, Minus, ChevronDown, ChevronUp,
   RefreshCw, Activity, Users, ArrowUpRight, ArrowDownRight,
-  GitCompare, Camera
+  GitCompare, Camera, Route
 } from 'lucide-react';
 
 // ─── Types ───────────────────────────────────────────────────────
@@ -55,6 +59,119 @@ interface DailyReport {
     keyFactors: string[];
     limitations: string[];
   };
+  eventSummary: {
+    eventCount: number;
+    rawCount: number;
+    dedupedCount: number;
+    recentThemes: string[];
+    catalystSummary: string;
+    sourceBreakdown: Record<string, number>;
+    trustLevelSummary: {
+      official: number;
+      mainstream: number;
+      secondary: number;
+      unknown: number;
+      dominant: 'official' | 'mainstream' | 'secondary' | 'unknown' | 'mixed';
+      note: string;
+    };
+    recentEventTitles: string[];
+    limitations: string[];
+    dataCoverage: 'full' | 'limited' | 'insufficient';
+  };
+  topicSummary: {
+    summary: string;
+    topics: Array<{
+      topic: string;
+      recentCount: number;
+      previousCount: number;
+      delta: number;
+      surgeLevel: 'none' | 'watch' | 'surging';
+      diffusionLevel: 'single-stock theme' | 'multi-stock theme' | 'broadening theme';
+      relatedSymbols: string[];
+      trustLevelSummary: string;
+      limitations: string[];
+    }>;
+    trendItems: Array<{
+      topic: string;
+      momentum: {
+        topic: string;
+        timeline: Array<{ date: string; count: number }>;
+        momentumType: 'spike' | 'rising' | 'stable' | 'cooling' | 'unknown';
+        peak: number;
+        avg: number;
+        recentTrend: number;
+        limitations: string[];
+      };
+      diffusion: {
+        topic: string;
+        nodes: Array<{ symbol: string; eventCount: number }>;
+        breadth: number;
+        diffusionType: 'single' | 'cluster' | 'broad';
+        sourceDiversity: number;
+        limitations: string[];
+      };
+      trustLevelSummary: string;
+    }>;
+    limitations: string[];
+    generatedAt: string;
+  };
+  themeLinkageSummary: {
+    summary: string;
+    items: Array<{
+      topic: string;
+      linkage: {
+        topic: string;
+        linkedTopics: Array<{
+          topic: string;
+          coOccurrence: number;
+          overlapSymbols: string[];
+          trustLevelSummary: string;
+          linkageStrength: 'weak' | 'moderate' | 'strong';
+        }>;
+        limitations: string[];
+      };
+      graph: {
+        topic: string;
+        nodes: Array<{ id: string; type: 'topic' | 'sector' | 'symbol'; label: string; weight: number }>;
+        edges: Array<{ source: string; target: string; strength: number; relationType: string }>;
+        limitations: string[];
+      };
+    }>;
+    limitations: string[];
+    generatedAt: string;
+  };
+  crossMarketSummary: {
+    summary: string;
+    items: Array<{
+      topic: string;
+      crossMarket: {
+        topic: string;
+        originCluster: { symbols: string[]; sector?: string; firstSeenDate: string };
+        spreadClusters: Array<{ symbols: string[]; sector?: string; firstSeenDate: string; spreadDelay: number }>;
+        spreadPattern: 'early_cluster' | 'sector_expansion' | 'broad_market' | 'unclear';
+        spreadSpeed: 'slow' | 'moderate' | 'fast';
+        trustLevelSummary: string;
+        limitations: string[];
+      };
+      timeline: {
+        topic: string;
+        timeline: Array<{
+          date: string;
+          sectors: string[];
+          symbolCount: number;
+          breadth: number;
+          linkageStrength: number;
+        }>;
+        stage: 'early' | 'spreading' | 'mature' | 'fading' | 'unknown';
+        trend: 'expanding' | 'stable' | 'contracting';
+        limitations: string[];
+      };
+      trustLevelSummary: string;
+    }>;
+    limitations: string[];
+    generatedAt: string;
+  };
+  signalReliabilitySummary: SignalEffectivenessSummary;
   candidateSummary: {
     strongCandidates: CandidateDetail[];
     watchCandidates: CandidateDetail[];
@@ -125,6 +242,15 @@ interface DailyComparison {
   };
 }
 
+interface PortfolioSnapshotApiResponse {
+  scope: 'watchlist' | 'candidates';
+  compareWindow: '1d' | '7d' | '30d';
+  snapshot: PortfolioDecisionSupport & { snapshotDate: string; scope: 'watchlist' | 'candidates'; symbols: string[] };
+  comparison: PortfolioImpactSnapshotComparison;
+  limitations?: string[];
+  generatedAt: string;
+}
+
 // ─── Styles ──────────────────────────────────────────────────────
 
 const REGIME_STYLE: Record<string, { bg: string; text: string; icon: React.ReactNode }> = {
@@ -146,6 +272,7 @@ const RISK_STYLE: Record<string, { bg: string; text: string; label: string }> = 
 
 export default function DailyReportPage() {
   const { data: report, loading, error, refetch } = useApiData<DailyReport>('/api/report/daily');
+  const { data: portfolioObservation } = useApiData<PortfolioSnapshotApiResponse>('/api/portfolio/impact-snapshot?scope=watchlist&comparison=true&compareWindow=1d', { refetchInterval: 180000 });
   const [snapshotLoading, setSnapshotLoading] = useState(false);
   const [snapshotMsg, setSnapshotMsg] = useState<string | null>(null);
 
@@ -232,7 +359,28 @@ export default function DailyReportPage() {
       <MarketSummaryCard data={report.marketSummary} />
 
       {/* Multi-Agent Market Viewpoints */}
-      <MultiAgentMarketPanel marketSummary={report.marketSummary} />
+      <MultiAgentMarketPanel marketSummary={report.marketSummary} eventSummary={report.eventSummary} />
+
+      <RelevantInsightsPanel
+        mode="report"
+        maxItems={5}
+        title="今日最值得關注"
+        description="依研究層 relevance 排序今日較值得先看的 signal、topic、portfolio 與 risk 線索，不構成交易建議。"
+      />
+
+      {/* Market Event Summary */}
+      <div id="daily-market-events">
+        <MarketEventSummaryCard data={report.eventSummary} />
+      </div>
+      <div id="daily-topic-surge">
+        <TopicSurgeCard data={report.topicSummary} />
+      </div>
+      <ThemeLinkageCard data={report.themeLinkageSummary} />
+      <CrossMarketCard data={report.crossMarketSummary} />
+      <div id="daily-signal-reliability">
+        <SignalReliabilitySummaryCard summary={report.signalReliabilitySummary} />
+      </div>
+      <PortfolioObservationCard data={portfolioObservation} />
 
       {/* Candidate Summary Card */}
       <CandidateSummaryCard data={report.candidateSummary} />
@@ -250,13 +398,57 @@ export default function DailyReportPage() {
       <DataStatusCard data={report.dataStatusSummary} />
 
       {/* Disclaimer */}
-      <Disclaimer warning={report.disclaimer} variant="detailed" source="MarketRegimeEngine + StrategyScreenEngine + SignalFusionEngine + Watchlist DB" methodology="規則式分析引擎綜合評分，非 AI 黑盒模型" />
+      <Disclaimer warning={report.disclaimer} variant="detailed" source="MarketRegimeEngine + StrategyScreenEngine + SignalFusionEngine + NewsEvent + TopicSurgeEngine" methodology="規則式分析引擎綜合評分，非 AI 黑盒模型" />
 
       {/* Footer */}
       <p className="text-xs text-muted-foreground text-center">
         報告產生時間: {new Date(report.last_updated).toLocaleString('zh-TW')}
       </p>
     </div>
+  );
+}
+
+function PortfolioObservationCard({ data }: { data: PortfolioSnapshotApiResponse | null }) {
+  if (!data) return null;
+  const snapshot = data.snapshot;
+  return (
+    <GlassCard id="daily-portfolio-observation" className="p-5 space-y-3">
+      <h3 className="text-sm font-semibold flex items-center gap-2">
+        <GitCompare className="h-4 w-4 text-primary" />
+        組合觀察（研究）
+      </h3>
+      <p className="text-xs text-muted-foreground">{snapshot.summary}</p>
+      <p className="text-[11px] text-muted-foreground">
+        {data.comparison.summaryNote}
+      </p>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-3 text-xs">
+        <div className="rounded-lg border border-border/40 p-3">
+          <div className="text-muted-foreground">主題集中度</div>
+          <div className="font-semibold mt-1">{snapshot.themeConcentration.concentrationLevel}</div>
+          <div className="text-muted-foreground mt-1">{snapshot.themeConcentration.topThemes[0]?.theme ?? 'insufficient'}</div>
+        </div>
+        <div className="rounded-lg border border-border/40 p-3">
+          <div className="text-muted-foreground">產業分布</div>
+          <div className="font-semibold mt-1">{snapshot.sectorConcentration.concentrationLevel}</div>
+          <div className="text-muted-foreground mt-1">{snapshot.sectorConcentration.sectors[0]?.sector ?? 'unknown'}</div>
+        </div>
+        <div className="rounded-lg border border-border/40 p-3">
+          <div className="text-muted-foreground">風險提示</div>
+          <div className="font-semibold mt-1">{snapshot.riskClusters.overallRiskLevel}</div>
+          <div className="text-muted-foreground mt-1">{snapshot.riskClusters.clusters[0]?.reason ?? '無顯著群聚'}</div>
+        </div>
+        <div className="rounded-lg border border-border/40 p-3">
+          <div className="text-muted-foreground">市場曝險</div>
+          <div className="font-semibold mt-1">{snapshot.regimeExposure.sensitivity}</div>
+          <div className="text-muted-foreground mt-1">{snapshot.regimeExposure.regime} / {snapshot.regimeExposure.confidence}%</div>
+        </div>
+      </div>
+      {snapshot.limitations.length > 0 && (
+        <p className="text-[11px] text-amber-600 dark:text-amber-400">
+          限制：{snapshot.limitations.slice(0, 2).join('；')}
+        </p>
+      )}
+    </GlassCard>
   );
 }
 
@@ -296,6 +488,228 @@ function MarketSummaryCard({ data }: { data: DailyReport['marketSummary'] }) {
       {data.limitations.length > 0 && (
         <LimitationsList items={data.limitations} />
       )}
+    </GlassCard>
+  );
+}
+
+function MarketEventSummaryCard({ data }: { data: DailyReport['eventSummary'] }) {
+  const hasEvents = data.eventCount > 0;
+  const coverageClass =
+    data.dataCoverage === 'full'
+      ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400'
+      : data.dataCoverage === 'limited'
+      ? 'bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300'
+      : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400';
+
+  return (
+    <GlassCard className="p-6">
+      <div className="flex items-center gap-2 mb-3">
+        <FileText className="h-5 w-5 text-primary" />
+        <h2 className="text-lg font-semibold">市場熱點 / 事件摘要</h2>
+        <span className={`ml-auto text-xs px-2 py-0.5 rounded-full ${coverageClass}`}>
+          {data.dataCoverage === 'full' ? '事件覆蓋較完整' : data.dataCoverage === 'limited' ? '事件覆蓋有限' : '事件資料不足'}
+        </span>
+      </div>
+
+      {!hasEvents ? (
+        <p className="text-sm text-muted-foreground">目前事件資料不足，暫無可用市場熱點摘要。</p>
+      ) : (
+        <div className="space-y-3">
+          <div className="text-sm text-muted-foreground">
+            事件數量：{data.eventCount}（原始 {data.rawCount}，去重 {data.dedupedCount} 筆）
+          </div>
+          <p className="text-sm leading-relaxed">{data.catalystSummary}</p>
+          {data.recentThemes.length > 0 && (
+            <div className="flex flex-wrap gap-1.5">
+              {data.recentThemes.slice(0, 5).map((theme) => (
+                <span key={theme} className="text-xs px-2 py-0.5 rounded bg-muted/40">
+                  #{theme}
+                </span>
+              ))}
+            </div>
+          )}
+          <p className="text-xs text-muted-foreground">
+            來源可信度：official {data.trustLevelSummary.official}、mainstream {data.trustLevelSummary.mainstream}、
+            secondary {data.trustLevelSummary.secondary}、unknown {data.trustLevelSummary.unknown}（{data.trustLevelSummary.note}）
+          </p>
+        </div>
+      )}
+
+      {data.limitations.length > 0 && <LimitationsList items={data.limitations} />}
+    </GlassCard>
+  );
+}
+
+function TopicSurgeCard({ data }: { data: DailyReport['topicSummary'] }) {
+  return (
+    <GlassCard className="p-6">
+      <div className="flex items-center gap-2 mb-3">
+        <Activity className="h-5 w-5 text-primary" />
+        <h2 className="text-lg font-semibold">主題趨勢觀察</h2>
+      </div>
+      <p className="text-sm text-muted-foreground mb-3">{data.summary}</p>
+      {data.topics.length === 0 ? (
+        <p className="text-sm text-muted-foreground">目前無明確主題升溫結果（或資料不足）。</p>
+      ) : (
+        <div className="space-y-2">
+          {data.topics.slice(0, 5).map((topic) => {
+            const trend = data.trendItems.find((t) => t.topic === topic.topic);
+            return (
+            <div key={topic.topic} className="rounded-lg border border-border/30 p-3 bg-muted/10">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-sm font-medium">{topic.topic}</span>
+                <span className={`text-[10px] px-1.5 py-0.5 rounded ${
+                  topic.surgeLevel === 'surging'
+                    ? 'bg-red-100 text-red-700 dark:bg-red-950/40 dark:text-red-300'
+                    : 'bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300'
+                }`}>
+                  {topic.surgeLevel}
+                </span>
+                <span className="text-[10px] px-1.5 py-0.5 rounded bg-muted/40 text-muted-foreground">
+                  {topic.diffusionLevel}
+                </span>
+                {trend && (
+                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-primary/10 text-primary">
+                    {trend.momentum.momentumType}
+                  </span>
+                )}
+              </div>
+              <p className="text-xs text-muted-foreground mt-1">
+                次數：{topic.previousCount} → {topic.recentCount}（Δ {topic.delta >= 0 ? '+' : ''}{topic.delta}）
+                · 相關股票 {topic.relatedSymbols.length} 檔
+              </p>
+              <p className="text-xs text-muted-foreground mt-1">{topic.trustLevelSummary}</p>
+              {trend && trend.momentum.timeline.length > 0 && (
+                <div className="mt-2 flex items-end gap-1 h-8">
+                  {trend.momentum.timeline.slice(-7).map((p) => (
+                    <div key={p.date} className="flex-1 bg-primary/15 rounded-sm overflow-hidden">
+                      <div
+                        className="bg-primary/50 w-full"
+                        style={{ height: `${Math.max(8, Math.min(100, (p.count / Math.max(1, trend.momentum.peak)) * 100))}%` }}
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+              {trend && (
+                <p className="text-[11px] text-muted-foreground mt-1">
+                  擴散 breadth {trend.diffusion.breadth}（{trend.diffusion.diffusionType}）· source diversity {trend.diffusion.sourceDiversity}
+                </p>
+              )}
+            </div>
+            );
+          })}
+        </div>
+      )}
+      {data.limitations.length > 0 && <LimitationsList items={data.limitations} />}
+    </GlassCard>
+  );
+}
+
+function ThemeLinkageCard({ data }: { data: DailyReport['themeLinkageSummary'] }) {
+  return (
+    <GlassCard className="p-6">
+      <div className="flex items-center gap-2 mb-3">
+        <GitCompare className="h-5 w-5 text-primary" />
+        <h2 className="text-lg font-semibold">主題連動觀察</h2>
+      </div>
+      <p className="text-sm text-muted-foreground mb-3">{data.summary}</p>
+      {data.items.length === 0 ? (
+        <p className="text-sm text-muted-foreground">目前無可用主題連動資料。</p>
+      ) : (
+        <div className="space-y-3">
+          {data.items.slice(0, 3).map((item) => (
+            <div key={item.topic} className="rounded-lg border border-border/30 p-3 bg-muted/10">
+              <p className="text-sm font-medium mb-1">{item.topic}</p>
+              {item.linkage.linkedTopics.length === 0 ? (
+                <p className="text-xs text-muted-foreground">無明確 linked topics。</p>
+              ) : (
+                <div className="space-y-1">
+                  {item.linkage.linkedTopics.slice(0, 4).map((linked) => (
+                    <div key={linked.topic} className="text-xs text-muted-foreground flex items-center gap-2 flex-wrap">
+                      <span className="font-medium text-foreground/80">{linked.topic}</span>
+                      <span className={`px-1.5 py-0.5 rounded ${
+                        linked.linkageStrength === 'strong'
+                          ? 'bg-red-100 text-red-700 dark:bg-red-950/40 dark:text-red-300'
+                          : linked.linkageStrength === 'moderate'
+                          ? 'bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300'
+                          : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'
+                      }`}>
+                        {linked.linkageStrength}
+                      </span>
+                      <span>co={linked.coOccurrence}</span>
+                      <span>symbols={linked.overlapSymbols.length}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <p className="text-[11px] text-muted-foreground mt-2">
+                graph: nodes {item.graph.nodes.length} / edges {item.graph.edges.length}
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
+      {data.limitations.length > 0 && <LimitationsList items={data.limitations} />}
+    </GlassCard>
+  );
+}
+
+function CrossMarketCard({ data }: { data: DailyReport['crossMarketSummary'] }) {
+  return (
+    <GlassCard className="p-6">
+      <div className="flex items-center gap-2 mb-3">
+        <Route className="h-5 w-5 text-primary" />
+        <h2 className="text-lg font-semibold">主題跨板塊傳導</h2>
+      </div>
+      <p className="text-sm text-muted-foreground mb-3">{data.summary}</p>
+      {data.items.length === 0 ? (
+        <p className="text-sm text-muted-foreground">目前無可用主題傳導資料。</p>
+      ) : (
+        <div className="space-y-3">
+          {data.items.slice(0, 3).map((item) => {
+            const peakSectors = Math.max(0, ...item.timeline.timeline.map((p) => p.sectors.length));
+            const peakBreadth = Math.max(0, ...item.timeline.timeline.map((p) => p.breadth));
+            return (
+              <div key={item.topic} className="rounded-lg border border-border/30 p-3 bg-muted/10">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <p className="text-sm font-medium">{item.topic}</p>
+                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-primary/10 text-primary">
+                    {item.crossMarket.spreadPattern}
+                  </span>
+                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-muted/40 text-muted-foreground">
+                    {item.crossMarket.spreadSpeed}
+                  </span>
+                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-muted/40 text-muted-foreground">
+                    {item.timeline.stage}/{item.timeline.trend}
+                  </span>
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">
+                  origin {item.crossMarket.originCluster.sector ?? 'symbol-only'}（{item.crossMarket.originCluster.symbols.length} 檔）
+                  · 擴散群 {item.crossMarket.spreadClusters.length} · 涉及 sector 峰值 {peakSectors} · breadth 峰值 {peakBreadth}
+                </p>
+                {item.timeline.timeline.length > 0 && (
+                  <div className="mt-2 flex items-end gap-1 h-8">
+                    {item.timeline.timeline.slice(-7).map((p) => {
+                      const peak = Math.max(1, ...item.timeline.timeline.map((n) => n.breadth));
+                      return (
+                        <div key={p.date} className="flex-1 bg-primary/15 rounded-sm overflow-hidden">
+                          <div
+                            className="bg-primary/50 w-full"
+                            style={{ height: `${Math.max(8, Math.min(100, (p.breadth / peak) * 100))}%` }}
+                          />
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+                <p className="text-[11px] text-muted-foreground mt-1">{item.crossMarket.trustLevelSummary}</p>
+              </div>
+            );
+          })}
+        </div>
+      )}
+      {data.limitations.length > 0 && <LimitationsList items={data.limitations} />}
     </GlassCard>
   );
 }
@@ -531,7 +945,7 @@ function RiskSummaryCard({ data }: { data: DailyReport['riskSummary'] }) {
   const style = RISK_STYLE[data.overallRiskLevel] ?? RISK_STYLE.unknown;
 
   return (
-    <GlassCard className="p-6">
+    <GlassCard id="daily-risk-summary" className="p-6">
       <div className="flex items-center gap-2 mb-4">
         <Shield className="h-5 w-5 text-primary" />
         <h2 className="text-lg font-semibold">風險提醒</h2>
@@ -907,7 +1321,13 @@ const STANCE_LABEL2: Record<AgentStance2, { label: string; cls: string }> = {
   Insufficient: { label: '資料不足', cls: 'text-gray-500 dark:text-gray-400' },
 };
 
-function MultiAgentMarketPanel({ marketSummary }: { marketSummary: DailyReport['marketSummary'] }) {
+function MultiAgentMarketPanel({
+  marketSummary,
+  eventSummary,
+}: {
+  marketSummary: DailyReport['marketSummary'];
+  eventSummary: DailyReport['eventSummary'];
+}) {
   const [result, setResult] = React.useState<ResearchResult2 | null>(null);
   const [loading, setLoading] = React.useState(false);
   const [err, setErr] = React.useState<string | null>(null);
@@ -933,7 +1353,11 @@ function MultiAgentMarketPanel({ marketSummary }: { marketSummary: DailyReport['
           fundamentalScore: 50,
           marketAdjustment: 0,
           usedSources: ['market_index'],
-          missingSources: ['chip_data', 'revenue_data', 'event_data'],
+          missingSources: ['chip_data', 'revenue_data'],
+          eventCount: eventSummary.eventCount,
+          eventTrustLevelSummary: eventSummary.trustLevelSummary,
+          recentThemes: eventSummary.recentThemes,
+          catalystSummary: eventSummary.catalystSummary,
           limitations: marketSummary.limitations,
         }),
       });
@@ -945,7 +1369,7 @@ function MultiAgentMarketPanel({ marketSummary }: { marketSummary: DailyReport['
     } finally {
       setLoading(false);
     }
-  }, [marketSummary, result, loading]);
+  }, [marketSummary, eventSummary, result, loading]);
 
   const toggle = () => {
     setOpen((v) => !v);
@@ -1022,4 +1446,3 @@ function MultiAgentMarketPanel({ marketSummary }: { marketSummary: DailyReport['
     </GlassCard>
   );
 }
-

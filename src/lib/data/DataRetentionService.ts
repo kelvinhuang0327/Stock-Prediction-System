@@ -13,6 +13,7 @@
  *   DailyMarketSnapshot    — one row per day (snapshotDate: String YYYY-MM-DD)
  *   DailyCandidateSnapshot — many rows per day, keyed by (snapshotDate, symbol)
  *   DailyWatchlistSnapshot — many rows per day, keyed by (snapshotDate, symbol)
+ *   PortfolioImpactSnapshot — one row per day/scope, keyed by (snapshotDate, scope)
  *   NotificationDeliveryLog — one row per delivery attempt (sentAt: DateTime)
  *
  * Usage:
@@ -33,6 +34,7 @@ export const DEFAULT_RETENTION_POLICY: RetentionPolicy = {
   dailyMarketSnapshot: 90,
   dailyCandidateSnapshot: 60,
   dailyWatchlistSnapshot: 60,
+  portfolioImpactSnapshot: 180,
   notificationDeliveryLog: 90,
 };
 
@@ -45,6 +47,8 @@ export interface RetentionPolicy {
   dailyCandidateSnapshot: number;
   /** How many days of DailyWatchlistSnapshot rows to keep (default: 60) */
   dailyWatchlistSnapshot: number;
+  /** How many days of PortfolioImpactSnapshot rows to keep (default: 180) */
+  portfolioImpactSnapshot: number;
   /** How many days of NotificationDeliveryLog rows to keep (default: 90) */
   notificationDeliveryLog: number;
 }
@@ -57,6 +61,11 @@ export interface TableCleanupResult {
   skipped: number;           // rows NOT removed (protected / error)
   dryRun: boolean;
   error?: string;
+}
+
+interface DynamicCleanupModel<TWhere> {
+  count(args: { where: TWhere }): Promise<number>;
+  deleteMany(args: { where: TWhere }): Promise<{ count: number }>;
 }
 
 export interface CleanupSummary {
@@ -124,6 +133,10 @@ export class DataRetentionService {
         overrides.dailyWatchlistSnapshot ?? DEFAULT_RETENTION_POLICY.dailyWatchlistSnapshot,
         MIN_RETENTION_DAYS
       ),
+      portfolioImpactSnapshot: Math.max(
+        overrides.portfolioImpactSnapshot ?? DEFAULT_RETENTION_POLICY.portfolioImpactSnapshot,
+        MIN_RETENTION_DAYS
+      ),
       notificationDeliveryLog: Math.max(
         overrides.notificationDeliveryLog ?? DEFAULT_RETENTION_POLICY.notificationDeliveryLog,
         MIN_RETENTION_DAYS
@@ -146,6 +159,7 @@ export class DataRetentionService {
       this.cleanDailyMarketSnapshot(),
       this.cleanDailyCandidateSnapshot(),
       this.cleanDailyWatchlistSnapshot(),
+      this.cleanPortfolioImpactSnapshot(),
       this.cleanNotificationDeliveryLog(),
     ]);
 
@@ -278,6 +292,47 @@ export class DataRetentionService {
     }
   }
 
+  /** PortfolioImpactSnapshot — keyed by (snapshotDate, scope) */
+  async cleanPortfolioImpactSnapshot(): Promise<TableCleanupResult> {
+    const cutoff = cutoffDateString(this.policy.portfolioImpactSnapshot);
+    const todayStr = today();
+    const table = 'PortfolioImpactSnapshot';
+
+    try {
+      const dynamicPrisma = prisma as unknown as {
+        portfolioImpactSnapshot?: DynamicCleanupModel<{ snapshotDate: { lt: string; not: string } }>;
+      };
+      const model = dynamicPrisma.portfolioImpactSnapshot;
+      if (!model) {
+        return {
+          table, cutoffDate: cutoff, scanned: 0, deleted: 0, skipped: 0,
+          dryRun: this.dryRun, error: 'Model not available — run prisma generate',
+        };
+      }
+      const scanned = await model.count({
+        where: {
+          snapshotDate: { lt: cutoff, not: todayStr },
+        },
+      });
+
+      if (this.dryRun || scanned === 0) {
+        return { table, cutoffDate: cutoff, scanned, deleted: 0, skipped: scanned, dryRun: this.dryRun };
+      }
+
+      const { count: deleted } = await model.deleteMany({
+        where: {
+          snapshotDate: { lt: cutoff, not: todayStr },
+        },
+      });
+
+      return { table, cutoffDate: cutoff, scanned, deleted, skipped: scanned - deleted, dryRun: false };
+    } catch (e) {
+      const err = e instanceof Error ? e.message : String(e);
+      console.error(`[DataRetention] ${table} error:`, err);
+      return { table, cutoffDate: cutoff, scanned: 0, deleted: 0, skipped: 0, dryRun: this.dryRun, error: err };
+    }
+  }
+
   /** NotificationDeliveryLog — keyed by sentAt (DateTime) */
   async cleanNotificationDeliveryLog(): Promise<TableCleanupResult> {
     const cutoffDt = cutoffDateTime(this.policy.notificationDeliveryLog);
@@ -286,7 +341,10 @@ export class DataRetentionService {
 
     try {
       // Use dynamic prisma access since NotificationDeliveryLog was added via db push
-      const model = (prisma as any).notificationDeliveryLog;
+      const dynamicPrisma = prisma as unknown as {
+        notificationDeliveryLog?: DynamicCleanupModel<{ sentAt: { lt: Date } }>;
+      };
+      const model = dynamicPrisma.notificationDeliveryLog;
       if (!model) {
         return {
           table, cutoffDate: cutoffIso, scanned: 0, deleted: 0, skipped: 0,

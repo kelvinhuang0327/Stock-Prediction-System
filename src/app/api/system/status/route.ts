@@ -1,6 +1,7 @@
 
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { safeRevenueCount } from '@/lib/prisma-safe';
 import fs from 'fs';
 import path from 'path';
 
@@ -16,9 +17,9 @@ export async function GET() {
         ] = await Promise.all([
             prisma.stock.count(),
             prisma.stockQuote.count(),
-            (prisma as any).monthlyRevenue.count(),
+            safeRevenueCount(),
             prisma.syncLog.findMany({
-                orderBy: { timestamp: 'desc' },
+                orderBy: { syncedAt: 'desc' },
                 take: 5
             })
         ]);
@@ -33,7 +34,7 @@ export async function GET() {
                 const stats = fs.statSync(dbPath);
                 dbSize = (stats.size / (1024 * 1024)).toFixed(2) + ' MB';
             }
-        } catch (e) { }
+        } catch { }
 
         return NextResponse.json({
             status: 'ok',
@@ -45,7 +46,8 @@ export async function GET() {
             dbSize,
             lastSyncLogs: syncLogs
         });
-    } catch (error: any) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
+    } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        return NextResponse.json({ error: message }, { status: 500 });
     }
 }

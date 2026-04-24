@@ -202,6 +202,40 @@ describe('MultiAgentResearchEngine', () => {
     expect(catalystView!.missingSources.length).toBeGreaterThan(0);
   });
 
+  it('CatalystAgent returns Neutral when eventCount is 1-2', () => {
+    const result = runMultiAgentResearch({ ...fullInput, eventCount: 2 });
+    const catalystView = result.viewpoints.find((v) => v.name === 'CatalystAgent');
+    expect(catalystView).toBeDefined();
+    expect(catalystView!.stance).toBe('Neutral');
+  });
+
+  it('CatalystAgent returns Bullish (low confidence) when eventCount >=3', () => {
+    const result = runMultiAgentResearch({
+      ...fullInput,
+      eventCount: 4,
+      eventTrustLevelSummary: { official: 0, mainstream: 2, secondary: 1, unknown: 0 },
+      recentThemes: ['法說會', '產能'],
+      catalystSummary: '近期主題集中，且包含較高可信度來源，值得持續觀察',
+    });
+    const catalystView = result.viewpoints.find((v) => v.name === 'CatalystAgent');
+    expect(catalystView).toBeDefined();
+    expect(catalystView!.stance).toBe('Bullish');
+    expect(catalystView!.confidence).toBeLessThanOrEqual(40);
+  });
+
+  it('CatalystAgent limits confidence when trust is mostly unknown/secondary', () => {
+    const result = runMultiAgentResearch({
+      ...fullInput,
+      eventCount: 5,
+      eventTrustLevelSummary: { official: 0, mainstream: 0, secondary: 3, unknown: 2 },
+      catalystSummary: '來源多為次級摘要，需保守解讀',
+    });
+    const catalystView = result.viewpoints.find((v) => v.name === 'CatalystAgent');
+    expect(catalystView).toBeDefined();
+    expect(catalystView!.confidence).toBeLessThanOrEqual(25);
+    expect(['Neutral', 'Bullish']).toContain(catalystView!.stance);
+  });
+
   // ─── 12. keyRisks always non-empty ───────────────────────────
 
   it('keyRisks always has at least one item', () => {

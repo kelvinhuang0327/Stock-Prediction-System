@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react';
 import { HybridPrediction } from '@/components/analysis/HybridPrediction';
-import { AIAdvice } from '@/components/analysis/AIAdvice';
 import { SectorRotationMap } from '@/components/analysis/SectorRotationMap';
 import { SentimentAnalysis } from '@/components/analysis/SentimentAnalysis';
 import { TechnicalIndicatorPanel } from '@/components/analysis/TechnicalIndicatorPanel';
@@ -10,13 +9,25 @@ import { calculateAllIndicators } from '@/lib/technicalIndicators';
 import { StockDataWithIndicators } from '@/types/stock';
 import { Search } from 'lucide-react';
 
+interface StockHistoryPoint {
+    date: string;
+    open: number;
+    high: number;
+    low: number;
+    close: number;
+    volume: number;
+}
+
+interface StockHistoryResponse {
+    data: StockHistoryPoint[];
+}
 
 export default function AnalysisPage() {
     const [symbol, setSymbol] = useState('2330'); // Default to TSMC
     const [inputSymbol, setInputSymbol] = useState('2330');
     const [data, setData] = useState<StockDataWithIndicators[]>([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const [, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -26,8 +37,8 @@ export default function AnalysisPage() {
                 const res = await fetch(`/api/stocks/${symbol}/history?months=6`);
                 if (!res.ok) throw new Error('Failed to fetch data');
 
-                const json = await res.json();
-                const historyData = json.data.map((item: any) => ({
+                const json: StockHistoryResponse = await res.json();
+                const historyData = json.data.map((item) => ({
                     date: item.date,
                     open: item.open,
                     high: item.high,

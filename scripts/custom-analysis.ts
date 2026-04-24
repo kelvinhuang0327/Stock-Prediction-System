@@ -26,7 +26,7 @@ async function analyzeTargetStocks(symbols: string[]) {
             console.log(`Current Price: ${latestQuote?.close}`);
             console.log(`Technical Score: ${result.technicalScore}`);
             console.log(`RS Score: ${result.rsScore}`);
-            console.log(`Momentum: ${result.momentum}%`);
+            console.log(`RS Score: ${result.rsScore ?? 'N/A'}`);
 
             // Analyze for Buy/Sell recommendation
             if (result.technicalScore > 70) {

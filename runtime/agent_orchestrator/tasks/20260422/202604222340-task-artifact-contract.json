@@ -1,0 +1,35 @@
+{
+  "version": "1.0",
+  "objective": "先確保排程、task 狀態轉移、artifact 寫入完整且可恢復。",
+  "scope": [
+    "Implement one focused increment aligned with backlog priorities.",
+    "Produce all required delivery artifacts for this task.",
+    "Keep changes minimal and reversible."
+  ],
+  "constraints": [
+    "Do not modify protected paths from project profile.",
+    "Do not claim completion without machine-readable evidence.",
+    "If blocked by runtime/permission, finalize with clear failure evidence."
+  ],
+  "acceptance_tests": [
+    "completed.md exists and explains what was done.",
+    "task_result.json exists and includes all required_result_fields.",
+    "No forbidden paths are present in changed_files."
+  ],
+  "required_outputs": [
+    "completed_markdown",
+    "task_result_json",
+    "changed_files_list"
+  ],
+  "forbidden_changes": [
+    ".env",
+    "dev.db",
+    "prisma/migrations/",
+    "deploy/",
+    "archive/"
+  ],
+  "handoff_questions": [
+    "What should the next planner prioritize based on this result?",
+    "Are there unresolved blockers that require explicit replan scope?"
+  ]
+}

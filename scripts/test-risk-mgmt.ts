@@ -70,7 +70,7 @@ async function testRiskManagement() {
 
     const strategy = new AssetDoublingStrategy({ skipFilters: true });
 
-    // @ts-ignore
+    // @ts-expect-error test fixture uses minimal ad-hoc structure for strategy input
     const results = await strategy.screen([stock], marketData);
     const result = results[0];
 

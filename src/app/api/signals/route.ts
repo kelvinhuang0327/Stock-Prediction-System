@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { apiCache } from '@/lib/cache';
+import type { SignalsApiResponse, SignalsCoverage } from '@/types/api-payloads';
 
 /**
  * GET /api/signals
@@ -15,7 +16,7 @@ export async function GET(request: NextRequest) {
     const minStrength = parseInt(searchParams.get('minStrength') || '0');
 
     const cacheKey = `signals:${limit}:${minStrength}`;
-    const cached = apiCache.get<any>(cacheKey);
+    const cached = apiCache.get<SignalsApiResponse>(cacheKey);
     if (cached) return NextResponse.json(cached);
 
     try {
@@ -311,7 +312,7 @@ function calculateATR(closes: number[], highs: number[], lows: number[], period:
     return sum / period;
 }
 
-async function calculateFromDB(limit: number, minStrength: number): Promise<{ results: SignalResult[]; coverage: any }> {
+async function calculateFromDB(limit: number, minStrength: number): Promise<{ results: SignalResult[]; coverage: SignalsCoverage }> {
     const stocks = await prisma.stock.findMany({
         select: { id: true, name: true, industry: true },
         take: 200,

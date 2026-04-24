@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@/lib/error-utils';
 
 import { NextResponse } from 'next/server';
 import { newsSentimentService } from '@/lib/services/NewsSentimentService';
@@ -13,7 +14,7 @@ export async function GET(request: Request) {
     try {
         const result = await newsSentimentService.analyze(symbol);
         return NextResponse.json(result);
-    } catch (error: any) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
+    } catch (error: unknown) {
+        return NextResponse.json({ error: getErrorMessage(error) }, { status: 500 });
     }
 }

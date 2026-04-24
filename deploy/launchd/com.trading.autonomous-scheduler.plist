@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  com.trading.autonomous-scheduler.plist
+  macOS launchd agent for the autonomous trading scheduler daemon.
+
+  Install:  bash deploy/launchd/install.sh
+  Uninstall: bash deploy/launchd/uninstall.sh
+
+  Logs:
+    ~/Library/Logs/autonomous-scheduler/stdout.log
+    ~/Library/Logs/autonomous-scheduler/stderr.log
+-->
+<plist version="1.0">
+<dict>
+
+  <!-- Agent identity -->
+  <key>Label</key>
+  <string>com.trading.autonomous-scheduler</string>
+
+  <!-- Run the shell wrapper so PATH and env vars are set correctly -->
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/scripts/run-scheduler-daemon.sh</string>
+  </array>
+
+  <!-- Working directory -->
+  <key>WorkingDirectory</key>
+  <string>/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System</string>
+
+  <!-- Start on boot / login -->
+  <key>RunAtLoad</key>
+  <true/>
+
+  <!-- Restart the daemon if it exits unexpectedly -->
+  <key>KeepAlive</key>
+  <dict>
+    <!-- Only keep alive if the program exits with a non-zero code.
+         A clean exit (--once mode) should NOT restart. -->
+    <key>SuccessfulExit</key>
+    <false/>
+  </dict>
+
+  <!-- Throttle restarts: wait 30 s between respawns -->
+  <key>ThrottleInterval</key>
+  <integer>30</integer>
+
+  <!-- Log files -->
+  <key>StandardOutPath</key>
+  <string>/Users/kelvin/Library/Logs/autonomous-scheduler/stdout.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/kelvin/Library/Logs/autonomous-scheduler/stderr.log</string>
+
+  <!-- Environment passed to the daemon -->
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>NODE_ENV</key>
+    <string>production</string>
+    <key>TS_NODE_COMPILER_OPTIONS</key>
+    <string>{"module":"commonjs"}</string>
+    <key>PATH</key>
+    <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
+  </dict>
+
+</dict>
+</plist>

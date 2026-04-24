@@ -1,0 +1,44 @@
+{
+  "version": "2.0",
+  "objective": "Audit and close stuck SimulatedTrade lifecycle",
+  "background": "20 SimulatedTrades in open/pending status for > 24h — indicates broken lifecycle or missing exit trigger.",
+  "trigger_reason": "OPTIMIZATION_MINER@source=system_health&score=76",
+  "scope": [
+    "src/lib/lifecycle/",
+    "src/lib/trading/",
+    "scripts/"
+  ],
+  "constraints": [
+    "Do not modify pnlPct values arbitrarily",
+    "Do not delete trade records",
+    "Do not modify trading thresholds or strategy parameters",
+    "Do not require live broker connection"
+  ],
+  "acceptance_tests": [
+    "All 20 stuck trades resolved (cancelled or closed with documented reason)",
+    "Exit trigger logic reviewed and hardened for the identified edge case",
+    "Zero trades in open/pending state > 24h after fix",
+    "Write lifecycle audit report to docs/reports/lifecycle_audit.md"
+  ],
+  "required_outputs": [
+    "All 20 stuck trades resolved (cancelled or closed with documented reason)",
+    "Exit trigger logic reviewed and hardened for the identified edge case",
+    "Zero trades in open/pending state > 24h after fix",
+    "Write lifecycle audit report to docs/reports/lifecycle_audit.md"
+  ],
+  "forbidden_changes": [
+    "Do not modify pnlPct values arbitrarily",
+    "Do not delete trade records"
+  ],
+  "handoff_questions": [
+    "Did you verify each acceptance criterion with evidence?",
+    "Were any forbidden actions performed?",
+    "What artifacts were produced?"
+  ],
+  "expected_duration_hours": 4,
+  "target_files": [
+    "src/lib/lifecycle/",
+    "src/lib/trading/",
+    "scripts/"
+  ]
+}

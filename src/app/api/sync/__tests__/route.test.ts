@@ -1,3 +1,5 @@
+/** @jest-environment node */
+
 import { POST } from '../route'
 import { syncService } from '@/lib/services/syncService'
 

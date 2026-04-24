@@ -10,7 +10,7 @@
  * - result never fabricates "success" when not delivered
  */
 
-import { deliverAlerts, WebhookDeliveryProvider, DeliveryProvider, DeliveryResult } from '../notify/NotificationDeliveryEngine';
+import { deliverAlerts, DeliveryProvider } from '../notify/NotificationDeliveryEngine';
 import { prisma } from '../prisma';
 import type { DailyAlertsResult } from '../notify/DailyAlertEngine';
 
@@ -22,7 +22,7 @@ jest.mock('../prisma', () => ({
   },
 }));
 
-const mockLogCreate = (prisma as any).notificationDeliveryLog.create as jest.Mock;
+const mockLogCreate = prisma.notificationDeliveryLog.create as jest.Mock;
 
 // ─── Fixtures ────────────────────────────────────────────────────
 
@@ -40,10 +40,52 @@ function makeAlertsResult(alertCount = 3): DailyAlertsResult {
       basis: 'StrategyScreenEngine',
       comparisonBased: true,
     })),
+    eventAlerts: [],
+    eventAlertSummary: '事件提醒測試略過',
     comparisonAvailable: true,
     previousSnapshotDate: '2025-01-14',
     limitations: [],
     generatedAt: new Date().toISOString(),
+  };
+}
+
+function makeAutonomousAlertsDigest(alertCount = 1) {
+  const alerts = Array.from({ length: alertCount }, (_, i) => ({
+    jobName: `autonomous:job-${i + 1}`,
+    severity: 'critical' as const,
+    message: `autonomous job ${i + 1} needs attention`,
+    detectedAt: new Date().toISOString(),
+    digestKey: `autonomous:job-${i + 1}|critical|autonomous job ${i + 1} needs attention`,
+  }));
+
+  return {
+    reportDate: '2025-01-15',
+    generatedAt: new Date().toISOString(),
+    summary: 'Autonomous alerts: 1 active.',
+    markdown: '## Autonomous System Health\n\nAutonomous alerts: 1 active.',
+    structured: {
+      reportDate: '2025-01-15',
+      summary: 'Autonomous alerts: 1 active.',
+      total: alerts.length,
+      critical: alerts.length,
+      warning: 0,
+      info: 0,
+      suppressed: 0,
+      alerts,
+      healthSummary: { total: 4, ok: 3, delayed: 0, failed: 1, neverRan: 0 },
+      limitations: [],
+    },
+    alerts,
+    summaryStats: {
+      total: alerts.length,
+      critical: alerts.length,
+      warning: 0,
+      info: 0,
+      suppressed: 0,
+    },
+    healthSummary: { total: 4, ok: 3, delayed: 0, failed: 1, neverRan: 0 },
+    limitations: [],
+    shouldAttach: true,
   };
 }
 
@@ -219,6 +261,25 @@ describe('NotificationDeliveryEngine — deliverAlerts()', () => {
       });
 
       expect(provider.send as jest.Mock).toHaveBeenCalledTimes(1);
+    });
+
+    it('delivers when only autonomous alerts are present', async () => {
+      const provider = makeSuccessProvider();
+      const alertsResult = {
+        ...makeAlertsResult(0),
+        autonomousAlerts: makeAutonomousAlertsDigest(1),
+      } as DailyAlertsResult;
+
+      const result = await deliverAlerts(alertsResult, {
+        providers: [provider],
+        sendWhenEmpty: false,
+        minAlerts: 1,
+        retryDelayMs: 0,
+      });
+
+      expect(result.channels).toHaveLength(1);
+      expect(provider.send as jest.Mock).toHaveBeenCalledTimes(1);
+      expect(mockLogCreate.mock.calls[0][0].data.alertCount).toBe(1);
     });
   });
 

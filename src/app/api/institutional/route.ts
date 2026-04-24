@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { chipAnomalyScanner, ChipAnomalySignal } from '@/lib/scanners/ChipAnomalyScanner';
+import type { InstitutionalScanItem } from '@/types/api-payloads';
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const chipModel = (prisma as any).institutionalChip;
 
 /**
  * GET /api/institutional
@@ -16,9 +20,9 @@ export async function GET(request: NextRequest) {
 
     try {
         // Check chip data availability
-        const chipCount = await (prisma as any).institutionalChip.count();
+        const chipCount = await chipModel.count();
         const chipStocks = chipCount > 0
-            ? await (prisma as any).institutionalChip.groupBy({ by: ['stockId'] })
+            ? await chipModel.groupBy({ by: ['stockId'] })
             : [];
 
         if (chipStocks.length < 1) {
@@ -66,7 +70,13 @@ export async function GET(request: NextRequest) {
     }
 }
 
-async function scanFromDB(severityFilter: string, limit: number) {
+interface ChipDataRow {
+    stockId: string;
+    date: string;
+    totalBuy: number;
+}
+
+async function scanFromDB(severityFilter: string, limit: number): Promise<InstitutionalScanItem[] | null> {
     // Get all stocks that have chip data
     const stocks = await prisma.stock.findMany({
         select: { id: true, name: true, industry: true },
@@ -74,10 +84,10 @@ async function scanFromDB(severityFilter: string, limit: number) {
 
     if (stocks.length === 0) return null;
 
-    const allResults: InstitutionalScanResult[] = [];
+    const allResults: InstitutionalScanItem[] = [];
 
     for (const stock of stocks) {
-        const chips = await (prisma as any).institutionalChip.findMany({
+        const chips = await chipModel.findMany({
             where: { stockId: stock.id },
             orderBy: { date: 'asc' },
             take: 60,
@@ -98,7 +108,7 @@ async function scanFromDB(severityFilter: string, limit: number) {
             orderBy: { date: 'desc' },
         });
 
-        const result: InstitutionalScanResult = {
+        const result: InstitutionalScanItem = {
             symbol: stock.id,
             name: stock.name,
             industry: stock.industry || '',
@@ -129,31 +139,14 @@ async function scanFromDB(severityFilter: string, limit: number) {
         .slice(0, limit);
 }
 
-interface InstitutionalScanResult {
-    symbol: string;
-    name: string;
-    industry: string;
-    price: number | null;
-    change: number | null;
-    volume: number | null;
-    anomalyScore: number;
-    phase: string;
-    phaseDescription: string;
-    signals: {
-        type: string;
-        severity: string;
-        score: number;
-        reasoning: string;
-    }[];
-}
 
-function estimatePhase(signals: ChipAnomalySignal[], chips: any[]) {
+function estimatePhase(signals: ChipAnomalySignal[], chips: ChipDataRow[]) {
     // Phase estimation based on chip patterns (model inference, not certainty)
     const hasConcentrationSurge = signals.some(s => s.anomalyType === 'CONCENTRATION_SURGE');
     const hasTrustAccumulation = signals.some(s => s.anomalyType === 'TRUST_ACCUMULATION');
 
-    const recentNetBuy = chips.slice(-5).reduce((sum: number, c: any) => sum + (c.totalBuy || 0), 0);
-    const olderNetBuy = chips.slice(-20, -5).reduce((sum: number, c: any) => sum + (c.totalBuy || 0), 0);
+    const recentNetBuy = (chips as ChipDataRow[]).slice(-5).reduce((sum: number, c) => sum + (c.totalBuy || 0), 0);
+    const olderNetBuy = (chips as ChipDataRow[]).slice(-20, -5).reduce((sum: number, c) => sum + (c.totalBuy || 0), 0);
 
     if (hasConcentrationSurge && recentNetBuy > olderNetBuy * 2) {
         return {

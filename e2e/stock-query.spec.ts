@@ -4,7 +4,7 @@ test.describe('Stock Query Flow', () => {
     test('should navigate to homepage', async ({ page }) => {
         await page.goto('/');
 
-        await expect(page).toHaveTitle(/Stock Prediction System|股票預測系統/i);
+        await expect(page).toHaveTitle(/Stock洞察平台/i);
     });
 
     test('should display market overview cards', async ({ page }) => {
@@ -36,27 +36,24 @@ test.describe('Stock Query Flow', () => {
 
     test('should navigate to stock detail page', async ({ page }) => {
         // Direct navigation to stock detail
-        await page.goto('/stock/2330');
+        await page.goto('/stocks/2330');
 
-        // Wait for page to load
-        await page.waitForLoadState('networkidle');
+        // Wait for the actual detail content instead of the early loading shell.
+        await page.locator('h2').filter({ hasText: '市場環境' }).first().waitFor({ timeout: 30000 });
 
         // Check if we're on a stock page (should have stock info)
         const hasStockContent = await page.locator('.glass-card').count() > 0;
         expect(hasStockContent).toBeTruthy();
     });
 
-    test('should display stock chart on detail page', async ({ page }) => {
-        await page.goto('/stock/2330');
+    test('should display technical analysis section on detail page', async ({ page }) => {
+        await page.goto('/stocks/2330');
 
-        await page.waitForLoadState('networkidle');
+        await page.getByRole('button', { name: '技術指標' }).click();
+        await page.getByText('訊號有效性（研究）').waitFor({ timeout: 30000 });
 
-        // Charts might take time to render
-        await page.waitForTimeout(2000);
-
-        // Check for chart container or svg elements
-        const hasChart = (await page.locator('svg, canvas, .recharts-wrapper').count()) > 0;
-        expect(hasChart).toBeTruthy();
+        const hasTechnicalSection = await page.getByText('訊號有效性（研究）').count() > 0;
+        expect(hasTechnicalSection).toBeTruthy();
     });
 
     test('should handle invalid stock symbol', async ({ page }) => {
@@ -82,8 +79,6 @@ test.describe('Stock Query Flow', () => {
     test('should be responsive on mobile', async ({ page }) => {
         await page.setViewportSize({ width: 375, height: 667 });
         await page.goto('/');
-
-        await page.waitForLoadState('networkidle');
 
         // Check that content is visible and not overflowing
         const body = page.locator('body');

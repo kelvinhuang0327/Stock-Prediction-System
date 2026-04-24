@@ -34,14 +34,16 @@ export class RiskDefenseModule {
     private readonly MAX_HOLD_DAYS = 20;             // Time stop after 20 days
 
     /**
-     * Evaluate all stop-loss layers for a position
+     * Evaluate all stop-loss layers for a position.
+     * @param asOf  Override the wall-clock time (used for simulation / fast-forward). Defaults to Date.now().
      */
-    evaluateStopLoss(position: Position): StopLossResult {
+    evaluateStopLoss(position: Position, asOf?: Date): StopLossResult {
         const { entryPrice, entryDate, currentPrice, highestPrice, atr } = position;
 
         const currentPnL = (currentPrice - entryPrice) / entryPrice;
+        const nowMs = asOf ? asOf.getTime() : Date.now();
         const daysHeld = Math.floor(
-            (Date.now() - entryDate.getTime()) / (1000 * 60 * 60 * 24)
+            (nowMs - entryDate.getTime()) / (1000 * 60 * 60 * 24)
         );
 
         // Layer 1: Emergency Stop Loss (-7%)

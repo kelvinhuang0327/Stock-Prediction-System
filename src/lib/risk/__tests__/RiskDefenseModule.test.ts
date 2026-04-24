@@ -6,9 +6,15 @@ import { RiskDefenseModule, MarketEnvironmentFilter, Position } from '../RiskDef
 
 describe('RiskDefenseModule', () => {
     let riskDefense: RiskDefenseModule;
+    const fixedNow = new Date('2026-01-25T00:00:00Z').getTime();
 
     beforeEach(() => {
         riskDefense = new RiskDefenseModule();
+        jest.spyOn(Date, 'now').mockReturnValue(fixedNow);
+    });
+
+    afterEach(() => {
+        jest.restoreAllMocks();
     });
 
     describe('evaluateStopLoss', () => {

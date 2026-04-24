@@ -110,7 +110,7 @@ describe('StockInfo Component', () => {
         render(<StockInfo symbol="2330" data={null} />)
 
         expect(screen.getByText('Loading...')).toBeInTheDocument()
-        expect(screen.getByText('0.0')).toBeInTheDocument()
+        expect(document.querySelector('.text-5xl')).toHaveTextContent('0.00')
     })
 
     it('should open price alert dialog when button clicked', () => {

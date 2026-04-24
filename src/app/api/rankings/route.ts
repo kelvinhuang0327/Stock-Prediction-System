@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { apiCache } from '@/lib/cache';
+import type { RankingsRowItem, RankingsCoverage, RankingsApiResponse } from '@/types/api-payloads';
 
 /**
  * GET /api/rankings
@@ -16,7 +17,7 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '50');
 
     const cacheKey = `rankings:${type}:${sectorFilter}:${limit}`;
-    const cached = apiCache.get<any>(cacheKey);
+    const cached = apiCache.get<RankingsApiResponse>(cacheKey);
     if (cached) return NextResponse.json(cached);
 
     try {
@@ -53,21 +54,21 @@ export async function GET(request: NextRequest) {
 async function getLastUpdated(type: string): Promise<string | null> {
     try {
         if (['foreign', 'trust', 'dealer'].includes(type)) {
-            const latest = await (prisma as any).institutionalChip.findFirst({ orderBy: { date: 'desc' }, select: { date: true } });
-            return latest?.date || null;
+            const latest = await chipModel.findFirst({ orderBy: { date: 'desc' }, select: { date: true } });
+            return (latest as { date?: string } | null)?.date || null;
         }
         const latest = await prisma.stockQuote.findFirst({ orderBy: { date: 'desc' }, select: { date: true } });
         return latest?.date || null;
     } catch { return null; }
 }
 
-async function getDataCoverage(type: string) {
+async function getDataCoverage(type: string): Promise<RankingsCoverage> {
     const totalStocks = await prisma.stock.count();
     const limitations: string[] = [];
 
     if (['foreign', 'trust', 'dealer'].includes(type)) {
-        const chipStocks = await (prisma as any).institutionalChip.groupBy({ by: ['stockId'] });
-        const chipDates = await (prisma as any).institutionalChip.groupBy({ by: ['date'] });
+        const chipStocks: { stockId: string }[] = await chipModel.groupBy({ by: ['stockId'] });
+        const chipDates: { date: string }[] = await chipModel.groupBy({ by: ['date'] });
         if (chipStocks.length < totalStocks * 0.5) {
             limitations.push(`資料覆蓋率不足，排行榜僅基於目前可用樣本 (${chipStocks.length}/${totalStocks} 檔)`);
         }
@@ -81,13 +82,27 @@ async function getDataCoverage(type: string) {
     return { stocks: quoteStocks.length, total: totalStocks, limitations };
 }
 
-async function fetchFromDB(type: string, sectorFilter: string, limit: number) {
+// Minimal typed shape for institutionalChip rows returned from Prisma
+interface ChipRow {
+    stockId: string;
+    date: string;
+    foreignBuy: number;
+    trustBuy: number;
+    dealerBuy: number;
+    totalBuy: number;
+    stock?: { name: string; industry: string; quotes?: { close: number; change: number; volume: number }[] };
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const chipModel = (prisma as any).institutionalChip;
+
+async function fetchFromDB(type: string, sectorFilter: string, limit: number): Promise<RankingsRowItem[] | null> {
     const sectorWhere = sectorFilter
         ? { stock: { industry: { contains: sectorFilter } } }
         : {};
 
     if (['foreign', 'trust', 'dealer'].includes(type)) {
-        const chips = await (prisma as any).institutionalChip.findMany({
+        const chips: ChipRow[] = await chipModel.findMany({
             where: {
                 ...sectorWhere,
             },
@@ -103,7 +118,7 @@ async function fetchFromDB(type: string, sectorFilter: string, limit: number) {
         });
 
         // Group by stockId, take latest per stock
-        const latestByStock = new Map<string, any>();
+        const latestByStock = new Map<string, ChipRow>();
         for (const chip of chips) {
             if (!latestByStock.has(chip.stockId)) {
                 latestByStock.set(chip.stockId, chip);
@@ -112,10 +127,10 @@ async function fetchFromDB(type: string, sectorFilter: string, limit: number) {
 
         const sortKey = type === 'foreign' ? 'foreignBuy' : type === 'trust' ? 'trustBuy' : 'dealerBuy';
         const sorted = Array.from(latestByStock.values())
-            .sort((a: any, b: any) => b[sortKey] - a[sortKey])
+            .sort((a, b) => (b[sortKey as keyof ChipRow] as number) - (a[sortKey as keyof ChipRow] as number))
             .slice(0, limit);
 
-        return sorted.map((chip: any) => ({
+        return sorted.map((chip): RankingsRowItem => ({
             symbol: chip.stockId,
             name: chip.stock?.name || chip.stockId,
             industry: chip.stock?.industry || '',
@@ -140,7 +155,7 @@ async function fetchFromDB(type: string, sectorFilter: string, limit: number) {
             include: { stock: true },
         });
 
-        const latestByStock = new Map<string, any>();
+        const latestByStock = new Map<string, typeof quotes[0]>();
         for (const q of quotes) {
             if (!latestByStock.has(q.stockId)) {
                 latestByStock.set(q.stockId, q);
@@ -148,14 +163,14 @@ async function fetchFromDB(type: string, sectorFilter: string, limit: number) {
         }
 
         const sorted = Array.from(latestByStock.values())
-            .sort((a: any, b: any) => {
-                const va = a[orderField] ?? 0;
-                const vb = b[orderField] ?? 0;
+            .sort((a, b) => {
+                const va = (a[orderField as 'volume' | 'change'] ?? 0) as number;
+                const vb = (b[orderField as 'volume' | 'change'] ?? 0) as number;
                 return orderDir === 'desc' ? vb - va : va - vb;
             })
             .slice(0, limit);
 
-        return sorted.map((q: any) => ({
+        return sorted.map((q): RankingsRowItem => ({
             symbol: q.stockId,
             name: q.stock?.name || q.stockId,
             industry: q.stock?.industry || '',
@@ -179,7 +194,7 @@ async function fetchFromDB(type: string, sectorFilter: string, limit: number) {
         if (indices.length === 0) return null;
 
         // Group by name, take latest
-        const latestByName = new Map<string, any>();
+        const latestByName = new Map<string, typeof indices[0]>();
         for (const idx of indices) {
             if (!latestByName.has(idx.name)) {
                 latestByName.set(idx.name, idx);
@@ -188,7 +203,7 @@ async function fetchFromDB(type: string, sectorFilter: string, limit: number) {
 
         return Array.from(latestByName.values())
             .filter(idx => idx.name !== 'TAIEX' && idx.name !== '發行量加權股價指數')
-            .map((idx: any) => ({
+            .map((idx): RankingsRowItem => ({
                 symbol: idx.name,
                 name: idx.name,
                 industry: idx.name,

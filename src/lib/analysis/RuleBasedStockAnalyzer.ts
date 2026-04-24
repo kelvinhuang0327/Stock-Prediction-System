@@ -141,7 +141,7 @@ export async function analyzeStock(symbol: string): Promise<StockAnalysisResult>
     // ── Overall Score ──
     const hasChip = chipCount >= 5;
     const hasRevenue = revenueYoY !== null;
-    const revenueScore = hasRevenue ? clamp(50 + revenueYoY, 0, 100) : 0;
+    const revenueScore = revenueYoY !== null ? clamp(50 + revenueYoY, 0, 100) : 0;
 
     let overallScore: number;
     if (isETF) {

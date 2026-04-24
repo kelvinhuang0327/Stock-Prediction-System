@@ -89,7 +89,7 @@ describe('MarketOverview Component', () => {
 
         // Initial call
         await waitFor(() => {
-            expect(global.fetch).toHaveBeenCalledTimes(3) // 3 indices
+            expect(global.fetch).toHaveBeenCalledTimes(4) // 1 status call + 3 indices
         })
 
         jest.clearAllMocks()
@@ -123,8 +123,8 @@ describe('MarketOverview Component', () => {
         render(<MarketOverview />)
 
         await waitFor(() => {
-            const successElements = document.querySelectorAll('.text-success')
-            expect(successElements.length).toBeGreaterThan(0)
+            const upElements = document.querySelectorAll('.text-red-600')
+            expect(upElements.length).toBeGreaterThan(0)
         })
     })
 
@@ -149,8 +149,8 @@ describe('MarketOverview Component', () => {
         render(<MarketOverview />)
 
         await waitFor(() => {
-            const destructiveElements = document.querySelectorAll('.text-destructive')
-            expect(destructiveElements.length).toBeGreaterThan(0)
+            const downElements = document.querySelectorAll('.text-green-600')
+            expect(downElements.length).toBeGreaterThan(0)
         })
     })
 

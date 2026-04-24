@@ -2,6 +2,9 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { apiCache } from '@/lib/cache';
+import { getErrorMessage } from '@/lib/error-utils';
+import type { Prisma } from '@prisma/client';
+import { buildFundamentalResearchContextForSymbol } from '@/lib/fundamentals/FundamentalResearchService';
 
 /**
  * GET /api/watchlist
@@ -9,7 +12,7 @@ import { apiCache } from '@/lib/cache';
  */
 export async function GET() {
     const cacheKey = 'watchlist:list';
-    const cached = apiCache.get<any>(cacheKey);
+    const cached = apiCache.get<object>(cacheKey);
     if (cached) return NextResponse.json(cached);
 
     try {
@@ -73,13 +76,42 @@ export async function GET() {
 
         const lastUpdated = await prisma.stockQuote.findFirst({ orderBy: { date: 'desc' }, select: { date: true } });
 
+        const withFundamentalOverlay = await Promise.all(
+            formatted.map(async (item) => {
+                try {
+                    const context = await buildFundamentalResearchContextForSymbol({
+                        symbol: item.stockId,
+                        name: item.name,
+                        industry: item.industry,
+                    });
+                    return {
+                        ...item,
+                        fundamentalOverlay: context.overlay,
+                    };
+                } catch {
+                    return {
+                        ...item,
+                        fundamentalOverlay: {
+                            riskLevel: 'unknown' as const,
+                            strengths: [],
+                            pressures: [],
+                            valuationContext: '資料不足，暫無法建立估值脈絡。',
+                            growthContext: '資料不足，暫無法建立成長脈絡。',
+                            summary: '基本面資料不足，目前僅能保守觀察。',
+                            limitations: ['基本面 overlay 建立失敗，已降級。'],
+                        },
+                    };
+                }
+            }),
+        );
+
         const response = {
-            data: formatted,
+            data: withFundamentalOverlay,
             sample_size: formatted.length,
             last_updated: lastUpdated?.date || null,
             coverage: {
-                total: formatted.length,
-                withQuotes: formatted.filter(f => f.hasQuoteData).length,
+                total: withFundamentalOverlay.length,
+                withQuotes: withFundamentalOverlay.filter(f => f.hasQuoteData).length,
             },
         };
 
@@ -129,9 +161,9 @@ export async function POST(request: Request) {
                         },
                     });
                     results.migrated++;
-                } catch (e: any) {
+                } catch (e: unknown) {
                     results.skipped++;
-                    results.errors.push(`${item.stockId}: ${e.message || 'unknown error'}`);
+                    results.errors.push(`${item.stockId}: ${getErrorMessage(e) || 'unknown error'}`);
                 }
             }
             apiCache.invalidate('watchlist:');
@@ -186,7 +218,7 @@ export async function PATCH(request: Request) {
             return NextResponse.json({ error: 'Stock not in watchlist' }, { status: 404 });
         }
 
-        const updateData: any = {};
+        const updateData: Prisma.WatchlistUpdateInput = {};
         if (entryPrice !== undefined) updateData.entryPrice = entryPrice;
         if (quantity !== undefined) updateData.quantity = quantity;
         if (note !== undefined) updateData.note = note;

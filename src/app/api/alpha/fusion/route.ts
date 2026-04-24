@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { fuseSignals, fuseBatch } from '@/lib/alpha/SignalFusionEngine';
+import { fuseSignals, fuseBatch, FusionResult } from '@/lib/alpha/SignalFusionEngine';
 import { apiCache } from '@/lib/cache';
 
 /**
@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
     if (body.symbols && Array.isArray(body.symbols)) {
         const symbols = body.symbols.slice(0, 30); // cap batch size
         const cacheKey = `alpha:batch:${symbols.sort().join(',')}`;
-        const cached = apiCache.get<any>(cacheKey);
+        const cached = apiCache.get<{ data: FusionResult[]; count: number; disclaimer: string }>(cacheKey);
         if (cached) return NextResponse.json(cached);
 
         try {
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
     }
 
     const cacheKey = `alpha:fusion:${symbol}`;
-    const cached = apiCache.get<any>(cacheKey);
+    const cached = apiCache.get<FusionResult>(cacheKey);
     if (cached) return NextResponse.json(cached);
 
     try {

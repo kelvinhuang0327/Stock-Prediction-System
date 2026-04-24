@@ -16,7 +16,7 @@ import { AlertSeverityBadge } from '@/components/ui/badges';
 import { LimitationBlock } from '@/components/ui/limitation-block';
 import {
   Bell, AlertTriangle, Info, TrendingUp, TrendingDown,
-  Shield, Database, RefreshCw, ChevronDown, ChevronUp, Minus
+  Shield, Database, RefreshCw, ChevronDown, ChevronUp, Minus, Activity
 } from 'lucide-react';
 
 // ─── Types ───────────────────────────────────────────────────────
@@ -27,6 +27,18 @@ type AlertType =
   | 'newly_insufficient_data' | 'data_quality_warning' | 'comparison_unavailable';
 
 type AlertSeverity = 'info' | 'caution' | 'warning';
+type EventAlertSeverity = AlertSeverity;
+type EventAlertType =
+  | 'symbol_new_event'
+  | 'watchlist_new_event'
+  | 'candidate_new_event'
+  | 'market_event_increase'
+  | 'low_trust_event_cluster'
+  | 'catalyst_watch'
+  | 'no_recent_event'
+  | 'topic_surging'
+  | 'theme_diffusing'
+  | 'low_trust_theme_noise';
 
 interface DailyAlert {
   type: AlertType;
@@ -45,10 +57,25 @@ interface DailyAlertResult {
   summary: string;
   overallSeverity: AlertSeverity;
   alerts: DailyAlert[];
+  eventAlerts: EventAlert[];
+  eventAlertSummary: string;
   comparisonAvailable: boolean;
   previousSnapshotDate: string | null;
   limitations: string[];
   generatedAt: string;
+}
+
+interface EventAlert {
+  type: EventAlertType;
+  severity: EventAlertSeverity;
+  title: string;
+  message: string;
+  relatedSymbols?: string[];
+  relatedThemes?: string[];
+  eventCount?: number;
+  trustLevelSummary?: string;
+  comparisonWindow?: string;
+  limitations?: string[];
 }
 
 // ─── Styles ──────────────────────────────────────────────────────
@@ -89,6 +116,19 @@ const TYPE_STYLE: Record<AlertType, { label: string; icon: React.ReactNode }> = 
   comparison_unavailable:   { label: '比較不可用', icon: <Minus className="h-3 w-3" /> },
 };
 
+const EVENT_TYPE_STYLE: Record<EventAlertType, { label: string; icon: React.ReactNode }> = {
+  symbol_new_event:      { label: '個股新事件', icon: <Info className="h-3 w-3" /> },
+  watchlist_new_event:   { label: '自選新事件', icon: <Shield className="h-3 w-3" /> },
+  candidate_new_event:   { label: '候選新事件', icon: <TrendingUp className="h-3 w-3" /> },
+  market_event_increase: { label: '市場事件增加', icon: <TrendingUp className="h-3 w-3" /> },
+  low_trust_event_cluster: { label: '低信源群聚', icon: <AlertTriangle className="h-3 w-3" /> },
+  catalyst_watch:        { label: '催化觀察', icon: <Bell className="h-3 w-3" /> },
+  no_recent_event:       { label: '近期無事件', icon: <Minus className="h-3 w-3" /> },
+  topic_surging:         { label: '主題升溫', icon: <TrendingUp className="h-3 w-3" /> },
+  theme_diffusing:       { label: '題材擴散', icon: <Activity className="h-3 w-3" /> },
+  low_trust_theme_noise: { label: '低信源雜訊', icon: <AlertTriangle className="h-3 w-3" /> },
+};
+
 // ─── Page ────────────────────────────────────────────────────────
 
 export default function AlertsPage() {
@@ -126,6 +166,9 @@ export default function AlertsPage() {
   const warningCount = data.alerts.filter(a => a.severity === 'warning').length;
   const cautionCount = data.alerts.filter(a => a.severity === 'caution').length;
   const infoCount = data.alerts.filter(a => a.severity === 'info').length;
+  const eventWarningCount = (data.eventAlerts ?? []).filter(a => a.severity === 'warning').length;
+  const eventCautionCount = (data.eventAlerts ?? []).filter(a => a.severity === 'caution').length;
+  const eventInfoCount = (data.eventAlerts ?? []).filter(a => a.severity === 'info').length;
 
   return (
     <div className="container mx-auto px-4 py-8 space-y-6">
@@ -204,6 +247,29 @@ export default function AlertsPage() {
         </div>
       )}
 
+      {/* Event alert section */}
+      <GlassCard className="p-5 space-y-3">
+        <div className="flex items-center justify-between gap-3 flex-wrap">
+          <h2 className="text-sm font-semibold flex items-center gap-2">
+            <Bell className="h-4 w-4 text-primary" />
+            事件型提醒（研究補充）
+          </h2>
+          <div className="text-xs text-muted-foreground">
+            warning {eventWarningCount} · caution {eventCautionCount} · info {eventInfoCount}
+          </div>
+        </div>
+        <p className="text-sm text-muted-foreground">{data.eventAlertSummary ?? '事件提醒未提供。'}</p>
+        {!data.eventAlerts || data.eventAlerts.length === 0 ? (
+          <p className="text-xs text-muted-foreground">目前無可用事件提醒（已降級或無明顯變化）。</p>
+        ) : (
+          <div className="space-y-2">
+            {data.eventAlerts.slice(0, 8).map((alert, i) => (
+              <EventAlertCard key={`${alert.type}-${i}`} alert={alert} />
+            ))}
+          </div>
+        )}
+      </GlassCard>
+
       {/* Alert list */}
       {filtered.length === 0 ? (
         <GlassCard className="p-10 text-center text-muted-foreground">
@@ -223,7 +289,7 @@ export default function AlertsPage() {
 
       <Disclaimer
         warning="本提醒為系統自動產生之研究摘要，不構成投資建議。所有提醒基於模型推估，不保證未來表現。"
-        source="DailyAlertEngine: DailySnapshotEngine + StrategyScreenEngine + MarketRegimeEngine"
+        source="DailyAlertEngine + EventAlertEngine：DailySnapshotEngine + StrategyScreenEngine + MarketRegimeEngine + NewsEvent"
         methodology="規則式比較引擎：比較前日快照與當日分析結果，無 AI 黑盒預測"
         variant="detailed"
       />
@@ -296,6 +362,35 @@ function AlertCard({ alert: a }: { alert: DailyAlert }) {
               </div>
             )}
           </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function EventAlertCard({ alert: a }: { alert: EventAlert }) {
+  const sev = SEVERITY_STYLE[a.severity];
+  const type = EVENT_TYPE_STYLE[a.type];
+
+  return (
+    <div className={`rounded-xl border p-3 ${sev.bg} ${sev.border}`}>
+      <div className="flex items-start gap-3">
+        <span className={`mt-0.5 shrink-0 ${sev.text}`}>{sev.icon}</span>
+        <div className="flex-1 min-w-0 space-y-1">
+          <div className="flex flex-wrap gap-1.5">
+            <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${sev.bg} ${sev.text} border ${sev.border}`}>{sev.label}</span>
+            <span className="text-[10px] px-1.5 py-0.5 rounded font-medium bg-muted/50 text-muted-foreground flex items-center gap-0.5">
+              {type.icon}{type.label}
+            </span>
+          </div>
+          <p className={`text-sm font-medium ${sev.text}`}>{a.title}</p>
+          <p className="text-xs text-muted-foreground">{a.message}</p>
+          {a.relatedSymbols && a.relatedSymbols.length > 0 && (
+            <p className="text-[11px] text-muted-foreground">標的：{a.relatedSymbols.slice(0, 6).join(', ')}</p>
+          )}
+          {a.trustLevelSummary && (
+            <p className="text-[11px] text-muted-foreground">來源可信度：{a.trustLevelSummary}</p>
+          )}
         </div>
       </div>
     </div>

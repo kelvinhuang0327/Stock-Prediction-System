@@ -57,6 +57,8 @@ export interface ScreenParams {
     maxResults?: number;
     respectMarketRegime?: boolean;
     symbolUniverse?: string[];
+    /** When running a rolling simulation, cap all data queries to this date (YYYY-MM-DD). */
+    asOf?: string;
 }
 
 export interface ScreenResult {
@@ -113,6 +115,7 @@ export async function runScreen(params: ScreenParams = {}): Promise<ScreenResult
         maxResults = DEFAULT_MAX_RESULTS,
         respectMarketRegime = true,
         symbolUniverse,
+        asOf,
     } = params;
 
     const limitations: string[] = [];
@@ -136,9 +139,10 @@ export async function runScreen(params: ScreenParams = {}): Promise<ScreenResult
     if (symbolUniverse && symbolUniverse.length > 0) {
         symbols = symbolUniverse;
     } else {
-        // Use stocks with >= 50 days of data
+        // Use stocks with >= 50 days of data (capped to asOf when in simulation)
         const stockCounts = await prisma.stockQuote.groupBy({
             by: ['stockId'],
+            where: asOf ? { date: { lte: asOf } } : undefined,
             _count: { stockId: true },
         });
         symbols = stockCounts

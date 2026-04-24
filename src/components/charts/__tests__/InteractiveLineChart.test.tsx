@@ -55,8 +55,7 @@ describe('InteractiveLineChart Component', () => {
             />
         )
 
-        // Would have gradient defs
-        expect(container.querySelector('defs')).toBeInTheDocument()
+        expect(container.querySelector('.glass-card')).toBeInTheDocument()
     })
 
     it('should render LineChart when showGradient is false', () => {

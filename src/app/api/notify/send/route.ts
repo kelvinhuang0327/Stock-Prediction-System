@@ -12,6 +12,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { generateDailyAlerts } from '@/lib/notify/DailyAlertEngine';
+import { AutonomousAlertNotificationAdapter } from '@/lib/jobs/AutonomousAlertNotificationAdapter';
 import {
   deliverAlerts,
   WebhookDeliveryProvider,
@@ -40,7 +41,13 @@ export async function POST(request: NextRequest) {
     };
 
     // Generate alerts
-    const alertsResult = await generateDailyAlerts({ includeWatchlist: true, includeDataWarnings: true });
+    const [alertsResult, autonomousDigest] = await Promise.all([
+      generateDailyAlerts({ includeWatchlist: true, includeDataWarnings: true }),
+      new AutonomousAlertNotificationAdapter().buildDigest(),
+    ]);
+    const enrichedAlertsResult = autonomousDigest.shouldAttach
+      ? { ...alertsResult, autonomousAlerts: autonomousDigest }
+      : alertsResult;
 
     // If date override was requested, note it (engine always uses today's data)
     if (date && date !== alertsResult.reportDate) {
@@ -74,7 +81,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({
         dryRun: true,
         reportDate: alertsResult.reportDate,
-        alertCount: alertsResult.alerts.length,
+        alertCount: alertsResult.alerts.length + (autonomousDigest.shouldAttach ? autonomousDigest.alerts.length : 0),
         summary: alertsResult.summary,
         overallSeverity: alertsResult.overallSeverity,
         comparisonAvailable: alertsResult.comparisonAvailable,
@@ -88,7 +95,7 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    const result = await deliverAlerts(alertsResult, { providers, sendWhenEmpty, minAlerts });
+    const result = await deliverAlerts(enrichedAlertsResult, { providers, sendWhenEmpty, minAlerts });
 
     const successCount = result.channels.filter(c => c.status === 'success').length;
     const failedCount = result.channels.filter(c => c.status === 'failed').length;

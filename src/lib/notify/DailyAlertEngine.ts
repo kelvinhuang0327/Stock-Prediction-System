@@ -17,6 +17,8 @@ import { detectRegime } from '@/lib/market/MarketRegimeEngine';
 import { runScreen } from '@/lib/screen/StrategyScreenEngine';
 import { fuseBatch } from '@/lib/alpha/SignalFusionEngine';
 import { APP_NAME } from '@/lib/config/app';
+import { generateEventAlerts, type EventAlert } from '@/lib/events/EventAlertEngine';
+import type { AutonomousNotifyDigest } from './AutonomousAlertDigest';
 
 // ─── Public Types ─────────────────────────────────────────────────
 
@@ -51,8 +53,11 @@ export interface DailyAlertsResult {
   summary: string;
   overallSeverity: AlertSeverity;
   alerts: DailyAlert[];
+  eventAlerts: EventAlert[];
+  eventAlertSummary: string;
   limitations: string[];
   generatedAt: string;
+  autonomousAlerts?: AutonomousNotifyDigest | null;
 }
 
 export interface AlertParams {
@@ -60,6 +65,7 @@ export interface AlertParams {
   minSeverity?: AlertSeverity;
   maxItems?: number;
   includeDataWarnings?: boolean;
+  includeEventAlerts?: boolean;
 }
 
 // ─── Constants ────────────────────────────────────────────────────
@@ -79,11 +85,14 @@ export async function generateDailyAlerts(params?: AlertParams): Promise<DailyAl
   const today = new Date().toISOString().split('T')[0];
   const includeWatchlist = params?.includeWatchlist !== false;
   const includeDataWarnings = params?.includeDataWarnings !== false;
+  const includeEventAlerts = params?.includeEventAlerts !== false;
   const minSeverityRank = SEVERITY_RANK[params?.minSeverity ?? 'info'];
   const maxItems = params?.maxItems ?? 50;
 
   const limitations: string[] = [];
   const alerts: DailyAlert[] = [];
+  let eventAlerts: EventAlert[] = [];
+  let eventAlertSummary = '事件提醒未啟用';
 
   // ── Find previous snapshot ──────────────────────────────────────
   const prevMarketSnap = await prisma.dailyMarketSnapshot.findFirst({
@@ -308,6 +317,32 @@ export async function generateDailyAlerts(params?: AlertParams): Promise<DailyAl
   }
 
   // ── Filter & sort ──────────────────────────────────────────────
+  if (includeEventAlerts) {
+    try {
+      const [marketEventAlerts, watchlistEventAlerts, candidateEventAlerts] = await Promise.all([
+        generateEventAlerts({ mode: 'market', days: 1, minSeverity: 'info' }),
+        generateEventAlerts({ mode: 'watchlist', days: 1, minSeverity: 'info' }),
+        generateEventAlerts({ mode: 'candidates', days: 1, minSeverity: 'info' }),
+      ]);
+
+      eventAlertSummary = [marketEventAlerts.summary, watchlistEventAlerts.summary, candidateEventAlerts.summary]
+        .filter(Boolean)
+        .join('；');
+      eventAlerts = [...marketEventAlerts.alerts, ...watchlistEventAlerts.alerts, ...candidateEventAlerts.alerts]
+        .filter((alert, idx, arr) => arr.findIndex((a) => `${a.type}:${a.title}` === `${alert.type}:${alert.title}`) === idx)
+        .sort((a, b) => SEVERITY_RANK[b.severity] - SEVERITY_RANK[a.severity]);
+      limitations.push(
+        ...marketEventAlerts.limitations.map((l) => `[event/market] ${l}`),
+        ...watchlistEventAlerts.limitations.map((l) => `[event/watchlist] ${l}`),
+        ...candidateEventAlerts.limitations.map((l) => `[event/candidates] ${l}`),
+      );
+    } catch {
+      eventAlertSummary = '事件提醒暫時不可用（已降級）';
+      limitations.push('事件提醒引擎不可用，已降級略過 event alerts');
+      eventAlerts = [];
+    }
+  }
+
   const filtered = alerts
     .filter(a => SEVERITY_RANK[a.severity] >= minSeverityRank)
     .sort((a, b) => SEVERITY_RANK[b.severity] - SEVERITY_RANK[a.severity])
@@ -327,6 +362,8 @@ export async function generateDailyAlerts(params?: AlertParams): Promise<DailyAl
     summary,
     overallSeverity,
     alerts: filtered,
+    eventAlerts,
+    eventAlertSummary,
     limitations,
     generatedAt: new Date().toISOString(),
   };

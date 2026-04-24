@@ -20,13 +20,20 @@
 
 import React, { useState, useCallback } from 'react';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
-import { useApiData } from '@/hooks/useApiData';
+import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useApiData, useApiPost } from '@/hooks/useApiData';
 import { GlassCard } from '@/components/ui/glass-card';
 import { LoadingSpinner } from '@/components/ui/loading';
 import { Disclaimer } from '@/components/ui/disclaimer';
 import { LimitationBlock } from '@/components/ui/limitation-block';
 import { BucketBadge } from '@/components/ui/badges';
+import { RelevantInsightsPanel } from '@/components/relevance/RelevantInsightsPanel';
+import { StockSignalEffectivenessSection } from '@/components/signals/StockSignalEffectivenessSection';
+import { SignalDisagreementCard } from '@/components/signals/SignalDisagreementCard';
+import { computeDisagreementOverlay } from '@/lib/signals/SignalDisagreementEngine';
+import { ConfidenceReadinessCard } from '@/components/signals/ConfidenceReadinessCard';
+import type { ConfidenceReadinessInput } from '@/lib/calibration/ConfidenceReadinessEngine';
+import { buildStockTabHref, parseStockTabQuery, type StockTabKey } from '@/lib/stockTabNavigation';
 import type { StockDetailResponse } from '@/app/api/stocks/[id]/detail/route';
 import {
   TrendingUp, TrendingDown, Minus, AlertTriangle, BarChart3,
@@ -678,13 +685,84 @@ function ContextSection({ d }: { d: StockDetailResponse }) {
 
 export default function StockDetailPage() {
   const params = useParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const symbol = (params?.symbol as string ?? '').toUpperCase();
 
   const { data, loading, error } = useApiData<StockDetailResponse>(
     symbol ? `/api/stocks/${symbol}/detail` : null
   );
+  const {
+    data: eventSummary,
+    loading: eventLoading,
+    error: eventError,
+  } = useApiData<EventSummaryResponse>(
+    symbol ? `/api/events/summary?symbol=${symbol}` : null
+  );
+  const {
+    data: eventAlerts,
+    loading: eventAlertsLoading,
+    error: eventAlertsError,
+  } = useApiData<EventAlertsResponse>(
+    symbol ? `/api/events/alerts?mode=symbol&symbol=${symbol}&days=1&minSeverity=info` : null
+  );
+  const {
+    data: topicSummary,
+    loading: topicLoading,
+    error: topicError,
+  } = useApiData<TopicSurgeApiResponse>(
+    symbol ? `/api/events/topics?days=3&minSurgeLevel=watch&includeSymbols=1&maxTopics=8&symbol=${symbol}` : null
+  );
 
-  const [activeTab, setActiveTab] = useState<'analysis' | 'signals' | 'backtest' | 'context' | 'research'>('analysis');
+  const activeTab = parseStockTabQuery(searchParams?.get('tab'));
+  const tabItems: { key: StockTabKey; label: string; icon: React.ReactNode }[] = [
+    { key: 'analysis', label: '綜合分析', icon: <BarChart3 className="h-3.5 w-3.5" /> },
+    { key: 'signals', label: '技術指標', icon: <Activity className="h-3.5 w-3.5" /> },
+    { key: 'backtest', label: '回測概覽', icon: <Shield className="h-3.5 w-3.5" /> },
+    { key: 'research', label: '研究委員會', icon: <Users className="h-3.5 w-3.5" /> },
+    { key: 'context', label: '持倉脈絡', icon: <Database className="h-3.5 w-3.5" /> },
+  ];
+  const [activeHash, setActiveHash] = React.useState('');
+
+  const handleTabChange = React.useCallback((nextTab: StockTabKey) => {
+    const nextHref = buildStockTabHref({
+      basePath: pathname || `/stocks/${symbol}`,
+      tab: nextTab,
+    });
+    router.replace(nextHref, { scroll: false });
+  }, [pathname, router, symbol]);
+
+  React.useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const syncHash = () => {
+      setActiveHash(window.location.hash.replace(/^#/, ''));
+    };
+
+    syncHash();
+    window.addEventListener('hashchange', syncHash);
+    return () => {
+      window.removeEventListener('hashchange', syncHash);
+    };
+  }, []);
+
+  React.useEffect(() => {
+    if (!activeHash) return;
+
+    let frameOne = 0;
+    let frameTwo = 0;
+    frameOne = window.requestAnimationFrame(() => {
+      frameTwo = window.requestAnimationFrame(() => {
+        const target = document.getElementById(activeHash);
+        target?.scrollIntoView({ block: 'start' });
+      });
+    });
+
+    return () => {
+      window.cancelAnimationFrame(frameOne);
+      window.cancelAnimationFrame(frameTwo);
+    };
+  }, [activeHash, activeTab]);
 
   if (!symbol) {
     return <div className="p-8 text-center text-muted-foreground">無效的股票代號</div>;
@@ -742,20 +820,36 @@ export default function StockDetailPage() {
           </GlassCard>
 
           {/* ── Section 2.5: Snapshot Comparison ── */}
-          <ComparisonCard comparison={data.comparison} />
+          <div id="stock-snapshot-comparison">
+            <ComparisonCard comparison={data.comparison} />
+          </div>
+
+          {/* ── Section 2.6: Event / Catalyst (MVP) ── */}
+          <GlassCard id="stock-event-context" className="p-5 space-y-3">
+            <h2 className="text-sm font-semibold flex items-center gap-2">
+              <Info className="h-4 w-4 text-primary" />
+              事件 / 催化劑（MVP）
+              <span className="text-xs font-normal text-muted-foreground ml-auto">事件存在性摘要 · 非預測</span>
+            </h2>
+            <EventCatalystSection summary={eventSummary} loading={eventLoading} error={eventError} />
+            <SymbolEventAlertSection summary={eventAlerts} loading={eventAlertsLoading} error={eventAlertsError} />
+            <SymbolTopicSurgeSection summary={topicSummary} symbol={symbol} loading={topicLoading} error={topicError} />
+          </GlassCard>
+
+          <RelevantInsightsPanel
+            mode="symbol"
+            symbol={symbol}
+            maxItems={4}
+            title="最值得關注"
+            description="優先顯示與此標的最直接、較可信、且仍具時效性的研究資訊，不構成交易建議。"
+          />
 
           <div>
             <div className="flex gap-1 border-b border-border/30 mb-4 overflow-x-auto">
-              {[
-                { key: 'analysis', label: '綜合分析', icon: <BarChart3 className="h-3.5 w-3.5" /> },
-                { key: 'signals', label: '技術指標', icon: <Activity className="h-3.5 w-3.5" /> },
-                { key: 'backtest', label: '回測概覽', icon: <Shield className="h-3.5 w-3.5" /> },
-                { key: 'research', label: '研究委員會', icon: <Users className="h-3.5 w-3.5" /> },
-                { key: 'context', label: '持倉脈絡', icon: <Database className="h-3.5 w-3.5" /> },
-              ].map(({ key, label, icon }) => (
+              {tabItems.map(({ key, label, icon }) => (
                 <button
                   key={key}
-                  onClick={() => setActiveTab(key as any)}
+                  onClick={() => handleTabChange(key)}
                   className={`inline-flex items-center gap-1.5 px-4 py-2 text-sm whitespace-nowrap border-b-2 transition-colors ${
                     activeTab === key
                       ? 'border-primary text-primary font-medium'
@@ -785,19 +879,60 @@ export default function StockDetailPage() {
                   </h2>
                   <ScoreBreakdownSection fusion={data.fusion} />
                 </GlassCard>
+                {data.fusion && (
+                  <SignalDisagreementCard
+                    overlay={computeDisagreementOverlay({
+                      technicalScore: data.fusion.technicalScore,
+                      chipScore: data.fusion.chipScore,
+                      fundamentalScore: data.fusion.fundamentalScore,
+                      isETF: data.isETF,
+                      dataCoverage: data.dataCoverage,
+                      missingSources: data.fusion.missingSources,
+                      marketRegime: data.regime?.regime ?? 'Unknown',
+                      marketRegimeConfidence: data.regime?.confidence ?? 0,
+                    })}
+                  />
+                )}
+                {data.fusion && (() => {
+                  const confidenceInputs: ConfidenceReadinessInput[] = [
+                    {
+                      moduleId: 'SignalFusionEngine',
+                      confidenceType: 'COVERAGE_PROXY',
+                      rawConfidence: data.fusion!.confidence,
+                      predictionOutcomePairs: 0,
+                      limitations: data.fusion!.missingSources.length > 0
+                        ? [`缺失資料來源：${data.fusion!.missingSources.join('、')}`]
+                        : [],
+                    },
+                    {
+                      moduleId: 'SignalEffectivenessEngine',
+                      confidenceType: 'BRIER_ADJACENT',
+                      rawConfidence: 0,
+                      sampleSize: 0,
+                      brierLikeScore: undefined,
+                      predictionOutcomePairs: 0,
+                      limitations: ['詳細 brierLikeScore 數據請至「技術訊號」頁查看訊號有效性'],
+                    },
+                  ];
+                  return <ConfidenceReadinessCard inputs={confidenceInputs} />;
+                })()}
               </div>
             )}
 
             {/* ── Section 5: Technical Signals ── */}
             {activeTab === 'signals' && (
-              <GlassCard className="p-5 space-y-3">
-                <h2 className="text-sm font-semibold flex items-center gap-2">
-                  <Activity className="h-4 w-4 text-primary" />
-                  技術指標
-                  <span className="text-xs font-normal text-muted-foreground ml-auto">模型推估 · 非買賣建議</span>
-                </h2>
-                <TechnicalSignalsSection signals={data.signals} />
-              </GlassCard>
+              <div className="space-y-4">
+                <GlassCard className="p-5 space-y-3">
+                  <h2 className="text-sm font-semibold flex items-center gap-2">
+                    <Activity className="h-4 w-4 text-primary" />
+                    技術指標
+                    <span className="text-xs font-normal text-muted-foreground ml-auto">模型推估 · 非買賣建議</span>
+                  </h2>
+                  <TechnicalSignalsSection signals={data.signals} />
+                </GlassCard>
+
+                <StockSignalEffectivenessSection symbol={symbol} />
+              </div>
             )}
 
             {/* ── Section 6: Backtest ── */}
@@ -814,7 +949,7 @@ export default function StockDetailPage() {
 
             {/* ── Section 7: Context ── */}
             {activeTab === 'context' && (
-              <GlassCard className="p-5 space-y-3">
+              <GlassCard id="stock-context" className="p-5 space-y-3">
                 <h2 className="text-sm font-semibold flex items-center gap-2">
                   <Database className="h-4 w-4 text-primary" />
                   候選與自選脈絡
@@ -831,7 +966,7 @@ export default function StockDetailPage() {
                   研究委員會觀點
                   <span className="text-xs font-normal text-muted-foreground ml-auto">模型推估 · 非交易建議</span>
                 </h2>
-                <MultiAgentResearchSection data={data} />
+                <MultiAgentResearchSection data={data} eventSummary={eventSummary} />
               </GlassCard>
             )}
           </div>
@@ -874,6 +1009,149 @@ interface MAResearchResult {
   disclaimer: string;
 }
 
+interface EventSummaryResponse {
+  symbol: string;
+  eventCount: number;
+  rawCount: number;
+  dedupedCount: number;
+  recentThemes: string[];
+  recentEventTitles: string[];
+  catalystSummary: string;
+  sourceBreakdown: Record<string, number>;
+  trustLevelSummary: {
+    official: number;
+    mainstream: number;
+    secondary: number;
+    unknown: number;
+    dominant: 'official' | 'mainstream' | 'secondary' | 'unknown' | 'mixed';
+    note: string;
+  };
+  limitations: string[];
+  dataCoverage: 'full' | 'limited' | 'insufficient';
+  last_updated: string;
+}
+
+interface EventAlertsResponse {
+  summary: string;
+  alerts: Array<{
+    type: string;
+    severity: 'info' | 'caution' | 'warning';
+    title: string;
+    message: string;
+    trustLevelSummary?: string;
+    comparisonWindow?: string;
+  }>;
+  limitations: string[];
+  generatedAt: string;
+}
+
+interface TopicSurgeApiResponse {
+  summary: string;
+  topics: Array<{
+    topic: string;
+    surgeLevel: 'none' | 'watch' | 'surging';
+    diffusionLevel: 'single-stock theme' | 'multi-stock theme' | 'broadening theme';
+    relatedSymbols: string[];
+    trustLevelSummary: string;
+    recentCount: number;
+    previousCount: number;
+    delta: number;
+  }>;
+  limitations: string[];
+  generatedAt: string;
+}
+
+interface TopicContextResponse {
+  topic: string;
+  momentum: {
+    topic: string;
+    timeline: Array<{ date: string; count: number }>;
+    momentumType: 'spike' | 'rising' | 'stable' | 'cooling' | 'unknown';
+    peak: number;
+    avg: number;
+    recentTrend: number;
+    limitations: string[];
+  };
+  diffusion: {
+    topic: string;
+    nodes: Array<{ symbol: string; eventCount: number }>;
+    breadth: number;
+    diffusionType: 'single' | 'cluster' | 'broad';
+    sourceDiversity: number;
+    limitations: string[];
+  };
+  generatedAt: string;
+  limitations: string[];
+}
+
+interface ThemeLinkageApiResponse {
+  topic: string;
+  linkage: {
+    topic: string;
+    linkedTopics: Array<{
+      topic: string;
+      coOccurrence: number;
+      overlapSymbols: string[];
+      trustLevelSummary: string;
+      linkageStrength: 'weak' | 'moderate' | 'strong';
+    }>;
+    limitations: string[];
+  };
+  graph: {
+    topic: string;
+    nodes: Array<{ id: string; type: 'topic' | 'sector' | 'symbol'; label: string; weight: number }>;
+    edges: Array<{ source: string; target: string; strength: number; relationType: string }>;
+    limitations: string[];
+  };
+  generatedAt: string;
+  limitations: string[];
+}
+
+interface CrossMarketApiResponse {
+  topic: string;
+  crossMarket: {
+    topic: string;
+    originCluster: { symbols: string[]; sector?: string; firstSeenDate: string };
+    spreadClusters: Array<{ symbols: string[]; sector?: string; firstSeenDate: string; spreadDelay: number }>;
+    spreadPattern: 'early_cluster' | 'sector_expansion' | 'broad_market' | 'unclear';
+    spreadSpeed: 'slow' | 'moderate' | 'fast';
+    trustLevelSummary: string;
+    limitations: string[];
+  } | null;
+  timeline: {
+    topic: string;
+    timeline: Array<{ date: string; sectors: string[]; symbolCount: number; breadth: number; linkageStrength: number }>;
+    stage: 'early' | 'spreading' | 'mature' | 'fading' | 'unknown';
+    trend: 'expanding' | 'stable' | 'contracting';
+    limitations: string[];
+  } | null;
+  generatedAt: string;
+  limitations: string[];
+}
+
+interface PortfolioImpactApiResponse {
+  results: Array<{
+    symbol: string;
+    topicContext: {
+      topics: Array<{
+        topic: string;
+        stage: 'early' | 'spreading' | 'mature' | 'fading' | 'unknown';
+        momentumType: string;
+        diffusionType: string;
+        role: 'origin' | 'early' | 'follower' | 'late' | 'unclear';
+      }>;
+    };
+    crossMarketContext: {
+      spreadPattern: string;
+      spreadSpeed: string;
+      positionInChain: string;
+    };
+    narrative: string;
+    limitations: string[];
+  }>;
+  generatedAt: string;
+}
+
 const MA_CONSENSUS_STYLE: Record<MAConsensus, { bg: string; text: string; label: string }> = {
   Positive:     { bg: 'bg-red-100 dark:bg-red-950/40',     text: 'text-red-700 dark:text-red-400',    label: '多數偏多' },
   Negative:     { bg: 'bg-green-100 dark:bg-green-950/40', text: 'text-green-700 dark:text-green-400', label: '多數偏空' },
@@ -897,14 +1175,30 @@ const MA_STANCE_STYLE: Record<MAStance, { label: string; cls: string; dot: strin
   Insufficient: { label: '資料不足', cls: 'text-gray-500 dark:text-gray-400', dot: 'bg-gray-400' },
 };
 
-function MultiAgentResearchSection({ data }: { data: StockDetailResponse }) {
+function MultiAgentResearchSection({
+  data,
+  eventSummary,
+}: {
+  data: StockDetailResponse;
+  eventSummary: EventSummaryResponse | null;
+}) {
   const [result, setResult] = React.useState<MAResearchResult | null>(null);
+  const [loadedEventSignature, setLoadedEventSignature] = React.useState<string | null>(null);
   const [loading, setLoading] = React.useState(false);
   const [err, setErr] = React.useState<string | null>(null);
   const [expandedAgent, setExpandedAgent] = React.useState<string | null>(null);
 
   const load = useCallback(async () => {
-    if (result || loading) return;
+    const currentEventSignature = eventSummary
+      ? JSON.stringify({
+          eventCount: eventSummary.eventCount,
+          trust: eventSummary.trustLevelSummary,
+          themes: eventSummary.recentThemes,
+          summary: eventSummary.catalystSummary,
+        })
+      : 'null';
+    if (loading) return;
+    if (result && loadedEventSignature === currentEventSignature) return;
     if (!data.fusion && data.dataPoints < 20) {
       setErr('資料不足 20 天，無法執行多 Agent 研究分析');
       return;
@@ -929,18 +1223,23 @@ function MultiAgentResearchSection({ data }: { data: StockDetailResponse }) {
           marketAdjustment: data.fusion?.marketAdjustment ?? 0,
           usedSources: data.fusion?.usedSources ?? [],
           missingSources: data.fusion?.missingSources ?? [],
+          eventCount: eventSummary?.eventCount,
+          eventTrustLevelSummary: eventSummary?.trustLevelSummary,
+          recentThemes: eventSummary?.recentThemes,
+          catalystSummary: eventSummary?.catalystSummary,
           limitations: [...(data.limitations ?? []), ...(data.fusion?.limitations ?? [])],
         }),
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json: MAResearchResult = await res.json();
       setResult(json);
+      setLoadedEventSignature(currentEventSignature);
     } catch (e: unknown) {
       setErr(e instanceof Error ? e.message : '研究委員會分析暫時不可用');
     } finally {
       setLoading(false);
     }
-  }, [data, result, loading]);
+  }, [data, result, loading, eventSummary, loadedEventSignature]);
 
   // Auto-load on mount
   React.useEffect(() => { load(); }, [load]);
@@ -1070,6 +1369,233 @@ function MultiAgentResearchSection({ data }: { data: StockDetailResponse }) {
       <p className="text-[10px] text-muted-foreground/50 italic border-t border-border/20 pt-2">
         {result.disclaimer}
       </p>
+    </div>
+  );
+}
+
+function EventCatalystSection({
+  summary,
+  loading,
+  error,
+}: {
+  summary: EventSummaryResponse | null;
+  loading: boolean;
+  error: string | null;
+}) {
+  if (loading) return <SectionUnavailable reason="事件資料載入中…" />;
+  if (error) return <SectionUnavailable reason="事件資料暫時不可用（已降級）" />;
+  if (!summary || summary.eventCount === 0) {
+    return <SectionUnavailable reason="無事件資料（已降級）" />;
+  }
+
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center gap-2 flex-wrap">
+        <span className="text-sm font-semibold">事件數量：{summary.eventCount}</span>
+        <span className="text-xs text-muted-foreground">原始 {summary.rawCount} / 去重 {summary.dedupedCount}</span>
+        <span className={`text-xs px-2 py-0.5 rounded-full ${
+          summary.dataCoverage === 'full'
+            ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400'
+            : 'bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400'
+        }`}>
+          {summary.dataCoverage === 'full' ? '事件覆蓋較完整' : '事件覆蓋有限'}
+        </span>
+      </div>
+      <p className="text-sm text-foreground/80">{summary.catalystSummary}</p>
+      {summary.recentThemes.length > 0 && (
+        <div className="flex flex-wrap gap-1">
+          {summary.recentThemes.slice(0, 5).map((theme) => (
+            <span key={theme} className="text-[11px] px-1.5 py-0.5 rounded bg-muted/20 text-muted-foreground">
+              #{theme}
+            </span>
+          ))}
+        </div>
+      )}
+      <p className="text-xs text-muted-foreground">
+        來源可信度：official {summary.trustLevelSummary.official}、mainstream {summary.trustLevelSummary.mainstream}、
+        secondary {summary.trustLevelSummary.secondary}、unknown {summary.trustLevelSummary.unknown}（{summary.trustLevelSummary.note}）
+      </p>
+      {summary.recentEventTitles.length > 0 && (
+        <ul className="space-y-1">
+          {summary.recentEventTitles.slice(0, 3).map((t, i) => (
+            <li key={i} className="text-xs text-muted-foreground">• {t}</li>
+          ))}
+        </ul>
+      )}
+      {summary.limitations.length > 0 && <LimitationBlock items={summary.limitations} compact />}
+    </div>
+  );
+}
+
+function SymbolEventAlertSection({
+  summary,
+  loading,
+  error,
+}: {
+  summary: EventAlertsResponse | null;
+  loading: boolean;
+  error: string | null;
+}) {
+  if (loading) return <p className="text-xs text-muted-foreground">事件提醒載入中…</p>;
+  if (error || !summary) return <p className="text-xs text-muted-foreground">事件提醒暫時不可用（已降級）。</p>;
+  if (summary.alerts.length === 0) return <p className="text-xs text-muted-foreground">{summary.summary}</p>;
+
+  return (
+    <div className="space-y-2 border-t border-border/20 pt-2">
+      <p className="text-xs text-muted-foreground">{summary.summary}</p>
+      {summary.alerts.slice(0, 2).map((alert, idx) => (
+        <div key={`${alert.type}-${idx}`} className="rounded-lg border border-border/40 bg-muted/10 p-2">
+          <p className="text-xs font-medium">{alert.title}</p>
+          <p className="text-xs text-muted-foreground mt-0.5">{alert.message}</p>
+          {alert.trustLevelSummary && (
+            <p className="text-[11px] text-muted-foreground mt-1">可信度：{alert.trustLevelSummary}</p>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function SymbolTopicSurgeSection({
+  summary,
+  symbol,
+  loading,
+  error,
+}: {
+  summary: TopicSurgeApiResponse | null;
+  symbol: string;
+  loading: boolean;
+  error: string | null;
+}) {
+  const primaryTopic = summary?.topics.find((t) => t.relatedSymbols.includes(symbol))?.topic;
+  const { data: topicContext } = useApiData<TopicContextResponse>(
+    primaryTopic ? `/api/events/topic-momentum?topic=${encodeURIComponent(primaryTopic)}&days=7&minCount=0` : null
+  );
+  const { data: linkageContext } = useApiData<ThemeLinkageApiResponse>(
+    primaryTopic ? `/api/events/theme-linkage?topic=${encodeURIComponent(primaryTopic)}&days=7&minStrength=weak&includeSymbols=1` : null
+  );
+  const { data: transmissionContext } = useApiData<CrossMarketApiResponse>(
+    primaryTopic ? `/api/events/cross-market?topic=${encodeURIComponent(primaryTopic)}&days=14&minBreadth=1` : null
+  );
+  const { post: fetchPortfolioImpact } = useApiPost<{ symbols: string[] }, PortfolioImpactApiResponse>();
+  const [portfolioImpact, setPortfolioImpact] = React.useState<PortfolioImpactApiResponse['results'][number] | null>(null);
+
+  React.useEffect(() => {
+    let cancelled = false;
+    async function run() {
+      if (!symbol) return;
+      const res = await fetchPortfolioImpact('/api/portfolio/impact', { symbols: [symbol] });
+      if (cancelled) return;
+      setPortfolioImpact(res?.results?.[0] ?? null);
+    }
+    run();
+    return () => { cancelled = true; };
+  }, [symbol, fetchPortfolioImpact]);
+
+  if (loading) return <p className="text-xs text-muted-foreground">主題擴散資料載入中…</p>;
+  if (error || !summary) return <p className="text-xs text-muted-foreground">主題擴散資料暫時不可用（已降級）。</p>;
+  const related = summary.topics.filter((t) => t.relatedSymbols.includes(symbol)).slice(0, 2);
+  if (related.length === 0) return <p className="text-xs text-muted-foreground">近期無可用主題升溫/擴散關聯。</p>;
+  const symbolNode = topicContext?.diffusion.nodes.find((n) => n.symbol === symbol);
+  const topNodeCount = topicContext?.diffusion.nodes[0]?.eventCount ?? 0;
+  const role = symbolNode && topNodeCount > 0 && symbolNode.eventCount >= topNodeCount * 0.7 ? '主要' : '次要';
+  const transmissionTimeline = transmissionContext?.timeline?.timeline ?? [];
+  const transmissionPeakBreadth = Math.max(1, ...transmissionTimeline.map((n) => n.breadth));
+
+  return (
+    <div id="stock-topic-context" className="space-y-2 border-t border-border/20 pt-2">
+      <p className="text-xs text-muted-foreground">題材趨勢脈絡（研究補充）</p>
+      {topicContext && (
+        <div className="rounded-lg border border-border/40 bg-muted/10 p-2">
+          <p className="text-xs font-medium">
+            {topicContext.topic} · {topicContext.momentum.momentumType} · {topicContext.diffusion.diffusionType} · {role}
+          </p>
+          {topicContext.momentum.timeline.length > 0 ? (
+            <div className="mt-1 flex items-end gap-1 h-6">
+              {topicContext.momentum.timeline.slice(-7).map((p) => (
+                <div key={p.date} className="flex-1 bg-primary/10 rounded-sm overflow-hidden">
+                  <div
+                    className="bg-primary/50 w-full"
+                    style={{ height: `${Math.max(8, Math.min(100, (p.count / Math.max(1, topicContext.momentum.peak)) * 100))}%` }}
+                  />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-[11px] text-muted-foreground mt-1">主題趨勢資料不足</p>
+          )}
+        </div>
+      )}
+      {linkageContext && (
+        <div className="rounded-lg border border-border/40 bg-muted/10 p-2">
+          <p className="text-xs font-medium">相關主題連動</p>
+          {linkageContext.linkage.linkedTopics.length === 0 ? (
+            <p className="text-[11px] text-muted-foreground mt-0.5">目前無可用關聯主題資料。</p>
+          ) : (
+            <div className="mt-1 space-y-1">
+              {linkageContext.linkage.linkedTopics.slice(0, 3).map((lt) => (
+                <p key={lt.topic} className="text-[11px] text-muted-foreground">
+                  {lt.topic} · {lt.linkageStrength} · co {lt.coOccurrence}
+                </p>
+              ))}
+            </div>
+          )}
+          <p className="text-[11px] text-muted-foreground mt-1">
+            graph 節點 {linkageContext.graph.nodes.length} / 邊 {linkageContext.graph.edges.length}
+          </p>
+        </div>
+      )}
+      {transmissionContext?.crossMarket && transmissionContext.timeline && (
+        <div className="rounded-lg border border-border/40 bg-muted/10 p-2">
+          <p className="text-xs font-medium">題材生命週期 / 傳導階段</p>
+          <p className="text-[11px] text-muted-foreground mt-0.5">
+            {transmissionContext.timeline.stage} · {transmissionContext.timeline.trend} · {transmissionContext.crossMarket.spreadPattern} · {transmissionContext.crossMarket.spreadSpeed}
+          </p>
+          <p className="text-[11px] text-muted-foreground mt-0.5">
+            {transmissionContext.crossMarket.originCluster.symbols.includes(symbol)
+              ? '此股屬於 origin cluster'
+              : transmissionContext.crossMarket.spreadClusters.some((c) => c.symbols.includes(symbol))
+              ? '此股屬於後期擴散節點'
+              : '此股為邊緣關聯節點'}
+          </p>
+          {transmissionTimeline.length > 0 ? (
+            <div className="mt-1 flex items-end gap-1 h-6">
+              {transmissionTimeline.slice(-7).map((p) => {
+                return (
+                  <div key={p.date} className="flex-1 bg-primary/10 rounded-sm overflow-hidden">
+                    <div
+                      className="bg-primary/50 w-full"
+                      style={{ height: `${Math.max(8, Math.min(100, (p.breadth / transmissionPeakBreadth) * 100))}%` }}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <p className="text-[11px] text-muted-foreground mt-0.5">主題趨勢資料不足</p>
+          )}
+        </div>
+      )}
+      {portfolioImpact && (
+        <div id="stock-decision-context" className="rounded-lg border border-border/40 bg-muted/10 p-2">
+          <p className="text-xs font-medium">決策脈絡（研究輔助）</p>
+          <p className="text-[11px] text-muted-foreground mt-0.5">
+            {portfolioImpact.topicContext.topics[0]?.stage ?? 'unknown'} · {portfolioImpact.topicContext.topics[0]?.role ?? 'unclear'} · {portfolioImpact.crossMarketContext.spreadPattern}
+          </p>
+          <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">{portfolioImpact.narrative}</p>
+        </div>
+      )}
+      {related.map((topic) => (
+        <div key={topic.topic} className="rounded-lg border border-border/40 bg-muted/10 p-2">
+          <p className="text-xs font-medium">
+            {topic.topic} · {topic.surgeLevel} · {topic.diffusionLevel}
+          </p>
+          <p className="text-[11px] text-muted-foreground mt-0.5">
+            次數 {topic.previousCount} → {topic.recentCount}（Δ {topic.delta >= 0 ? '+' : ''}{topic.delta}）
+          </p>
+          <p className="text-[11px] text-muted-foreground mt-0.5">{topic.trustLevelSummary}</p>
+        </div>
+      ))}
     </div>
   );
 }

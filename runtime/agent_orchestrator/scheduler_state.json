@@ -1,0 +1,13 @@
+{
+  "version": "1.0",
+  "schedulerEnabled": true,
+  "plannerProvider": "codex",
+  "workerProvider": "copilot",
+  "scheduleMinutes": 10,
+  "nextPlannerRunAt": "2026-04-24T15:42:51.184Z",
+  "nextWorkerRunAt": "2026-04-24T15:44:11.984Z",
+  "lastPlannerRunAt": "2026-04-24T15:32:51.184Z",
+  "lastWorkerRunAt": "2026-04-24T15:34:11.984Z",
+  "updatedAt": "2026-04-24T15:34:11.984Z",
+  "providerCooldowns": {}
+}

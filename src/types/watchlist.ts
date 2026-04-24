@@ -1,4 +1,5 @@
 import { Stock } from '@/lib/mockData';
+import type { PortfolioImpact } from '@/types/portfolio';
 
 /** localStorage-based watchlist item with portfolio holdings */
 export interface PortfolioItem extends Stock {
@@ -104,6 +105,7 @@ export interface WatchlistRowViewModel {
     alphaScore?: number;
     recommendationBucket?: string;
     alphaConfidence?: number;
+    portfolioImpact?: PortfolioImpact;
     // Computed portfolio
     marketValue: number;
     costBasis: number;

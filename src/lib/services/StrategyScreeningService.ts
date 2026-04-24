@@ -18,6 +18,8 @@ export interface ScreeningCriteria {
     maxCapital?: number; // In 100M
     asOfDate?: string; // YYYYMMDD
     strategy?: string;
+    /** Reserved for future filter overrides (e.g. { skipFilters: true }) */
+    options?: Record<string, unknown>;
 }
 
 export class StrategyScreeningService {

@@ -71,7 +71,7 @@ async function analyze() {
 
         // Simple Scoring Logic
         let score = 0;
-        let reasons = [];
+        const reasons = [];
 
         // Trend
         if (lastInd.ma20 && latest.close > lastInd.ma20) {
