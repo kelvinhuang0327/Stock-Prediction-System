@@ -1,0 +1,12 @@
+{
+  "task_id": 142,
+  "status": "outputs_generated",
+  "generated_files": [
+    "true_exhausted_diagnosis.md",
+    "learning_data_gap_report.json",
+    "recovery_execution_plan.json",
+    "validation_rerun_checklist.md"
+  ],
+  "evidence": "Audit run output saved in transient runtime; run node scripts/audit_learning_signals.js for live evidence (READINESS: fullTradesClosed:4)",
+  "notes": "No protected paths modified. If further access to DB or backtest infra is needed, a follow-up task should run the extensive backtest/MonteCarlo phases described in the prompt."
+}

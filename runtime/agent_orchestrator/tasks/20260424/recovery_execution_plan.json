@@ -1,0 +1,66 @@
+{
+  "objective": "Recover from TRUE_EXHAUSTED by restoring usable learning flow and meeting statistical gates",
+  "timeline_hours": 24,
+  "steps": [
+    {
+      "id": "probe_campaign",
+      "description": "Execute targeted probe campaign: place 8-12 shadow probe trades across trend and rebound and any under-sampled setups; mark isProbe=true and track outcomes.",
+      "owner": "research-team",
+      "expected_effect": "Generate >=1 promotable successful probe to reach fullTradeCount >=5",
+      "validation": {
+        "metric": "successful_probes_promoted",
+        "target": 1
+      }
+    },
+    {
+      "id": "promote_successful_probes",
+      "description": "Promote up to 3 well-performing shadow probes to full trade mode (policy: promotionSource=shadow_track_record), observing guardrails.",
+      "owner": "ops",
+      "expected_effect": "Increase counted fullTradeCount",
+      "validation": {
+        "metric": "fullTradeCount",
+        "target": 5
+      }
+    },
+    {
+      "id": "investigate_time_exit",
+      "description": "Analyze recent time-exit causes and consider small holding period extension for probe trades to reduce neutral outcomes.",
+      "owner": "quant",
+      "validation": {
+        "metric": "time_exit_rate_recent20",
+        "target": "< 0.4"
+      }
+    },
+    {
+      "id": "reassess_contamination",
+      "description": "Audit contaminated exclusions; where safe, run sanitized re-analysis on a copy to recover non-synthetic valid samples.",
+      "owner": "data-engineering",
+      "validation": {
+        "metric": "clean_reports_recovered",
+        "target": ">=1"
+      }
+    },
+    {
+      "id": "post_recovery_audit",
+      "description": "Run audit (node scripts/audit_learning_signals.js) and classifier (classifySignalState) and produce machine-readable report. If passes gates, allow optimization miners to re-run.",
+      "owner": "research-team",
+      "validation": {
+        "gates": {
+          "fullTradeCount": 5,
+          "SNR_percent": 50,
+          "setupDiversity": 3
+        }
+      }
+    }
+  ],
+  "risks_and_mitigations": [
+    {
+      "risk": "Promoting contaminated or synthetic trades",
+      "mitigation": "Require human review before promotion; only promote probes with multiple independent positive signals"
+    },
+    {
+      "risk": "Probe volume insufficient or probes biased",
+      "mitigation": "Distribute probes across symbols and setupTypes; cap per-symbol probes at 2"
+    }
+  ]
+}
