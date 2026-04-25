@@ -19,6 +19,58 @@ async function main() {
     await syncService.syncMetrics();
     await syncService.syncMarketIndices();
 
+    // --- OHLC Integrity Assertions ---
+    // Query recent rows and assert basic OHLC invariants. Do NOT change data, only fail loudly so sync pipeline surfaces issues.
+    async function checkOHLCIntegrity() {
+        // Check last 7 days of quotes
+        const since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+        const sinceStr = since.toISOString().slice(0,10).replace(/-/g,'');
+
+        const badRows = await prisma.$queryRaw`
+            SELECT stockId, date, open, high, low, close, volume
+            FROM StockQuote
+            WHERE date >= ${sinceStr}
+              AND (
+                high < low
+                OR open > high
+                OR open < low
+                OR close > high
+                OR close < low
+                OR open <= 0
+                OR high <= 0
+                OR low <= 0
+                OR close <= 0
+              )
+            LIMIT 100
+        ` as any[];
+
+        if (badRows.length > 0) {
+            console.error('OHLC integrity check FAILED. Sample bad rows:', badRows.slice(0,10));
+            // Also write a SyncLog entry for visibility
+            await prisma.syncLog.create({ data: {
+                endpoint: 'stock_quote_integrity_check',
+                status: 'failed',
+                records: badRows.length,
+                duration: 0,
+                error: 'OHLC invariants violated in recent quotes',
+                metadata: JSON.stringify({ sample: badRows.slice(0,10) })
+            }});
+            // Fail loudly so CI/pipeline can capture
+            throw new Error('OHLC integrity violations detected during sync. See SyncLog entry.');
+        } else {
+            await prisma.syncLog.create({ data: {
+                endpoint: 'stock_quote_integrity_check',
+                status: 'success',
+                records: 0,
+                duration: 0,
+                metadata: JSON.stringify({ checked_since: sinceStr })
+            }});
+            console.log('OHLC integrity check passed.');
+        }
+    }
+
+    await checkOHLCIntegrity();
+
     // 3. Sync Historical Quotes for candidates
     // We pick TSMC and others as a start, or we can fetch TOP volume stocks
     console.log('Step 3: Syncing Historical Quotes for Top Stocks...');
