@@ -1,4 +1,6 @@
 import { exec as execCallback } from 'node:child_process';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { promisify } from 'node:util';
 import type { SignalStateResult } from './ctoTypes';
 import type {
@@ -738,6 +740,34 @@ function detectProviderRateLimit(message: string, provider: WorkerProvider): {
   };
 }
 
+/**
+ * Resolve AGENT_ORCHESTRATOR_WORKER_CMD from process.env first, then fall back
+ * to reading it from the launchd.env file.  This lets API-triggered worker ticks
+ * (which run inside the Next.js process and may not inherit launchd env vars)
+ * work the same as launchd-triggered ticks.
+ */
+export function resolveWorkerCommand(): string | undefined {
+  const fromEnv = process.env['AGENT_ORCHESTRATOR_WORKER_CMD'];
+  if (fromEnv && fromEnv.trim() !== '') return fromEnv;
+  try {
+    const envPath = join(process.cwd(), 'deploy', 'launchd-orchestrator', 'launchd.env');
+    const content = readFileSync(envPath, 'utf-8');
+    for (const rawLine of content.split('\n')) {
+      const line = rawLine.trim();
+      if (!line.startsWith('AGENT_ORCHESTRATOR_WORKER_CMD')) continue;
+      const eqIdx = line.indexOf('=');
+      if (eqIdx < 0) continue;
+      const raw = line.slice(eqIdx + 1).trim();
+      if (raw.startsWith("'") && raw.endsWith("'")) return raw.slice(1, -1);
+      if (raw.startsWith('"') && raw.endsWith('"')) return raw.slice(1, -1);
+      return raw || undefined;
+    }
+  } catch {
+    // env file not present or unreadable — caller will handle missing command
+  }
+  return undefined;
+}
+
 function interpolateCommand(template: string, input: WorkerExecutionInput): string {
   const replace = (source: string, token: string, value: string): string => source.split(token).join(value);
   let output = template;
@@ -750,7 +780,7 @@ function interpolateCommand(template: string, input: WorkerExecutionInput): stri
 }
 
 export async function runWorkerProvider(input: WorkerExecutionInput): Promise<WorkerExecutionOutput> {
-  const externalCommand = process.env.AGENT_ORCHESTRATOR_WORKER_CMD;
+  const externalCommand = resolveWorkerCommand();
 
   if (externalCommand) {
     const command = interpolateCommand(externalCommand, input);

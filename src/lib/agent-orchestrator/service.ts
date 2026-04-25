@@ -11,7 +11,7 @@ import {
   saveSchedulerState,
 } from './storage';
 import { runWorkerTick } from './workerTick';
-import { isTerminalTaskStatus } from './types';
+
 import type { PlannerProvider, TaskContract, TaskResult, WorkerProvider } from './types';
 
 interface ListTaskOptions {

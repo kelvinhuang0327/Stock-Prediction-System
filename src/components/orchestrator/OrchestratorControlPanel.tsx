@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition, useEffect, useCallback } from 'react';
+import React, { useState, useTransition, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { GlassButton } from '@/components/ui/glass-button';
 import type { PlannerProvider, WorkerProvider } from '@/lib/agent-orchestrator/types';
@@ -31,6 +31,7 @@ interface TaskRecord {
   plannerProvider: string;
   workerProvider: string;
   createdAt?: string;
+  updatedAt?: string;
   lastOutputAt?: string | null;
   latestProgressSummary?: string | null;
   changedFilesCount?: number | null;
@@ -137,7 +138,7 @@ function fmtDurationSec(sec?: number | null): string {
 function fmtDateTime(iso?: string | null): string {
   if (!iso) return '—';
   const d = new Date(iso);
-  if (isNaN(d.getTime())) return '—';
+  if (Number.isNaN(d.getTime())) return '—';
   const pad = (n: number) => String(n).padStart(2, '0');
   return `${d.getFullYear()}/${pad(d.getMonth()+1)}/${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
 }
@@ -160,6 +161,175 @@ function useCountdown(nextRunAt: string | null | undefined): string {
   }, [nextRunAt]);
 
   return display;
+}
+
+// ── Collapsible section helper ────────────────────────────────────────────────
+function Accordion({ title, badge, children, defaultOpen = false }: Readonly<{
+  title: string;
+  badge?: string;
+  children: React.ReactNode;
+  defaultOpen?: boolean;
+}>) {
+  const [open, setOpen] = useState(defaultOpen);
+  return (
+    <div className="border border-slate-700 rounded">
+      <button
+        className="w-full flex items-center justify-between px-3 py-1.5 text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800/40 transition-colors"
+        onClick={() => setOpen((v) => !v)}
+      >
+        <span>{title}{badge ? <span className="ml-2 text-slate-500">({badge})</span> : null}</span>
+        <span className="text-slate-500">{open ? '▲' : '▼'}</span>
+      </button>
+      {open && <div className="px-3 py-2 border-t border-slate-700/60">{children}</div>}
+    </div>
+  );
+}
+
+// ── Full task detail panel ────────────────────────────────────────────────────
+function TaskDetailPanel({ task, detail, loading, onClose }: Readonly<{
+  task: TaskRecord;
+  detail: TaskDetail | null;
+  loading: boolean;
+  onClose: () => void;
+}>) {
+  const d = detail;
+  const t = d?.task ?? task;
+  const contract = d?.contract;
+  const result   = d?.result;
+
+  const title = contract?.objective ?? t.title ?? t.slug;
+  const integrationGroup = t.plannerContext?.dedupeKey ?? contract?.trigger_reason ?? '—';
+  const slot = fmtDateTime(t.createdAt);
+
+  // Derive review status from task status
+  const terminalStatuses = ['COMPLETED', 'REPLAN_REQUIRED', 'FAILED', 'FAILED_RATE_LIMIT'];
+  let reviewStatus = '—';
+  if (t.status === 'PENDING_REVIEW') { reviewStatus = 'PENDING_REVIEW'; }
+  else if (terminalStatuses.includes(t.status)) { reviewStatus = 'SKIPPED_GIT_COMMIT'; }
+
+  const rejectReason = result && result.gate_verdict !== 'PASS'
+    ? (result.gate_reason || `task status ${t.status} is not COMPLETED`)
+    : null;
+
+  const fmtSec = (s?: number | null) => (s == null ? '—' : fmtDurationSec(s));
+
+  return (
+    <div className="rounded-lg bg-slate-900/80 border border-slate-700 p-3 text-xs space-y-2">
+      {/* Header */}
+      <div className="flex items-start justify-between gap-2">
+        <div className="flex-1 min-w-0">
+          <div className="font-semibold text-white text-sm truncate" title={title}>{title}</div>
+          <div className="text-slate-400 mt-0.5">
+            ID: <span className="text-slate-200">{t.taskId}</span>
+            {' | Slot: '}<span className="text-slate-200">{slot}</span>
+          </div>
+        </div>
+        <button onClick={onClose} className="text-slate-400 hover:text-white shrink-0 text-base leading-none">✕</button>
+      </div>
+
+      {loading && <div className="text-slate-500 animate-pulse">載入詳情中…</div>}
+
+      {/* Status row */}
+      <div className="flex flex-wrap gap-x-4 gap-y-0.5 text-slate-400">
+        <span>狀態: <span className={statusColor(t.status)}>{t.status}</span></span>
+        <span>Planner 來源: <span className="text-slate-200">{contract?.trigger_reason ?? t.plannerContext?.taskType ?? '—'}</span></span>
+        <span>Worker: <span className="text-slate-200">{t.workerProvider}</span></span>
+      </div>
+
+      {/* Gate + failure row */}
+      {result && (
+        <div className="space-y-0.5 text-slate-400">
+          <div>Gate: <span className={result.gate_verdict === 'PASS' ? 'text-emerald-400' : 'text-rose-400'}>{result.gate_verdict}</span>
+            {result.gate_reason && <span className="text-slate-500 ml-1">({result.gate_reason.slice(0, 120)}{result.gate_reason.length > 120 ? '…' : ''})</span>}
+          </div>
+          <div>
+            Failure: <span className="text-slate-200">{result.failure_provider ?? '—'}</span> / <span className="text-slate-200">{result.failure_reason ?? '—'}</span>
+            {' | '}Reset Hint: <span className="text-slate-200">{result.reset_hint ?? '—'}</span>
+          </div>
+        </div>
+      )}
+
+      {/* Commit / review grid */}
+      <div className="grid grid-cols-2 gap-x-4 gap-y-0.5 text-slate-400">
+        <span>Commit SHA: <span className="text-slate-200">—</span></span>
+        <span>Source Branch: <span className="text-slate-200">—</span></span>
+        <span>Review Status: <span className="text-slate-200">{reviewStatus}</span></span>
+        <span>Reviewed At: <span className="text-slate-200">—</span></span>
+        <span>Merge Branch: <span className="text-slate-200">—</span></span>
+        <span>Merge SHA: <span className="text-slate-200">—</span></span>
+        <span>Integration Group: <span className="text-slate-200">{integrationGroup}</span></span>
+        <span>Review Priority: <span className="text-slate-200">normal</span></span>
+      </div>
+
+      {/* Reject reason */}
+      {rejectReason && (
+        <div className="text-rose-400">Reject Reason: {rejectReason}</div>
+      )}
+
+      {/* Timing row */}
+      <div className="flex flex-wrap gap-x-4 gap-y-0.5 text-slate-400">
+        <span>耗時: <span className="text-slate-200">{result ? fmtSec(result.duration_seconds) : fmtDuration(task.durationMs)}</span></span>
+        <span>開始: <span className="text-slate-200">{fmtDateTime(t.createdAt)}</span></span>
+        <span>結束: <span className="text-slate-200">{fmtDateTime(task.completedAt ?? (t.status !== 'QUEUED' && t.status !== 'RUNNING' ? t.updatedAt : undefined))}</span></span>
+        <span>最後輸出: <span className="text-slate-200">{fmtDateTime(t.lastOutputAt)}</span></span>
+        {result?.final_message && <span>執行判讀: <span className="text-slate-200">{result.final_message}</span></span>}
+      </div>
+
+      {/* Progress */}
+      {t.latestProgressSummary && (
+        <div className="text-slate-400 whitespace-pre-wrap">最新進度: {t.latestProgressSummary}</div>
+      )}
+      {t.status === 'FAILED_RATE_LIMIT' && (
+        <div className="text-orange-200">建議：等待 provider reset，或切換其他 provider 後再跑下一輪 worker。</div>
+      )}
+
+      {/* Collapsible sections */}
+      <div className="space-y-1 pt-1">
+        {d?.promptContent != null && (
+          <Accordion title="📋 Prompt（任務指令）">
+            <pre className="text-slate-300 whitespace-pre-wrap text-[10px] max-h-64 overflow-y-auto leading-relaxed">{d.promptContent}</pre>
+          </Accordion>
+        )}
+        {d?.completedContent != null && (
+          <Accordion title="✅ Completed（執行結果）">
+            <pre className="text-slate-300 whitespace-pre-wrap text-[10px] max-h-64 overflow-y-auto leading-relaxed">{d.completedContent}</pre>
+          </Accordion>
+        )}
+        {contract && (
+          <Accordion title="📐 Task Contract（規範）">
+            <pre className="text-slate-300 whitespace-pre-wrap text-[10px] max-h-48 overflow-y-auto">{JSON.stringify(contract, null, 2)}</pre>
+          </Accordion>
+        )}
+        {result && (
+          <Accordion title="🧪 Task Result（Gate 驗收）">
+            <div className="space-y-1">
+              {result.acceptance_results.map((ar) => (
+                <div key={ar.name} className={ar.passed ? 'text-emerald-400' : 'text-rose-400'}>
+                  {ar.passed ? '✓' : '✗'} {ar.name}
+                  {ar.evidence && <div className="text-slate-500 text-[10px] ml-4">{ar.evidence}</div>}
+                </div>
+              ))}
+            </div>
+          </Accordion>
+        )}
+        {result && result.changed_files.length > 0 && (
+          <Accordion title={`📂 異動檔案（${result.changed_files.length} 個）`}>
+            <ul className="text-slate-300 text-[10px] space-y-0.5">
+              {result.changed_files.map((f) => <li key={f} className="font-mono">{f}</li>)}
+            </ul>
+          </Accordion>
+        )}
+        {d?.workerLogTail != null && (
+          <Accordion title="🖖 Worker 輸出（後 200 行）">
+            <pre className="text-slate-300 whitespace-pre-wrap text-[10px] max-h-64 overflow-y-auto font-mono">{d.workerLogTail}</pre>
+          </Accordion>
+        )}
+        {result?.gate_reason && result.gate_verdict !== 'PASS' && (
+          <div className="text-rose-300 pt-1">錯誤訊息: {result.gate_reason}</div>
+        )}
+      </div>
+    </div>
+  );
 }
 
 export function OrchestratorControlPanel({
@@ -491,13 +661,13 @@ export function OrchestratorControlPanel({
               {tasks.map((t) => (
                 <tr
                   key={t.taskId}
-                  className="border-b border-slate-800/50 cursor-pointer hover:bg-slate-800/40 transition-colors"
-                  onClick={() => setSelectedTask(t)}
+                  className={`border-b border-slate-800/50 cursor-pointer hover:bg-slate-800/40 transition-colors ${selectedTask?.taskId === t.taskId ? 'bg-slate-800/60' : ''}`}
+                  onClick={() => { void selectTask(t); }}
                 >
                   <td className="py-1 pr-3 text-slate-400">{t.taskId}</td>
-                  <td className="py-1 pr-3 text-slate-400">{t.dayKey}</td>
-                  <td className="py-1 pr-3 text-white max-w-[180px] truncate">
-                    {t.slug}
+                  <td className="py-1 pr-3 text-slate-400 whitespace-nowrap">{fmtDateTime(t.createdAt)}</td>
+                  <td className="py-1 pr-3 text-white max-w-[220px] truncate" title={t.title ?? t.slug}>
+                    {t.title ?? t.slug}
                     {t.status === 'RUNNING' && (
                       <span className="ml-1 text-yellow-400 text-[10px]">● RUNNING</span>
                     )}
@@ -505,10 +675,10 @@ export function OrchestratorControlPanel({
                       <span className="ml-1 text-orange-300 text-[10px]">● 額度限制</span>
                     )}
                   </td>
-                  <td className={`py-1 pr-3 ${statusColor(t.status)}`}>{t.status}</td>
+                  <td className={`py-1 pr-3 whitespace-nowrap ${statusColor(t.status)}`}>{t.status}</td>
                   <td className="py-1 pr-3 text-slate-400">{fmtDuration(t.durationMs)}</td>
                   <td className="py-1 pr-3 text-slate-400">{t.changedFilesCount ?? '—'}</td>
-                  <td className="py-1 text-slate-400">{t.completedAt ? new Date(t.completedAt).toLocaleTimeString() : '—'}</td>
+                  <td className="py-1 text-slate-400 whitespace-nowrap">{fmtDateTime(t.completedAt)}</td>
                 </tr>
               ))}
               {tasks.length === 0 && !tasksLoading && (
@@ -537,24 +707,12 @@ export function OrchestratorControlPanel({
 
         {/* Selected task detail */}
         {selectedTask && (
-          <div className="rounded-lg bg-slate-900/80 border border-slate-700 p-3 text-xs space-y-1">
-            <div className="flex justify-between">
-              <span className="font-semibold text-white">任務 #{selectedTask.taskId} 詳情</span>
-              <button onClick={() => setSelectedTask(null)} className="text-slate-400 hover:text-white">✕</button>
-            </div>
-            <div className="grid grid-cols-2 gap-x-4 gap-y-0.5 text-slate-300">
-              <span>狀態:</span><span className={statusColor(selectedTask.status)}>{selectedTask.status}</span>
-              <span>Planner:</span><span>{selectedTask.plannerProvider}</span>
-              <span>Worker:</span><span>{selectedTask.workerProvider}</span>
-              <span>日期:</span><span>{selectedTask.dayKey}</span>
-            </div>
-            {selectedTask.latestProgressSummary && (
-              <div className="mt-1 text-slate-400 whitespace-pre-wrap">{selectedTask.latestProgressSummary}</div>
-            )}
-            {selectedTask.status === 'FAILED_RATE_LIMIT' && (
-              <div className="text-orange-200">建議：等待 provider reset，或切換其他 provider 後再跑下一輪 worker。</div>
-            )}
-          </div>
+          <TaskDetailPanel
+            task={selectedTask}
+            detail={selectedTaskDetail}
+            loading={detailLoading}
+            onClose={() => { setSelectedTask(null); setSelectedTaskDetail(null); }}
+          />
         )}
       </div>
 

@@ -32,6 +32,9 @@ interface DraftBuildResult {
 
 const DEFAULT_TASK_COOLDOWN_MINUTES = 30;
 
+/** Maximum REPLAN_REQUIRED retries allowed per dedupeKey before the planner stops creating new tasks. */
+const MAX_REPLAN_RETRY_COUNT = 15;
+
 /** Confidence shift required to bypass the cooldown guard (mirrors SOURCE _CONFIDENCE_CHANGE_GATE). */
 const CONFIDENCE_CHANGE_GATE = 0.2;
 
@@ -51,6 +54,16 @@ function findInFlightTaskByDedupeKey(tasks: TaskRecord[], dedupeKey: string): Ta
       .filter((task) => task.plannerContext?.dedupeKey === dedupeKey && ['QUEUED', 'RUNNING'].includes(task.status))
       .sort((a, b) => b.taskId - a.taskId)[0] ?? null
   );
+}
+
+/**
+ * Count REPLAN_REQUIRED tasks for a given dedupeKey.
+ * Used to enforce a retry cap so the planner does not loop indefinitely.
+ */
+function countReplanByDedupeKey(tasks: TaskRecord[], dedupeKey: string): number {
+  return tasks.filter(
+    (task) => task.plannerContext?.dedupeKey === dedupeKey && task.status === 'REPLAN_REQUIRED',
+  ).length;
 }
 
 /**
@@ -224,12 +237,11 @@ async function buildPlannerDraftForTick(
           classifyReason: `OPTIMIZATION_MINER@source=${minerResult.candidate.sourceType}&score=${minerResult.candidate.priorityScore}&mined=${minerResult.totalMined}`,
         };
       }
-      return finalizeSkippedTick(
-        runtime,
-        `Signal state TRUE_EXHAUSTED — no usable learning data. Reason: ${signalState.reason}. Both composite plan and single-task miner produced nothing.`,
-        'signal_exhausted',
-        null,
-      );
+      // Both miners produced nothing (e.g. today's composite already PENDING_REVIEW, single-task
+      // quota exhausted).  Fall through to the general backlog planner so that any
+      // REPLAN_REQUIRED tasks from individual domain miners can still be retried, rather than
+      // leaving the scheduler completely idle.
+      // (no return here — execution continues to the general buildPlannerDraft call below)
     }
 
     if (signalState.state === 'COLD_REGIME') {
@@ -277,6 +289,20 @@ async function guardAfterDraft(
       `Dedupe hit: task #${inFlightTask.taskId} is in-flight for key ${draft.plannerContext.dedupeKey}.`,
       'dedupe_in_flight',
       inFlightTask.taskId,
+    );
+  }
+
+  // Retry cap: if this dedupeKey has already accumulated too many REPLAN_REQUIRED
+  // tasks, stop creating new ones to avoid an infinite loop.  The env var fix
+  // (resolveWorkerCommand) should have resolved the root cause; the cap prevents
+  // further damage if a different failure mode occurs.
+  const replanCount = countReplanByDedupeKey(index.tasks, draft.plannerContext.dedupeKey);
+  if (replanCount >= MAX_REPLAN_RETRY_COUNT) {
+    return finalizeSkippedTick(
+      runtime,
+      `Max replan retry (${MAX_REPLAN_RETRY_COUNT}) reached for dedupeKey ${draft.plannerContext.dedupeKey}. Manual reset required.`,
+      'dedupe_in_flight',
+      null,
     );
   }
 

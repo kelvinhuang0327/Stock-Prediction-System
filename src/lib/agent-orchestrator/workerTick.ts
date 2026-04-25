@@ -7,7 +7,7 @@ import {
 } from './common';
 import { evaluateGate } from './gate';
 import { loadProjectProfile } from './profile';
-import { runWorkerProvider } from './providers';
+import { resolveWorkerCommand, runWorkerProvider } from './providers';
 import {
   appendRun,
   findFirstTaskByStatus,
@@ -222,6 +222,15 @@ export async function runWorkerTick(options: WorkerTickOptions = {}): Promise<Wo
 
   const activeTaskResult = await handleSingleActiveTask(paths, state, index, profile, startedAtIso);
   if (activeTaskResult) return activeTaskResult;
+
+  // Guard: if no worker command is configured (neither process.env nor launchd.env),
+  // skip the entire tick rather than claiming a QUEUED task and immediately marking
+  // it REPLAN_REQUIRED in a loop.
+  const workerCmd = resolveWorkerCommand();
+  if (!workerCmd) {
+    await finalizeWorkerRun(paths, state, startedAtIso, 'skipped', 'AGENT_ORCHESTRATOR_WORKER_CMD is not configured — worker tick skipped.', null);
+    return { status: 'skipped', reason: 'worker_not_configured', taskId: null };
+  }
 
   const queuedTasks = index.tasks
     .filter((task) => task.status === 'QUEUED')
