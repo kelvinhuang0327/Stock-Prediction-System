@@ -1,0 +1,88 @@
+{
+  "generatedAt": "2026-04-25T01:16:40.923Z",
+  "sampleCounts": {
+    "trend": 3,
+    "rebound": 2
+  },
+  "trades": [
+    {
+      "tradeId": 22,
+      "symbol": "2014",
+      "entryDate": "2026-04-16",
+      "setupType": "trend",
+      "entryPrice": 18.55,
+      "pnlPct": 0.3784779931624163,
+      "ma5": 18.57,
+      "ma20": 18.527500000000003,
+      "ma_regime": "up",
+      "fiveDayReturn": 1.084010840108407,
+      "volConfirmation": 0.6142468059962558
+    },
+    {
+      "tradeId": 21,
+      "symbol": "1326",
+      "entryDate": "2026-04-16",
+      "setupType": "trend",
+      "entryPrice": 52.1,
+      "pnlPct": -2.316459810597359,
+      "ma5": 51.61,
+      "ma20": 46.72000000000001,
+      "ma_regime": "up",
+      "fiveDayReturn": 2.102102102102088,
+      "volConfirmation": 0.8734249722956902
+    },
+    {
+      "tradeId": 20,
+      "symbol": "2308",
+      "entryDate": "2026-04-16",
+      "setupType": "trend",
+      "entryPrice": 1845,
+      "pnlPct": -0.4402542777549206,
+      "ma5": 1792,
+      "ma20": 1581,
+      "ma_regime": "up",
+      "fiveDayReturn": 5.747126436781613,
+      "volConfirmation": 0.9823518891787628
+    },
+    {
+      "tradeId": 38,
+      "symbol": "2014",
+      "entryDate": "2026-04-17",
+      "setupType": "rebound",
+      "entryPrice": 18.65,
+      "pnlPct": -0.1597444089456874,
+      "ma5": 18.57,
+      "ma20": 18.527500000000003,
+      "ma_regime": "up",
+      "fiveDayReturn": 1.084010840108407,
+      "volConfirmation": 0.6142468059962558
+    },
+    {
+      "tradeId": 35,
+      "symbol": "2014",
+      "entryDate": "2026-04-17",
+      "setupType": "rebound",
+      "entryPrice": 18.65,
+      "pnlPct": -0.1597444089456874,
+      "ma5": 18.57,
+      "ma20": 18.527500000000003,
+      "ma_regime": "up",
+      "fiveDayReturn": 1.084010840108407,
+      "volConfirmation": 0.6142468059962558
+    }
+  ],
+  "confusionMatrix": {
+    "trend": {
+      "up": 3,
+      "down": 0,
+      "neutral": 0,
+      "insufficient": 0
+    },
+    "rebound": {
+      "up": 2,
+      "down": 0,
+      "neutral": 0,
+      "insufficient": 0
+    }
+  }
+}
