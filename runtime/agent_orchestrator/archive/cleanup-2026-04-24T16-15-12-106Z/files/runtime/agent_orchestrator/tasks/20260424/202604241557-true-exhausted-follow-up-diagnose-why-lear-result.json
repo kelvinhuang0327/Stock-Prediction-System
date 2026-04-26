@@ -1,0 +1,52 @@
+{
+  "version": "1.0",
+  "task_id": 142,
+  "status": "REPLAN_REQUIRED",
+  "gate_verdict": "POLICY_VIOLATION",
+  "gate_reason": "Worker touched forbidden paths.",
+  "failure_provider": null,
+  "failure_reason": null,
+  "reset_hint": null,
+  "final_message": null,
+  "http_status": null,
+  "duration_seconds": 202,
+  "changed_files": [
+    "deploy/launchd-orchestrator/launchd.env",
+    "logs/launchd/backend.stderr.log",
+    "logs/launchd/backend.stdout.log",
+    "logs/launchd/main-service.stdout.log",
+    "logs/launchd/planner-tick.stdout.log",
+    "logs/launchd/start_all.log",
+    "logs/launchd/stop_all.log",
+    "logs/launchd/worker-daemon.stdout.log",
+    "logs/launchd/worker-tick.stdout.log",
+    "prisma/dev.db-shm",
+    "prisma/dev.db-wal",
+    "runtime/agent_orchestrator/runs.json",
+    "runtime/agent_orchestrator/scheduler_state.json",
+    "runtime/agent_orchestrator/task_index.json",
+    "scripts/orchestrator_worker_external.sh",
+    "src/app/api/orchestrator/providers/route.ts",
+    "src/app/orchestrator/page.tsx",
+    "src/components/orchestrator/OrchestratorControlPanel.tsx",
+    "src/lib/agent-orchestrator/plannerTick.ts",
+    "src/lib/agent-orchestrator/providers.ts",
+    "src/lib/agent-orchestrator/service.ts",
+    "src/lib/agent-orchestrator/storage.ts",
+    "src/lib/agent-orchestrator/types.ts",
+    "src/lib/agent-orchestrator/workerTick.ts"
+  ],
+  "error_markers_hit": [],
+  "missing_required_outputs": [],
+  "forbidden_change_violations": [
+    "deploy/launchd-orchestrator/launchd.env"
+  ],
+  "acceptance_results": [
+    {
+      "name": "Worker command completed",
+      "passed": true,
+      "evidence": "Process exited with code 0."
+    }
+  ],
+  "next_action": "Planner must inspect this result and create a replan task."
+}

@@ -1,0 +1,52 @@
+{
+  "version": "2.0",
+  "objective": "Add loading.tsx and error.tsx to pages missing async feedback",
+  "background": "20 page directories lack loading.tsx or error.tsx. Operators see blank screens or crashes during slow fetches or API errors.",
+  "trigger_reason": "OPTIMIZATION_MINER@source=ui_ux&score=44",
+  "scope": [
+    "src/app",
+    "src/app/analysis",
+    "src/app/asset-doubling",
+    "src/app/backtest",
+    "src/app/candidates",
+    "src/app/calendar"
+  ],
+  "constraints": [
+    "Do not modify page business logic",
+    "Do not change routing structure",
+    "Do not modify trading thresholds or strategy parameters",
+    "Do not require live broker connection"
+  ],
+  "acceptance_tests": [
+    "loading.tsx added to all identified page directories",
+    "error.tsx added to all identified page directories",
+    "Each loading state shows a meaningful skeleton or spinner (not a blank screen)",
+    "Each error state shows the error message and a retry action",
+    "TypeScript compiles with zero errors"
+  ],
+  "required_outputs": [
+    "loading.tsx added to all identified page directories",
+    "error.tsx added to all identified page directories",
+    "Each loading state shows a meaningful skeleton or spinner (not a blank screen)",
+    "Each error state shows the error message and a retry action",
+    "TypeScript compiles with zero errors"
+  ],
+  "forbidden_changes": [
+    "Do not modify page business logic",
+    "Do not change routing structure"
+  ],
+  "handoff_questions": [
+    "Did you verify each acceptance criterion with evidence?",
+    "Were any forbidden actions performed?",
+    "What artifacts were produced?"
+  ],
+  "expected_duration_hours": 5,
+  "target_files": [
+    "src/app",
+    "src/app/analysis",
+    "src/app/asset-doubling",
+    "src/app/backtest",
+    "src/app/candidates",
+    "src/app/calendar"
+  ]
+}

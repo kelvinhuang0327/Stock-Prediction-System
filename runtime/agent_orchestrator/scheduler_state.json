@@ -1,13 +1,13 @@
 {
   "version": "1.0",
-  "schedulerEnabled": true,
-  "plannerProvider": "codex",
+  "schedulerEnabled": false,
+  "plannerProvider": "claude",
   "workerProvider": "copilot-daemon",
   "scheduleMinutes": 10,
-  "nextPlannerRunAt": "2026-04-24T15:52:52.582Z",
-  "nextWorkerRunAt": "2026-04-24T15:55:29.439Z",
-  "lastPlannerRunAt": "2026-04-24T15:42:52.582Z",
-  "lastWorkerRunAt": "2026-04-24T15:45:29.439Z",
-  "updatedAt": "2026-04-24T15:45:29.439Z",
+  "nextPlannerRunAt": "2026-04-26T00:14:56.330Z",
+  "nextWorkerRunAt": "2026-04-26T00:22:03.613Z",
+  "lastPlannerRunAt": "2026-04-26T00:04:56.330Z",
+  "lastWorkerRunAt": "2026-04-26T00:12:03.613Z",
+  "updatedAt": "2026-04-26T00:12:03.613Z",
   "providerCooldowns": {}
 }

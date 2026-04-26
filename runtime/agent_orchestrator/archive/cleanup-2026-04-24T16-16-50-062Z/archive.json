@@ -1,0 +1,22 @@
+{
+  "version": "1.0",
+  "createdAt": "2026-04-24T16:16:50.064Z",
+  "reason": "Removed superseded failed orchestrator history after a later PASS for the same dedupeKey.",
+  "removedTaskIds": [],
+  "removedRunIds": [
+    "planner-1777046496538"
+  ],
+  "tasks": [],
+  "runs": [
+    {
+      "runId": "planner-1777046496538",
+      "tickType": "planner",
+      "startedAt": "2026-04-24T16:01:36.323Z",
+      "finishedAt": "2026-04-24T16:01:36.538Z",
+      "status": "skipped",
+      "reason": "Quality gate rejected draft: 規則 5 失敗：與最近任務 #142 focus / 結構 / 輸出高度重複。",
+      "taskId": null
+    }
+  ],
+  "movedFiles": []
+}

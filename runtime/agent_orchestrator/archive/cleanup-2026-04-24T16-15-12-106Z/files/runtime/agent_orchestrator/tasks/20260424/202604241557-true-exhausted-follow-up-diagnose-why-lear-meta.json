@@ -1,0 +1,19 @@
+{
+  "version": "1.0",
+  "task_id": 142,
+  "slug": "true-exhausted-follow-up-diagnose-why-lear",
+  "status": "REPLAN_REQUIRED",
+  "gate_verdict": "POLICY_VIOLATION",
+  "planner_provider": "codex",
+  "worker_provider": "copilot-daemon",
+  "created_at": "2026-04-24T15:57:04.442Z",
+  "updated_at": "2026-04-24T16:00:34.353Z",
+  "last_output_at": "2026-04-24T16:00:34.353Z",
+  "latest_progress_summary": "Worker finished task but gate=POLICY_VIOLATION.",
+  "planner_context": {
+    "taskType": "true_exhausted_analysis",
+    "game": null,
+    "regimeState": "TRUE_EXHAUSTED",
+    "dedupeKey": "true_exhausted_analysis|GLOBAL|TRUE_EXHAUSTED"
+  }
+}

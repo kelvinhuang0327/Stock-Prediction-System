@@ -1,0 +1,58 @@
+{
+  "version": "2.0",
+  "objective": "Validate trend/rebound setup classification against raw price structure",
+  "background": "Setup classification may not reflect actual price behavior: 84 currently open/pending trades — setup classification should be validated.",
+  "trigger_reason": "OPTIMIZATION_MINER@source=price_analysis_quality&score=72",
+  "scope": [
+    "src/lib/scoring/",
+    "src/lib/learning/",
+    "docs/reports/",
+    "wiki/v1/"
+  ],
+  "constraints": [
+    "Do not change live trading thresholds",
+    "Do not modify position sizing or risk floor",
+    "Do not auto-tune strategy parameters",
+    "Do not modify alphaScore or triggerScore weighting without evidence",
+    "Do not bypass learning gates",
+    "Diagnostics and reports only — no automated strategy changes",
+    "Do not modify trading thresholds or strategy parameters",
+    "Do not require live broker connection"
+  ],
+  "acceptance_tests": [
+    "Sample 20 recent trend and 20 recent rebound closed trades",
+    "For each: compute MA5/MA20 alignment, 5-day return before entry, volume confirmation ratio",
+    "Report trades where MA structure contradicts the assigned setupType",
+    "Add confusion-matrix table (setupType vs MA-regime) to docs/reports/setup_audit.json",
+    "Document findings in wiki/v1/price-analysis-quality.md",
+    "No automatic reclassification of existing trades"
+  ],
+  "required_outputs": [
+    "Sample 20 recent trend and 20 recent rebound closed trades",
+    "For each: compute MA5/MA20 alignment, 5-day return before entry, volume confirmation ratio",
+    "Report trades where MA structure contradicts the assigned setupType",
+    "Add confusion-matrix table (setupType vs MA-regime) to docs/reports/setup_audit.json",
+    "Document findings in wiki/v1/price-analysis-quality.md",
+    "No automatic reclassification of existing trades"
+  ],
+  "forbidden_changes": [
+    "Do not change live trading thresholds",
+    "Do not modify position sizing or risk floor",
+    "Do not auto-tune strategy parameters",
+    "Do not modify alphaScore or triggerScore weighting without evidence",
+    "Do not bypass learning gates",
+    "Diagnostics and reports only — no automated strategy changes"
+  ],
+  "handoff_questions": [
+    "Did you verify each acceptance criterion with evidence?",
+    "Were any forbidden actions performed?",
+    "What artifacts were produced?"
+  ],
+  "expected_duration_hours": 7,
+  "target_files": [
+    "src/lib/scoring/",
+    "src/lib/learning/",
+    "docs/reports/",
+    "wiki/v1/"
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "version": "2.0",
+  "objective": "Audit sector and market context alignment for active proposals",
+  "background": "Proposals may be generated without sufficient market/sector confirmation: Latest MarketIndex: 2026-03-17T07:20:39.000Z — cannot validate sector alignment; 43 approved proposals in last 7d — sector concentration not validated.",
+  "trigger_reason": "OPTIMIZATION_MINER@source=price_analysis_quality&score=72",
+  "scope": [
+    "src/lib/scoring/",
+    "prisma/schema.prisma",
+    "docs/reports/",
+    "wiki/v1/"
+  ],
+  "constraints": [
+    "Do not change live trading thresholds",
+    "Do not modify position sizing or risk floor",
+    "Do not auto-tune strategy parameters",
+    "Do not modify alphaScore or triggerScore weighting without evidence",
+    "Do not bypass learning gates",
+    "Diagnostics and reports only — no automated strategy changes",
+    "Do not modify trading thresholds or strategy parameters",
+    "Do not require live broker connection"
+  ],
+  "acceptance_tests": [
+    "Report TAIEX direction (5d return) for each approved proposal date",
+    "Report sector distribution of active open trades (semiconductor / finance / etc.)",
+    "Identify proposals where stock setup contradicts broad market direction",
+    "Produce sector alignment summary in docs/reports/sector_alignment.json",
+    "Document findings in wiki/v1/price-analysis-quality.md",
+    "No automatic proposal rejection — report only"
+  ],
+  "required_outputs": [
+    "Report TAIEX direction (5d return) for each approved proposal date",
+    "Report sector distribution of active open trades (semiconductor / finance / etc.)",
+    "Identify proposals where stock setup contradicts broad market direction",
+    "Produce sector alignment summary in docs/reports/sector_alignment.json",
+    "Document findings in wiki/v1/price-analysis-quality.md",
+    "No automatic proposal rejection — report only"
+  ],
+  "forbidden_changes": [
+    "Do not change live trading thresholds",
+    "Do not modify position sizing or risk floor",
+    "Do not auto-tune strategy parameters",
+    "Do not modify alphaScore or triggerScore weighting without evidence",
+    "Do not bypass learning gates",
+    "Diagnostics and reports only — no automated strategy changes"
+  ],
+  "handoff_questions": [
+    "Did you verify each acceptance criterion with evidence?",
+    "Were any forbidden actions performed?",
+    "What artifacts were produced?"
+  ],
+  "expected_duration_hours": 5,
+  "target_files": [
+    "src/lib/scoring/",
+    "prisma/schema.prisma",
+    "docs/reports/",
+    "wiki/v1/"
+  ]
+}

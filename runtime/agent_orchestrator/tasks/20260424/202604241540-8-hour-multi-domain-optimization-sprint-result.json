@@ -1,30 +1,25 @@
 {
   "version": "1.0",
   "task_id": 141,
-  "status": "COMPLETED",
-  "gate_verdict": "PASS",
-  "gate_reason": "",
-  "failure_provider": null,
-  "failure_reason": null,
-  "reset_hint": null,
-  "final_message": null,
-  "http_status": null,
-  "duration_seconds": 341,
-  "changed_files": [
-    "logs/launchd/backend.stderr.log",
-    "logs/launchd/backend.stdout.log",
-    "logs/launchd/main-service.stdout.log",
-    "logs/launchd/start_all.log"
+  "status": "REPLAN_REQUIRED",
+  "gate_verdict": "WORKER_RUNTIME_FAILED",
+  "gate_reason": "Task became stale for over 15 minutes.",
+  "duration_seconds": 0,
+  "changed_files": [],
+  "error_markers_hit": [
+    "stale_running_task"
   ],
-  "error_markers_hit": [],
-  "missing_required_outputs": [],
+  "missing_required_outputs": [
+    "completed_markdown",
+    "task_result_json"
+  ],
   "forbidden_change_violations": [],
   "acceptance_results": [
     {
-      "name": "Worker command completed",
-      "passed": true,
-      "evidence": "Process exited with code 0."
+      "name": "Worker output freshness",
+      "passed": false,
+      "evidence": "No output update observed within stale threshold."
     }
   ],
-  "next_action": "Continue to next planned task."
+  "next_action": "Planner should replan this task with narrower scope."
 }

@@ -1,0 +1,50 @@
+{
+  "version": "2.0",
+  "objective": "Expand unit test coverage for untested orchestrator modules",
+  "background": "20 orchestrator modules have no test file: service, signalStateClassifier, storage, tasks, types. Critical planner/worker/gate logic runs without regression protection.",
+  "trigger_reason": "OPTIMIZATION_MINER@source=test_coverage&score=48",
+  "scope": [
+    "src/lib/agent-orchestrator/service.ts",
+    "src/lib/agent-orchestrator/signalStateClassifier.ts",
+    "src/lib/agent-orchestrator/storage.ts",
+    "src/lib/agent-orchestrator/tasks.ts",
+    "src/lib/agent-orchestrator/types.ts",
+    "src/lib/agent-orchestrator/workerTick.ts"
+  ],
+  "constraints": [
+    "Do not add tests that require a live DB or network connection",
+    "Use mocks for prisma and filesystem calls",
+    "Do not modify trading thresholds or strategy parameters",
+    "Do not require live broker connection"
+  ],
+  "acceptance_tests": [
+    "Test files created for: service, signalStateClassifier, storage, tasks",
+    "Each test covers: happy path, error path, and at least one edge case",
+    "All tests pass: jest --testPathPattern=agent-orchestrator",
+    "Coverage report shows improvement in orchestrator module line coverage"
+  ],
+  "required_outputs": [
+    "Test files created for: service, signalStateClassifier, storage, tasks",
+    "Each test covers: happy path, error path, and at least one edge case",
+    "All tests pass: jest --testPathPattern=agent-orchestrator",
+    "Coverage report shows improvement in orchestrator module line coverage"
+  ],
+  "forbidden_changes": [
+    "Do not add tests that require a live DB or network connection",
+    "Use mocks for prisma and filesystem calls"
+  ],
+  "handoff_questions": [
+    "Did you verify each acceptance criterion with evidence?",
+    "Were any forbidden actions performed?",
+    "What artifacts were produced?"
+  ],
+  "expected_duration_hours": 7,
+  "target_files": [
+    "src/lib/agent-orchestrator/service.ts",
+    "src/lib/agent-orchestrator/signalStateClassifier.ts",
+    "src/lib/agent-orchestrator/storage.ts",
+    "src/lib/agent-orchestrator/tasks.ts",
+    "src/lib/agent-orchestrator/types.ts",
+    "src/lib/agent-orchestrator/workerTick.ts"
+  ]
+}
