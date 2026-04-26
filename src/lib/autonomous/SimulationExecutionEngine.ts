@@ -55,6 +55,18 @@ function computeATR(quotes: QuoteRow[], period = 14): number {
   return recent.length === 0 ? 0 : recent.reduce((s, v) => s + v, 0) / recent.length;
 }
 
+function normalizeDateStr(d: string): string {
+  if (!d) return d;
+  if (d.includes('-')) return d;
+  if (d.length === 8) return `${d.slice(0,4)}-${d.slice(4,6)}-${d.slice(6,8)}`;
+  return d;
+}
+
+function dateFromStr(d: string): Date {
+  const iso = normalizeDateStr(d);
+  return new Date(`${iso}T00:00:00+08:00`);
+}
+
 function setupThresholds(setupType: StrategyProposal['setupType']) {
   if (setupType === 'trend') return { target: 0.08, stop: -0.06, maxHoldDays: 15 };
   if (setupType === 'rebound') return { target: 0.06, stop: -0.05, maxHoldDays: 10 };
@@ -446,7 +458,13 @@ export async function executeSimulationCycle(
     });
 
     // Evaluate immediate exit conditions using historical data from entry date forward
-    const updatedQuotes = quotes.filter((q) => q.date >= trade.entryDate);
+    const updatedQuotes = quotes.filter((q) => {
+      try {
+        const qDate = dateFromStr(q.date);
+        const entryDateObj = dateFromStr(trade.entryDate);
+        return qDate >= entryDateObj;
+      } catch { return false; }
+    });
     const highSinceEntry = Math.max(...updatedQuotes.map((q) => q.high));
     const lowSinceEntry = Math.min(...updatedQuotes.map((q) => q.low));
     const currentClose = updatedQuotes[updatedQuotes.length - 1].close;
@@ -631,7 +649,14 @@ export async function closeOpenTrades(options?: {
     // Apply an upper date ceiling equal to `now` to prevent future-quote leakage
     // when closeOpenTrades is invoked with a historical simulationDate.
     const simDateCeiling = now.toISOString().slice(0, 10); // 'YYYY-MM-DD'
-    const updatedQuotes = quotes.filter((q) => q.date >= trade.entryDate && q.date <= simDateCeiling);
+    const updatedQuotes = quotes.filter((q) => {
+      try {
+        const qDate = dateFromStr(q.date);
+        const entryDateObj = dateFromStr(trade.entryDate);
+        const ceilingDate = dateFromStr(simDateCeiling);
+        return qDate >= entryDateObj && qDate <= ceilingDate;
+      } catch { return false; }
+    });
     if (updatedQuotes.length === 0) {
       console.warn(`[TradeCloser] trade ${trade.id} (${trade.symbol}): no quotes on/after entryDate ${trade.entryDate} — skipping`);
       continue;
