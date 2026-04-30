@@ -1,7 +1,7 @@
 import { JobOrchestrationService } from './JobOrchestrationService';
 import { AUTONOMOUS_JOB_REGISTRY, buildAutonomousIdempotencyKey, getAutonomousJobNames } from './autonomousJobRegistry';
 import { JobHealthService } from './JobHealthService';
-import type { JobAlert, JobHealthRow, JobHealthSummary } from './types';
+import type { JobAlert, JobHealthRow, JobHealthSummary, JobRunStatus, JobTriggerSource } from './types';
 import { prisma } from '../prisma';
 
 export interface AutonomousJobsStatus {
@@ -14,9 +14,23 @@ export interface AutonomousJobsStatus {
   limitations: string[];
 }
 
-function describeRunStatus(status: JobHealthRow['status'], missed: boolean): string {
+function coerceTriggerSource(value: string | null | undefined): JobTriggerSource | null {
+  if (value === 'api' || value === 'cli' || value === 'local_scheduler' || value === 'os_cron') {
+    return value;
+  }
+  return null;
+}
+
+function coerceRunStatus(value: string | null | undefined): JobHealthRow['status'] {
+  if (value === 'running' || value === 'success' || value === 'failed' || value === 'skipped') {
+    return value;
+  }
+  return 'never-ran';
+}
+
+function describeRunStatus(status: JobHealthRow['status'], missed: boolean): JobHealthRow['status'] {
   if (status === 'never-ran') return 'never-ran';
-  if (status === 'running') return missed ? 'running (delayed)' : 'running';
+  if (status === 'running') return 'running';
   if (status === 'success') return 'success';
   if (status === 'failed') return 'failed';
   return 'skipped';
@@ -44,7 +58,7 @@ export async function getAutonomousJobsStatus(now = new Date()): Promise<Autonom
 
     const missed = !windowRun || (windowRun.status !== 'success' && windowRun.status !== 'running');
     const canRerun = !windowRun || windowRun.status !== 'running';
-    const status = windowRun?.status ?? (latestRun ? latestRun.status : 'never-ran');
+    const status: JobHealthRow['status'] = coerceRunStatus(windowRun?.status ?? latestRun?.status);
 
     if (missed) missedJobs.push(jobName);
     if (!latestRun && !windowRun) neverRanJobs.push(jobName);
@@ -55,7 +69,7 @@ export async function getAutonomousJobsStatus(now = new Date()): Promise<Autonom
       latestRun: currentRun,
       missed,
       canRerun,
-      triggerSource: windowRun?.triggerSource ?? currentRun?.triggerSource ?? null,
+      triggerSource: coerceTriggerSource(windowRun?.triggerSource ?? currentRun?.triggerSource),
       lastErrorMessage: windowRun?.errorMessage ?? currentRun?.errorMessage ?? null,
       status: describeRunStatus(status, missed),
       healthStatus: healthByJob.get(jobName)?.healthStatus ?? 'never-ran',
