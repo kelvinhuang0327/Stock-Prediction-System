@@ -71,6 +71,40 @@ describe('JobOrchestrationService', () => {
     expect(row?.status).toBe('running');
   });
 
+  test('force rerun success clears stale skipped metadata', async () => {
+    const scheduledFor = new Date('2026-03-30T00:45:00.000Z');
+    await cleanup([jobName]);
+
+    const first = await service.startJobRun({
+      jobName,
+      scheduledFor,
+      triggerSource: 'local_scheduler',
+    });
+    await service.skipJobRun(first.run.id ?? 0, 'skipped once', {
+      schedulerOutcome: 'skipped',
+      skippedReason: 'scheduler_disabled',
+    });
+
+    const rerun = await service.startJobRun({
+      jobName,
+      scheduledFor,
+      triggerSource: 'local_scheduler',
+      force: true,
+    });
+
+    const completed = await service.completeJobRun(rerun.run.id ?? 0, {
+      summary: 'completed after rerun',
+      metadata: {
+        schedulerOutcome: 'success',
+        skippedReason: null,
+      },
+    });
+
+    expect(completed.status).toBe('success');
+    expect(completed.metadata).toContain('schedulerOutcome');
+    expect(completed.metadata).not.toContain('skippedReason');
+  });
+
   test('running status blocks re-entry', async () => {
     const scheduledFor = new Date('2026-03-30T01:00:00.000Z');
     await cleanup([jobName]);

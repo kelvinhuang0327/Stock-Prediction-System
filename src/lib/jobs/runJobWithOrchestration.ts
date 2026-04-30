@@ -76,7 +76,10 @@ export async function runJobWithOrchestration<T>(
 
     const completed = await orchestration.completeJobRun(startResult.run.id ?? 0, {
       summary: outcome.summary,
-      metadata: mergedMetadata,
+      metadata: {
+        ...mergedMetadata,
+        skippedReason: null,
+      },
     });
 
     return {
@@ -88,7 +91,10 @@ export async function runJobWithOrchestration<T>(
     const failed = await orchestration.failJobRun(startResult.run.id ?? 0, {
       error,
       summary: input.summary ?? `Job ${input.job.jobName} failed`,
-      metadata: input.metadata,
+      metadata: {
+        ...input.metadata,
+        skippedReason: null,
+      },
     });
     return {
       jobRun: failed,

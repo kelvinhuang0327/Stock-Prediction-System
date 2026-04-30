@@ -25,11 +25,17 @@ function safeStringify(value?: Record<string, unknown>): string | null {
 
 function mergeMetadata(existing: string | null | undefined, next?: Record<string, unknown>): string | null {
   if (!next) return existing ?? null;
-  const merged = {
-    ...(safeParse(existing) ?? {}),
-    ...next,
-  };
-  return JSON.stringify(merged);
+  const merged = safeParse(existing);
+
+  for (const [key, value] of Object.entries(next)) {
+    if (value === null) {
+      delete merged[key];
+      continue;
+    }
+    merged[key] = value;
+  }
+
+  return Object.keys(merged).length > 0 ? JSON.stringify(merged) : null;
 }
 
 function toRecord(row: {
@@ -232,9 +238,7 @@ export class JobOrchestrationService {
     const latest: Record<string, JobRunLogRecord | null> = {};
     for (const jobName of jobNames) latest[jobName] = null;
     for (const row of runs) {
-      if (!latest[row.jobName]) {
-        latest[row.jobName] = toRecord(row);
-      }
+      latest[row.jobName] ??= toRecord(row);
     }
     return latest;
   }
