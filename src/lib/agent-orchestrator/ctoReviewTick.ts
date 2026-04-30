@@ -9,6 +9,7 @@ import { randomUUID } from 'crypto';
 import { prisma } from '@/lib/prisma';
 import { batchInsertBacklogItems } from './backlogService';
 import { classifySignalState } from './signalStateClassifier';
+import { evaluateExecutionPolicy, getPolicySkipMessage } from './llmExecutionPolicy';
 import type {
   BacklogCategory,
   BacklogItemInput,
@@ -173,6 +174,27 @@ async function recordIntentSignals(
 // ─── Main Tick ────────────────────────────────────────────────────────────────
 
 export async function runCtoReviewTick(input: CtoReviewRunInput): Promise<CtoReviewRunResult> {
+  const policyDecision = await evaluateExecutionPolicy({
+    caller: 'cto_review',
+    callerContext: input.isManual ? 'manual' : 'background',
+    provider: '',
+    model: '',
+    taskId: null,
+  });
+  if (!policyDecision.allowed) {
+    return {
+      runId: `cto-skipped-${Date.now()}`,
+      candidateCount: 0,
+      acceptedCount: 0,
+      rejectedCount: 0,
+      deferredCount: 0,
+      reflectedCount: 0,
+      summary: getPolicySkipMessage(policyDecision.skip_reason),
+      candidates: [],
+      backlogItemsCreated: 0,
+    };
+  }
+
   const runId    = randomUUID();
   const startedAt = new Date();
 

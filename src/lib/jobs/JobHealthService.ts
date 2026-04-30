@@ -27,14 +27,20 @@ function minutesAgo(date: Date, minutes: number): Date {
 }
 
 function getWindowStart(jobName: string, now: Date): Date {
-  if (jobName === 'autonomous:monitor') return minutesAgo(now, 60);
-  if (jobName === 'autonomous:learning') return startOfUtcWeek(now);
+  const definition = AUTONOMOUS_JOB_REGISTRY[jobName as keyof typeof AUTONOMOUS_JOB_REGISTRY];
+  if (definition?.cadence === 'interval') {
+    return minutesAgo(now, (definition.intervalMinutes ?? 30) * 2);
+  }
+  if (definition?.cadence === 'weekly' || jobName === 'autonomous:learning') return startOfUtcWeek(now);
   return startOfUtcDay(now);
 }
 
 function getWindowLabel(jobName: string): string {
-  if (jobName === 'autonomous:monitor') return 'recent 60 minutes';
-  if (jobName === 'autonomous:learning') return 'current week';
+  const definition = AUTONOMOUS_JOB_REGISTRY[jobName as keyof typeof AUTONOMOUS_JOB_REGISTRY];
+  if (definition?.cadence === 'interval') {
+    return `recent ${(definition.intervalMinutes ?? 30) * 2} minutes`;
+  }
+  if (definition?.cadence === 'weekly' || jobName === 'autonomous:learning') return 'current week';
   return 'today';
 }
 

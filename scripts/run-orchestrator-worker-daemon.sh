@@ -22,7 +22,7 @@ FAIL_FAST="${WORKER_DAEMON_FAIL_FAST:-0}"
 echo "{\"event\":\"worker_daemon_start\",\"interval_sec\":${INTERVAL_SEC},\"at\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}"
 
 while true; do
-  if npm run orchestrator:worker -- --force; then
+  if npm run orchestrator:worker -- --force --caller-context=background; then
     :
   else
     status=$?

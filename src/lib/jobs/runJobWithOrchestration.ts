@@ -54,12 +54,29 @@ export async function runJobWithOrchestration<T>(
       runMode: input.runMode ?? 'live_run',
       force: input.force ?? false,
     });
+    const mergedMetadata = {
+      ...input.metadata,
+      ...outcome.metadata,
+    };
+
+    if (outcome.finalStatus === 'skipped') {
+      const skipped = await orchestration.skipJobRun(
+        startResult.run.id ?? 0,
+        outcome.summary,
+        mergedMetadata,
+      );
+
+      return {
+        jobRun: skipped,
+        skipped: true,
+        reason: outcome.skipReason,
+        outcome: outcome.payload ?? null,
+      };
+    }
+
     const completed = await orchestration.completeJobRun(startResult.run.id ?? 0, {
       summary: outcome.summary,
-      metadata: {
-        ...input.metadata,
-        ...outcome.metadata,
-      },
+      metadata: mergedMetadata,
     });
 
     return {

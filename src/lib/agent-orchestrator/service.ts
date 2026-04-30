@@ -1,4 +1,5 @@
 import { fileExists, nowIso, readJsonFile, scheduleNextRunAt } from './common';
+import { getLlmPolicyState } from './llmExecutionPolicy';
 import nodeFs from 'node:fs/promises';
 import { runPlannerTick } from './plannerTick';
 import { loadProjectProfile } from './profile';
@@ -48,9 +49,11 @@ export async function getOrchestratorSummary() {
   const index = await loadTaskIndex(paths);
   const runs = await loadRunStore(paths);
   const latestTask = getLatestTask(index);
+  const llmControl = await getLlmPolicyState();
 
   return {
     schedulerEnabled: state.schedulerEnabled,
+    llmControl,
     plannerProvider: state.plannerProvider,
     workerProvider: state.workerProvider,
     scheduleMinutes: state.scheduleMinutes,
@@ -174,18 +177,18 @@ export async function updateOrchestratorProviders(plannerProvider: PlannerProvid
 export async function runOrchestratorNow(target: 'planner' | 'worker' | 'both') {
   if (target === 'planner') {
     return {
-      planner: await runPlannerTick({ force: true }),
+      planner: await runPlannerTick({ force: true, callerContext: 'manual' }),
       worker: null,
     };
   }
   if (target === 'worker') {
     return {
       planner: null,
-      worker: await runWorkerTick({ force: true }),
+      worker: await runWorkerTick({ force: true, callerContext: 'manual' }),
     };
   }
-  const planner = await runPlannerTick({ force: true });
-  const worker = await runWorkerTick({ force: true });
+  const planner = await runPlannerTick({ force: true, callerContext: 'manual' });
+  const worker = await runWorkerTick({ force: true, callerContext: 'manual' });
   return { planner, worker };
 }
 

@@ -1,5 +1,5 @@
-import { promises as fs } from 'fs';
-import path from 'path';
+import { promises as fs } from 'node:fs';
+import path from 'node:path';
 
 export const WORKSPACE_ROOT = process.cwd();
 export const PROFILE_PATH = path.resolve(WORKSPACE_ROOT, 'runtime/agent_orchestrator/project_profile.json');
@@ -36,8 +36,8 @@ export function safeSlug(input: string): string {
   const normalized = input
     .toLowerCase()
     .trim()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
+    .replaceAll(/[^a-z0-9]+/g, '-')
+    .replaceAll(/^-+|-+$/g, '');
   return normalized.slice(0, 42) || 'task';
 }
 
@@ -54,14 +54,103 @@ export async function fileExists(filePath: string): Promise<boolean> {
   }
 }
 
+function getBalancedJsonCloser(start: string): string | null {
+  if (start === '{') return '}';
+  if (start === '[') return ']';
+  return null;
+}
+
+function updateJsonStringState(state: { inString: boolean; escaped: boolean }, char: string): void {
+  if (!state.inString) {
+    if (char === '"') {
+      state.inString = true;
+    }
+    return;
+  }
+
+  if (state.escaped) {
+    state.escaped = false;
+    return;
+  }
+
+  if (char === '\\') {
+    state.escaped = true;
+    return;
+  }
+
+  if (char === '"') {
+    state.inString = false;
+  }
+}
+
+function nextJsonDepth(depth: number, char: string, start: string, end: string): number {
+  if (char === start) return depth + 1;
+  if (char === end) return depth - 1;
+  return depth;
+}
+
+function extractBalancedJsonCandidate(raw: string): string | null {
+  const trimmed = raw.trim();
+  if (!trimmed) return null;
+
+  const start = trimmed[0];
+  const end = getBalancedJsonCloser(start);
+  if (!end) return null;
+
+  let depth = 0;
+  const stringState = { inString: false, escaped: false };
+
+  for (let index = 0; index < trimmed.length; index += 1) {
+    const char = trimmed[index];
+
+    if (stringState.inString || char === '"') {
+      updateJsonStringState(stringState, char);
+      continue;
+    }
+
+    depth = nextJsonDepth(depth, char, start, end);
+    if (char === end && depth === 0) {
+      return trimmed.slice(0, index + 1);
+    }
+  }
+
+  return null;
+}
+
+async function quarantineCorruptJsonFile(filePath: string, raw: string): Promise<void> {
+  const quarantinePath = `${filePath}.corrupt-${Date.now()}`;
+  await fs.writeFile(quarantinePath, raw, 'utf8');
+}
+
 export async function readJsonFile<T>(filePath: string): Promise<T> {
   const raw = await fs.readFile(filePath, 'utf8');
-  return JSON.parse(raw) as T;
+
+  try {
+    return JSON.parse(raw) as T;
+  } catch {
+    const repaired = extractBalancedJsonCandidate(raw);
+    if (!repaired) {
+      await quarantineCorruptJsonFile(filePath, raw);
+      throw new Error(`Failed to parse JSON at ${filePath}`);
+    }
+
+    try {
+      const parsed = JSON.parse(repaired) as T;
+      await quarantineCorruptJsonFile(filePath, raw);
+      await fs.writeFile(filePath, `${JSON.stringify(parsed, null, 2)}\n`, 'utf8');
+      return parsed;
+    } catch {
+      await quarantineCorruptJsonFile(filePath, raw);
+      throw new Error(`Failed to repair malformed JSON at ${filePath}`);
+    }
+  }
 }
 
 export async function writeJsonFile(filePath: string, value: unknown): Promise<void> {
   await ensureDir(path.dirname(filePath));
-  await fs.writeFile(filePath, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
+  const tempPath = `${filePath}.tmp-${process.pid}-${Date.now()}`;
+  await fs.writeFile(tempPath, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
+  await fs.rename(tempPath, filePath);
 }
 
 export async function writeTextFile(filePath: string, value: string): Promise<void> {

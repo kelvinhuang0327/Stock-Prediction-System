@@ -3,7 +3,7 @@ import type { AutonomousJobName } from './types';
 export interface JobWindowDefinition {
   jobName: AutonomousJobName;
   label: string;
-  cadence: 'daily' | 'interval';
+  cadence: 'daily' | 'interval' | 'weekly';
   intervalMinutes?: number;
   getScheduledFor(now: Date): Date;
   getExpectedWindows(now: Date): Date[];
@@ -26,6 +26,51 @@ function dailyWindows(now: Date): Date[] {
 
 function intervalWindows(now: Date, minutes: number): Date[] {
   return [truncateToUtcInterval(now, minutes)];
+}
+
+function latestDailyWindowAtUtc(now: Date, hour: number, minute: number): Date {
+  const todayWindow = new Date(Date.UTC(
+    now.getUTCFullYear(),
+    now.getUTCMonth(),
+    now.getUTCDate(),
+    hour,
+    minute,
+  ));
+
+  if (todayWindow.getTime() <= now.getTime()) {
+    return todayWindow;
+  }
+
+  todayWindow.setUTCDate(todayWindow.getUTCDate() - 1);
+  return todayWindow;
+}
+
+function dailyWindowsAtUtc(now: Date, hour: number, minute: number): Date[] {
+  return [latestDailyWindowAtUtc(now, hour, minute)];
+}
+
+function latestWeeklyWindowAtUtc(now: Date, weekday: number, hour: number, minute: number): Date {
+  const currentWeekday = now.getUTCDay();
+  const daysBack = (currentWeekday - weekday + 7) % 7;
+  const candidate = new Date(Date.UTC(
+    now.getUTCFullYear(),
+    now.getUTCMonth(),
+    now.getUTCDate(),
+    hour,
+    minute,
+  ));
+  candidate.setUTCDate(candidate.getUTCDate() - daysBack);
+
+  if (candidate.getTime() <= now.getTime()) {
+    return candidate;
+  }
+
+  candidate.setUTCDate(candidate.getUTCDate() - 7);
+  return candidate;
+}
+
+function weeklyWindowsAtUtc(now: Date, weekday: number, hour: number, minute: number): Date[] {
+  return [latestWeeklyWindowAtUtc(now, weekday, hour, minute)];
 }
 
 export const AUTONOMOUS_JOB_REGISTRY: Record<AutonomousJobName, JobWindowDefinition> = {
@@ -89,6 +134,71 @@ export const AUTONOMOUS_JOB_REGISTRY: Record<AutonomousJobName, JobWindowDefinit
     getScheduledFor: (now) => truncateToUtcInterval(now, 7 * 24 * 60),
     getExpectedWindows: (now) => intervalWindows(now, 7 * 24 * 60),
   },
+  'training:tw-data-sync': {
+    jobName: 'training:tw-data-sync',
+    label: 'Taiwan Stock Data Sync (every 30 min)',
+    cadence: 'interval',
+    intervalMinutes: 30,
+    getScheduledFor: (now) => truncateToUtcInterval(now, 30),
+    getExpectedWindows: (now) => intervalWindows(now, 30),
+  },
+  'training:tw-snapshot': {
+    jobName: 'training:tw-snapshot',
+    label: 'Taiwan Stock Daily Snapshot (14:05 Asia/Taipei)',
+    cadence: 'daily',
+    getScheduledFor: (now) => latestDailyWindowAtUtc(now, 6, 5),
+    getExpectedWindows: (now) => dailyWindowsAtUtc(now, 6, 5),
+  },
+  'training:tw-screen': {
+    jobName: 'training:tw-screen',
+    label: 'Taiwan Stock Dry-Run Screening (14:10 Asia/Taipei)',
+    cadence: 'daily',
+    getScheduledFor: (now) => latestDailyWindowAtUtc(now, 6, 10),
+    getExpectedWindows: (now) => dailyWindowsAtUtc(now, 6, 10),
+  },
+  'training:tw-report': {
+    jobName: 'training:tw-report',
+    label: 'Taiwan Stock End-of-Day Report (21:10 Asia/Taipei)',
+    cadence: 'daily',
+    getScheduledFor: (now) => latestDailyWindowAtUtc(now, 13, 10),
+    getExpectedWindows: (now) => dailyWindowsAtUtc(now, 13, 10),
+  },
+  'training:tw-optimization-miner': {
+    jobName: 'training:tw-optimization-miner',
+    label: 'Taiwan Self-Optimisation Miner (22:00 Asia/Taipei)',
+    cadence: 'daily',
+    getScheduledFor: (now) => latestDailyWindowAtUtc(now, 14, 0),
+    getExpectedWindows: (now) => dailyWindowsAtUtc(now, 14, 0),
+  },
+  'training:tw-worker-cycle': {
+    jobName: 'training:tw-worker-cycle',
+    label: 'Taiwan Optimisation Worker Cycle (every 60 min)',
+    cadence: 'interval',
+    intervalMinutes: 60,
+    getScheduledFor: (now) => truncateToUtcInterval(now, 60),
+    getExpectedWindows: (now) => intervalWindows(now, 60),
+  },
+  'training:tw-insight-ingest': {
+    jobName: 'training:tw-insight-ingest',
+    label: 'Taiwan Optimisation Insight Ingest (23:10 Asia/Taipei)',
+    cadence: 'daily',
+    getScheduledFor: (now) => latestDailyWindowAtUtc(now, 15, 10),
+    getExpectedWindows: (now) => dailyWindowsAtUtc(now, 15, 10),
+  },
+  'training:tw-weekly-deep-research': {
+    jobName: 'training:tw-weekly-deep-research',
+    label: 'Taiwan Weekly Deep Research (Sunday 18:00 Asia/Taipei)',
+    cadence: 'weekly',
+    getScheduledFor: (now) => latestWeeklyWindowAtUtc(now, 0, 10, 0),
+    getExpectedWindows: (now) => weeklyWindowsAtUtc(now, 0, 10, 0),
+  },
+  'training:tw-self-audit': {
+    jobName: 'training:tw-self-audit',
+    label: 'Taiwan Self-Optimisation Audit (00:10 Asia/Taipei)',
+    cadence: 'daily',
+    getScheduledFor: (now) => latestDailyWindowAtUtc(now, 16, 10),
+    getExpectedWindows: (now) => dailyWindowsAtUtc(now, 16, 10),
+  },
 };
 
 export function getAutonomousJobNames(): AutonomousJobName[] {
@@ -97,5 +207,23 @@ export function getAutonomousJobNames(): AutonomousJobName[] {
 
 export function buildAutonomousIdempotencyKey(jobName: AutonomousJobName, scheduledFor: Date): string {
   return `${jobName}:${scheduledFor.toISOString()}`;
+}
+
+export function getAutonomousJobNextDueAt(jobName: AutonomousJobName, now: Date): Date {
+  const def = AUTONOMOUS_JOB_REGISTRY[jobName];
+  if (def.cadence === 'daily') {
+    const next = new Date(def.getScheduledFor(now));
+    next.setUTCDate(next.getUTCDate() + 1);
+    return next;
+  }
+
+  if (def.cadence === 'weekly') {
+    const next = new Date(def.getScheduledFor(now));
+    next.setUTCDate(next.getUTCDate() + 7);
+    return next;
+  }
+
+  const intervalMs = (def.intervalMinutes ?? 30) * 60_000;
+  return new Date(def.getScheduledFor(now).getTime() + intervalMs);
 }
 

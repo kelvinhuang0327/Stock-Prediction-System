@@ -63,6 +63,8 @@ export interface JobRunnerOutput<T> {
   summary: string;
   metadata?: Record<string, unknown>;
   payload?: T;
+  finalStatus?: 'success' | 'skipped';
+  skipReason?: string;
 }
 
 export interface JobExecutionResult<T> {
@@ -127,7 +129,16 @@ export type AutonomousJobName =
   | 'training:intraday_monitor'
   | 'training:daily_cycle'
   | 'training:nightly_opt'
-  | 'training:weekly_deep';
+  | 'training:weekly_deep'
+  | 'training:tw-data-sync'
+  | 'training:tw-snapshot'
+  | 'training:tw-screen'
+  | 'training:tw-report'
+  | 'training:tw-optimization-miner'
+  | 'training:tw-worker-cycle'
+  | 'training:tw-insight-ingest'
+  | 'training:tw-weekly-deep-research'
+  | 'training:tw-self-audit';
 
 export type BackfillTaskType =
   | 'stock_quote'

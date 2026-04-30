@@ -59,6 +59,12 @@ export interface ScreenParams {
     symbolUniverse?: string[];
     /** When running a rolling simulation, cap all data queries to this date (YYYY-MM-DD). */
     asOf?: string;
+    /**
+     * Dry-run mode: run the full screening pipeline but do NOT write to DailyCandidateSnapshot.
+     * Returns the same ScreenResult as a normal run.
+     * Used by twstock:candidate_screening_dry_run orchestrated task.
+     */
+    dryRun?: boolean;
 }
 
 export interface ScreenResult {

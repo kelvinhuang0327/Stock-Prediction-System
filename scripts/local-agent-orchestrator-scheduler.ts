@@ -40,18 +40,13 @@ async function tick(): Promise<void> {
     const { state } = await loadSchedulerState(profile);
     const now = new Date();
 
-    if (!state.schedulerEnabled) {
-      console.log(JSON.stringify({ event: 'scheduler_tick', skipped: true, reason: 'disabled', at: now.toISOString() }));
-      return;
-    }
-
     if (shouldRun(state.nextPlannerRunAt, now)) {
-      const planner = await runPlannerTick();
+      const planner = await runPlannerTick({ callerContext: 'background' });
       console.log(JSON.stringify({ event: 'planner_tick', at: now.toISOString(), planner }));
     }
 
     if (shouldRun(state.nextWorkerRunAt, now)) {
-      const worker = await runWorkerTick();
+      const worker = await runWorkerTick({ callerContext: 'background' });
       console.log(JSON.stringify({ event: 'worker_tick', at: now.toISOString(), worker }));
     }
 

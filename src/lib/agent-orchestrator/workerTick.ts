@@ -18,10 +18,12 @@ import {
 import { toFinalStatus, updateTaskRecord, writeTaskCompletionArtifacts } from './tasks';
 import { attemptAutoCommit } from './autoCommit';
 import { processCompletedOptimizationTaskFromFS } from '../autonomous/InsightIntegrationLayer';
+import { evaluateExecutionPolicy, getPolicySkipMessage, type LlmCallerContext } from './llmExecutionPolicy';
 import type { ProviderCooldownState, TaskContract, TaskResult, WorkerTickOutcome } from './types';
 
 interface WorkerTickOptions {
   force?: boolean;
+  callerContext?: LlmCallerContext;
 }
 
 function buildRunId(): string {
@@ -200,10 +202,17 @@ export async function runWorkerTick(options: WorkerTickOptions = {}): Promise<Wo
   const index = await loadTaskIndex(paths);
   const startedAt = new Date();
   const startedAtIso = startedAt.toISOString();
+  const policyDecision = await evaluateExecutionPolicy({
+    caller: 'worker',
+    callerContext: options.callerContext ?? 'background',
+    provider: state.workerProvider,
+    model: state.workerCopilotModel ?? '',
+    taskId: null,
+  });
 
-  if (!options.force && !state.schedulerEnabled) {
-    await finalizeWorkerRun(paths, state, startedAtIso, 'skipped', 'Scheduler is disabled.', null);
-    return { status: 'skipped', reason: 'scheduler_disabled', taskId: null };
+  if (!policyDecision.allowed) {
+    await finalizeWorkerRun(paths, state, startedAtIso, 'skipped', getPolicySkipMessage(policyDecision.skip_reason), null);
+    return { status: 'skipped', reason: policyDecision.skip_reason ?? 'SCHEDULER_DISABLED', taskId: null };
   }
 
   state.providerCooldowns ??= {};
@@ -252,6 +261,7 @@ export async function runWorkerTick(options: WorkerTickOptions = {}): Promise<Wo
   const workerOutput = await runWorkerProvider({
     workerProvider: state.workerProvider,
     workerCopilotModel: state.workerCopilotModel ?? '',
+    callerContext: options.callerContext ?? 'background',
     taskId: task.taskId,
     promptPath: task.promptPath,
     contractPath: task.contractPath,

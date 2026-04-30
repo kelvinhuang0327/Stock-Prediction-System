@@ -56,14 +56,79 @@ interface SystemHealth {
   knownLimitations: string[];
 }
 
+// ─── Task Status Types ────────────────────────────────────────────
+
+interface TaskLatestRun {
+  id: number | undefined;
+  status: string;
+  startedAt: string | null;
+  finishedAt: string | null;
+  summary: string | null;
+  errorMessage: string | null;
+  durationMs: number | null;
+  triggerSource: string;
+}
+
+interface TaskStatus {
+  taskName: string;
+  label: string;
+  cadence: string;
+  scheduleLabel: string | null;
+  writesToDb: boolean;
+  supportsDryRun: boolean;
+  nextRunAt: string | null;
+  latestRun: TaskLatestRun | null;
+  todayRan: boolean;
+  todayStatus: string | null;
+}
+
+interface TasksResponse {
+  tasks: TaskStatus[];
+  generatedAt: string;
+}
+
+interface AutonomousSchedulerJobStatus {
+  jobName: string;
+  status: string;
+  healthStatus: string;
+  summary: string;
+  failureStreak: number;
+  failureCount: number;
+  nextDueAt: string;
+  skippedReason: string | null;
+  generatedTaskCount: number;
+  generatedInsightCount: number;
+  schedulerOutcome: string;
+  latestRun: {
+    startedAt: string | null;
+    finishedAt: string | null;
+    status: string;
+    summary: string | null;
+    errorMessage: string | null;
+    metadata: Record<string, unknown> | null;
+  } | null;
+}
+
+interface AutonomousSchedulerResponse {
+  jobs: AutonomousSchedulerJobStatus[];
+}
+
+interface RunTaskResponse {
+  summary?: string;
+  status?: string;
+  error?: string;
+  skipped?: boolean;
+  skipReason?: string;
+}
+
 // ─── Helpers ──────────────────────────────────────────────────────
 
-function FreshBadge({ fresh }: { fresh: boolean }) {
+function FreshBadge({ fresh }: Readonly<{ fresh: boolean }>) {
   return <StatusBadge status={fresh ? 'fresh' : 'stale'} variant="glass"
     label={fresh ? '新鮮' : '過期'} />;
 }
 
-function ConfiguredBadge({ configured }: { configured: boolean }) {
+function ConfiguredBadge({ configured }: Readonly<{ configured: boolean }>) {
   return <StatusBadge status={configured ? 'configured' : 'not configured'} variant="glass"
     label={configured ? '已設定' : '未設定'} />;
 }
@@ -77,12 +142,98 @@ function fmtTime(iso: string | null) {
   }
 }
 
+function fmtDuration(ms: number | null): string {
+  if (ms === null) return '—';
+  if (ms < 1000) return `${ms}ms`;
+  return `${(ms / 1000).toFixed(1)}s`;
+}
+
+function TaskHeartbeat({ todayRan, todayStatus, latestRun }: Readonly<Pick<TaskStatus, 'todayRan' | 'todayStatus' | 'latestRun'>>) {
+  if (todayRan && todayStatus === 'success') {
+    return <span className="inline-block w-2.5 h-2.5 rounded-full bg-green-400 mr-2" title="今日已成功執行" />;
+  }
+  if (latestRun?.status === 'failed') {
+    return <span className="inline-block w-2.5 h-2.5 rounded-full bg-red-400 mr-2" title="最近執行失敗" />;
+  }
+  if (latestRun?.status === 'running') {
+    return <span className="inline-block w-2.5 h-2.5 rounded-full bg-blue-400 animate-pulse mr-2" title="執行中" />;
+  }
+  if (latestRun) {
+    return <span className="inline-block w-2.5 h-2.5 rounded-full bg-yellow-400 mr-2" title="今日尚未執行" />;
+  }
+  return <span className="inline-block w-2.5 h-2.5 rounded-full bg-slate-500 mr-2" title="從未執行" />;
+}
+
+// ─── Task Runner Button ───────────────────────────────────────────
+
+function RunTaskButton({ taskName, supportsDryRun, onDone }: Readonly<{ taskName: string; supportsDryRun: boolean; onDone: () => void }>) {
+  const [running, setRunning] = useState(false);
+  const [runResult, setRunResult] = useState<string | null>(null);
+  const [runError, setRunError] = useState<string | null>(null);
+
+  const run = useCallback(async (dryRun: boolean) => {
+    setRunning(true);
+    setRunResult(null);
+    setRunError(null);
+    try {
+      const res = await fetch('/api/tasks/run', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ taskName, dryRun }),
+      });
+      const data: RunTaskResponse = await res.json();
+      if (!res.ok) {
+        setRunError(data.error ?? `HTTP ${res.status}`);
+      } else if (data.skipped) {
+        setRunResult(`略過：${data.skipReason ?? '已執行過'}`);
+      } else {
+        setRunResult(data.summary ?? data.status ?? '完成');
+        onDone();
+      }
+    } catch (e) {
+      setRunError(e instanceof Error ? e.message : '執行失敗');
+    } finally {
+      setRunning(false);
+    }
+  }, [taskName, onDone]);
+
+  return (
+    <div className="flex items-center gap-2 mt-2">
+      <button
+        disabled={running}
+        onClick={() => run(false)}
+        className="px-3 py-1 rounded-md bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white text-xs transition-colors"
+      >
+        {running ? '執行中…' : '立即執行'}
+      </button>
+      {supportsDryRun && (
+        <button
+          disabled={running}
+          onClick={() => run(true)}
+          className="px-3 py-1 rounded-md bg-slate-600 hover:bg-slate-500 disabled:opacity-50 text-white text-xs transition-colors"
+        >
+          預覽執行
+        </button>
+      )}
+      {runResult && <span className="text-xs text-green-400 truncate max-w-xs">{runResult}</span>}
+      {runError && <span className="text-xs text-red-400 truncate max-w-xs">{runError}</span>}
+    </div>
+  );
+}
+
 // ─── Page ─────────────────────────────────────────────────────────
 
 export default function SystemSettingsPage() {
   const [health, setHealth] = useState<SystemHealth | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const [tasks, setTasks] = useState<TaskStatus[] | null>(null);
+  const [tasksLoading, setTasksLoading] = useState(true);
+  const [tasksError, setTasksError] = useState<string | null>(null);
+  const [schedulerJobs, setSchedulerJobs] = useState<AutonomousSchedulerJobStatus[] | null>(null);
+  const [schedulerLoading, setSchedulerLoading] = useState(true);
+  const [schedulerError, setSchedulerError] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -99,7 +250,48 @@ export default function SystemSettingsPage() {
     }
   }, []);
 
-  useEffect(() => { load(); }, [load]);
+  const loadTasks = useCallback(async () => {
+    setTasksLoading(true);
+    setTasksError(null);
+    try {
+      const res = await fetch('/api/tasks/status');
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data: TasksResponse = await res.json();
+      setTasks(data.tasks);
+    } catch (e: unknown) {
+      setTasksError(e instanceof Error ? e.message : '無法取得任務狀態');
+    } finally {
+      setTasksLoading(false);
+    }
+  }, []);
+
+  const loadScheduler = useCallback(async () => {
+    setSchedulerLoading(true);
+    setSchedulerError(null);
+    try {
+      const res = await fetch('/api/autonomous/jobs/status');
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data: AutonomousSchedulerResponse = await res.json();
+      setSchedulerJobs(
+        data.jobs.filter((job) => job.jobName.startsWith('training:tw-') && ![
+          'training:tw-data-sync',
+          'training:tw-snapshot',
+          'training:tw-screen',
+          'training:tw-report',
+        ].includes(job.jobName)),
+      );
+    } catch (e: unknown) {
+      setSchedulerError(e instanceof Error ? e.message : '無法取得自我優化排程狀態');
+    } finally {
+      setSchedulerLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    load();
+    loadTasks();
+    loadScheduler();
+  }, [load, loadTasks, loadScheduler]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-6">
@@ -308,6 +500,119 @@ export default function SystemSettingsPage() {
             </div>
           </>
         )}
+
+        {/* ── Task Orchestration ───────────────────────────────────── */}
+        <section>
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-white font-semibold">任務排程狀態</h2>
+            <button
+              onClick={loadTasks}
+              className="px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-white text-xs transition-colors"
+            >
+              重新整理
+            </button>
+          </div>
+          {tasksLoading && <div className="text-center py-8 text-slate-400 text-sm">載入中…</div>}
+          {tasksError && (
+            <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-sm">{tasksError}</div>
+          )}
+          {tasks && (
+            <div className="space-y-3">
+              {tasks.map(task => (
+                <div key={task.taskName} className="bg-white/5 backdrop-blur border border-white/10 rounded-xl p-4">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <TaskHeartbeat todayRan={task.todayRan} todayStatus={task.todayStatus} latestRun={task.latestRun} />
+                        <span className="text-white font-medium text-sm">{task.label}</span>
+                        <span className="text-slate-500 text-xs font-mono hidden sm:block">{task.taskName}</span>
+                      </div>
+                      <div className="mt-1.5 text-xs text-slate-400 space-y-0.5">
+                        {task.latestRun ? (
+                          <>
+                            <div>
+                              上次執行：{fmtTime(task.latestRun.startedAt)}
+                              {' '}
+                              <StatusBadge status={task.latestRun.status} variant="glass" label={task.latestRun.status} />
+                              {' '}
+                              {fmtDuration(task.latestRun.durationMs)}
+                            </div>
+                            {task.latestRun.summary && (
+                              <div className="text-slate-500 truncate max-w-xl">{task.latestRun.summary}</div>
+                            )}
+                            {task.latestRun.errorMessage && (
+                              <div className="text-red-400 truncate max-w-xl">{task.latestRun.errorMessage}</div>
+                            )}
+                          </>
+                        ) : (
+                          <div className="text-slate-500">從未執行過</div>
+                        )}
+                      </div>
+                      <RunTaskButton taskName={task.taskName} supportsDryRun={task.supportsDryRun} onDone={loadTasks} />
+                    </div>
+                    <div className="flex-shrink-0 text-right text-xs text-slate-500 space-y-1">
+                      <div>{task.scheduleLabel ?? (task.cadence === 'daily' ? '每日' : '按需')}</div>
+                      <div>下次執行：{fmtTime(task.nextRunAt)}</div>
+                      <div>{task.writesToDb ? '寫入 DB' : '唯讀'}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+
+        <section>
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-white font-semibold">自我優化排程</h2>
+            <button
+              onClick={loadScheduler}
+              className="px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-white text-xs transition-colors"
+            >
+              重新整理
+            </button>
+          </div>
+          {schedulerLoading && <div className="text-center py-8 text-slate-400 text-sm">載入中…</div>}
+          {schedulerError && (
+            <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-sm">{schedulerError}</div>
+          )}
+          {schedulerJobs && (
+            <div className="space-y-3">
+              {schedulerJobs.map((job) => (
+                <div key={job.jobName} className="bg-white/5 backdrop-blur border border-white/10 rounded-xl p-4">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <StatusBadge status={job.schedulerOutcome} variant="glass" label={job.schedulerOutcome} />
+                        <span className="text-white font-medium text-sm">{job.jobName}</span>
+                        <span className="text-slate-500 text-xs">{job.healthStatus}</span>
+                      </div>
+                      <div className="mt-2 text-xs text-slate-400 space-y-1">
+                        <div>上次結果：{job.latestRun?.summary ?? job.summary}</div>
+                        <div>
+                          上次執行：{fmtTime(job.latestRun?.startedAt ?? null)}
+                          {' '}
+                          <StatusBadge status={job.latestRun?.status ?? job.status} variant="glass" label={job.latestRun?.status ?? job.status} />
+                        </div>
+                        {job.latestRun?.errorMessage && (
+                          <div className="text-red-400 truncate max-w-xl">{job.latestRun.errorMessage}</div>
+                        )}
+                        {job.skippedReason && (
+                          <div className="text-yellow-300">略過原因：{job.skippedReason}</div>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex-shrink-0 text-right text-xs text-slate-500 space-y-1">
+                      <div>下次執行：{fmtTime(job.nextDueAt)}</div>
+                      <div>失敗次數：{job.failureCount}｜連續失敗：{job.failureStreak}</div>
+                      <div>生成任務：{job.generatedTaskCount}｜生成洞察：{job.generatedInsightCount}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
       </div>
     </div>
   );

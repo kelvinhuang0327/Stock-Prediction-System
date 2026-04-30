@@ -45,7 +45,7 @@ function buildRuntimePaths(profile: ProjectProfile): RuntimePaths {
 function defaultSchedulerState(profile: ProjectProfile): SchedulerState {
   return {
     version: '1.0',
-    schedulerEnabled: true,
+    schedulerEnabled: false,
     plannerProvider: profile.planner_provider,
     workerProvider: profile.worker_provider,
     providerCooldowns: {},
@@ -98,7 +98,12 @@ export async function ensureRuntimeLayout(profile: ProjectProfile): Promise<Runt
 
 export async function loadSchedulerState(profile: ProjectProfile): Promise<{ paths: RuntimePaths; state: SchedulerState }> {
   const paths = await ensureRuntimeLayout(profile);
-  const state = await readJsonFile<SchedulerState>(paths.schedulerStatePath);
+  const stored: Partial<SchedulerState> = await readJsonFile<Partial<SchedulerState>>(paths.schedulerStatePath).catch(() => ({} as Partial<SchedulerState>));
+  const state: SchedulerState = {
+    ...defaultSchedulerState(profile),
+    ...stored,
+    providerCooldowns: stored.providerCooldowns ?? {},
+  };
   return { paths, state };
 }
 
@@ -107,7 +112,12 @@ export async function saveSchedulerState(paths: RuntimePaths, state: SchedulerSt
 }
 
 export async function loadTaskIndex(paths: RuntimePaths): Promise<TaskStoreIndex> {
-  return readJsonFile<TaskStoreIndex>(paths.taskIndexPath);
+  const stored: Partial<TaskStoreIndex> = await readJsonFile<Partial<TaskStoreIndex>>(paths.taskIndexPath).catch(() => ({} as Partial<TaskStoreIndex>));
+  return {
+    ...defaultTaskIndex(),
+    ...stored,
+    tasks: Array.isArray(stored.tasks) ? stored.tasks : [],
+  };
 }
 
 export async function saveTaskIndex(paths: RuntimePaths, index: TaskStoreIndex): Promise<void> {
@@ -115,7 +125,12 @@ export async function saveTaskIndex(paths: RuntimePaths, index: TaskStoreIndex):
 }
 
 export async function loadRunStore(paths: RuntimePaths): Promise<RunStore> {
-  return readJsonFile<RunStore>(paths.runStorePath);
+  const stored: Partial<RunStore> = await readJsonFile<Partial<RunStore>>(paths.runStorePath).catch(() => ({} as Partial<RunStore>));
+  return {
+    ...defaultRunStore(),
+    ...stored,
+    runs: Array.isArray(stored.runs) ? stored.runs : [],
+  };
 }
 
 export async function appendRun(paths: RuntimePaths, run: RunRecord): Promise<void> {

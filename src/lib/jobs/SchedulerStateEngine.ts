@@ -17,6 +17,7 @@ import { prisma } from '../prisma';
 import {
   AUTONOMOUS_JOB_REGISTRY,
   buildAutonomousIdempotencyKey,
+  getAutonomousJobNextDueAt,
   getAutonomousJobNames,
 } from './autonomousJobRegistry';
 import {
@@ -27,9 +28,18 @@ import {
   runTrainingIntradayMonitorCycle,
   runTrainingDailyCycle,
   runTrainingNightlyOpt,
+  runTrainingTaiwanDataSync,
+  runTrainingTaiwanInsightIngest,
+  runTrainingTaiwanOptimizationMiner,
+  runTrainingTaiwanReport,
+  runTrainingTaiwanScreen,
+  runTrainingTaiwanSelfAudit,
+  runTrainingTaiwanSnapshot,
+  runTrainingTaiwanWeeklyDeepResearch,
+  runTrainingTaiwanWorkerCycle,
   runTrainingWeeklyDeep,
 } from './autonomousJobRunners';
-import type { AutonomousJobName, JobRunLogRecord, JobRunMode } from './types';
+import type { AutonomousJobName, JobExecutionResult, JobRunMode } from './types';
 
 // ---------------------------------------------------------------------------
 // Public types
@@ -37,7 +47,7 @@ import type { AutonomousJobName, JobRunLogRecord, JobRunMode } from './types';
 
 /** Classification of a single job window at evaluation time. */
 export type JobWindowClassification =
-  | 'already_ran'   // idempotency key exists with status success or running
+  | 'already_ran'   // idempotency key exists with any non-failed terminal state
   | 'not_due_yet'   // scheduledFor is in the future (edge-case guard)
   | 'missed'        // no success record for this window
   | 'failed'        // a failed record exists (eligible for retry)
@@ -85,6 +95,14 @@ interface BackfillPolicy {
   mostRecentOnly: boolean;
 }
 
+type BackfillTriggerSource = 'local_scheduler';
+
+type BackfillRunner = (args: {
+  triggerSource: BackfillTriggerSource;
+  scheduledFor: Date;
+  runMode: JobRunMode;
+}) => Promise<JobExecutionResult<unknown>>;
+
 const BACKFILL_POLICIES: Record<AutonomousJobName, BackfillPolicy> = {
   'autonomous:daily': {
     autoBackfill: true,
@@ -127,7 +145,74 @@ const BACKFILL_POLICIES: Record<AutonomousJobName, BackfillPolicy> = {
     maxMissedAgeMs: 2 * 24 * 60 * 60 * 1000, // only backfill if missed < 2 days ago
     mostRecentOnly: true,
   },
+  'training:tw-data-sync': {
+    autoBackfill: true,
+    maxMissedAgeMs: 2 * 60 * 60 * 1000,
+    mostRecentOnly: true,
+  },
+  'training:tw-snapshot': {
+    autoBackfill: true,
+    maxMissedAgeMs: 24 * 60 * 60 * 1000,
+    mostRecentOnly: true,
+  },
+  'training:tw-screen': {
+    autoBackfill: true,
+    maxMissedAgeMs: 24 * 60 * 60 * 1000,
+    mostRecentOnly: true,
+  },
+  'training:tw-report': {
+    autoBackfill: true,
+    maxMissedAgeMs: 24 * 60 * 60 * 1000,
+    mostRecentOnly: true,
+  },
+  'training:tw-optimization-miner': {
+    autoBackfill: true,
+    maxMissedAgeMs: 24 * 60 * 60 * 1000,
+    mostRecentOnly: true,
+  },
+  'training:tw-worker-cycle': {
+    autoBackfill: true,
+    maxMissedAgeMs: 2 * 60 * 60 * 1000,
+    mostRecentOnly: true,
+  },
+  'training:tw-insight-ingest': {
+    autoBackfill: true,
+    maxMissedAgeMs: 24 * 60 * 60 * 1000,
+    mostRecentOnly: true,
+  },
+  'training:tw-weekly-deep-research': {
+    autoBackfill: true,
+    maxMissedAgeMs: 2 * 24 * 60 * 60 * 1000,
+    mostRecentOnly: true,
+  },
+  'training:tw-self-audit': {
+    autoBackfill: true,
+    maxMissedAgeMs: 24 * 60 * 60 * 1000,
+    mostRecentOnly: true,
+  },
 };
+
+const BACKFILL_RUNNERS: Record<AutonomousJobName, BackfillRunner> = {
+  'autonomous:daily': runAutonomousDailyCycle,
+  'autonomous:monitor': runAutonomousMonitorCycle,
+  'autonomous:review': runAutonomousReviewCycle,
+  'autonomous:learning': runAutonomousLearningCycle,
+  'training:intraday_monitor': runTrainingIntradayMonitorCycle,
+  'training:daily_cycle': runTrainingDailyCycle,
+  'training:nightly_opt': runTrainingNightlyOpt,
+  'training:weekly_deep': runTrainingWeeklyDeep,
+  'training:tw-data-sync': runTrainingTaiwanDataSync,
+  'training:tw-snapshot': runTrainingTaiwanSnapshot,
+  'training:tw-screen': runTrainingTaiwanScreen,
+  'training:tw-report': runTrainingTaiwanReport,
+  'training:tw-optimization-miner': runTrainingTaiwanOptimizationMiner,
+  'training:tw-worker-cycle': runTrainingTaiwanWorkerCycle,
+  'training:tw-insight-ingest': runTrainingTaiwanInsightIngest,
+  'training:tw-weekly-deep-research': runTrainingTaiwanWeeklyDeepResearch,
+  'training:tw-self-audit': runTrainingTaiwanSelfAudit,
+};
+
+const MAX_JOB_RETRY_ATTEMPTS = 2;
 
 // ---------------------------------------------------------------------------
 // Utility
@@ -138,16 +223,14 @@ function truncateToUtcDay(now: Date): Date {
 }
 
 function getNextDueAt(jobName: AutonomousJobName, now: Date): Date {
-  const def = AUTONOMOUS_JOB_REGISTRY[jobName];
-  if (def.cadence === 'daily') {
-    const tomorrow = new Date(truncateToUtcDay(now));
-    tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
-    return tomorrow;
-  }
-  // interval job: next bucket
-  const intervalMs = (def.intervalMinutes ?? 30) * 60_000;
-  const scheduledMs = def.getScheduledFor(now).getTime();
-  return new Date(scheduledMs + intervalMs);
+  return getAutonomousJobNextDueAt(jobName, now);
+}
+
+function getResultError(result: JobExecutionResult<unknown>, jobName: AutonomousJobName): string | undefined {
+  if (result.skipped) return undefined;
+  if (result.jobRun.status === 'skipped') return undefined;
+  if (result.jobRun.status === 'success') return undefined;
+  return result.jobRun.errorMessage ?? result.reason ?? `Job ${jobName} returned status ${result.jobRun.status}`;
 }
 
 // ---------------------------------------------------------------------------
@@ -155,9 +238,58 @@ function getNextDueAt(jobName: AutonomousJobName, now: Date): Date {
 // ---------------------------------------------------------------------------
 
 export class SchedulerStateEngine {
-  private startedAt: Date = new Date();
+  private readonly startedAt: Date = new Date();
   private lastReconciliationAt: Date | null = null;
   private lastReconciliationResults: JobReconciliationResult[] = [];
+
+  private buildBackfillRunContext(scheduledFor: Date): {
+    triggerSource: BackfillTriggerSource;
+    scheduledFor: Date;
+    runMode: JobRunMode;
+  } {
+    return {
+      triggerSource: 'local_scheduler',
+      scheduledFor,
+      runMode: 'missed_run',
+    };
+  }
+
+  private async runBackfillAttempt(
+    jobName: AutonomousJobName,
+    scheduledFor: Date,
+  ): Promise<{ runId: number | undefined; error?: string }> {
+    const result = await BACKFILL_RUNNERS[jobName](this.buildBackfillRunContext(scheduledFor));
+    const error = getResultError(result, jobName);
+
+    return {
+      runId: result.jobRun.id,
+      error,
+    };
+  }
+
+  private shouldRetryBackfill(attempt: number): boolean {
+    return attempt < MAX_JOB_RETRY_ATTEMPTS;
+  }
+
+  private logBackfillRetry(
+    jobName: AutonomousJobName,
+    scheduledFor: Date,
+    attempt: number,
+    error: string,
+  ): void {
+    console.error(JSON.stringify({
+      event: 'scheduler_retry',
+      jobName,
+      scheduledFor: scheduledFor.toISOString(),
+      attempt: attempt + 1,
+      retrying: true,
+      error,
+    }));
+  }
+
+  private normalizeBackfillError(err: unknown): string {
+    return err instanceof Error ? err.message : String(err);
+  }
 
   /** Classify a specific job window. */
   async classifyJobWindow(
@@ -172,7 +304,7 @@ export class SchedulerStateEngine {
     const windowRun = await prisma.jobRunLog.findUnique({ where: { idempotencyKey } });
 
     if (windowRun) {
-      if (windowRun.status === 'success' || windowRun.status === 'running') return 'already_ran';
+      if (windowRun.status !== 'failed') return 'already_ran';
       if (windowRun.status === 'failed') return 'failed';
     }
 
@@ -222,35 +354,34 @@ export class SchedulerStateEngine {
     jobName: AutonomousJobName,
     scheduledFor: Date,
   ): Promise<{ runId: number | undefined; error?: string }> {
-    const runMode: JobRunMode = 'missed_run';
-    const triggerSource = 'local_scheduler' as const;
+    for (let attempt = 0; attempt <= MAX_JOB_RETRY_ATTEMPTS; attempt += 1) {
+      try {
+        const { runId, error } = await this.runBackfillAttempt(jobName, scheduledFor);
+        if (!error) {
+          return { runId };
+        }
 
-    try {
-      let result;
-      if (jobName === 'autonomous:daily') {
-        result = await runAutonomousDailyCycle({ triggerSource, scheduledFor, runMode });
-      } else if (jobName === 'autonomous:monitor') {
-        result = await runAutonomousMonitorCycle({ triggerSource, scheduledFor, runMode });
-      } else if (jobName === 'autonomous:review') {
-        result = await runAutonomousReviewCycle({ triggerSource, scheduledFor, runMode });
-      } else if (jobName === 'autonomous:learning') {
-        result = await runAutonomousLearningCycle({ triggerSource, scheduledFor, runMode });
-      } else if (jobName === 'training:intraday_monitor') {
-        result = await runTrainingIntradayMonitorCycle({ triggerSource, scheduledFor, runMode });
-      } else if (jobName === 'training:daily_cycle') {
-        result = await runTrainingDailyCycle({ triggerSource, scheduledFor, runMode });
-      } else if (jobName === 'training:nightly_opt') {
-        result = await runTrainingNightlyOpt({ triggerSource, scheduledFor, runMode });
-      } else {
-        result = await runTrainingWeeklyDeep({ triggerSource, scheduledFor, runMode });
+        if (this.shouldRetryBackfill(attempt)) {
+          this.logBackfillRetry(jobName, scheduledFor, attempt, error);
+          continue;
+        }
+
+        return { runId, error };
+      } catch (err) {
+        const error = this.normalizeBackfillError(err);
+        if (this.shouldRetryBackfill(attempt)) {
+          this.logBackfillRetry(jobName, scheduledFor, attempt, error);
+          continue;
+        }
+
+        return {
+          runId: undefined,
+          error,
+        };
       }
-      return { runId: result.jobRun.id };
-    } catch (err) {
-      return {
-        runId: undefined,
-        error: err instanceof Error ? err.message : String(err),
-      };
     }
+
+    return { runId: undefined, error: `Unknown scheduler failure for ${jobName}` };
   }
 
   /**
@@ -322,7 +453,7 @@ export class SchedulerStateEngine {
     const idempotencyKey = buildAutonomousIdempotencyKey(jobName, scheduledFor);
 
     const existing = await prisma.jobRunLog.findUnique({ where: { idempotencyKey } });
-    if (existing && (existing.status === 'success' || existing.status === 'running')) {
+    if (existing && existing.status !== 'failed') {
       return { ran: false, skipped: true, reason: existing.status };
     }
 
@@ -372,10 +503,9 @@ export class SchedulerStateEngine {
       nextDueAt: getNextDueAt(jobName, now).toISOString(),
     }));
 
-    const uptimeSeconds =
-      this.lastReconciliationAt !== null
-        ? Math.round((now.getTime() - this.startedAt.getTime()) / 1000)
-        : null;
+    const uptimeSeconds = this.lastReconciliationAt === null
+      ? null
+      : Math.round((now.getTime() - this.startedAt.getTime()) / 1000);
 
     return {
       schedulerPid: process.pid,

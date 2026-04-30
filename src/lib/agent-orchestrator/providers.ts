@@ -1,7 +1,6 @@
-import { exec as execCallback } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { promisify } from 'node:util';
+import { executeWorkerProviderCommand } from './aiService';
 import type { SignalStateResult } from './ctoTypes';
 import type {
   AcceptanceResult,
@@ -14,8 +13,6 @@ import type {
   TaskResult,
   WorkerProvider,
 } from './types';
-
-const exec = promisify(execCallback);
 
 export interface PlannerDraftInput {
   profile: ProjectProfile;
@@ -35,6 +32,7 @@ export interface PlannerDraft {
 export interface WorkerExecutionInput {
   workerProvider: WorkerProvider;
   workerCopilotModel?: string;
+  callerContext?: 'background' | 'manual';
   taskId: number;
   promptPath: string;
   contractPath: string;
@@ -683,7 +681,7 @@ export function buildPlannerDraft(input: PlannerDraftInput): PlannerDraft {
   };
 }
 
-function parseChangedFiles(stdout: string): string[] {
+export function parseChangedFiles(stdout: string): string[] {
   const marker = /CHANGED_FILES_JSON:\s*(\[[\s\S]*?\])/.exec(stdout);
   if (!marker?.[1]) return [];
   try {
@@ -705,7 +703,7 @@ const RATE_LIMIT_PATTERNS = [
 
 const COPILOT_USAGE_FOOTER_PATTERN = /^\s*Requests\s+\d+\s+Premium\s*\([^\n)]*\)\s*$/gim;
 
-function detectProviderRateLimit(message: string, provider: WorkerProvider): {
+export function detectProviderRateLimit(message: string, provider: WorkerProvider): {
   finalMessage: string;
   resetHint: string | null;
   httpStatus: number | null;
@@ -768,7 +766,7 @@ export function resolveWorkerCommand(): string | undefined {
   return undefined;
 }
 
-function interpolateCommand(template: string, input: WorkerExecutionInput): string {
+export function interpolateCommand(template: string, input: WorkerExecutionInput): string {
   const replace = (source: string, token: string, value: string): string => source.split(token).join(value);
   let output = template;
   output = replace(output, '{task_id}', String(input.taskId));
@@ -783,107 +781,14 @@ export async function runWorkerProvider(input: WorkerExecutionInput): Promise<Wo
   const externalCommand = resolveWorkerCommand();
 
   if (externalCommand) {
-    const command = interpolateCommand(externalCommand, input);
-    try {
-      const { stdout, stderr } = await exec(command, {
-        cwd: process.cwd(),
-        maxBuffer: 10 * 1024 * 1024,
-        timeout: 15 * 60_000,
-      });
-      const changedFiles = parseChangedFiles(stdout);
-      const workerStdout = [stdout, stderr].filter(Boolean).join('\n');
-      const rateLimit = detectProviderRateLimit(workerStdout, input.workerProvider);
-
-      if (rateLimit) {
-        return {
-          completedMarkdown: [
-            '# Worker Completion Summary',
-            '',
-            `- Provider: \`${input.workerProvider}\``,
-            `- Task ID: ${input.taskId}`,
-            '- Execution mode: external command',
-            '',
-            '## Runtime Failure',
-            '- Provider returned a rate limit response.',
-            `- Reset hint: ${rateLimit.resetHint ?? 'Wait for reset or switch provider.'}`,
-            '',
-            '## Final Message',
-            rateLimit.finalMessage,
-          ].join('\n'),
-          changedFiles,
-          acceptanceResults: [
-            {
-              name: 'Worker command completed',
-              passed: false,
-              evidence: rateLimit.finalMessage,
-            },
-          ],
-          workerStdout,
-          errorMarkersHit: ['worker_runtime_failed', 'provider_rate_limit'],
-          runtimeFailed: true,
-          runtimeErrorMessage: rateLimit.finalMessage,
-          failureProvider: input.workerProvider,
-          failureReason: 'rate_limit',
-          resetHint: rateLimit.resetHint,
-          httpStatus: rateLimit.httpStatus,
-        };
-      }
-
-      return {
-        completedMarkdown: [
-          '# Worker Completion Summary',
-          '',
-          `- Provider: \`${input.workerProvider}\``,
-          `- Task ID: ${input.taskId}`,
-          '- Execution mode: external command',
-          '',
-          '## Notes',
-          'Worker command completed successfully.',
-        ].join('\n'),
-        changedFiles,
-        acceptanceResults: [
-          {
-            name: 'Worker command completed',
-            passed: true,
-            evidence: 'Process exited with code 0.',
-          },
-        ],
-        workerStdout,
-        errorMarkersHit: [],
-        runtimeFailed: false,
-      };
-    } catch (error) {
-      const message = error instanceof Error ? error.message : String(error);
-      const rateLimit = detectProviderRateLimit(message, input.workerProvider);
-      return {
-        completedMarkdown: [
-          '# Worker Completion Summary',
-          '',
-          `- Provider: \`${input.workerProvider}\``,
-          `- Task ID: ${input.taskId}`,
-          '- Execution mode: external command',
-          '',
-          '## Runtime Failure',
-          rateLimit?.finalMessage ?? message,
-        ].join('\n'),
-        changedFiles: [],
-        acceptanceResults: [
-          {
-            name: 'Worker command completed',
-            passed: false,
-            evidence: rateLimit?.finalMessage ?? message,
-          },
-        ],
-        workerStdout: message,
-        errorMarkersHit: rateLimit ? ['worker_runtime_failed', 'provider_rate_limit'] : ['worker_runtime_failed'],
-        runtimeFailed: true,
-        runtimeErrorMessage: rateLimit?.finalMessage ?? message,
-        failureProvider: rateLimit ? input.workerProvider : null,
-        failureReason: rateLimit ? 'rate_limit' : 'runtime_failure',
-        resetHint: rateLimit?.resetHint ?? null,
-        httpStatus: rateLimit?.httpStatus ?? null,
-      };
-    }
+    return executeWorkerProviderCommand({
+      input,
+      externalCommand,
+      callerContext: input.callerContext ?? 'background',
+      interpolateCommand,
+      parseChangedFiles,
+      detectProviderRateLimit,
+    });
   }
 
   return {

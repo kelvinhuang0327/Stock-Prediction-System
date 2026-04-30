@@ -1,4 +1,5 @@
 import { BACKLOG_PATH, BACKLOG_RESEARCH_PATH, fileExists, nowIso, readJsonFile, readTextFile, scheduleNextRunAt } from './common';
+import { evaluateExecutionPolicy, getPolicySkipMessage, type LlmCallerContext } from './llmExecutionPolicy';
 import { loadProjectProfile } from './profile';
 import { buildColdRegimePayload, buildPlannerDraft, buildSaturatedPayload, pickResearchBacklogItem } from './providers';
 import { classifySignalState } from './signalStateClassifier';
@@ -17,6 +18,7 @@ import type { PlannerTaskFingerprint, PlannerTickOutcome, ResearchBacklog, TaskC
 
 interface PlannerTickOptions {
   force?: boolean;
+  callerContext?: LlmCallerContext;
 }
 
 interface PlannerRuntimeContext {
@@ -172,11 +174,12 @@ async function loadRecentTaskReferences(tasks: TaskRecord[]): Promise<ReturnType
 async function guardBeforeDraft(
   runtime: PlannerRuntimeContext,
   latestTask: TaskRecord | null,
-  force: boolean,
+  policySkipMessage: string | null,
+  policySkipReason: string | null,
   profile: Awaited<ReturnType<typeof loadProjectProfile>>,
 ): Promise<{ previousResult: TaskResult | null } | PlannerTickOutcome> {
-  if (!force && !runtime.state.schedulerEnabled) {
-    return finalizeSkippedTick(runtime, 'Scheduler is disabled.', 'scheduler_disabled', null, false);
+  if (policySkipMessage && policySkipReason) {
+    return finalizeSkippedTick(runtime, policySkipMessage, policySkipReason, null, false);
   }
 
   if (latestTask?.status === 'RUNNING' && profile.planner_rules.skip_if_latest_running) {
@@ -351,8 +354,21 @@ export async function runPlannerTick(options: PlannerTickOptions = {}): Promise<
   const index = await loadTaskIndex(paths);
   const startedAt = nowIso();
   const runtime: PlannerRuntimeContext = { startedAt, paths, state };
+  const policyDecision = await evaluateExecutionPolicy({
+    caller: 'planner',
+    callerContext: options.callerContext ?? 'background',
+    provider: state.plannerProvider,
+    model: '',
+    taskId: null,
+  });
   const latestTask = getLatestTask(index);
-  const beforeDraft = await guardBeforeDraft(runtime, latestTask, Boolean(options.force), profile);
+  const beforeDraft = await guardBeforeDraft(
+    runtime,
+    latestTask,
+    policyDecision.allowed ? null : getPolicySkipMessage(policyDecision.skip_reason),
+    policyDecision.allowed ? null : policyDecision.skip_reason,
+    profile,
+  );
   if ('status' in beforeDraft) return beforeDraft;
 
   const backlogMarkdown = (await fileExists(BACKLOG_PATH))

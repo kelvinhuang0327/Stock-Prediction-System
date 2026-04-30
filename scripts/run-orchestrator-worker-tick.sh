@@ -16,4 +16,4 @@ fi
 export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
 cd "$PROJECT_DIR"
 
-exec npm run orchestrator:worker -- --force
+exec npm run orchestrator:worker -- --force --caller-context=background

@@ -21,6 +21,7 @@
  */
 
 import { initTrainingScheduler, getTrainingSchedulerStatus } from '../src/lib/training/TrainingScheduler';
+import { evaluateExecutionPolicy, getPolicySkipMessage } from '../src/lib/agent-orchestrator/llmExecutionPolicy';
 import { SchedulerStateEngine } from '../src/lib/jobs/SchedulerStateEngine';
 import type { AutonomousJobName } from '../src/lib/jobs/types';
 
@@ -62,6 +63,11 @@ let currentTick: Promise<void> | null = null;
 
 async function tick(): Promise<void> {
   if (isShuttingDown) return;
+  const policyDecision = await evaluateExecutionPolicy({ caller: 'training_scheduler', callerContext: 'background', provider: '', model: '', taskId: null });
+  if (!policyDecision.allowed) {
+    console.log(JSON.stringify({ event: 'training_scheduler_skip', reason: getPolicySkipMessage(policyDecision.skip_reason), at: new Date().toISOString() }));
+    return;
+  }
   const now = new Date();
   const tickResults: Array<{ jobName: string; ran: boolean; skipped: boolean; reason?: string }> = [];
 
@@ -111,6 +117,7 @@ async function main(): Promise<void> {
   const once = hasFlag('--once');
   const skipReconcile = hasFlag('--skip-reconcile');
   const intervalMs = parseIntervalMs();
+  const policyDecision = await evaluateExecutionPolicy({ caller: 'training_scheduler', callerContext: 'background', provider: '', model: '', taskId: null });
 
   console.log(
     JSON.stringify({
@@ -123,6 +130,11 @@ async function main(): Promise<void> {
       jobs: TRAINING_JOB_NAMES,
     }),
   );
+
+  if (!policyDecision.allowed) {
+    console.log(JSON.stringify({ event: 'training_scheduler_skip', reason: getPolicySkipMessage(policyDecision.skip_reason), at: new Date().toISOString() }));
+    return;
+  }
 
   // Step 1: Init training scheduler state
   initTrainingScheduler();
