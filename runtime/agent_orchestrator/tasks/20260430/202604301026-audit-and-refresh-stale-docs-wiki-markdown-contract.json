@@ -1,0 +1,46 @@
+{
+  "version": "2.0",
+  "objective": "Audit and refresh stale docs/wiki markdown files",
+  "background": "5 markdown files in docs/ or wiki/ have not been updated in > 30 days. They may reference outdated APIs, file paths, or procedures.",
+  "trigger_reason": "OPTIMIZATION_MINER@source=wiki_docs&score=34",
+  "scope": [
+    "docs/DATA_SYNC_GUIDE.md",
+    "docs/KELLY_RISK_INTEGRATION.md",
+    "docs/autonomous-quickstart.md",
+    "docs/autonomous-scheduler.md",
+    "docs/reports/doubling_report_20260212.md"
+  ],
+  "constraints": [
+    "Do not delete documents without archiving to archive/",
+    "Do not modify trading thresholds or strategy parameters",
+    "Do not require live broker connection"
+  ],
+  "acceptance_tests": [
+    "Each stale file reviewed and updated or marked as archived",
+    "File paths and API references verified against current codebase",
+    "CHANGELOG.md updated with a doc-refresh entry",
+    "No dead links remaining in docs/ or wiki/"
+  ],
+  "required_outputs": [
+    "Each stale file reviewed and updated or marked as archived",
+    "File paths and API references verified against current codebase",
+    "CHANGELOG.md updated with a doc-refresh entry",
+    "No dead links remaining in docs/ or wiki/"
+  ],
+  "forbidden_changes": [
+    "Do not delete documents without archiving to archive/"
+  ],
+  "handoff_questions": [
+    "Did you verify each acceptance criterion with evidence?",
+    "Were any forbidden actions performed?",
+    "What artifacts were produced?"
+  ],
+  "expected_duration_hours": 6,
+  "target_files": [
+    "docs/DATA_SYNC_GUIDE.md",
+    "docs/KELLY_RISK_INTEGRATION.md",
+    "docs/autonomous-quickstart.md",
+    "docs/autonomous-scheduler.md",
+    "docs/reports/doubling_report_20260212.md"
+  ]
+}

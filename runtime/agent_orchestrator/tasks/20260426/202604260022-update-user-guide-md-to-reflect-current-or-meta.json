@@ -1,0 +1,21 @@
+{
+  "version": "1.0",
+  "task_id": 169,
+  "slug": "update-user-guide-md-to-reflect-current-or",
+  "status": "PENDING_REVIEW",
+  "gate_verdict": "PASS",
+  "planner_provider": "claude",
+  "worker_provider": "copilot-daemon",
+  "created_at": "2026-04-26T00:22:55.842Z",
+  "updated_at": "2026-04-26T00:23:22.254Z",
+  "last_output_at": "2026-04-26T00:23:22.254Z",
+  "latest_progress_summary": "Auto-committed 3 file(s) (sha: c150abf). Awaiting CTO review.",
+  "planner_context": {
+    "taskType": "optimization_wiki_docs",
+    "game": null,
+    "regimeState": "OPTIMIZATION",
+    "dedupeKey": "wiki_docs__user_guide_drift",
+    "confidenceScore": null,
+    "regimeTaskType": "wiki_docs"
+  }
+}

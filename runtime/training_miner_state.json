@@ -1,0 +1,32 @@
+{
+  "version": "1.0",
+  "publishedDedupeKeys": {
+    "weekly_deep__trigger_score_vs_return": "2026-04-30T08:55:13.974Z",
+    "weekly_deep__mfe_mae_distribution": "2026-04-30T08:55:13.974Z",
+    "weekly_deep__setup_performance_breakdown": "2026-04-30T08:55:13.974Z",
+    "weekly_deep__sector_alignment": "2026-04-30T08:55:13.974Z",
+    "weekly_deep__volatility_stop_validation": "2026-04-30T08:55:13.974Z",
+    "intraday__data_freshness_audit": "2026-04-30T09:06:03.088Z",
+    "intraday__lifecycle_stuck_detection": "2026-04-30T09:06:03.088Z",
+    "daily_cycle__time_exit_dominance": "2026-04-30T09:06:15.214Z"
+  },
+  "dailyQuota": {
+    "date": "2026-04-30",
+    "low": 5,
+    "medium": 3,
+    "high": 0
+  },
+  "lastRunAt": "2026-04-30T10:26:06.786Z",
+  "probeActivity": {
+    "totalProbeAttempts": 0,
+    "allowedProbes": 0,
+    "deniedProbes": 0,
+    "lastProbeAt": null
+  },
+  "recoveryEvents": {
+    "totalExpiredGates": 0,
+    "totalDowngrades": 0,
+    "totalDiversityRescues": 0,
+    "lastRecoveryAt": null
+  }
+}

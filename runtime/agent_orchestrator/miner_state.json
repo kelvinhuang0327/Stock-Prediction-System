@@ -14,13 +14,23 @@
     "price_analysis_quality__sector_context_audit": "2026-04-25T01:22:37.300Z",
     "ui_ux__missing_loading_error_states": "2026-04-25T01:24:45.702Z",
     "composite_8h_plan__2026-04-26": "2026-04-26T00:02:52.355Z",
-    "test_coverage__orchestrator_gaps": "2026-04-26T00:04:56.320Z"
+    "test_coverage__orchestrator_gaps": "2026-04-26T00:04:56.320Z",
+    "test_coverage__missing_e2e_flows": "2026-04-26T00:12:54.196Z",
+    "ui_ux__no_actionable_output": "2026-04-26T00:14:57.926Z",
+    "wiki_docs__user_guide_drift": "2026-04-26T00:22:55.839Z",
+    "lifecycle__no_closes": "2026-04-26T02:43:19.469Z",
+    "composite_8h_plan__2026-04-27": "2026-04-27T01:06:50.577Z",
+    "system_health__no_learning_insight": "2026-04-27T01:57:05.156Z",
+    "execution_layer__trigger_skew": "2026-04-27T01:59:51.113Z",
+    "composite_8h_plan__2026-04-30": "2026-04-30T08:55:13.644Z",
+    "system_health__job_failures": "2026-04-30T10:23:10.785Z",
+    "wiki_docs__stale_markdown": "2026-04-30T10:26:22.458Z"
   },
   "dailyQuota": {
-    "date": "2026-04-26",
+    "date": "2026-04-30",
     "highRisk": 0,
     "mediumRisk": 0,
-    "lowRisk": 1
+    "lowRisk": 2
   },
-  "lastRunAt": "2026-04-26T00:04:56.320Z"
+  "lastRunAt": "2026-04-30T10:26:22.458Z"
 }

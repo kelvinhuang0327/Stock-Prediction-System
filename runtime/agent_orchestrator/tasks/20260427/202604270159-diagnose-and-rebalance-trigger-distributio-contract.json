@@ -1,0 +1,46 @@
+{
+  "version": "2.0",
+  "objective": "Diagnose and rebalance trigger distribution skew in execution layer",
+  "background": "setupType \"trend\" accounts for 82% of all simulated trades in the last 7 days (132/161). Skew indicates the scoring engine is over-fitting to one setup pattern.",
+  "trigger_reason": "OPTIMIZATION_MINER@source=execution_layer&score=68",
+  "scope": [
+    "src/lib/scoring/",
+    "src/lib/strategy/",
+    "scripts/"
+  ],
+  "constraints": [
+    "Do not delete any SimulatedTrade records",
+    "Do not lower scoring thresholds arbitrarily",
+    "Do not modify live position sizing without approval",
+    "Do not modify trading thresholds or strategy parameters",
+    "Do not require live broker connection"
+  ],
+  "acceptance_tests": [
+    "Root cause of trigger skew identified (scoring weight, signal density, or filtering bias)",
+    "Scoring weights reviewed and documented with rationale",
+    "Trigger distribution rebalanced so no single setupType > 60% of weekly trades",
+    "Write analysis report to docs/reports/trigger_distribution_audit.md"
+  ],
+  "required_outputs": [
+    "Root cause of trigger skew identified (scoring weight, signal density, or filtering bias)",
+    "Scoring weights reviewed and documented with rationale",
+    "Trigger distribution rebalanced so no single setupType > 60% of weekly trades",
+    "Write analysis report to docs/reports/trigger_distribution_audit.md"
+  ],
+  "forbidden_changes": [
+    "Do not delete any SimulatedTrade records",
+    "Do not lower scoring thresholds arbitrarily",
+    "Do not modify live position sizing without approval"
+  ],
+  "handoff_questions": [
+    "Did you verify each acceptance criterion with evidence?",
+    "Were any forbidden actions performed?",
+    "What artifacts were produced?"
+  ],
+  "expected_duration_hours": 6,
+  "target_files": [
+    "src/lib/scoring/",
+    "src/lib/strategy/",
+    "scripts/"
+  ]
+}

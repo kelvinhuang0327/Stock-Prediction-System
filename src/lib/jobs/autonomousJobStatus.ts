@@ -1,7 +1,7 @@
 import { JobOrchestrationService } from './JobOrchestrationService';
 import { AUTONOMOUS_JOB_REGISTRY, buildAutonomousIdempotencyKey, getAutonomousJobNames } from './autonomousJobRegistry';
 import { JobHealthService } from './JobHealthService';
-import type { JobAlert, JobHealthRow, JobHealthSummary, JobRunStatus, JobTriggerSource } from './types';
+import type { JobAlert, JobHealthRow, JobHealthSummary, JobRunMode, JobTriggerSource } from './types';
 import { prisma } from '../prisma';
 
 export interface AutonomousJobsStatus {
@@ -26,6 +26,13 @@ function coerceRunStatus(value: string | null | undefined): JobHealthRow['status
     return value;
   }
   return 'never-ran';
+}
+
+function coerceRunMode(value: string | null | undefined): JobRunMode | null {
+  if (value === 'live_run' || value === 'missed_run' || value === 'backfill_data_run') {
+    return value;
+  }
+  return null;
 }
 
 function describeRunStatus(status: JobHealthRow['status'], missed: boolean): JobHealthRow['status'] {
@@ -57,7 +64,7 @@ export async function getAutonomousJobsStatus(now = new Date()): Promise<Autonom
     const windowRun = await prisma.jobRunLog.findUnique({ where: { idempotencyKey } }).catch(() => null);
 
     const missed = !windowRun || (windowRun.status !== 'success' && windowRun.status !== 'running');
-    const canRerun = !windowRun || windowRun.status !== 'running';
+    const canRerun = windowRun?.status !== 'running';
     const status: JobHealthRow['status'] = coerceRunStatus(windowRun?.status ?? latestRun?.status);
 
     if (missed) missedJobs.push(jobName);
@@ -70,6 +77,7 @@ export async function getAutonomousJobsStatus(now = new Date()): Promise<Autonom
       missed,
       canRerun,
       triggerSource: coerceTriggerSource(windowRun?.triggerSource ?? currentRun?.triggerSource),
+      runMode: coerceRunMode(windowRun?.runMode ?? currentRun?.runMode),
       lastErrorMessage: windowRun?.errorMessage ?? currentRun?.errorMessage ?? null,
       status: describeRunStatus(status, missed),
       healthStatus: healthByJob.get(jobName)?.healthStatus ?? 'never-ran',

@@ -1,0 +1,44 @@
+{
+  "version": "2.0",
+  "objective": "Diagnose stalled lifecycle — no SimulatedTrade closes in 7 days",
+  "background": "Zero SimulatedTrade closes in the last 7 days despite 84 open/pending trades. Exit criteria may be broken or signal thresholds are unreachable.",
+  "trigger_reason": "OPTIMIZATION_MINER@source=lifecycle&score=62",
+  "scope": [
+    "src/lib/lifecycle/",
+    "src/lib/trading/",
+    "scripts/"
+  ],
+  "constraints": [
+    "Do not force-close trades with arbitrary PnL values",
+    "Do not delete trade records",
+    "Do not modify trading thresholds or strategy parameters",
+    "Do not require live broker connection"
+  ],
+  "acceptance_tests": [
+    "Exit trigger logic traced end-to-end and breakage point identified",
+    "At least 1 trade manually reviewed for why it has not closed",
+    "Exit criteria verified to be reachable with current price data",
+    "Write lifecycle health report to docs/reports/lifecycle_health.md"
+  ],
+  "required_outputs": [
+    "Exit trigger logic traced end-to-end and breakage point identified",
+    "At least 1 trade manually reviewed for why it has not closed",
+    "Exit criteria verified to be reachable with current price data",
+    "Write lifecycle health report to docs/reports/lifecycle_health.md"
+  ],
+  "forbidden_changes": [
+    "Do not force-close trades with arbitrary PnL values",
+    "Do not delete trade records"
+  ],
+  "handoff_questions": [
+    "Did you verify each acceptance criterion with evidence?",
+    "Were any forbidden actions performed?",
+    "What artifacts were produced?"
+  ],
+  "expected_duration_hours": 6,
+  "target_files": [
+    "src/lib/lifecycle/",
+    "src/lib/trading/",
+    "scripts/"
+  ]
+}

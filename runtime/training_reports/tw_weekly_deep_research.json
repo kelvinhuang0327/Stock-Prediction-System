@@ -1,0 +1,19 @@
+{
+  "generatedAt": "2026-04-26T10:00:00.000Z",
+  "summary": "tasks_mined=0 tasks_skipped=16 gated_setup_types=none recovery_signals=none recovery_events=0 probe_successes=0 time_exit_rate=100% quota_remaining_low=0",
+  "metadata": {
+    "tasksMined": 0,
+    "tasksSkipped": 16,
+    "gatedSetupTypes": [],
+    "recoverySignals": [],
+    "recoveryEventsCount": 0,
+    "probeSuccesses": 0,
+    "timeExitRate": 1,
+    "quotaRemaining": {
+      "low": 0,
+      "medium": 0,
+      "high": 1
+    }
+  },
+  "thresholdsChanged": false
+}

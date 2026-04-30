@@ -1,0 +1,398 @@
+{
+  "generatedAt": "2026-04-30T09:06:23.116Z",
+  "schedulerEnabled": false,
+  "thresholdsChanged": false,
+  "queuedOptimizationTasks": 1,
+  "runningOptimizationTasks": 0,
+  "activeInsights": 0,
+  "failedJobs": [],
+  "delayedJobs": [
+    "training:tw-report",
+    "training:tw-worker-cycle"
+  ],
+  "missedCriticalJobs": [
+    "training:tw-optimization-miner",
+    "training:tw-worker-cycle"
+  ],
+  "orchestrator": {
+    "schedulerEnabled": false,
+    "llmControl": {
+      "version": "1.0",
+      "mode": "safe-run",
+      "blocked_execution_count": 324,
+      "allowed_execution_count": 3,
+      "last_llm_call_at": null,
+      "last_blocked_at": "2026-04-30T09:06:23.102561Z",
+      "last_skip_reason": "SCHEDULER_DISABLED",
+      "last_caller": "worker",
+      "last_provider": "copilot-daemon",
+      "last_model": "",
+      "last_task_id": "",
+      "updated_at": "2026-04-30T09:06:23.102564Z",
+      "scheduler_enabled": false,
+      "state_path": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/llm_execution_policy_state.json",
+      "event_log_path": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/llm_execution_events.jsonl"
+    },
+    "plannerProvider": "codex",
+    "workerProvider": "copilot-daemon",
+    "scheduleMinutes": 10,
+    "nextPlannerRunAt": null,
+    "nextWorkerRunAt": "2026-04-30T09:16:23.111Z",
+    "lastPlannerRunAt": "2026-04-27T01:57:05.163Z",
+    "lastWorkerRunAt": "2026-04-30T09:06:23.111Z",
+    "taskCounts": {
+      "total": 173,
+      "queued": 1,
+      "running": 0,
+      "completed": 131,
+      "failed": 1,
+      "failedRateLimit": 1,
+      "replanRequired": 28
+    },
+    "providerCooldowns": {},
+    "latestTask": {
+      "taskId": 173,
+      "title": "8-Hour Multi-Domain Optimization Sprint (系統 / 功能 / 模擬 / 實戰 / 自我學習)",
+      "slug": "8-hour-multi-domain-optimization-sprint",
+      "dayKey": "20260430",
+      "status": "QUEUED",
+      "gateVerdict": null,
+      "plannerProvider": "codex",
+      "workerProvider": "copilot-daemon",
+      "createdAt": "2026-04-30T08:55:13.852Z",
+      "updatedAt": "2026-04-30T08:55:13.852Z",
+      "lastOutputAt": "2026-04-30T08:55:13.852Z",
+      "latestProgressSummary": "Planner created prompt + contract.",
+      "promptPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260430/202604300855-8-hour-multi-domain-optimization-sprint-prompt.md",
+      "contractPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260430/202604300855-8-hour-multi-domain-optimization-sprint-contract.json",
+      "completedPath": null,
+      "resultPath": null,
+      "metaPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260430/202604300855-8-hour-multi-domain-optimization-sprint-meta.json",
+      "workerLogPath": null,
+      "plannerContext": {
+        "taskType": "optimization_composite_8h",
+        "game": null,
+        "regimeState": "OPTIMIZATION",
+        "dedupeKey": "composite_8h_plan__2026-04-30",
+        "confidenceScore": null,
+        "regimeTaskType": "composite_8h_plan"
+      }
+    },
+    "recentRuns": [
+      {
+        "runId": "worker-1777539983107",
+        "tickType": "worker",
+        "startedAt": "2026-04-30T09:06:23.031Z",
+        "finishedAt": "2026-04-30T09:06:23.107Z",
+        "status": "skipped",
+        "reason": "SCHEDULER_DISABLED — skip execution",
+        "taskId": null
+      },
+      {
+        "runId": "worker-1777539949302",
+        "tickType": "worker",
+        "startedAt": "2026-04-30T09:05:49.232Z",
+        "finishedAt": "2026-04-30T09:05:49.302Z",
+        "status": "skipped",
+        "reason": "SCHEDULER_DISABLED — skip execution",
+        "taskId": null
+      },
+      {
+        "runId": "worker-1777539936605",
+        "tickType": "worker",
+        "startedAt": "2026-04-30T09:05:36.546Z",
+        "finishedAt": "2026-04-30T09:05:36.605Z",
+        "status": "skipped",
+        "reason": "SCHEDULER_DISABLED — skip execution",
+        "taskId": null
+      },
+      {
+        "runId": "worker-1777539874818",
+        "tickType": "worker",
+        "startedAt": "2026-04-30T09:04:34.718Z",
+        "finishedAt": "2026-04-30T09:04:34.818Z",
+        "status": "skipped",
+        "reason": "SCHEDULER_DISABLED — skip execution",
+        "taskId": null
+      },
+      {
+        "runId": "worker-1777539813061",
+        "tickType": "worker",
+        "startedAt": "2026-04-30T09:03:32.979Z",
+        "finishedAt": "2026-04-30T09:03:33.061Z",
+        "status": "skipped",
+        "reason": "SCHEDULER_DISABLED — skip execution",
+        "taskId": null
+      },
+      {
+        "runId": "worker-1777539787297",
+        "tickType": "worker",
+        "startedAt": "2026-04-30T09:03:07.241Z",
+        "finishedAt": "2026-04-30T09:03:07.297Z",
+        "status": "skipped",
+        "reason": "SCHEDULER_DISABLED — skip execution",
+        "taskId": null
+      },
+      {
+        "runId": "worker-1777539787234",
+        "tickType": "worker",
+        "startedAt": "2026-04-30T09:03:07.157Z",
+        "finishedAt": "2026-04-30T09:03:07.234Z",
+        "status": "skipped",
+        "reason": "SCHEDULER_DISABLED — skip execution",
+        "taskId": null
+      },
+      {
+        "runId": "worker-1777539755473",
+        "tickType": "worker",
+        "startedAt": "2026-04-30T09:02:35.398Z",
+        "finishedAt": "2026-04-30T09:02:35.473Z",
+        "status": "skipped",
+        "reason": "SCHEDULER_DISABLED — skip execution",
+        "taskId": null
+      },
+      {
+        "runId": "worker-1777539751021",
+        "tickType": "worker",
+        "startedAt": "2026-04-30T09:02:30.884Z",
+        "finishedAt": "2026-04-30T09:02:31.021Z",
+        "status": "skipped",
+        "reason": "SCHEDULER_DISABLED — skip execution",
+        "taskId": null
+      },
+      {
+        "runId": "worker-1777439244132",
+        "tickType": "worker",
+        "startedAt": "2026-04-29T05:07:22.270Z",
+        "finishedAt": "2026-04-29T05:07:24.132Z",
+        "status": "skipped",
+        "reason": "SCHEDULER_DISABLED — skip execution",
+        "taskId": null
+      },
+      {
+        "runId": "worker-1777439166904",
+        "tickType": "worker",
+        "startedAt": "2026-04-29T05:06:06.778Z",
+        "finishedAt": "2026-04-29T05:06:06.904Z",
+        "status": "skipped",
+        "reason": "SCHEDULER_DISABLED — skip execution",
+        "taskId": null
+      },
+      {
+        "runId": "worker-1777439102484",
+        "tickType": "worker",
+        "startedAt": "2026-04-29T05:05:02.296Z",
+        "finishedAt": "2026-04-29T05:05:02.484Z",
+        "status": "skipped",
+        "reason": "SCHEDULER_DISABLED — skip execution",
+        "taskId": null
+      },
+      {
+        "runId": "worker-1777439038761",
+        "tickType": "worker",
+        "startedAt": "2026-04-29T05:03:58.594Z",
+        "finishedAt": "2026-04-29T05:03:58.761Z",
+        "status": "skipped",
+        "reason": "SCHEDULER_DISABLED — skip execution",
+        "taskId": null
+      },
+      {
+        "runId": "worker-1777438974716",
+        "tickType": "worker",
+        "startedAt": "2026-04-29T05:02:54.590Z",
+        "finishedAt": "2026-04-29T05:02:54.716Z",
+        "status": "skipped",
+        "reason": "SCHEDULER_DISABLED — skip execution",
+        "taskId": null
+      },
+      {
+        "runId": "worker-1777438911328",
+        "tickType": "worker",
+        "startedAt": "2026-04-29T05:01:51.220Z",
+        "finishedAt": "2026-04-29T05:01:51.328Z",
+        "status": "skipped",
+        "reason": "SCHEDULER_DISABLED — skip execution",
+        "taskId": null
+      },
+      {
+        "runId": "worker-1777438847487",
+        "tickType": "worker",
+        "startedAt": "2026-04-29T05:00:47.364Z",
+        "finishedAt": "2026-04-29T05:00:47.487Z",
+        "status": "skipped",
+        "reason": "SCHEDULER_DISABLED — skip execution",
+        "taskId": null
+      },
+      {
+        "runId": "planner-1777438822854",
+        "tickType": "planner",
+        "startedAt": "2026-04-29T05:00:22.768Z",
+        "finishedAt": "2026-04-29T05:00:22.854Z",
+        "status": "skipped",
+        "reason": "SCHEDULER_DISABLED — skip execution",
+        "taskId": null
+      },
+      {
+        "runId": "worker-1777438817340",
+        "tickType": "worker",
+        "startedAt": "2026-04-29T05:00:17.245Z",
+        "finishedAt": "2026-04-29T05:00:17.340Z",
+        "status": "skipped",
+        "reason": "SCHEDULER_DISABLED — skip execution",
+        "taskId": null
+      },
+      {
+        "runId": "worker-1777438781039",
+        "tickType": "worker",
+        "startedAt": "2026-04-29T04:59:40.924Z",
+        "finishedAt": "2026-04-29T04:59:41.039Z",
+        "status": "skipped",
+        "reason": "SCHEDULER_DISABLED — skip execution",
+        "taskId": null
+      },
+      {
+        "runId": "worker-1777438717535",
+        "tickType": "worker",
+        "startedAt": "2026-04-29T04:58:37.412Z",
+        "finishedAt": "2026-04-29T04:58:37.535Z",
+        "status": "skipped",
+        "reason": "SCHEDULER_DISABLED — skip execution",
+        "taskId": null
+      }
+    ],
+    "profile": {
+      "projectName": "Stock Prediction System",
+      "backlogPath": "runtime/agent_orchestrator/backlog.md",
+      "protectedPaths": [
+        ".env",
+        "dev.db",
+        "prisma/migrations/",
+        "deploy/",
+        "archive/"
+      ],
+      "requiredChecks": [
+        "npm run lint",
+        "npm run test",
+        "npm run build"
+      ]
+    }
+  },
+  "training": {
+    "schedulerPid": 63969,
+    "startedAt": null,
+    "uptimeSeconds": null,
+    "layers": {
+      "intraday_monitor": {
+        "layer": "intraday_monitor",
+        "lastRunAt": "2026-04-30T09:06:03.086Z",
+        "lastStatus": "success",
+        "nextDueAt": null,
+        "runCount": 1,
+        "lastSummary": "open_trades=72 active_insights=0 expired_insights=0 tasks_mined=2 quota_low=1 latest_snapshot=rolling-sim-2026-04-17"
+      },
+      "daily_cycle": {
+        "layer": "daily_cycle",
+        "lastRunAt": "2026-04-30T09:06:03.093Z",
+        "lastStatus": "success",
+        "nextDueAt": null,
+        "runCount": 1,
+        "lastSummary": "snapshot=19 proposals=5 orders=0 reviews=0 learning_insight=112 active_insights=0 insight_stacking=ok gated_setups=none recovery_signals=none tasks_mined=1"
+      },
+      "nightly_opt": {
+        "layer": "nightly_opt",
+        "lastRunAt": "2026-04-30T09:06:15.218Z",
+        "lastStatus": "success",
+        "nextDueAt": null,
+        "runCount": 1,
+        "lastSummary": "tasks_mined=0 tasks_skipped=16 reports_processed=2 active_insights=0 quota_remaining_low=0 quota_remaining_medium=0"
+      },
+      "weekly_deep": {
+        "layer": "weekly_deep",
+        "lastRunAt": "2026-04-30T09:06:15.237Z",
+        "lastStatus": "success",
+        "nextDueAt": null,
+        "runCount": 1,
+        "lastSummary": "tasks_mined=0 tasks_skipped=16 gated_setup_types=none recovery_signals=none recovery_events=0 probe_successes=0 time_exit_rate=100% quota_remaining_low=0"
+      }
+    },
+    "insightCounts": {
+      "active": 0,
+      "expired": 0,
+      "byType": {}
+    },
+    "gatedSetupTypes": [],
+    "probeActivity": {
+      "totalProbeAttempts": 0,
+      "allowedProbes": 0,
+      "deniedProbes": 0,
+      "lastProbeAt": null
+    },
+    "recoveryEvents": {
+      "totalExpiredGates": 0,
+      "totalDowngrades": 0,
+      "totalDiversityRescues": 0,
+      "lastRecoveryAt": null
+    },
+    "taskLog": [
+      {
+        "dedupeKey": "daily_cycle__time_exit_dominance",
+        "title": "Time-Exit Dominance Analysis — Daily Pulse",
+        "source": "time_exit_dominance",
+        "layer": "daily_cycle",
+        "risk": "low",
+        "startedAt": "2026-04-30T09:06:03.093Z",
+        "finishedAt": "2026-04-30T09:06:03.093Z",
+        "status": "success",
+        "summary": "mined: Time-Exit Dominance Analysis — Daily Pulse",
+        "insightsCandidates": 0
+      },
+      {
+        "dedupeKey": "intraday__lifecycle_stuck_detection",
+        "title": "Open-Trade Lifecycle Stuck Detection",
+        "source": "lifecycle_stuck_detection",
+        "layer": "intraday_monitor",
+        "risk": "low",
+        "startedAt": "2026-04-30T09:06:03.086Z",
+        "finishedAt": "2026-04-30T09:06:03.086Z",
+        "status": "success",
+        "summary": "mined: Open-Trade Lifecycle Stuck Detection",
+        "insightsCandidates": 0
+      },
+      {
+        "dedupeKey": "intraday__data_freshness_audit",
+        "title": "Quote Freshness Audit — Intraday",
+        "source": "data_freshness_audit",
+        "layer": "intraday_monitor",
+        "risk": "low",
+        "startedAt": "2026-04-30T09:06:03.086Z",
+        "finishedAt": "2026-04-30T09:06:03.086Z",
+        "status": "success",
+        "summary": "mined: Quote Freshness Audit — Intraday",
+        "insightsCandidates": 0
+      }
+    ],
+    "quotaRemaining": {
+      "low": 0,
+      "medium": 0,
+      "high": 1
+    }
+  },
+  "recommendations": [
+    {
+      "severity": "P0",
+      "title": "Scheduler hard-off active",
+      "detail": "Global orchestrator scheduler is disabled; optimisation miner and worker automation will remain skipped until re-enabled."
+    },
+    {
+      "severity": "P0",
+      "title": "Critical scheduler windows missed",
+      "detail": "Missed critical jobs: training:tw-optimization-miner, training:tw-worker-cycle. Restore scheduler execution before backlog ages out."
+    },
+    {
+      "severity": "P2",
+      "title": "Review insight and observability hygiene",
+      "detail": "Active insights=0; delayed jobs=training:tw-report, training:tw-worker-cycle. Prune stale insights and keep dashboard metrics current."
+    }
+  ],
+  "reportPath": "runtime/training_reports/tw_self_audit.json"
+}

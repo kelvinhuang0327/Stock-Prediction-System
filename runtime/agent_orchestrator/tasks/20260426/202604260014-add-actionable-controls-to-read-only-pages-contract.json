@@ -1,0 +1,42 @@
+{
+  "version": "2.0",
+  "objective": "Add actionable controls to read-only pages missing operator interactions",
+  "background": "2 pages appear to display data without any interactive controls (no buttons, links, or forms). Operators cannot act on what they see.",
+  "trigger_reason": "OPTIMIZATION_MINER@source=ui_ux&score=44",
+  "scope": [
+    "src/app/simplified/page.tsx",
+    "src/app/watchlist/page.tsx"
+  ],
+  "constraints": [
+    "Do not add controls that trigger irreversible actions without confirmation",
+    "Do not remove read-only data display",
+    "Do not modify trading thresholds or strategy parameters",
+    "Do not require live broker connection"
+  ],
+  "acceptance_tests": [
+    "Each identified page reviewed for intended audience and purpose",
+    "At least one actionable control added per page (refresh, export CSV, view detail, or clear filter)",
+    "New controls documented in USER_GUIDE.md",
+    "TypeScript compiles with zero errors"
+  ],
+  "required_outputs": [
+    "Each identified page reviewed for intended audience and purpose",
+    "At least one actionable control added per page (refresh, export CSV, view detail, or clear filter)",
+    "New controls documented in USER_GUIDE.md",
+    "TypeScript compiles with zero errors"
+  ],
+  "forbidden_changes": [
+    "Do not add controls that trigger irreversible actions without confirmation",
+    "Do not remove read-only data display"
+  ],
+  "handoff_questions": [
+    "Did you verify each acceptance criterion with evidence?",
+    "Were any forbidden actions performed?",
+    "What artifacts were produced?"
+  ],
+  "expected_duration_hours": 5,
+  "target_files": [
+    "src/app/simplified/page.tsx",
+    "src/app/watchlist/page.tsx"
+  ]
+}

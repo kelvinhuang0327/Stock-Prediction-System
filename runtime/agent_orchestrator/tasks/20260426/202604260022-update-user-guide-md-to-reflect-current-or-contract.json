@@ -1,0 +1,42 @@
+{
+  "version": "2.0",
+  "objective": "Update USER_GUIDE.md to reflect current orchestrator and scheduler features",
+  "background": "USER_GUIDE.md was last modified 100 days ago. Recent orchestrator, CTO review, and daemon autostart changes are undocumented.",
+  "trigger_reason": "OPTIMIZATION_MINER@source=wiki_docs&score=34",
+  "scope": [
+    "USER_GUIDE.md",
+    "docs/autonomous-scheduler.md",
+    "deploy/launchd-orchestrator/"
+  ],
+  "constraints": [
+    "Do not remove existing operator procedures",
+    "Do not modify trading thresholds or strategy parameters",
+    "Do not require live broker connection"
+  ],
+  "acceptance_tests": [
+    "USER_GUIDE.md updated with orchestrator dual-view (main + CTO)",
+    "Daemon autostart procedure documented (launchd)",
+    "Rate-limit recovery procedure documented",
+    "Structured backlog_research.json workflow explained with example"
+  ],
+  "required_outputs": [
+    "USER_GUIDE.md updated with orchestrator dual-view (main + CTO)",
+    "Daemon autostart procedure documented (launchd)",
+    "Rate-limit recovery procedure documented",
+    "Structured backlog_research.json workflow explained with example"
+  ],
+  "forbidden_changes": [
+    "Do not remove existing operator procedures"
+  ],
+  "handoff_questions": [
+    "Did you verify each acceptance criterion with evidence?",
+    "Were any forbidden actions performed?",
+    "What artifacts were produced?"
+  ],
+  "expected_duration_hours": 4,
+  "target_files": [
+    "USER_GUIDE.md",
+    "docs/autonomous-scheduler.md",
+    "deploy/launchd-orchestrator/"
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "version": "2.0",
+  "objective": "Investigate and resolve recurring scheduler job failures",
+  "background": "6 JobRunLog entries with status=failed in the last 24h across: training:tw-worker-cycle, training:tw-self-audit. Silent failures leave the pipeline in an unknown state.",
+  "trigger_reason": "OPTIMIZATION_MINER@source=system_health&score=76",
+  "scope": [
+    "src/lib/scheduler/",
+    "scripts/",
+    "logs/"
+  ],
+  "constraints": [
+    "Do not disable jobs without operator approval",
+    "Do not clear JobRunLog history",
+    "Do not modify trading thresholds or strategy parameters",
+    "Do not require live broker connection"
+  ],
+  "acceptance_tests": [
+    "Root cause identified and documented for each failed job: training:tw-worker-cycle, training:tw-self-audit",
+    "Fix applied or retry mechanism improved",
+    "JobRunLog shows 0 failures for the same jobs in the next 24h window",
+    "Write incident report to docs/reports/scheduler_incident.md"
+  ],
+  "required_outputs": [
+    "Root cause identified and documented for each failed job: training:tw-worker-cycle, training:tw-self-audit",
+    "Fix applied or retry mechanism improved",
+    "JobRunLog shows 0 failures for the same jobs in the next 24h window",
+    "Write incident report to docs/reports/scheduler_incident.md"
+  ],
+  "forbidden_changes": [
+    "Do not disable jobs without operator approval",
+    "Do not clear JobRunLog history"
+  ],
+  "handoff_questions": [
+    "Did you verify each acceptance criterion with evidence?",
+    "Were any forbidden actions performed?",
+    "What artifacts were produced?"
+  ],
+  "expected_duration_hours": 6,
+  "target_files": [
+    "src/lib/scheduler/",
+    "scripts/",
+    "logs/"
+  ]
+}

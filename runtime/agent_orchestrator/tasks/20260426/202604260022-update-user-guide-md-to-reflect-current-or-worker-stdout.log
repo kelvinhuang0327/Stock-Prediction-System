@@ -1,0 +1,13 @@
+[orchestrator-worker] task_id=169 provider=copilot-daemon
+[orchestrator-worker] prompt_path=/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260426/202604260022-update-user-guide-md-to-reflect-current-or-prompt.md
+[orchestrator-worker] contract_path=/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260426/202604260022-update-user-guide-md-to-reflect-current-or-contract.json
+CHANGED_FILES_JSON: ["logs/launchd/backend.stdout.log","logs/launchd/planner-tick.stdout.log","logs/launchd/worker-daemon.stdout.log","logs/launchd/worker-tick.stdout.log","prisma/dev.db","prisma/dev.db-shm","prisma/dev.db-wal","runtime/agent_orchestrator/miner_state.json","runtime/agent_orchestrator/runs.json","runtime/agent_orchestrator/scheduler_state.json","runtime/agent_orchestrator/task_index.json","runtime/agent_orchestrator/tasks/20260426/202604260004-expand-unit-test-coverage-for-untested-orc-meta.json"]
+
+Error: No authentication information found.
+
+Copilot can be authenticated with GitHub using an OAuth Token or a Fine-Grained Personal Access Token.
+
+To authenticate, you can use any of the following methods:
+  • Start 'copilot' and run the '/login' command
+  • Set the COPILOT_GITHUB_TOKEN, GH_TOKEN, or GITHUB_TOKEN environment variable
+  • Run 'gh auth login' to authenticate with the GitHub CLI
