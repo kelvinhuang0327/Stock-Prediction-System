@@ -5,9 +5,9 @@
   "workerProvider": "copilot-daemon",
   "providerCooldowns": {},
   "scheduleMinutes": 10,
-  "nextPlannerRunAt": "2026-04-30T10:33:11.614Z",
-  "nextWorkerRunAt": "2026-04-30T10:37:15.018Z",
-  "lastPlannerRunAt": "2026-04-30T10:23:11.614Z",
-  "lastWorkerRunAt": "2026-04-30T10:27:15.018Z",
-  "updatedAt": "2026-04-30T10:27:15.018Z"
+  "nextPlannerRunAt": "2026-04-30T10:27:26.459Z",
+  "nextWorkerRunAt": "2026-04-30T10:40:32.805Z",
+  "lastPlannerRunAt": "2026-04-27T01:57:05.163Z",
+  "lastWorkerRunAt": "2026-04-30T10:30:32.805Z",
+  "updatedAt": "2026-04-30T10:30:32.805Z"
 }

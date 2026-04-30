@@ -1,5 +1,8 @@
 # 凱利準則與風險防禦系統整合指南
 
+> Last reviewed: 2026-04-30 — Action: confirmed referenced source files exist (src/lib/portfolio/KellyCalculator.ts, src/lib/risk/RiskDefenseModule.ts). Minor clarifications added to docs repository.
+
+
 ## 概述
 
 本系統已整合凱利準則 (Kelly Criterion) 倉位管理與多層級風險防禦模組，提供科學化的資金配置與風險控制。

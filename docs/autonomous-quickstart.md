@@ -1,5 +1,8 @@
 # Autonomous Scheduler Quick Start
 
+> Last reviewed: 2026-04-30 — Action: confirmed npm entrypoints and deploy examples exist. Updated verification notes to use the repository's npm scripts.
+
+
 Use this guide if you want to get the local Autonomous System running in about 5 minutes.
 
 ## 1) Prerequisites

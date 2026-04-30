@@ -2,13 +2,13 @@
   "version": "1.0",
   "mode": "safe-run",
   "blocked_execution_count": 12,
-  "allowed_execution_count": 17,
+  "allowed_execution_count": 22,
   "last_llm_call_at": "2026-04-30T10:27:41.081279Z",
   "last_blocked_at": "2026-04-30T10:15:28.480723Z",
   "last_skip_reason": "SCHEDULER_DISABLED",
-  "last_caller": "ai_service",
-  "last_provider": "",
+  "last_caller": "worker",
+  "last_provider": "copilot-daemon",
   "last_model": "",
   "last_task_id": "",
-  "updated_at": "2026-04-30T10:27:41.081285Z"
+  "updated_at": "2026-04-30T10:30:32.657821Z"
 }

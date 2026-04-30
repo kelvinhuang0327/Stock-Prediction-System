@@ -1,5 +1,8 @@
 # 數據同步指南
 
+> Last reviewed: 2026-04-30 — Action: updated npm script and script paths to match repository (changed to `npm run sync` and `scripts/sync-real-data.ts`). See CHANGELOG.md for details.
+
+
 ## 當前狀況
 
 資料庫只有 **8 天數據** (2026-01-08 ~ 2026-01-15)，無法進行有效的歷史翻倍股分析。

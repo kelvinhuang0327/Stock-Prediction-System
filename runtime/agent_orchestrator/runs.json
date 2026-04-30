@@ -2,6 +2,60 @@
   "version": "1.0",
   "runs": [
     {
+      "runId": "worker-1777545032662",
+      "tickType": "worker",
+      "startedAt": "2026-04-30T10:30:32.579Z",
+      "finishedAt": "2026-04-30T10:30:32.662Z",
+      "status": "skipped",
+      "reason": "No queued task.",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777545006537",
+      "tickType": "worker",
+      "startedAt": "2026-04-30T10:30:06.404Z",
+      "finishedAt": "2026-04-30T10:30:06.537Z",
+      "status": "skipped",
+      "reason": "No queued task.",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777544970339",
+      "tickType": "worker",
+      "startedAt": "2026-04-30T10:29:30.246Z",
+      "finishedAt": "2026-04-30T10:29:30.339Z",
+      "status": "skipped",
+      "reason": "No queued task.",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777544943786",
+      "tickType": "worker",
+      "startedAt": "2026-04-30T10:29:03.714Z",
+      "finishedAt": "2026-04-30T10:29:03.786Z",
+      "status": "skipped",
+      "reason": "No queued task.",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777544896962",
+      "tickType": "worker",
+      "startedAt": "2026-04-30T10:28:16.895Z",
+      "finishedAt": "2026-04-30T10:28:16.962Z",
+      "status": "skipped",
+      "reason": "No queued task.",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777544880390",
+      "tickType": "worker",
+      "startedAt": "2026-04-30T10:22:45.572Z",
+      "finishedAt": "2026-04-30T10:28:00.390Z",
+      "status": "success",
+      "reason": "Task #173 finalized with PASS.",
+      "taskId": 173
+    },
+    {
       "runId": "worker-1777544834887",
       "tickType": "worker",
       "startedAt": "2026-04-30T10:27:14.824Z",
@@ -4443,60 +4497,6 @@
       "tickType": "worker",
       "startedAt": "2026-04-28T23:36:01.193Z",
       "finishedAt": "2026-04-28T23:36:01.310Z",
-      "status": "skipped",
-      "reason": "GLOBAL_HARD_OFF — skip execution",
-      "taskId": null
-    },
-    {
-      "runId": "worker-1777419298360",
-      "tickType": "worker",
-      "startedAt": "2026-04-28T23:34:58.259Z",
-      "finishedAt": "2026-04-28T23:34:58.360Z",
-      "status": "skipped",
-      "reason": "GLOBAL_HARD_OFF — skip execution",
-      "taskId": null
-    },
-    {
-      "runId": "worker-1777419235364",
-      "tickType": "worker",
-      "startedAt": "2026-04-28T23:33:55.260Z",
-      "finishedAt": "2026-04-28T23:33:55.364Z",
-      "status": "skipped",
-      "reason": "GLOBAL_HARD_OFF — skip execution",
-      "taskId": null
-    },
-    {
-      "runId": "planner-1777419218549",
-      "tickType": "planner",
-      "startedAt": "2026-04-28T23:33:38.435Z",
-      "finishedAt": "2026-04-28T23:33:38.549Z",
-      "status": "skipped",
-      "reason": "GLOBAL_HARD_OFF — skip execution",
-      "taskId": null
-    },
-    {
-      "runId": "worker-1777419210147",
-      "tickType": "worker",
-      "startedAt": "2026-04-28T23:33:29.897Z",
-      "finishedAt": "2026-04-28T23:33:30.147Z",
-      "status": "skipped",
-      "reason": "GLOBAL_HARD_OFF — skip execution",
-      "taskId": null
-    },
-    {
-      "runId": "worker-1777419172018",
-      "tickType": "worker",
-      "startedAt": "2026-04-28T23:32:51.951Z",
-      "finishedAt": "2026-04-28T23:32:52.018Z",
-      "status": "skipped",
-      "reason": "GLOBAL_HARD_OFF — skip execution",
-      "taskId": null
-    },
-    {
-      "runId": "worker-1777419172012",
-      "tickType": "worker",
-      "startedAt": "2026-04-28T23:32:51.940Z",
-      "finishedAt": "2026-04-28T23:32:52.012Z",
       "status": "skipped",
       "reason": "GLOBAL_HARD_OFF — skip execution",
       "taskId": null

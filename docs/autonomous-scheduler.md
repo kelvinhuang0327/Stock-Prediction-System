@@ -1,5 +1,8 @@
 # Autonomous Scheduler Template
 
+> Last reviewed: 2026-04-30 — Action: confirmed npm entrypoints and deploy examples exist. Scheduler templates validated against `package.json` scripts.
+
+
 This document provides local scheduling templates for the autonomous research and simulation system.
 
 The goal is reliability, not complexity:
