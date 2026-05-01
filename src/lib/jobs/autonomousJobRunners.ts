@@ -16,6 +16,7 @@ import {
   runWeeklyDeepLayer,
 } from '../training/TrainingScheduler';
 import type { LayerRunResult } from '../training/TrainingSchedulerTypes';
+import { isTaiwanTradingDay, toTaiwanDateIso } from '../market/twTradingCalendar';
 import { runTaiwanStockTask } from './TaiwanStockJobOrchestrator';
 import { runCompositeOptimizationMiner, runOptimizationMiner } from '../agent-orchestrator/optimizationMiner';
 import { loadProjectProfile } from '../agent-orchestrator/profile';
@@ -83,6 +84,7 @@ async function runDailyRunner(context: JobRunnerContext): Promise<JobRunnerOutpu
 }
 
 async function runMonitorRunner(_context: JobRunnerContext): Promise<JobRunnerOutput<MonitorCyclePayload>> {
+  const now = new Date();
   const [openTrades, latestSnapshot, closedTrades, reviewedTrades] = await Promise.all([
     prisma.simulatedTrade.count({ where: { status: { in: ['open', 'shadow-open'] } } }),
     prisma.autonomousResearchSnapshot.findFirst({ orderBy: { createdAt: 'desc' } }),
@@ -93,6 +95,25 @@ async function runMonitorRunner(_context: JobRunnerContext): Promise<JobRunnerOu
     prisma.tradeReviewReport.findMany({ select: { tradeId: true } }),
   ]);
   const tradeReviewIds = new Set(reviewedTrades.map((review) => review.tradeId));
+
+  // Build a calendar-aware note so operators can distinguish a holiday/weekend
+  // from a genuine sync failure when the latest snapshot date has not advanced.
+  const buildNote = (): string => {
+    if (!latestSnapshot) return 'no autonomous snapshot yet';
+    const todayIso = toTaiwanDateIso(now);
+    const isTradingToday = isTaiwanTradingDay(now);
+    const snapshotDateNote = latestSnapshot.snapshotDate
+      ? `latestSnapshotDate=${latestSnapshot.snapshotDate}`
+      : '';
+    if (!isTradingToday) {
+      const isWeekend = [0, 6].includes(new Date(`${todayIso}T12:00:00+08:00`).getDay());
+      const closedReason = isWeekend ? 'weekend' : 'holiday';
+      return `monitor snapshot refreshed; ${snapshotDateNote}; Market closed (${closedReason}); latest trading quote is current`;
+    }
+    return snapshotDateNote
+      ? `monitor snapshot refreshed; ${snapshotDateNote}`
+      : 'monitor snapshot refreshed';
+  };
 
   const payload: MonitorCyclePayload = {
     openTrades,
@@ -106,7 +127,7 @@ async function runMonitorRunner(_context: JobRunnerContext): Promise<JobRunnerOu
       .length,
     latestSnapshotId: latestSnapshot?.id ?? null,
     latestSnapshotDate: latestSnapshot?.snapshotDate ?? null,
-    note: latestSnapshot ? 'monitor snapshot refreshed' : 'no autonomous snapshot yet',
+    note: buildNote(),
   };
 
   return {
