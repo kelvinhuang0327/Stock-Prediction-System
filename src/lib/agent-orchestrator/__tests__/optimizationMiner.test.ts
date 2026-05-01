@@ -431,6 +431,24 @@ describe('Autonomous Optimization Miner — pure function tests', () => {
       const hasMeasurableOutput = criteriaText.includes('json') || criteriaText.includes('report') || criteriaText.includes('csv');
       expect(hasMeasurableOutput).toBe(true);
     });
+
+    it('candidateToDraft adds native ingest contract metadata for price_analysis_quality', () => {
+      const candidate = makePriceAnalysisCandidate();
+      const draft = candidateToDraft(candidate, MOCK_PROFILE);
+
+      expect(draft.contract.ingest_contract).toEqual(expect.objectContaining({
+        kind: 'price_analysis_native_report',
+        dedupeKey: 'price_analysis_quality__data_audit',
+        reportPath: 'docs/reports/price_data_quality.json',
+        insightTypeCandidate: 'data_quality_issue',
+        requiredScopeField: 'affectedSymbols',
+        noThresholdChanges: true,
+      }));
+      expect(draft.contract.acceptance_tests).toEqual(expect.arrayContaining([
+        'Write native insight report JSON to docs/reports/price_data_quality.json',
+        'No threshold changes — diagnostics only, using existing thresholds',
+      ]));
+    });
   });
 
 });

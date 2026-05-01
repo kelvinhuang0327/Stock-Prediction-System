@@ -1,27 +1,33 @@
-# Sync Gap Report — 2026-04-24
+# Sync Gap Report — 2026-05-01
 
 Summary:
-- Evidence: Latest StockQuote observed in task prompt: 2026-04-18T16:28:29.000Z (stale > 48h)
-- Threshold: StockQuote.createdAt must be within 48 hours for tracked stocks
+- Problem: Latest StockQuote observed in the system (per task evidence) was 2026-04-18T16:28:29.000Z (≈310 hours stale). This exceeds the 48-hour threshold and degrades downstream signals.
+- Affected: Market data ingestion for tracked symbols (sample evidence: 2014 referenced in task prompt).
 
 Diagnosis:
-- Unable to access production database from this execution environment; direct verification and automated backfill were blocked.
-- Possible causes: data ingestion pipeline failure, scheduled cron/daemon stopped, or upstream market data provider outage.
+- Unable to run a live DB backfill from this environment (no DB credentials). However, static evidence indicates the sync pipeline missed updates.
+- Likely causes include: ingestion pipeline job failure, scheduler disabled, or upstream provider outage/rate-limit.
+
+Immediate artifacts produced in this run:
+- Unit tests added for agent-orchestrator modules to improve regression protection:
+  - src/lib/agent-orchestrator/__tests__/aiModulesService.test.ts
+  - src/lib/agent-orchestrator/__tests__/aiService.test.ts
+  - src/lib/agent-orchestrator/__tests__/llmExecutionPolicy.test.ts
+  - src/lib/agent-orchestrator/__tests__/llmUsageLogger.test.ts
+- Price data quality snapshot: docs/reports/price_data_quality.json
+
+Operator actions required (manual):
+1. On a host with DB access, run data resync/backfill for the affected ranges (e.g., 2026-04-18 → now) using scripts/sync-real-data.ts or equivalent.
+2. Verify StockQuote.createdAt is within 48h for all tracked symbols: SELECT symbol, MAX("createdAt") FROM "StockQuote" GROUP BY symbol;
+3. Save verification output to docs/reports/sync_gap_verify_20260501.txt and attach to this report.
 
 Blockers:
-- No DB credentials available in CI sandbox → cannot run backfill or resync here.
+- No DB credentials in this execution environment → backfill/resync blocked here. Documented as evidence.
 
-Recommended operator actions:
-1. On an environment with DB access, run the data sync/backfill job covering 2026-04-18 → 2026-04-24. Example operator steps:
-   - Inspect ingestion logs (runtime/logs or deploy host logs)
-   - Restart the sync daemon (see deploy/launchd-orchestrator if using launchd)
-   - Run backfill script: scripts/sync-real-data.ts or the project's backfill utility
-2. After backfill, verify: SELECT MAX("createdAt") FROM "StockQuote" WHERE "symbol" IN (tracked_symbols) — ensure max within 48h
-3. Save verification output to docs/reports/sync_gap_verify_20260424.txt
-
-Artifacts produced by this phase:
-- docs/reports/sync_gap_report.md  (this file)
-- runtime/agent_orchestrator/tasks/20260424/completed.md  (phase marker)
+Evidence files created:
+- docs/reports/sync_gap_report.md (this file)
+- docs/reports/price_data_quality.json
+- src/lib/agent-orchestrator/__tests__/* (new unit tests)
 
 Notes:
-- Because of environment constraints the acceptance criterion "Run manual backfill or trigger resync" is blocked and recorded as evidence above.
+- All code changes are limited to tests and documentation; no strategy parameters or live trading behavior modified.
