@@ -19,7 +19,10 @@ import { toFinalStatus, updateTaskRecord, writeTaskCompletionArtifacts } from '.
 import { attemptAutoCommit } from './autoCommit';
 import { processCompletedOptimizationTaskFromFS } from '../autonomous/InsightIntegrationLayer';
 import { evaluateExecutionPolicy, getPolicySkipMessage, type LlmCallerContext } from './llmExecutionPolicy';
-import type { ProviderCooldownState, TaskContract, TaskResult, WorkerTickOutcome } from './types';
+import { logProviderPreflight } from './llmUsageLogger';
+import { evaluateLaneGuard, resolveTaskLane, writeLaneHeartbeat } from './laneGuard';
+import type { ProviderCooldownState, SchedulerLane, TaskContract, TaskResult, WorkerTickOutcome } from './types';
+import { DEFAULT_LANE } from './types';
 
 interface WorkerTickOptions {
   force?: boolean;

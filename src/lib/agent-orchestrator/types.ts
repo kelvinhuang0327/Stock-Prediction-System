@@ -1,6 +1,36 @@
 export type PlannerProvider = 'codex' | 'claude';
 export type WorkerProvider = 'codex' | 'claude' | 'copilot' | 'copilot-daemon';
 
+/**
+ * Scheduler lanes for per-lane mutual exclusion.
+ *
+ * Same lane → only one task may be RUNNING at a time (mutual exclusion).
+ * Different lanes → may run concurrently (no cross-lane blocking).
+ *
+ * Lane assignment rules (default when not set on a TaskRecord: 'L-ONDEMAND'):
+ *   L-INTRADAY  — quote sync, open-trade monitor, lifecycle monitor
+ *   L-DAILY     — market snapshot, candidate screening, proposal, simulation, KPI
+ *   L-NIGHTLY   — learning insight, optimization miner, code health, stale cleanup, report
+ *   L-WEEKLY    — walk-forward backtest, model evaluation, feature importance
+ *   L-ONDEMAND  — manual / debug / ad-hoc tasks (default; backwards-compat)
+ */
+export type SchedulerLane =
+  | 'L-INTRADAY'
+  | 'L-DAILY'
+  | 'L-NIGHTLY'
+  | 'L-WEEKLY'
+  | 'L-ONDEMAND';
+
+export const SCHEDULER_LANES: SchedulerLane[] = [
+  'L-INTRADAY',
+  'L-DAILY',
+  'L-NIGHTLY',
+  'L-WEEKLY',
+  'L-ONDEMAND',
+];
+
+export const DEFAULT_LANE: SchedulerLane = 'L-ONDEMAND';
+
 export type TaskStatus =
   | 'QUEUED'
   | 'RUNNING'
@@ -190,6 +220,8 @@ export interface TaskRecord {
   metaPath: string;
   workerLogPath: string | null;
   plannerContext?: PlannerTaskFingerprint | null;
+  /** Lane assignment for per-lane mutual exclusion. Defaults to 'L-ONDEMAND' when absent. */
+  lane?: SchedulerLane;
 }
 
 export interface PlannerTaskFingerprint {
@@ -216,11 +248,23 @@ export interface RunRecord {
   status: 'success' | 'failed' | 'skipped';
   reason: string;
   taskId: number | null;
+  /** Lane the run was dispatched into. Absent on legacy records. */
+  lane?: SchedulerLane;
 }
 
 export interface RunStore {
   version: '1.0';
   runs: RunRecord[];
+}
+
+/**
+ * Per-lane heartbeat record. Written every tick by the lane guard
+ * so stale-job cleanup can detect dead lanes.
+ */
+export interface LaneHeartbeat {
+  lane: SchedulerLane;
+  lastHeartbeatAt: string;   // ISO-8601
+  runningTaskId: number | null;
 }
 
 export interface SchedulerState {
@@ -236,6 +280,8 @@ export interface SchedulerState {
   lastPlannerRunAt: string | null;
   lastWorkerRunAt: string | null;
   updatedAt: string;
+  /** Per-lane heartbeat map — written by lane guard on every tick. */
+  laneHeartbeats?: Partial<Record<SchedulerLane, LaneHeartbeat>>;
 }
 
 export const TERMINAL_TASK_STATUSES: readonly TaskStatus[] = ['COMPLETED', 'PENDING_REVIEW', 'FAILED', 'FAILED_RATE_LIMIT', 'CANCELLED'];
