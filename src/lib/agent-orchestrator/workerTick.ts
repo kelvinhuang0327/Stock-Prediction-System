@@ -91,6 +91,7 @@ async function finalizeWorkerRun(
   status: 'success' | 'failed' | 'skipped',
   reason: string,
   taskId: number | null,
+  lane?: SchedulerLane,
 ): Promise<void> {
   await appendRun(paths, {
     runId: buildRunId(),
@@ -100,6 +101,7 @@ async function finalizeWorkerRun(
     status,
     reason,
     taskId,
+    lane,
   });
   state.lastWorkerRunAt = nowIso();
   state.nextWorkerRunAt = scheduleNextRunAt(state.scheduleMinutes);
@@ -162,30 +164,60 @@ function buildTaskProgressSummary(finalStatus: TaskResult['status'], provider: s
   return `Worker finished task but gate=${gateResult.gate_verdict}.`;
 }
 
-async function handleSingleActiveTask(
+/**
+ * Lane-based active-task guard (replaces single_active_task global lock).
+ *
+ * - Resolves the lane of the first QUEUED task (or DEFAULT_LANE when no queued task).
+ * - Checks whether that lane is already locked by a RUNNING task.
+ * - If locked and stale: auto-finalizes (same as previous single_active_task + finalize_on_stale).
+ * - If locked and not stale: returns 'skipped'.
+ * - If not locked: returns null (caller may proceed).
+ * - Also writes a heartbeat for the lane.
+ *
+ * Falls back to global single-task if single_active_task=true and all tasks are L-ONDEMAND
+ * (backwards-compatible: without lane field, all tasks share L-ONDEMAND).
+ */
+async function handleLaneGuard(
   paths: Awaited<ReturnType<typeof loadSchedulerState>>['paths'],
   state: Awaited<ReturnType<typeof loadSchedulerState>>['state'],
   index: Awaited<ReturnType<typeof loadTaskIndex>>,
   profile: Awaited<ReturnType<typeof loadProjectProfile>>,
   startedAtIso: string,
+  targetLane: SchedulerLane,
 ): Promise<WorkerTickOutcome | null> {
-  const activeTask = findFirstTaskByStatus(index, 'RUNNING');
-  if (!activeTask || !profile.worker_rules.single_active_task) return null;
-  if (
-    profile.worker_rules.finalize_on_permission_block &&
-    isStale(activeTask.lastOutputAt, profile.worker_rules.finalize_on_stale_output_minutes)
-  ) {
+  if (!profile.worker_rules.single_active_task) {
+    // Guard disabled — write heartbeat only (no running task)
+    writeLaneHeartbeat(state, targetLane, null);
+    return null;
+  }
+
+  const staleThresholdMs = profile.worker_rules.finalize_on_stale_output_minutes * 60_000;
+  const guardResult = evaluateLaneGuard(index.tasks, targetLane, staleThresholdMs);
+
+  // Write heartbeat regardless of guard outcome
+  writeLaneHeartbeat(state, targetLane, guardResult.lockHolder?.taskId ?? null);
+
+  if (guardResult.decision === 'allowed') return null;
+
+  const lockHolder = guardResult.lockHolder!;
+  if (guardResult.decision === 'stale_finalize' && profile.worker_rules.finalize_on_permission_block) {
     return finalizeStaleRunningTask(
       paths,
       state,
       index,
-      activeTask,
+      lockHolder,
       startedAtIso,
       profile.worker_rules.finalize_on_stale_output_minutes,
     );
   }
-  await finalizeWorkerRun(paths, state, startedAtIso, 'skipped', `Task #${activeTask.taskId} is already RUNNING.`, activeTask.taskId);
-  return { status: 'skipped', reason: 'already_running', taskId: activeTask.taskId };
+
+  await finalizeWorkerRun(
+    paths, state, startedAtIso, 'skipped',
+    `Lane ${targetLane}: task #${lockHolder.taskId} is already RUNNING.`,
+    lockHolder.taskId,
+    targetLane,
+  );
+  return { status: 'skipped', reason: 'already_running', taskId: lockHolder.taskId };
 }
 
 function scheduleOptimizationInsights(
@@ -232,15 +264,21 @@ export async function runWorkerTick(options: WorkerTickOptions = {}): Promise<Wo
     return { status: 'skipped', reason: 'provider_rate_limited', taskId: activeCooldown.lastTaskId };
   }
 
-  const activeTaskResult = await handleSingleActiveTask(paths, state, index, profile, startedAtIso);
-  if (activeTaskResult) return activeTaskResult;
+  // Resolve target lane from the first QUEUED task, defaulting to L-ONDEMAND.
+  const firstQueued = index.tasks
+    .filter((t) => t.status === 'QUEUED')
+    .sort((a, b) => a.taskId - b.taskId)[0];
+  const targetLane = firstQueued ? resolveTaskLane(firstQueued) : DEFAULT_LANE;
+
+  const laneGuardResult = await handleLaneGuard(paths, state, index, profile, startedAtIso, targetLane);
+  if (laneGuardResult) return laneGuardResult;
 
   // Guard: if no worker command is configured (neither process.env nor launchd.env),
   // skip the entire tick rather than claiming a QUEUED task and immediately marking
   // it REPLAN_REQUIRED in a loop.
   const workerCmd = resolveWorkerCommand();
   if (!workerCmd) {
-    await finalizeWorkerRun(paths, state, startedAtIso, 'skipped', 'AGENT_ORCHESTRATOR_WORKER_CMD is not configured — worker tick skipped.', null);
+    await finalizeWorkerRun(paths, state, startedAtIso, 'skipped', 'AGENT_ORCHESTRATOR_WORKER_CMD is not configured — worker tick skipped.', null, targetLane);
     return { status: 'skipped', reason: 'worker_not_configured', taskId: null };
   }
 
@@ -250,7 +288,7 @@ export async function runWorkerTick(options: WorkerTickOptions = {}): Promise<Wo
 
   const task = queuedTasks[0];
   if (!task) {
-    await finalizeWorkerRun(paths, state, startedAtIso, 'skipped', 'No queued task.', null);
+    await finalizeWorkerRun(paths, state, startedAtIso, 'skipped', 'No queued task.', null, targetLane);
     return { status: 'skipped', reason: 'no_queued_task', taskId: null };
   }
 
@@ -349,6 +387,7 @@ export async function runWorkerTick(options: WorkerTickOptions = {}): Promise<Wo
     finalStatus === 'COMPLETED' ? 'success' : 'failed',
     `Task #${task.taskId} finalized with ${gateResult.gate_verdict}.`,
     task.taskId,
+    resolveTaskLane(task),
   );
 
   return {

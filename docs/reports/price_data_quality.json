@@ -1,44 +1,9 @@
 {
-  "generatedAt": "2026-04-25T01:05:12.571Z",
-  "db_path": "prisma/dev.db",
-  "overall_latest_quote_createdAt": "2026-04-18T16:28:29.000Z",
-  "market_dates_count_last_30_days": 0,
-  "per_symbol": [
-    {
-      "stockId": "2330",
-      "name": "台積電",
-      "latest_quote_date": "2026-04-15",
-      "latest_quote_createdAt": "2026-04-15T16:23:54.000Z",
-      "latest_close": 2080,
-      "zero_volume_rows": 0,
-      "ohlc_anomalies": 0,
-      "ohlc_bad_rows": [],
-      "missing_trading_days_last_30": 0,
-      "is_stale": true
-    },
-    {
-      "stockId": "2454",
-      "name": "聯發科",
-      "latest_quote_date": "2026-04-15",
-      "latest_quote_createdAt": "2026-04-15T16:24:04.000Z",
-      "latest_close": 1790,
-      "zero_volume_rows": 0,
-      "ohlc_anomalies": 0,
-      "ohlc_bad_rows": [],
-      "missing_trading_days_last_30": 0,
-      "is_stale": true
-    },
-    {
-      "stockId": "2317",
-      "name": "鴻海",
-      "latest_quote_date": "2026-04-15",
-      "latest_quote_createdAt": "2026-04-15T16:23:43.000Z",
-      "latest_close": 207.5,
-      "zero_volume_rows": 0,
-      "ohlc_anomalies": 0,
-      "ohlc_bad_rows": [],
-      "missing_trading_days_last_30": 0,
-      "is_stale": true
-    }
-  ]
+  "generated_at": "2026-05-04T08:21:28.656394Z",
+  "latest_quote_per_symbol": {},
+  "missing_trading_days_last_30": {},
+  "zero_volume_rows_count": 0,
+  "zero_volume_rows_sample": [],
+  "ohlc_anomalies_count": 0,
+  "ohlc_anomalies_sample": []
 }
