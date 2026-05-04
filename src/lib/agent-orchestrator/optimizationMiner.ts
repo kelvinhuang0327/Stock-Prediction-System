@@ -1591,6 +1591,35 @@ export function candidateToDraft(candidate: OptimizationTaskCandidate, profile: 
     target_files: candidate.suggestedFiles,
   };
 
+  // Special-case: price analysis candidates should include a native ingest contract
+  if (candidate.sourceType === 'price_analysis_quality') {
+    // Attach ingest_contract metadata so downstream gate can validate report ingestability
+    // and workers know where to write the native JSON report.
+    // Note: TaskContract type is extended dynamically here for practical testing and gate checks.
+    (contract as any).ingest_contract = {
+      kind: 'price_analysis_native_report',
+      dedupeKey: candidate.dedupeKey,
+      reportPath: 'docs/reports/price_data_quality.json',
+      insightTypeCandidate: 'data_quality_issue',
+      requiredScopeField: 'affectedSymbols',
+      requiredTopLevelFields: ['generatedAt', 'insightType', 'confidence', 'evidence', 'severity', 'affectedSymbols'],
+      noThresholdChanges: true,
+    };
+
+    // Ensure contract acceptance_tests include native-report and no-threshold-change reminders
+    contract.acceptance_tests = Array.from(new Set([...
+      contract.acceptance_tests,
+      'Write native insight report JSON to docs/reports/price_data_quality.json',
+      'No threshold changes — diagnostics only, using existing thresholds',
+    ].flat()));
+
+    // Also mark required_outputs to include the native report path
+    contract.required_outputs = Array.from(new Set([...
+      contract.required_outputs,
+      'docs/reports/price_data_quality.json',
+    ].flat()));
+  }
+
   const plannerContext: PlannerTaskFingerprint = {
     taskType: `optimization_${candidate.sourceType}`,
     game: null,
