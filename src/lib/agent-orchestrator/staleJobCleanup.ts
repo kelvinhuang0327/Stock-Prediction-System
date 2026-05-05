@@ -158,6 +158,17 @@ export interface StaleCleanupReport {
 
   /** Trend analysis based on cleanup history */
   trends: CleanupTrendReport;
+
+  /**
+   * Inline system health summary derived from trend signals.
+   * Mirrors the output of systemHealth.computeSystemHealth() without
+   * creating a circular import dependency.
+   */
+  systemHealthStatus: {
+    status: 'healthy' | 'degraded' | 'critical';
+    hasSignals: boolean;
+    signalLabels: TrendLabel[];
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -491,6 +502,11 @@ export async function runStaleJobCleanup(
   const updatedHistory = await appendCleanupHistory(paths.orchestratorRoot, historyEntry);
   const trends = analyzeCleanupTrends(updatedHistory);
 
+  // Inline health summary (avoids circular import with systemHealth.ts)
+  const signalLabels = trends.signals.map((s) => s.label);
+  const healthStatus =
+    signalLabels.length === 0 ? 'healthy' : signalLabels.length === 1 ? 'degraded' : 'critical';
+
   const report: StaleCleanupReport = {
     generatedAt: nowIso(),
     dryRun,
@@ -509,6 +525,11 @@ export async function runStaleJobCleanup(
       skippedBecauseDryRun,
     },
     trends,
+    systemHealthStatus: {
+      status: healthStatus,
+      hasSignals: signalLabels.length > 0,
+      signalLabels,
+    },
   };
 
   await writeCleanupReport(paths.orchestratorRoot, report);

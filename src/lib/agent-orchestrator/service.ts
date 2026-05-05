@@ -1,6 +1,7 @@
 import { fileExists, nowIso, readJsonFile, scheduleNextRunAt } from './common';
 import { getLlmPolicyState } from './llmExecutionPolicy';
 import nodeFs from 'node:fs/promises';
+import { buildLaneSummaries, buildSchedulerHeartbeatFile } from './laneGuard';
 import { runPlannerTick } from './plannerTick';
 import { loadProjectProfile } from './profile';
 import {
@@ -12,8 +13,10 @@ import {
   saveSchedulerState,
 } from './storage';
 import { runWorkerTick } from './workerTick';
+import { getSystemHealthStatus } from './systemHealth';
 
 import type { PlannerProvider, TaskContract, TaskResult, WorkerProvider } from './types';
+import { SCHEDULER_LANES } from './types';
 
 interface ListTaskOptions {
   page?: number;
@@ -51,6 +54,12 @@ export async function getOrchestratorSummary() {
   const latestTask = getLatestTask(index);
   const llmControl = await getLlmPolicyState();
 
+  const laneSummaries = buildLaneSummaries(index.tasks, state, SCHEDULER_LANES);
+  const schedulerHeartbeat = buildSchedulerHeartbeatFile(state, index.tasks);
+
+  // Non-blocking system health check — gracefully returns null on any error
+  const systemHealth = await getSystemHealthStatus().catch(() => null);
+
   return {
     schedulerEnabled: state.schedulerEnabled,
     llmControl,
@@ -73,6 +82,9 @@ export async function getOrchestratorSummary() {
     providerCooldowns: state.providerCooldowns ?? {},
     latestTask,
     recentRuns: runs.runs.slice(0, 20),
+    laneSummaries,
+    schedulerHeartbeat,
+    systemHealth,
     profile: {
       projectName: profile.project_name,
       backlogPath: profile.backlog_path,

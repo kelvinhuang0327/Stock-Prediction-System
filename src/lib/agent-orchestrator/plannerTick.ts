@@ -13,6 +13,7 @@ import {
 import { createQueuedTask } from './tasks';
 import { buildRecentTaskReference, evaluatePlannerDraftQuality } from './taskQualityGate';
 import { runCompositeOptimizationMiner, runOptimizationMiner } from './optimizationMiner';
+import { getSystemHealthStatus, emitHealthWarningIfDegraded } from './systemHealth';
 import type { PlannerDraft } from './providers';
 import type { PlannerTaskFingerprint, PlannerTickOutcome, ResearchBacklog, TaskContract, TaskRecord, TaskResult } from './types';
 
@@ -357,6 +358,12 @@ export async function runPlannerTick(options: PlannerTickOptions = {}): Promise<
   if (!state.schedulerEnabled) {
     return finalizeSkippedTick(runtime, 'SCHEDULER_DISABLED — skip execution', 'scheduler_disabled', null, false);
   }
+
+  // Health-aware logging: observe system health and emit a warning if degraded/critical.
+  // Purely observational — does NOT change scheduling behaviour.
+  getSystemHealthStatus()
+    .then((health) => emitHealthWarningIfDegraded('plannerTick', health))
+    .catch(() => { /* non-fatal — health check must never block the planner */ });
   const policyDecision = await evaluateExecutionPolicy({
     caller: 'planner',
     callerContext: options.callerContext ?? 'background',

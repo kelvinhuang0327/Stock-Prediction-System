@@ -21,6 +21,7 @@ import { processCompletedOptimizationTaskFromFS } from '../autonomous/InsightInt
 import { evaluateExecutionPolicy, getPolicySkipMessage, type LlmCallerContext } from './llmExecutionPolicy';
 import { logProviderPreflight } from './llmUsageLogger';
 import { evaluateLaneGuard, resolveTaskLane, writeLaneHeartbeat, writeLaneLockFile, writeSchedulerHeartbeatFile } from './laneGuard';
+import { getSystemHealthStatus, emitHealthWarningIfDegraded } from './systemHealth';
 import type { ProviderCooldownState, SchedulerLane, TaskContract, TaskResult, WorkerTickOutcome } from './types';
 import { DEFAULT_LANE, SCHEDULER_LANES } from './types';
 
@@ -241,6 +242,13 @@ export async function runWorkerTick(options: WorkerTickOptions = {}): Promise<Wo
   const index = await loadTaskIndex(paths);
   const startedAt = new Date();
   const startedAtIso = startedAt.toISOString();
+
+  // Health-aware logging: observe system health and emit a warning if degraded/critical.
+  // Purely observational — does NOT change scheduling behaviour.
+  getSystemHealthStatus()
+    .then((health) => emitHealthWarningIfDegraded('workerTick', health))
+    .catch(() => { /* non-fatal — health check must never block the worker */ });
+
   const policyDecision = await evaluateExecutionPolicy({
     caller: 'worker',
     callerContext: options.callerContext ?? 'background',
