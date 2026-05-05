@@ -1,0 +1,42 @@
+{
+  "pipeline_version": "P3-07",
+  "run_ts": "2026-05-05T06:08:27.074632+00:00",
+  "as_of_date": "2026-05-01",
+  "symbols_requested": [
+    "2330"
+  ],
+  "symbols_evaluated": [
+    "2330"
+  ],
+  "hypotheses_evaluated": [
+    "STOCK_H001_20D_MOMENTUM",
+    "STOCK_H002_RSI_REVERSION",
+    "STOCK_H003_VOLUME_BREAKOUT"
+  ],
+  "windows_evaluated": [
+    150,
+    500
+  ],
+  "total_tests": 6,
+  "total_valid_tests": 5,
+  "total_passed_pit": 6,
+  "total_data_insufficient": 1,
+  "promoted_candidates": [],
+  "rejected_count": 3,
+  "avg_roi": -0.0564,
+  "avg_sharpe": 2.1131,
+  "permutation_pass_rate": 0.0,
+  "bh_fdr_pass_count": 0,
+  "leakage_violation_count": 0,
+  "random_split_violation_count": 0,
+  "final_classification": "REAL_BATCH_EVALUATION_DATA_INSUFFICIENT",
+  "safety_confirmations": {
+    "no_production_write": true,
+    "no_trade_execution": true,
+    "not_trading_advice": true,
+    "real_data_read_only": true,
+    "bh_fdr_corrected": true,
+    "pit_guard_enforced": true,
+    "no_random_split": true
+  }
+}

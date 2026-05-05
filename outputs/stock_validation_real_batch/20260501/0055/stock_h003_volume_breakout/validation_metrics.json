@@ -1,0 +1,17 @@
+{
+  "hypothesis_id": "STOCK_H003_VOLUME_BREAKOUT",
+  "symbol": "0055",
+  "as_of_date": "2026-05-01",
+  "windows_tested": [
+    150,
+    500
+  ],
+  "windows_ok": [
+    500
+  ],
+  "avg_sharpe_annualized": -0.205,
+  "avg_roi_annualized": -0.0433,
+  "bh_fdr_pass_count": 0,
+  "promoted": "REJECTED",
+  "run_ts": "2026-05-05T06:08:26.863509+00:00"
+}

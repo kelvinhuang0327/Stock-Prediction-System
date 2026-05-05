@@ -1,0 +1,18 @@
+{
+  "hypothesis_id": "STOCK_H001_20D_MOMENTUM",
+  "symbol": "2454",
+  "as_of_date": "2026-05-01",
+  "windows_tested": [
+    150,
+    500
+  ],
+  "windows_ok": [
+    150,
+    500
+  ],
+  "avg_sharpe_annualized": -1.4524,
+  "avg_roi_annualized": -1.7773,
+  "bh_fdr_pass_count": 0,
+  "promoted": "REJECTED",
+  "run_ts": "2026-05-05T06:06:57.105387+00:00"
+}
