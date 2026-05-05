@@ -1,0 +1,18 @@
+{
+  "generatedAt": "2026-04-24T10:00:00.000Z",
+  "dryRun": true,
+  "schedulerEnabled": false,
+  "leaseDurationMs": 1800000,
+  "heartbeatStaleThresholdMs": 600000,
+  "expiredLocks": [],
+  "staleHeartbeats": [],
+  "runningTasksScanned": 0,
+  "actionsPerformed": [],
+  "summary": {
+    "expiredLockCount": 0,
+    "staleHeartbeatCount": 0,
+    "tasksReclaimed": 0,
+    "skippedBecauseSchedulerDisabled": true,
+    "skippedBecauseDryRun": true
+  }
+}
