@@ -55,8 +55,13 @@ from gbgf.models import (
 from gbgf.gates.gate_runner import GateRunner
 from gbgf.domain.stock_real import StockRealDomain, DATA_INSUFFICIENT
 from gbgf.domain.point_in_time_guard import PointInTimeGuard
+from gbgf.domain.stock_features import (
+    compute_features_for_rows,
+    compute_universe_median_returns,
+)
 
-REGISTRY_PATH = ROOT / "research" / "stock_hypothesis_registry.json"
+DEFAULT_REGISTRY_PATH = ROOT / "research" / "stock_hypothesis_registry.json"
+REGISTRY_PATH = DEFAULT_REGISTRY_PATH  # kept for test backward compatibility
 DB_PATH = ROOT / "prisma" / "dev.db"
 OUTPUT_BATCH_BASE = ROOT / "outputs" / "stock_validation_real_batch"
 
@@ -66,6 +71,7 @@ TX_COST_BPS = 10
 DEFAULT_MIN_ROWS = 300
 DEFAULT_N_PERMUTATIONS = 500
 DEFAULT_AUTO_SYMBOLS = 8            # how many symbols to auto-select
+BH_FDR_ALPHA = 0.10                 # Benjamini-Hochberg FDR threshold
 
 GATE_ICONS = {
     GateStatus.PASS: "✅",
@@ -139,7 +145,7 @@ def select_symbols(
 
 # ── Signal computers (real OHLCV rows) ─────────────────────────────────────────
 
-def compute_momentum_signals(rows: List[Dict], lookback: int = 20, forward: int = 5) -> List[Dict]:
+def compute_momentum_signals(rows: List[Dict], lookback: int = 20, forward: int = 5, **kwargs) -> List[Dict]:
     """H001: 20-day price momentum → next-5d directional return."""
     closes = [float(r["close"]) for r in rows]
     signals = []
@@ -152,7 +158,7 @@ def compute_momentum_signals(rows: List[Dict], lookback: int = 20, forward: int 
     return signals
 
 
-def compute_rsi_reversion_signals(rows: List[Dict], period: int = 5, forward: int = 5) -> List[Dict]:
+def compute_rsi_reversion_signals(rows: List[Dict], period: int = 5, forward: int = 5, **kwargs) -> List[Dict]:
     """H002: RSI(5) mean reversion. Buy oversold (<30), sell overbought (>70)."""
     closes = [float(r["close"]) for r in rows]
     signals = []
@@ -177,7 +183,7 @@ def compute_rsi_reversion_signals(rows: List[Dict], period: int = 5, forward: in
 
 
 def compute_volume_breakout_signals(
-    rows: List[Dict], lookback: int = 20, volume_mult: float = 1.5, forward: int = 5
+    rows: List[Dict], lookback: int = 20, volume_mult: float = 1.5, forward: int = 5, **kwargs
 ) -> List[Dict]:
     """H003: Volume breakout (volume > 1.5x 20d avg AND close > open)."""
     closes = [float(r["close"]) for r in rows]
@@ -201,6 +207,142 @@ SIGNAL_COMPUTERS = {
 }
 
 
+# ── V2 signal computers (H004–H008, use stock_features PIT-safe builder) ───────
+
+def compute_h004_signals(
+    rows: List[Dict], forward: int = 5, extra_context: Optional[Dict] = None, **kwargs
+) -> List[Dict]:
+    """H004: Momentum + Volume Confirmation (20d return > 0 AND vol z-score > 1)."""
+    features = compute_features_for_rows(rows, ["return_20d", "volume_zscore_20d"])
+    signals = []
+    for i, feat in enumerate(features):
+        if i + forward >= len(rows):
+            break
+        r20 = feat.get("return_20d")
+        vz = feat.get("volume_zscore_20d")
+        if r20 is None or vz is None:
+            continue
+        if r20 > 0 and vz > 1.0:
+            fwd = (float(rows[i + forward]["close"]) - float(rows[i]["close"])) / float(rows[i]["close"])
+            signals.append({"date": rows[i]["date"], "signal": 1,
+                             "vol_zscore": round(vz, 3), "forward_return": round(fwd, 6)})
+    return signals
+
+
+def compute_h005_signals(
+    rows: List[Dict], forward: int = 5, extra_context: Optional[Dict] = None, **kwargs
+) -> List[Dict]:
+    """H005: Pullback in Uptrend (close > MA60, 5d pullback, 20d positive)."""
+    features = compute_features_for_rows(rows, ["return_5d", "return_20d", "ma60"])
+    signals = []
+    for i, feat in enumerate(features):
+        if i + forward >= len(rows):
+            break
+        r5 = feat.get("return_5d")
+        r20 = feat.get("return_20d")
+        ma60_val = feat.get("ma60")
+        if r5 is None or r20 is None or ma60_val is None:
+            continue
+        close = float(rows[i]["close"])
+        if close > ma60_val and r5 < 0 and r20 > 0:
+            fwd = (float(rows[i + forward]["close"]) - close) / close
+            signals.append({"date": rows[i]["date"], "signal": 1,
+                             "return_5d": round(r5, 4), "return_20d": round(r20, 4),
+                             "forward_return": round(fwd, 6)})
+    return signals
+
+
+def compute_h006_signals(
+    rows: List[Dict], forward: int = 5, extra_context: Optional[Dict] = None, **kwargs
+) -> List[Dict]:
+    """H006: Low Volatility Breakout (vol in bottom 25th pct AND close > 20d high)."""
+    features = compute_features_for_rows(rows, ["volatility_20d", "breakout_20d_high"])
+    signals = []
+    # Rolling p25 of volatility (PIT: use only features[0..i])
+    for i, feat in enumerate(features):
+        if i + forward >= len(rows):
+            break
+        vol = feat.get("volatility_20d")
+        bo = feat.get("breakout_20d_high")
+        if vol is None or bo is None or not bo:
+            continue
+        past_vols = [
+            features[j]["volatility_20d"]
+            for j in range(i + 1)
+            if features[j].get("volatility_20d") is not None
+        ]
+        if len(past_vols) < 4:
+            continue
+        p25_idx = max(0, int(len(past_vols) * 0.25) - 1)
+        p25_val = sorted(past_vols)[p25_idx]
+        if vol <= p25_val:
+            fwd = (float(rows[i + forward]["close"]) - float(rows[i]["close"])) / float(rows[i]["close"])
+            signals.append({"date": rows[i]["date"], "signal": 1,
+                             "volatility_20d": round(vol, 6),
+                             "forward_return": round(fwd, 6)})
+    return signals
+
+
+def compute_h007_signals(
+    rows: List[Dict], forward: int = 5, extra_context: Optional[Dict] = None, **kwargs
+) -> List[Dict]:
+    """H007: Relative Strength vs Universe (20d return > universe median 20d return)."""
+    universe_median = (extra_context or {}).get("universe_median_returns")
+    if not universe_median:
+        return []
+    features = compute_features_for_rows(
+        rows, ["return_20d", "universe_relative_strength"],
+        universe_median_returns=universe_median,
+    )
+    signals = []
+    for i, feat in enumerate(features):
+        if i + forward >= len(rows):
+            break
+        rel = feat.get("universe_relative_strength")
+        if rel is None:
+            continue
+        if rel > 0:
+            fwd = (float(rows[i + forward]["close"]) - float(rows[i]["close"])) / float(rows[i]["close"])
+            signals.append({"date": rows[i]["date"], "signal": 1,
+                             "relative_strength": round(rel, 4),
+                             "forward_return": round(fwd, 6)})
+    return signals
+
+
+def compute_h008_signals(
+    rows: List[Dict], forward: int = 5, extra_context: Optional[Dict] = None, **kwargs
+) -> List[Dict]:
+    """H008: ETF Defensive Momentum — only ETF symbols (Taiwan prefix '00')."""
+    symbol = (extra_context or {}).get("symbol", "")
+    if not symbol.startswith("00"):
+        return []   # Not an ETF — DATA_INSUFFICIENT handled by caller
+    features = compute_features_for_rows(rows, ["return_20d", "drawdown_20d"])
+    signals = []
+    for i, feat in enumerate(features):
+        if i + forward >= len(rows):
+            break
+        r20 = feat.get("return_20d")
+        dd = feat.get("drawdown_20d")
+        if r20 is None or dd is None:
+            continue
+        if r20 > 0 and dd > -0.05:
+            fwd = (float(rows[i + forward]["close"]) - float(rows[i]["close"])) / float(rows[i]["close"])
+            signals.append({"date": rows[i]["date"], "signal": 1,
+                             "drawdown_20d": round(dd, 4),
+                             "forward_return": round(fwd, 6)})
+    return signals
+
+
+# Register all signal computers (v1 + v2)
+SIGNAL_COMPUTERS.update({
+    "STOCK_H004_MOM_VOL_CONFIRM": compute_h004_signals,
+    "STOCK_H005_PULLBACK_UPTREND": compute_h005_signals,
+    "STOCK_H006_LOW_VOL_BREAKOUT": compute_h006_signals,
+    "STOCK_H007_RELATIVE_STRENGTH": compute_h007_signals,
+    "STOCK_H008_ETF_DEF_MOMENTUM": compute_h008_signals,
+})
+
+
 # ── Per-window OOS evaluation on real rows ─────────────────────────────────────
 
 def eval_window(
@@ -209,10 +351,14 @@ def eval_window(
     window_days: int,
     n_permutations: int,
     seed: int,
+    extra_context: Optional[Dict] = None,
 ) -> Dict[str, Any]:
     """
     Evaluate one hypothesis on `rows` using last `window_days` (or fewer if not
     enough). Returns metrics dict with permutation p-value.
+
+    extra_context: optional dict with additional context for v2 signal computers
+        (e.g. 'universe_median_returns' for H007, 'symbol' for H008).
     """
     signal_fn = SIGNAL_COMPUTERS.get(hid)
     if signal_fn is None:
@@ -228,7 +374,7 @@ def eval_window(
             "error": f"only {len(use_rows)} rows < window_days={window_days}",
         }
 
-    all_sigs = signal_fn(use_rows, forward=FORWARD_DAYS)
+    all_sigs = signal_fn(use_rows, forward=FORWARD_DAYS, extra_context=extra_context)
     if not all_sigs:
         return {"status": DATA_INSUFFICIENT, "window_days": window_days,
                 "error": "no_signals", "actual_rows": len(use_rows)}
@@ -352,28 +498,34 @@ def run_batch_pipeline(args: argparse.Namespace) -> Dict[str, Any]:
     window_days_max = args.window_days
     n_perms = args.permutations
 
+    # Resolve registry path (v1 default or --registry override)
+    registry_path = Path(getattr(args, "registry", None) or DEFAULT_REGISTRY_PATH)
+    if not registry_path.is_absolute():
+        registry_path = ROOT / registry_path
+
     print("\n" + "=" * 72)
-    print("  GBGF Real Stock Hypothesis Batch Evaluation — P3-07")
+    print("  GBGF Real Stock Hypothesis Batch Evaluation — P3-07/P3-08")
     print(f"  {ts_start.isoformat()}")
     print(f"  as_of_date={as_of_date}  min_rows={min_rows}  window_days={window_days_max}")
     print(f"  permutations={n_perms}")
+    print(f"  registry={registry_path.name}")
     print("  ⚠️  REAL DATA — READ-ONLY — NOT A TRADING RECOMMENDATION")
     print("=" * 72 + "\n")
 
     # ── Load hypothesis registry ──────────────────────────────────────────────
-    if not REGISTRY_PATH.exists():
-        print(f"ERROR: registry not found at {REGISTRY_PATH}")
+    if not registry_path.exists():
+        print(f"ERROR: registry not found at {registry_path}")
         sys.exit(1)
-    registry = json.loads(REGISTRY_PATH.read_text())
+    registry = json.loads(registry_path.read_text())
     hypotheses = registry.get("hypotheses", [])
-    print(f"[1/7] Loaded {len(hypotheses)} hypotheses from registry")
+    print(f"[1/8] Loaded {len(hypotheses)} hypotheses from {registry_path.name}")
 
     # ── Select symbols ────────────────────────────────────────────────────────
     requested = [s.strip() for s in args.symbols.split(",") if s.strip()] if args.symbols else None
     symbols = select_symbols(as_of_date, min_rows=min_rows,
                              requested_symbols=requested, db_path=DB_PATH)
 
-    print(f"[2/7] Symbol universe: {len(symbols)} symbol(s) with >= {min_rows} rows")
+    print(f"[2/8] Symbol universe: {len(symbols)} symbol(s) with >= {min_rows} rows")
     if not symbols:
         print(f"\n  ⚠️  {DATA_INSUFFICIENT}: No symbols with >= {min_rows} ISO-date rows up to {as_of_date}")
         return {"status": DATA_INSUFFICIENT, "symbols_evaluated": []}
@@ -389,16 +541,12 @@ def run_batch_pipeline(args: argparse.Namespace) -> Dict[str, Any]:
     runner = GateRunner()
     pit_guard = PointInTimeGuard(as_of_date=as_of_date, forward_days=FORWARD_DAYS)
 
-    # ── Collect all window-level test results for BH-FDR ─────────────────────
-    all_tests: List[Dict[str, Any]] = []   # will be BH-FDR corrected globally
-
-    # symbol → hyp → list of window results
-    raw_results: Dict[str, Dict[str, List[Dict]]] = {}
-
-    print("[3/7] Running window-level OOS + permutation tests...")
+    # ── Pre-load all symbol rows once (used for OOS, gates, and universe) ─────
+    print("[3/8] Loading rows for all symbols...")
+    all_symbol_rows: Dict[str, Any] = {}
+    all_symbol_pit: Dict[str, Any] = {}
+    all_symbol_adapters: Dict[str, Any] = {}
     for sym in symbols:
-        raw_results[sym] = {}
-        # Load rows once per symbol
         domain_adapter = StockRealDomain(
             symbol=sym,
             as_of_date=as_of_date,
@@ -407,8 +555,38 @@ def run_batch_pipeline(args: argparse.Namespace) -> Dict[str, Any]:
             min_rows=min_rows,
         )
         rows = domain_adapter._load_rows()
-
+        all_symbol_adapters[sym] = domain_adapter
         if rows == DATA_INSUFFICIENT or not rows:
+            all_symbol_rows[sym] = None
+            all_symbol_pit[sym] = None
+        else:
+            all_symbol_rows[sym] = rows
+            all_symbol_pit[sym] = pit_guard.check(rows, split_type="time_based")
+
+    # ── Compute universe median returns for H007 (PIT-safe) ───────────────────
+    print("[4/8] Computing universe median returns for H007 (PIT-safe)...")
+    valid_rows_for_universe = {s: r for s, r in all_symbol_rows.items() if r}
+    universe_median_returns = compute_universe_median_returns(
+        valid_rows_for_universe,
+        lookback=20,
+        as_of_date=as_of_date,
+    )
+    print(f"  Universe median computed for {len(universe_median_returns)} dates "
+          f"across {len(valid_rows_for_universe)} symbols\n")
+
+    # ── Collect all window-level test results for BH-FDR ─────────────────────
+    all_tests: List[Dict[str, Any]] = []   # will be BH-FDR corrected globally
+
+    # symbol → hyp → list of window results
+    raw_results: Dict[str, Dict[str, List[Dict]]] = {}
+
+    print("[5/8] Running window-level OOS + permutation tests...")
+    for sym in symbols:
+        raw_results[sym] = {}
+        rows = all_symbol_rows.get(sym)
+        pit_result = all_symbol_pit.get(sym)
+
+        if not rows:
             print(f"  {sym}: {DATA_INSUFFICIENT}")
             for hyp in hypotheses:
                 hid = hyp["hypothesis_id"]
@@ -418,15 +596,21 @@ def run_batch_pipeline(args: argparse.Namespace) -> Dict[str, Any]:
                 ]
             continue
 
-        pit_result = pit_guard.check(rows, split_type="time_based")
         print(f"  {sym}: {len(rows)} rows  PIT={'PASS' if pit_result.passed else 'FAIL'}")
+
+        # Build per-symbol extra context (universe median + symbol identifier)
+        sym_extra_context = {
+            "universe_median_returns": universe_median_returns,
+            "symbol": sym,
+        }
 
         for hyp in hypotheses:
             hid = hyp["hypothesis_id"]
             hyp_windows = []
             for w in BATCH_WINDOWS:
                 seed = hash(f"{sym}:{hid}:{w}") % (2 ** 31)
-                wr = eval_window(hid, rows, w, n_perms, seed)
+                wr = eval_window(hid, rows, w, n_perms, seed,
+                                 extra_context=sym_extra_context)
                 wr["symbol"] = sym
                 wr["hypothesis_id"] = hid
                 wr["window_days"] = w
@@ -447,8 +631,8 @@ def run_batch_pipeline(args: argparse.Namespace) -> Dict[str, Any]:
             raw_results[sym][hid] = hyp_windows
 
     # ── Global BH-FDR correction ──────────────────────────────────────────────
-    print(f"\n[4/7] BH-FDR correction over {len(all_tests)} tests (alpha=0.10)...")
-    bh_corrected = bh_fdr_correction(all_tests, alpha=0.10)
+    print(f"\n[6/8] BH-FDR correction over {len(all_tests)} tests (alpha={BH_FDR_ALPHA})...")
+    bh_corrected = bh_fdr_correction(all_tests, alpha=BH_FDR_ALPHA)
 
     # Merge BH results back into raw_results
     test_idx = 0
@@ -485,18 +669,15 @@ def run_batch_pipeline(args: argparse.Namespace) -> Dict[str, Any]:
         )
 
     # ── G01–G10 per (symbol × hypothesis) ─────────────────────────────────────
-    print("[5/7] Running G01–G10 gates for each symbol × hypothesis...")
+    print("[7/8] Running G01–G10 gates for each symbol × hypothesis...")
     gate_results_map: Dict[str, Dict[str, Any]] = {}
 
     for sym in symbols:
         gate_results_map[sym] = {}
-        domain_adapter = StockRealDomain(
-            symbol=sym, as_of_date=as_of_date,
-            window_days=window_days_max, db_path=DB_PATH, min_rows=min_rows,
-        )
-        rows = domain_adapter._load_rows()
+        domain_adapter = all_symbol_adapters[sym]
+        rows = all_symbol_rows.get(sym)
         pit_result = pit_guard.check(
-            rows if rows != DATA_INSUFFICIENT and rows else [],
+            rows if rows else [],
             split_type="time_based",
         )
 
@@ -558,7 +739,7 @@ def run_batch_pipeline(args: argparse.Namespace) -> Dict[str, Any]:
             gate_results_map[sym][hid] = gr
 
     # ── Promotion decisions ────────────────────────────────────────────────────
-    print("[6/7] Evaluating promotion decisions...")
+    print("[8/8] Evaluating promotion decisions...")
     promotion_map: Dict[str, Dict[str, str]] = {}
     promoted_candidates: List[Dict] = []
 
@@ -587,8 +768,7 @@ def run_batch_pipeline(args: argparse.Namespace) -> Dict[str, Any]:
                 promoted_candidates.append({"symbol": sym, "hypothesis_id": hid})
             print(f"  {sym} × {hid[:30]}: {status}")
 
-    # ── Save per-result output files ───────────────────────────────────────────
-    print("[7/7] Saving outputs...")
+    print("[8/8] Saving outputs...")
     for sym in symbols:
         for hyp in hypotheses:
             hid = hyp["hypothesis_id"]
@@ -629,12 +809,10 @@ def run_batch_pipeline(args: argparse.Namespace) -> Dict[str, Any]:
                 "run_ts": ts,
             }, indent=2))
 
-            # data_lineage.json — refresh adapter for clean lineage
-            lineage_adapter = StockRealDomain(
-                symbol=sym, as_of_date=as_of_date,
-                window_days=window_days_max, db_path=DB_PATH, min_rows=min_rows,
-            )
-            lineage_adapter._load_rows()
+            # data_lineage.json — use pre-loaded adapter
+            lineage_adapter = all_symbol_adapters[sym]
+            if not hasattr(lineage_adapter, "_rows") or not lineage_adapter._rows:
+                lineage_adapter._load_rows()
             lineage = lineage_adapter.get_data_lineage()
             (out_dir / "data_lineage.json").write_text(json.dumps(lineage, indent=2))
 
@@ -643,7 +821,8 @@ def run_batch_pipeline(args: argparse.Namespace) -> Dict[str, Any]:
                 "run_id": f"{hid}-{sym}-{as_of_date}",
                 "hypothesis_id": hid,
                 "symbol": sym,
-                "pipeline_version": "P3-07",
+                "pipeline_version": "P3-07/P3-08",
+                "registry": registry_path.name,
                 "run_ts": ts,
                 "as_of_date": as_of_date,
                 "window_days_max": window_days_max,
@@ -824,6 +1003,9 @@ def main() -> None:
                         help=f"Minimum rows to include a symbol (default: {DEFAULT_MIN_ROWS})")
     parser.add_argument("--permutations", type=int, default=DEFAULT_N_PERMUTATIONS,
                         help=f"Permutation test iterations per window (default: {DEFAULT_N_PERMUTATIONS})")
+    parser.add_argument("--registry", type=str, default=None,
+                        help="Path to hypothesis registry JSON (default: stock_hypothesis_registry.json). "
+                             "Use 'research/stock_hypothesis_registry_v2.json' for P3-08 v2 hypotheses.")
     args = parser.parse_args()
 
     if not args.dry_run:
