@@ -11,7 +11,7 @@
  *   - Assert dryRun=false reclaims reclaimable expired locks.
  */
 
-import type { ProjectProfile } from '../profile';
+import type { ProjectProfile } from '../types'; // type-only; module is mocked below
 import type { SchedulerState, TaskRecord, TaskStoreIndex } from '../types';
 
 // ---------------------------------------------------------------------------
@@ -41,8 +41,15 @@ jest.mock('../common', () => ({
 
 import { loadProjectProfile } from '../profile';
 import { loadSchedulerState, loadTaskIndex, saveTaskIndex } from '../storage';
-import { writeJsonFile } from '../common';
-import { runStaleJobCleanup, type StaleCleanupReport } from '../staleJobCleanup';
+import { readJsonFile, writeJsonFile } from '../common';
+import {
+  runStaleJobCleanup,
+  appendCleanupHistory,
+  analyzeCleanupTrends,
+  type CleanupHistory,
+  type CleanupHistoryEntry,
+  type StaleCleanupReport,
+} from '../staleJobCleanup';
 
 // ---------------------------------------------------------------------------
 // Fixed clock — pin Date.now() so ageMs comparisons are deterministic
@@ -320,5 +327,175 @@ describe('staleJobCleanup — schedulerEnabled=false scan', () => {
     expect(report.schedulerEnabled).toBe(false);
     expect(report.expiredLocks).toHaveLength(1);
     expect(report.actionsPerformed).toHaveLength(0);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// History tracking tests
+// ---------------------------------------------------------------------------
+
+describe('staleJobCleanup — cleanup history', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (writeJsonFile as jest.Mock).mockResolvedValue(undefined);
+  });
+
+  it('appendCleanupHistory prepends the entry and writes to history file', async () => {
+    (readJsonFile as jest.Mock).mockResolvedValue({ version: '1.0', entries: [] });
+
+    const entry: CleanupHistoryEntry = {
+      timestamp: NOW_ISO,
+      expiredLockCount: 2,
+      staleHeartbeatCount: 1,
+      tasksReclaimed: 1,
+    };
+
+    const result = await appendCleanupHistory('/fake/root', entry);
+
+    expect(result.entries).toHaveLength(1);
+    expect(result.entries[0]).toEqual(entry);
+    expect(writeJsonFile).toHaveBeenCalledWith(
+      expect.stringContaining('stale_cleanup_history.json'),
+      expect.objectContaining({ version: '1.0', entries: [entry] }),
+    );
+  });
+
+  it('appendCleanupHistory prepends new entry before existing entries', async () => {
+    const existing: CleanupHistoryEntry = {
+      timestamp: new Date(NOW_MS - 60_000).toISOString(),
+      expiredLockCount: 0,
+      staleHeartbeatCount: 0,
+      tasksReclaimed: 0,
+    };
+    (readJsonFile as jest.Mock).mockResolvedValue({ version: '1.0', entries: [existing] });
+
+    const newEntry: CleanupHistoryEntry = {
+      timestamp: NOW_ISO,
+      expiredLockCount: 1,
+      staleHeartbeatCount: 0,
+      tasksReclaimed: 1,
+    };
+
+    const result = await appendCleanupHistory('/fake/root', newEntry);
+
+    expect(result.entries[0]).toEqual(newEntry);
+    expect(result.entries[1]).toEqual(existing);
+  });
+
+  it('appendCleanupHistory gracefully starts fresh when history file missing', async () => {
+    (readJsonFile as jest.Mock).mockRejectedValue(new Error('ENOENT'));
+
+    const entry: CleanupHistoryEntry = {
+      timestamp: NOW_ISO,
+      expiredLockCount: 0,
+      staleHeartbeatCount: 0,
+      tasksReclaimed: 0,
+    };
+
+    const result = await appendCleanupHistory('/fake/root', entry);
+    expect(result.entries).toHaveLength(1);
+  });
+
+  it('runStaleJobCleanup report includes a trends field', async () => {
+    (loadProjectProfile as jest.Mock).mockResolvedValue(makeProfile());
+    (loadSchedulerState as jest.Mock).mockResolvedValue({ paths: mockPaths(), state: makeState() });
+    (loadTaskIndex as jest.Mock).mockResolvedValue(makeTaskIndex([]));
+    (readJsonFile as jest.Mock).mockResolvedValue({ version: '1.0', entries: [] });
+
+    const report = await runStaleJobCleanup({ dryRun: true });
+
+    expect(report).toHaveProperty('trends');
+    expect(typeof report.trends.hasSignals).toBe('boolean');
+    expect(typeof report.trends.sufficientData).toBe('boolean');
+    expect(Array.isArray(report.trends.signals)).toBe(true);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Trend detection tests
+// ---------------------------------------------------------------------------
+
+describe('staleJobCleanup — trend detection', () => {
+  function makeHistory(entries: Partial<CleanupHistoryEntry>[]): CleanupHistory {
+    return {
+      version: '1.0',
+      entries: entries.map((e, i) => ({
+        timestamp: new Date(NOW_MS - i * 60_000).toISOString(),
+        expiredLockCount: 0,
+        staleHeartbeatCount: 0,
+        tasksReclaimed: 0,
+        ...e,
+      })),
+    };
+  }
+
+  it('returns sufficientData=false when fewer than 4 entries', () => {
+    const hist = makeHistory([{}, {}]);
+    const result = analyzeCleanupTrends(hist);
+    expect(result.sufficientData).toBe(false);
+    expect(result.signals).toHaveLength(0);
+    expect(result.hasSignals).toBe(false);
+  });
+
+  it('returns no signals when counts are all zero', () => {
+    const hist = makeHistory([{}, {}, {}, {}, {}]);
+    const result = analyzeCleanupTrends(hist);
+    expect(result.sufficientData).toBe(true);
+    expect(result.signals).toHaveLength(0);
+    expect(result.hasSignals).toBe(false);
+  });
+
+  it('detects worker_unstable signal when expiredLockCount is rising', () => {
+    // Most-recent first: high then low (rising recent vs older)
+    const hist = makeHistory([
+      { expiredLockCount: 5 }, // most recent
+      { expiredLockCount: 4 },
+      { expiredLockCount: 1 }, // older
+      { expiredLockCount: 0 },
+    ]);
+    const result = analyzeCleanupTrends(hist);
+    expect(result.sufficientData).toBe(true);
+    const signal = result.signals.find((s) => s.label === 'worker_unstable');
+    expect(signal).toBeDefined();
+    expect(signal!.recentAvg).toBeGreaterThan(signal!.olderAvg);
+    expect(result.hasSignals).toBe(true);
+  });
+
+  it('detects scheduler_issue signal when staleHeartbeatCount is rising', () => {
+    const hist = makeHistory([
+      { staleHeartbeatCount: 3 },
+      { staleHeartbeatCount: 2 },
+      { staleHeartbeatCount: 0 },
+      { staleHeartbeatCount: 0 },
+    ]);
+    const result = analyzeCleanupTrends(hist);
+    const signal = result.signals.find((s) => s.label === 'scheduler_issue');
+    expect(signal).toBeDefined();
+    expect(signal!.recentAvg).toBeGreaterThan(signal!.olderAvg);
+  });
+
+  it('detects crash_rate_up signal when tasksReclaimed is rising', () => {
+    const hist = makeHistory([
+      { tasksReclaimed: 4 },
+      { tasksReclaimed: 3 },
+      { tasksReclaimed: 0 },
+      { tasksReclaimed: 0 },
+    ]);
+    const result = analyzeCleanupTrends(hist);
+    const signal = result.signals.find((s) => s.label === 'crash_rate_up');
+    expect(signal).toBeDefined();
+    expect(signal!.recentAvg).toBeGreaterThan(signal!.olderAvg);
+  });
+
+  it('does NOT emit a signal when counts are stable', () => {
+    const hist = makeHistory([
+      { expiredLockCount: 1 },
+      { expiredLockCount: 1 },
+      { expiredLockCount: 1 },
+      { expiredLockCount: 1 },
+    ]);
+    const result = analyzeCleanupTrends(hist);
+    const signal = result.signals.find((s) => s.label === 'worker_unstable');
+    expect(signal).toBeUndefined();
   });
 });

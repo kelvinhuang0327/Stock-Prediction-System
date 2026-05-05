@@ -13,6 +13,7 @@
  *   - Does NOT call any LLM or policy script
  *   - Does NOT modify provider execution counters
  *   - Always writes stale_cleanup_report.json (even in dryRun)
+ *   - Always appends to stale_cleanup_history.json (observability, even in dryRun)
  */
 
 import nodePath from 'node:path';
@@ -74,6 +75,56 @@ export interface CleanupAction {
   performedAt: string;
 }
 
+// ---------------------------------------------------------------------------
+// History types
+// ---------------------------------------------------------------------------
+
+/** One row appended to stale_cleanup_history.json per cleanup run. */
+export interface CleanupHistoryEntry {
+  timestamp: string;
+  expiredLockCount: number;
+  staleHeartbeatCount: number;
+  tasksReclaimed: number;
+}
+
+export interface CleanupHistory {
+  version: '1.0';
+  /** Most-recent entry first. Capped at MAX_HISTORY_ENTRIES. */
+  entries: CleanupHistoryEntry[];
+}
+
+// ---------------------------------------------------------------------------
+// Trend types
+// ---------------------------------------------------------------------------
+
+/** Which stability concern this signal represents. */
+export type TrendLabel = 'worker_unstable' | 'scheduler_issue' | 'crash_rate_up';
+
+export interface TrendSignal {
+  /** Machine-readable label */
+  label: TrendLabel;
+  /** Human-readable explanation */
+  description: string;
+  /** Average metric value over the recent half of the analysis window */
+  recentAvg: number;
+  /** Average metric value over the older half of the analysis window */
+  olderAvg: number;
+  /** Total entries used for this analysis */
+  windowSize: number;
+}
+
+export interface CleanupTrendReport {
+  analyzedAt: string;
+  /** Number of history entries used for the analysis */
+  entriesAnalyzed: number;
+  /** Whether there were enough entries to run trend detection (min 4) */
+  sufficientData: boolean;
+  /** Rising trend signals detected (empty when sufficientData=false) */
+  signals: TrendSignal[];
+  /** True if at least one rising trend was detected */
+  hasSignals: boolean;
+}
+
 export interface StaleCleanupReport {
   /** ISO timestamp of when the scan ran */
   generatedAt: string;
@@ -104,14 +155,20 @@ export interface StaleCleanupReport {
     skippedBecauseSchedulerDisabled: boolean;
     skippedBecauseDryRun: boolean;
   };
+
+  /** Trend analysis based on cleanup history */
+  trends: CleanupTrendReport;
 }
 
 // ---------------------------------------------------------------------------
 // Defaults
 // ---------------------------------------------------------------------------
 
-const DEFAULT_LEASE_DURATION_MS = 30 * 60_000;       // 30 minutes
-const DEFAULT_HEARTBEAT_STALE_MS = 10 * 60_000;      // 10 minutes
+const DEFAULT_LEASE_DURATION_MS = 30 * 60_000;    // 30 minutes
+const DEFAULT_HEARTBEAT_STALE_MS = 10 * 60_000;   // 10 minutes
+const MAX_HISTORY_ENTRIES = 100;
+const TREND_WINDOW = 10;                           // analyse last N entries
+const MIN_ENTRIES_FOR_TREND = 4;                   // need at least 4 to split into two halves
 
 // ---------------------------------------------------------------------------
 // Core detection logic
@@ -234,6 +291,138 @@ async function reclaimExpiredLocks(
 }
 
 // ---------------------------------------------------------------------------
+// History — append + load
+// ---------------------------------------------------------------------------
+
+const HISTORY_FILE = 'stale_cleanup_history.json';
+
+function defaultHistory(): CleanupHistory {
+  return { version: '1.0', entries: [] };
+}
+
+/**
+ * Load existing history from disk, gracefully returning empty history on any error.
+ */
+async function loadCleanupHistory(orchestratorRoot: string): Promise<CleanupHistory> {
+  const histPath = nodePath.join(orchestratorRoot, HISTORY_FILE);
+  try {
+    const stored = await readJsonFile<Partial<CleanupHistory>>(histPath);
+    return {
+      version: '1.0',
+      entries: Array.isArray(stored?.entries) ? stored.entries : [],
+    };
+  } catch {
+    return defaultHistory();
+  }
+}
+
+/**
+ * Append one entry to stale_cleanup_history.json and return the updated history.
+ * Caps the log at MAX_HISTORY_ENTRIES (oldest entries dropped).
+ * Always writes — this is observability data, not operational state.
+ */
+export async function appendCleanupHistory(
+  orchestratorRoot: string,
+  entry: CleanupHistoryEntry,
+): Promise<CleanupHistory> {
+  const history = await loadCleanupHistory(orchestratorRoot);
+  // Prepend (most-recent-first), then cap
+  history.entries = [entry, ...history.entries].slice(0, MAX_HISTORY_ENTRIES);
+  const histPath = nodePath.join(orchestratorRoot, HISTORY_FILE);
+  await writeJsonFile(histPath, history);
+  return history;
+}
+
+// ---------------------------------------------------------------------------
+// Trend detection
+// ---------------------------------------------------------------------------
+
+function avg(values: number[]): number {
+  if (values.length === 0) return 0;
+  return values.reduce((s, v) => s + v, 0) / values.length;
+}
+
+/**
+ * Detect whether a metric is trending upward by comparing two halves of a window.
+ * Returns a TrendSignal when recentAvg > olderAvg AND recentAvg > 0.
+ */
+function detectRisingTrend(
+  entries: CleanupHistoryEntry[],
+  metricKey: keyof CleanupHistoryEntry,
+  label: TrendLabel,
+  description: string,
+): TrendSignal | null {
+  // entries is already sorted most-recent-first; take the window, then reverse for chronological
+  const window = entries.slice(0, TREND_WINDOW).reverse();
+  const half = Math.floor(window.length / 2);
+  const olderHalf = window.slice(0, half).map((e) => e[metricKey] as number);
+  const recentHalf = window.slice(half).map((e) => e[metricKey] as number);
+
+  const olderAvg = avg(olderHalf);
+  const recentAvg = avg(recentHalf);
+
+  // Signal fires when the recent half is worse than the older half AND non-zero
+  if (recentAvg > 0 && recentAvg > olderAvg) {
+    return { label, description, recentAvg, olderAvg, windowSize: window.length };
+  }
+  return null;
+}
+
+/**
+ * Analyse the cleanup history for rising trends.
+ *
+ * - expiredLockCount ↑  → worker_unstable  (workers crashing before lease expires)
+ * - staleHeartbeatCount ↑ → scheduler_issue (scheduler process becoming unresponsive)
+ * - tasksReclaimed ↑   → crash_rate_up    (forceful reclaims increasing)
+ */
+export function analyzeCleanupTrends(history: CleanupHistory): CleanupTrendReport {
+  const analyzedAt = nowIso();
+  const entries = history.entries;
+
+  if (entries.length < MIN_ENTRIES_FOR_TREND) {
+    return {
+      analyzedAt,
+      entriesAnalyzed: entries.length,
+      sufficientData: false,
+      signals: [],
+      hasSignals: false,
+    };
+  }
+
+  const candidates: Array<[keyof CleanupHistoryEntry, TrendLabel, string]> = [
+    [
+      'expiredLockCount',
+      'worker_unstable',
+      'Expired lock count is rising — workers may be crashing before releasing lane locks.',
+    ],
+    [
+      'staleHeartbeatCount',
+      'scheduler_issue',
+      'Stale heartbeat count is rising — scheduler process may be becoming unresponsive.',
+    ],
+    [
+      'tasksReclaimed',
+      'crash_rate_up',
+      'Task reclaim count is rising — worker crash rate appears to be increasing.',
+    ],
+  ];
+
+  const signals: TrendSignal[] = [];
+  for (const [key, label, description] of candidates) {
+    const signal = detectRisingTrend(entries, key, label, description);
+    if (signal) signals.push(signal);
+  }
+
+  return {
+    analyzedAt,
+    entriesAnalyzed: Math.min(entries.length, TREND_WINDOW),
+    sufficientData: true,
+    signals,
+    hasSignals: signals.length > 0,
+  };
+}
+
+// ---------------------------------------------------------------------------
 // Report writer
 // ---------------------------------------------------------------------------
 
@@ -252,11 +441,14 @@ async function writeCleanupReport(
 /**
  * Run the stale job cleanup scan.
  *
- * @param options.dryRun                 When true (default), no state is mutated.
- * @param options.leaseDurationMs        Lease expiry window in milliseconds.
- * @param options.heartbeatStaleThresholdMs  Heartbeat stale window in milliseconds.
+ * @param options.dryRun                    When true (default), no state is mutated.
+ * @param options.leaseDurationMs           Lease expiry window in milliseconds.
+ * @param options.heartbeatStaleThresholdMs Heartbeat stale window in milliseconds.
  *
- * Always writes `runtime/agent_orchestrator/stale_cleanup_report.json`.
+ * Always writes:
+ *   - runtime/agent_orchestrator/stale_cleanup_report.json  (current run)
+ *   - runtime/agent_orchestrator/stale_cleanup_history.json (running log)
+ *
  * Returns the full report object for programmatic use.
  */
 export async function runStaleJobCleanup(
@@ -288,6 +480,17 @@ export async function runStaleJobCleanup(
   if (!dryRun && state.schedulerEnabled) {
     actionsPerformed = await reclaimExpiredLocks(paths, index, expiredLocks);
   }
+
+  // Append to history (always — observability data)
+  const historyEntry: CleanupHistoryEntry = {
+    timestamp: nowIso(),
+    expiredLockCount: expiredLocks.length,
+    staleHeartbeatCount: staleHeartbeats.length,
+    tasksReclaimed: actionsPerformed.length,
+  };
+  const updatedHistory = await appendCleanupHistory(paths.orchestratorRoot, historyEntry);
+  const trends = analyzeCleanupTrends(updatedHistory);
+
   const report: StaleCleanupReport = {
     generatedAt: nowIso(),
     dryRun,
@@ -305,6 +508,7 @@ export async function runStaleJobCleanup(
       skippedBecauseSchedulerDisabled,
       skippedBecauseDryRun,
     },
+    trends,
   };
 
   await writeCleanupReport(paths.orchestratorRoot, report);
