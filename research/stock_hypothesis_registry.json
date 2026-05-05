@@ -1,0 +1,120 @@
+{
+  "_meta": {
+    "registry_version": "1.0",
+    "domain": "STOCK",
+    "created_at": "2026-05-05T00:00:00Z",
+    "description": "Stock domain hypothesis registry for GBGF validation pipeline (P3-05). All hypotheses use mock/synthetic data. Not for production trading.",
+    "guardrails": [
+      "All validation uses synthetic deterministic data \u2014 NOT real market data",
+      "NOT a trading recommendation",
+      "Human review required before any promotion past T2",
+      "Production write is blocked by G09/G10 until all gates pass and human review complete"
+    ]
+  },
+  "hypotheses": [
+    {
+      "hypothesis_id": "STOCK_H001_20D_MOMENTUM",
+      "description": "20-day price momentum signal: buy if 20d trailing return > 0, sell if < 0. Tests whether recent price trend persists over next 5 trading days.",
+      "feature_set": [
+        "close_20d_return",
+        "close_price"
+      ],
+      "expected_signal": "Positive autocorrelation in 20d momentum; next-5d return positive when signal=1",
+      "prediction_target": "next_5d_return_direction",
+      "lookback_days": 20,
+      "forward_days": 5,
+      "transaction_cost_bps": 10,
+      "status": "rejected",
+      "registered_at": "2026-05-05T00:00:00Z",
+      "family": "momentum",
+      "human_review_required": true,
+      "notes": "Classic momentum hypothesis. G03 FAIL expected on random mock data \u2014 no real edge.",
+      "last_validated_at": "2026-05-05T05:44:51.674149+00:00",
+      "validation_result": {
+        "status": "rejected",
+        "criteria": {
+          "roi_positive_all_windows": false,
+          "sharpe_positive_500d": false,
+          "perm_p_lt_005": false
+        },
+        "primary_window_sharpe": -3.208,
+        "primary_perm_p": 0.366,
+        "reasons": [
+          "ROI not positive across all windows",
+          "Sharpe \u2264 0 on primary window (-3.208)",
+          "Permutation p-value=0.366 \u2265 0.05 (not significant)"
+        ]
+      }
+    },
+    {
+      "hypothesis_id": "STOCK_H002_RSI_REVERSION",
+      "description": "5-day RSI mean reversion: buy when RSI(5) < 30 (oversold), sell when RSI(5) > 70 (overbought). Tests short-term price reversal.",
+      "feature_set": [
+        "rsi_5d",
+        "close_price",
+        "close_5d_return"
+      ],
+      "expected_signal": "Mean reversion: oversold condition predicts positive next-5d return",
+      "prediction_target": "next_5d_return_direction",
+      "lookback_days": 5,
+      "forward_days": 5,
+      "transaction_cost_bps": 10,
+      "status": "rejected",
+      "registered_at": "2026-05-05T00:00:00Z",
+      "family": "mean_reversion",
+      "human_review_required": true,
+      "notes": "RSI-based short-term reversion. G03 FAIL expected on random mock data.",
+      "last_validated_at": "2026-05-05T05:44:51.674163+00:00",
+      "validation_result": {
+        "status": "rejected",
+        "criteria": {
+          "roi_positive_all_windows": false,
+          "sharpe_positive_500d": false,
+          "perm_p_lt_005": false
+        },
+        "primary_window_sharpe": -2.2128,
+        "primary_perm_p": 0.53,
+        "reasons": [
+          "ROI not positive across all windows",
+          "Sharpe \u2264 0 on primary window (-2.2128)",
+          "Permutation p-value=0.53 \u2265 0.05 (not significant)"
+        ]
+      }
+    },
+    {
+      "hypothesis_id": "STOCK_H003_VOLUME_BREAKOUT",
+      "description": "Volume breakout signal: buy if today's volume > 1.5x 20-day average AND close > open (up-day). Tests whether high-volume up-days predict continuation.",
+      "feature_set": [
+        "volume",
+        "volume_20d_avg",
+        "close",
+        "open",
+        "close_1d_return"
+      ],
+      "expected_signal": "High-volume up-days predict positive next-5d momentum (institutional accumulation signal)",
+      "prediction_target": "next_5d_return_direction",
+      "lookback_days": 20,
+      "forward_days": 5,
+      "transaction_cost_bps": 15,
+      "status": "rejected",
+      "registered_at": "2026-05-05T00:00:00Z",
+      "family": "volume_price",
+      "human_review_required": true,
+      "notes": "Volume breakout. G03 FAIL expected on random mock data \u2014 no real volume pattern.",
+      "last_validated_at": "2026-05-05T05:44:51.674171+00:00",
+      "validation_result": {
+        "status": "rejected",
+        "criteria": {
+          "roi_positive_all_windows": true,
+          "sharpe_positive_500d": true,
+          "perm_p_lt_005": false
+        },
+        "primary_window_sharpe": 1.6715,
+        "primary_perm_p": 0.926,
+        "reasons": [
+          "Permutation p-value=0.926 \u2265 0.05 (not significant)"
+        ]
+      }
+    }
+  ]
+}

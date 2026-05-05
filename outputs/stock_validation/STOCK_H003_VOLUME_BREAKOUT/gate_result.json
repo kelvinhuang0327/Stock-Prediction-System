@@ -1,0 +1,207 @@
+{
+  "hypothesis_id": "STOCK_H003_VOLUME_BREAKOUT",
+  "run_ts": "2026-05-05T05:44:51.673343+00:00",
+  "dry_run": true,
+  "pipeline": "GBGF_STOCK_VALIDATION_P3-05",
+  "mock_data": true,
+  "no_production_write": true,
+  "gate_results": [
+    {
+      "gate_id": "G01",
+      "gate_name": "Hypothesis Registry Gate",
+      "status": "PASS",
+      "message": "Hypothesis pre-registered",
+      "evidence": {
+        "pre_registered": true
+      }
+    },
+    {
+      "gate_id": "G02",
+      "gate_name": "Data Leakage Gate",
+      "status": "PASS",
+      "message": "StockDomain: PIT flag confirmed on mock data. RISK NOTE: Survivorship bias not enforced \u2014 universe excludes delisted stocks. Real implementation requires delisting-inclusive universe and asof-join PIT data.",
+      "evidence": {
+        "leakage_clean": true
+      }
+    },
+    {
+      "gate_id": "G03",
+      "gate_name": "OOS Validation Gate",
+      "status": "FAIL",
+      "message": "Only 0/2 OOS windows pass",
+      "evidence": {
+        "passing": 0,
+        "total": 2
+      }
+    },
+    {
+      "gate_id": "G04",
+      "gate_name": "Permutation Null Gate",
+      "status": "FAIL",
+      "message": "p=0.9260 >= 0.05 \u2014 strategy classified as noise",
+      "evidence": {
+        "p_value": 0.926
+      }
+    },
+    {
+      "gate_id": "G05",
+      "gate_name": "Multiple Testing Gate",
+      "status": "FAIL",
+      "message": "Fails BH-FDR correction \u2014 likely noise after multiple testing",
+      "evidence": {
+        "bh_fdr_pass": false
+      }
+    },
+    {
+      "gate_id": "G06",
+      "gate_name": "EV / ROI Gate",
+      "status": "PASS",
+      "message": "EV positive \u2014 strategy is monetizable",
+      "evidence": {
+        "classification": "EV_POSITIVE",
+        "sharpe_annualized": 2.0221,
+        "cagr_annualized": 0.4702,
+        "win_rate": 0.6833,
+        "n_oos_signals": 60,
+        "transaction_cost_bps": 10,
+        "pit_risks": [
+          "PIT (point-in-time) data required \u2014 avoid look-ahead on fundamentals/restatements",
+          "Survivorship bias: universe must include delisted stocks",
+          "Transaction cost: 10bps assumed; real cost includes slippage + market impact",
+          "Sharpe / CAGR / max drawdown: computed from mock data \u2014 not production-valid"
+        ],
+        "mock_data": true,
+        "note": "Mock Sharpe from synthetic data. Not production-valid.",
+        "status": "MOCK_POC_COMPUTED"
+      }
+    },
+    {
+      "gate_id": "G07",
+      "gate_name": "Live Monitoring Gate",
+      "status": "WARN",
+      "message": "Insufficient live outcomes: 0 (need >=5 for reliable monitoring)",
+      "evidence": {
+        "live_outcome_count": 0
+      }
+    },
+    {
+      "gate_id": "G08",
+      "gate_name": "Retirement Gate",
+      "status": "PASS",
+      "message": "No retirement condition triggered",
+      "evidence": {
+        "tier": "T1_REGISTERED"
+      }
+    },
+    {
+      "gate_id": "G09",
+      "gate_name": "Production Write Gate",
+      "status": "BLOCKED",
+      "message": "Blocked: critical gate failure upstream",
+      "evidence": {
+        "reason": "critical_failure"
+      }
+    },
+    {
+      "gate_id": "G10",
+      "gate_name": "Human Review Gate",
+      "status": "BLOCKED",
+      "message": "Human review not yet completed. Agent cannot auto-approve.",
+      "evidence": {
+        "human_review": false,
+        "auto_approval": "NEVER_ALLOWED"
+      }
+    }
+  ],
+  "promotion": {
+    "status": "rejected",
+    "criteria": {
+      "roi_positive_all_windows": true,
+      "sharpe_positive_500d": true,
+      "perm_p_lt_005": false
+    },
+    "primary_window_sharpe": 1.6715,
+    "primary_perm_p": 0.926,
+    "reasons": [
+      "Permutation p-value=0.926 \u2265 0.05 (not significant)"
+    ]
+  },
+  "window_results": [
+    {
+      "window_days": 150,
+      "n_signals": 4,
+      "error": "insufficient_oos",
+      "edge_pp": 0.0,
+      "sharpe": null,
+      "roi": null
+    },
+    {
+      "window_days": 500,
+      "n_signals": 16,
+      "mean_return": 0.006411,
+      "std_return": 0.027228,
+      "sharpe_annualized": 1.6715,
+      "win_rate": 0.5625,
+      "edge_pp": 6.25,
+      "roi_annualized": 0.323095,
+      "tx_cost_bps": 15
+    },
+    {
+      "window_days": 1500,
+      "n_signals": 46,
+      "mean_return": 0.004343,
+      "std_return": 0.030628,
+      "sharpe_annualized": 1.0066,
+      "win_rate": 0.5217,
+      "edge_pp": 2.1739,
+      "roi_annualized": 0.21887,
+      "tx_cost_bps": 15
+    }
+  ],
+  "permutation_results": [
+    {
+      "p_value": 1.0,
+      "n_permutations": 0,
+      "error": "insufficient_oos",
+      "window_days": 150
+    },
+    {
+      "observed_mean": 0.006411,
+      "null_mean": 0.006411,
+      "null_std": 0.0,
+      "p_value": 0.926,
+      "n_permutations": 500,
+      "one_tailed": true,
+      "window_days": 500
+    },
+    {
+      "observed_mean": 0.004343,
+      "null_mean": 0.004343,
+      "null_std": 0.0,
+      "p_value": 0.938,
+      "n_permutations": 500,
+      "one_tailed": true,
+      "window_days": 1500
+    }
+  ],
+  "bh_fdr_results": [
+    {
+      "hypothesis_id": "STOCK_H003_VOLUME_BREAKOUT",
+      "window": "500d",
+      "p_value": 0.926,
+      "bh_rank": 7,
+      "bh_threshold": 0.04375,
+      "bh_adjusted_p": 1.0,
+      "bh_pass": false
+    },
+    {
+      "hypothesis_id": "STOCK_H003_VOLUME_BREAKOUT",
+      "window": "1500d",
+      "p_value": 0.938,
+      "bh_rank": 8,
+      "bh_threshold": 0.05,
+      "bh_adjusted_p": 0.938,
+      "bh_pass": false
+    }
+  ]
+}

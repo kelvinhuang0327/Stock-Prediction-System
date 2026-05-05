@@ -1,0 +1,59 @@
+{
+  "pipeline": "GBGF_STOCK_VALIDATION_P3-05",
+  "run_ts": "2026-05-05T05:44:51.060450+00:00",
+  "elapsed_seconds": 0.6,
+  "dry_run": true,
+  "n_hypotheses": 3,
+  "n_windows": 3,
+  "windows_tested": [
+    150,
+    500,
+    1500
+  ],
+  "n_permutations": 500,
+  "total_tests_bh_fdr": 8,
+  "bh_fdr_passes": 0,
+  "promoted": [],
+  "rejected": [
+    "STOCK_H001_20D_MOMENTUM",
+    "STOCK_H002_RSI_REVERSION",
+    "STOCK_H003_VOLUME_BREAKOUT"
+  ],
+  "results": [
+    {
+      "hypothesis_id": "STOCK_H001_20D_MOMENTUM",
+      "status": "rejected",
+      "gate_pass": 3,
+      "gate_warn": 2,
+      "gate_fail": 3,
+      "gate_blocked": 2,
+      "output_dir": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/outputs/stock_validation/STOCK_H001_20D_MOMENTUM"
+    },
+    {
+      "hypothesis_id": "STOCK_H002_RSI_REVERSION",
+      "status": "rejected",
+      "gate_pass": 3,
+      "gate_warn": 2,
+      "gate_fail": 3,
+      "gate_blocked": 2,
+      "output_dir": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/outputs/stock_validation/STOCK_H002_RSI_REVERSION"
+    },
+    {
+      "hypothesis_id": "STOCK_H003_VOLUME_BREAKOUT",
+      "status": "rejected",
+      "gate_pass": 4,
+      "gate_warn": 1,
+      "gate_fail": 3,
+      "gate_blocked": 2,
+      "output_dir": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/outputs/stock_validation/STOCK_H003_VOLUME_BREAKOUT"
+    }
+  ],
+  "safety": {
+    "no_external_data": true,
+    "no_production_write": true,
+    "no_order_placement": true,
+    "synthetic_data_only": true,
+    "not_trading_advice": true
+  },
+  "final_classification": "STOCK_HYPOTHESIS_VALIDATION_PIPELINE_READY"
+}

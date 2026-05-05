@@ -1,0 +1,38 @@
+{
+  "run_id": "STOCK_H002_RSI_REVERSION-2026-05-05",
+  "hypothesis_id": "STOCK_H002_RSI_REVERSION",
+  "pipeline_version": "P3-05",
+  "run_ts": "2026-05-05T05:44:51.668016+00:00",
+  "source_artifact_sha256": {
+    "stock_hypothesis_registry.json": "4df160647bfa788f74ffa3cf2bb6168f32bcf45b4eb9def59e801ea67c586402",
+    "run_stock_validation.py": "6f9e3161e34d89eddcea63ad1638461532c33f51e479f0fecc2d32c852da2352"
+  },
+  "gate_result_sha256": "4bf2e854ab9c11a2228d2aba86aede517b27c922b6feefcc387f84ad47f17952",
+  "gate_statuses": {
+    "G01": "PASS",
+    "G02": "PASS",
+    "G03": "FAIL",
+    "G04": "FAIL",
+    "G05": "FAIL",
+    "G06": "WARN",
+    "G07": "WARN",
+    "G08": "PASS",
+    "G09": "BLOCKED",
+    "G10": "BLOCKED"
+  },
+  "final_status": "rejected",
+  "safety_confirmations": {
+    "no_db_write": true,
+    "no_production_write": true,
+    "no_strategy_added": true,
+    "not_trading_advice": true,
+    "dry_run": true,
+    "synthetic_data_only": true
+  },
+  "windows_tested": [
+    150,
+    500,
+    1500
+  ],
+  "n_permutations": 500
+}
