@@ -1,0 +1,29 @@
+{
+  "hypothesis_id": "STOCK_POC_SIMPLE_20D_MOMENTUM_001",
+  "domain": "STOCK",
+  "strategy_name": "simple_20d_momentum",
+  "registered_at": "2026-05-05T04:00:00Z",
+  "version": "poc-0.1",
+  "prediction_target": "next_5d_return_positive",
+  "expected_direction": "positive momentum",
+  "rationale": "Stocks with positive 20-day return continue upward (momentum effect). POC hypothesis only - not validated.",
+  "min_oos_window": 60,
+  "transaction_cost_bps": 10,
+  "human_review_required": true,
+  "pit_data_required": true,
+  "survivorship_bias_guard": true,
+  "universe": [
+    "MOCK_A",
+    "MOCK_B"
+  ],
+  "data_source": "research/stock_poc/sample_stock_ohlcv.csv",
+  "data_is_mock": true,
+  "forbidden_patterns": [
+    "no-OOS promotion",
+    "survivorship bias universe",
+    "payout-blind strategy promotion",
+    "post-hoc mining"
+  ],
+  "status": "REGISTERED_UNVALIDATED",
+  "notes": "GBGF P3-01 Stock POC skeleton. Not a trading recommendation."
+}
