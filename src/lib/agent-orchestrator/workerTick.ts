@@ -20,9 +20,9 @@ import { attemptAutoCommit } from './autoCommit';
 import { processCompletedOptimizationTaskFromFS } from '../autonomous/InsightIntegrationLayer';
 import { evaluateExecutionPolicy, getPolicySkipMessage, type LlmCallerContext } from './llmExecutionPolicy';
 import { logProviderPreflight } from './llmUsageLogger';
-import { evaluateLaneGuard, resolveTaskLane, writeLaneHeartbeat } from './laneGuard';
+import { evaluateLaneGuard, resolveTaskLane, writeLaneHeartbeat, writeLaneLockFile, writeSchedulerHeartbeatFile } from './laneGuard';
 import type { ProviderCooldownState, SchedulerLane, TaskContract, TaskResult, WorkerTickOutcome } from './types';
-import { DEFAULT_LANE } from './types';
+import { DEFAULT_LANE, SCHEDULER_LANES } from './types';
 
 interface WorkerTickOptions {
   force?: boolean;
@@ -225,10 +225,14 @@ function scheduleOptimizationInsights(
   task: NonNullable<ReturnType<typeof findFirstTaskByStatus>>,
 ): void {
   if (finalStatus !== 'COMPLETED') return;
-  if (task.plannerContext?.regimeState !== 'OPTIMIZATION') return;
-  const dedupeKey = (task.plannerContext as unknown as Record<string, unknown>)?.dedupeKey as string | undefined;
+  const plannerCtx = task.plannerContext as unknown as Record<string, unknown> | undefined;
+  const regimeState = plannerCtx?.regimeState as string | undefined;
+  const regimeTaskType = plannerCtx?.regimeTaskType as string | undefined;
+  const isOptimizationTask = regimeState === 'OPTIMIZATION' || regimeTaskType === 'price_analysis_quality';
+  if (!isOptimizationTask) return;
+  const dedupeKey = plannerCtx?.dedupeKey as string | undefined;
   if (!dedupeKey) return;
-  processCompletedOptimizationTaskFromFS(dedupeKey).catch(() => { /* non-blocking */ });
+  processCompletedOptimizationTaskFromFS(dedupeKey, { regimeContext: 'OPTIMIZATION' }).catch(() => { /* non-blocking */ });
 }
 
 export async function runWorkerTick(options: WorkerTickOptions = {}): Promise<WorkerTickOutcome> {
@@ -247,6 +251,8 @@ export async function runWorkerTick(options: WorkerTickOptions = {}): Promise<Wo
 
   if (!policyDecision.allowed) {
     await finalizeWorkerRun(paths, state, startedAtIso, 'skipped', getPolicySkipMessage(policyDecision.skip_reason), null);
+    // Non-blocking: write heartbeat reflecting disabled/blocked status
+    writeSchedulerHeartbeatFile(paths.orchestratorRoot, state, index.tasks).catch(() => { /* non-blocking */ });
     return { status: 'skipped', reason: policyDecision.skip_reason ?? 'SCHEDULER_DISABLED', taskId: null };
   }
 
@@ -389,6 +395,11 @@ export async function runWorkerTick(options: WorkerTickOptions = {}): Promise<Wo
     task.taskId,
     resolveTaskLane(task),
   );
+
+  // Non-blocking: persist lane locks + heartbeat after tick completes
+  const leaseDurationMs = profile.worker_rules.finalize_on_stale_output_minutes * 60_000;
+  writeLaneLockFile(paths.orchestratorRoot, index.tasks, state, state.schedulerEnabled, leaseDurationMs).catch(() => { /* non-blocking */ });
+  writeSchedulerHeartbeatFile(paths.orchestratorRoot, state, index.tasks).catch(() => { /* non-blocking */ });
 
   return {
     status: finalStatus === 'COMPLETED' ? 'success' : 'failed',

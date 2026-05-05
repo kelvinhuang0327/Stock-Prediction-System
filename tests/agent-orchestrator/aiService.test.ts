@@ -1,5 +1,9 @@
 jest.resetModules();
 
+jest.mock('../../src/lib/agent-orchestrator/providerFactory', () => ({
+  enforceProviderForRole: jest.fn(() => ({ allowed: true, blockReason: null, resolution: {} })),
+}));
+
 jest.mock('../../src/lib/agent-orchestrator/llmExecutionPolicy', () => ({
   evaluateExecutionPolicy: jest.fn(async () => ({ allowed: false, skip_reason: 'SCHEDULER_DISABLED' })),
 }));

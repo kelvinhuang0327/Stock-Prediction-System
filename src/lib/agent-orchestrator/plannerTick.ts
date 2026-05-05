@@ -354,6 +354,9 @@ export async function runPlannerTick(options: PlannerTickOptions = {}): Promise<
   const index = await loadTaskIndex(paths);
   const startedAt = nowIso();
   const runtime: PlannerRuntimeContext = { startedAt, paths, state };
+  if (!state.schedulerEnabled) {
+    return finalizeSkippedTick(runtime, 'SCHEDULER_DISABLED — skip execution', 'scheduler_disabled', null, false);
+  }
   const policyDecision = await evaluateExecutionPolicy({
     caller: 'planner',
     callerContext: options.callerContext ?? 'background',

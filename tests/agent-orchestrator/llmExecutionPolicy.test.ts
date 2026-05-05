@@ -1,7 +1,33 @@
 jest.resetModules();
 
-// Use the real execution_policy.py script for deterministic JSON output during tests
-
+// Mock child_process so the test doesn't depend on runtime execution_policy.py state
+jest.mock('node:child_process', () => {
+  const mockStdout = JSON.stringify({
+    allowed: true,
+    mode: 'safe-run',
+    scheduler_enabled: true,
+    caller: 'ai_service',
+    caller_context: 'background',
+    provider: '',
+    model: '',
+    task_id: '',
+    skip_reason: null,
+    blocked_execution_count: 0,
+    last_llm_call_at: null,
+    state_path: '/tmp/state.json',
+    event_log_path: '/tmp/events.jsonl',
+    ok: true,
+  });
+  // Node's util.promisify checks for this custom symbol on execFile
+  const customKey = Symbol.for('nodejs.util.promisify.custom');
+  const mockExecFile = Object.assign(
+    jest.fn((_cmd: string, _args: string[], _opts: unknown, cb?: (err: null, out: string, errOut: string) => void) => {
+      if (typeof cb === 'function') cb(null, mockStdout, '');
+    }),
+    { [customKey]: jest.fn().mockResolvedValue({ stdout: mockStdout, stderr: '' }) },
+  );
+  return { execFile: mockExecFile };
+});
 
 const { evaluateExecutionPolicy, getPolicySkipMessage, recordLlmExecution } = require('../../src/lib/agent-orchestrator/llmExecutionPolicy');
 

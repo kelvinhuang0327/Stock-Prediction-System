@@ -2,6 +2,7 @@ import { exec as execCallback } from 'node:child_process';
 import { promisify } from 'node:util';
 import { buildPolicyBlockedWorkerOutput } from './aiModulesService';
 import { evaluateExecutionPolicy, recordLlmExecution, type LlmCallerContext } from './llmExecutionPolicy';
+import { enforceProviderForRole } from './providerFactory';
 import type { WorkerExecutionInput, WorkerExecutionOutput } from './providers';
 import type { WorkerProvider } from './types';
 
@@ -30,6 +31,11 @@ export async function executeWorkerProviderCommand({
   parseChangedFiles,
   detectProviderRateLimit,
 }: ExecuteWorkerProviderCommandInput): Promise<WorkerExecutionOutput> {
+  const providerGate = enforceProviderForRole('ai_service', input.workerProvider);
+  if (!providerGate.allowed) {
+    return buildPolicyBlockedWorkerOutput(input, 'PROVIDER_NOT_IN_ALLOWLIST');
+  }
+
   const policyDecision = await evaluateExecutionPolicy({
     caller: 'ai_service',
     callerContext,
