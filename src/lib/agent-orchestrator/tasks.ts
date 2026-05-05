@@ -30,6 +30,8 @@ interface CreateTaskInput {
   plannerContext: PlannerTaskFingerprint | null;
   plannerProvider: PlannerProvider;
   workerProvider: WorkerProvider;
+  /** Optional health context stamped at task-creation time by the system health guard. */
+  healthContext?: TaskRecord['healthContext'];
 }
 
 function nextTaskId(index: TaskStoreIndex): number {
@@ -114,6 +116,7 @@ export async function createQueuedTask(
     metaPath: artifact.metaPath,
     workerLogPath: null,
     plannerContext: input.plannerContext,
+    ...(input.healthContext !== undefined ? { healthContext: input.healthContext } : {}),
   };
 
   index.tasks.push(task);

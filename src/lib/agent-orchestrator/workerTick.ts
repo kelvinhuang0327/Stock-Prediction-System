@@ -22,6 +22,7 @@ import { evaluateExecutionPolicy, getPolicySkipMessage, type LlmCallerContext } 
 import { logProviderPreflight } from './llmUsageLogger';
 import { evaluateLaneGuard, resolveTaskLane, writeLaneHeartbeat, writeLaneLockFile, writeSchedulerHeartbeatFile } from './laneGuard';
 import { getSystemHealthStatus, emitHealthWarningIfDegraded } from './systemHealth';
+import { shouldWarnOnWorkerRun, logGuardDecision } from './systemHealthGuard';
 import type { ProviderCooldownState, SchedulerLane, TaskContract, TaskResult, WorkerTickOutcome } from './types';
 import { DEFAULT_LANE, SCHEDULER_LANES } from './types';
 
@@ -307,6 +308,12 @@ export async function runWorkerTick(options: WorkerTickOptions = {}): Promise<Wo
   }
 
   const contract = await readJsonFile<TaskContract>(task.contractPath);
+
+  // Health guard — non-intrusive: always allowed, log if degraded/critical.
+  shouldWarnOnWorkerRun()
+    .then((decision) => logGuardDecision('workerTick', 'worker_run', decision))
+    .catch(() => { /* non-fatal — guard must never block worker */ });
+
   await updateTaskRecord(paths, index, task.taskId, {
     status: 'RUNNING',
     latestProgressSummary: 'Worker claimed task and started execution.',

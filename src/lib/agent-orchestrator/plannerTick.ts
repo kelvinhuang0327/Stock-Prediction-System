@@ -14,6 +14,7 @@ import { createQueuedTask } from './tasks';
 import { buildRecentTaskReference, evaluatePlannerDraftQuality } from './taskQualityGate';
 import { runCompositeOptimizationMiner, runOptimizationMiner } from './optimizationMiner';
 import { getSystemHealthStatus, emitHealthWarningIfDegraded } from './systemHealth';
+import { shouldWarnOnDispatch, shouldAnnotateTask, logGuardDecision } from './systemHealthGuard';
 import type { PlannerDraft } from './providers';
 import type { PlannerTaskFingerprint, PlannerTickOutcome, ResearchBacklog, TaskContract, TaskRecord, TaskResult } from './types';
 
@@ -397,6 +398,13 @@ export async function runPlannerTick(options: PlannerTickOptions = {}): Promise<
   const postDraftGuard = await guardAfterDraft(runtime, index, draftResult.draft);
   if ('status' in postDraftGuard) return postDraftGuard;
 
+  // Health guard — non-intrusive: always allowed, annotates task with health context.
+  const [dispatchDecision, healthAnnotation] = await Promise.all([
+    shouldWarnOnDispatch(),
+    shouldAnnotateTask(),
+  ]);
+  logGuardDecision('plannerTick', 'dispatch', dispatchDecision);
+
   const task = await createQueuedTask(profile, paths, index, {
     objective: draftResult.draft.objective,
     promptMarkdown: postDraftGuard.gate.promptMarkdown,
@@ -404,6 +412,7 @@ export async function runPlannerTick(options: PlannerTickOptions = {}): Promise<
     plannerContext: draftResult.draft.plannerContext,
     plannerProvider: state.plannerProvider,
     workerProvider: state.workerProvider,
+    healthContext: healthAnnotation,
   });
 
   const creationNote = draftResult.classifyReason ? ` [regime: ${draftResult.classifyReason}]` : '';

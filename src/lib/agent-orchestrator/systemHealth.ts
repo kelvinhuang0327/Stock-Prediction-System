@@ -60,6 +60,18 @@ export interface SystemHealthReport {
   sufficientData: boolean;
   /** Number of history entries analysed. */
   entriesAnalyzed: number;
+  /**
+   * Guard warnings accumulated since last flush.
+   * Populated by systemHealthGuard.peekGuardWarnings() when included in a report.
+   * Empty array when no warnings have been emitted.
+   */
+  guardWarnings?: Array<{
+    guard: string;
+    warningLevel: string;
+    reason: string;
+    signalLabels: string[];
+    recordedAt: string;
+  }>;
 }
 
 // ---------------------------------------------------------------------------

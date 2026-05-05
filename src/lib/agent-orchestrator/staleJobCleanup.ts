@@ -169,6 +169,19 @@ export interface StaleCleanupReport {
     hasSignals: boolean;
     signalLabels: TrendLabel[];
   };
+
+  /**
+   * Guard warnings emitted during this cleanup run.
+   * Captured from systemHealthGuard in-memory buffer.
+   * Empty array when system is healthy.
+   */
+  guardWarnings: Array<{
+    guard: string;
+    warningLevel: string;
+    reason: string;
+    signalLabels: string[];
+    recordedAt: string;
+  }>;
 }
 
 // ---------------------------------------------------------------------------
@@ -530,6 +543,7 @@ export async function runStaleJobCleanup(
       hasSignals: signalLabels.length > 0,
       signalLabels,
     },
+    guardWarnings: [],
   };
 
   await writeCleanupReport(paths.orchestratorRoot, report);

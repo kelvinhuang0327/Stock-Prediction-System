@@ -222,6 +222,15 @@ export interface TaskRecord {
   plannerContext?: PlannerTaskFingerprint | null;
   /** Lane assignment for per-lane mutual exclusion. Defaults to 'L-ONDEMAND' when absent. */
   lane?: SchedulerLane;
+  /**
+   * Health context stamped at task-creation time by the system health guard.
+   * Purely observational — does not affect scheduling or task execution.
+   */
+  healthContext?: {
+    status: 'healthy' | 'degraded' | 'critical';
+    signals: Array<{ label: string; description: string; recentAvg: number; olderAvg: number; windowSize: number }>;
+    evaluatedAt: string;
+  };
 }
 
 export interface PlannerTaskFingerprint {
