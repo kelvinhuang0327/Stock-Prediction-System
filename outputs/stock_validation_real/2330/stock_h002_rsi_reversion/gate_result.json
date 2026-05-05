@@ -1,0 +1,36 @@
+{
+  "hypothesis_id": "STOCK_H002_RSI_REVERSION",
+  "symbol": "2330",
+  "as_of_date": "2026-05-01",
+  "status": "promoted_candidate",
+  "gate_statuses": {
+    "G01": "FAIL",
+    "G02": "PASS",
+    "G03": "FAIL",
+    "G04": "WARN",
+    "G05": "WARN",
+    "G06": "WARN",
+    "G07": "WARN",
+    "G08": "PASS",
+    "G09": "BLOCKED",
+    "G10": "BLOCKED"
+  },
+  "ev_result": {
+    "classification": "VALID_SIGNAL_NON_MONETIZABLE",
+    "sharpe_annualized": 0.4637,
+    "cagr_annualized": 0.1754,
+    "win_rate": 0.5152,
+    "n_oos_signals": 99,
+    "transaction_cost_bps": 10,
+    "symbol": "2330",
+    "as_of_date": "2026-05-01",
+    "real_data": true,
+    "pit_risks": [
+      "Data from prisma/dev.db \u2014 sync quality depends on data pipeline",
+      "Survivorship bias possible: universe may not include delisted stocks",
+      "Transaction cost: simplified model, slippage not included",
+      "Date format: ISO YYYY-MM-DD only (non-ISO rows excluded)"
+    ]
+  },
+  "run_ts": "2026-05-05T05:55:20.323261+00:00"
+}

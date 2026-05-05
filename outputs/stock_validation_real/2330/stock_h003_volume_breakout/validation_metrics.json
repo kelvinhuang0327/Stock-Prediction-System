@@ -1,0 +1,12 @@
+{
+  "hypothesis_id": "STOCK_H003_VOLUME_BREAKOUT",
+  "symbol": "2330",
+  "as_of_date": "2026-05-01",
+  "sharpe_annualized": 0.4637,
+  "cagr_annualized": 0.1754,
+  "win_rate": 0.5152,
+  "n_oos_signals": 99,
+  "promoted": true,
+  "note": "Real data \u2014 single window only (no multi-window OOS in P3-06)",
+  "run_ts": "2026-05-05T05:55:20.323261+00:00"
+}

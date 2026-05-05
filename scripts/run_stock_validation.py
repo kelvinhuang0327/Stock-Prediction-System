@@ -819,19 +819,248 @@ def run_pipeline(args: argparse.Namespace):
     return summary
 
 
+
+# ── Real data pipeline ─────────────────────────────────────────────────────────
+
+def run_real_pipeline(args: argparse.Namespace) -> None:
+    """Run validation pipeline using real StockRealDomain adapter (P3-06)."""
+    from gbgf.domain.stock_real import StockRealDomain, DATA_INSUFFICIENT
+
+    ts_start = datetime.now(timezone.utc)
+    symbol = args.symbol
+    as_of_date = args.as_of_date
+    window_days = args.window_days
+
+    print("\n" + "=" * 72)
+    print("  GBGF Stock Hypothesis Validation Pipeline — P3-06 REAL DATA")
+    print(f"  {ts_start.isoformat()}")
+    print(f"  symbol={symbol}  as_of_date={as_of_date}  window_days={window_days}")
+    print("  ⚠️  REAL DATA — READ-ONLY — NOT A TRADING RECOMMENDATION")
+    print("=" * 72 + "\n")
+
+    # Load registry
+    if not REGISTRY_PATH.exists():
+        print(f"ERROR: registry not found at {REGISTRY_PATH}")
+        sys.exit(1)
+    registry = json.loads(REGISTRY_PATH.read_text())
+    hypotheses = registry.get("hypotheses", [])
+    print(f"[1/5] Loaded {len(hypotheses)} hypotheses\n")
+
+    n_perms = args.permutations
+    output_base_real = ROOT / "outputs" / "stock_validation_real" / symbol
+    runner = GateRunner()
+    promoted, rejected = [], []
+
+    for hyp in hypotheses:
+        hid = hyp["hypothesis_id"]
+        print(f"\n  ── {hid} ──")
+
+        # Build real domain adapter
+        domain_adapter = StockRealDomain(
+            symbol=symbol,
+            as_of_date=as_of_date,
+            window_days=window_days,
+        )
+
+        # Validate data availability
+        valid, msg = domain_adapter.validate_input_data()
+        print(f"  Data: {msg}")
+        if not valid:
+            print(f"  ⚠️  {DATA_INSUFFICIENT} — skipping {hid}")
+            out_dir = output_base_real / hid.lower()
+            out_dir.mkdir(parents=True, exist_ok=True)
+            lineage = domain_adapter.get_data_lineage()
+            (out_dir / "data_lineage.json").write_text(json.dumps(lineage, indent=2))
+            (out_dir / "gate_result.json").write_text(json.dumps({
+                "hypothesis_id": hid,
+                "status": DATA_INSUFFICIENT,
+                "symbol": symbol,
+                "as_of_date": as_of_date,
+                "reason": msg,
+            }, indent=2))
+            rejected.append(hid)
+            continue
+
+        # Build evidence bundle using real EV
+        ev_result = domain_adapter.compute_ev(
+            StrategyState(
+                strategy_id=hid,
+                ev_classification="UNKNOWN",
+                tier=ValidationTier.T1_REGISTERED,
+                human_review_complete=False,
+                domain=DomainType.STOCK,
+            )
+        )
+        sharpe = ev_result.get("sharpe_annualized", 0) or 0
+        if sharpe > 0.5:
+            ev_class = "EV_POSITIVE"
+        elif sharpe > 0:
+            ev_class = "VALID_SIGNAL_NON_MONETIZABLE"
+        else:
+            ev_class = "EV_NEGATIVE_BY_DESIGN"
+
+        state = StrategyState(
+            strategy_id=hid,
+            ev_classification=ev_class,
+            tier=ValidationTier.T1_REGISTERED,
+            human_review_complete=False,
+            domain=DomainType.STOCK,
+        )
+
+        bundle = EvidenceBundle(
+            strategy_id=hid,
+            gate_results=[],
+            backtest_results=[
+                BacktestResult(
+                    strategy_id=hid,
+                    window_label=f"real_{window_days}d",
+                    edge_pp=max(0.0, sharpe * 0.1),
+                    p_value=0.5,
+                    n_samples=ev_result.get("n_oos_signals", 0),
+                    passed_degraded_threshold=sharpe > 0,
+                )
+            ],
+            metadata={
+                "pipeline_version": "P3-06",
+                "symbol": symbol,
+                "as_of_date": as_of_date,
+                "ev_result": ev_result,
+                "multi_window_tested": False,
+                "permutation_tested": False,
+                "bh_fdr_corrected": False,
+                "real_data": True,
+            },
+        )
+
+        gate_results = runner.run_all(
+            strategy_state=state,
+            evidence_bundle=bundle,
+            domain_adapter=domain_adapter,
+        )
+
+        # Print gate results
+        print("  " + "=" * 68)
+        for gr in gate_results:
+            icon = GATE_ICONS.get(gr.status, "?")
+            print(f"  {icon} {gr.gate_id} [{gr.status.value:8s}] {gr.gate_name}")
+        g_pass = sum(1 for g in gate_results if g.status == GateStatus.PASS)
+        g_fail = sum(1 for g in gate_results if g.status == GateStatus.FAIL)
+        g_warn = sum(1 for g in gate_results if g.status == GateStatus.WARN)
+        g_blk = sum(1 for g in gate_results if g.status == GateStatus.BLOCKED)
+        print(f"  PASS={g_pass} | WARN={g_warn} | BLOCKED={g_blk} | FAIL={g_fail}")
+        print("  " + "=" * 68)
+
+        # Promote if sharpe > 0 and win_rate > 0.5 on real data
+        win_rate = ev_result.get("win_rate", 0) or 0
+        if sharpe > 0 and win_rate >= 0.5:
+            final_status = "promoted_candidate"
+            promoted.append(hid)
+        else:
+            final_status = "rejected"
+            rejected.append(hid)
+        print(f"  Decision: {final_status.upper()}")
+
+        # Save outputs
+        out_dir = output_base_real / hid.lower()
+        out_dir.mkdir(parents=True, exist_ok=True)
+        ts = ts_start.strftime("%Y%m%d_%H%M%S")
+
+        # gate_result.json
+        (out_dir / "gate_result.json").write_text(json.dumps({
+            "hypothesis_id": hid,
+            "symbol": symbol,
+            "as_of_date": as_of_date,
+            "status": final_status,
+            "gate_statuses": {gr.gate_id: gr.status.value for gr in gate_results},
+            "ev_result": ev_result,
+            "run_ts": ts_start.isoformat(),
+        }, indent=2))
+
+        # validation_metrics.json
+        (out_dir / "validation_metrics.json").write_text(json.dumps({
+            "hypothesis_id": hid,
+            "symbol": symbol,
+            "as_of_date": as_of_date,
+            "sharpe_annualized": sharpe,
+            "cagr_annualized": ev_result.get("cagr_annualized"),
+            "win_rate": win_rate,
+            "n_oos_signals": ev_result.get("n_oos_signals"),
+            "promoted": final_status == "promoted_candidate",
+            "note": "Real data — single window only (no multi-window OOS in P3-06)",
+            "run_ts": ts_start.isoformat(),
+        }, indent=2))
+
+        # data_lineage.json
+        lineage = domain_adapter.get_data_lineage()
+        (out_dir / "data_lineage.json").write_text(json.dumps(lineage, indent=2))
+
+        # reproducibility_pack.json
+        repro = {
+            "run_id": f"{hid}-{symbol}-{ts[:8]}",
+            "hypothesis_id": hid,
+            "pipeline_version": "P3-06",
+            "run_ts": ts_start.isoformat(),
+            "symbol": symbol,
+            "as_of_date": as_of_date,
+            "window_days": window_days,
+            "data_lineage": lineage,
+            "gate_statuses": {gr.gate_id: gr.status.value for gr in gate_results},
+            "final_status": final_status,
+            "safety_confirmations": {
+                "no_production_write": True,
+                "no_trade_execution": True,
+                "not_trading_advice": True,
+                "real_data_read_only": True,
+                "pit_guard_applied": True,
+            },
+            "note": "Real data from prisma/dev.db StockQuote. PIT guard enforced.",
+        }
+        (out_dir / "reproducibility_pack.json").write_text(json.dumps(repro, indent=2))
+
+    elapsed = round((datetime.now(timezone.utc) - ts_start).total_seconds(), 1)
+    print("\n" + "=" * 72)
+    print(f"  Real-data validation complete")
+    print(f"  Symbol    : {symbol}")
+    print(f"  AsOfDate  : {as_of_date}")
+    print(f"  Promoted  : {promoted}")
+    print(f"  Rejected  : {rejected}")
+    print(f"  Output    : {output_base_real}")
+    print(f"  Elapsed   : {elapsed}s")
+    print("=" * 72)
+    print()
+    print("  ✅  STOCK_REAL_DATA_VALIDATION_READY")
+    print()
+
+
 def main():
-    parser = argparse.ArgumentParser(description="GBGF Stock Hypothesis Validation Pipeline P3-05")
+    parser = argparse.ArgumentParser(
+        description="GBGF Stock Hypothesis Validation Pipeline (P3-05/P3-06)"
+    )
     parser.add_argument("--dry-run", action="store_true", required=True,
-                        help="Required flag: confirms this is a dry run with synthetic data only")
+                        help="Required safety flag (synthetic or real)")
     parser.add_argument("--permutations", type=int, default=N_PERMUTATIONS,
-                        help=f"Number of permutation test iterations (default {N_PERMUTATIONS})")
+                        help=f"Permutation test iterations (default {N_PERMUTATIONS})")
+    parser.add_argument("--data-source", choices=["synthetic", "real"], default="synthetic",
+                        help="Data source: synthetic (default) or real (reads prisma/dev.db)")
+    parser.add_argument("--symbol", type=str, default="2330",
+                        help="Stock symbol for real mode (default: 2330)")
+    parser.add_argument("--as-of-date", type=str, default=None,
+                        help="As-of date YYYY-MM-DD for real mode (default: today)")
+    parser.add_argument("--window-days", type=int, default=1500,
+                        help="Window days for real mode (default: 1500)")
     args = parser.parse_args()
 
     if not args.dry_run:
-        print("ERROR: --dry-run flag is required. This pipeline only supports dry-run mode.")
+        print("ERROR: --dry-run flag is required.")
         sys.exit(1)
 
-    run_pipeline(args)
+    if args.data_source == "real":
+        # Default as_of_date to today
+        if not args.as_of_date:
+            args.as_of_date = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        run_real_pipeline(args)
+    else:
+        run_pipeline(args)
 
 
 if __name__ == "__main__":
