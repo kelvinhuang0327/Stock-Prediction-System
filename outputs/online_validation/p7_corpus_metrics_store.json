@@ -1,0 +1,102 @@
+{
+  "metricsVersion": "corpus-metrics-v0",
+  "metricsRunId": "p7-corpus-metrics-20260511-001",
+  "generatedAt": "2026-05-11T13:03:24.267+08:00",
+  "corpusPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/outputs/online_validation/simulation_snapshot_corpus.jsonl",
+  "totalEntries": 12,
+  "readyCount": 6,
+  "blockedCount": 6,
+  "uniqueAsOfDateCount": 2,
+  "uniqueSymbolCount": 2,
+  "uniqueHorizonCount": 3,
+  "coverageRatio": 0.5,
+  "byAsOfDate": {
+    "2026-05-11": 6,
+    "2026-05-12": 6
+  },
+  "bySymbol": {
+    "2330": 6,
+    "2454": 6
+  },
+  "byHorizon": {
+    "5D": 4,
+    "20D": 4,
+    "60D": 4
+  },
+  "bySnapshotStatus": {
+    "SNAPSHOT_READY": 6,
+    "SNAPSHOT_BLOCKED": 6
+  },
+  "byBlockedReason": {
+    "NONE": 6,
+    "WINDOW_NOT_DUE": 4,
+    "OUTCOME_MISSING": 2
+  },
+  "perSymbolObservationCount": {
+    "2330": 6,
+    "2454": 6
+  },
+  "perHorizonObservationCount": {
+    "5D": 4,
+    "20D": 4,
+    "60D": 4
+  },
+  "outcomeCoverageTrend": [
+    {
+      "asOfDate": "2026-05-11",
+      "totalCount": 6,
+      "readyCount": 3,
+      "blockedCount": 3,
+      "coverageRatio": 0.5,
+      "missingOutcomeCount": 3,
+      "notDueCount": 2
+    },
+    {
+      "asOfDate": "2026-05-12",
+      "totalCount": 6,
+      "readyCount": 3,
+      "blockedCount": 3,
+      "coverageRatio": 0.5,
+      "missingOutcomeCount": 3,
+      "notDueCount": 2
+    }
+  ],
+  "readyTrendByAsOfDate": [
+    {
+      "asOfDate": "2026-05-11",
+      "readyCount": 3
+    },
+    {
+      "asOfDate": "2026-05-12",
+      "readyCount": 3
+    }
+  ],
+  "blockedTrendByAsOfDate": [
+    {
+      "asOfDate": "2026-05-11",
+      "blockedCount": 3
+    },
+    {
+      "asOfDate": "2026-05-12",
+      "blockedCount": 3
+    }
+  ],
+  "dataQualityFlags": [
+    "NON_EMPTY_CORPUS",
+    "MULTI_DATE_CORPUS",
+    "READY_AND_BLOCKED_PRESENT",
+    "COVERAGE_AT_OR_ABOVE_THRESHOLD",
+    "OBSERVABILITY_ONLY_METRICS"
+  ],
+  "guardrails": {
+    "noProductionWrite": true,
+    "noSimulationWrite": true,
+    "noOptimizerWrite": true,
+    "noPerformanceClaim": true,
+    "noTradingSignal": true
+  },
+  "validationStatus": "PASS",
+  "validationMessages": [
+    "PASS: corpus metrics safety contracts verified"
+  ]
+}
