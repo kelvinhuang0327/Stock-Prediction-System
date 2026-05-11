@@ -1,0 +1,29 @@
+{
+  "previewVersion": "backfill-quality-impact-preview-v0",
+  "previewRunId": "p14-backfill-quality-impact-preview-20260511-001",
+  "generatedAt": "2026-05-11T08:10:50.531Z",
+  "currentCoverageRatio": 0.23333333333333334,
+  "projectedCoverageRatio": 0.2833333333333333,
+  "currentQualityStatus": "BLOCKED",
+  "projectedQualityStatus": "BLOCKED",
+  "projectedReadyCount": 17,
+  "projectedBlockedCount": 43,
+  "projectedHorizonCoverageGap": 0.35,
+  "impactStatus": "IMPROVES_COVERAGE",
+  "notes": [
+    "Preview only: does not modify corpus or production data.",
+    "Projected coverage is based solely on BLOCKED_TO_READY transitions from rehearsal."
+  ],
+  "guardrails": {
+    "noProductionWrite": true,
+    "noCorpusWrite": true,
+    "noOptimizerWrite": true,
+    "noPerformanceClaim": true,
+    "noTradingSignal": true,
+    "observabilityOnly": true
+  },
+  "validationStatus": "PASS",
+  "validationMessages": [
+    "PASS: backfill quality impact preview safety contracts verified"
+  ]
+}

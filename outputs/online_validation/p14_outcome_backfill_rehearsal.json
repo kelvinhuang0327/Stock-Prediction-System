@@ -1,0 +1,87 @@
+{
+  "rehearsalVersion": "outcome-backfill-rehearsal-v0",
+  "rehearsalRunId": "p14-outcome-backfill-rehearsal-20260511-001",
+  "generatedAt": "2026-05-11T08:10:50.530Z",
+  "dryRun": true,
+  "inputCandidateCount": 3,
+  "rehearsedCount": 3,
+  "stillBlockedCount": 0,
+  "rehearsalItems": [
+    {
+      "rehearsalItemKey": "P14_OUTCOME_BACKFILL_REHEARSAL|p14-outcome-backfill-rehearsal-20260511-001|P14_BACKFILL_CANDIDATE|p14-outcome-backfill-selector-20260511-001|SIM_CORPUS|p5-replay-simulation-20260511-001|2026-05-11|2454|MVP_CORE|20D",
+      "candidateKey": "P14_BACKFILL_CANDIDATE|p14-outcome-backfill-selector-20260511-001|SIM_CORPUS|p5-replay-simulation-20260511-001|2026-05-11|2454|MVP_CORE|20D",
+      "corpusEntryKey": "SIM_CORPUS|p5-replay-simulation-20260511-001|2026-05-11|2454|MVP_CORE|20D",
+      "symbol": "2454",
+      "horizonLabel": "20D",
+      "originalAsOfDate": "2026-05-11",
+      "targetTradingDate": "2026-06-08",
+      "previousSnapshotStatus": "SNAPSHOT_BLOCKED",
+      "previousBlockedReason": "OUTCOME_MISSING",
+      "proposedSnapshotStatus": "SNAPSHOT_READY",
+      "proposedBlockedReason": "NONE",
+      "proposedOutcomeSnapshot": {
+        "closePriceAtPrediction": 100,
+        "closePriceAtOutcome": 110,
+        "returnPct": 0.1,
+        "priceSource": "mock-deterministic",
+        "outcomeAvailable": true
+      },
+      "transitionType": "BLOCKED_TO_READY",
+      "productionWriteAllowed": false,
+      "corpusWriteAllowed": false,
+      "optimizerWriteAllowed": false
+    },
+    {
+      "rehearsalItemKey": "P14_OUTCOME_BACKFILL_REHEARSAL|p14-outcome-backfill-rehearsal-20260511-001|P14_BACKFILL_CANDIDATE|p14-outcome-backfill-selector-20260511-001|SIM_CORPUS|p7-second-date-simulation-20260512-001|2026-05-12|2454|MVP_CORE|20D",
+      "candidateKey": "P14_BACKFILL_CANDIDATE|p14-outcome-backfill-selector-20260511-001|SIM_CORPUS|p7-second-date-simulation-20260512-001|2026-05-12|2454|MVP_CORE|20D",
+      "corpusEntryKey": "SIM_CORPUS|p7-second-date-simulation-20260512-001|2026-05-12|2454|MVP_CORE|20D",
+      "symbol": "2454",
+      "horizonLabel": "20D",
+      "originalAsOfDate": "2026-05-12",
+      "targetTradingDate": "2026-06-09",
+      "previousSnapshotStatus": "SNAPSHOT_BLOCKED",
+      "previousBlockedReason": "OUTCOME_MISSING",
+      "proposedSnapshotStatus": "SNAPSHOT_READY",
+      "proposedBlockedReason": "NONE",
+      "proposedOutcomeSnapshot": {
+        "closePriceAtPrediction": 100,
+        "closePriceAtOutcome": 110,
+        "returnPct": 0.1,
+        "priceSource": "mock-deterministic",
+        "outcomeAvailable": true
+      },
+      "transitionType": "BLOCKED_TO_READY",
+      "productionWriteAllowed": false,
+      "corpusWriteAllowed": false,
+      "optimizerWriteAllowed": false
+    },
+    {
+      "rehearsalItemKey": "P14_OUTCOME_BACKFILL_REHEARSAL|p14-outcome-backfill-rehearsal-20260511-001|P14_BACKFILL_CANDIDATE|p14-outcome-backfill-selector-20260511-001|SIM_CORPUS|p8-third-date-simulation-20260513-001|2026-05-13|2454|MVP_CORE|20D",
+      "candidateKey": "P14_BACKFILL_CANDIDATE|p14-outcome-backfill-selector-20260511-001|SIM_CORPUS|p8-third-date-simulation-20260513-001|2026-05-13|2454|MVP_CORE|20D",
+      "corpusEntryKey": "SIM_CORPUS|p8-third-date-simulation-20260513-001|2026-05-13|2454|MVP_CORE|20D",
+      "symbol": "2454",
+      "horizonLabel": "20D",
+      "originalAsOfDate": "2026-05-13",
+      "targetTradingDate": "2026-06-10",
+      "previousSnapshotStatus": "SNAPSHOT_BLOCKED",
+      "previousBlockedReason": "OUTCOME_MISSING",
+      "proposedSnapshotStatus": "SNAPSHOT_READY",
+      "proposedBlockedReason": "NONE",
+      "proposedOutcomeSnapshot": {
+        "closePriceAtPrediction": 100,
+        "closePriceAtOutcome": 110,
+        "returnPct": 0.1,
+        "priceSource": "mock-deterministic",
+        "outcomeAvailable": true
+      },
+      "transitionType": "BLOCKED_TO_READY",
+      "productionWriteAllowed": false,
+      "corpusWriteAllowed": false,
+      "optimizerWriteAllowed": false
+    }
+  ],
+  "validationStatus": "PASS",
+  "validationMessages": [
+    "PASS: outcome backfill rehearsal safety contracts verified"
+  ]
+}
