@@ -1,0 +1,17 @@
+{
+  "executorVersion": "daily-corpus-append-dry-run-executor-v0",
+  "corpusPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/outputs/online_validation/simulation_snapshot_corpus.jsonl",
+  "corpusRunId": "p11-corpus-dry-run-20260515-001",
+  "ingestionDate": "2026-05-11",
+  "dryRun": true,
+  "append": true,
+  "appendStatus": "BLOCKED_DUPLICATE",
+  "existingCount": 30,
+  "incomingCount": 6,
+  "appendedCount": 0,
+  "totalAfterAppend": 30,
+  "validationStatus": "FAIL",
+  "validationMessages": [
+    "FAIL: preview did not pass — blocked reasons: DUPLICATE_AS_OF_DATE, DUPLICATE_KEY_BLOCKED"
+  ]
+}
