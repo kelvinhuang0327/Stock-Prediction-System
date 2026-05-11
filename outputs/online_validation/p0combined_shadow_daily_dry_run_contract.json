@@ -1,0 +1,29 @@
+{
+  "contractVersion": "p0combined-v1",
+  "taskName": "P0-COMBINED",
+  "asOfDate": "2026-05-11",
+  "generatedAt": "2026-05-11T03:18:18.729Z",
+  "writeMode": "DRY_RUN_ARTIFACT_ONLY",
+  "dryRunOnly": true,
+  "description": "Shadow Prediction Daily Dry-run Contract — confirms entry count and validation gate",
+  "entryCount": 2,
+  "validationStatus": "PASS",
+  "batchValidationStatus": "PASS",
+  "guardrailStatus": "PASS",
+  "symbols": [
+    "2330",
+    "2454"
+  ],
+  "sourceDateBasis": {
+    "sourceDate": "2026-05-09",
+    "asOfDate": "2026-05-11",
+    "sourceDateLeqAsOfDate": true
+  },
+  "targetHorizons": [
+    "5D",
+    "20D"
+  ],
+  "allHorizonsPending": true,
+  "allWriteBackFalse": true,
+  "forbiddenFieldsPresent": false
+}

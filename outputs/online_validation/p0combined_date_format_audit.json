@@ -1,0 +1,99 @@
+{
+  "taskName": "P0-COMBINED",
+  "phase": "A",
+  "auditDate": "2026-05-11",
+  "generatedAt": "2026-05-11T03:18:18.729Z",
+  "searchPatterns": [
+    "asOfDate.*toString | String(asOfDate) | asOfDate.*replace",
+    "\\d{8} date literals",
+    "date <= | date >= bare string comparison",
+    "Prisma.sql | $queryRaw date concatenation",
+    "asOfDb / resolveAsOfDate callers"
+  ],
+  "hitsTotal": 11,
+  "realLeakSites": 0,
+  "falsePositiveSites": 11,
+  "sites": [
+    {
+      "file": "src/app/api/admin/data-quality/route.ts",
+      "line": 28,
+      "pattern": "asOfDate.replace(/-/g,\"\")",
+      "classification": "FALSE_POSITIVE",
+      "reason": "Intentional YYYY-MM-DD→YYYYMMDD conversion after resolveAsOfDate(). DB format."
+    },
+    {
+      "file": "src/app/api/stocks/backtest/route.ts",
+      "line": 90,
+      "pattern": "asOfDate.replace(/-/g,\"\")",
+      "classification": "FALSE_POSITIVE",
+      "reason": "Intentional YYYY-MM-DD→YYYYMMDD conversion. Uses in DB query via asOfDb."
+    },
+    {
+      "file": "src/app/api/stocks/[id]/detail/route.ts",
+      "line": 198,
+      "pattern": "asOfDate.replace(/-/g,\"\")",
+      "classification": "FALSE_POSITIVE",
+      "reason": "Intentional YYYY-MM-DD→YYYYMMDD conversion. Consistent with DB format."
+    },
+    {
+      "file": "src/app/api/backtest/validate/route.ts",
+      "line": 66,
+      "pattern": "asOfDate.replace(/-/g,\"\")",
+      "classification": "FALSE_POSITIVE",
+      "reason": "Intentional YYYY-MM-DD→YYYYMMDD conversion after resolveAsOfDate()."
+    },
+    {
+      "file": "src/app/api/report/ops/route.ts",
+      "line": 27,
+      "pattern": "asOfDate.replace(/-/g,\"\")",
+      "classification": "FALSE_POSITIVE",
+      "reason": "Intentional YYYY-MM-DD→YYYYMMDD conversion after resolveAsOfDate()."
+    },
+    {
+      "file": "src/app/api/strategy/screen/route.ts",
+      "line": 32,
+      "pattern": "asOfDate.replace(/-/g,\"\") → asOf param",
+      "classification": "FALSE_POSITIVE",
+      "reason": "StrategyScreenEngine.asOf expects YYYYMMDD. Consistent with DB format."
+    },
+    {
+      "file": "src/app/api/strategy/screen/route.ts",
+      "line": 68,
+      "pattern": "asOfDate.replace(/-/g,\"\") → asOf param",
+      "classification": "FALSE_POSITIVE",
+      "reason": "Same as above — POST handler. Consistent."
+    },
+    {
+      "file": "src/lib/analysis/RuleBasedStockAnalyzer.ts",
+      "line": 60,
+      "pattern": "asOf.replace(/-/g,\"\")",
+      "classification": "FALSE_POSITIVE",
+      "reason": "Local YYYYMMDD conversion. Used only for DB string comparison."
+    },
+    {
+      "file": "src/lib/backtest/BacktestRunner.ts",
+      "line": 42,
+      "pattern": "dateStr.replace(/-/g,\"\")",
+      "classification": "FALSE_POSITIVE",
+      "reason": "Converting simulation loop date to YYYYMMDD for DB query."
+    },
+    {
+      "file": "src/lib/services/PredictionEngine.ts",
+      "line": 42,
+      "pattern": "asOfDate comparison with today YYYYMMDD",
+      "classification": "FALSE_POSITIVE",
+      "reason": "Self-contained today check. Not a query injection point."
+    },
+    {
+      "file": "src/lib/services/StrategyScreeningService.ts",
+      "line": 42,
+      "pattern": "asOfDate.replace(/-/g,\"\")",
+      "classification": "FALSE_POSITIVE",
+      "reason": "Local YYYYMMDD conversion for DB query. Consistent with pattern."
+    }
+  ],
+  "repairSites": [],
+  "conclusion": "Zero true leak sites. All .replace(/-/g,\"\") calls are correct intentional conversions after upstream resolveAsOfDate() validation. No format inconsistency in call chain. No hardcoded 8-digit date literals in query code (only in comments/docs). No bare string date comparisons in query context.",
+  "timeboxStatus": "WITHIN_4H",
+  "recommendedAction": "PROCEED_TO_PART_B"
+}

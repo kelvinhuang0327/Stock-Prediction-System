@@ -58,6 +58,78 @@ This file tracks candidates for archival, not automatic moves. Nothing listed he
 - `scripts/_test_index.py` if confirmed unused
 - Empty or orphaned scaffolding directories once verified
 
+---
+
+## P0-COMBINED Detailed Inventory (2026-05-11)
+
+### Root-level Legacy Python Files (15)
+
+| File | Status |
+|---|---|
+| `ai_advisor.py` | Archive candidate |
+| `asset_doubling.py` | Archive candidate |
+| `asset_doubling_hunter.py` | Archive candidate |
+| `auto_optimizer.py` | Archive candidate |
+| `doubling_final_report.py` | Archive candidate |
+| `execution_policy.py` | Archive candidate |
+| `major_players.py` | Archive candidate |
+| `rolling_backtest_engine.py` | Archive candidate |
+| `strategy_research_framework.py` | Archive candidate |
+| `super_surge_detector.py` | Archive candidate |
+| `validate_kelly.py` | Archive candidate |
+| `validate_kelly_backtest.py` | Archive candidate |
+| `validate_risk_defense.py` | Archive candidate |
+| `validate_walk_forward.py` | Archive candidate |
+| `verify_hunter.py` | Archive candidate |
+
+### scripts/day[4-8]-phase* Files (15)
+
+| File | Status |
+|---|---|
+| `scripts/day4-phase0-snapshot.js` | Archive candidate |
+| `scripts/day5-phase0-snapshot.js` | Archive candidate |
+| `scripts/day5-phase1-contamination-cleanup.js` | Archive candidate |
+| `scripts/day6-phase0-1-audit-remediate.js` | Archive candidate |
+| `scripts/day6-phase0d-lock-diagnosis.ts` | Archive candidate |
+| `scripts/day6-phase2-regime-analysis.js` | Archive candidate |
+| `scripts/day6-phase4-setup-exploration.ts` | Archive candidate |
+| `scripts/day7-phase0-state-reconstruction.ts` | Archive candidate |
+| `scripts/day7-phase1-regime-analysis.ts` | Archive candidate |
+| `scripts/day7-phase3-learning-recovery.ts` | Archive candidate |
+| `scripts/day7-phase4-setup-diagnosis.ts` | Archive candidate |
+| `scripts/day8-phase0-baseline.ts` | Archive candidate |
+| `scripts/day8-phase1-diagnosis.ts` | Archive candidate |
+| `scripts/day8-phase3-5cycles.ts` | Archive candidate |
+| `scripts/day8-phase3-verify.ts` | Archive candidate |
+
+### src/{analyzers,sandbox,validators}/*.py
+
+| File | Status |
+|---|---|
+| `src/analyzers/HistoricalDoublingScanner.py` | Archive candidate |
+| `src/analyzers/ClusteringAnalyzer.py` | Archive candidate |
+| `src/sandbox/StrategySandbox.py` | Archive candidate |
+| `src/lib/indicators/ChipConcentrationIndex.py` | Archive candidate |
+| `src/validators/MonteCarloValidator.py` | Archive candidate |
+| `src/validators/SurvivorshipFilter.py` | Archive candidate |
+| `src/validators/LookAheadBiasDetector.py` | Archive candidate |
+
+### scripts/ai_agents/*.py
+
+| File | Status |
+|---|---|
+| `scripts/ai_agents/discover_doubling.py` | Archive candidate |
+| `scripts/ai_agents/final_jury_report.py` | Archive candidate |
+| `scripts/ai_agents/jury_backtest.py` | Archive candidate |
+| `scripts/ai_agents/jury_experts.py` | Archive candidate |
+| `scripts/ai_agents/jury_experts.py` | Archive candidate |
+| `scripts/ai_agents/single_stock_jury.py` | Archive candidate |
+| `scripts/ai_agents/sync_institutional.py` | Archive candidate |
+| `scripts/ai_agents/taiwan_stock_agent.py` | Archive candidate |
+
+> Note: Files listed here are candidates only. No files are moved or deleted by this inventory.
+> Check live references before archiving any file.
+
 ## Verified Blockers
 
 The following surfaces are not archive-safe yet:

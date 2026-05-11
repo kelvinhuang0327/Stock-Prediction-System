@@ -1,0 +1,92 @@
+{
+  "taskName": "P0-COMBINED",
+  "asOfDate": "2026-05-11",
+  "generatedAt": "2026-05-11T03:18:18.729Z",
+  "guardrails": [
+    {
+      "id": "G01",
+      "name": "No DB write",
+      "status": "PASS",
+      "note": "No prisma.create / update called in dry-run writer"
+    },
+    {
+      "id": "G02",
+      "name": "No production Prediction row",
+      "status": "PASS",
+      "note": "writeMode=DRY_RUN, no Prediction model write"
+    },
+    {
+      "id": "G03",
+      "name": "No StrategySignal write",
+      "status": "PASS",
+      "note": "StrategySignal not touched"
+    },
+    {
+      "id": "G04",
+      "name": "No external API call",
+      "status": "PASS",
+      "note": "No HTTP calls in writer pipeline"
+    },
+    {
+      "id": "G05",
+      "name": "No LLM call",
+      "status": "PASS",
+      "note": "No LLM API calls"
+    },
+    {
+      "id": "G06",
+      "name": "No auto trading",
+      "status": "PASS",
+      "note": "No order creation"
+    },
+    {
+      "id": "G07",
+      "name": "No forbidden terms in conclusions",
+      "status": "PASS",
+      "note": "buy/sell/roi/win_rate/alpha/edge/profit absent from artifact conclusions"
+    },
+    {
+      "id": "G08",
+      "name": "alphaScore sanitized to researchScore",
+      "status": "PASS",
+      "note": "scoreSnapshot.researchScore used; alphaScore not exposed"
+    },
+    {
+      "id": "G09",
+      "name": "recommendationBucket sanitized to researchBucket",
+      "status": "PASS",
+      "note": "researchBucket used; recommendationBucket not exposed"
+    },
+    {
+      "id": "G10",
+      "name": "targetHorizons all PENDING",
+      "status": "PASS",
+      "note": "All horizons have outcomeStatus=PENDING"
+    },
+    {
+      "id": "G11",
+      "name": "outcomeWriteBackAllowed all false",
+      "status": "PASS",
+      "note": "All entries have outcomeWriteBackAllowed=false"
+    },
+    {
+      "id": "G12",
+      "name": "sourceDateBasis.sourceDate <= asOfDate",
+      "status": "PASS",
+      "note": "sourceDate=2026-05-09 <= asOfDate=2026-05-11"
+    },
+    {
+      "id": "G13",
+      "name": "Artifacts only in outputs/online_validation",
+      "status": "PASS",
+      "note": "No writes outside designated dir"
+    },
+    {
+      "id": "G14",
+      "name": "JSONL is non-empty",
+      "status": "PASS",
+      "note": "2 entries written"
+    }
+  ],
+  "overallStatus": "PASS"
+}
