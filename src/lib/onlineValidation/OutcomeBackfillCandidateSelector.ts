@@ -286,12 +286,12 @@ export function summarizeBackfillCandidateSelection(
         byEligibility[candidate.backfillEligibility] += 1;
         byBlockedReason[candidate.currentBlockedReason] = (byBlockedReason[candidate.currentBlockedReason] ?? 0) + 1;
         symbolsSelected.add(candidate.symbol);
-        earliestTargetTradingDate = earliestTargetTradingDate
-            ? (candidate.targetTradingDate < earliestTargetTradingDate ? candidate.targetTradingDate : earliestTargetTradingDate)
-            : candidate.targetTradingDate;
-        latestTargetTradingDate = latestTargetTradingDate
-            ? (candidate.targetTradingDate > latestTargetTradingDate ? candidate.targetTradingDate : latestTargetTradingDate)
-            : candidate.targetTradingDate;
+        if (earliestTargetTradingDate === null || candidate.targetTradingDate < earliestTargetTradingDate) {
+            earliestTargetTradingDate = candidate.targetTradingDate;
+        }
+        if (latestTargetTradingDate === null || candidate.targetTradingDate > latestTargetTradingDate) {
+            latestTargetTradingDate = candidate.targetTradingDate;
+        }
     }
 
     return {

@@ -1,0 +1,122 @@
+{
+  "packageVersion": "backfill-manual-review-package-v0",
+  "packageRunId": "p15-backfill-manual-review-20260511-001",
+  "generatedAt": "2026-05-11T09:15:00.000Z",
+  "reviewStatus": "READY_FOR_HUMAN_REVIEW",
+  "reviewSummary": {
+    "governanceStatus": "READY_FOR_MANUAL_REVIEW",
+    "writePathMode": "ARTIFACT_ONLY_REHEARSAL",
+    "previewOnly": true,
+    "blockedToReadyCount": 3,
+    "projectedCoverageRatio": 0.2833333333333333,
+    "projectedQualityStatus": "BLOCKED"
+  },
+  "candidateSummary": {
+    "selectedCount": 3,
+    "symbols": [
+      "2454"
+    ],
+    "horizons": [
+      "20D"
+    ],
+    "currentBlockedReasons": {
+      "OUTCOME_MISSING": 3
+    }
+  },
+  "transitionSummary": {
+    "inputCandidateCount": 3,
+    "rehearsedCount": 3,
+    "stillBlockedCount": 0,
+    "transitionCounts": {
+      "BLOCKED_TO_READY": 3,
+      "REMAINS_BLOCKED": 0,
+      "NO_CHANGE": 0
+    },
+    "byHorizon": {
+      "20D": {
+        "ready": 3,
+        "blocked": 0
+      }
+    },
+    "bySymbol": {
+      "2454": {
+        "ready": 3,
+        "blocked": 0
+      }
+    },
+    "readyAfterRehearsalCount": 3,
+    "blockedAfterRehearsalCount": 0
+  },
+  "impactPreviewSummary": {
+    "currentCoverageRatio": 0.23333333333333334,
+    "projectedCoverageRatio": 0.2833333333333333,
+    "currentQualityStatus": "BLOCKED",
+    "projectedQualityStatus": "BLOCKED",
+    "impactStatus": "IMPROVES_COVERAGE"
+  },
+  "risks": [
+    "artifact-only rehearsal",
+    "manual review required",
+    "current quality status: BLOCKED",
+    "projected quality status: BLOCKED",
+    "preview-only coverage impact"
+  ],
+  "requiredReviewerDecisions": [
+    {
+      "decision": "confirm rehearsal remains artifact-only",
+      "allowed": false,
+      "reason": "Required for review hygiene"
+    },
+    {
+      "decision": "confirm no corpus write",
+      "allowed": false,
+      "reason": "Required for write-path safety"
+    },
+    {
+      "decision": "confirm no production backfill",
+      "allowed": false,
+      "reason": "Required for phase boundary"
+    },
+    {
+      "decision": "confirm no optimizer trigger",
+      "allowed": false,
+      "reason": "Required for phase boundary"
+    },
+    {
+      "decision": "confirm projected coverage is not performance",
+      "allowed": false,
+      "reason": "Coverage preview is not a performance claim"
+    }
+  ],
+  "forbiddenDecisions": [
+    {
+      "decision": "approve production backfill",
+      "allowed": false,
+      "reason": "Not enabled in P15"
+    },
+    {
+      "decision": "approve corpus write",
+      "allowed": false,
+      "reason": "Not enabled in P15"
+    },
+    {
+      "decision": "approve optimizer",
+      "allowed": false,
+      "reason": "Not enabled in P15"
+    },
+    {
+      "decision": "approve trading action",
+      "allowed": false,
+      "reason": "Not enabled in P15"
+    },
+    {
+      "decision": "claim strategy performance",
+      "allowed": false,
+      "reason": "Coverage preview is not performance"
+    }
+  ],
+  "validationStatus": "PASS",
+  "validationMessages": [
+    "PASS: backfill manual review package safety contracts verified"
+  ]
+}
