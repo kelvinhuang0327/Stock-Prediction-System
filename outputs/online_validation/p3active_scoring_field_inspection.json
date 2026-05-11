@@ -1,0 +1,288 @@
+{
+  "meta": {
+    "generatedAt": "2026-05-11T14:34:41.881Z",
+    "corpusPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/outputs/online_validation/p3active_scoring_historical_replay_corpus.jsonl",
+    "totalLines": 4500,
+    "parseErrors": 0,
+    "uniqueSymbols": 25,
+    "uniqueAsOfDates": 60
+  },
+  "fieldPresence": {
+    "duplicateKey": {
+      "count": 4500,
+      "ratio": 1
+    },
+    "symbol": {
+      "count": 4500,
+      "ratio": 1
+    },
+    "originalAsOfDate": {
+      "count": 4500,
+      "ratio": 1
+    },
+    "createdAt": {
+      "count": 4500,
+      "ratio": 1
+    },
+    "researchBucket": {
+      "count": 4500,
+      "ratio": 1
+    },
+    "scoreSnapshot": {
+      "count": 4500,
+      "ratio": 1
+    },
+    "entryPriceSource": {
+      "count": 4500,
+      "ratio": 1
+    },
+    "closePriceAtPrediction": {
+      "count": 4500,
+      "ratio": 1
+    },
+    "outcomeSnapshot": {
+      "count": 4500,
+      "ratio": 1
+    },
+    "validationMessages": {
+      "count": 4500,
+      "ratio": 1
+    },
+    "scoringCompletenessStatus": {
+      "count": 4500,
+      "ratio": 1
+    },
+    "activeScoringSnapshot": {
+      "count": 4500,
+      "ratio": 1
+    }
+  },
+  "bucketDistribution": {
+    "LowPriority": 1158,
+    "Watch": 462,
+    "Neutral": 1401,
+    "Strong": 1479
+  },
+  "completenessDistribution": {
+    "COMPLETE": 3099,
+    "PARTIAL": 1401
+  },
+  "scoreDistribution": {
+    "stats": {
+      "count": 4500,
+      "min": 21,
+      "max": 94,
+      "mean": 59.68533333333333,
+      "nonZeroCount": 4500
+    },
+    "nonZeroCount": 4500,
+    "nonZeroRatio": 1,
+    "buckets": {
+      "0": 0,
+      "1-25": 282,
+      "26-50": 1338,
+      "51-75": 1581,
+      "76-100": 1299
+    }
+  },
+  "activeScoringSnapshot": {
+    "presentCount": 4500,
+    "presentRatio": 1,
+    "subFieldPresence": {
+      "builderVersion": {
+        "count": 4500,
+        "ratio": 1
+      },
+      "scoringMode": {
+        "count": 4500,
+        "ratio": 1
+      },
+      "scoringEngineSource": {
+        "count": 4500,
+        "ratio": 1
+      },
+      "researchBucket": {
+        "count": 4500,
+        "ratio": 1
+      },
+      "alphaScore": {
+        "count": 4500,
+        "ratio": 1
+      },
+      "scoreSnapshot": {
+        "count": 4500,
+        "ratio": 1
+      },
+      "signalSnapshot": {
+        "count": 4500,
+        "ratio": 1
+      },
+      "factorSnapshot": {
+        "count": 4500,
+        "ratio": 1
+      },
+      "reasonSnapshot": {
+        "count": 4500,
+        "ratio": 1
+      },
+      "limitations": {
+        "count": 4500,
+        "ratio": 1
+      },
+      "dataCoverage": {
+        "count": 4500,
+        "ratio": 1
+      },
+      "dataPoints": {
+        "count": 4500,
+        "ratio": 1
+      },
+      "usedSources": {
+        "count": 4500,
+        "ratio": 1
+      },
+      "missingSources": {
+        "count": 4500,
+        "ratio": 1
+      },
+      "pitGateDate": {
+        "count": 4500,
+        "ratio": 1
+      },
+      "scoringAvailable": {
+        "count": 4500,
+        "ratio": 1
+      },
+      "completenessStatus": {
+        "count": 4500,
+        "ratio": 1
+      },
+      "scoringNote": {
+        "count": 4500,
+        "ratio": 1
+      }
+    },
+    "completenessDistribution": {
+      "COMPLETE": 3099,
+      "PARTIAL": 1401
+    },
+    "nonZeroAlphaScore": 4500,
+    "nonZeroAlphaRatio": 1,
+    "scoreSnapshotCoverage": {
+      "presentCount": 4500,
+      "fieldStats": {
+        "researchScore": {
+          "count": 4500,
+          "min": 21,
+          "max": 94,
+          "mean": 59.68533333333333,
+          "nonZeroCount": 4500
+        },
+        "confidenceScore": {
+          "count": 4500,
+          "min": 0,
+          "max": 0,
+          "mean": 0,
+          "nonZeroCount": 0
+        },
+        "technicalScore": {
+          "count": 4500,
+          "min": 8,
+          "max": 100,
+          "mean": 56.82933333333333,
+          "nonZeroCount": 4500
+        },
+        "chipScore": {
+          "count": 4500,
+          "min": 50,
+          "max": 80,
+          "mean": 65.92933333333333,
+          "nonZeroCount": 4500
+        },
+        "fundamentalScore": {
+          "count": 4500,
+          "min": 0,
+          "max": 0,
+          "mean": 0,
+          "nonZeroCount": 0
+        },
+        "marketAdjustment": {
+          "count": 4500,
+          "min": 0,
+          "max": 0,
+          "mean": 0,
+          "nonZeroCount": 0
+        }
+      }
+    },
+    "factorSnapshotCoverage": {
+      "presentCount": 4500,
+      "presentRatio": 1,
+      "factorCountStats": {
+        "count": 4500,
+        "min": 10,
+        "max": 10,
+        "mean": 10
+      }
+    },
+    "signalSnapshotCoverage": {
+      "presentCount": 4500,
+      "fieldKeys": {
+        "MA 趨勢": 4500,
+        "RSI(14)": 4500,
+        "MACD": 4500,
+        "近 20 日動能": 4500,
+        "近 5 日報酬": 4500,
+        "近 20 日報酬": 4500,
+        "量能變化": 4500,
+        "波動率": 4500,
+        "近期最大回撤": 4500,
+        "法人近 10 日買超": 4500
+      }
+    },
+    "reasonSnapshotCoverage": {
+      "presentCount": 4500,
+      "fieldKeys": {
+        "技術偏空": 540,
+        "技術偏多": 900,
+        "技術偏多 / 動能轉強 / 法人買超": 618,
+        "法人買超": 321,
+        "動能走弱 / 法人買超": 360,
+        "技術偏空 / 動能走弱 / 法人買超": 195,
+        "技術偏多 / 動能走弱": 180,
+        "動能走弱": 39,
+        "資料觀察中": 39,
+        "技術偏多 / 法人買超": 462,
+        "技術偏空 / 法人買超": 423,
+        "技術偏空 / 動能走弱": 423
+      }
+    }
+  },
+  "outcomeDistribution": {
+    "priceSource": {
+      "stockQuote.close": 4204,
+      "MISSING": 271,
+      "PENDING": 25
+    },
+    "withReturnPct": 4204,
+    "returnPctStats": {
+      "count": 4204,
+      "min": -35.8718,
+      "max": 144.6889,
+      "mean": 6.3248339200761245,
+      "nonZeroCount": 2540
+    }
+  },
+  "horizonDistribution": {
+    "5": 1500,
+    "20": 1500,
+    "60": 1500
+  },
+  "invariantChecks": {
+    "forbiddenFields": "PASS",
+    "forbiddenFieldHits": {},
+    "malformedDuplicateKey": 0,
+    "malformedCreatedAt": 0,
+    "pitViolations": 0
+  }
+}

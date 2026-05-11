@@ -1,0 +1,216 @@
+{
+  "phase": "P3-HARDRESET PART A",
+  "generatedAt": "2026-05-11T14:20:00.537Z",
+  "classification": "P3_PREFLIGHT_PASS",
+  "summary": {
+    "total": 32,
+    "passCount": 32,
+    "warnCount": 0,
+    "failCount": 0
+  },
+  "rootCauseConfirmed": {
+    "p2FindingId": "P2_SPOTCHECK_LIMITED_BY_MISSING_SCORE_FIELDS",
+    "cause": "DefaultStockQuoteCandidateProvider returns all-zero scores (intentional stub for P0)",
+    "fix": "ActiveScoringSnapshotBuilder will call RuleBasedStockAnalyzer.analyzeStock(symbol, asOfDate) for PIT-safe real scores"
+  },
+  "scoringModules": {
+    "primaryPath": "RuleBasedStockAnalyzer.analyzeStock(symbol, asOfDate)",
+    "pitSafe": true,
+    "dbRequired": true,
+    "forbiddenClaims": false
+  },
+  "results": [
+    {
+      "id": "A1.1",
+      "status": "PASS",
+      "desc": "P0 corpus exists",
+      "detail": null
+    },
+    {
+      "id": "A1.2",
+      "status": "PASS",
+      "desc": "P0 corpus = 4500 lines",
+      "detail": null
+    },
+    {
+      "id": "A1.3",
+      "status": "PASS",
+      "desc": "P0 artifact JSON valid",
+      "detail": null
+    },
+    {
+      "id": "A1.4",
+      "status": "PASS",
+      "desc": "P0 universe audit JSON valid",
+      "detail": null
+    },
+    {
+      "id": "A1.5",
+      "status": "PASS",
+      "desc": "P0 asOfDate candidates JSON valid",
+      "detail": null
+    },
+    {
+      "id": "A2.1",
+      "status": "PASS",
+      "desc": "P1 corpus exists",
+      "detail": null
+    },
+    {
+      "id": "A2.2",
+      "status": "PASS",
+      "desc": "P1 corpus = 9900 lines",
+      "detail": null
+    },
+    {
+      "id": "A3.1",
+      "status": "PASS",
+      "desc": "P2 final report exists",
+      "detail": null
+    },
+    {
+      "id": "A3.2",
+      "status": "PASS",
+      "desc": "P2 field inspection JSON valid",
+      "detail": null
+    },
+    {
+      "id": "A3.3",
+      "status": "PASS",
+      "desc": "P2 prediction audit JSON valid",
+      "detail": null
+    },
+    {
+      "id": "A4.1",
+      "status": "PASS",
+      "desc": "Frozen corpus exists",
+      "detail": null
+    },
+    {
+      "id": "A4.2",
+      "status": "PASS",
+      "desc": "Frozen corpus = 60 lines",
+      "detail": null
+    },
+    {
+      "id": "A5.1",
+      "status": "PASS",
+      "desc": "P0 corpus all researchBucket=Neutral",
+      "detail": null
+    },
+    {
+      "id": "A5.2",
+      "status": "PASS",
+      "desc": "P0 corpus all scoreSnapshot fields = 0",
+      "detail": null
+    },
+    {
+      "id": "A5.3",
+      "status": "PASS",
+      "desc": "P0 corpus has no scoringCompletenessStatus field",
+      "detail": null
+    },
+    {
+      "id": "A6.1",
+      "status": "PASS",
+      "desc": "RuleBasedStockAnalyzer.ts exists",
+      "detail": null
+    },
+    {
+      "id": "A6.2",
+      "status": "PASS",
+      "desc": "RuleBasedStockAnalyzer exports analyzeStock",
+      "detail": null
+    },
+    {
+      "id": "A6.3",
+      "status": "PASS",
+      "desc": "analyzeStock accepts asOf parameter (PIT-safe)",
+      "detail": null
+    },
+    {
+      "id": "A6.4",
+      "status": "PASS",
+      "desc": "RuleBasedStockAnalyzer is PIT-safe (asOfDb reference)",
+      "detail": null
+    },
+    {
+      "id": "A6.5",
+      "status": "PASS",
+      "desc": "SignalFusionEngine.ts exists",
+      "detail": null
+    },
+    {
+      "id": "A6.6",
+      "status": "PASS",
+      "desc": "StrategyScreenEngine.ts exists",
+      "detail": null
+    },
+    {
+      "id": "A7.1",
+      "status": "PASS",
+      "desc": "ShadowPredictionLogContract.ts exists",
+      "detail": null
+    },
+    {
+      "id": "A7.2",
+      "status": "PASS",
+      "desc": "ShadowPredictionLogContract exports sanitizeResearchCandidateForShadowLog",
+      "detail": null
+    },
+    {
+      "id": "A7.3",
+      "status": "PASS",
+      "desc": "ShadowPredictionHistoricalReplayWriter.ts exists",
+      "detail": null
+    },
+    {
+      "id": "A7.4",
+      "status": "PASS",
+      "desc": "ShadowPredictionHistoricalReplayWriter exports runHistoricalReplayShadowWrite",
+      "detail": null
+    },
+    {
+      "id": "A7.5",
+      "status": "PASS",
+      "desc": "ShadowPredictionHistoricalReplayWriter has CandidateProvider interface",
+      "detail": null
+    },
+    {
+      "id": "A7.6",
+      "status": "PASS",
+      "desc": "DefaultStockQuoteCandidateProvider is the P2 root cause (stub scores)",
+      "detail": null
+    },
+    {
+      "id": "A8.1",
+      "status": "PASS",
+      "desc": "P3 corpus does not yet exist (fresh start)",
+      "detail": null
+    },
+    {
+      "id": "A8.2",
+      "status": "PASS",
+      "desc": "ActiveScoringSnapshotBuilder.ts does not yet exist (to be created)",
+      "detail": null
+    },
+    {
+      "id": "A9.1",
+      "status": "PASS",
+      "desc": "Prisma schema exists",
+      "detail": null
+    },
+    {
+      "id": "A9.2",
+      "status": "PASS",
+      "desc": "Prisma client generated (node_modules)",
+      "detail": null
+    },
+    {
+      "id": "A9.3",
+      "status": "PASS",
+      "desc": "P0 corpus has >90% stockQuote.close priceSource (confirms DB access)",
+      "detail": null
+    }
+  ]
+}

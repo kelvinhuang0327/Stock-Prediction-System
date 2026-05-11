@@ -35,6 +35,13 @@ import {
 } from './ShadowPredictionLogContract';
 
 import {
+    buildActiveScoringSnapshot,
+    buildRawCandidateFromActiveScoringSnapshot,
+    ActiveScoringSnapshot,
+    ScoringCompletenessStatus,
+} from './ActiveScoringSnapshotBuilder';
+
+import {
     resolveEntryPrice,
     resolveOutcomePrice,
     ResolverOptions,
@@ -87,6 +94,10 @@ export interface HistoricalReplayConfig {
     today?: string;                       // override for testing
     resolverOptions?: ResolverOptions;    // for testing injection
     candidateProvider?: CandidateProvider; // for testing injection
+    // P3-HARDRESET extensions
+    useActiveScoringSnapshot?: boolean;   // if true, call ActiveScoringSnapshotBuilder per entry
+    outputFilename?: string;              // override default OUTPUT_CORPUS_FILENAME
+    activeScoringProvider?: (symbol: string, asOfDate: string) => Promise<ActiveScoringSnapshot>; // injectable for testing
 }
 
 /** Corpus line written to JSONL */
@@ -118,6 +129,9 @@ export interface HistoricalReplayCorpusLine {
     };
     // Metadata
     validationMessages: string[];
+    // P3-HARDRESET: active scoring fields (optional — present when useActiveScoringSnapshot=true)
+    scoringCompletenessStatus?: ScoringCompletenessStatus;
+    activeScoringSnapshot?: ActiveScoringSnapshot;
 }
 
 export interface HistoricalReplayRunResult {
@@ -132,6 +146,8 @@ export interface HistoricalReplayRunResult {
     errorCount: number;
     validationMessages: string[];
     outputPath: string;
+    // P3-HARDRESET: scoring completeness stats (present when useActiveScoringSnapshot=true)
+    scoringCompletenessDistribution?: Record<string, number>;
 }
 
 export interface HistoricalReplayArtifact {
@@ -245,6 +261,10 @@ export function buildHistoricalReplayConfig(options: {
     resolverOptions?: ResolverOptions;
     candidateProvider?: CandidateProvider;
     corpusRunId?: string;
+    // P3-HARDRESET extensions
+    useActiveScoringSnapshot?: boolean;
+    outputFilename?: string;
+    activeScoringProvider?: (symbol: string, asOfDate: string) => Promise<ActiveScoringSnapshot>;
 }): HistoricalReplayConfig {
     const outputDir = options.outputDir ?? path.join(process.cwd(), 'outputs', 'online_validation');
     const horizons = options.horizons ?? [5, 20, 60];
@@ -307,6 +327,9 @@ export function buildHistoricalReplayConfig(options: {
         today: options.today,
         resolverOptions: options.resolverOptions,
         candidateProvider: options.candidateProvider,
+        useActiveScoringSnapshot: options.useActiveScoringSnapshot,
+        outputFilename: options.outputFilename,
+        activeScoringProvider: options.activeScoringProvider,
     };
 }
 
@@ -332,11 +355,14 @@ export async function runHistoricalReplayShadowWrite(
         today: configToday,
         resolverOptions,
         candidateProvider,
+        useActiveScoringSnapshot,
+        outputFilename: configOutputFilename,
+        activeScoringProvider: configActiveScoringProvider,
     } = config;
 
     const today = configToday ?? new Date().toISOString().slice(0, 10);
     const provider = candidateProvider ?? new DefaultStockQuoteCandidateProvider();
-    const outputPath = path.join(outputDir, OUTPUT_CORPUS_FILENAME);
+    const outputPath = path.join(outputDir, configOutputFilename ?? OUTPUT_CORPUS_FILENAME);
 
     // Safety: verify we are NOT writing to the frozen corpus
     const frozenPath = path.join(outputDir, FROZEN_CORPUS_FILENAME);
@@ -352,6 +378,7 @@ export async function runHistoricalReplayShadowWrite(
     const lines: string[] = [];
     const seenDuplicateKeys = new Set<string>();
     const priceSourceDistribution: Record<string, number> = {};
+    const scoringCompletenessDistribution: Record<string, number> = {};
     const validationMessages: string[] = [];
     let successCount = 0;
     let pendingCount = 0;
@@ -373,8 +400,21 @@ export async function runHistoricalReplayShadowWrite(
             const { symbol } = universeEntry;
 
             try {
-                // Get research candidate (stubbed or from strategy screen)
-                const rawCandidate = await provider.getCandidates(symbol, asOfDate);
+                // P3-HARDRESET: optionally build active scoring snapshot (PIT-safe)
+                let activeScoringSnapshot: ActiveScoringSnapshot | undefined;
+                if (useActiveScoringSnapshot) {
+                    const scoringFn = configActiveScoringProvider ?? buildActiveScoringSnapshot;
+                    activeScoringSnapshot = await scoringFn(symbol, asOfDate);
+                    // Track completeness distribution
+                    const cs = activeScoringSnapshot.completenessStatus;
+                    scoringCompletenessDistribution[cs] = (scoringCompletenessDistribution[cs] ?? 0) + 1;
+                }
+
+                // Get research candidate:
+                // If active scoring is enabled, build from snapshot; otherwise use default provider
+                const rawCandidate: RawResearchCandidate = activeScoringSnapshot
+                    ? buildRawCandidateFromActiveScoringSnapshot(activeScoringSnapshot)
+                    : await provider.getCandidates(symbol, asOfDate);
 
                 // Resolve entry price (PIT-safe)
                 const resolverOpts = { ...resolverOptions, today };
@@ -476,6 +516,11 @@ export async function runHistoricalReplayShadowWrite(
                             ...logEntry.validationMessages,
                             ...entryPrice.entryAvailable ? [] : [`WARN: entry price missing for ${symbol} on ${asOfDate}`],
                         ],
+                        // P3-HARDRESET: attach active scoring if computed
+                        ...(activeScoringSnapshot !== undefined && {
+                            scoringCompletenessStatus: activeScoringSnapshot.completenessStatus,
+                            activeScoringSnapshot,
+                        }),
                     };
 
                     // Guard: no forbidden claims in any string field
@@ -506,6 +551,7 @@ export async function runHistoricalReplayShadowWrite(
         errorCount,
         validationMessages,
         outputPath,
+        ...(useActiveScoringSnapshot && { scoringCompletenessDistribution }),
     };
 }
 
