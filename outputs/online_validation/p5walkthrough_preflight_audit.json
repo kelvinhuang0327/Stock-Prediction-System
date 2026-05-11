@@ -1,0 +1,153 @@
+{
+  "classification": "P5_PREFLIGHT_PASS",
+  "passed": 24,
+  "failed": 0,
+  "total": 24,
+  "generatedAt": "2026-05-11T15:08:58.490Z",
+  "gates": [
+    {
+      "id": "A01",
+      "description": "p4calibration_walkthrough_cases.json exists",
+      "status": "PASS",
+      "detail": "OK"
+    },
+    {
+      "id": "A02",
+      "description": "p4calibration_full_audit.json exists",
+      "status": "PASS",
+      "detail": "OK"
+    },
+    {
+      "id": "A03",
+      "description": "p4calibration_readiness_decision.json exists",
+      "status": "PASS",
+      "detail": "OK"
+    },
+    {
+      "id": "A04",
+      "description": "p3active_scoring_historical_replay_corpus.jsonl exists",
+      "status": "PASS",
+      "detail": "OK"
+    },
+    {
+      "id": "A05",
+      "description": "p1baseline_historical_replay_corpus.jsonl exists",
+      "status": "PASS",
+      "detail": "OK"
+    },
+    {
+      "id": "A06",
+      "description": "simulation_snapshot_corpus.jsonl exists",
+      "status": "PASS",
+      "detail": "OK"
+    },
+    {
+      "id": "A07",
+      "description": "p3active_scoring_field_inspection.json exists",
+      "status": "PASS",
+      "detail": "OK"
+    },
+    {
+      "id": "A08",
+      "description": "p4 walkthrough cases >= 50",
+      "status": "PASS",
+      "detail": "OK"
+    },
+    {
+      "id": "A09",
+      "description": "p4 walkthrough cases array non-empty",
+      "status": "PASS",
+      "detail": "OK"
+    },
+    {
+      "id": "A10",
+      "description": "p4 readiness classification = P4_FULL_CALIBRATION_AUDIT_COMPLETE",
+      "status": "PASS",
+      "detail": "OK"
+    },
+    {
+      "id": "A11",
+      "description": "p4 readiness 29/29 PASS",
+      "status": "PASS",
+      "detail": "OK"
+    },
+    {
+      "id": "A12",
+      "description": "simulation_snapshot_corpus.jsonl = 60 lines",
+      "status": "PASS",
+      "detail": "OK"
+    },
+    {
+      "id": "A13",
+      "description": "p3active corpus = 4500 lines",
+      "status": "PASS",
+      "detail": "OK"
+    },
+    {
+      "id": "A14",
+      "description": "p1baseline corpus = 9900 lines",
+      "status": "PASS",
+      "detail": "OK"
+    },
+    {
+      "id": "A15",
+      "description": "p0hardreset corpus = 4500 lines",
+      "status": "PASS",
+      "detail": "OK"
+    },
+    {
+      "id": "A16",
+      "description": "P3 corpus: mock-deterministic=0",
+      "status": "PASS",
+      "detail": "OK"
+    },
+    {
+      "id": "A17",
+      "description": "P1 corpus: mock-deterministic=0",
+      "status": "PASS",
+      "detail": "OK"
+    },
+    {
+      "id": "A18",
+      "description": "p4calibration_full_audit.json: no forbidden claims",
+      "status": "PASS",
+      "detail": "OK"
+    },
+    {
+      "id": "A19",
+      "description": "p4calibration_readiness_decision.json: no forbidden claims",
+      "status": "PASS",
+      "detail": "OK"
+    },
+    {
+      "id": "A20",
+      "description": "p4calibration_walkthrough_cases.json: no forbidden claims",
+      "status": "PASS",
+      "detail": "OK"
+    },
+    {
+      "id": "A21",
+      "description": "P3 corpus: >=25 unique symbols",
+      "status": "PASS",
+      "detail": "OK"
+    },
+    {
+      "id": "A22",
+      "description": "P3 corpus: usable ratio 100% (no EMPTY)",
+      "status": "PASS",
+      "detail": "OK"
+    },
+    {
+      "id": "A23",
+      "description": "P3 corpus: PIT violations = 0",
+      "status": "PASS",
+      "detail": "OK"
+    },
+    {
+      "id": "A24",
+      "description": "p4calibration_full_audit.json: byHorizon/byBucket/byScoreDecile/confusionMatrices/predictionVsBaseline all present",
+      "status": "PASS",
+      "detail": "OK"
+    }
+  ]
+}
