@@ -1,0 +1,30 @@
+{
+  "generatedAt": "2026-05-11T11:58:21.424Z",
+  "auditVersion": "p1baseline-preflight-v1",
+  "artifactChecks": {
+    "p0hardreset_universe_audit.json": "EXISTS",
+    "p0hardreset_historical_asofdate_candidates.json": "EXISTS",
+    "p0hardreset_historical_replay_corpus.jsonl": "EXISTS",
+    "p0hardreset_historical_replay_summary.md": "EXISTS",
+    "p0hardreset_corpus_quality_gate_rerun.json": "EXISTS",
+    "p0hardreset_final_report.md": "EXISTS"
+  },
+  "allArtifactsExist": true,
+  "corpusValidation": {
+    "lines": 4500,
+    "linesPass": true,
+    "symbols": 25,
+    "symbolsPass": true,
+    "dates": 60,
+    "datesPass": true,
+    "mockDeterministic": 0,
+    "mockPass": true,
+    "coveragePct": 93.42,
+    "coveragePass": true,
+    "frozenLines": 60,
+    "frozenPass": true,
+    "parseErrors": 0
+  },
+  "overallPass": true,
+  "nextStep": "Proceed with P1 baseline corpus generation"
+}

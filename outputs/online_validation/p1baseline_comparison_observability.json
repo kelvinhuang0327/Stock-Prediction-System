@@ -1,0 +1,243 @@
+{
+  "generatedAt": "2026-05-11T13:41:47.929Z",
+  "scriptVersion": "compare-p0hardreset-corpus-to-p1baseline-v1",
+  "observabilityOnly": true,
+  "disclaimer": "Descriptive statistics only. No investment recommendations, ROI claims, alpha claims, or predictions.",
+  "p0": {
+    "file": "p0hardreset_historical_replay_corpus.jsonl",
+    "totalLines": 4500,
+    "parseErrors": 0,
+    "uniqueSymbols": 25,
+    "uniqueAsOfDates": 60,
+    "priceSourceDist": {
+      "UNKNOWN": 4500
+    },
+    "coveragePct": 0,
+    "returnPctStats": {
+      "count": 4500,
+      "mean": null,
+      "median": null,
+      "min": null,
+      "max": null,
+      "stddev": null
+    },
+    "returnPctByHorizon": {
+      "horizon_undefinedd": {
+        "count": 0,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "max": null,
+        "stddev": null
+      }
+    },
+    "returnPctTop5SymbolsByMean": []
+  },
+  "p1": {
+    "file": "p1baseline_historical_replay_corpus.jsonl",
+    "totalLines": 9900,
+    "parseErrors": 0,
+    "uniqueSymbols": 25,
+    "uniqueAsOfDates": 60,
+    "uniqueBaselineTypes": [
+      "BUY_AND_HOLD_ALL",
+      "TOP_N_EQUAL_WEIGHT",
+      "RANDOM_N_DETERMINISTIC",
+      "STOCKQUOTE_COVERAGE_TOP_N"
+    ],
+    "typeCounts": {
+      "BUY_AND_HOLD_ALL": 4500,
+      "TOP_N_EQUAL_WEIGHT": 1800,
+      "RANDOM_N_DETERMINISTIC": 1800,
+      "STOCKQUOTE_COVERAGE_TOP_N": 1800
+    },
+    "priceSourceDist": {
+      "stockQuote.close": 9329,
+      "MISSING": 516,
+      "PENDING": 55
+    },
+    "coveragePct": 94.2323,
+    "returnPctStats": {
+      "count": 9329,
+      "mean": 6.5169,
+      "median": 1.7301,
+      "min": -35.8718,
+      "max": 144.6889,
+      "stddev": 16.4375
+    },
+    "returnPctByType": {
+      "type_BUY_AND_HOLD_ALL": {
+        "count": 4204,
+        "mean": 6.3248,
+        "median": 1.6898,
+        "min": -35.8718,
+        "max": 144.6889,
+        "stddev": 16.216
+      },
+      "type_TOP_N_EQUAL_WEIGHT": {
+        "count": 1690,
+        "mean": 3.8681,
+        "median": 1.0288,
+        "min": -35.8718,
+        "max": 144.6889,
+        "stddev": 13.9933
+      },
+      "type_RANDOM_N_DETERMINISTIC": {
+        "count": 1677,
+        "mean": 6.1152,
+        "median": 1.5152,
+        "min": -34.5312,
+        "max": 128.9217,
+        "stddev": 15.5362
+      },
+      "type_STOCKQUOTE_COVERAGE_TOP_N": {
+        "count": 1758,
+        "mean": 9.9057,
+        "median": 3.0692,
+        "min": -35.8718,
+        "max": 144.6889,
+        "stddev": 19.1836
+      }
+    },
+    "returnPctByHorizon": {
+      "horizon_5d": {
+        "count": 3300,
+        "mean": 0.9619,
+        "median": 0.3519,
+        "min": -28.8136,
+        "max": 56.2952,
+        "stddev": 6.0596
+      },
+      "horizon_20d": {
+        "count": 3273,
+        "mean": 4.7403,
+        "median": 1.7241,
+        "min": -27.521,
+        "max": 75.5306,
+        "stddev": 11.9139
+      },
+      "horizon_60d": {
+        "count": 2756,
+        "mean": 15.2782,
+        "median": 8.5743,
+        "min": -35.8718,
+        "max": 144.6889,
+        "stddev": 24.1785
+      }
+    },
+    "returnPctByTypeAndHorizon": {
+      "BUY_AND_HOLD_ALL__5d": {
+        "count": 1500,
+        "mean": 0.923,
+        "median": 0.2586,
+        "min": -28.8136,
+        "max": 56.2952,
+        "stddev": 6.1488
+      },
+      "BUY_AND_HOLD_ALL__20d": {
+        "count": 1486,
+        "mean": 4.5893,
+        "median": 1.6153,
+        "min": -27.521,
+        "max": 75.5306,
+        "stddev": 12.2587
+      },
+      "BUY_AND_HOLD_ALL__60d": {
+        "count": 1218,
+        "mean": 15.0948,
+        "median": 9.0626,
+        "min": -35.8718,
+        "max": 144.6889,
+        "stddev": 23.6896
+      },
+      "TOP_N_EQUAL_WEIGHT__5d": {
+        "count": 600,
+        "mean": 0.6883,
+        "median": 0.3889,
+        "min": -28.8136,
+        "max": 27.6178,
+        "stddev": 4.9273
+      },
+      "TOP_N_EQUAL_WEIGHT__20d": {
+        "count": 595,
+        "mean": 3.0339,
+        "median": 1.1559,
+        "min": -27.521,
+        "max": 56.1936,
+        "stddev": 9.698
+      },
+      "TOP_N_EQUAL_WEIGHT__60d": {
+        "count": 495,
+        "mean": 8.7251,
+        "median": 4.0293,
+        "min": -35.8718,
+        "max": 144.6889,
+        "stddev": 22.1218
+      },
+      "RANDOM_N_DETERMINISTIC__5d": {
+        "count": 600,
+        "mean": 0.9352,
+        "median": 0,
+        "min": -23.3577,
+        "max": 56.2952,
+        "stddev": 6.4656
+      },
+      "RANDOM_N_DETERMINISTIC__20d": {
+        "count": 593,
+        "mean": 4.6686,
+        "median": 1.5152,
+        "min": -23.1395,
+        "max": 75.5306,
+        "stddev": 12.2039
+      },
+      "RANDOM_N_DETERMINISTIC__60d": {
+        "count": 484,
+        "mean": 14.3091,
+        "median": 7.8847,
+        "min": -34.5312,
+        "max": 128.9217,
+        "stddev": 22.3398
+      },
+      "STOCKQUOTE_COVERAGE_TOP_N__5d": {
+        "count": 600,
+        "mean": 1.3596,
+        "median": 0.8277,
+        "min": -28.8136,
+        "max": 56.2952,
+        "stddev": 6.4121
+      },
+      "STOCKQUOTE_COVERAGE_TOP_N__20d": {
+        "count": 599,
+        "mean": 6.8809,
+        "median": 3.4224,
+        "min": -27.521,
+        "max": 56.1936,
+        "stddev": 12.425
+      },
+      "STOCKQUOTE_COVERAGE_TOP_N__60d": {
+        "count": 559,
+        "mean": 22.3198,
+        "median": 19.5337,
+        "min": -35.8718,
+        "max": 144.6889,
+        "stddev": 26.5611
+      }
+    }
+  },
+  "crossCorpus": {
+    "note": "Observability bridge — P0 is system predictions corpus, P1 is naive reference baseline corpus. No alpha, ROI, or outperformance claims made.",
+    "p0VsP1LineDelta": -5400,
+    "p0CoveragePct": 0,
+    "p1CoveragePct": 94.2323,
+    "p0OverallMeanReturnPct": null,
+    "p1OverallMeanReturnPct": 6.5169,
+    "limitations": [
+      "P0 corpus contains system-generated prediction entries — not a strategy recommendation.",
+      "P1 corpus is a naive reference baseline — not a strategy recommendation.",
+      "Return % figures are back-computed from historical TWSE close prices and are observational only.",
+      "No live trading, no buy/sell signals, no investment advice derived from this comparison.",
+      "Past statistical summaries do not predict future returns.",
+      "Coverage gaps (MISSING/PENDING) affect completeness of statistics."
+    ]
+  }
+}
