@@ -27,6 +27,13 @@ import { randomUUID } from 'crypto';
 
 import { resolveAsOfDate } from '@/lib/data/AsOfDataGate';
 import {
+    accumulateShadowPredictionLedger,
+    buildShadowLedgerPath,
+    summarizeShadowLedger,
+    AccumulateResult,
+    LedgerSummary,
+} from './ShadowLedgerAccumulator';
+import {
     RawResearchCandidate,
     ShadowPredictionLogBatch,
     ShadowPredictionLogEntry,
@@ -59,6 +66,10 @@ export interface ShadowPredictionDryRunConfig {
     writeMode: DryRunWriteMode;         // always DRY_RUN_ARTIFACT_ONLY — locked
     sourceDateBasis: SourceDateBasis;
     targetHorizons?: TargetHorizon[];
+    // Ledger accumulation options
+    appendToLedger?: boolean;           // if true, append to long-term shadow ledger
+    ledgerPath?: string;                // explicit ledger path (overrides ledgerName)
+    ledgerName?: string;                // ledger file name (default: shadow_prediction_ledger.jsonl)
 }
 
 export interface ShadowPredictionDryRunResult {
@@ -67,6 +78,8 @@ export interface ShadowPredictionDryRunResult {
     validationResult: ShadowPredictionDryRunValidationResult;
     summary: ShadowPredictionDryRunSummary;
     jsonlPreview: string;
+    ledgerAccumulateResult?: AccumulateResult;
+    ledgerSummary?: LedgerSummary;
 }
 
 export interface ShadowPredictionDryRunArtifactPaths {
@@ -234,6 +247,9 @@ export function buildShadowPredictionDryRunConfig(params?: {
     maxCandidates?: number;
     universeTier?: UniverseTier;
     runId?: string;
+    appendToLedger?: boolean;
+    ledgerPath?: string;
+    ledgerName?: string;
 }): ShadowPredictionDryRunConfig {
     const resolvedAsOfDate = resolveAsOfDate(params?.asOfDate);
     const runId = params?.runId ?? `dry-run-${resolvedAsOfDate}-${randomUUID().slice(0, 8)}`;
@@ -253,6 +269,9 @@ export function buildShadowPredictionDryRunConfig(params?: {
         dryRun: true,
         writeMode: WRITE_MODE,
         sourceDateBasis,
+        appendToLedger: params?.appendToLedger ?? false,
+        ledgerPath: params?.ledgerPath,
+        ledgerName: params?.ledgerName,
     };
 }
 
@@ -319,7 +338,35 @@ export async function runShadowPredictionDailyDryRun(
     const jsonlPreview = buildShadowPredictionJsonlPreview(batch.entries);
     const summary = summarizeShadowPredictionDryRun(config, batch, validationResult);
 
-    return { config, batch, validationResult, summary, jsonlPreview };
+    let ledgerAccumulateResult: AccumulateResult | undefined;
+    let ledgerSummary: LedgerSummary | undefined;
+
+    if (config.appendToLedger) {
+        const ledgerPath = config.ledgerPath ?? buildShadowLedgerPath({
+            ledgerName: config.ledgerName,
+        });
+        const rawEntries = batch.entries as unknown as Record<string, unknown>[];
+        ledgerAccumulateResult = await accumulateShadowPredictionLedger(rawEntries, {
+            ledgerPath,
+            dryRun: true,
+            append: true,
+            runId: config.runId,
+            asOfDate: config.asOfDate,
+        });
+
+        // Propagate FAIL to summary
+        if (ledgerAccumulateResult.appendOnlyStatus === 'FAIL') {
+            summary.readinessStatus = 'WARN';
+        }
+
+        // Build ledger summary from current ledger content
+        if (fs.existsSync(ledgerPath)) {
+            const ledgerContent = fs.readFileSync(ledgerPath, 'utf8');
+            ledgerSummary = summarizeShadowLedger(ledgerContent);
+        }
+    }
+
+    return { config, batch, validationResult, summary, jsonlPreview, ledgerAccumulateResult, ledgerSummary };
 }
 
 /**
@@ -367,6 +414,37 @@ export function buildShadowPredictionDryRunArtifact(
     const mdPath = path.join(dir, 'p0combined_shadow_daily_dry_run_result.md');
     const mdContent = buildDryRunMarkdown(result);
     fs.writeFileSync(mdPath, mdContent, 'utf8');
+
+    // Ledger accumulation artifacts (P2)
+    if (result.ledgerAccumulateResult) {
+        const accResult = result.ledgerAccumulateResult;
+        const accJsonPath = path.join(dir, 'p2_shadow_ledger_accumulation_result.json');
+        fs.writeFileSync(
+            accJsonPath,
+            JSON.stringify(
+                {
+                    runId: result.config.runId,
+                    asOfDate: result.config.asOfDate,
+                    dryRunOnly: true,
+                    ...accResult,
+                },
+                null,
+                2,
+            ),
+            'utf8',
+        );
+
+        const accMdPath = path.join(dir, 'p2_shadow_ledger_accumulation_result.md');
+        fs.writeFileSync(accMdPath, buildLedgerAccumulationMarkdown(result), 'utf8');
+    }
+
+    if (result.ledgerSummary) {
+        const summJsonPath = path.join(dir, 'p2_shadow_ledger_summary.json');
+        fs.writeFileSync(summJsonPath, JSON.stringify(result.ledgerSummary, null, 2), 'utf8');
+
+        const summMdPath = path.join(dir, 'p2_shadow_ledger_summary.md');
+        fs.writeFileSync(summMdPath, buildLedgerSummaryMarkdown(result.ledgerSummary), 'utf8');
+    }
 
     return { jsonPath, jsonlPath, markdownPath: mdPath };
 }
@@ -563,5 +641,66 @@ function buildDryRunMarkdown(result: ShadowPredictionDryRunResult): string {
         `- No StrategySignal write`,
         `- targetHorizons all PENDING`,
         `- outcomeWriteBackAllowed: false for all entries`,
+    ].join('\n');
+}
+
+function buildLedgerAccumulationMarkdown(result: ShadowPredictionDryRunResult): string {
+    const acc = result.ledgerAccumulateResult!;
+    return [
+        `# P2 Shadow Ledger Accumulation Result`,
+        ``,
+        `> **append-only — no existing content modified — no production DB write**`,
+        ``,
+        `## Run Info`,
+        `| Field | Value |`,
+        `|---|---|`,
+        `| runId | ${result.config.runId} |`,
+        `| asOfDate | ${result.config.asOfDate} |`,
+        `| dryRun | true |`,
+        `| append | ${acc.append} |`,
+        ``,
+        `## Accumulation Result`,
+        `| Field | Value |`,
+        `|---|---|`,
+        `| incomingCount | ${acc.incomingCount} |`,
+        `| appendedCount | ${acc.appendedCount} |`,
+        `| duplicateCount | ${acc.duplicateCount} |`,
+        `| existingCount | ${acc.existingCount} |`,
+        `| totalAfterAppend | ${acc.totalAfterAppend} |`,
+        `| appendOnlyStatus | ${acc.appendOnlyStatus} |`,
+        ``,
+        `## Guardrail`,
+        `- Append-only: existing entries cannot be overwritten`,
+        `- Duplicate keys rejected`,
+        `- Malformed JSONL causes FAIL`,
+        `- productionWriteAllowed: false for all ledger entries`,
+    ].join('\n');
+}
+
+function buildLedgerSummaryMarkdown(summary: LedgerSummary): string {
+    return [
+        `# P2 Shadow Prediction Ledger Summary`,
+        ``,
+        `> **research audit summary — no performance claim — not investment advice**`,
+        ``,
+        `## Totals`,
+        `| Field | Value |`,
+        `|---|---|`,
+        `| totalEntries | ${summary.totalEntries} |`,
+        `| uniqueRunCount | ${summary.uniqueRunCount} |`,
+        `| uniqueAsOfDateCount | ${summary.uniqueAsOfDateCount} |`,
+        `| symbolCount | ${summary.symbolCount} |`,
+        `| pendingOutcomeCount | ${summary.pendingOutcomeCount} |`,
+        `| readyOutcomeCount | ${summary.readyOutcomeCount} |`,
+        `| malformedLineCount | ${summary.malformedLineCount} |`,
+        ``,
+        `## By Research Bucket`,
+        ...Object.entries(summary.byResearchBucket).map(([k, v]) => `- ${k}: ${v}`),
+        ``,
+        `## By Validation Status`,
+        ...Object.entries(summary.byValidationStatus).map(([k, v]) => `- ${k}: ${v}`),
+        ``,
+        `## By Guardrail Status`,
+        ...Object.entries(summary.byGuardrailStatus).map(([k, v]) => `- ${k}: ${v}`),
     ].join('\n');
 }
