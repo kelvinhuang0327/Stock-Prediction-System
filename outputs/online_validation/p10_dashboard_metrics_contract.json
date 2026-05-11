@@ -1,0 +1,424 @@
+{
+  "contractVersion": "dashboard-metrics-contract-v0",
+  "dashboardRunId": "p10-dashboard-metrics-contract-20260511-001",
+  "generatedAt": "2026-05-11T06:55:18.139Z",
+  "sourceArtifacts": {
+    "corpusMetricsVersion": "corpus-metrics-v0",
+    "corpusMetricsRunId": "p9-corpus-metrics-20260511-001",
+    "qualityGateVersion": "corpus-quality-gate-v0",
+    "qualityGateRunId": "p9-corpus-quality-gate-20260511-001",
+    "trendStabilityVersion": "corpus-trend-stability-v0",
+    "trendStabilityRunId": "p8-corpus-trend-stability-20260511-001"
+  },
+  "overviewCards": {
+    "totalEntries": {
+      "cardId": "overview_total_entries",
+      "title": "Total Corpus Entries",
+      "value": 24,
+      "status": "OK"
+    },
+    "uniqueAsOfDateCount": {
+      "cardId": "overview_unique_as_of_date_count",
+      "title": "Unique As-Of Dates",
+      "value": 4,
+      "status": "OK"
+    },
+    "uniqueSymbolCount": {
+      "cardId": "overview_unique_symbol_count",
+      "title": "Unique Symbols",
+      "value": 2,
+      "status": "OK"
+    },
+    "uniqueHorizonCount": {
+      "cardId": "overview_unique_horizon_count",
+      "title": "Unique Horizons",
+      "value": 3,
+      "status": "OK"
+    },
+    "coverageRatio": {
+      "cardId": "overview_coverage_ratio",
+      "title": "Overall Coverage Ratio",
+      "value": 0.5833333333333334,
+      "status": "OK",
+      "note": "58% of snapshots have resolved outcomes"
+    },
+    "qualityStatus": {
+      "cardId": "overview_quality_status",
+      "title": "Quality Gate Status",
+      "value": "DATA_LIMITED",
+      "status": "DATA_LIMITED"
+    },
+    "trendStabilityStatus": {
+      "cardId": "overview_trend_stability_status",
+      "title": "Trend Stability Status",
+      "value": "STABLE_FOR_OBSERVABILITY_ONLY",
+      "status": "OK"
+    }
+  },
+  "readinessCards": {
+    "metricsReadiness": {
+      "cardId": "readiness_metrics",
+      "label": "Corpus Metrics Readiness",
+      "status": "OK",
+      "note": "Corpus metrics safety contracts verified"
+    },
+    "qualityGateReadiness": {
+      "cardId": "readiness_quality_gate",
+      "label": "Quality Gate Readiness",
+      "status": "DATA_LIMITED",
+      "note": "horizonCoverageGap=0.875 > maxHorizonCoverageGap=0.35 => DATA_LIMITED"
+    },
+    "trendStabilityReadiness": {
+      "cardId": "readiness_trend_stability",
+      "label": "Trend Stability Readiness",
+      "status": "READY_FOR_OBSERVABILITY_DASHBOARD",
+      "note": "hasEnoughDates=true coverageDropWithinLimit=true avgCoverage=0.556; Observability-only stability; no production, simulation, or optimizer writes permitted"
+    },
+    "finalDashboardReadiness": {
+      "cardId": "readiness_final_dashboard",
+      "label": "Final Dashboard Readiness",
+      "status": "DATA_LIMITED",
+      "note": "Dashboard is DATA_LIMITED — observability only. Not for production. Not for optimizer."
+    },
+    "isProductionReady": false,
+    "isOptimizerReady": false,
+    "disclaimers": [
+      "Dashboard readiness does not imply production readiness.",
+      "Dashboard readiness does not imply optimizer readiness.",
+      "All metrics are observability-only. No trading signals. No performance claims."
+    ]
+  },
+  "qualityCards": {
+    "qualityStatus": {
+      "cardId": "quality_status",
+      "title": "Quality Gate Status",
+      "value": "DATA_LIMITED",
+      "status": "DATA_LIMITED"
+    },
+    "coverageRatio": {
+      "cardId": "quality_coverage_ratio",
+      "title": "Coverage Ratio",
+      "value": 0.5833333333333334,
+      "status": "OK"
+    },
+    "symbolCoverageGap": {
+      "cardId": "quality_symbol_coverage_gap",
+      "title": "Symbol Coverage Gap",
+      "value": 0.3333,
+      "status": "OK",
+      "note": "Max allowed symbol coverage gap = 0.35"
+    },
+    "horizonCoverageGap": {
+      "cardId": "quality_horizon_coverage_gap",
+      "title": "Horizon Coverage Gap",
+      "value": 0.875,
+      "status": "WARN",
+      "note": "Current 60D horizon coverage limited — gap = 0.875"
+    },
+    "perSymbolCoverage": [
+      {
+        "symbol": "2330",
+        "totalCount": 12,
+        "readyCount": 9,
+        "blockedCount": 3,
+        "coverageRatio": 0.75
+      },
+      {
+        "symbol": "2454",
+        "totalCount": 12,
+        "readyCount": 5,
+        "blockedCount": 7,
+        "coverageRatio": 0.4167
+      }
+    ],
+    "perHorizonCoverage": [
+      {
+        "horizonLabel": "5D",
+        "totalCount": 8,
+        "readyCount": 8,
+        "blockedCount": 0,
+        "coverageRatio": 1
+      },
+      {
+        "horizonLabel": "20D",
+        "totalCount": 8,
+        "readyCount": 5,
+        "blockedCount": 3,
+        "coverageRatio": 0.625
+      },
+      {
+        "horizonLabel": "60D",
+        "totalCount": 8,
+        "readyCount": 1,
+        "blockedCount": 7,
+        "coverageRatio": 0.125
+      }
+    ],
+    "validationStatus": {
+      "cardId": "quality_validation_status",
+      "title": "Quality Validation Status",
+      "value": "PASS",
+      "status": "OK"
+    }
+  },
+  "trendCards": {
+    "stabilityStatus": {
+      "cardId": "trend_stability_status",
+      "title": "Trend Stability Status",
+      "value": "STABLE_FOR_OBSERVABILITY_ONLY",
+      "status": "OK"
+    },
+    "averageCoverageRatio": {
+      "cardId": "trend_average_coverage_ratio",
+      "title": "Average Coverage Ratio (trend)",
+      "value": 0.5833333333333333,
+      "status": "OK"
+    },
+    "largestCoverageDrop": {
+      "cardId": "trend_largest_coverage_drop",
+      "title": "Largest Coverage Drop",
+      "value": 0,
+      "status": "OK",
+      "note": "Max allowed drop = 0.10 per period"
+    },
+    "dateCount": {
+      "cardId": "trend_date_count",
+      "title": "Trend Date Count",
+      "value": 4,
+      "status": "OK"
+    },
+    "stabilityChecks": {
+      "hasEnoughDates": true,
+      "coverageDropWithinLimit": true,
+      "averageCoverageMeetsThreshold": true,
+      "noProductionWrite": true,
+      "noSimulationWrite": true,
+      "noOptimizerWrite": true,
+      "noPerformanceClaim": true,
+      "noTradingSignal": true
+    },
+    "validationStatus": {
+      "cardId": "trend_validation_status",
+      "title": "Trend Validation Status",
+      "value": "PASS",
+      "status": "OK"
+    }
+  },
+  "warningCards": {
+    "warnings": [
+      {
+        "warningId": "warn_data_limited",
+        "severity": "HIGH",
+        "message": "Quality gate status is DATA_LIMITED. Reasons: horizonCoverageGap=0.875 > maxHorizonCoverageGap=0.35 => DATA_LIMITED"
+      },
+      {
+        "warningId": "warn_horizon_coverage_gap",
+        "severity": "HIGH",
+        "message": "horizonCoverageGap=0.875 exceeds allowed maximum. 60D horizon coverage is severely limited (coverageRatio=0.125)."
+      },
+      {
+        "warningId": "warn_60d_limited",
+        "severity": "HIGH",
+        "message": "60D horizon has only 1 ready snapshot out of 8. 60D coverage will not mature until sufficient real-time data accumulates."
+      },
+      {
+        "warningId": "warn_fixture_driven",
+        "severity": "MEDIUM",
+        "message": "Corpus is fixture-driven (synthetic as-of dates). All entries are simulation snapshots, not live outcome data. No real market outcomes are present."
+      },
+      {
+        "warningId": "warn_no_prod_readiness",
+        "severity": "HIGH",
+        "message": "This dashboard does NOT represent production readiness. Dashboard readiness differs from production readiness. Do not use for live trading decisions."
+      },
+      {
+        "warningId": "warn_no_optimizer_readiness",
+        "severity": "HIGH",
+        "message": "This dashboard does NOT represent optimizer readiness. Data is observability-only. Optimizer is not permitted to consume these metrics."
+      }
+    ],
+    "totalWarnings": 6,
+    "highSeverityCount": 5
+  },
+  "guardrailCards": {
+    "noProductionWrite": true,
+    "noSimulationWrite": true,
+    "noOptimizerWrite": true,
+    "noPerformanceClaim": true,
+    "noTradingSignal": true,
+    "observabilityOnly": true,
+    "allGuardrailsActive": true
+  },
+  "tableSections": [
+    {
+      "tableId": "table_per_symbol_coverage",
+      "title": "Per-Symbol Coverage",
+      "columns": [
+        "symbol",
+        "totalCount",
+        "readyCount",
+        "blockedCount",
+        "coverageRatio"
+      ],
+      "rows": [
+        {
+          "symbol": "2330",
+          "totalCount": 12,
+          "readyCount": 9,
+          "blockedCount": 3,
+          "coverageRatio": 0.75
+        },
+        {
+          "symbol": "2454",
+          "totalCount": 12,
+          "readyCount": 5,
+          "blockedCount": 7,
+          "coverageRatio": 0.4167
+        }
+      ]
+    },
+    {
+      "tableId": "table_per_horizon_coverage",
+      "title": "Per-Horizon Coverage",
+      "columns": [
+        "horizonLabel",
+        "totalCount",
+        "readyCount",
+        "blockedCount",
+        "coverageRatio"
+      ],
+      "rows": [
+        {
+          "horizonLabel": "5D",
+          "totalCount": 8,
+          "readyCount": 8,
+          "blockedCount": 0,
+          "coverageRatio": 1
+        },
+        {
+          "horizonLabel": "20D",
+          "totalCount": 8,
+          "readyCount": 5,
+          "blockedCount": 3,
+          "coverageRatio": 0.625
+        },
+        {
+          "horizonLabel": "60D",
+          "totalCount": 8,
+          "readyCount": 1,
+          "blockedCount": 7,
+          "coverageRatio": 0.125
+        }
+      ]
+    },
+    {
+      "tableId": "table_coverage_trend",
+      "title": "Coverage Trend by As-Of Date",
+      "columns": [
+        "asOfDate",
+        "totalCount",
+        "readyCount",
+        "blockedCount",
+        "coverageRatio"
+      ],
+      "rows": [
+        {
+          "asOfDate": "2026-05-11",
+          "totalCount": 6,
+          "readyCount": 3,
+          "blockedCount": 3,
+          "coverageRatio": 0.5,
+          "missingOutcomeCount": 3,
+          "notDueCount": 2
+        },
+        {
+          "asOfDate": "2026-05-12",
+          "totalCount": 6,
+          "readyCount": 3,
+          "blockedCount": 3,
+          "coverageRatio": 0.5,
+          "missingOutcomeCount": 3,
+          "notDueCount": 2
+        },
+        {
+          "asOfDate": "2026-05-13",
+          "totalCount": 6,
+          "readyCount": 4,
+          "blockedCount": 2,
+          "coverageRatio": 0.6666666666666666,
+          "missingOutcomeCount": 2,
+          "notDueCount": 1
+        },
+        {
+          "asOfDate": "2026-05-14",
+          "totalCount": 6,
+          "readyCount": 4,
+          "blockedCount": 2,
+          "coverageRatio": 0.6666666666666666,
+          "missingOutcomeCount": 2,
+          "notDueCount": 2
+        }
+      ]
+    }
+  ],
+  "chartSections": [
+    {
+      "chartId": "chart_ready_trend",
+      "title": "Ready Count by As-Of Date",
+      "chartType": "line",
+      "data": [
+        {
+          "asOfDate": "2026-05-11",
+          "readyCount": 3
+        },
+        {
+          "asOfDate": "2026-05-12",
+          "readyCount": 3
+        },
+        {
+          "asOfDate": "2026-05-13",
+          "readyCount": 4
+        },
+        {
+          "asOfDate": "2026-05-14",
+          "readyCount": 4
+        }
+      ],
+      "xKey": "asOfDate",
+      "yKeys": [
+        "readyCount"
+      ]
+    },
+    {
+      "chartId": "chart_coverage_ratio_trend",
+      "title": "Coverage Ratio Trend",
+      "chartType": "line",
+      "data": [
+        {
+          "asOfDate": "2026-05-11",
+          "coverageRatio": 0.5
+        },
+        {
+          "asOfDate": "2026-05-12",
+          "coverageRatio": 0.5
+        },
+        {
+          "asOfDate": "2026-05-13",
+          "coverageRatio": 0.6666666666666666
+        },
+        {
+          "asOfDate": "2026-05-14",
+          "coverageRatio": 0.6666666666666666
+        }
+      ],
+      "xKey": "asOfDate",
+      "yKeys": [
+        "coverageRatio"
+      ]
+    }
+  ],
+  "validationStatus": "PASS",
+  "validationMessages": [
+    "PASS: dashboard metrics contract safety contracts verified"
+  ]
+}

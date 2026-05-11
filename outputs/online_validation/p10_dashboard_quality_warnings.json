@@ -1,0 +1,113 @@
+{
+  "dashboardRunId": "p10-dashboard-metrics-contract-20260511-001",
+  "generatedAt": "2026-05-11T06:55:18.139Z",
+  "warningCards": {
+    "warnings": [
+      {
+        "warningId": "warn_data_limited",
+        "severity": "HIGH",
+        "message": "Quality gate status is DATA_LIMITED. Reasons: horizonCoverageGap=0.875 > maxHorizonCoverageGap=0.35 => DATA_LIMITED"
+      },
+      {
+        "warningId": "warn_horizon_coverage_gap",
+        "severity": "HIGH",
+        "message": "horizonCoverageGap=0.875 exceeds allowed maximum. 60D horizon coverage is severely limited (coverageRatio=0.125)."
+      },
+      {
+        "warningId": "warn_60d_limited",
+        "severity": "HIGH",
+        "message": "60D horizon has only 1 ready snapshot out of 8. 60D coverage will not mature until sufficient real-time data accumulates."
+      },
+      {
+        "warningId": "warn_fixture_driven",
+        "severity": "MEDIUM",
+        "message": "Corpus is fixture-driven (synthetic as-of dates). All entries are simulation snapshots, not live outcome data. No real market outcomes are present."
+      },
+      {
+        "warningId": "warn_no_prod_readiness",
+        "severity": "HIGH",
+        "message": "This dashboard does NOT represent production readiness. Dashboard readiness differs from production readiness. Do not use for live trading decisions."
+      },
+      {
+        "warningId": "warn_no_optimizer_readiness",
+        "severity": "HIGH",
+        "message": "This dashboard does NOT represent optimizer readiness. Data is observability-only. Optimizer is not permitted to consume these metrics."
+      }
+    ],
+    "totalWarnings": 6,
+    "highSeverityCount": 5
+  },
+  "qualityCards": {
+    "qualityStatus": {
+      "cardId": "quality_status",
+      "title": "Quality Gate Status",
+      "value": "DATA_LIMITED",
+      "status": "DATA_LIMITED"
+    },
+    "coverageRatio": {
+      "cardId": "quality_coverage_ratio",
+      "title": "Coverage Ratio",
+      "value": 0.5833333333333334,
+      "status": "OK"
+    },
+    "symbolCoverageGap": {
+      "cardId": "quality_symbol_coverage_gap",
+      "title": "Symbol Coverage Gap",
+      "value": 0.3333,
+      "status": "OK",
+      "note": "Max allowed symbol coverage gap = 0.35"
+    },
+    "horizonCoverageGap": {
+      "cardId": "quality_horizon_coverage_gap",
+      "title": "Horizon Coverage Gap",
+      "value": 0.875,
+      "status": "WARN",
+      "note": "Current 60D horizon coverage limited — gap = 0.875"
+    },
+    "perSymbolCoverage": [
+      {
+        "symbol": "2330",
+        "totalCount": 12,
+        "readyCount": 9,
+        "blockedCount": 3,
+        "coverageRatio": 0.75
+      },
+      {
+        "symbol": "2454",
+        "totalCount": 12,
+        "readyCount": 5,
+        "blockedCount": 7,
+        "coverageRatio": 0.4167
+      }
+    ],
+    "perHorizonCoverage": [
+      {
+        "horizonLabel": "5D",
+        "totalCount": 8,
+        "readyCount": 8,
+        "blockedCount": 0,
+        "coverageRatio": 1
+      },
+      {
+        "horizonLabel": "20D",
+        "totalCount": 8,
+        "readyCount": 5,
+        "blockedCount": 3,
+        "coverageRatio": 0.625
+      },
+      {
+        "horizonLabel": "60D",
+        "totalCount": 8,
+        "readyCount": 1,
+        "blockedCount": 7,
+        "coverageRatio": 0.125
+      }
+    ],
+    "validationStatus": {
+      "cardId": "quality_validation_status",
+      "title": "Quality Validation Status",
+      "value": "PASS",
+      "status": "OK"
+    }
+  }
+}
