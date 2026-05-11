@@ -1,8 +1,10 @@
 /**
- * P0-COMBINED Part C — Outcome Write-back Skeleton Tests
+ * P0-COMBINED Part C — Outcome Write-back Skeleton Tests (updated for v0)
  *
- * Stubs only — all functions throw NOT_YET_IMPLEMENTED.
- * These tests verify the skeleton contract (types + throw behavior).
+ * Originally tested stub behavior. Updated in P1 to verify that:
+ * - All 4 functions are exported and callable
+ * - Function signatures match the contract
+ * - Basic v0 behavior is consistent
  *
  * @jest-environment node
  */
@@ -12,7 +14,7 @@ import {
     resolveOutcomePriceAsOf,
     buildOutcomeWriteBackBatch,
     validateOutcomeWriteBackBatch,
-    OutcomeHorizonDays,
+    PriceProvider,
 } from '../ShadowOutcomeWriteBack';
 
 import { ShadowPredictionLogEntry } from '../ShadowPredictionLogContract';
@@ -62,88 +64,138 @@ const makeStubEntry = (symbol: string): ShadowPredictionLogEntry => ({
     writeMode: 'DRY_RUN',
 });
 
+const nullPriceProvider: PriceProvider = {
+    async getClosePrice() { return null; },
+};
+
 // ─── planOutcomeWriteBackTargets ──────────────────────────────────
 
-describe('planOutcomeWriteBackTargets (stub)', () => {
-    it('throws NOT_YET_IMPLEMENTED', () => {
-        const entries = [makeStubEntry('2330')];
-        expect(() => planOutcomeWriteBackTargets(entries, 5)).toThrow('NOT_YET_IMPLEMENTED');
+describe('planOutcomeWriteBackTargets (v0 — was stub)', () => {
+    it('is exported and callable', () => {
+        expect(typeof planOutcomeWriteBackTargets).toBe('function');
     });
 
-    it('throws for 20D horizon too', () => {
+    it('returns targets array for valid entries', () => {
         const entries = [makeStubEntry('2330')];
-        expect(() => planOutcomeWriteBackTargets(entries, 20)).toThrow('NOT_YET_IMPLEMENTED');
+        const targets = planOutcomeWriteBackTargets(entries, 5);
+        expect(Array.isArray(targets)).toBe(true);
     });
 
-    it('error message contains function name', () => {
-        expect(() => planOutcomeWriteBackTargets([], 5)).toThrow('planOutcomeWriteBackTargets');
+    it('5D target has horizonLabel="5D"', () => {
+        const entries = [makeStubEntry('2330')];
+        const targets = planOutcomeWriteBackTargets(entries, 5);
+        expect(targets[0].horizonLabel).toBe('5D');
+    });
+
+    it('20D target has horizonLabel="20D"', () => {
+        const entries = [makeStubEntry('2330')];
+        const targets = planOutcomeWriteBackTargets(entries, 20);
+        expect(targets[0].horizonLabel).toBe('20D');
+    });
+
+    it('throws for horizonDays=0', () => {
+        expect(() => planOutcomeWriteBackTargets([], 0)).toThrow();
     });
 });
 
 // ─── resolveOutcomePriceAsOf ──────────────────────────────────────
 
-describe('resolveOutcomePriceAsOf (stub)', () => {
-    it('throws NOT_YET_IMPLEMENTED', async () => {
-        await expect(
-            resolveOutcomePriceAsOf('2330', '2026-05-16', '2026-05-16')
-        ).rejects.toThrow('NOT_YET_IMPLEMENTED');
+describe('resolveOutcomePriceAsOf (v0 — was stub)', () => {
+    it('is exported and callable', () => {
+        expect(typeof resolveOutcomePriceAsOf).toBe('function');
     });
 
-    it('error message contains function name', async () => {
-        await expect(
-            resolveOutcomePriceAsOf('2330', '2026-05-16', '2026-05-16')
-        ).rejects.toThrow('resolveOutcomePriceAsOf');
+    it('accepts (symbol, targetDate, asOfDate, priceProvider) signature', async () => {
+        const result = await resolveOutcomePriceAsOf(
+            '2330', '2026-05-18', '2026-06-30', nullPriceProvider,
+        );
+        expect(result).toBeDefined();
     });
 
-    it('stub accepts (symbol, targetDate, asOfDate) signature', async () => {
-        // Verify the function signature is present (type-level test)
-        await expect(
-            resolveOutcomePriceAsOf('2454', '2026-06-11', '2026-06-11')
-        ).rejects.toThrow('NOT_YET_IMPLEMENTED');
+    it('returns MISSING_PRICE when provider returns null', async () => {
+        const result = await resolveOutcomePriceAsOf(
+            '2330', '2026-05-18', '2026-06-30', nullPriceProvider,
+        );
+        expect(result.status).toBe('MISSING_PRICE');
+    });
+
+    it('returns FUTURE_DATE_BLOCKED when targetDate > asOfDate', async () => {
+        const result = await resolveOutcomePriceAsOf(
+            '2330', '2026-07-01', '2026-06-30', nullPriceProvider,
+        );
+        expect(result.status).toBe('FUTURE_DATE_BLOCKED');
     });
 });
 
 // ─── buildOutcomeWriteBackBatch ───────────────────────────────────
 
-describe('buildOutcomeWriteBackBatch (stub)', () => {
-    it('throws NOT_YET_IMPLEMENTED', () => {
-        const entries = [makeStubEntry('2330')];
-        expect(() => buildOutcomeWriteBackBatch(entries)).toThrow('NOT_YET_IMPLEMENTED');
+describe('buildOutcomeWriteBackBatch (v0 — was stub)', () => {
+    it('is exported and callable', () => {
+        expect(typeof buildOutcomeWriteBackBatch).toBe('function');
     });
 
-    it('error message contains function name', () => {
-        expect(() => buildOutcomeWriteBackBatch([])).toThrow('buildOutcomeWriteBackBatch');
+    it('returns batch with dryRun=true', async () => {
+        const entries = [makeStubEntry('2330')];
+        const batch = await buildOutcomeWriteBackBatch(entries, {
+            asOfReviewDate: '2026-06-30',
+            horizons: [5],
+            priceProvider: nullPriceProvider,
+            runId: 'stub-batch',
+            dryRun: true,
+            writeMode: 'OUTCOME_ARTIFACT_ONLY',
+        });
+        expect(batch.dryRun).toBe(true);
+        expect(batch.writeMode).toBe('OUTCOME_ARTIFACT_ONLY');
+    });
+
+    it('all outcomes have productionWriteAllowed=false', async () => {
+        const entries = [makeStubEntry('2330')];
+        const batch = await buildOutcomeWriteBackBatch(entries, {
+            asOfReviewDate: '2026-06-30',
+            horizons: [5],
+            priceProvider: nullPriceProvider,
+            runId: 'stub-batch',
+            dryRun: true,
+            writeMode: 'OUTCOME_ARTIFACT_ONLY',
+        });
+        for (const o of batch.outcomes) {
+            expect(o.productionWriteAllowed).toBe(false);
+        }
     });
 });
 
 // ─── validateOutcomeWriteBackBatch ────────────────────────────────
 
-describe('validateOutcomeWriteBackBatch (stub)', () => {
-    it('throws NOT_YET_IMPLEMENTED', () => {
-        const stubBatch = {
-            batchVersion: 'stub',
-            runId: 'stub',
-            asOfDate: '2026-05-11',
-            generatedAt: new Date().toISOString(),
-            records: [],
-            batchValidationStatus: 'PASS' as const,
-            batchValidationMessages: [],
-            writeBackAllowed: false as const,
-        };
-        expect(() => validateOutcomeWriteBackBatch(stubBatch)).toThrow('NOT_YET_IMPLEMENTED');
+describe('validateOutcomeWriteBackBatch (v0 — was stub)', () => {
+    it('is exported and callable', () => {
+        expect(typeof validateOutcomeWriteBackBatch).toBe('function');
     });
 
-    it('error message contains function name', () => {
-        const stubBatch = {
-            batchVersion: 'stub',
-            runId: 'stub',
-            asOfDate: '2026-05-11',
-            generatedAt: new Date().toISOString(),
-            records: [],
-            batchValidationStatus: 'PASS' as const,
-            batchValidationMessages: [],
-            writeBackAllowed: false as const,
-        };
-        expect(() => validateOutcomeWriteBackBatch(stubBatch)).toThrow('validateOutcomeWriteBackBatch');
+    it('returns PASS for valid dryRun batch', async () => {
+        const entries = [makeStubEntry('2330')];
+        const batch = await buildOutcomeWriteBackBatch(entries, {
+            asOfReviewDate: '2026-06-30',
+            horizons: [5],
+            priceProvider: nullPriceProvider,
+            runId: 'validate-stub',
+            dryRun: true,
+            writeMode: 'OUTCOME_ARTIFACT_ONLY',
+        });
+        const result = validateOutcomeWriteBackBatch(batch);
+        expect(result.status).toBe('PASS');
+    });
+
+    it('returns FAIL if writeMode is not OUTCOME_ARTIFACT_ONLY', async () => {
+        const entries = [makeStubEntry('2330')];
+        const batch = await buildOutcomeWriteBackBatch(entries, {
+            asOfReviewDate: '2026-06-30',
+            horizons: [5],
+            priceProvider: nullPriceProvider,
+            runId: 'validate-stub',
+            dryRun: true,
+            writeMode: 'OUTCOME_ARTIFACT_ONLY',
+        });
+        const result = validateOutcomeWriteBackBatch({ ...batch, writeMode: 'OTHER' as any });
+        expect(result.status).toBe('FAIL');
     });
 });
