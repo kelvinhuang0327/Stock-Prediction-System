@@ -1,0 +1,16 @@
+{
+  "readinessVersion": "corpus-readiness-v0",
+  "corpusReady": true,
+  "readinessStatus": "READY_FOR_OBSERVABILITY_ONLY_CORPUS",
+  "reasons": [
+    "All thresholds met: readyCount=3 uniqueSymbols=2 coverageRatio=0.50",
+    "Observability-only corpus. No production, simulation, or optimizer writes permitted."
+  ],
+  "guardrails": {
+    "noProductionWrite": true,
+    "noSimulationWrite": true,
+    "noOptimizerWrite": true,
+    "noPerformanceClaim": true,
+    "noTradingSignal": true
+  }
+}
