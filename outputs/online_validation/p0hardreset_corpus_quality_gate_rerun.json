@@ -1,0 +1,238 @@
+{
+  "qualityGateVersion": "corpus-quality-gate-v0",
+  "qualityRunId": "p0hardreset-corpus-quality-gate-2026-05-11-001",
+  "generatedAt": "2026-05-11T11:51:21.327Z",
+  "inputTotalEntries": 4500,
+  "inputAsOfDateCount": 60,
+  "inputSymbolCount": 25,
+  "inputHorizonCount": 3,
+  "coverageRatio": 0.9342222222222222,
+  "perSymbolCoverage": [
+    {
+      "symbol": "0055",
+      "totalCount": 180,
+      "readyCount": 161,
+      "blockedCount": 19,
+      "coverageRatio": 0.8944
+    },
+    {
+      "symbol": "00712",
+      "totalCount": 180,
+      "readyCount": 177,
+      "blockedCount": 3,
+      "coverageRatio": 0.9833
+    },
+    {
+      "symbol": "00738U",
+      "totalCount": 180,
+      "readyCount": 177,
+      "blockedCount": 3,
+      "coverageRatio": 0.9833
+    },
+    {
+      "symbol": "00830",
+      "totalCount": 180,
+      "readyCount": 177,
+      "blockedCount": 3,
+      "coverageRatio": 0.9833
+    },
+    {
+      "symbol": "00891",
+      "totalCount": 180,
+      "readyCount": 177,
+      "blockedCount": 3,
+      "coverageRatio": 0.9833
+    },
+    {
+      "symbol": "00903",
+      "totalCount": 180,
+      "readyCount": 177,
+      "blockedCount": 3,
+      "coverageRatio": 0.9833
+    },
+    {
+      "symbol": "1210",
+      "totalCount": 180,
+      "readyCount": 161,
+      "blockedCount": 19,
+      "coverageRatio": 0.8944
+    },
+    {
+      "symbol": "1308",
+      "totalCount": 180,
+      "readyCount": 161,
+      "blockedCount": 19,
+      "coverageRatio": 0.8944
+    },
+    {
+      "symbol": "1314",
+      "totalCount": 180,
+      "readyCount": 161,
+      "blockedCount": 19,
+      "coverageRatio": 0.8944
+    },
+    {
+      "symbol": "1319",
+      "totalCount": 180,
+      "readyCount": 161,
+      "blockedCount": 19,
+      "coverageRatio": 0.8944
+    },
+    {
+      "symbol": "1326",
+      "totalCount": 180,
+      "readyCount": 179,
+      "blockedCount": 1,
+      "coverageRatio": 0.9944
+    },
+    {
+      "symbol": "1402",
+      "totalCount": 180,
+      "readyCount": 161,
+      "blockedCount": 19,
+      "coverageRatio": 0.8944
+    },
+    {
+      "symbol": "1434",
+      "totalCount": 180,
+      "readyCount": 161,
+      "blockedCount": 19,
+      "coverageRatio": 0.8944
+    },
+    {
+      "symbol": "1513",
+      "totalCount": 180,
+      "readyCount": 161,
+      "blockedCount": 19,
+      "coverageRatio": 0.8944
+    },
+    {
+      "symbol": "1536",
+      "totalCount": 180,
+      "readyCount": 161,
+      "blockedCount": 19,
+      "coverageRatio": 0.8944
+    },
+    {
+      "symbol": "1560",
+      "totalCount": 180,
+      "readyCount": 178,
+      "blockedCount": 2,
+      "coverageRatio": 0.9889
+    },
+    {
+      "symbol": "1598",
+      "totalCount": 180,
+      "readyCount": 161,
+      "blockedCount": 19,
+      "coverageRatio": 0.8944
+    },
+    {
+      "symbol": "1605",
+      "totalCount": 180,
+      "readyCount": 161,
+      "blockedCount": 19,
+      "coverageRatio": 0.8944
+    },
+    {
+      "symbol": "1710",
+      "totalCount": 180,
+      "readyCount": 161,
+      "blockedCount": 19,
+      "coverageRatio": 0.8944
+    },
+    {
+      "symbol": "1717",
+      "totalCount": 180,
+      "readyCount": 161,
+      "blockedCount": 19,
+      "coverageRatio": 0.8944
+    },
+    {
+      "symbol": "1802",
+      "totalCount": 180,
+      "readyCount": 178,
+      "blockedCount": 2,
+      "coverageRatio": 0.9889
+    },
+    {
+      "symbol": "2317",
+      "totalCount": 180,
+      "readyCount": 177,
+      "blockedCount": 3,
+      "coverageRatio": 0.9833
+    },
+    {
+      "symbol": "2330",
+      "totalCount": 180,
+      "readyCount": 177,
+      "blockedCount": 3,
+      "coverageRatio": 0.9833
+    },
+    {
+      "symbol": "2454",
+      "totalCount": 180,
+      "readyCount": 177,
+      "blockedCount": 3,
+      "coverageRatio": 0.9833
+    },
+    {
+      "symbol": "6415",
+      "totalCount": 180,
+      "readyCount": 160,
+      "blockedCount": 20,
+      "coverageRatio": 0.8889
+    }
+  ],
+  "perHorizonCoverage": [
+    {
+      "horizonLabel": "5D",
+      "totalCount": 1500,
+      "readyCount": 1500,
+      "blockedCount": 0,
+      "coverageRatio": 1
+    },
+    {
+      "horizonLabel": "20D",
+      "totalCount": 1500,
+      "readyCount": 1486,
+      "blockedCount": 14,
+      "coverageRatio": 0.9907
+    },
+    {
+      "horizonLabel": "60D",
+      "totalCount": 1500,
+      "readyCount": 1218,
+      "blockedCount": 282,
+      "coverageRatio": 0.812
+    }
+  ],
+  "symbolCoverageGap": 0.1055,
+  "horizonCoverageGap": 0.188,
+  "qualityChecks": {
+    "hasEnoughDates": true,
+    "hasEnoughSymbols": true,
+    "hasEnoughHorizons": true,
+    "coverageMeetsThreshold": true,
+    "symbolCoverageGapWithinLimit": true,
+    "horizonCoverageGapWithinLimit": true,
+    "noProductionWrite": true,
+    "noSimulationWrite": true,
+    "noOptimizerWrite": true,
+    "noPerformanceClaim": true,
+    "noTradingSignal": true
+  },
+  "qualityStatus": "PASS_FOR_OBSERVABILITY_ONLY",
+  "reasons": [
+    "All gates: dates=60 symbols=25 horizons=3 coverage=0.9342",
+    "Observability-only quality gate; no production/simulation/optimizer writes permitted"
+  ],
+  "validationStatus": "PASS",
+  "validationMessages": [
+    "PASS: corpus quality gate safety contracts verified"
+  ],
+  "p0HardresetNote": "Historical replay corpus quality gate rerun. Not investment advice.",
+  "frozenCorpusLineCount": 60,
+  "frozenCorpusPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/outputs/online_validation/simulation_snapshot_corpus.jsonl",
+  "corpusLineCount": 4500
+}

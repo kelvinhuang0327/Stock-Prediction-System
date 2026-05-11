@@ -1,0 +1,610 @@
+{
+  "generatedAt": "2026-05-11T11:38:14.601Z",
+  "auditVersion": "p0hardreset-asofdate-v1",
+  "candidateCount": 60,
+  "passThreshold": 30,
+  "pass": true,
+  "failReason": null,
+  "candidates": [
+    {
+      "asOfDate": "2026-02-11",
+      "outcome5dDate": "2026-02-26",
+      "outcome20dDate": "2026-03-19",
+      "outcome60dDate": "2026-05-18",
+      "allOutcomesAvailable": false,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": false
+    },
+    {
+      "asOfDate": "2026-01-28",
+      "outcome5dDate": "2026-02-04",
+      "outcome20dDate": "2026-03-05",
+      "outcome60dDate": "2026-05-04",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2026-01-27",
+      "outcome5dDate": "2026-02-03",
+      "outcome20dDate": "2026-03-04",
+      "outcome60dDate": "2026-04-30",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2026-01-26",
+      "outcome5dDate": "2026-02-02",
+      "outcome20dDate": "2026-03-03",
+      "outcome60dDate": "2026-04-29",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2026-01-14",
+      "outcome5dDate": "2026-01-21",
+      "outcome20dDate": "2026-02-11",
+      "outcome60dDate": "2026-04-17",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2026-01-13",
+      "outcome5dDate": "2026-01-20",
+      "outcome20dDate": "2026-02-10",
+      "outcome60dDate": "2026-04-16",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2026-01-12",
+      "outcome5dDate": "2026-01-19",
+      "outcome20dDate": "2026-02-09",
+      "outcome60dDate": "2026-04-15",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2026-01-09",
+      "outcome5dDate": "2026-01-16",
+      "outcome20dDate": "2026-02-06",
+      "outcome60dDate": "2026-04-14",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2026-01-08",
+      "outcome5dDate": "2026-01-15",
+      "outcome20dDate": "2026-02-05",
+      "outcome60dDate": "2026-04-13",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2026-01-07",
+      "outcome5dDate": "2026-01-14",
+      "outcome20dDate": "2026-02-04",
+      "outcome60dDate": "2026-04-10",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2026-01-06",
+      "outcome5dDate": "2026-01-13",
+      "outcome20dDate": "2026-02-03",
+      "outcome60dDate": "2026-04-09",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2026-01-05",
+      "outcome5dDate": "2026-01-12",
+      "outcome20dDate": "2026-02-02",
+      "outcome60dDate": "2026-04-08",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2026-01-02",
+      "outcome5dDate": "2026-01-09",
+      "outcome20dDate": "2026-01-30",
+      "outcome60dDate": "2026-04-07",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-12-30",
+      "outcome5dDate": "2026-01-07",
+      "outcome20dDate": "2026-01-28",
+      "outcome60dDate": "2026-04-02",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-12-29",
+      "outcome5dDate": "2026-01-06",
+      "outcome20dDate": "2026-01-27",
+      "outcome60dDate": "2026-04-01",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-12-26",
+      "outcome5dDate": "2026-01-05",
+      "outcome20dDate": "2026-01-26",
+      "outcome60dDate": "2026-03-31",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-12-24",
+      "outcome5dDate": "2025-12-31",
+      "outcome20dDate": "2026-01-22",
+      "outcome60dDate": "2026-03-27",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-12-23",
+      "outcome5dDate": "2025-12-30",
+      "outcome20dDate": "2026-01-21",
+      "outcome60dDate": "2026-03-26",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-12-22",
+      "outcome5dDate": "2025-12-29",
+      "outcome20dDate": "2026-01-20",
+      "outcome60dDate": "2026-03-25",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-12-19",
+      "outcome5dDate": "2025-12-26",
+      "outcome20dDate": "2026-01-19",
+      "outcome60dDate": "2026-03-24",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-12-17",
+      "outcome5dDate": "2025-12-24",
+      "outcome20dDate": "2026-01-15",
+      "outcome60dDate": "2026-03-20",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-12-16",
+      "outcome5dDate": "2025-12-23",
+      "outcome20dDate": "2026-01-14",
+      "outcome60dDate": "2026-03-19",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-12-15",
+      "outcome5dDate": "2025-12-22",
+      "outcome20dDate": "2026-01-13",
+      "outcome60dDate": "2026-03-18",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-12-12",
+      "outcome5dDate": "2025-12-19",
+      "outcome20dDate": "2026-01-12",
+      "outcome60dDate": "2026-03-17",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-12-11",
+      "outcome5dDate": "2025-12-18",
+      "outcome20dDate": "2026-01-09",
+      "outcome60dDate": "2026-03-16",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-12-10",
+      "outcome5dDate": "2025-12-17",
+      "outcome20dDate": "2026-01-08",
+      "outcome60dDate": "2026-03-13",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-12-09",
+      "outcome5dDate": "2025-12-16",
+      "outcome20dDate": "2026-01-07",
+      "outcome60dDate": "2026-03-12",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-12-08",
+      "outcome5dDate": "2025-12-15",
+      "outcome20dDate": "2026-01-06",
+      "outcome60dDate": "2026-03-11",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-12-05",
+      "outcome5dDate": "2025-12-12",
+      "outcome20dDate": "2026-01-05",
+      "outcome60dDate": "2026-03-10",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-12-04",
+      "outcome5dDate": "2025-12-11",
+      "outcome20dDate": "2026-01-02",
+      "outcome60dDate": "2026-03-09",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-12-03",
+      "outcome5dDate": "2025-12-10",
+      "outcome20dDate": "2025-12-31",
+      "outcome60dDate": "2026-03-06",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-12-02",
+      "outcome5dDate": "2025-12-09",
+      "outcome20dDate": "2025-12-30",
+      "outcome60dDate": "2026-03-05",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-12-01",
+      "outcome5dDate": "2025-12-08",
+      "outcome20dDate": "2025-12-29",
+      "outcome60dDate": "2026-03-04",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-11-28",
+      "outcome5dDate": "2025-12-05",
+      "outcome20dDate": "2025-12-26",
+      "outcome60dDate": "2026-03-03",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-11-25",
+      "outcome5dDate": "2025-12-02",
+      "outcome20dDate": "2025-12-23",
+      "outcome60dDate": "2026-02-26",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-11-24",
+      "outcome5dDate": "2025-12-01",
+      "outcome20dDate": "2025-12-22",
+      "outcome60dDate": "2026-02-25",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-11-18",
+      "outcome5dDate": "2025-11-25",
+      "outcome20dDate": "2025-12-16",
+      "outcome60dDate": "2026-02-11",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-11-17",
+      "outcome5dDate": "2025-11-24",
+      "outcome20dDate": "2025-12-15",
+      "outcome60dDate": "2026-02-10",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-11-14",
+      "outcome5dDate": "2025-11-21",
+      "outcome20dDate": "2025-12-12",
+      "outcome60dDate": "2026-02-09",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-11-13",
+      "outcome5dDate": "2025-11-20",
+      "outcome20dDate": "2025-12-11",
+      "outcome60dDate": "2026-02-06",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-11-12",
+      "outcome5dDate": "2025-11-19",
+      "outcome20dDate": "2025-12-10",
+      "outcome60dDate": "2026-02-05",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-11-11",
+      "outcome5dDate": "2025-11-18",
+      "outcome20dDate": "2025-12-09",
+      "outcome60dDate": "2026-02-04",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-11-10",
+      "outcome5dDate": "2025-11-17",
+      "outcome20dDate": "2025-12-08",
+      "outcome60dDate": "2026-02-03",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-11-07",
+      "outcome5dDate": "2025-11-14",
+      "outcome20dDate": "2025-12-05",
+      "outcome60dDate": "2026-02-02",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-11-06",
+      "outcome5dDate": "2025-11-13",
+      "outcome20dDate": "2025-12-04",
+      "outcome60dDate": "2026-01-30",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-11-05",
+      "outcome5dDate": "2025-11-12",
+      "outcome20dDate": "2025-12-03",
+      "outcome60dDate": "2026-01-29",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-11-04",
+      "outcome5dDate": "2025-11-11",
+      "outcome20dDate": "2025-12-02",
+      "outcome60dDate": "2026-01-28",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-11-03",
+      "outcome5dDate": "2025-11-10",
+      "outcome20dDate": "2025-12-01",
+      "outcome60dDate": "2026-01-27",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-10-31",
+      "outcome5dDate": "2025-11-07",
+      "outcome20dDate": "2025-11-28",
+      "outcome60dDate": "2026-01-26",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-10-30",
+      "outcome5dDate": "2025-11-06",
+      "outcome20dDate": "2025-11-27",
+      "outcome60dDate": "2026-01-23",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-10-29",
+      "outcome5dDate": "2025-11-05",
+      "outcome20dDate": "2025-11-26",
+      "outcome60dDate": "2026-01-22",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-10-28",
+      "outcome5dDate": "2025-11-04",
+      "outcome20dDate": "2025-11-25",
+      "outcome60dDate": "2026-01-21",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-10-27",
+      "outcome5dDate": "2025-11-03",
+      "outcome20dDate": "2025-11-24",
+      "outcome60dDate": "2026-01-20",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-10-23",
+      "outcome5dDate": "2025-10-30",
+      "outcome20dDate": "2025-11-20",
+      "outcome60dDate": "2026-01-16",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-10-22",
+      "outcome5dDate": "2025-10-29",
+      "outcome20dDate": "2025-11-19",
+      "outcome60dDate": "2026-01-15",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-10-21",
+      "outcome5dDate": "2025-10-28",
+      "outcome20dDate": "2025-11-18",
+      "outcome60dDate": "2026-01-14",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-10-20",
+      "outcome5dDate": "2025-10-27",
+      "outcome20dDate": "2025-11-17",
+      "outcome60dDate": "2026-01-13",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-10-16",
+      "outcome5dDate": "2025-10-23",
+      "outcome20dDate": "2025-11-13",
+      "outcome60dDate": "2026-01-09",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-10-15",
+      "outcome5dDate": "2025-10-22",
+      "outcome20dDate": "2025-11-12",
+      "outcome60dDate": "2026-01-08",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    },
+    {
+      "asOfDate": "2025-10-14",
+      "outcome5dDate": "2025-10-21",
+      "outcome20dDate": "2025-11-11",
+      "outcome60dDate": "2026-01-07",
+      "allOutcomesAvailable": true,
+      "outcome5dAvailable": true,
+      "outcome20dAvailable": true,
+      "outcome60dAvailable": true
+    }
+  ]
+}
