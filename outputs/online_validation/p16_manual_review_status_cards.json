@@ -1,0 +1,44 @@
+{
+  "governanceGateStatus": {
+    "cardId": "review_governance_gate_status",
+    "label": "Governance Gate Status",
+    "value": "READY_FOR_MANUAL_REVIEW",
+    "status": "OK",
+    "note": "Manual review only; no production approval."
+  },
+  "manualReviewPackageStatus": {
+    "cardId": "review_manual_package_status",
+    "label": "Manual Review Package Status",
+    "value": "READY_FOR_HUMAN_REVIEW",
+    "status": "OK",
+    "note": "Package is for human review only."
+  },
+  "decision": {
+    "cardId": "review_decision",
+    "label": "Decision",
+    "value": "ALLOW_MANUAL_REVIEW_ONLY",
+    "status": "OK",
+    "note": "Decision does not authorize writes."
+  },
+  "corpusUnchanged": {
+    "cardId": "review_corpus_unchanged",
+    "label": "Corpus Unchanged",
+    "value": true,
+    "status": "OK",
+    "note": "Corpus line count must remain 60."
+  },
+  "previewOnlyImpact": {
+    "cardId": "review_preview_only_impact",
+    "label": "Preview-Only Impact",
+    "value": true,
+    "status": "OK",
+    "note": "Projected coverage is preview-only, not a performance claim."
+  },
+  "manualApprovalRequired": {
+    "cardId": "review_manual_approval_required",
+    "label": "Manual Approval Required",
+    "value": true,
+    "status": "OK",
+    "note": "Manual approval remains required."
+  }
+}

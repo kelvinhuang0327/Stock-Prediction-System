@@ -1,0 +1,228 @@
+{
+  "workflowBindingVersion": "manual-review-workflow-binding-v0",
+  "bindingRunId": "p16-manual-review-workflow-binding-20260511-001",
+  "generatedAt": "2026-05-11T10:00:00.000Z",
+  "sourceArtifacts": {
+    "governanceGateVersion": "outcome-backfill-governance-gate-v0",
+    "governanceRunId": "p15-backfill-governance-20260511-001",
+    "writePathContractVersion": "backfill-write-path-contract-v0",
+    "writePathContractRunId": "p15-backfill-write-path-contract-20260511-001",
+    "manualReviewPackageVersion": "backfill-manual-review-package-v0",
+    "manualReviewPackageRunId": "p15-backfill-manual-review-20260511-001",
+    "qualityImpactPreviewVersion": "backfill-quality-impact-preview-v0",
+    "recoveryPlanVersion": "coverage-recovery-plan-v0"
+  },
+  "workflowStatus": "READY_FOR_MANUAL_REVIEW",
+  "allowedWorkflowActions": [
+    "REVIEW_REHEARSAL_ARTIFACT",
+    "REVIEW_WRITE_PATH_POLICY",
+    "REVIEW_QUALITY_IMPACT_PREVIEW",
+    "REQUEST_MORE_DATA",
+    "ACKNOWLEDGE_DATA_LIMITED"
+  ],
+  "blockedWorkflowActions": [
+    "PRODUCTION_DB_WRITE",
+    "CORPUS_WRITE",
+    "PREDICTION_ROW_WRITE",
+    "STRATEGY_SIGNAL_WRITE",
+    "OPTIMIZER_TRIGGER",
+    "AUTO_PROMOTE",
+    "TRADING_ACTION",
+    "PRODUCTION_BACKFILL"
+  ],
+  "reviewStatusCards": {
+    "governanceGateStatus": {
+      "cardId": "review_governance_gate_status",
+      "label": "Governance Gate Status",
+      "value": "READY_FOR_MANUAL_REVIEW",
+      "status": "OK",
+      "note": "Manual review only; no production approval."
+    },
+    "manualReviewPackageStatus": {
+      "cardId": "review_manual_package_status",
+      "label": "Manual Review Package Status",
+      "value": "READY_FOR_HUMAN_REVIEW",
+      "status": "OK",
+      "note": "Package is for human review only."
+    },
+    "decision": {
+      "cardId": "review_decision",
+      "label": "Decision",
+      "value": "ALLOW_MANUAL_REVIEW_ONLY",
+      "status": "OK",
+      "note": "Decision does not authorize writes."
+    },
+    "corpusUnchanged": {
+      "cardId": "review_corpus_unchanged",
+      "label": "Corpus Unchanged",
+      "value": true,
+      "status": "OK",
+      "note": "Corpus line count must remain 60."
+    },
+    "previewOnlyImpact": {
+      "cardId": "review_preview_only_impact",
+      "label": "Preview-Only Impact",
+      "value": true,
+      "status": "OK",
+      "note": "Projected coverage is preview-only, not a performance claim."
+    },
+    "manualApprovalRequired": {
+      "cardId": "review_manual_approval_required",
+      "label": "Manual Approval Required",
+      "value": true,
+      "status": "OK",
+      "note": "Manual approval remains required."
+    }
+  },
+  "approvalBoundaryCards": {
+    "manualApprovalRequired": {
+      "cardId": "approval_manual_required",
+      "label": "Manual Approval Required",
+      "value": true,
+      "status": "OK"
+    },
+    "automaticPromotionAllowed": {
+      "cardId": "approval_auto_promotion",
+      "label": "Automatic Promotion Allowed",
+      "value": false,
+      "status": "OK"
+    },
+    "productionBackfillAllowed": {
+      "cardId": "approval_production_backfill",
+      "label": "Production Backfill Allowed",
+      "value": false,
+      "status": "OK"
+    },
+    "corpusWriteAllowed": {
+      "cardId": "approval_corpus_write",
+      "label": "Corpus Write Allowed",
+      "value": false,
+      "status": "OK"
+    },
+    "optimizerAllowed": {
+      "cardId": "approval_optimizer_allowed",
+      "label": "Optimizer Allowed",
+      "value": false,
+      "status": "OK"
+    },
+    "allowedNextStep": {
+      "cardId": "approval_next_step",
+      "label": "Allowed Next Step",
+      "value": "MANUAL_REVIEW_ONLY",
+      "status": "OK"
+    }
+  },
+  "writePathCards": {
+    "productionDbWriteAllowed": {
+      "cardId": "writepath_production_db",
+      "label": "Production DB Write Allowed",
+      "value": false,
+      "status": "OK"
+    },
+    "corpusJsonlWriteAllowed": {
+      "cardId": "writepath_corpus_jsonl",
+      "label": "Corpus JSONL Write Allowed",
+      "value": false,
+      "status": "OK"
+    },
+    "predictionRowWriteAllowed": {
+      "cardId": "writepath_prediction_row",
+      "label": "Prediction Row Write Allowed",
+      "value": false,
+      "status": "OK"
+    },
+    "strategySignalWriteAllowed": {
+      "cardId": "writepath_strategy_signal",
+      "label": "Strategy Signal Write Allowed",
+      "value": false,
+      "status": "OK"
+    },
+    "artifactOnly": {
+      "cardId": "writepath_artifact_only",
+      "label": "Artifact Only",
+      "value": true,
+      "status": "OK"
+    }
+  },
+  "riskCards": [
+    {
+      "cardId": "risk_governance",
+      "label": "Governance Status",
+      "value": "READY_FOR_MANUAL_REVIEW",
+      "status": "WARN",
+      "note": "Manual review only."
+    },
+    {
+      "cardId": "risk_preview_only",
+      "label": "Preview-Only Impact",
+      "value": true,
+      "status": "OK",
+      "note": "Impact is preview-only."
+    },
+    {
+      "cardId": "risk_no_write",
+      "label": "No Write Path",
+      "value": false,
+      "status": "OK",
+      "note": "All write paths remain blocked."
+    }
+  ],
+  "requiredReviewerDecisions": [
+    {
+      "decision": "confirm rehearsal remains artifact-only",
+      "allowed": false,
+      "reason": "Required for review hygiene"
+    },
+    {
+      "decision": "confirm no corpus write",
+      "allowed": false,
+      "reason": "Required for write-path safety"
+    },
+    {
+      "decision": "confirm no production backfill",
+      "allowed": false,
+      "reason": "Required for phase boundary"
+    },
+    {
+      "decision": "confirm no optimizer trigger",
+      "allowed": false,
+      "reason": "Required for phase boundary"
+    },
+    {
+      "decision": "confirm projected coverage is not performance",
+      "allowed": false,
+      "reason": "Coverage preview is not a performance claim"
+    }
+  ],
+  "forbiddenReviewerDecisions": [
+    {
+      "decision": "approve production backfill",
+      "allowed": false,
+      "reason": "Not enabled in P15"
+    },
+    {
+      "decision": "approve corpus write",
+      "allowed": false,
+      "reason": "Not enabled in P15"
+    },
+    {
+      "decision": "approve optimizer",
+      "allowed": false,
+      "reason": "Not enabled in P15"
+    },
+    {
+      "decision": "approve trading action",
+      "allowed": false,
+      "reason": "Not enabled in P15"
+    },
+    {
+      "decision": "claim strategy performance",
+      "allowed": false,
+      "reason": "Coverage preview is not performance"
+    }
+  ],
+  "validationStatus": "PASS",
+  "validationMessages": [
+    "PASS: manual review workflow binding safety contracts verified"
+  ]
+}
