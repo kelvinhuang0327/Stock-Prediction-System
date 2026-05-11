@@ -1,0 +1,81 @@
+{
+  "trackerVersion": "horizon-maturity-tracker-v0",
+  "trackerRunId": "p13-horizon-maturity-20260511-001",
+  "generatedAt": "2026-05-11T08:03:05.937Z",
+  "reviewDate": "2026-07-13",
+  "inputCorpusEntryCount": 60,
+  "totalEntries": 60,
+  "horizonSummaries": [
+    {
+      "horizonLabel": "5D",
+      "totalCount": 20,
+      "readyCount": 8,
+      "blockedCount": 12,
+      "coverageRatio": 0.4,
+      "blockedReasonCounts": {
+        "WINDOW_NOT_DUE": 12
+      },
+      "earliestAsOfDate": "2026-05-11",
+      "latestAsOfDate": "2026-05-22",
+      "earliestTargetTradingDate": "2026-05-18",
+      "latestTargetTradingDate": "2026-05-29",
+      "dueCount": 20,
+      "notDueCount": 0,
+      "missingOutcomeCount": 0,
+      "maturityRatio": 1,
+      "maturityStatus": "PARTIAL"
+    },
+    {
+      "horizonLabel": "20D",
+      "totalCount": 20,
+      "readyCount": 5,
+      "blockedCount": 15,
+      "coverageRatio": 0.25,
+      "blockedReasonCounts": {
+        "OUTCOME_MISSING": 3,
+        "WINDOW_NOT_DUE": 12
+      },
+      "earliestAsOfDate": "2026-05-11",
+      "latestAsOfDate": "2026-05-22",
+      "earliestTargetTradingDate": "2026-06-08",
+      "latestTargetTradingDate": "2026-06-22",
+      "dueCount": 20,
+      "notDueCount": 0,
+      "missingOutcomeCount": 3,
+      "maturityRatio": 1,
+      "maturityStatus": "PARTIAL"
+    },
+    {
+      "horizonLabel": "60D",
+      "totalCount": 20,
+      "readyCount": 1,
+      "blockedCount": 19,
+      "coverageRatio": 0.05,
+      "blockedReasonCounts": {
+        "WINDOW_NOT_DUE": 19
+      },
+      "earliestAsOfDate": "2026-05-11",
+      "latestAsOfDate": "2026-05-22",
+      "earliestTargetTradingDate": "2026-08-03",
+      "latestTargetTradingDate": "2026-08-17",
+      "dueCount": 0,
+      "notDueCount": 20,
+      "missingOutcomeCount": 0,
+      "maturityRatio": 0,
+      "maturityStatus": "NOT_DUE_DOMINANT"
+    }
+  ],
+  "maturityStatus": "PARTIALLY_MATURE",
+  "guardrails": {
+    "noProductionWrite": true,
+    "noSimulationWrite": true,
+    "noOptimizerWrite": true,
+    "noPerformanceClaim": true,
+    "noTradingSignal": true,
+    "observabilityOnly": true
+  },
+  "validationStatus": "PASS",
+  "validationMessages": [
+    "PASS: horizon maturity tracker safety contracts verified"
+  ]
+}

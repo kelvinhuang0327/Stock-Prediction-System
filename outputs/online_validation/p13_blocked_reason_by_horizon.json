@@ -1,0 +1,30 @@
+[
+  {
+    "horizonLabel": "5D",
+    "blockedReasonCounts": {
+      "WINDOW_NOT_DUE": 12
+    },
+    "topBlockedReason": "WINDOW_NOT_DUE",
+    "blockedCount": 12,
+    "totalCount": 20
+  },
+  {
+    "horizonLabel": "20D",
+    "blockedReasonCounts": {
+      "OUTCOME_MISSING": 3,
+      "WINDOW_NOT_DUE": 12
+    },
+    "topBlockedReason": "WINDOW_NOT_DUE",
+    "blockedCount": 15,
+    "totalCount": 20
+  },
+  {
+    "horizonLabel": "60D",
+    "blockedReasonCounts": {
+      "WINDOW_NOT_DUE": 19
+    },
+    "topBlockedReason": "WINDOW_NOT_DUE",
+    "blockedCount": 19,
+    "totalCount": 20
+  }
+]
