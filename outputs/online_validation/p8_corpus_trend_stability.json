@@ -1,0 +1,97 @@
+{
+  "artifactVersion": "p8-corpus-trend-stability-v0",
+  "generatedAt": "2026-05-11T05:42:28.018Z",
+  "trendStabilityVersion": "corpus-trend-stability-v0",
+  "trendRunId": "p8-corpus-trend-stability-20260511-001",
+  "inputAsOfDateCount": 3,
+  "inputTotalEntries": 18,
+  "coverageTrend": [
+    {
+      "asOfDate": "2026-05-11",
+      "totalCount": 6,
+      "readyCount": 3,
+      "blockedCount": 3,
+      "missingOutcomeCount": 1,
+      "notDueCount": 2,
+      "coverageRatio": 0.5
+    },
+    {
+      "asOfDate": "2026-05-12",
+      "totalCount": 6,
+      "readyCount": 3,
+      "blockedCount": 3,
+      "missingOutcomeCount": 1,
+      "notDueCount": 2,
+      "coverageRatio": 0.5
+    },
+    {
+      "asOfDate": "2026-05-13",
+      "totalCount": 6,
+      "readyCount": 4,
+      "blockedCount": 2,
+      "missingOutcomeCount": 1,
+      "notDueCount": 1,
+      "coverageRatio": 0.6667
+    }
+  ],
+  "readyTrendByAsOfDate": [
+    {
+      "asOfDate": "2026-05-11",
+      "readyCount": 3
+    },
+    {
+      "asOfDate": "2026-05-12",
+      "readyCount": 3
+    },
+    {
+      "asOfDate": "2026-05-13",
+      "readyCount": 4
+    }
+  ],
+  "blockedTrendByAsOfDate": [
+    {
+      "asOfDate": "2026-05-11",
+      "blockedCount": 3
+    },
+    {
+      "asOfDate": "2026-05-12",
+      "blockedCount": 3
+    },
+    {
+      "asOfDate": "2026-05-13",
+      "blockedCount": 2
+    }
+  ],
+  "coverageTrendSummary": {
+    "dateCount": 3,
+    "minCoverageRatio": 0.5,
+    "maxCoverageRatio": 0.6667,
+    "averageCoverageRatio": 0.5555666666666667,
+    "largestCoverageDrop": 0,
+    "largestCoverageRise": 0.16669999999999996,
+    "stableDateCount": 3,
+    "unstableDateCount": 0
+  },
+  "stabilityChecks": {
+    "hasEnoughDates": true,
+    "coverageDropWithinLimit": true,
+    "averageCoverageMeetsThreshold": true,
+    "noProductionWrite": true,
+    "noSimulationWrite": true,
+    "noOptimizerWrite": true,
+    "noPerformanceClaim": true,
+    "noTradingSignal": true
+  },
+  "stabilityStatus": "STABLE_FOR_OBSERVABILITY_ONLY",
+  "reasons": [
+    "hasEnoughDates=true coverageDropWithinLimit=true avgCoverage=0.556",
+    "Observability-only stability; no production, simulation, or optimizer writes permitted"
+  ],
+  "productionWriteAllowed": false,
+  "simulationWriteAllowed": false,
+  "optimizerWriteAllowed": false,
+  "validationStatus": "PASS",
+  "validationMessages": [
+    "PASS: corpus trend stability safety contracts verified"
+  ]
+}

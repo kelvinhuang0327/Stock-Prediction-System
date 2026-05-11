@@ -1,0 +1,114 @@
+{
+  "artifactVersion": "p8-corpus-metrics-v0",
+  "generatedAt": "2026-05-11T05:42:28.018Z",
+  "metricsVersion": "corpus-metrics-v0",
+  "metricsRunId": "p8-corpus-metrics-20260511-001",
+  "corpusPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/outputs/online_validation/simulation_snapshot_corpus.jsonl",
+  "totalEntries": 18,
+  "readyCount": 10,
+  "blockedCount": 8,
+  "uniqueAsOfDateCount": 3,
+  "uniqueSymbolCount": 2,
+  "uniqueHorizonCount": 3,
+  "coverageRatio": 0.5556,
+  "byAsOfDate": {
+    "2026-05-11": 6,
+    "2026-05-12": 6,
+    "2026-05-13": 6
+  },
+  "bySymbol": {
+    "2330": 9,
+    "2454": 9
+  },
+  "byHorizon": {
+    "5D": 6,
+    "20D": 6,
+    "60D": 6
+  },
+  "bySnapshotStatus": {
+    "SNAPSHOT_READY": 10,
+    "SNAPSHOT_BLOCKED": 8
+  },
+  "byBlockedReason": {
+    "WINDOW_NOT_DUE": 5,
+    "OUTCOME_MISSING": 3
+  },
+  "perSymbolObservationCount": {
+    "2330": 9,
+    "2454": 9
+  },
+  "perHorizonObservationCount": {
+    "5D": 6,
+    "20D": 6,
+    "60D": 6
+  },
+  "outcomeCoverageTrend": [
+    {
+      "asOfDate": "2026-05-11",
+      "totalCount": 6,
+      "readyCount": 3,
+      "blockedCount": 3,
+      "missingOutcomeCount": 1,
+      "notDueCount": 2,
+      "coverageRatio": 0.5
+    },
+    {
+      "asOfDate": "2026-05-12",
+      "totalCount": 6,
+      "readyCount": 3,
+      "blockedCount": 3,
+      "missingOutcomeCount": 1,
+      "notDueCount": 2,
+      "coverageRatio": 0.5
+    },
+    {
+      "asOfDate": "2026-05-13",
+      "totalCount": 6,
+      "readyCount": 4,
+      "blockedCount": 2,
+      "missingOutcomeCount": 1,
+      "notDueCount": 1,
+      "coverageRatio": 0.6667
+    }
+  ],
+  "readyTrendByAsOfDate": [
+    {
+      "asOfDate": "2026-05-11",
+      "readyCount": 3
+    },
+    {
+      "asOfDate": "2026-05-12",
+      "readyCount": 3
+    },
+    {
+      "asOfDate": "2026-05-13",
+      "readyCount": 4
+    }
+  ],
+  "blockedTrendByAsOfDate": [
+    {
+      "asOfDate": "2026-05-11",
+      "blockedCount": 3
+    },
+    {
+      "asOfDate": "2026-05-12",
+      "blockedCount": 3
+    },
+    {
+      "asOfDate": "2026-05-13",
+      "blockedCount": 2
+    }
+  ],
+  "dataQualityFlags": [],
+  "guardrails": {
+    "noProductionWrite": true,
+    "noSimulationWrite": true,
+    "noOptimizerWrite": true,
+    "noPerformanceClaim": true,
+    "noTradingSignal": true
+  },
+  "validationStatus": "PASS",
+  "validationMessages": [
+    "PASS: corpus metrics safety contracts verified"
+  ]
+}
