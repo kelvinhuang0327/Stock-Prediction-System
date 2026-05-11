@@ -1,0 +1,246 @@
+{
+  "metricsVersion": "corpus-metrics-v0",
+  "metricsRunId": "p12-corpus-metrics-20260511-001",
+  "generatedAt": "2026-05-11T07:40:08.890Z",
+  "corpusPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/outputs/online_validation/simulation_snapshot_corpus.jsonl",
+  "totalEntries": 60,
+  "readyCount": 14,
+  "blockedCount": 46,
+  "uniqueAsOfDateCount": 10,
+  "uniqueSymbolCount": 2,
+  "uniqueHorizonCount": 3,
+  "coverageRatio": 0.23333333333333334,
+  "byAsOfDate": {
+    "2026-05-11": 6,
+    "2026-05-12": 6,
+    "2026-05-13": 6,
+    "2026-05-14": 6,
+    "2026-05-15": 6,
+    "2026-05-18": 6,
+    "2026-05-19": 6,
+    "2026-05-20": 6,
+    "2026-05-21": 6,
+    "2026-05-22": 6
+  },
+  "bySymbol": {
+    "2330": 30,
+    "2454": 30
+  },
+  "byHorizon": {
+    "5D": 20,
+    "20D": 20,
+    "60D": 20
+  },
+  "bySnapshotStatus": {
+    "SNAPSHOT_READY": 14,
+    "SNAPSHOT_BLOCKED": 46
+  },
+  "byBlockedReason": {
+    "NONE": 14,
+    "WINDOW_NOT_DUE": 43,
+    "OUTCOME_MISSING": 3
+  },
+  "perSymbolObservationCount": {
+    "2330": 30,
+    "2454": 30
+  },
+  "perHorizonObservationCount": {
+    "5D": 20,
+    "20D": 20,
+    "60D": 20
+  },
+  "outcomeCoverageTrend": [
+    {
+      "asOfDate": "2026-05-11",
+      "totalCount": 6,
+      "readyCount": 3,
+      "blockedCount": 3,
+      "coverageRatio": 0.5,
+      "missingOutcomeCount": 3,
+      "notDueCount": 2
+    },
+    {
+      "asOfDate": "2026-05-12",
+      "totalCount": 6,
+      "readyCount": 3,
+      "blockedCount": 3,
+      "coverageRatio": 0.5,
+      "missingOutcomeCount": 3,
+      "notDueCount": 2
+    },
+    {
+      "asOfDate": "2026-05-13",
+      "totalCount": 6,
+      "readyCount": 4,
+      "blockedCount": 2,
+      "coverageRatio": 0.6666666666666666,
+      "missingOutcomeCount": 2,
+      "notDueCount": 1
+    },
+    {
+      "asOfDate": "2026-05-14",
+      "totalCount": 6,
+      "readyCount": 4,
+      "blockedCount": 2,
+      "coverageRatio": 0.6666666666666666,
+      "missingOutcomeCount": 2,
+      "notDueCount": 2
+    },
+    {
+      "asOfDate": "2026-05-15",
+      "totalCount": 6,
+      "readyCount": 0,
+      "blockedCount": 6,
+      "coverageRatio": 0,
+      "missingOutcomeCount": 6,
+      "notDueCount": 6
+    },
+    {
+      "asOfDate": "2026-05-18",
+      "totalCount": 6,
+      "readyCount": 0,
+      "blockedCount": 6,
+      "coverageRatio": 0,
+      "missingOutcomeCount": 6,
+      "notDueCount": 6
+    },
+    {
+      "asOfDate": "2026-05-19",
+      "totalCount": 6,
+      "readyCount": 0,
+      "blockedCount": 6,
+      "coverageRatio": 0,
+      "missingOutcomeCount": 6,
+      "notDueCount": 6
+    },
+    {
+      "asOfDate": "2026-05-20",
+      "totalCount": 6,
+      "readyCount": 0,
+      "blockedCount": 6,
+      "coverageRatio": 0,
+      "missingOutcomeCount": 6,
+      "notDueCount": 6
+    },
+    {
+      "asOfDate": "2026-05-21",
+      "totalCount": 6,
+      "readyCount": 0,
+      "blockedCount": 6,
+      "coverageRatio": 0,
+      "missingOutcomeCount": 6,
+      "notDueCount": 6
+    },
+    {
+      "asOfDate": "2026-05-22",
+      "totalCount": 6,
+      "readyCount": 0,
+      "blockedCount": 6,
+      "coverageRatio": 0,
+      "missingOutcomeCount": 6,
+      "notDueCount": 6
+    }
+  ],
+  "readyTrendByAsOfDate": [
+    {
+      "asOfDate": "2026-05-11",
+      "readyCount": 3
+    },
+    {
+      "asOfDate": "2026-05-12",
+      "readyCount": 3
+    },
+    {
+      "asOfDate": "2026-05-13",
+      "readyCount": 4
+    },
+    {
+      "asOfDate": "2026-05-14",
+      "readyCount": 4
+    },
+    {
+      "asOfDate": "2026-05-15",
+      "readyCount": 0
+    },
+    {
+      "asOfDate": "2026-05-18",
+      "readyCount": 0
+    },
+    {
+      "asOfDate": "2026-05-19",
+      "readyCount": 0
+    },
+    {
+      "asOfDate": "2026-05-20",
+      "readyCount": 0
+    },
+    {
+      "asOfDate": "2026-05-21",
+      "readyCount": 0
+    },
+    {
+      "asOfDate": "2026-05-22",
+      "readyCount": 0
+    }
+  ],
+  "blockedTrendByAsOfDate": [
+    {
+      "asOfDate": "2026-05-11",
+      "blockedCount": 3
+    },
+    {
+      "asOfDate": "2026-05-12",
+      "blockedCount": 3
+    },
+    {
+      "asOfDate": "2026-05-13",
+      "blockedCount": 2
+    },
+    {
+      "asOfDate": "2026-05-14",
+      "blockedCount": 2
+    },
+    {
+      "asOfDate": "2026-05-15",
+      "blockedCount": 6
+    },
+    {
+      "asOfDate": "2026-05-18",
+      "blockedCount": 6
+    },
+    {
+      "asOfDate": "2026-05-19",
+      "blockedCount": 6
+    },
+    {
+      "asOfDate": "2026-05-20",
+      "blockedCount": 6
+    },
+    {
+      "asOfDate": "2026-05-21",
+      "blockedCount": 6
+    },
+    {
+      "asOfDate": "2026-05-22",
+      "blockedCount": 6
+    }
+  ],
+  "dataQualityFlags": [
+    "NON_EMPTY_CORPUS",
+    "MULTI_DATE_CORPUS",
+    "READY_AND_BLOCKED_PRESENT",
+    "COVERAGE_BELOW_THRESHOLD",
+    "OBSERVABILITY_ONLY_METRICS"
+  ],
+  "guardrails": {
+    "noProductionWrite": true,
+    "noSimulationWrite": true,
+    "noOptimizerWrite": true,
+    "noPerformanceClaim": true,
+    "noTradingSignal": true
+  },
+  "validationStatus": "PASS",
+  "validationMessages": [
+    "PASS: corpus metrics safety contracts verified"
+  ]
+}

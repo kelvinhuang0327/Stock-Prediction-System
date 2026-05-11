@@ -19,6 +19,7 @@ const customJestConfig = {
     testPathIgnorePatterns: [
         '/node_modules/',
         '/e2e/',
+        '/\\.claude/',
     ],
     collectCoverageFrom: [
         'src/**/*.{js,jsx,ts,tsx}',

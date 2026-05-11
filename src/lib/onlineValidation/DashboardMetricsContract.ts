@@ -301,7 +301,7 @@ export function buildReadinessCards(input: DashboardMetricsContractInput): Readi
         disclaimers: [
             'Dashboard readiness does not imply production readiness.',
             'Dashboard readiness does not imply optimizer readiness.',
-            'All metrics are observability-only. No trading signals. No performance claims.',
+            'All metrics are observability-only. No live execution. No performance claims.',
         ],
     };
 }

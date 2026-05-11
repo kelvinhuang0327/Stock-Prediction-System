@@ -1,0 +1,72 @@
+{
+  "qualityGateVersion": "corpus-quality-gate-v0",
+  "qualityRunId": "p12-corpus-quality-20260511-001",
+  "generatedAt": "2026-05-11T07:40:08.898Z",
+  "inputTotalEntries": 60,
+  "inputAsOfDateCount": 10,
+  "inputSymbolCount": 2,
+  "inputHorizonCount": 3,
+  "coverageRatio": 0.23333333333333334,
+  "perSymbolCoverage": [
+    {
+      "symbol": "2330",
+      "totalCount": 30,
+      "readyCount": 9,
+      "blockedCount": 21,
+      "coverageRatio": 0.3
+    },
+    {
+      "symbol": "2454",
+      "totalCount": 30,
+      "readyCount": 5,
+      "blockedCount": 25,
+      "coverageRatio": 0.1667
+    }
+  ],
+  "perHorizonCoverage": [
+    {
+      "horizonLabel": "5D",
+      "totalCount": 20,
+      "readyCount": 8,
+      "blockedCount": 12,
+      "coverageRatio": 0.4
+    },
+    {
+      "horizonLabel": "20D",
+      "totalCount": 20,
+      "readyCount": 5,
+      "blockedCount": 15,
+      "coverageRatio": 0.25
+    },
+    {
+      "horizonLabel": "60D",
+      "totalCount": 20,
+      "readyCount": 1,
+      "blockedCount": 19,
+      "coverageRatio": 0.05
+    }
+  ],
+  "symbolCoverageGap": 0.1333,
+  "horizonCoverageGap": 0.35,
+  "qualityChecks": {
+    "hasEnoughDates": true,
+    "hasEnoughSymbols": true,
+    "hasEnoughHorizons": true,
+    "coverageMeetsThreshold": false,
+    "symbolCoverageGapWithinLimit": true,
+    "horizonCoverageGapWithinLimit": true,
+    "noProductionWrite": true,
+    "noSimulationWrite": true,
+    "noOptimizerWrite": true,
+    "noPerformanceClaim": true,
+    "noTradingSignal": true
+  },
+  "qualityStatus": "BLOCKED",
+  "reasons": [
+    "coverageRatio=0.23333333333333334 < minCoverageRatio=0.5 => BLOCKED"
+  ],
+  "validationStatus": "PASS",
+  "validationMessages": [
+    "PASS: corpus quality gate safety contracts verified"
+  ]
+}
