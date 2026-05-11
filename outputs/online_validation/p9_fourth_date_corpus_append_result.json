@@ -1,0 +1,25 @@
+{
+  "artifactVersion": "p9-corpus-append-result-v0",
+  "generatedAt": "2026-05-11T06:02:30.153Z",
+  "asOfDate": "2026-05-14",
+  "simulationRunId": "p9-fourth-date-simulation-20260514-001",
+  "corpusPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/outputs/online_validation/simulation_snapshot_corpus.jsonl",
+  "appendStatus": "DUPLICATE_KEY_BLOCKED",
+  "existingCount": 24,
+  "incomingCount": 6,
+  "appendedCount": 0,
+  "duplicateCount": 6,
+  "totalAfterAppend": 24,
+  "duplicateKeys": [
+    "SIM_CORPUS|p9-fourth-date-simulation-20260514-001|2026-05-14|2330|MVP_CORE|5D",
+    "SIM_CORPUS|p9-fourth-date-simulation-20260514-001|2026-05-14|2330|MVP_CORE|20D",
+    "SIM_CORPUS|p9-fourth-date-simulation-20260514-001|2026-05-14|2330|MVP_CORE|60D",
+    "SIM_CORPUS|p9-fourth-date-simulation-20260514-001|2026-05-14|2454|MVP_CORE|5D",
+    "SIM_CORPUS|p9-fourth-date-simulation-20260514-001|2026-05-14|2454|MVP_CORE|20D",
+    "SIM_CORPUS|p9-fourth-date-simulation-20260514-001|2026-05-14|2454|MVP_CORE|60D"
+  ],
+  "dryRun": true,
+  "productionWriteAllowed": false,
+  "simulationWriteAllowed": false,
+  "optimizerWriteAllowed": false
+}

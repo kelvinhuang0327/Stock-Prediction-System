@@ -1,0 +1,138 @@
+{
+  "metricsVersion": "corpus-metrics-v0",
+  "metricsRunId": "p9-corpus-metrics-20260511-001",
+  "generatedAt": "2026-05-11T06:02:30.216Z",
+  "corpusPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/outputs/online_validation/simulation_snapshot_corpus.jsonl",
+  "totalEntries": 24,
+  "readyCount": 14,
+  "blockedCount": 10,
+  "uniqueAsOfDateCount": 4,
+  "uniqueSymbolCount": 2,
+  "uniqueHorizonCount": 3,
+  "coverageRatio": 0.5833333333333334,
+  "byAsOfDate": {
+    "2026-05-11": 6,
+    "2026-05-12": 6,
+    "2026-05-13": 6,
+    "2026-05-14": 6
+  },
+  "bySymbol": {
+    "2330": 12,
+    "2454": 12
+  },
+  "byHorizon": {
+    "5D": 8,
+    "20D": 8,
+    "60D": 8
+  },
+  "bySnapshotStatus": {
+    "SNAPSHOT_READY": 14,
+    "SNAPSHOT_BLOCKED": 10
+  },
+  "byBlockedReason": {
+    "NONE": 14,
+    "WINDOW_NOT_DUE": 7,
+    "OUTCOME_MISSING": 3
+  },
+  "perSymbolObservationCount": {
+    "2330": 12,
+    "2454": 12
+  },
+  "perHorizonObservationCount": {
+    "5D": 8,
+    "20D": 8,
+    "60D": 8
+  },
+  "outcomeCoverageTrend": [
+    {
+      "asOfDate": "2026-05-11",
+      "totalCount": 6,
+      "readyCount": 3,
+      "blockedCount": 3,
+      "coverageRatio": 0.5,
+      "missingOutcomeCount": 3,
+      "notDueCount": 2
+    },
+    {
+      "asOfDate": "2026-05-12",
+      "totalCount": 6,
+      "readyCount": 3,
+      "blockedCount": 3,
+      "coverageRatio": 0.5,
+      "missingOutcomeCount": 3,
+      "notDueCount": 2
+    },
+    {
+      "asOfDate": "2026-05-13",
+      "totalCount": 6,
+      "readyCount": 4,
+      "blockedCount": 2,
+      "coverageRatio": 0.6666666666666666,
+      "missingOutcomeCount": 2,
+      "notDueCount": 1
+    },
+    {
+      "asOfDate": "2026-05-14",
+      "totalCount": 6,
+      "readyCount": 4,
+      "blockedCount": 2,
+      "coverageRatio": 0.6666666666666666,
+      "missingOutcomeCount": 2,
+      "notDueCount": 2
+    }
+  ],
+  "readyTrendByAsOfDate": [
+    {
+      "asOfDate": "2026-05-11",
+      "readyCount": 3
+    },
+    {
+      "asOfDate": "2026-05-12",
+      "readyCount": 3
+    },
+    {
+      "asOfDate": "2026-05-13",
+      "readyCount": 4
+    },
+    {
+      "asOfDate": "2026-05-14",
+      "readyCount": 4
+    }
+  ],
+  "blockedTrendByAsOfDate": [
+    {
+      "asOfDate": "2026-05-11",
+      "blockedCount": 3
+    },
+    {
+      "asOfDate": "2026-05-12",
+      "blockedCount": 3
+    },
+    {
+      "asOfDate": "2026-05-13",
+      "blockedCount": 2
+    },
+    {
+      "asOfDate": "2026-05-14",
+      "blockedCount": 2
+    }
+  ],
+  "dataQualityFlags": [
+    "NON_EMPTY_CORPUS",
+    "MULTI_DATE_CORPUS",
+    "READY_AND_BLOCKED_PRESENT",
+    "COVERAGE_AT_OR_ABOVE_THRESHOLD",
+    "OBSERVABILITY_ONLY_METRICS"
+  ],
+  "guardrails": {
+    "noProductionWrite": true,
+    "noSimulationWrite": true,
+    "noOptimizerWrite": true,
+    "noPerformanceClaim": true,
+    "noTradingSignal": true
+  },
+  "validationStatus": "PASS",
+  "validationMessages": [
+    "PASS: corpus metrics safety contracts verified"
+  ]
+}

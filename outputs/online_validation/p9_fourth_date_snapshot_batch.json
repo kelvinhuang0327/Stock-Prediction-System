@@ -1,0 +1,412 @@
+{
+  "artifactVersion": "p9-fourth-date-batch-v0",
+  "generatedAt": "2026-05-11T06:02:30.153Z",
+  "asOfDate": "2026-05-14",
+  "reviewDate": "2026-07-03",
+  "simulationRunId": "p9-fourth-date-simulation-20260514-001",
+  "sourceReplayRunId": "p9-fourth-date-replay-fixture-20260514-001",
+  "dryRun": true,
+  "simulationBatchVersion": "sim-batch-v0",
+  "mode": "SNAPSHOT_ONLY",
+  "inputRecordCount": 6,
+  "snapshotReadyCount": 4,
+  "snapshotBlockedCount": 2,
+  "snapshots": [
+    {
+      "simulationSnapshotVersion": "sim-snapshot-v0",
+      "simulationRunId": "p9-fourth-date-simulation-20260514-001",
+      "simulationSnapshotKey": "SIM_SNAPSHOT|p9-fourth-date-replay-fixture-20260514-001|2026-05-14|2330|MVP_CORE|5D",
+      "replayKey": "REPLAY_DATASET|2026-05-14|2330|MVP_CORE|p9-fourth-date-simulation-20260514-001|5D",
+      "originalRunId": "p9-fourth-date-simulation-20260514-001",
+      "originalAsOfDate": "2026-05-14",
+      "symbol": "2330",
+      "stockName": "Taiwan Semiconductor Manufacturing",
+      "universeTier": "MVP_CORE",
+      "horizonLabel": "5D",
+      "horizonDays": 5,
+      "targetTradingDate": "2026-05-21",
+      "reviewDate": "2026-07-03",
+      "researchBucket": "Strong",
+      "scoreSnapshot": {
+        "researchScore": 78,
+        "confidenceScore": 71,
+        "technicalScore": 80,
+        "chipScore": 74,
+        "fundamentalScore": 83,
+        "marketAdjustment": 6
+      },
+      "confidenceSnapshot": 71,
+      "factorSnapshot": [
+        "deterministic fixture day4 momentum",
+        "observability-only corpus entry"
+      ],
+      "riskSnapshot": [
+        "sector concentration watch"
+      ],
+      "limitationSnapshot": [
+        "deterministic fourth-date fixture"
+      ],
+      "dataCoverageSnapshot": {
+        "coverage": "full",
+        "usedSources": [
+          "fixtureQuote",
+          "fixtureFundamental"
+        ],
+        "missingSources": []
+      },
+      "sourceDateBasis": {
+        "sourceDate": "2026-05-13",
+        "sourceType": "DETERMINISTIC_TEST_FIXTURE",
+        "missingDataFlags": []
+      },
+      "outcomeSnapshot": {
+        "closePriceAtPrediction": null,
+        "closePriceAtOutcome": 1030,
+        "returnPct": 1.8,
+        "priceSource": "deterministic-fixture",
+        "outcomeAvailable": true
+      },
+      "snapshotStatus": "SNAPSHOT_READY",
+      "snapshotBlockedReason": "NONE",
+      "pitSafeStatus": "PIT_SAFE",
+      "productionWriteAllowed": false,
+      "simulationWriteAllowed": false,
+      "optimizerWriteAllowed": false,
+      "validationMessages": [
+        "DETERMINISTIC_TEST_FIXTURE_READY"
+      ]
+    },
+    {
+      "simulationSnapshotVersion": "sim-snapshot-v0",
+      "simulationRunId": "p9-fourth-date-simulation-20260514-001",
+      "simulationSnapshotKey": "SIM_SNAPSHOT|p9-fourth-date-replay-fixture-20260514-001|2026-05-14|2330|MVP_CORE|20D",
+      "replayKey": "REPLAY_DATASET|2026-05-14|2330|MVP_CORE|p9-fourth-date-simulation-20260514-001|20D",
+      "originalRunId": "p9-fourth-date-simulation-20260514-001",
+      "originalAsOfDate": "2026-05-14",
+      "symbol": "2330",
+      "stockName": "Taiwan Semiconductor Manufacturing",
+      "universeTier": "MVP_CORE",
+      "horizonLabel": "20D",
+      "horizonDays": 20,
+      "targetTradingDate": "2026-06-11",
+      "reviewDate": "2026-07-03",
+      "researchBucket": "Strong",
+      "scoreSnapshot": {
+        "researchScore": 78,
+        "confidenceScore": 71,
+        "technicalScore": 80,
+        "chipScore": 74,
+        "fundamentalScore": 83,
+        "marketAdjustment": 6
+      },
+      "confidenceSnapshot": 71,
+      "factorSnapshot": [
+        "deterministic fixture day4 momentum",
+        "observability-only corpus entry"
+      ],
+      "riskSnapshot": [
+        "sector concentration watch"
+      ],
+      "limitationSnapshot": [
+        "deterministic fourth-date fixture"
+      ],
+      "dataCoverageSnapshot": {
+        "coverage": "full",
+        "usedSources": [
+          "fixtureQuote",
+          "fixtureFundamental"
+        ],
+        "missingSources": []
+      },
+      "sourceDateBasis": {
+        "sourceDate": "2026-05-13",
+        "sourceType": "DETERMINISTIC_TEST_FIXTURE",
+        "missingDataFlags": []
+      },
+      "outcomeSnapshot": {
+        "closePriceAtPrediction": null,
+        "closePriceAtOutcome": 1030,
+        "returnPct": 1.8,
+        "priceSource": "deterministic-fixture",
+        "outcomeAvailable": true
+      },
+      "snapshotStatus": "SNAPSHOT_READY",
+      "snapshotBlockedReason": "NONE",
+      "pitSafeStatus": "PIT_SAFE",
+      "productionWriteAllowed": false,
+      "simulationWriteAllowed": false,
+      "optimizerWriteAllowed": false,
+      "validationMessages": [
+        "DETERMINISTIC_TEST_FIXTURE_READY"
+      ]
+    },
+    {
+      "simulationSnapshotVersion": "sim-snapshot-v0",
+      "simulationRunId": "p9-fourth-date-simulation-20260514-001",
+      "simulationSnapshotKey": "SIM_SNAPSHOT|p9-fourth-date-replay-fixture-20260514-001|2026-05-14|2330|MVP_CORE|60D",
+      "replayKey": "REPLAY_DATASET|2026-05-14|2330|MVP_CORE|p9-fourth-date-simulation-20260514-001|60D",
+      "originalRunId": "p9-fourth-date-simulation-20260514-001",
+      "originalAsOfDate": "2026-05-14",
+      "symbol": "2330",
+      "stockName": "Taiwan Semiconductor Manufacturing",
+      "universeTier": "MVP_CORE",
+      "horizonLabel": "60D",
+      "horizonDays": 60,
+      "targetTradingDate": "2026-08-05",
+      "reviewDate": "2026-07-03",
+      "researchBucket": "Watch",
+      "scoreSnapshot": {
+        "researchScore": 45,
+        "confidenceScore": 34,
+        "technicalScore": 43,
+        "chipScore": 41,
+        "fundamentalScore": 42,
+        "marketAdjustment": -1
+      },
+      "confidenceSnapshot": 34,
+      "factorSnapshot": [
+        "deterministic fixture day4 horizon check",
+        "observability-only corpus entry"
+      ],
+      "riskSnapshot": [
+        "forward visibility limited"
+      ],
+      "limitationSnapshot": [
+        "deterministic fourth-date fixture"
+      ],
+      "dataCoverageSnapshot": {
+        "coverage": "partial",
+        "usedSources": [
+          "fixtureQuote",
+          "fixtureFundamental"
+        ],
+        "missingSources": [
+          "outcome"
+        ]
+      },
+      "sourceDateBasis": {
+        "sourceDate": "2026-05-13",
+        "sourceType": "DETERMINISTIC_TEST_FIXTURE",
+        "missingDataFlags": [
+          "OUTCOME_PENDING"
+        ]
+      },
+      "outcomeSnapshot": {
+        "closePriceAtPrediction": null,
+        "closePriceAtOutcome": null,
+        "returnPct": null,
+        "priceSource": "deterministic-fixture",
+        "outcomeAvailable": false
+      },
+      "snapshotStatus": "SNAPSHOT_BLOCKED",
+      "snapshotBlockedReason": "WINDOW_NOT_DUE",
+      "pitSafeStatus": "PIT_SAFE",
+      "productionWriteAllowed": false,
+      "simulationWriteAllowed": false,
+      "optimizerWriteAllowed": false,
+      "validationMessages": [
+        "DETERMINISTIC_TEST_FIXTURE_BLOCKED:WINDOW_NOT_DUE"
+      ]
+    },
+    {
+      "simulationSnapshotVersion": "sim-snapshot-v0",
+      "simulationRunId": "p9-fourth-date-simulation-20260514-001",
+      "simulationSnapshotKey": "SIM_SNAPSHOT|p9-fourth-date-replay-fixture-20260514-001|2026-05-14|2454|MVP_CORE|5D",
+      "replayKey": "REPLAY_DATASET|2026-05-14|2454|MVP_CORE|p9-fourth-date-simulation-20260514-001|5D",
+      "originalRunId": "p9-fourth-date-simulation-20260514-001",
+      "originalAsOfDate": "2026-05-14",
+      "symbol": "2454",
+      "stockName": "MediaTek",
+      "universeTier": "MVP_CORE",
+      "horizonLabel": "5D",
+      "horizonDays": 5,
+      "targetTradingDate": "2026-05-21",
+      "reviewDate": "2026-07-03",
+      "researchBucket": "Strong",
+      "scoreSnapshot": {
+        "researchScore": 78,
+        "confidenceScore": 71,
+        "technicalScore": 80,
+        "chipScore": 74,
+        "fundamentalScore": 83,
+        "marketAdjustment": 6
+      },
+      "confidenceSnapshot": 71,
+      "factorSnapshot": [
+        "deterministic fixture day4 momentum",
+        "observability-only corpus entry"
+      ],
+      "riskSnapshot": [
+        "sector concentration watch"
+      ],
+      "limitationSnapshot": [
+        "deterministic fourth-date fixture"
+      ],
+      "dataCoverageSnapshot": {
+        "coverage": "full",
+        "usedSources": [
+          "fixtureQuote",
+          "fixtureFundamental"
+        ],
+        "missingSources": []
+      },
+      "sourceDateBasis": {
+        "sourceDate": "2026-05-13",
+        "sourceType": "DETERMINISTIC_TEST_FIXTURE",
+        "missingDataFlags": []
+      },
+      "outcomeSnapshot": {
+        "closePriceAtPrediction": null,
+        "closePriceAtOutcome": 990,
+        "returnPct": 2.3,
+        "priceSource": "deterministic-fixture",
+        "outcomeAvailable": true
+      },
+      "snapshotStatus": "SNAPSHOT_READY",
+      "snapshotBlockedReason": "NONE",
+      "pitSafeStatus": "PIT_SAFE",
+      "productionWriteAllowed": false,
+      "simulationWriteAllowed": false,
+      "optimizerWriteAllowed": false,
+      "validationMessages": [
+        "DETERMINISTIC_TEST_FIXTURE_READY"
+      ]
+    },
+    {
+      "simulationSnapshotVersion": "sim-snapshot-v0",
+      "simulationRunId": "p9-fourth-date-simulation-20260514-001",
+      "simulationSnapshotKey": "SIM_SNAPSHOT|p9-fourth-date-replay-fixture-20260514-001|2026-05-14|2454|MVP_CORE|20D",
+      "replayKey": "REPLAY_DATASET|2026-05-14|2454|MVP_CORE|p9-fourth-date-simulation-20260514-001|20D",
+      "originalRunId": "p9-fourth-date-simulation-20260514-001",
+      "originalAsOfDate": "2026-05-14",
+      "symbol": "2454",
+      "stockName": "MediaTek",
+      "universeTier": "MVP_CORE",
+      "horizonLabel": "20D",
+      "horizonDays": 20,
+      "targetTradingDate": "2026-06-11",
+      "reviewDate": "2026-07-03",
+      "researchBucket": "Strong",
+      "scoreSnapshot": {
+        "researchScore": 78,
+        "confidenceScore": 71,
+        "technicalScore": 80,
+        "chipScore": 74,
+        "fundamentalScore": 83,
+        "marketAdjustment": 6
+      },
+      "confidenceSnapshot": 71,
+      "factorSnapshot": [
+        "deterministic fixture day4 momentum",
+        "observability-only corpus entry"
+      ],
+      "riskSnapshot": [
+        "sector concentration watch"
+      ],
+      "limitationSnapshot": [
+        "deterministic fourth-date fixture"
+      ],
+      "dataCoverageSnapshot": {
+        "coverage": "full",
+        "usedSources": [
+          "fixtureQuote",
+          "fixtureFundamental"
+        ],
+        "missingSources": []
+      },
+      "sourceDateBasis": {
+        "sourceDate": "2026-05-13",
+        "sourceType": "DETERMINISTIC_TEST_FIXTURE",
+        "missingDataFlags": []
+      },
+      "outcomeSnapshot": {
+        "closePriceAtPrediction": null,
+        "closePriceAtOutcome": 990,
+        "returnPct": 2.3,
+        "priceSource": "deterministic-fixture",
+        "outcomeAvailable": true
+      },
+      "snapshotStatus": "SNAPSHOT_READY",
+      "snapshotBlockedReason": "NONE",
+      "pitSafeStatus": "PIT_SAFE",
+      "productionWriteAllowed": false,
+      "simulationWriteAllowed": false,
+      "optimizerWriteAllowed": false,
+      "validationMessages": [
+        "DETERMINISTIC_TEST_FIXTURE_READY"
+      ]
+    },
+    {
+      "simulationSnapshotVersion": "sim-snapshot-v0",
+      "simulationRunId": "p9-fourth-date-simulation-20260514-001",
+      "simulationSnapshotKey": "SIM_SNAPSHOT|p9-fourth-date-replay-fixture-20260514-001|2026-05-14|2454|MVP_CORE|60D",
+      "replayKey": "REPLAY_DATASET|2026-05-14|2454|MVP_CORE|p9-fourth-date-simulation-20260514-001|60D",
+      "originalRunId": "p9-fourth-date-simulation-20260514-001",
+      "originalAsOfDate": "2026-05-14",
+      "symbol": "2454",
+      "stockName": "MediaTek",
+      "universeTier": "MVP_CORE",
+      "horizonLabel": "60D",
+      "horizonDays": 60,
+      "targetTradingDate": "2026-08-05",
+      "reviewDate": "2026-07-03",
+      "researchBucket": "Watch",
+      "scoreSnapshot": {
+        "researchScore": 45,
+        "confidenceScore": 34,
+        "technicalScore": 43,
+        "chipScore": 41,
+        "fundamentalScore": 42,
+        "marketAdjustment": -1
+      },
+      "confidenceSnapshot": 34,
+      "factorSnapshot": [
+        "deterministic fixture day4 horizon check",
+        "observability-only corpus entry"
+      ],
+      "riskSnapshot": [
+        "forward visibility limited"
+      ],
+      "limitationSnapshot": [
+        "deterministic fourth-date fixture"
+      ],
+      "dataCoverageSnapshot": {
+        "coverage": "partial",
+        "usedSources": [
+          "fixtureQuote",
+          "fixtureFundamental"
+        ],
+        "missingSources": [
+          "outcome"
+        ]
+      },
+      "sourceDateBasis": {
+        "sourceDate": "2026-05-13",
+        "sourceType": "DETERMINISTIC_TEST_FIXTURE",
+        "missingDataFlags": [
+          "OUTCOME_PENDING"
+        ]
+      },
+      "outcomeSnapshot": {
+        "closePriceAtPrediction": null,
+        "closePriceAtOutcome": null,
+        "returnPct": null,
+        "priceSource": "deterministic-fixture",
+        "outcomeAvailable": false
+      },
+      "snapshotStatus": "SNAPSHOT_BLOCKED",
+      "snapshotBlockedReason": "WINDOW_NOT_DUE",
+      "pitSafeStatus": "PIT_SAFE",
+      "productionWriteAllowed": false,
+      "simulationWriteAllowed": false,
+      "optimizerWriteAllowed": false,
+      "validationMessages": [
+        "DETERMINISTIC_TEST_FIXTURE_BLOCKED:WINDOW_NOT_DUE"
+      ]
+    }
+  ],
+  "validationStatus": "PASS",
+  "validationMessages": [
+    "Deterministic fourth-date fixture generated: 6 snapshots"
+  ]
+}
