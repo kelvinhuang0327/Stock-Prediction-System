@@ -1,0 +1,240 @@
+{
+  "phase": "P17-HARDRESET",
+  "task": "MonthlyRevenue releaseDate PIT query gate validation",
+  "date": "2026-05-12",
+  "disclaimer": "Does not constitute investment advice. Does not compute ROI, profit, alpha, win-rate, edge, or outperformance.",
+  "validationStatus": "ALL_PASS",
+  "passCount": 18,
+  "failCount": 0,
+  "total": 18,
+  "productionApplyAllowed": false,
+  "results": [
+    {
+      "label": "SC1: explicit releaseDate before asOfDate → available",
+      "status": "PASS",
+      "details": {
+        "stockId": null,
+        "year": 2026,
+        "month": 2,
+        "asOfDate": "2026-05-01",
+        "available": true,
+        "releaseDate": "2026-03-10",
+        "releaseDateSource": null,
+        "releaseDateConfidence": null,
+        "reason": "releaseDate (2026-03-10) <= asOfDate (2026-05-01) — available",
+        "inferred": false
+      }
+    },
+    {
+      "label": "SC2: explicit releaseDate == asOfDate → available (boundary)",
+      "status": "PASS",
+      "details": {
+        "stockId": null,
+        "year": 2026,
+        "month": 3,
+        "asOfDate": "2026-04-10",
+        "available": true,
+        "releaseDate": "2026-04-10",
+        "releaseDateSource": null,
+        "releaseDateConfidence": null,
+        "reason": "releaseDate (2026-04-10) <= asOfDate (2026-04-10) — available",
+        "inferred": false
+      }
+    },
+    {
+      "label": "SC3: explicit releaseDate after asOfDate → unavailable",
+      "status": "PASS",
+      "details": {
+        "stockId": null,
+        "year": 2026,
+        "month": 4,
+        "asOfDate": "2026-04-30",
+        "available": false,
+        "releaseDate": "2026-05-10",
+        "releaseDateSource": null,
+        "releaseDateConfidence": null,
+        "reason": "releaseDate (2026-05-10) > asOfDate (2026-04-30) — unavailable",
+        "inferred": false
+      }
+    },
+    {
+      "label": "SC4: missing releaseDate + allowInferred=false → unavailable",
+      "status": "PASS",
+      "details": {
+        "stockId": null,
+        "year": 2026,
+        "month": 1,
+        "asOfDate": "2026-04-01",
+        "available": false,
+        "releaseDate": null,
+        "releaseDateSource": null,
+        "releaseDateConfidence": null,
+        "reason": "no releaseDate and allowInferredReleaseDate=false — unavailable",
+        "inferred": false
+      }
+    },
+    {
+      "label": "SC5: missing + allowInferred=true + asOf before inferred → unavailable",
+      "status": "PASS",
+      "details": {
+        "stockId": null,
+        "year": 2026,
+        "month": 3,
+        "asOfDate": "2026-04-09",
+        "available": false,
+        "releaseDate": "2026-04-10",
+        "releaseDateSource": "INFERRED_NEXT_MONTH_10TH",
+        "releaseDateConfidence": "LOW_TO_MEDIUM",
+        "reason": "inferred releaseDate (2026-04-10) > asOfDate (2026-04-09) — unavailable",
+        "inferred": true
+      }
+    },
+    {
+      "label": "SC6: missing + allowInferred=true + asOf == inferred → available",
+      "status": "PASS",
+      "details": {
+        "stockId": null,
+        "year": 2026,
+        "month": 3,
+        "asOfDate": "2026-04-10",
+        "available": true,
+        "releaseDate": "2026-04-10",
+        "releaseDateSource": "INFERRED_NEXT_MONTH_10TH",
+        "releaseDateConfidence": "LOW_TO_MEDIUM",
+        "reason": "inferred releaseDate (2026-04-10) <= asOfDate (2026-04-10) — available",
+        "inferred": true
+      }
+    },
+    {
+      "label": "SC7: missing year → unavailable",
+      "status": "PASS",
+      "details": {
+        "stockId": null,
+        "year": null,
+        "month": 3,
+        "asOfDate": "2026-05-01",
+        "available": false,
+        "releaseDate": null,
+        "releaseDateSource": null,
+        "releaseDateConfidence": null,
+        "reason": "missing year — unavailable",
+        "inferred": false
+      }
+    },
+    {
+      "label": "SC8: invalid month=0 → unavailable",
+      "status": "PASS",
+      "details": {
+        "stockId": null,
+        "year": 2026,
+        "month": 0,
+        "asOfDate": "2026-05-01",
+        "available": false,
+        "releaseDate": null,
+        "releaseDateSource": null,
+        "releaseDateConfidence": null,
+        "reason": "invalid month 0 — unavailable",
+        "inferred": false
+      }
+    },
+    {
+      "label": "SC9: filter excludes future/missing releaseDate records",
+      "status": "PASS",
+      "details": {
+        "filtered": [
+          {
+            "year": 2026,
+            "month": 2
+          },
+          {
+            "year": 2026,
+            "month": 3
+          }
+        ],
+        "asOfDate": "2026-04-15"
+      }
+    },
+    {
+      "label": "SC10: no forbidden outcome fields in availability result",
+      "status": "PASS",
+      "details": {
+        "resultKeys": [
+          "stockId",
+          "year",
+          "month",
+          "asOfDate",
+          "available",
+          "releaseDate",
+          "releaseDateSource",
+          "releaseDateConfidence",
+          "reason",
+          "inferred"
+        ],
+        "forbidden": []
+      }
+    },
+    {
+      "label": "SG1: TAIWAN_REVENUE_RELEASE_DAY === 10",
+      "status": "PASS",
+      "details": {
+        "value": 10
+      }
+    },
+    {
+      "label": "SG2: INFERRED_RELEASE_DATE_SOURCE",
+      "status": "PASS",
+      "details": {
+        "value": "INFERRED_NEXT_MONTH_10TH"
+      }
+    },
+    {
+      "label": "SG3: INFERRED_RELEASE_DATE_CONFIDENCE",
+      "status": "PASS",
+      "details": {
+        "value": "LOW_TO_MEDIUM"
+      }
+    },
+    {
+      "label": "SG4: Dec inference → 2026-01-10",
+      "status": "PASS",
+      "details": {
+        "releaseDate": "2026-01-10",
+        "releaseDateSource": "INFERRED_NEXT_MONTH_10TH",
+        "releaseDateConfidence": "LOW_TO_MEDIUM"
+      }
+    },
+    {
+      "label": "SG5: validateMonthlyRevenueAvailabilityResult returns valid",
+      "status": "PASS",
+      "details": {
+        "valid": true,
+        "errors": []
+      }
+    },
+    {
+      "label": "SG6: explainMonthlyRevenueAvailability has rule + details",
+      "status": "PASS",
+      "details": {
+        "rule": "RULE_4_NO_RELEASE_DATE",
+        "available": false
+      }
+    },
+    {
+      "label": "SG7: normalizeMonthlyRevenueReleaseDate handles Date object",
+      "status": "PASS",
+      "details": {
+        "releaseDate": "2026-04-10",
+        "releaseDateSource": null,
+        "releaseDateConfidence": null
+      }
+    },
+    {
+      "label": "SG8: productionApplyAllowed=false in script constants",
+      "status": "PASS",
+      "details": {
+        "productionApplyAllowed": false,
+        "migrationCommand": "prisma migrate deploy"
+      }
+    }
+  ]
+}

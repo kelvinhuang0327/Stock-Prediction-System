@@ -1,0 +1,40 @@
+{
+  "phase": "P17-HARDRESET",
+  "task": "MonthlyRevenue releaseDate Prisma Schema Patch",
+  "date": "2026-05-12",
+  "disclaimer": "Does not constitute investment advice. Does not compute ROI, profit, alpha, win-rate, edge, or outperformance. Governance / schema patch only.",
+  "productionApplyAllowed": false,
+  "migrationDraftPath": "prisma/migrations/20260512000000_monthly_revenue_release_date_pit_draft/migration.sql",
+  "schemaPath": "prisma/schema.prisma",
+  "addedFields": [
+    {
+      "model": "MonthlyRevenue",
+      "field": "releaseDate",
+      "type": "DateTime?",
+      "purpose": "PIT gate — date revenue was publicly released",
+      "comment": "P17: PIT gate"
+    },
+    {
+      "model": "MonthlyRevenue",
+      "field": "releaseDateSource",
+      "type": "String?",
+      "purpose": "Source of releaseDate — INFERRED_NEXT_MONTH_10TH or EXPLICIT",
+      "comment": "P17"
+    },
+    {
+      "model": "MonthlyRevenue",
+      "field": "releaseDateConfidence",
+      "type": "String?",
+      "purpose": "Confidence tag — LOW_TO_MEDIUM or HIGH",
+      "comment": "P17"
+    }
+  ],
+  "patchStatus": "APPLIED_TO_SCHEMA_ONLY",
+  "frozenFields": [
+    "id", "stockId", "year", "month", "revenue", "yoyGrowth", "momGrowth", "createdAt"
+  ],
+  "frozenConstraints": ["@@unique([stockId, year, month])"],
+  "migrationApprovalRequired": true,
+  "migrationCommand": "prisma migrate deploy",
+  "migrationCommandAllowed": false
+}

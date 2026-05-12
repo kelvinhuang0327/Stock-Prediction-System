@@ -7,6 +7,10 @@ export interface MonthlyRevenueLike {
   revenue: number;
   yoyGrowth: number | null;
   momGrowth: number | null;
+  // P17: PIT gate fields
+  releaseDate?: string | Date | null;
+  releaseDateSource?: string | null;
+  releaseDateConfidence?: string | null;
 }
 
 export interface FinancialReportLike {

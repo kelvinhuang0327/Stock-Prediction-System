@@ -45,6 +45,7 @@ import {
   buildPeerPercentileDetailTable,
 } from '@/lib/fundamental/PeerPercentileDetailTableBuilder';
 import type { PeerPercentileDetailTable } from '@/lib/fundamental/types';
+import { filterMonthlyRevenueAvailableAsOf } from '@/lib/onlineValidation/MonthlyRevenueAvailability';
 
 export interface FundamentalResearchContext {
   fundamentals: StockFundamentalSnapshot;
@@ -71,8 +72,9 @@ export async function buildFundamentalResearchContextForSymbol(input: {
   symbol: string;
   name: string;
   industry: string;
+  asOf?: string; // P17: PIT gate — filter MonthlyRevenue by releaseDate <= asOf
 }): Promise<FundamentalResearchContext> {
-  const [monthlyRevenues, financialReports, stockMetrics] = await Promise.all([
+  const [monthlyRevenuesRaw, financialReports, stockMetrics] = await Promise.all([
     prisma.monthlyRevenue.findMany({
       where: { stockId: input.symbol },
       orderBy: [{ year: 'desc' }, { month: 'desc' }],
@@ -89,6 +91,11 @@ export async function buildFundamentalResearchContextForSymbol(input: {
       take: 3,
     }),
   ]);
+
+  // P17: PIT gate — only include MonthlyRevenue records available as of asOf
+  const monthlyRevenues = input.asOf
+    ? filterMonthlyRevenueAvailableAsOf(monthlyRevenuesRaw, input.asOf, { allowInferredReleaseDate: true })
+    : monthlyRevenuesRaw;
 
   const fundamentals = buildStockFundamentalSnapshot({
     isETF: isEtfSymbol(input.symbol, input.name),

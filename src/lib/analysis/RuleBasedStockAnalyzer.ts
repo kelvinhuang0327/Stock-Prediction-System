@@ -7,6 +7,7 @@
  */
 
 import { prisma } from '@/lib/prisma';
+import { filterMonthlyRevenueAvailableAsOf } from '@/lib/onlineValidation/MonthlyRevenueAvailability';
 
 // ─── Public Types ───────────────────────────────────────────────
 
@@ -50,32 +51,55 @@ export interface StockAnalysisResult {
 
 // ─── Analyzer ───────────────────────────────────────────────────
 
-export async function analyzeStock(symbol: string): Promise<StockAnalysisResult> {
+export async function analyzeStock(symbol: string, asOf?: string): Promise<StockAnalysisResult> {
     const stock = await prisma.stock.findUnique({ where: { id: symbol } });
     const stockName = stock?.name || symbol;
     const isETF = symbol.length >= 4 && (symbol.startsWith('00') || symbol.startsWith('01'));
 
+    // P0-03: Gate all data queries to date <= asOfDate when asOf is provided.
+    // DB stores dates as YYYYMMDD strings; string lexicographic comparison works correctly.
+    const asOfDb = asOf ? asOf.replace(/-/g, '') : null;
+
+    // For MonthlyRevenue (stored as year/month ints), derive year+month cap.
+    let revenueAsOfWhere: object = { stockId: symbol };
+    if (asOfDb) {
+        const asOfYear = parseInt(asOfDb.slice(0, 4), 10);
+        const asOfMonth = parseInt(asOfDb.slice(4, 6), 10);
+        revenueAsOfWhere = {
+            stockId: symbol,
+            OR: [
+                { year: { lt: asOfYear } },
+                { year: asOfYear, month: { lte: asOfMonth } },
+            ],
+        };
+    }
+
     const [quotes, chips, revenues] = await Promise.all([
         prisma.stockQuote.findMany({
-            where: { stockId: symbol },
+            where: { stockId: symbol, ...(asOfDb ? { date: { lte: asOfDb } } : {}) },
             orderBy: { date: 'asc' },
             take: 500,
         }),
         prisma.institutionalChip.findMany({
-            where: { stockId: symbol },
+            where: { stockId: symbol, ...(asOfDb ? { date: { lte: asOfDb } } : {}) },
             orderBy: { date: 'desc' },
             take: 60,
         }),
         prisma.monthlyRevenue.findMany({
-            where: { stockId: symbol },
+            where: revenueAsOfWhere,
             orderBy: [{ year: 'desc' }, { month: 'desc' }],
             take: 24,
         }),
     ]);
 
+    // P17: PIT gate — only include MonthlyRevenue records available as of asOfDate
+    const revenuesPIT = asOf
+        ? filterMonthlyRevenueAvailableAsOf(revenues, asOf, { allowInferredReleaseDate: true })
+        : revenues;
+
     const quoteCount = quotes.length;
     const chipCount = chips.length;
-    const revenueCount = revenues.length;
+    const revenueCount = revenuesPIT.length;
 
     // ── Insufficient data shortcut ──
     if (quoteCount < 20) {
@@ -122,8 +146,8 @@ export async function analyzeStock(symbol: string): Promise<StockAnalysisResult>
     let revenueYoY: number | null = null;
     if (revenueCount >= 13) {
         usedSources.push('MonthlyRevenue');
-        const latest = revenues[0];
-        const sameMonthLastYear = revenues.find(r => r.year === latest.year - 1 && r.month === latest.month);
+        const latest = revenuesPIT[0];
+        const sameMonthLastYear = revenuesPIT.find(r => r.year === latest.year - 1 && r.month === latest.month);
         if (sameMonthLastYear && sameMonthLastYear.revenue > 0) {
             revenueYoY = r2(((latest.revenue - sameMonthLastYear.revenue) / sameMonthLastYear.revenue) * 100);
             factors.push({

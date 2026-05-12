@@ -163,14 +163,17 @@ model InstitutionalChip {
 }
 
 model MonthlyRevenue {
-  id        Int      @id @default(autoincrement())
-  stockId   String
-  year      Int
-  month     Int
-  revenue   Float
-  yoyGrowth Float? // YoY %
-  momGrowth Float? // MoM %
-  createdAt DateTime @default(now())
+  id                    Int       @id @default(autoincrement())
+  stockId               String
+  year                  Int
+  month                 Int
+  revenue               Float
+  yoyGrowth             Float?    // YoY %
+  momGrowth             Float?    // MoM %
+  releaseDate           DateTime? // P17: PIT gate — date revenue was publicly released
+  releaseDateSource     String?   // P17: e.g. INFERRED_NEXT_MONTH_10TH or EXPLICIT
+  releaseDateConfidence String?   // P17: e.g. LOW_TO_MEDIUM or HIGH
+  createdAt             DateTime  @default(now())
 
   stock Stock @relation(fields: [stockId], references: [id])
 
@@ -676,4 +679,31 @@ model OrchestratorSetting {
   key       String   @id
   value     String
   updatedAt DateTime @updatedAt
+}
+
+model MarketRegimeResult {
+  id                   String   @id @default(cuid())
+  date                 String
+  regimeLabel          String
+  confidence           Float
+  taiexClose           Float?
+  taiexMa50            Float?
+  taiexMa200           Float?
+  taiexReturn1d        Float?
+  taiexReturn20d       Float?
+  taiexVolatility20d   Float?
+  marketBreadthProxy   Float?
+  evidenceJson         String?
+  missingFeaturesJson  String?
+  pitSafetyJson        String?
+  source               String
+  version              String
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  @@unique([date, source, version])
+  @@index([date])
+  @@index([regimeLabel])
+  @@index([source])
+  @@index([version])
 }
