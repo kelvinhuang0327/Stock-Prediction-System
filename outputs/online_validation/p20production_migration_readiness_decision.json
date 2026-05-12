@@ -1,0 +1,109 @@
+{
+  "phase": "P20-HARDRESET",
+  "part": "E",
+  "generatedAt": "2026-05-12T05:24:54.397Z",
+  "productionApplyAllowed": false,
+  "productionDbWritten": false,
+  "classification": "P20_READY_FOR_PRODUCTION_MIGRATION_APPROVAL_REVIEW",
+  "passedCriteria": [
+    "P3/P19 corpus shape compatible",
+    "P19 PIT validation PASS",
+    "Leakage violations = 0",
+    "Forbidden field violations = 0",
+    "Scoring completeness degradation < 5% (actual: 0.00%)",
+    "Bucket change ratio < 10% (actual: 0.00%)",
+    "Snapshot impact (signal+reason+factor) < 10% (actual: 0.00%)",
+    "Changed cases documented (cases >= 1)"
+  ],
+  "failedCriteria": [],
+  "allCriteria": [
+    {
+      "name": "P3/P19 corpus shape compatible",
+      "status": "PASS",
+      "failClassification": null
+    },
+    {
+      "name": "P19 PIT validation PASS",
+      "status": "PASS",
+      "failClassification": null
+    },
+    {
+      "name": "Leakage violations = 0",
+      "status": "PASS",
+      "failClassification": null
+    },
+    {
+      "name": "Forbidden field violations = 0",
+      "status": "PASS",
+      "failClassification": null
+    },
+    {
+      "name": "Scoring completeness degradation < 5% (actual: 0.00%)",
+      "status": "PASS",
+      "failClassification": null
+    },
+    {
+      "name": "Bucket change ratio < 10% (actual: 0.00%)",
+      "status": "PASS",
+      "failClassification": null
+    },
+    {
+      "name": "Snapshot impact (signal+reason+factor) < 10% (actual: 0.00%)",
+      "status": "PASS",
+      "failClassification": null
+    },
+    {
+      "name": "Changed cases documented (cases >= 1)",
+      "status": "PASS",
+      "failClassification": null
+    }
+  ],
+  "evidenceSummary": {
+    "p3RowCount": 4500,
+    "p19RowCount": 4500,
+    "alignedRows": 4500,
+    "missingPreRows": 0,
+    "missingPostRows": 0,
+    "completeness": {
+      "degradedCount": 0,
+      "degradedRatio": "0.00%",
+      "p3Distribution": {
+        "COMPLETE": 3099,
+        "PARTIAL": 1401,
+        "EMPTY": 0
+      },
+      "p19Distribution": {
+        "COMPLETE": 3099,
+        "PARTIAL": 1401,
+        "EMPTY": 0
+      }
+    },
+    "bucketImpact": {
+      "changedCount": 0,
+      "changedRatio": "0.00%",
+      "distributionMatch": true
+    },
+    "snapshotImpact": {
+      "signalChangedCount": 0,
+      "reasonChangedCount": 0,
+      "factorChangedCount": 0,
+      "monthlyRevenueExcludedCount": 4500
+    },
+    "pitGuardSummary": {
+      "validationStatus": "PASS",
+      "leakageViolations": 0,
+      "forbiddenFieldViolations": 0,
+      "pitGateStatusDistribution": {
+        "NOT_APPLICABLE_NO_DATA": 4500
+      }
+    },
+    "changedCasesSampled": 10
+  },
+  "importantNotice": [
+    "This decision assesses readiness for P21 Production Migration Approval Review only.",
+    "It does NOT approve production migration.",
+    "Actual production migration requires a separate P21 approval process.",
+    "productionApplyAllowed remains false.",
+    "No production DB writes have occurred."
+  ]
+}

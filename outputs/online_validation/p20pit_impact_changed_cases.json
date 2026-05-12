@@ -1,0 +1,679 @@
+{
+  "phase": "P20-HARDRESET",
+  "part": "D",
+  "generatedAt": "2026-05-12T05:23:58.206Z",
+  "productionApplyAllowed": false,
+  "productionDbWritten": false,
+  "samplingMethod": "deterministic-stable-hash",
+  "classSampleCounts": {
+    "BUCKET_CHANGED": {
+      "available": 0,
+      "sampled": 0
+    },
+    "SCORE_CHANGED": {
+      "available": 0,
+      "sampled": 0
+    },
+    "REASON_CHANGED": {
+      "available": 0,
+      "sampled": 0
+    },
+    "SIGNAL_CHANGED": {
+      "available": 0,
+      "sampled": 0
+    },
+    "FACTOR_CHANGED": {
+      "available": 0,
+      "sampled": 0
+    },
+    "MONTHLY_REVENUE_EXCLUDED": {
+      "available": 4500,
+      "sampled": 5
+    },
+    "NO_CHANGE": {
+      "available": 0,
+      "sampled": 0
+    },
+    "NO_SCORING_CHANGE": {
+      "available": 4500,
+      "sampled": 5
+    }
+  },
+  "totalCases": 10,
+  "classificationSummary": {
+    "MONTHLY_REVENUE_EXCLUDED": 4500
+  },
+  "cases": [
+    {
+      "key": "00830|2025-11-24|5",
+      "symbol": "00830",
+      "originalAsOfDate": "2025-11-24",
+      "horizonDays": 5,
+      "classifications": [
+        "MONTHLY_REVENUE_EXCLUDED"
+      ],
+      "pre": {
+        "researchBucket": "Strong",
+        "alphaScore": 75,
+        "scoringCompletenessStatus": "COMPLETE",
+        "usedSources": [
+          "StockQuote",
+          "InstitutionalChip"
+        ],
+        "missingSources": [
+          "MonthlyRevenue"
+        ],
+        "reasonSummary": "技術偏多",
+        "factorSummary": [
+          "MA 趨勢: 多頭排列 (MA20(43.69) > MA60(41.53))",
+          "RSI(14): 55.94 (中性健康區間)",
+          "MACD: 0.73 (MACD > 0，多方動能)"
+        ],
+        "signalSummary": [
+          "MA 趨勢",
+          "RSI(14)",
+          "MACD",
+          "近 20 日動能",
+          "近 5 日報酬"
+        ]
+      },
+      "post": {
+        "researchBucket": "Strong",
+        "alphaScore": 75,
+        "scoringCompletenessStatus": "COMPLETE",
+        "usedSources": [
+          "StockQuote",
+          "InstitutionalChip"
+        ],
+        "missingSources": [
+          "MonthlyRevenue"
+        ],
+        "reasonSummary": "技術偏多",
+        "factorSummary": [
+          "MA 趨勢: 多頭排列 (MA20(43.69) > MA60(41.53))",
+          "RSI(14): 55.94 (中性健康區間)",
+          "MACD: 0.73 (MACD > 0，多方動能)"
+        ],
+        "signalSummary": [
+          "MA 趨勢",
+          "RSI(14)",
+          "MACD",
+          "近 20 日動能",
+          "近 5 日報酬"
+        ]
+      },
+      "changedFields": [],
+      "monthlyRevenuePitGateStatus": "NOT_APPLICABLE_NO_DATA",
+      "observationNote": "Observability only. No outcome or returnPct used. No investment conclusion.",
+      "_sampledForClass": "MONTHLY_REVENUE_EXCLUDED"
+    },
+    {
+      "key": "6415|2025-10-31|20",
+      "symbol": "6415",
+      "originalAsOfDate": "2025-10-31",
+      "horizonDays": 20,
+      "classifications": [
+        "MONTHLY_REVENUE_EXCLUDED"
+      ],
+      "pre": {
+        "researchBucket": "LowPriority",
+        "alphaScore": 30,
+        "scoringCompletenessStatus": "COMPLETE",
+        "usedSources": [
+          "StockQuote",
+          "InstitutionalChip"
+        ],
+        "missingSources": [
+          "MonthlyRevenue"
+        ],
+        "reasonSummary": "技術偏空 / 法人買超",
+        "factorSummary": [
+          "MA 趨勢: 空頭排列 (MA20(198.88) < MA60(211.23))",
+          "RSI(14): 37.93 (偏離中性)",
+          "MACD: -4.17 (MACD < 0，空方動能)"
+        ],
+        "signalSummary": [
+          "MA 趨勢",
+          "RSI(14)",
+          "MACD",
+          "近 20 日動能",
+          "近 5 日報酬"
+        ]
+      },
+      "post": {
+        "researchBucket": "LowPriority",
+        "alphaScore": 30,
+        "scoringCompletenessStatus": "COMPLETE",
+        "usedSources": [
+          "StockQuote",
+          "InstitutionalChip"
+        ],
+        "missingSources": [
+          "MonthlyRevenue"
+        ],
+        "reasonSummary": "技術偏空 / 法人買超",
+        "factorSummary": [
+          "MA 趨勢: 空頭排列 (MA20(198.88) < MA60(211.23))",
+          "RSI(14): 37.93 (偏離中性)",
+          "MACD: -4.17 (MACD < 0，空方動能)"
+        ],
+        "signalSummary": [
+          "MA 趨勢",
+          "RSI(14)",
+          "MACD",
+          "近 20 日動能",
+          "近 5 日報酬"
+        ]
+      },
+      "changedFields": [],
+      "monthlyRevenuePitGateStatus": "NOT_APPLICABLE_NO_DATA",
+      "observationNote": "Observability only. No outcome or returnPct used. No investment conclusion.",
+      "_sampledForClass": "MONTHLY_REVENUE_EXCLUDED"
+    },
+    {
+      "key": "1605|2025-12-02|5",
+      "symbol": "1605",
+      "originalAsOfDate": "2025-12-02",
+      "horizonDays": 5,
+      "classifications": [
+        "MONTHLY_REVENUE_EXCLUDED"
+      ],
+      "pre": {
+        "researchBucket": "Strong",
+        "alphaScore": 94,
+        "scoringCompletenessStatus": "COMPLETE",
+        "usedSources": [
+          "StockQuote",
+          "InstitutionalChip"
+        ],
+        "missingSources": [
+          "MonthlyRevenue"
+        ],
+        "reasonSummary": "技術偏多 / 動能轉強 / 法人買超",
+        "factorSummary": [
+          "MA 趨勢: 多頭排列 (MA20(30.8) > MA60(30.12))",
+          "RSI(14): 58.12 (中性健康區間)",
+          "MACD: 0.57 (MACD > 0，多方動能)"
+        ],
+        "signalSummary": [
+          "MA 趨勢",
+          "RSI(14)",
+          "MACD",
+          "近 20 日動能",
+          "近 5 日報酬"
+        ]
+      },
+      "post": {
+        "researchBucket": "Strong",
+        "alphaScore": 94,
+        "scoringCompletenessStatus": "COMPLETE",
+        "usedSources": [
+          "StockQuote",
+          "InstitutionalChip"
+        ],
+        "missingSources": [
+          "MonthlyRevenue"
+        ],
+        "reasonSummary": "技術偏多 / 動能轉強 / 法人買超",
+        "factorSummary": [
+          "MA 趨勢: 多頭排列 (MA20(30.8) > MA60(30.12))",
+          "RSI(14): 58.12 (中性健康區間)",
+          "MACD: 0.57 (MACD > 0，多方動能)"
+        ],
+        "signalSummary": [
+          "MA 趨勢",
+          "RSI(14)",
+          "MACD",
+          "近 20 日動能",
+          "近 5 日報酬"
+        ]
+      },
+      "changedFields": [],
+      "monthlyRevenuePitGateStatus": "NOT_APPLICABLE_NO_DATA",
+      "observationNote": "Observability only. No outcome or returnPct used. No investment conclusion.",
+      "_sampledForClass": "MONTHLY_REVENUE_EXCLUDED"
+    },
+    {
+      "key": "1308|2025-11-18|60",
+      "symbol": "1308",
+      "originalAsOfDate": "2025-11-18",
+      "horizonDays": 60,
+      "classifications": [
+        "MONTHLY_REVENUE_EXCLUDED"
+      ],
+      "pre": {
+        "researchBucket": "Neutral",
+        "alphaScore": 68,
+        "scoringCompletenessStatus": "PARTIAL",
+        "usedSources": [
+          "StockQuote",
+          "InstitutionalChip"
+        ],
+        "missingSources": [
+          "MonthlyRevenue"
+        ],
+        "reasonSummary": "技術偏多 / 動能走弱",
+        "factorSummary": [
+          "MA 趨勢: 多頭排列 (MA20(13.57) > MA60(13.04))",
+          "RSI(14): 40.35 (中性健康區間)",
+          "MACD: 0.05 (MACD > 0，多方動能)"
+        ],
+        "signalSummary": [
+          "MA 趨勢",
+          "RSI(14)",
+          "MACD",
+          "近 20 日動能",
+          "近 5 日報酬"
+        ]
+      },
+      "post": {
+        "researchBucket": "Neutral",
+        "alphaScore": 68,
+        "scoringCompletenessStatus": "PARTIAL",
+        "usedSources": [
+          "StockQuote",
+          "InstitutionalChip"
+        ],
+        "missingSources": [
+          "MonthlyRevenue"
+        ],
+        "reasonSummary": "技術偏多 / 動能走弱",
+        "factorSummary": [
+          "MA 趨勢: 多頭排列 (MA20(13.57) > MA60(13.04))",
+          "RSI(14): 40.35 (中性健康區間)",
+          "MACD: 0.05 (MACD > 0，多方動能)"
+        ],
+        "signalSummary": [
+          "MA 趨勢",
+          "RSI(14)",
+          "MACD",
+          "近 20 日動能",
+          "近 5 日報酬"
+        ]
+      },
+      "changedFields": [],
+      "monthlyRevenuePitGateStatus": "NOT_APPLICABLE_NO_DATA",
+      "observationNote": "Observability only. No outcome or returnPct used. No investment conclusion.",
+      "_sampledForClass": "MONTHLY_REVENUE_EXCLUDED"
+    },
+    {
+      "key": "2317|2025-12-16|20",
+      "symbol": "2317",
+      "originalAsOfDate": "2025-12-16",
+      "horizonDays": 20,
+      "classifications": [
+        "MONTHLY_REVENUE_EXCLUDED"
+      ],
+      "pre": {
+        "researchBucket": "Neutral",
+        "alphaScore": 59,
+        "scoringCompletenessStatus": "PARTIAL",
+        "usedSources": [
+          "StockQuote",
+          "InstitutionalChip"
+        ],
+        "missingSources": [
+          "MonthlyRevenue"
+        ],
+        "reasonSummary": "法人買超",
+        "factorSummary": [
+          "MA 趨勢: 空頭排列 (MA20(226.03) < MA60(232.16))",
+          "RSI(14): 46.25 (中性健康區間)",
+          "MACD: -0.86 (MACD < 0，空方動能)"
+        ],
+        "signalSummary": [
+          "MA 趨勢",
+          "RSI(14)",
+          "MACD",
+          "近 20 日動能",
+          "近 5 日報酬"
+        ]
+      },
+      "post": {
+        "researchBucket": "Neutral",
+        "alphaScore": 59,
+        "scoringCompletenessStatus": "PARTIAL",
+        "usedSources": [
+          "StockQuote",
+          "InstitutionalChip"
+        ],
+        "missingSources": [
+          "MonthlyRevenue"
+        ],
+        "reasonSummary": "法人買超",
+        "factorSummary": [
+          "MA 趨勢: 空頭排列 (MA20(226.03) < MA60(232.16))",
+          "RSI(14): 46.25 (中性健康區間)",
+          "MACD: -0.86 (MACD < 0，空方動能)"
+        ],
+        "signalSummary": [
+          "MA 趨勢",
+          "RSI(14)",
+          "MACD",
+          "近 20 日動能",
+          "近 5 日報酬"
+        ]
+      },
+      "changedFields": [],
+      "monthlyRevenuePitGateStatus": "NOT_APPLICABLE_NO_DATA",
+      "observationNote": "Observability only. No outcome or returnPct used. No investment conclusion.",
+      "_sampledForClass": "MONTHLY_REVENUE_EXCLUDED"
+    },
+    {
+      "key": "00830|2025-11-24|5",
+      "symbol": "00830",
+      "originalAsOfDate": "2025-11-24",
+      "horizonDays": 5,
+      "classifications": [
+        "MONTHLY_REVENUE_EXCLUDED"
+      ],
+      "pre": {
+        "researchBucket": "Strong",
+        "alphaScore": 75,
+        "scoringCompletenessStatus": "COMPLETE",
+        "usedSources": [
+          "StockQuote",
+          "InstitutionalChip"
+        ],
+        "missingSources": [
+          "MonthlyRevenue"
+        ],
+        "reasonSummary": "技術偏多",
+        "factorSummary": [
+          "MA 趨勢: 多頭排列 (MA20(43.69) > MA60(41.53))",
+          "RSI(14): 55.94 (中性健康區間)",
+          "MACD: 0.73 (MACD > 0，多方動能)"
+        ],
+        "signalSummary": [
+          "MA 趨勢",
+          "RSI(14)",
+          "MACD",
+          "近 20 日動能",
+          "近 5 日報酬"
+        ]
+      },
+      "post": {
+        "researchBucket": "Strong",
+        "alphaScore": 75,
+        "scoringCompletenessStatus": "COMPLETE",
+        "usedSources": [
+          "StockQuote",
+          "InstitutionalChip"
+        ],
+        "missingSources": [
+          "MonthlyRevenue"
+        ],
+        "reasonSummary": "技術偏多",
+        "factorSummary": [
+          "MA 趨勢: 多頭排列 (MA20(43.69) > MA60(41.53))",
+          "RSI(14): 55.94 (中性健康區間)",
+          "MACD: 0.73 (MACD > 0，多方動能)"
+        ],
+        "signalSummary": [
+          "MA 趨勢",
+          "RSI(14)",
+          "MACD",
+          "近 20 日動能",
+          "近 5 日報酬"
+        ]
+      },
+      "changedFields": [],
+      "monthlyRevenuePitGateStatus": "NOT_APPLICABLE_NO_DATA",
+      "observationNote": "Observability only. No outcome or returnPct used. No investment conclusion.",
+      "_sampledForClass": "NO_SCORING_CHANGE"
+    },
+    {
+      "key": "6415|2025-10-31|20",
+      "symbol": "6415",
+      "originalAsOfDate": "2025-10-31",
+      "horizonDays": 20,
+      "classifications": [
+        "MONTHLY_REVENUE_EXCLUDED"
+      ],
+      "pre": {
+        "researchBucket": "LowPriority",
+        "alphaScore": 30,
+        "scoringCompletenessStatus": "COMPLETE",
+        "usedSources": [
+          "StockQuote",
+          "InstitutionalChip"
+        ],
+        "missingSources": [
+          "MonthlyRevenue"
+        ],
+        "reasonSummary": "技術偏空 / 法人買超",
+        "factorSummary": [
+          "MA 趨勢: 空頭排列 (MA20(198.88) < MA60(211.23))",
+          "RSI(14): 37.93 (偏離中性)",
+          "MACD: -4.17 (MACD < 0，空方動能)"
+        ],
+        "signalSummary": [
+          "MA 趨勢",
+          "RSI(14)",
+          "MACD",
+          "近 20 日動能",
+          "近 5 日報酬"
+        ]
+      },
+      "post": {
+        "researchBucket": "LowPriority",
+        "alphaScore": 30,
+        "scoringCompletenessStatus": "COMPLETE",
+        "usedSources": [
+          "StockQuote",
+          "InstitutionalChip"
+        ],
+        "missingSources": [
+          "MonthlyRevenue"
+        ],
+        "reasonSummary": "技術偏空 / 法人買超",
+        "factorSummary": [
+          "MA 趨勢: 空頭排列 (MA20(198.88) < MA60(211.23))",
+          "RSI(14): 37.93 (偏離中性)",
+          "MACD: -4.17 (MACD < 0，空方動能)"
+        ],
+        "signalSummary": [
+          "MA 趨勢",
+          "RSI(14)",
+          "MACD",
+          "近 20 日動能",
+          "近 5 日報酬"
+        ]
+      },
+      "changedFields": [],
+      "monthlyRevenuePitGateStatus": "NOT_APPLICABLE_NO_DATA",
+      "observationNote": "Observability only. No outcome or returnPct used. No investment conclusion.",
+      "_sampledForClass": "NO_SCORING_CHANGE"
+    },
+    {
+      "key": "1605|2025-12-02|5",
+      "symbol": "1605",
+      "originalAsOfDate": "2025-12-02",
+      "horizonDays": 5,
+      "classifications": [
+        "MONTHLY_REVENUE_EXCLUDED"
+      ],
+      "pre": {
+        "researchBucket": "Strong",
+        "alphaScore": 94,
+        "scoringCompletenessStatus": "COMPLETE",
+        "usedSources": [
+          "StockQuote",
+          "InstitutionalChip"
+        ],
+        "missingSources": [
+          "MonthlyRevenue"
+        ],
+        "reasonSummary": "技術偏多 / 動能轉強 / 法人買超",
+        "factorSummary": [
+          "MA 趨勢: 多頭排列 (MA20(30.8) > MA60(30.12))",
+          "RSI(14): 58.12 (中性健康區間)",
+          "MACD: 0.57 (MACD > 0，多方動能)"
+        ],
+        "signalSummary": [
+          "MA 趨勢",
+          "RSI(14)",
+          "MACD",
+          "近 20 日動能",
+          "近 5 日報酬"
+        ]
+      },
+      "post": {
+        "researchBucket": "Strong",
+        "alphaScore": 94,
+        "scoringCompletenessStatus": "COMPLETE",
+        "usedSources": [
+          "StockQuote",
+          "InstitutionalChip"
+        ],
+        "missingSources": [
+          "MonthlyRevenue"
+        ],
+        "reasonSummary": "技術偏多 / 動能轉強 / 法人買超",
+        "factorSummary": [
+          "MA 趨勢: 多頭排列 (MA20(30.8) > MA60(30.12))",
+          "RSI(14): 58.12 (中性健康區間)",
+          "MACD: 0.57 (MACD > 0，多方動能)"
+        ],
+        "signalSummary": [
+          "MA 趨勢",
+          "RSI(14)",
+          "MACD",
+          "近 20 日動能",
+          "近 5 日報酬"
+        ]
+      },
+      "changedFields": [],
+      "monthlyRevenuePitGateStatus": "NOT_APPLICABLE_NO_DATA",
+      "observationNote": "Observability only. No outcome or returnPct used. No investment conclusion.",
+      "_sampledForClass": "NO_SCORING_CHANGE"
+    },
+    {
+      "key": "1308|2025-11-18|60",
+      "symbol": "1308",
+      "originalAsOfDate": "2025-11-18",
+      "horizonDays": 60,
+      "classifications": [
+        "MONTHLY_REVENUE_EXCLUDED"
+      ],
+      "pre": {
+        "researchBucket": "Neutral",
+        "alphaScore": 68,
+        "scoringCompletenessStatus": "PARTIAL",
+        "usedSources": [
+          "StockQuote",
+          "InstitutionalChip"
+        ],
+        "missingSources": [
+          "MonthlyRevenue"
+        ],
+        "reasonSummary": "技術偏多 / 動能走弱",
+        "factorSummary": [
+          "MA 趨勢: 多頭排列 (MA20(13.57) > MA60(13.04))",
+          "RSI(14): 40.35 (中性健康區間)",
+          "MACD: 0.05 (MACD > 0，多方動能)"
+        ],
+        "signalSummary": [
+          "MA 趨勢",
+          "RSI(14)",
+          "MACD",
+          "近 20 日動能",
+          "近 5 日報酬"
+        ]
+      },
+      "post": {
+        "researchBucket": "Neutral",
+        "alphaScore": 68,
+        "scoringCompletenessStatus": "PARTIAL",
+        "usedSources": [
+          "StockQuote",
+          "InstitutionalChip"
+        ],
+        "missingSources": [
+          "MonthlyRevenue"
+        ],
+        "reasonSummary": "技術偏多 / 動能走弱",
+        "factorSummary": [
+          "MA 趨勢: 多頭排列 (MA20(13.57) > MA60(13.04))",
+          "RSI(14): 40.35 (中性健康區間)",
+          "MACD: 0.05 (MACD > 0，多方動能)"
+        ],
+        "signalSummary": [
+          "MA 趨勢",
+          "RSI(14)",
+          "MACD",
+          "近 20 日動能",
+          "近 5 日報酬"
+        ]
+      },
+      "changedFields": [],
+      "monthlyRevenuePitGateStatus": "NOT_APPLICABLE_NO_DATA",
+      "observationNote": "Observability only. No outcome or returnPct used. No investment conclusion.",
+      "_sampledForClass": "NO_SCORING_CHANGE"
+    },
+    {
+      "key": "2317|2025-12-16|20",
+      "symbol": "2317",
+      "originalAsOfDate": "2025-12-16",
+      "horizonDays": 20,
+      "classifications": [
+        "MONTHLY_REVENUE_EXCLUDED"
+      ],
+      "pre": {
+        "researchBucket": "Neutral",
+        "alphaScore": 59,
+        "scoringCompletenessStatus": "PARTIAL",
+        "usedSources": [
+          "StockQuote",
+          "InstitutionalChip"
+        ],
+        "missingSources": [
+          "MonthlyRevenue"
+        ],
+        "reasonSummary": "法人買超",
+        "factorSummary": [
+          "MA 趨勢: 空頭排列 (MA20(226.03) < MA60(232.16))",
+          "RSI(14): 46.25 (中性健康區間)",
+          "MACD: -0.86 (MACD < 0，空方動能)"
+        ],
+        "signalSummary": [
+          "MA 趨勢",
+          "RSI(14)",
+          "MACD",
+          "近 20 日動能",
+          "近 5 日報酬"
+        ]
+      },
+      "post": {
+        "researchBucket": "Neutral",
+        "alphaScore": 59,
+        "scoringCompletenessStatus": "PARTIAL",
+        "usedSources": [
+          "StockQuote",
+          "InstitutionalChip"
+        ],
+        "missingSources": [
+          "MonthlyRevenue"
+        ],
+        "reasonSummary": "法人買超",
+        "factorSummary": [
+          "MA 趨勢: 空頭排列 (MA20(226.03) < MA60(232.16))",
+          "RSI(14): 46.25 (中性健康區間)",
+          "MACD: -0.86 (MACD < 0，空方動能)"
+        ],
+        "signalSummary": [
+          "MA 趨勢",
+          "RSI(14)",
+          "MACD",
+          "近 20 日動能",
+          "近 5 日報酬"
+        ]
+      },
+      "changedFields": [],
+      "monthlyRevenuePitGateStatus": "NOT_APPLICABLE_NO_DATA",
+      "observationNote": "Observability only. No outcome or returnPct used. No investment conclusion.",
+      "_sampledForClass": "NO_SCORING_CHANGE"
+    }
+  ],
+  "observationNote": "Samples are for observability only. No outcome, returnPct, or investment conclusion is drawn."
+}

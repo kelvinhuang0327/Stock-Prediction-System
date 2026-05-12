@@ -1,0 +1,90 @@
+{
+  "phase": "P20-HARDRESET",
+  "part": "A",
+  "generatedAt": "2026-05-12T05:19:02.232Z",
+  "gatesPassed": 19,
+  "gatesTotal": 19,
+  "gatesFailed": [],
+  "allGates": [
+    {
+      "gate": "p19 corpus exists",
+      "status": "PASS"
+    },
+    {
+      "gate": "p19 summary exists",
+      "status": "PASS"
+    },
+    {
+      "gate": "p19 pit guard validation exists",
+      "status": "PASS"
+    },
+    {
+      "gate": "p19 field inspection exists",
+      "status": "PASS"
+    },
+    {
+      "gate": "p19 final report exists",
+      "status": "PASS"
+    },
+    {
+      "gate": "p3 corpus exists",
+      "status": "PASS"
+    },
+    {
+      "gate": "p3 field inspection exists",
+      "status": "PASS"
+    },
+    {
+      "gate": "p3 final report exists",
+      "status": "PASS"
+    },
+    {
+      "gate": "p19 validationStatus PASS",
+      "status": "PASS"
+    },
+    {
+      "gate": "p19 corpus lines = 4500",
+      "status": "PASS"
+    },
+    {
+      "gate": "p19 leakage violations = 0",
+      "status": "PASS"
+    },
+    {
+      "gate": "p19 forbiddenFieldViolations = 0",
+      "status": "PASS"
+    },
+    {
+      "gate": "p19 productionApplyAllowed = false",
+      "status": "PASS"
+    },
+    {
+      "gate": "p19 final report contains COMPLETE classification",
+      "status": "PASS"
+    },
+    {
+      "gate": "frozen: simulation_snapshot_corpus.jsonl = 60",
+      "status": "PASS"
+    },
+    {
+      "gate": "frozen: p0hardreset_historical_replay_corpus.jsonl = 4500",
+      "status": "PASS"
+    },
+    {
+      "gate": "frozen: p1baseline_historical_replay_corpus.jsonl = 9900",
+      "status": "PASS"
+    },
+    {
+      "gate": "frozen: p3active_scoring_historical_replay_corpus.jsonl = 4500",
+      "status": "PASS"
+    },
+    {
+      "gate": "frozen: p19active_scoring_pit_replay_corpus.jsonl = 4500",
+      "status": "PASS"
+    }
+  ],
+  "validationStatus": "PASS",
+  "productionApplyAllowed": false,
+  "productionDbWritten": false,
+  "nextStep": "P20_PART_B"
+}
