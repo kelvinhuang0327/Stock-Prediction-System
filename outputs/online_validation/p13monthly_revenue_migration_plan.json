@@ -1,0 +1,141 @@
+{
+  "phase": "P13-HARDRESET",
+  "part": "D",
+  "planId": "p13-monthly-revenue-migration-plan-v0",
+  "generatedAt": "2026-05-12T00:00:00.000Z",
+  "productionSafety": {
+    "writesProductionDb": false,
+    "status": "DRAFT_ONLY",
+    "approval": "NOT_APPROVED",
+    "note": "This migration plan is a non-production draft. No production DB writes occur in this phase. Actual migration requires separate explicit approval from a human DBA or authorized operator."
+  },
+  "problemStatement": {
+    "model": "MonthlyRevenue",
+    "missingField": "releaseDate",
+    "currentGate": "YEAR_MONTH_PERIOD_GATE (year <= asOfYear AND month <= asOfMonth)",
+    "targetGate": "RELEASE_DATE_GATE (releaseDate <= asOfDate)",
+    "pitRiskLevel": "HIGH",
+    "taiwanRevenueReleaseConvention": "Taiwan monthly revenue (月營收) is officially released by the 10th calendar day of the following month (TWSE/MOPS regulation). Without a releaseDate field, queries may return data that was not yet publicly disclosed on the asOfDate.",
+    "affectedCodePaths": [
+      "src/lib/analysis/RuleBasedStockAnalyzer.ts (revenueAsOfWhere)",
+      "src/lib/fundamentals/FundamentalResearchService.ts (no asOf gate)",
+      "src/lib/fundamentals/StockFundamentalSnapshot.ts (MonthlyRevenueLike interface)"
+    ]
+  },
+  "proposedSchemaChange": {
+    "model": "MonthlyRevenue",
+    "addFields": [
+      {
+        "name": "releaseDate",
+        "type": "DateTime?",
+        "nullable": true,
+        "description": "Authoritative release date from TWSE/MOPS. If null, use INFERRED_NEXT_MONTH_10TH fallback.",
+        "pitGateField": true,
+        "required": true
+      },
+      {
+        "name": "releaseDateSource",
+        "type": "String?",
+        "nullable": true,
+        "description": "Source of releaseDate: AUTHORITATIVE | INFERRED_NEXT_MONTH_10TH",
+        "required": false
+      },
+      {
+        "name": "releaseDateConfidence",
+        "type": "String?",
+        "nullable": true,
+        "description": "Confidence level: HIGH | MEDIUM | LOW_TO_MEDIUM",
+        "required": false
+      }
+    ],
+    "noFieldsRemoved": true,
+    "noConstraintsChanged": true,
+    "uniqueConstraintPreserved": "@@unique([stockId, year, month])",
+    "prismaMigrationDraft": "-- CreateTable migration adds three nullable columns to MonthlyRevenue.\n-- Safe to apply without data loss. Existing rows will have releaseDate=NULL until backfill.\nALTER TABLE \"MonthlyRevenue\" ADD COLUMN IF NOT EXISTS \"releaseDate\" TIMESTAMP;\nALTER TABLE \"MonthlyRevenue\" ADD COLUMN IF NOT EXISTS \"releaseDateSource\" TEXT;\nALTER TABLE \"MonthlyRevenue\" ADD COLUMN IF NOT EXISTS \"releaseDateConfidence\" TEXT;"
+  },
+  "backfillRule": {
+    "description": "For all existing MonthlyRevenue records where releaseDate IS NULL: set releaseDate = 10th day of following month.",
+    "rule": "releaseDate = IF month=12 THEN DATE(year+1, 1, 10) ELSE DATE(year, month+1, 10)",
+    "releaseDateSource": "INFERRED_NEXT_MONTH_10TH",
+    "releaseDateConfidence": "LOW_TO_MEDIUM",
+    "forbiddenInputsForBackfill": [
+      "stock price",
+      "returnPct",
+      "realizedReturnClass",
+      "outcomeDate",
+      "horizonDays",
+      "baselineResult"
+    ],
+    "backfillSqlDraft": "-- NON-PRODUCTION DRAFT. Do NOT run in production without explicit approval.\n-- Backfill inferred releaseDates for existing MonthlyRevenue records.\nUPDATE \"MonthlyRevenue\"\nSET\n  \"releaseDate\" = (\n    CASE\n      WHEN month = 12 THEN MAKE_DATE(year + 1, 1, 10)::timestamp\n      ELSE MAKE_DATE(year, month + 1, 10)::timestamp\n    END\n  ),\n  \"releaseDateSource\" = 'INFERRED_NEXT_MONTH_10TH',\n  \"releaseDateConfidence\" = 'LOW_TO_MEDIUM'\nWHERE \"releaseDate\" IS NULL;",
+    "postBackfillValidation": "SELECT COUNT(*) FROM \"MonthlyRevenue\" WHERE \"releaseDate\" IS NULL; -- expect 0",
+    "authoritative_update_process": "After authoritative releaseDates are obtained from TWSE/MOPS API, update matching records and set releaseDateSource=AUTHORITATIVE, releaseDateConfidence=HIGH."
+  },
+  "validationRequirements": [
+    {
+      "id": "MR-VAL-001",
+      "requirement": "releaseDate <= asOfDate gate replaces year/month period gate in all query paths",
+      "blocking": true
+    },
+    {
+      "id": "MR-VAL-002",
+      "requirement": "Inferred releaseDates are labeled releaseDateSource=INFERRED_NEXT_MONTH_10TH",
+      "blocking": true
+    },
+    {
+      "id": "MR-VAL-003",
+      "requirement": "No realized-return based tuning of releaseDate (no returnPct, realizedReturnClass inputs)",
+      "blocking": true
+    },
+    {
+      "id": "MR-VAL-004",
+      "requirement": "No outcome leakage (no outcomePrice, futurePrice, horizonReturnPct in releaseDate computation)",
+      "blocking": true
+    },
+    {
+      "id": "MR-VAL-005",
+      "requirement": "MonthlyRevenueLike interface updated to include optional releaseDate field",
+      "blocking": false
+    },
+    {
+      "id": "MR-VAL-006",
+      "requirement": "FundamentalResearchService.buildFundamentalResearchContextForSymbol receives asOf parameter and gates by releaseDate",
+      "blocking": false
+    }
+  ],
+  "rollbackPlan": {
+    "description": "If migration causes issues, rollback by nulling or removing the added columns.",
+    "rollbackSqlDraft": "-- NON-PRODUCTION DRAFT. Rollback strategy.\n-- Option A: Set all inferred releaseDates back to NULL (safe, no data loss)\nUPDATE \"MonthlyRevenue\"\nSET \"releaseDate\" = NULL, \"releaseDateSource\" = NULL, \"releaseDateConfidence\" = NULL\nWHERE \"releaseDateSource\" = 'INFERRED_NEXT_MONTH_10TH';\n\n-- Option B: Drop columns entirely (irreversible — only if authoritative data not yet stored)\n-- ALTER TABLE \"MonthlyRevenue\" DROP COLUMN IF EXISTS \"releaseDate\";\n-- ALTER TABLE \"MonthlyRevenue\" DROP COLUMN IF EXISTS \"releaseDateSource\";\n-- ALTER TABLE \"MonthlyRevenue\" DROP COLUMN IF EXISTS \"releaseDateConfidence\";",
+    "prismaMigrationRollback": "npx prisma migrate reset (non-prod only) or manual SQL rollback in prod",
+    "artifactOnlyProof": "All artifacts in outputs/online_validation/p13monthly_revenue_* are read-only. No DB was modified in P13 phase."
+  },
+  "codeChangesRequired": [
+    {
+      "file": "prisma/schema.prisma",
+      "change": "Add releaseDate DateTime?, releaseDateSource String?, releaseDateConfidence String? to MonthlyRevenue model",
+      "phase": "P14 (requires approval)"
+    },
+    {
+      "file": "src/lib/fundamentals/StockFundamentalSnapshot.ts",
+      "change": "Add releaseDate?: string | null to MonthlyRevenueLike interface",
+      "phase": "P14 (requires approval)"
+    },
+    {
+      "file": "src/lib/analysis/RuleBasedStockAnalyzer.ts",
+      "change": "Replace revenueAsOfWhere year/month logic with releaseDate: { lte: asOfDate } gate",
+      "phase": "P14 (requires approval)"
+    },
+    {
+      "file": "src/lib/fundamentals/FundamentalResearchService.ts",
+      "change": "Add asOf parameter to buildFundamentalResearchContextForSymbol; gate monthlyRevenue.findMany by releaseDate: { lte: asOf }",
+      "phase": "P14 (requires approval)"
+    }
+  ],
+  "nonGoals": [
+    "This migration plan does NOT write production DB.",
+    "This migration plan does NOT modify scoring formulas, alphaScore, or recommendationBucket.",
+    "This migration plan does NOT modify P0/P1/P3/P4 corpus or simulation_snapshot_corpus.",
+    "This migration plan does NOT produce ROI figures, win rates, alpha calculations, profit estimates, or performance guarantees.",
+    "This migration plan does NOT tune releaseDate based on realized returns or outcome data.",
+    "This migration plan does NOT modify ManualReview* modules."
+  ]
+}

@@ -1,0 +1,146 @@
+{
+  "phase": "P13-HARDRESET",
+  "part": "C",
+  "generatedAt": "2026-05-12T03:22:22.445Z",
+  "dataAuditMode": "SCHEMA_ONLY",
+  "monthlyRevenueSchema": {
+    "modelName": "MonthlyRevenue",
+    "fields": [
+      "id        Int      @id @default(autoincrement())",
+      "stockId   String",
+      "year      Int",
+      "month     Int",
+      "revenue   Float",
+      "yoyGrowth Float? // YoY %",
+      "momGrowth Float? // MoM %",
+      "createdAt DateTime @default(now())"
+    ],
+    "fieldNames": [
+      "id",
+      "stockId",
+      "year",
+      "month",
+      "revenue",
+      "yoyGrowth",
+      "momGrowth",
+      "createdAt"
+    ],
+    "hasId": true,
+    "hasStockId": true,
+    "hasYear": true,
+    "hasMonth": true,
+    "hasRevenue": true,
+    "hasYoyGrowth": true,
+    "hasMomGrowth": true,
+    "hasCreatedAt": true,
+    "hasUpdatedAt": false,
+    "hasIngestedAt": false,
+    "hasReleaseDate": false,
+    "hasAnnouncementDate": false,
+    "hasAvailabilityDate": false,
+    "hasReleaseDateSource": false,
+    "hasReleaseDateConfidence": false,
+    "uniqueConstraint": "@@unique([stockId, year, month])",
+    "schemaSnippet": "model MonthlyRevenue {\n  id        Int      @id @default(autoincrement())\n  stockId   String\n  year      Int\n  month     Int\n  revenue   Float\n  yoyGrowth Float? // YoY %\n  momGrowth Float? // MoM %\n  createdAt DateTime @default(now())\n\n  stock Stock @relation(fields: [stockId], references: [id])\n\n  @@unique([stockId, year, month])\n}"
+  },
+  "codePathAudits": [
+    {
+      "file": "src/lib/analysis/RuleBasedStockAnalyzer.ts",
+      "label": "RuleBasedStockAnalyzer",
+      "status": "FOUND",
+      "usesYearMonthGate": true,
+      "usesReleaseDateGate": false,
+      "gateBlock": "revenueAsOfWhere: object = { stockId: symbol };\n    if (asOfDb) {\n        const asOfYear = parseInt(asOfDb.slice(0, 4), 10);\n        const asOfMonth = parseInt(asOfDb.slice(4, 6), 10);\n        revenueAsOfWhere = {\n            stockId: symbol,\n            OR: [\n                { year: { lt: asOfYear } },\n                { year: asOfYear, month: { lte: asOfMonth } },\n            ],\n        };\n    }\n",
+      "pitRisk": "HIGH — gates by reporting period, not releaseDate"
+    },
+    {
+      "file": "src/lib/fundamentals/FundamentalResearchService.ts",
+      "label": "FundamentalResearchService",
+      "status": "FOUND",
+      "hasAsOfGate": false,
+      "hasReleaseDateGate": false,
+      "queryBlock": "monthlyRevenue.findMany({\n      where: { stockId: input.symbol },\n      orderBy: [{ year: 'desc' }, { month: 'desc' }],\n      take: 18,\n    })",
+      "pitRisk": "HIGH — buildFundamentalResearchContextForSymbol uses no asOf gate at all"
+    },
+    {
+      "file": "src/lib/fundamentals/StockFundamentalSnapshot.ts",
+      "label": "MonthlyRevenueLike interface",
+      "status": "FOUND",
+      "hasReleaseDateField": false,
+      "interfaceSnippet": "interface MonthlyRevenueLike {\n  year: number;\n  month: number;\n  revenue: number;\n  yoyGrowth: number | null;\n  momGrowth: number | null;\n}",
+      "pitRisk": "MEDIUM — interface does not include releaseDate, so even if schema had it, it would not flow through"
+    },
+    {
+      "file": "src/lib/backtest/BacktestRunner.ts",
+      "label": "BacktestRunner",
+      "status": "FOUND",
+      "hasRevenueQuery": false,
+      "hasAsOfGate": false,
+      "pitRisk": "LOW — no direct revenue query or has gate"
+    }
+  ],
+  "currentPitRisk": {
+    "overallRisk": "HIGH",
+    "primaryReason": "MonthlyRevenue schema has no releaseDate field. All query paths use year/month period gate, not announcement date.",
+    "affectedCodePaths": [
+      {
+        "path": "RuleBasedStockAnalyzer.analyzeStock()",
+        "risk": "HIGH",
+        "detail": "Uses OR [year < asOfYear] OR [year = asOfYear AND month <= asOfMonth]. This treats reporting period as availability, not actual release."
+      },
+      {
+        "path": "FundamentalResearchService.buildFundamentalResearchContextForSymbol()",
+        "risk": "HIGH",
+        "detail": "No asOf gate at all. Returns all revenue records regardless of date."
+      },
+      {
+        "path": "MonthlyRevenueLike interface",
+        "risk": "MEDIUM",
+        "detail": "Interface lacks releaseDate field. Even after schema migration, requires interface update to propagate."
+      }
+    ]
+  },
+  "requiredRepairFields": [
+    {
+      "field": "releaseDate",
+      "type": "DateTime?",
+      "required": true,
+      "backfillRule": "releaseDate = 10th day of following month for existing records",
+      "notes": "Primary PIT gate field. Must be added to schema, interface, and all query paths."
+    },
+    {
+      "field": "releaseDateSource",
+      "type": "String?",
+      "required": false,
+      "backfillRule": "releaseDateSource = INFERRED_NEXT_MONTH_10TH for backfilled records",
+      "notes": "Tracks whether releaseDate is authoritative or inferred."
+    },
+    {
+      "field": "releaseDateConfidence",
+      "type": "String?",
+      "required": false,
+      "backfillRule": "releaseDateConfidence = LOW_TO_MEDIUM for backfilled records",
+      "notes": "Documents confidence level of inferred releaseDates."
+    }
+  ],
+  "recommendedMigrationShape": {
+    "schemaAddition": "model MonthlyRevenue {\n  id                    Int       @id @default(autoincrement())\n  stockId               String\n  year                  Int\n  month                 Int\n  revenue               Float\n  yoyGrowth             Float?\n  momGrowth             Float?\n  releaseDate           DateTime? // Authoritative release date (from TWSE/MOPS)\n  releaseDateSource     String?   // AUTHORITATIVE | INFERRED_NEXT_MONTH_10TH\n  releaseDateConfidence String?   // HIGH | MEDIUM | LOW_TO_MEDIUM\n  createdAt             DateTime  @default(now())\n\n  stock Stock @relation(fields: [stockId], references: [id])\n\n  @@unique([stockId, year, month])\n}",
+    "queryGateChange": "// BEFORE (HIGH PIT risk):\nprisma.monthlyRevenue.findMany({\n  where: {\n    stockId: symbol,\n    OR: [\n      { year: { lt: asOfYear } },\n      { year: asOfYear, month: { lte: asOfMonth } },\n    ],\n  },\n})\n\n// AFTER (PIT safe):\nprisma.monthlyRevenue.findMany({\n  where: {\n    stockId: symbol,\n    releaseDate: { lte: asOfDate },\n  },\n})",
+    "backfillSql": "-- Non-production draft. Do NOT run in production without explicit approval.\n-- Backfill inferred releaseDates for existing MonthlyRevenue records.\nUPDATE \"MonthlyRevenue\"\nSET\n  \"releaseDate\" = (\n    CASE\n      WHEN month = 12 THEN MAKE_DATE(year + 1, 1, 10)\n      ELSE MAKE_DATE(year, month + 1, 10)\n    END\n  )::timestamp,\n  \"releaseDateSource\" = 'INFERRED_NEXT_MONTH_10TH',\n  \"releaseDateConfidence\" = 'LOW_TO_MEDIUM'\nWHERE \"releaseDate\" IS NULL;"
+  },
+  "sampleRecordShape": {
+    "note": "DB read not attempted. Schema-only audit is sufficient for contract purposes.",
+    "expectedShape": {
+      "id": "number",
+      "stockId": "string",
+      "year": "number",
+      "month": "number",
+      "revenue": "number",
+      "yoyGrowth": "number | null",
+      "momGrowth": "number | null",
+      "createdAt": "DateTime",
+      "releaseDate": "DOES NOT EXIST — field missing from schema"
+    }
+  },
+  "dbReadError": null
+}
