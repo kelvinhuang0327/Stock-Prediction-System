@@ -1,0 +1,281 @@
+{
+  "phase": "P25-HARDRESET",
+  "part": "I",
+  "description": "Artifact Validation — JSON parse, required fields, status, disclaimer, frozen corpus counts",
+  "generatedAt": "2026-05-12T10:18:17.625Z",
+  "validationStatus": "PASS",
+  "totalChecks": 41,
+  "passCount": 41,
+  "failCount": 0,
+  "results": [
+    {
+      "id": "JSON-PARSE-p25post_migration_observability_preflight.json",
+      "desc": "p25post_migration_observability_preflight.json parses as valid JSON",
+      "status": "PASS",
+      "detail": "size=6512 bytes"
+    },
+    {
+      "id": "FIELD-p25post_migration_observability_preflight.json-classification",
+      "desc": "p25post_migration_observability_preflight.json has field 'classification'",
+      "status": "PASS",
+      "detail": "value=\"P25_PREFLIGHT_PASS\""
+    },
+    {
+      "id": "FIELD-p25post_migration_observability_preflight.json-gateTotalCount",
+      "desc": "p25post_migration_observability_preflight.json has field 'gateTotalCount'",
+      "status": "PASS",
+      "detail": "value=26"
+    },
+    {
+      "id": "FIELD-p25post_migration_observability_preflight.json-gatePassCount",
+      "desc": "p25post_migration_observability_preflight.json has field 'gatePassCount'",
+      "status": "PASS",
+      "detail": "value=26"
+    },
+    {
+      "id": "FIELD-p25post_migration_observability_preflight.json-gateFailCount",
+      "desc": "p25post_migration_observability_preflight.json has field 'gateFailCount'",
+      "status": "PASS",
+      "detail": "value=0"
+    },
+    {
+      "id": "STATUS-p25post_migration_observability_preflight.json",
+      "desc": "p25post_migration_observability_preflight.json classification = P25_PREFLIGHT_PASS",
+      "status": "PASS",
+      "detail": "actual=P25_PREFLIGHT_PASS"
+    },
+    {
+      "id": "DISCLAIMER-p25post_migration_observability_preflight.json",
+      "desc": "p25post_migration_observability_preflight.json contains disclaimer",
+      "status": "PASS",
+      "detail": "found"
+    },
+    {
+      "id": "JSON-PARSE-p25monthly_revenue_distribution_audit.json",
+      "desc": "p25monthly_revenue_distribution_audit.json parses as valid JSON",
+      "status": "PASS",
+      "detail": "size=2396 bytes"
+    },
+    {
+      "id": "FIELD-p25monthly_revenue_distribution_audit.json-validationStatus",
+      "desc": "p25monthly_revenue_distribution_audit.json has field 'validationStatus'",
+      "status": "PASS",
+      "detail": "value=\"PASS\""
+    },
+    {
+      "id": "FIELD-p25monthly_revenue_distribution_audit.json-totalRows",
+      "desc": "p25monthly_revenue_distribution_audit.json has field 'totalRows'",
+      "status": "PASS",
+      "detail": "value=2143"
+    },
+    {
+      "id": "FIELD-p25monthly_revenue_distribution_audit.json-rowsWithReleaseDate",
+      "desc": "p25monthly_revenue_distribution_audit.json has field 'rowsWithReleaseDate'",
+      "status": "PASS",
+      "detail": "value=2143"
+    },
+    {
+      "id": "FIELD-p25monthly_revenue_distribution_audit.json-invalidReleaseDateCount",
+      "desc": "p25monthly_revenue_distribution_audit.json has field 'invalidReleaseDateCount'",
+      "status": "PASS",
+      "detail": "value=0"
+    },
+    {
+      "id": "STATUS-p25monthly_revenue_distribution_audit.json",
+      "desc": "p25monthly_revenue_distribution_audit.json validationStatus = PASS",
+      "status": "PASS",
+      "detail": "actual=PASS"
+    },
+    {
+      "id": "DISCLAIMER-p25monthly_revenue_distribution_audit.json",
+      "desc": "p25monthly_revenue_distribution_audit.json contains disclaimer",
+      "status": "PASS",
+      "detail": "found"
+    },
+    {
+      "id": "JSON-PARSE-p25monthly_revenue_query_gate_smoke.json",
+      "desc": "p25monthly_revenue_query_gate_smoke.json parses as valid JSON",
+      "status": "PASS",
+      "detail": "size=5517 bytes"
+    },
+    {
+      "id": "FIELD-p25monthly_revenue_query_gate_smoke.json-validationStatus",
+      "desc": "p25monthly_revenue_query_gate_smoke.json has field 'validationStatus'",
+      "status": "PASS",
+      "detail": "value=\"PASS\""
+    },
+    {
+      "id": "FIELD-p25monthly_revenue_query_gate_smoke.json-totalCases",
+      "desc": "p25monthly_revenue_query_gate_smoke.json has field 'totalCases'",
+      "status": "PASS",
+      "detail": "value=13"
+    },
+    {
+      "id": "FIELD-p25monthly_revenue_query_gate_smoke.json-passCount",
+      "desc": "p25monthly_revenue_query_gate_smoke.json has field 'passCount'",
+      "status": "PASS",
+      "detail": "value=13"
+    },
+    {
+      "id": "FIELD-p25monthly_revenue_query_gate_smoke.json-failCount",
+      "desc": "p25monthly_revenue_query_gate_smoke.json has field 'failCount'",
+      "status": "PASS",
+      "detail": "value=0"
+    },
+    {
+      "id": "STATUS-p25monthly_revenue_query_gate_smoke.json",
+      "desc": "p25monthly_revenue_query_gate_smoke.json validationStatus = PASS",
+      "status": "PASS",
+      "detail": "actual=PASS"
+    },
+    {
+      "id": "DISCLAIMER-p25monthly_revenue_query_gate_smoke.json",
+      "desc": "p25monthly_revenue_query_gate_smoke.json contains disclaimer",
+      "status": "PASS",
+      "detail": "found"
+    },
+    {
+      "id": "JSON-PARSE-p25active_scoring_smoke_after_migration.json",
+      "desc": "p25active_scoring_smoke_after_migration.json parses as valid JSON",
+      "status": "PASS",
+      "detail": "size=17061 bytes"
+    },
+    {
+      "id": "FIELD-p25active_scoring_smoke_after_migration.json-smokeStatus",
+      "desc": "p25active_scoring_smoke_after_migration.json has field 'smokeStatus'",
+      "status": "PASS",
+      "detail": "value=\"PASS\""
+    },
+    {
+      "id": "FIELD-p25active_scoring_smoke_after_migration.json-totalEntries",
+      "desc": "p25active_scoring_smoke_after_migration.json has field 'totalEntries'",
+      "status": "PASS",
+      "detail": "value=25"
+    },
+    {
+      "id": "FIELD-p25active_scoring_smoke_after_migration.json-passCount",
+      "desc": "p25active_scoring_smoke_after_migration.json has field 'passCount'",
+      "status": "PASS",
+      "detail": "value=25"
+    },
+    {
+      "id": "FIELD-p25active_scoring_smoke_after_migration.json-failCount",
+      "desc": "p25active_scoring_smoke_after_migration.json has field 'failCount'",
+      "status": "PASS",
+      "detail": "value=0"
+    },
+    {
+      "id": "FIELD-p25active_scoring_smoke_after_migration.json-partialCount",
+      "desc": "p25active_scoring_smoke_after_migration.json has field 'partialCount'",
+      "status": "PASS",
+      "detail": "value=0"
+    },
+    {
+      "id": "STATUS-p25active_scoring_smoke_after_migration.json",
+      "desc": "p25active_scoring_smoke_after_migration.json smokeStatus = PASS",
+      "status": "PASS",
+      "detail": "actual=PASS"
+    },
+    {
+      "id": "DISCLAIMER-p25active_scoring_smoke_after_migration.json",
+      "desc": "p25active_scoring_smoke_after_migration.json contains disclaimer",
+      "status": "PASS",
+      "detail": "found"
+    },
+    {
+      "id": "JSON-PARSE-p25post_migration_contract_validation.json",
+      "desc": "p25post_migration_contract_validation.json parses as valid JSON",
+      "status": "PASS",
+      "detail": "size=5772 bytes"
+    },
+    {
+      "id": "FIELD-p25post_migration_contract_validation.json-validationStatus",
+      "desc": "p25post_migration_contract_validation.json has field 'validationStatus'",
+      "status": "PASS",
+      "detail": "value=\"PASS\""
+    },
+    {
+      "id": "FIELD-p25post_migration_contract_validation.json-passCount",
+      "desc": "p25post_migration_contract_validation.json has field 'passCount'",
+      "status": "PASS",
+      "detail": "value=31"
+    },
+    {
+      "id": "FIELD-p25post_migration_contract_validation.json-failCount",
+      "desc": "p25post_migration_contract_validation.json has field 'failCount'",
+      "status": "PASS",
+      "detail": "value=0"
+    },
+    {
+      "id": "FIELD-p25post_migration_contract_validation.json-warnCount",
+      "desc": "p25post_migration_contract_validation.json has field 'warnCount'",
+      "status": "PASS",
+      "detail": "value=0"
+    },
+    {
+      "id": "STATUS-p25post_migration_contract_validation.json",
+      "desc": "p25post_migration_contract_validation.json validationStatus = PASS",
+      "status": "PASS",
+      "detail": "actual=PASS"
+    },
+    {
+      "id": "DISCLAIMER-p25post_migration_contract_validation.json",
+      "desc": "p25post_migration_contract_validation.json contains disclaimer",
+      "status": "PASS",
+      "detail": "found"
+    },
+    {
+      "id": "CORPUS-simulation_snapshot_corpus.jsonl",
+      "desc": "simulation_snapshot_corpus.jsonl = 60 lines",
+      "status": "PASS",
+      "detail": "actual=60"
+    },
+    {
+      "id": "CORPUS-p0hardreset_historical_replay_corpus.jsonl",
+      "desc": "p0hardreset_historical_replay_corpus.jsonl = 4500 lines",
+      "status": "PASS",
+      "detail": "actual=4500"
+    },
+    {
+      "id": "CORPUS-p1baseline_historical_replay_corpus.jsonl",
+      "desc": "p1baseline_historical_replay_corpus.jsonl = 9900 lines",
+      "status": "PASS",
+      "detail": "actual=9900"
+    },
+    {
+      "id": "CORPUS-p3active_scoring_historical_replay_corpus.jsonl",
+      "desc": "p3active_scoring_historical_replay_corpus.jsonl = 4500 lines",
+      "status": "PASS",
+      "detail": "actual=4500"
+    },
+    {
+      "id": "CORPUS-p19active_scoring_pit_replay_corpus.jsonl",
+      "desc": "p19active_scoring_pit_replay_corpus.jsonl = 4500 lines",
+      "status": "PASS",
+      "detail": "actual=4500"
+    }
+  ],
+  "frozenCorpora": [
+    {
+      "file": "simulation_snapshot_corpus.jsonl",
+      "expectedLines": 60
+    },
+    {
+      "file": "p0hardreset_historical_replay_corpus.jsonl",
+      "expectedLines": 4500
+    },
+    {
+      "file": "p1baseline_historical_replay_corpus.jsonl",
+      "expectedLines": 9900
+    },
+    {
+      "file": "p3active_scoring_historical_replay_corpus.jsonl",
+      "expectedLines": 4500
+    },
+    {
+      "file": "p19active_scoring_pit_replay_corpus.jsonl",
+      "expectedLines": 4500
+    }
+  ],
+  "disclaimer": "Does not constitute investment advice. Does not compute ROI, profit, alpha, win-rate, edge, or outperformance."
+}

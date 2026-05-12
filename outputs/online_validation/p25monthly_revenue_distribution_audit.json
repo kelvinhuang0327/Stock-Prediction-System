@@ -1,0 +1,91 @@
+{
+  "phase": "P25-HARDRESET",
+  "part": "C",
+  "generatedAt": "2026-05-12T10:10:40.344Z",
+  "disclaimer": "Does not constitute investment advice. Does not compute ROI, profit, alpha, win-rate, edge, or outperformance.",
+  "validationStatus": "PASS",
+  "totalRows": 2143,
+  "rowsWithReleaseDate": 2143,
+  "rowsWithoutReleaseDate": 0,
+  "invalidReleaseDateCount": 0,
+  "duplicateStockIdYearMonthCount": 0,
+  "releaseDateSourceDistribution": {
+    "INFERRED_NEXT_MONTH_10TH": 2143
+  },
+  "releaseDateConfidenceDistribution": {
+    "LOW_TO_MEDIUM": 2143
+  },
+  "minReleaseDate": "2026-03-10",
+  "maxReleaseDate": "2026-04-10",
+  "sampleInferredRows": [
+    {
+      "stockId": "1101",
+      "year": 2026,
+      "month": 2,
+      "releaseDate": "2026-03-10",
+      "releaseDateSource": "INFERRED_NEXT_MONTH_10TH",
+      "releaseDateConfidence": "LOW_TO_MEDIUM"
+    },
+    {
+      "stockId": "1101",
+      "year": 2026,
+      "month": 3,
+      "releaseDate": "2026-04-10",
+      "releaseDateSource": "INFERRED_NEXT_MONTH_10TH",
+      "releaseDateConfidence": "LOW_TO_MEDIUM"
+    },
+    {
+      "stockId": "1102",
+      "year": 2026,
+      "month": 2,
+      "releaseDate": "2026-03-10",
+      "releaseDateSource": "INFERRED_NEXT_MONTH_10TH",
+      "releaseDateConfidence": "LOW_TO_MEDIUM"
+    },
+    {
+      "stockId": "1102",
+      "year": 2026,
+      "month": 3,
+      "releaseDate": "2026-04-10",
+      "releaseDateSource": "INFERRED_NEXT_MONTH_10TH",
+      "releaseDateConfidence": "LOW_TO_MEDIUM"
+    },
+    {
+      "stockId": "1103",
+      "year": 2026,
+      "month": 2,
+      "releaseDate": "2026-03-10",
+      "releaseDateSource": "INFERRED_NEXT_MONTH_10TH",
+      "releaseDateConfidence": "LOW_TO_MEDIUM"
+    }
+  ],
+  "sampleDecemberRows": [],
+  "sampleMarchRows": [
+    {
+      "stockId": "1101",
+      "year": 2026,
+      "month": 3,
+      "releaseDate": "2026-04-10",
+      "releaseDateSource": "INFERRED_NEXT_MONTH_10TH"
+    },
+    {
+      "stockId": "1102",
+      "year": 2026,
+      "month": 3,
+      "releaseDate": "2026-04-10",
+      "releaseDateSource": "INFERRED_NEXT_MONTH_10TH"
+    },
+    {
+      "stockId": "1103",
+      "year": 2026,
+      "month": 3,
+      "releaseDate": "2026-04-10",
+      "releaseDateSource": "INFERRED_NEXT_MONTH_10TH"
+    }
+  ],
+  "errors": [],
+  "warnings": [],
+  "productionDbWritten": false,
+  "corpusModified": false,
+  "scoringFormulaModified": false
+}

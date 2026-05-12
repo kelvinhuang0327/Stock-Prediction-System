@@ -1,0 +1,618 @@
+{
+  "phase": "P25-HARDRESET",
+  "part": "E",
+  "generatedAt": "2026-05-12T10:11:01.446Z",
+  "disclaimer": "Does not constitute investment advice. Does not compute ROI, profit, alpha, win-rate, edge, or outperformance.",
+  "smokeStatus": "PASS",
+  "totalEntries": 25,
+  "passCount": 25,
+  "failCount": 0,
+  "partialCount": 0,
+  "serviceCallable": true,
+  "sampleSymbols": [
+    "1101",
+    "1102",
+    "1103",
+    "1104",
+    "1108"
+  ],
+  "sampleAsOfDates": [
+    "2026-03-09",
+    "2026-03-10",
+    "2026-03-15",
+    "2026-04-09",
+    "2026-05-12"
+  ],
+  "monthlyRevenuePitGateAnalysis": {
+    "asOf20260309_excludeCount": 5,
+    "asOf20260309_total": 5,
+    "asOf20260310_includeCount": 0,
+    "asOf20260310_total": 5
+  },
+  "entries": [
+    {
+      "symbol": "1101",
+      "asOfDate": "2026-03-09",
+      "smokeStatus": "PASS",
+      "scoringCompletenessStatus": "PARTIAL",
+      "researchBucket": "中性",
+      "alphaScorePresent": true,
+      "scoreSnapshotPresent": true,
+      "reasonSnapshotPresent": true,
+      "signalSnapshotPresent": true,
+      "factorSnapshotPresent": true,
+      "forbiddenFieldsPresent": [],
+      "serviceCallable": true,
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ],
+      "revenueYoY": null,
+      "dataCoverage": "limited",
+      "dataPoints": 500,
+      "overallScore": 59
+    },
+    {
+      "symbol": "1101",
+      "asOfDate": "2026-03-10",
+      "smokeStatus": "PASS",
+      "scoringCompletenessStatus": "PARTIAL",
+      "researchBucket": "中性",
+      "alphaScorePresent": true,
+      "scoreSnapshotPresent": true,
+      "reasonSnapshotPresent": true,
+      "signalSnapshotPresent": true,
+      "factorSnapshotPresent": true,
+      "forbiddenFieldsPresent": [],
+      "serviceCallable": true,
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue（不足 13 個月，無法計算 YoY）"
+      ],
+      "revenueYoY": null,
+      "dataCoverage": "limited",
+      "dataPoints": 500,
+      "overallScore": 59
+    },
+    {
+      "symbol": "1101",
+      "asOfDate": "2026-03-15",
+      "smokeStatus": "PASS",
+      "scoringCompletenessStatus": "PARTIAL",
+      "researchBucket": "中性",
+      "alphaScorePresent": true,
+      "scoreSnapshotPresent": true,
+      "reasonSnapshotPresent": true,
+      "signalSnapshotPresent": true,
+      "factorSnapshotPresent": true,
+      "forbiddenFieldsPresent": [],
+      "serviceCallable": true,
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue（不足 13 個月，無法計算 YoY）"
+      ],
+      "revenueYoY": null,
+      "dataCoverage": "limited",
+      "dataPoints": 500,
+      "overallScore": 59
+    },
+    {
+      "symbol": "1101",
+      "asOfDate": "2026-04-09",
+      "smokeStatus": "PASS",
+      "scoringCompletenessStatus": "PARTIAL",
+      "researchBucket": "中性",
+      "alphaScorePresent": true,
+      "scoreSnapshotPresent": true,
+      "reasonSnapshotPresent": true,
+      "signalSnapshotPresent": true,
+      "factorSnapshotPresent": true,
+      "forbiddenFieldsPresent": [],
+      "serviceCallable": true,
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue（不足 13 個月，無法計算 YoY）"
+      ],
+      "revenueYoY": null,
+      "dataCoverage": "limited",
+      "dataPoints": 500,
+      "overallScore": 59
+    },
+    {
+      "symbol": "1101",
+      "asOfDate": "2026-05-12",
+      "smokeStatus": "PASS",
+      "scoringCompletenessStatus": "PARTIAL",
+      "researchBucket": "中性",
+      "alphaScorePresent": true,
+      "scoreSnapshotPresent": true,
+      "reasonSnapshotPresent": true,
+      "signalSnapshotPresent": true,
+      "factorSnapshotPresent": true,
+      "forbiddenFieldsPresent": [],
+      "serviceCallable": true,
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue（不足 13 個月，無法計算 YoY）"
+      ],
+      "revenueYoY": null,
+      "dataCoverage": "limited",
+      "dataPoints": 500,
+      "overallScore": 59
+    },
+    {
+      "symbol": "1102",
+      "asOfDate": "2026-03-09",
+      "smokeStatus": "PASS",
+      "scoringCompletenessStatus": "PARTIAL",
+      "researchBucket": "偏空",
+      "alphaScorePresent": true,
+      "scoreSnapshotPresent": true,
+      "reasonSnapshotPresent": true,
+      "signalSnapshotPresent": true,
+      "factorSnapshotPresent": true,
+      "forbiddenFieldsPresent": [],
+      "serviceCallable": true,
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ],
+      "revenueYoY": null,
+      "dataCoverage": "limited",
+      "dataPoints": 500,
+      "overallScore": 42
+    },
+    {
+      "symbol": "1102",
+      "asOfDate": "2026-03-10",
+      "smokeStatus": "PASS",
+      "scoringCompletenessStatus": "PARTIAL",
+      "researchBucket": "偏空",
+      "alphaScorePresent": true,
+      "scoreSnapshotPresent": true,
+      "reasonSnapshotPresent": true,
+      "signalSnapshotPresent": true,
+      "factorSnapshotPresent": true,
+      "forbiddenFieldsPresent": [],
+      "serviceCallable": true,
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue（不足 13 個月，無法計算 YoY）"
+      ],
+      "revenueYoY": null,
+      "dataCoverage": "limited",
+      "dataPoints": 500,
+      "overallScore": 42
+    },
+    {
+      "symbol": "1102",
+      "asOfDate": "2026-03-15",
+      "smokeStatus": "PASS",
+      "scoringCompletenessStatus": "PARTIAL",
+      "researchBucket": "偏空",
+      "alphaScorePresent": true,
+      "scoreSnapshotPresent": true,
+      "reasonSnapshotPresent": true,
+      "signalSnapshotPresent": true,
+      "factorSnapshotPresent": true,
+      "forbiddenFieldsPresent": [],
+      "serviceCallable": true,
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue（不足 13 個月，無法計算 YoY）"
+      ],
+      "revenueYoY": null,
+      "dataCoverage": "limited",
+      "dataPoints": 500,
+      "overallScore": 42
+    },
+    {
+      "symbol": "1102",
+      "asOfDate": "2026-04-09",
+      "smokeStatus": "PASS",
+      "scoringCompletenessStatus": "PARTIAL",
+      "researchBucket": "偏空",
+      "alphaScorePresent": true,
+      "scoreSnapshotPresent": true,
+      "reasonSnapshotPresent": true,
+      "signalSnapshotPresent": true,
+      "factorSnapshotPresent": true,
+      "forbiddenFieldsPresent": [],
+      "serviceCallable": true,
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue（不足 13 個月，無法計算 YoY）"
+      ],
+      "revenueYoY": null,
+      "dataCoverage": "limited",
+      "dataPoints": 500,
+      "overallScore": 42
+    },
+    {
+      "symbol": "1102",
+      "asOfDate": "2026-05-12",
+      "smokeStatus": "PASS",
+      "scoringCompletenessStatus": "PARTIAL",
+      "researchBucket": "偏空",
+      "alphaScorePresent": true,
+      "scoreSnapshotPresent": true,
+      "reasonSnapshotPresent": true,
+      "signalSnapshotPresent": true,
+      "factorSnapshotPresent": true,
+      "forbiddenFieldsPresent": [],
+      "serviceCallable": true,
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue（不足 13 個月，無法計算 YoY）"
+      ],
+      "revenueYoY": null,
+      "dataCoverage": "limited",
+      "dataPoints": 500,
+      "overallScore": 42
+    },
+    {
+      "symbol": "1103",
+      "asOfDate": "2026-03-09",
+      "smokeStatus": "PASS",
+      "scoringCompletenessStatus": "EMPTY",
+      "researchBucket": "資料不足",
+      "alphaScorePresent": true,
+      "scoreSnapshotPresent": true,
+      "reasonSnapshotPresent": true,
+      "signalSnapshotPresent": true,
+      "factorSnapshotPresent": true,
+      "forbiddenFieldsPresent": [],
+      "serviceCallable": true,
+      "usedSources": [],
+      "missingSources": [
+        "StockQuote（不足 20 天）"
+      ],
+      "revenueYoY": null,
+      "dataCoverage": "insufficient",
+      "dataPoints": 7,
+      "overallScore": 0
+    },
+    {
+      "symbol": "1103",
+      "asOfDate": "2026-03-10",
+      "smokeStatus": "PASS",
+      "scoringCompletenessStatus": "EMPTY",
+      "researchBucket": "資料不足",
+      "alphaScorePresent": true,
+      "scoreSnapshotPresent": true,
+      "reasonSnapshotPresent": true,
+      "signalSnapshotPresent": true,
+      "factorSnapshotPresent": true,
+      "forbiddenFieldsPresent": [],
+      "serviceCallable": true,
+      "usedSources": [],
+      "missingSources": [
+        "StockQuote（不足 20 天）"
+      ],
+      "revenueYoY": null,
+      "dataCoverage": "insufficient",
+      "dataPoints": 7,
+      "overallScore": 0
+    },
+    {
+      "symbol": "1103",
+      "asOfDate": "2026-03-15",
+      "smokeStatus": "PASS",
+      "scoringCompletenessStatus": "EMPTY",
+      "researchBucket": "資料不足",
+      "alphaScorePresent": true,
+      "scoreSnapshotPresent": true,
+      "reasonSnapshotPresent": true,
+      "signalSnapshotPresent": true,
+      "factorSnapshotPresent": true,
+      "forbiddenFieldsPresent": [],
+      "serviceCallable": true,
+      "usedSources": [],
+      "missingSources": [
+        "StockQuote（不足 20 天）"
+      ],
+      "revenueYoY": null,
+      "dataCoverage": "insufficient",
+      "dataPoints": 7,
+      "overallScore": 0
+    },
+    {
+      "symbol": "1103",
+      "asOfDate": "2026-04-09",
+      "smokeStatus": "PASS",
+      "scoringCompletenessStatus": "EMPTY",
+      "researchBucket": "資料不足",
+      "alphaScorePresent": true,
+      "scoreSnapshotPresent": true,
+      "reasonSnapshotPresent": true,
+      "signalSnapshotPresent": true,
+      "factorSnapshotPresent": true,
+      "forbiddenFieldsPresent": [],
+      "serviceCallable": true,
+      "usedSources": [],
+      "missingSources": [
+        "StockQuote（不足 20 天）"
+      ],
+      "revenueYoY": null,
+      "dataCoverage": "insufficient",
+      "dataPoints": 7,
+      "overallScore": 0
+    },
+    {
+      "symbol": "1103",
+      "asOfDate": "2026-05-12",
+      "smokeStatus": "PASS",
+      "scoringCompletenessStatus": "EMPTY",
+      "researchBucket": "資料不足",
+      "alphaScorePresent": true,
+      "scoreSnapshotPresent": true,
+      "reasonSnapshotPresent": true,
+      "signalSnapshotPresent": true,
+      "factorSnapshotPresent": true,
+      "forbiddenFieldsPresent": [],
+      "serviceCallable": true,
+      "usedSources": [],
+      "missingSources": [
+        "StockQuote（不足 20 天）"
+      ],
+      "revenueYoY": null,
+      "dataCoverage": "insufficient",
+      "dataPoints": 7,
+      "overallScore": 0
+    },
+    {
+      "symbol": "1104",
+      "asOfDate": "2026-03-09",
+      "smokeStatus": "PASS",
+      "scoringCompletenessStatus": "EMPTY",
+      "researchBucket": "資料不足",
+      "alphaScorePresent": true,
+      "scoreSnapshotPresent": true,
+      "reasonSnapshotPresent": true,
+      "signalSnapshotPresent": true,
+      "factorSnapshotPresent": true,
+      "forbiddenFieldsPresent": [],
+      "serviceCallable": true,
+      "usedSources": [],
+      "missingSources": [
+        "StockQuote（不足 20 天）"
+      ],
+      "revenueYoY": null,
+      "dataCoverage": "insufficient",
+      "dataPoints": 7,
+      "overallScore": 0
+    },
+    {
+      "symbol": "1104",
+      "asOfDate": "2026-03-10",
+      "smokeStatus": "PASS",
+      "scoringCompletenessStatus": "EMPTY",
+      "researchBucket": "資料不足",
+      "alphaScorePresent": true,
+      "scoreSnapshotPresent": true,
+      "reasonSnapshotPresent": true,
+      "signalSnapshotPresent": true,
+      "factorSnapshotPresent": true,
+      "forbiddenFieldsPresent": [],
+      "serviceCallable": true,
+      "usedSources": [],
+      "missingSources": [
+        "StockQuote（不足 20 天）"
+      ],
+      "revenueYoY": null,
+      "dataCoverage": "insufficient",
+      "dataPoints": 7,
+      "overallScore": 0
+    },
+    {
+      "symbol": "1104",
+      "asOfDate": "2026-03-15",
+      "smokeStatus": "PASS",
+      "scoringCompletenessStatus": "EMPTY",
+      "researchBucket": "資料不足",
+      "alphaScorePresent": true,
+      "scoreSnapshotPresent": true,
+      "reasonSnapshotPresent": true,
+      "signalSnapshotPresent": true,
+      "factorSnapshotPresent": true,
+      "forbiddenFieldsPresent": [],
+      "serviceCallable": true,
+      "usedSources": [],
+      "missingSources": [
+        "StockQuote（不足 20 天）"
+      ],
+      "revenueYoY": null,
+      "dataCoverage": "insufficient",
+      "dataPoints": 7,
+      "overallScore": 0
+    },
+    {
+      "symbol": "1104",
+      "asOfDate": "2026-04-09",
+      "smokeStatus": "PASS",
+      "scoringCompletenessStatus": "EMPTY",
+      "researchBucket": "資料不足",
+      "alphaScorePresent": true,
+      "scoreSnapshotPresent": true,
+      "reasonSnapshotPresent": true,
+      "signalSnapshotPresent": true,
+      "factorSnapshotPresent": true,
+      "forbiddenFieldsPresent": [],
+      "serviceCallable": true,
+      "usedSources": [],
+      "missingSources": [
+        "StockQuote（不足 20 天）"
+      ],
+      "revenueYoY": null,
+      "dataCoverage": "insufficient",
+      "dataPoints": 7,
+      "overallScore": 0
+    },
+    {
+      "symbol": "1104",
+      "asOfDate": "2026-05-12",
+      "smokeStatus": "PASS",
+      "scoringCompletenessStatus": "EMPTY",
+      "researchBucket": "資料不足",
+      "alphaScorePresent": true,
+      "scoreSnapshotPresent": true,
+      "reasonSnapshotPresent": true,
+      "signalSnapshotPresent": true,
+      "factorSnapshotPresent": true,
+      "forbiddenFieldsPresent": [],
+      "serviceCallable": true,
+      "usedSources": [],
+      "missingSources": [
+        "StockQuote（不足 20 天）"
+      ],
+      "revenueYoY": null,
+      "dataCoverage": "insufficient",
+      "dataPoints": 7,
+      "overallScore": 0
+    },
+    {
+      "symbol": "1108",
+      "asOfDate": "2026-03-09",
+      "smokeStatus": "PASS",
+      "scoringCompletenessStatus": "EMPTY",
+      "researchBucket": "資料不足",
+      "alphaScorePresent": true,
+      "scoreSnapshotPresent": true,
+      "reasonSnapshotPresent": true,
+      "signalSnapshotPresent": true,
+      "factorSnapshotPresent": true,
+      "forbiddenFieldsPresent": [],
+      "serviceCallable": true,
+      "usedSources": [],
+      "missingSources": [
+        "StockQuote（不足 20 天）"
+      ],
+      "revenueYoY": null,
+      "dataCoverage": "insufficient",
+      "dataPoints": 7,
+      "overallScore": 0
+    },
+    {
+      "symbol": "1108",
+      "asOfDate": "2026-03-10",
+      "smokeStatus": "PASS",
+      "scoringCompletenessStatus": "EMPTY",
+      "researchBucket": "資料不足",
+      "alphaScorePresent": true,
+      "scoreSnapshotPresent": true,
+      "reasonSnapshotPresent": true,
+      "signalSnapshotPresent": true,
+      "factorSnapshotPresent": true,
+      "forbiddenFieldsPresent": [],
+      "serviceCallable": true,
+      "usedSources": [],
+      "missingSources": [
+        "StockQuote（不足 20 天）"
+      ],
+      "revenueYoY": null,
+      "dataCoverage": "insufficient",
+      "dataPoints": 7,
+      "overallScore": 0
+    },
+    {
+      "symbol": "1108",
+      "asOfDate": "2026-03-15",
+      "smokeStatus": "PASS",
+      "scoringCompletenessStatus": "EMPTY",
+      "researchBucket": "資料不足",
+      "alphaScorePresent": true,
+      "scoreSnapshotPresent": true,
+      "reasonSnapshotPresent": true,
+      "signalSnapshotPresent": true,
+      "factorSnapshotPresent": true,
+      "forbiddenFieldsPresent": [],
+      "serviceCallable": true,
+      "usedSources": [],
+      "missingSources": [
+        "StockQuote（不足 20 天）"
+      ],
+      "revenueYoY": null,
+      "dataCoverage": "insufficient",
+      "dataPoints": 7,
+      "overallScore": 0
+    },
+    {
+      "symbol": "1108",
+      "asOfDate": "2026-04-09",
+      "smokeStatus": "PASS",
+      "scoringCompletenessStatus": "EMPTY",
+      "researchBucket": "資料不足",
+      "alphaScorePresent": true,
+      "scoreSnapshotPresent": true,
+      "reasonSnapshotPresent": true,
+      "signalSnapshotPresent": true,
+      "factorSnapshotPresent": true,
+      "forbiddenFieldsPresent": [],
+      "serviceCallable": true,
+      "usedSources": [],
+      "missingSources": [
+        "StockQuote（不足 20 天）"
+      ],
+      "revenueYoY": null,
+      "dataCoverage": "insufficient",
+      "dataPoints": 7,
+      "overallScore": 0
+    },
+    {
+      "symbol": "1108",
+      "asOfDate": "2026-05-12",
+      "smokeStatus": "PASS",
+      "scoringCompletenessStatus": "EMPTY",
+      "researchBucket": "資料不足",
+      "alphaScorePresent": true,
+      "scoreSnapshotPresent": true,
+      "reasonSnapshotPresent": true,
+      "signalSnapshotPresent": true,
+      "factorSnapshotPresent": true,
+      "forbiddenFieldsPresent": [],
+      "serviceCallable": true,
+      "usedSources": [],
+      "missingSources": [
+        "StockQuote（不足 20 天）"
+      ],
+      "revenueYoY": null,
+      "dataCoverage": "insufficient",
+      "dataPoints": 7,
+      "overallScore": 0
+    }
+  ],
+  "limitations": [],
+  "productionDbWritten": false,
+  "corpusModified": false,
+  "scoringFormulaModified": false
+}
