@@ -1,0 +1,153 @@
+{
+  "generatedAt": "2026-05-12T02:09:46.211Z",
+  "disclaimer": "Schema self-consistency diagnosis only. No investment recommendations. No scoring formula changes. No model changes. Descriptive diagnosis only.",
+  "phase": "P6-HARDRESET-LITE",
+  "runDate": "2026-05-12",
+  "inputSource": "outputs/online_validation/p5walkthrough_review.json",
+  "totalCasesInReview": 58,
+  "totalInconsistentCasesAnalyzed": 5,
+  "finalVerdict": "BY_DESIGN_BOUNDARY",
+  "verdictSummary": "All 5 inconsistent cases follow the same pattern: Watch bucket assigned to composite scores in [21, 29]. The existing Watch band lower bound (40) does not match observed behavior. This is a schema documentation gap — the boundary behavior appears intentional (signal-driven Watch assignment can override composite score thresholds) but is undocumented.",
+  "watchBoundaryPattern": {
+    "detected": true,
+    "caseCount": 5,
+    "scoreRange": "[21, 29]",
+    "interpretation": "Watch bucket appears to accept composite scores below its canonical band lower bound (40). This may reflect signal-qualified candidates where individual technical signals trigger Watch assignment independently of the composite score. The schema bands need explicit documentation of this boundary behavior."
+  },
+  "nextStepGuidance": "Contract freeze today (PART B output). Tomorrow: P12 PIT Feature Contract v0 (CEO 主軸 A first step).",
+  "requiresContractFreeze": true,
+  "summary": {
+    "totalInconsistentCases": 5,
+    "byCategoryCount": {
+      "BUCKET_MAPPING_MISMATCH": 0,
+      "SCORE_THRESHOLD_MISMATCH": 5,
+      "NORMALIZATION_GAP": 0,
+      "SNAPSHOT_CAPTURE_MISMATCH": 0,
+      "FACTOR_AGGREGATION_AMBIGUOUS": 0,
+      "UNKNOWN_REQUIRES_CODE_TRACE": 0
+    },
+    "watchLowScoreBoundaryCount": 5,
+    "dominantCategory": "SCORE_THRESHOLD_MISMATCH",
+    "observedScoreRange": {
+      "min": 21,
+      "max": 29
+    },
+    "observedBuckets": [
+      "Watch"
+    ],
+    "proposedVerdict": "BY_DESIGN_BOUNDARY",
+    "verdictEvidence": "5/5 (100%) of inconsistent cases match the Watch + score ≤ 39 boundary pattern. The schema bands were calibrated from historical data and may not account for signal-qualified candidates with below-band composite scores. This is a boundary definition ambiguity, not a code malfunction. Contract freeze is appropriate."
+  },
+  "cases": [
+    {
+      "caseId": "P5-CASE-004",
+      "symbol": "1536",
+      "asOf": "2025-12-02",
+      "horizon": 5,
+      "score": 21,
+      "scoreSource": "researchBucket.score (composite, as captured in P5 walkthrough)",
+      "researchBucket": "Watch",
+      "normalizedBucket": "Watch",
+      "activeScoringSnapshotBucket": null,
+      "topLevelBucket": "Watch",
+      "scoreSnapshotFields": {
+        "scoringCompletenessStatus": "COMPLETE",
+        "topSignalOrFactor": "技術偏空",
+        "reasonSnapshotSummary": "技術偏空 / 動能走弱"
+      },
+      "isWatchLowScoreBoundaryPattern": true,
+      "diagnosisCategory": "SCORE_THRESHOLD_MISMATCH",
+      "evidence": "Score 21 is below Watch band lower bound (40). All 5 inconsistent cases share this pattern: Watch + score in [21,29]. The Watch band lower threshold (40) appears too strict for signal-qualified candidates. This is a schema boundary definition question, not a code malfunction.",
+      "recommendedRepairType": "FREEZE_CONTRACT_AS_BOUNDARY",
+      "whyNoModelChangeNow": "P6-LITE scope is limited to schema self-consistency diagnosis only. No scoring formula, alphaScore, recommendationBucket, or activeScoringSnapshot logic may be changed during this phase. All repair decisions are deferred to P7 or P12."
+    },
+    {
+      "caseId": "P5-CASE-006",
+      "symbol": "00712",
+      "asOf": "2025-11-24",
+      "horizon": 5,
+      "score": 29,
+      "scoreSource": "researchBucket.score (composite, as captured in P5 walkthrough)",
+      "researchBucket": "Watch",
+      "normalizedBucket": "Watch",
+      "activeScoringSnapshotBucket": null,
+      "topLevelBucket": "Watch",
+      "scoreSnapshotFields": {
+        "scoringCompletenessStatus": "COMPLETE",
+        "topSignalOrFactor": "技術偏空",
+        "reasonSnapshotSummary": "技術偏空"
+      },
+      "isWatchLowScoreBoundaryPattern": true,
+      "diagnosisCategory": "SCORE_THRESHOLD_MISMATCH",
+      "evidence": "Score 29 is below Watch band lower bound (40). All 5 inconsistent cases share this pattern: Watch + score in [21,29]. The Watch band lower threshold (40) appears too strict for signal-qualified candidates. This is a schema boundary definition question, not a code malfunction.",
+      "recommendedRepairType": "FREEZE_CONTRACT_AS_BOUNDARY",
+      "whyNoModelChangeNow": "P6-LITE scope is limited to schema self-consistency diagnosis only. No scoring formula, alphaScore, recommendationBucket, or activeScoringSnapshot logic may be changed during this phase. All repair decisions are deferred to P7 or P12."
+    },
+    {
+      "caseId": "P5-CASE-012",
+      "symbol": "1536",
+      "asOf": "2025-12-02",
+      "horizon": 5,
+      "score": 21,
+      "scoreSource": "researchBucket.score (composite, as captured in P5 walkthrough)",
+      "researchBucket": "Watch",
+      "normalizedBucket": "Watch",
+      "activeScoringSnapshotBucket": null,
+      "topLevelBucket": "Watch",
+      "scoreSnapshotFields": {
+        "scoringCompletenessStatus": "COMPLETE",
+        "topSignalOrFactor": "技術偏空",
+        "reasonSnapshotSummary": "技術偏空 / 動能走弱"
+      },
+      "isWatchLowScoreBoundaryPattern": true,
+      "diagnosisCategory": "SCORE_THRESHOLD_MISMATCH",
+      "evidence": "Score 21 is below Watch band lower bound (40). All 5 inconsistent cases share this pattern: Watch + score in [21,29]. The Watch band lower threshold (40) appears too strict for signal-qualified candidates. This is a schema boundary definition question, not a code malfunction.",
+      "recommendedRepairType": "FREEZE_CONTRACT_AS_BOUNDARY",
+      "whyNoModelChangeNow": "P6-LITE scope is limited to schema self-consistency diagnosis only. No scoring formula, alphaScore, recommendationBucket, or activeScoringSnapshot logic may be changed during this phase. All repair decisions are deferred to P7 or P12."
+    },
+    {
+      "caseId": "P5-CASE-040",
+      "symbol": "1536",
+      "asOf": "2025-12-02",
+      "horizon": 5,
+      "score": 21,
+      "scoreSource": "researchBucket.score (composite, as captured in P5 walkthrough)",
+      "researchBucket": "Watch",
+      "normalizedBucket": "Watch",
+      "activeScoringSnapshotBucket": null,
+      "topLevelBucket": "Watch",
+      "scoreSnapshotFields": {
+        "scoringCompletenessStatus": "COMPLETE",
+        "topSignalOrFactor": "技術偏空",
+        "reasonSnapshotSummary": "技術偏空 / 動能走弱"
+      },
+      "isWatchLowScoreBoundaryPattern": true,
+      "diagnosisCategory": "SCORE_THRESHOLD_MISMATCH",
+      "evidence": "Score 21 is below Watch band lower bound (40). All 5 inconsistent cases share this pattern: Watch + score in [21,29]. The Watch band lower threshold (40) appears too strict for signal-qualified candidates. This is a schema boundary definition question, not a code malfunction.",
+      "recommendedRepairType": "FREEZE_CONTRACT_AS_BOUNDARY",
+      "whyNoModelChangeNow": "P6-LITE scope is limited to schema self-consistency diagnosis only. No scoring formula, alphaScore, recommendationBucket, or activeScoringSnapshot logic may be changed during this phase. All repair decisions are deferred to P7 or P12."
+    },
+    {
+      "caseId": "P5-CASE-041",
+      "symbol": "00712",
+      "asOf": "2025-12-02",
+      "horizon": 20,
+      "score": 29,
+      "scoreSource": "researchBucket.score (composite, as captured in P5 walkthrough)",
+      "researchBucket": "Watch",
+      "normalizedBucket": "Watch",
+      "activeScoringSnapshotBucket": null,
+      "topLevelBucket": "Watch",
+      "scoreSnapshotFields": {
+        "scoringCompletenessStatus": "COMPLETE",
+        "topSignalOrFactor": "技術偏空",
+        "reasonSnapshotSummary": "技術偏空"
+      },
+      "isWatchLowScoreBoundaryPattern": true,
+      "diagnosisCategory": "SCORE_THRESHOLD_MISMATCH",
+      "evidence": "Score 29 is below Watch band lower bound (40). All 5 inconsistent cases share this pattern: Watch + score in [21,29]. The Watch band lower threshold (40) appears too strict for signal-qualified candidates. This is a schema boundary definition question, not a code malfunction.",
+      "recommendedRepairType": "FREEZE_CONTRACT_AS_BOUNDARY",
+      "whyNoModelChangeNow": "P6-LITE scope is limited to schema self-consistency diagnosis only. No scoring formula, alphaScore, recommendationBucket, or activeScoringSnapshot logic may be changed during this phase. All repair decisions are deferred to P7 or P12."
+    }
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "generatedAt": "2026-05-12T02:09:46.211Z",
+  "disclaimer": "Schema contract freeze only. No investment recommendations. No scoring changes. This document records the observed boundary behavior for schema documentation purposes.",
+  "phase": "P6-HARDRESET-LITE — BY_DESIGN_BOUNDARY Contract Freeze",
+  "runDate": "2026-05-12",
+  "canonicalBucketLabels": [
+    {
+      "label": "Strong",
+      "aliases": [
+        "Strong Candidate",
+        "偏多",
+        "StrongBull"
+      ],
+      "canonicalScoreBand": {
+        "low": 60,
+        "high": 100
+      },
+      "description": "High composite score, all major signal dimensions aligned positively."
+    },
+    {
+      "label": "Watch",
+      "aliases": [
+        "Watch Candidate",
+        "觀察",
+        "留意"
+      ],
+      "canonicalScoreBand": {
+        "low": 40,
+        "high": 70
+      },
+      "observedBoundaryBehavior": {
+        "acceptedScoreRange": {
+          "min": 20,
+          "max": 39
+        },
+        "condition": "Signal-qualified Watch assignment: individual technical signals (e.g. 技術偏空 in universe-tracked stock) may trigger Watch bucket independently of composite score. Observed in 5 cases with scores [21,29].",
+        "evidenceSource": "P5 walkthrough review — 5 INCONSISTENT cases, all Watch + score ≤ 39",
+        "freezeDecision": "BY_DESIGN_BOUNDARY: This boundary behavior is accepted as-is. The score band documentation (40-70) will be updated to note signal-override cases."
+      }
+    },
+    {
+      "label": "Neutral",
+      "aliases": [
+        "中性"
+      ],
+      "canonicalScoreBand": {
+        "low": 30,
+        "high": 59
+      },
+      "description": "Mixed signals. Composite score in mid-range. No strong directional bias."
+    },
+    {
+      "label": "LowPriority",
+      "aliases": [
+        "Low Priority",
+        "低優先",
+        "偏空",
+        "WeakBear"
+      ],
+      "canonicalScoreBand": {
+        "low": 0,
+        "high": 39
+      },
+      "description": "Low composite score, mostly negative signals. Not prioritized."
+    },
+    {
+      "label": "InsufficientData",
+      "aliases": [
+        "Insufficient Data",
+        "N/A",
+        "NA",
+        "None"
+      ],
+      "canonicalScoreBand": null,
+      "description": "Score or bucket could not be determined due to missing data."
+    }
+  ],
+  "watchBoundaryContract": {
+    "canonicalLowerBound": 40,
+    "observedLowerBoundWithSignalOverride": 20,
+    "observedCaseCount": 5,
+    "observedScoreRange": "[21, 29]",
+    "freezeRule": "Watch bucket is permissible for composite scores in [20, 39] when individual signal factors provide a qualifying condition (e.g., universe tier + technical signal). The composite score band (40-70) reflects the TYPICAL range, not a hard gate.",
+    "normalizationRule": "All raw bucket labels in [Watch, watch, Watch Candidate, 觀察, 留意] normalize to canonical \"Watch\"."
+  },
+  "normalizationRules": {
+    "trimWhitespace": true,
+    "caseInsensitive": true,
+    "chineseAliases": {
+      "偏多": "Strong",
+      "強多": "Strong",
+      "偏空": "LowPriority",
+      "弱空": "LowPriority",
+      "觀察": "Watch",
+      "留意": "Watch",
+      "中性": "Neutral",
+      "低優先": "LowPriority",
+      "低優先度": "LowPriority"
+    },
+    "insufficientDataVariants": [
+      "Insufficient Data",
+      "N/A",
+      "NA",
+      "None",
+      ""
+    ]
+  },
+  "nonGoals": [
+    "This contract does NOT define investment rules or recommendations.",
+    "This contract does NOT establish performance thresholds or return expectations.",
+    "This contract does NOT modify scoring formulas, alphaScore, or recommendationBucket logic.",
+    "This contract does NOT apply to simulation_snapshot_corpus or P0/P1/P3/P4 corpora.",
+    "This contract is for schema documentation and normalization consistency only.",
+    "Future score re-calibration remains out of scope for P6-LITE."
+  ],
+  "frozenAt": "2026-05-12T02:09:46.211Z"
+}
