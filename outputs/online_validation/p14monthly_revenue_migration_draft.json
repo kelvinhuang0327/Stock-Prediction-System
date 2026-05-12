@@ -1,0 +1,79 @@
+{
+  "draftId": "p14-monthly-revenue-migration-draft-v0",
+  "generatedAt": "2026-05-12T03:43:54.878Z",
+  "phase": "P14",
+  "productionApplyAllowed": false,
+  "approvalTokenRequired": "P14_APPROVE_SCHEMA_MIGRATION_DRY_RUN_ONLY",
+  "proposedSchemaChange": {
+    "table": "MonthlyRevenue",
+    "fieldsToAdd": [
+      {
+        "name": "releaseDate",
+        "type": "DateTime?",
+        "nullable": true,
+        "description": "Actual or inferred public release date of the monthly revenue figure (Taiwan TWSE/MOPS, 10th of following month)."
+      },
+      {
+        "name": "releaseDateSource",
+        "type": "String?",
+        "nullable": true,
+        "description": "Source of releaseDate: AUTHORITATIVE | INFERRED_NEXT_MONTH_10TH | MISSING | INVALID."
+      },
+      {
+        "name": "releaseDateConfidence",
+        "type": "String?",
+        "nullable": true,
+        "description": "Confidence level of the releaseDate: HIGH | MEDIUM | LOW_TO_MEDIUM | NONE."
+      }
+    ],
+    "prismaSnippet": "// Add to MonthlyRevenue model in prisma/schema.prisma\n// WARNING: DO NOT APPLY TO PRODUCTION WITHOUT EXPLICIT APPROVAL\nreleaseDate        DateTime?\nreleaseDateSource  String?\nreleaseDateConfidence String?",
+    "sqlSnippet": "-- WARNING: DO NOT EXECUTE ON PRODUCTION WITHOUT EXPLICIT APPROVAL\n-- Dry-run / fixture-only draft\nALTER TABLE \"MonthlyRevenue\"\n  ADD COLUMN \"releaseDate\" TIMESTAMP,\n  ADD COLUMN \"releaseDateSource\" TEXT,\n  ADD COLUMN \"releaseDateConfidence\" TEXT;"
+  },
+  "backfillRule": {
+    "description": "Infer releaseDate as the 10th calendar day of the month following the revenue reporting month.",
+    "formula": "releaseDate = DATE(year, month+1, 10); if month=12, releaseDate = DATE(year+1, 1, 10)",
+    "decemberRollover": "month=12 → releaseDate = DATE(year+1, 01, 10)",
+    "sourceLabel": "INFERRED_NEXT_MONTH_10TH",
+    "forbiddenInputs": [
+      "outcomePrice",
+      "returnPct",
+      "realizedReturnClass",
+      "futurePrice",
+      "horizonReturnPct",
+      "outcomeDate",
+      "horizonDays",
+      "baselineResult",
+      "outcomeClose"
+    ]
+  },
+  "backfillSqlDraft": "-- WARNING: DO NOT EXECUTE ON PRODUCTION WITHOUT EXPLICIT APPROVAL\n-- Dry-run / fixture-only backfill draft\nUPDATE \"MonthlyRevenue\"\nSET\n  \"releaseDate\" = CASE\n    WHEN month = 12 THEN MAKE_DATE(year + 1, 1, 10)\n    ELSE MAKE_DATE(year, month + 1, 10)\n  END,\n  \"releaseDateSource\" = 'INFERRED_NEXT_MONTH_10TH',\n  \"releaseDateConfidence\" = 'LOW_TO_MEDIUM'\nWHERE \"releaseDate\" IS NULL;",
+  "productionSafetyWarning": "PRODUCTION APPLY FORBIDDEN. This draft must not be applied to any production database. Requires explicit written approval from authorized operator before P15 execution. Staging environment validation required before production.",
+  "fixtureOnlyInstructions": "To validate this draft: use fixture MonthlyRevenue objects in memory. Run validate-p14-monthly-revenue-fixture-dry-run.js for fixture-only proof. Do NOT run against production Prisma client. Do NOT run npx prisma migrate deploy without explicit production approval.",
+  "rollbackDraftReference": "p14-monthly-revenue-rollback-draft-v0",
+  "validationRequirements": [
+    "MR-VAL-001: All MonthlyRevenue records must have non-null releaseDate after backfill.",
+    "MR-VAL-002: releaseDate must equal 10th of month+1 (or Jan 10 of year+1 for December).",
+    "MR-VAL-003: releaseDateSource must be INFERRED_NEXT_MONTH_10TH for all backfilled records.",
+    "MR-VAL-004: RuleBasedStockAnalyzer must gate by releaseDate <= asOfDate.",
+    "MR-VAL-005: FundamentalResearchService must gate by releaseDate <= asOf.",
+    "MR-VAL-006: MonthlyRevenueLike interface must include optional releaseDate field."
+  ],
+  "nonGoals": [
+    "Does not compute ROI, win-rate, profit, or alpha.",
+    "Does not use realized return to infer releaseDate.",
+    "Does not modify scoring formula or alphaScore.",
+    "Does not modify frozen corpora.",
+    "Does not write to production DB."
+  ],
+  "p13Context": {
+    "planId": "p13-monthly-revenue-migration-plan-v0",
+    "dataAuditMode": "SCHEMA_ONLY",
+    "overallPitRisk": "HIGH",
+    "p12ContractPresent": true
+  },
+  "safetyValidation": {
+    "status": "SAFE_DRY_RUN_ONLY",
+    "errors": [],
+    "warnings": []
+  }
+}

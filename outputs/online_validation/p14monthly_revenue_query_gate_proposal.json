@@ -1,0 +1,179 @@
+{
+  "phase": "P14",
+  "part": "D",
+  "generatedAt": "2026-05-12T03:46:00.733Z",
+  "queryGateContractId": "p14-monthly-revenue-query-gate-contract-v0",
+  "queryGateRules": [
+    {
+      "id": "QG-001",
+      "condition": "year or month is missing/invalid",
+      "result": "UNAVAILABLE_MISSING_PERIOD",
+      "reason": "Cannot compute release date without valid year and month."
+    },
+    {
+      "id": "QG-002",
+      "condition": "releaseDate present and valid and releaseDate <= asOfDate",
+      "result": "AVAILABLE",
+      "reason": "Authoritative releaseDate confirms data was publicly available on asOfDate."
+    },
+    {
+      "id": "QG-003",
+      "condition": "releaseDate present and valid and releaseDate > asOfDate",
+      "result": "UNAVAILABLE_RELEASE_DATE_FUTURE",
+      "reason": "Data was not yet publicly released on asOfDate."
+    },
+    {
+      "id": "QG-004",
+      "condition": "releaseDate present but invalid format",
+      "result": "UNAVAILABLE_INVALID_RELEASE_DATE",
+      "reason": "Invalid releaseDate format — cannot determine availability."
+    },
+    {
+      "id": "QG-005",
+      "condition": "releaseDate missing and allowInferredReleaseDate=true: inferred <= asOfDate",
+      "result": "AVAILABLE",
+      "reason": "Inferred releaseDate (10th of next month) confirms data was available."
+    },
+    {
+      "id": "QG-006",
+      "condition": "releaseDate missing and allowInferredReleaseDate=true: inferred > asOfDate",
+      "result": "UNAVAILABLE_RELEASE_DATE_FUTURE",
+      "reason": "Inferred releaseDate is after asOfDate — data not yet available."
+    },
+    {
+      "id": "QG-007",
+      "condition": "releaseDate missing and allowInferredReleaseDate=false",
+      "result": "UNAVAILABLE_INFERRED_NOT_ALLOWED",
+      "reason": "Missing releaseDate and inference is disabled — unavailable by policy."
+    }
+  ],
+  "proposals": [
+    {
+      "targetFile": "src/lib/analysis/RuleBasedStockAnalyzer.ts",
+      "targetFunction": "analyzeStock()",
+      "currentRisk": "HIGH",
+      "currentImplementation": {
+        "description": "Gates MonthlyRevenue by year/month period (revenueAsOfWhere). Uses OR [{year<asOfYear}, {year=asOfYear AND month<=asOfMonth}]. This treats the reporting period as the availability date, which is not correct for Taiwan monthly revenue released on the 10th of the following month.",
+        "codeLocation": "Line ~62-74 in RuleBasedStockAnalyzer.ts",
+        "currentWhere": [
+          "{ year: { lt: asOfYear } }",
+          "{ year: asOfYear, month: { lte: asOfMonth } }"
+        ],
+        "pitLeakage": "If asOf=2024-02-05, Jan 2024 revenue (released 2024-02-10) is included. This is a PIT leakage."
+      },
+      "proposedChange": {
+        "description": "Replace year/month period gate with releaseDate gate. After schema migration adds releaseDate, use: where: { stockId, releaseDate: { lte: asOfDate } }.",
+        "proposedWhere": [
+          "{ stockId: symbol }",
+          "...(asOf ? { releaseDate: { lte: asOf } } : {})"
+        ],
+        "proposedCode": "// PROPOSED PATCH — requires schema migration (P15) before applying\n// Current: year/month period gate (HIGH PIT risk)\n// Proposed: releaseDate gate (PIT-safe)\nconst revenueAsOfWhere = asOf\n  ? { stockId: symbol, releaseDate: { lte: asOf } }\n  : { stockId: symbol };",
+        "fallbackIfReleaseDateMissing": "If releaseDate is null after backfill, fall back to INFERRED_NEXT_MONTH_10TH via application-layer filter (not DB query).",
+        "releaseDateFieldRequired": true
+      },
+      "whyNotAppliedYet": "MonthlyRevenue.releaseDate field does not exist in production schema. Schema migration (P15) must be completed and approved before this patch can be applied.",
+      "approvalRequirement": "Requires P15 schema migration approval and completion.",
+      "testCasesToAdd": [
+        {
+          "desc": "asOf=2024-02-09 → Jan 2024 revenue NOT included (inferred releaseDate=2024-02-10)",
+          "expected": "unavailable"
+        },
+        {
+          "desc": "asOf=2024-02-10 → Jan 2024 revenue included (inferred releaseDate=2024-02-10)",
+          "expected": "available"
+        },
+        {
+          "desc": "asOf=2024-01-15 → Dec 2023 revenue included (inferred releaseDate=2024-01-10)",
+          "expected": "available"
+        },
+        {
+          "desc": "asOf=2024-01-09 → Dec 2023 revenue NOT included (inferred releaseDate=2024-01-10)",
+          "expected": "unavailable"
+        }
+      ]
+    },
+    {
+      "targetFile": "src/lib/fundamentals/FundamentalResearchService.ts",
+      "targetFunction": "buildFundamentalResearchContextForSymbol()",
+      "currentRisk": "HIGH",
+      "currentImplementation": {
+        "description": "No asOf parameter. prisma.monthlyRevenue.findMany({ where: { stockId: input.symbol }, ... }) with no date gate at all. Returns all revenue records regardless of when they were released.",
+        "codeLocation": "Line ~76-81 in FundamentalResearchService.ts",
+        "currentWhere": [
+          "{ stockId: input.symbol }"
+        ],
+        "pitLeakage": "All historical MonthlyRevenue records returned regardless of asOf. Unreleased future revenue data may be included in analysis context."
+      },
+      "proposedChange": {
+        "description": "Add optional asOf parameter to buildFundamentalResearchContextForSymbol. Gate MonthlyRevenue query by releaseDate <= asOf.",
+        "proposedWhere": [
+          "{ stockId: input.symbol }",
+          "...(input.asOf ? { releaseDate: { lte: input.asOf } } : {})"
+        ],
+        "proposedCode": "// PROPOSED PATCH — requires schema migration (P15) before applying\n// Add asOf to input type:\n// input: { symbol: string; name: string; industry: string; asOf?: string }\n//\n// Current: no asOf gate (HIGH PIT risk)\n// Proposed: gate by releaseDate\nconst revenueWhere = input.asOf\n  ? { stockId: input.symbol, releaseDate: { lte: input.asOf } }\n  : { stockId: input.symbol };\nprisma.monthlyRevenue.findMany({ where: revenueWhere, ... })",
+        "fallbackIfReleaseDateMissing": "If releaseDate is null after backfill, include records only if inferred releaseDate <= asOf.",
+        "releaseDateFieldRequired": true
+      },
+      "whyNotAppliedYet": "MonthlyRevenue.releaseDate field does not exist in production schema. Schema migration (P15) required. Also requires adding asOf parameter to function signature.",
+      "approvalRequirement": "Requires P15 schema migration approval + interface update for MonthlyRevenueLike.",
+      "testCasesToAdd": [
+        {
+          "desc": "asOf provided → only revenue with releaseDate <= asOf returned",
+          "expected": "filtered"
+        },
+        {
+          "desc": "asOf not provided → all revenue returned (legacy behavior)",
+          "expected": "all"
+        },
+        {
+          "desc": "asOf=2024-02-09 → Jan 2024 revenue excluded",
+          "expected": "excluded"
+        },
+        {
+          "desc": "asOf=2024-02-10 → Jan 2024 revenue included",
+          "expected": "included"
+        }
+      ]
+    },
+    {
+      "targetFile": "src/lib/fundamentals/StockFundamentalSnapshot.ts",
+      "targetFunction": "MonthlyRevenueLike interface",
+      "currentRisk": "MEDIUM",
+      "currentImplementation": {
+        "description": "MonthlyRevenueLike interface does not include releaseDate field. After schema migration, the interface must be updated to propagate releaseDate through the application layer.",
+        "codeLocation": "MonthlyRevenueLike type definition",
+        "currentWhere": [
+          "No releaseDate field"
+        ],
+        "pitLeakage": "Even after schema migration, code consuming MonthlyRevenueLike will not see releaseDate without interface update."
+      },
+      "proposedChange": {
+        "description": "Add optional releaseDate field to MonthlyRevenueLike interface.",
+        "proposedCode": "// PROPOSED PATCH — requires schema migration (P15) before applying\nexport interface MonthlyRevenueLike {\n  year: number;\n  month: number;\n  revenue: number;\n  yoyGrowth?: number | null;\n  momGrowth?: number | null;\n  releaseDate?: string | null;         // ADD: ISO date YYYY-MM-DD\n  releaseDateSource?: string | null;   // ADD: AUTHORITATIVE | INFERRED_NEXT_MONTH_10TH\n  releaseDateConfidence?: string | null; // ADD: HIGH | MEDIUM | LOW_TO_MEDIUM\n}",
+        "releaseDateFieldRequired": true
+      },
+      "whyNotAppliedYet": "Requires schema migration first. Interface change is backward compatible (optional fields).",
+      "approvalRequirement": "Requires P15 schema migration completion.",
+      "testCasesToAdd": [
+        {
+          "desc": "MonthlyRevenueLike with releaseDate field compiles and passes type check",
+          "expected": "valid"
+        },
+        {
+          "desc": "Existing code consuming MonthlyRevenueLike without releaseDate still compiles",
+          "expected": "backward-compatible"
+        }
+      ]
+    }
+  ],
+  "productionApplyAllowed": false,
+  "approvalRequired": "All proposals require P15 schema migration approval before implementation.",
+  "nonGoals": [
+    "Does not directly modify production scoring logic.",
+    "Does not modify alphaScore or recommendationBucket.",
+    "Does not write production DB.",
+    "Does not modify frozen corpora.",
+    "Does not compute ROI, profit, win-rate, or alpha.",
+    "Does not constitute investment advice."
+  ]
+}
