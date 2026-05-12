@@ -1,0 +1,42 @@
+{
+  "timestamp": "2026-05-12T05:02:00.803Z",
+  "phase": "P19-HARDRESET",
+  "part": "A",
+  "preflightStatus": "PASS",
+  "p18ArtifactsPresent": true,
+  "missingFiles": [],
+  "prismaSchemaContainsReleaseDate": true,
+  "prismaSchemaContainsReleaseDateSource": true,
+  "prismaSchemaContainsReleaseDateConfidence": true,
+  "p18Conclusions": {
+    "migrationValidationStatus": "PASS",
+    "backfillValidationStatus": "PASS",
+    "queryGateValidationStatus": "PASS",
+    "rollbackValidationStatus": "PASS",
+    "productionApplyAllowed": false,
+    "productionDbWritten": false
+  },
+  "frozenCorpusLineCounts": {
+    "simulation_snapshot_corpus.jsonl": {
+      "expected": 60,
+      "actual": 60,
+      "ok": true
+    },
+    "p0hardreset_historical_replay_corpus.jsonl": {
+      "expected": 4500,
+      "actual": 4500,
+      "ok": true
+    },
+    "p1baseline_historical_replay_corpus.jsonl": {
+      "expected": 9900,
+      "actual": 9900,
+      "ok": true
+    },
+    "p3active_scoring_historical_replay_corpus.jsonl": {
+      "expected": 4500,
+      "actual": 4500,
+      "ok": true
+    }
+  },
+  "finalClassification": "P19_PREFLIGHT_PASS"
+}

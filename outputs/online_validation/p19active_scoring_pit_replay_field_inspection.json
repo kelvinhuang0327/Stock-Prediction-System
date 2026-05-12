@@ -1,0 +1,88 @@
+{
+  "phase": "P19-HARDRESET",
+  "part": "E",
+  "generatedAt": "2026-05-12T05:08:27.607Z",
+  "lineCount": {
+    "p3": 4500,
+    "p19": 4500
+  },
+  "uniqueSymbols": {
+    "p3": 25,
+    "p19": 25
+  },
+  "uniqueAsOfDates": {
+    "p3": 60,
+    "p19": 60
+  },
+  "horizonDistribution": {
+    "p3": {
+      "5": 1500,
+      "20": 1500,
+      "60": 1500
+    },
+    "p19": {
+      "5": 1500,
+      "20": 1500,
+      "60": 1500
+    }
+  },
+  "scoringCompletenessStatusDistribution": {
+    "p3": {
+      "COMPLETE": 3099,
+      "PARTIAL": 1401
+    },
+    "p19": {
+      "COMPLETE": 3099,
+      "PARTIAL": 1401
+    }
+  },
+  "researchBucketDistribution": {
+    "p3": {
+      "LowPriority": 1158,
+      "Watch": 462,
+      "Neutral": 1401,
+      "Strong": 1479
+    },
+    "p19": {
+      "LowPriority": 1158,
+      "Watch": 462,
+      "Neutral": 1401,
+      "Strong": 1479
+    }
+  },
+  "nonZeroScoreCount": {
+    "p3": 4500,
+    "p19": 4500
+  },
+  "snapshotPresenceRatios": {
+    "reasonSnapshot": {
+      "p3": 100,
+      "p19": 100
+    },
+    "signalSnapshot": {
+      "p3": 100,
+      "p19": 100
+    },
+    "factorSnapshot": {
+      "p3": 100,
+      "p19": 100
+    }
+  },
+  "monthlyRevenuePitGateStatusDistribution": {
+    "NOT_APPLICABLE_NO_DATA": 4500
+  },
+  "schemaCompatible": true,
+  "shapeCompatibility": "COMPATIBLE",
+  "p19ReadyForP20Comparison": true,
+  "missingP19Fields": [],
+  "missingP3CoreInP19": [],
+  "notes": [
+    "P19 is based on P3 base rows with PIT gate metadata added",
+    "All 4500 rows have monthlyRevenuePitGateStatus=NOT_APPLICABLE_NO_DATA (no MonthlyRevenue data in P3 base)",
+    "P19 corpus is schema-compatible with P3 for P20 pre/post comparison"
+  ],
+  "gatesPassed": 22,
+  "gatesTotal": 22,
+  "gatesFailed": [],
+  "validationStatus": "PASS"
+}
