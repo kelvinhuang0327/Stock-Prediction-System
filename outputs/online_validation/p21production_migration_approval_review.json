@@ -1,0 +1,211 @@
+{
+  "phase": "P21-HARDRESET",
+  "part": "C",
+  "generatedAt": "2026-05-12T05:46:14.177Z",
+  "description": "Production Migration Approval Review — P21",
+  "hardGateResults": [
+    {
+      "gateId": "HG-01",
+      "label": "P17 schema patch exists with addedFields",
+      "passed": true,
+      "evidence": "addedFields=[{\"model\":\"MonthlyRevenue\",\"field\":\"releaseDate\",\"type\":\"DateTime?\",\"purpose\":\"PIT gate — date revenue was publicly released\",\"comment\":\"P17: PIT gate\"},{\"model\":\"MonthlyRevenue\",\"field\":\"releaseDateSource\",\"type\":\"String?\",\"purpose\":\"Source of releaseDate — INFERRED_NEXT_MONTH_10TH or EXPLICIT\",\"comment\":\"P17\"},{\"model\":\"MonthlyRevenue\",\"field\":\"releaseDateConfidence\",\"type\":\"String?\",\"purpose\":\"Confidence tag — LOW_TO_MEDIUM or HIGH\",\"comment\":\"P17\"}]"
+    },
+    {
+      "gateId": "HG-02",
+      "label": "P17 query gate patch exists",
+      "passed": true,
+      "evidence": "patchStatus=APPLIED"
+    },
+    {
+      "gateId": "HG-03",
+      "label": "P17 query gate validation ALL_PASS",
+      "passed": true,
+      "evidence": "validationStatus=ALL_PASS passCount=18"
+    },
+    {
+      "gateId": "HG-04",
+      "label": "P18 fixture DB migration artifact exists",
+      "passed": true,
+      "evidence": "passCount=16 validationStatus=PASS"
+    },
+    {
+      "gateId": "HG-05",
+      "label": "P18 rollback passCount >= 1",
+      "passed": true,
+      "evidence": "passCount=27 validationStatus=PASS"
+    },
+    {
+      "gateId": "HG-06",
+      "label": "P18 query gate passCount >= 1",
+      "passed": true,
+      "evidence": "passCount=22 validationStatus=PASS"
+    },
+    {
+      "gateId": "HG-07",
+      "label": "P19 PIT guard validationStatus=PASS, leakage=0",
+      "passed": true,
+      "evidence": "validationStatus=PASS leakageViolations=0"
+    },
+    {
+      "gateId": "HG-08",
+      "label": "P20 decision classification = READY",
+      "passed": true,
+      "evidence": "classification=P20_READY_FOR_PRODUCTION_MIGRATION_APPROVAL_REVIEW"
+    },
+    {
+      "gateId": "HG-09",
+      "label": "P20 scoring changes = 0",
+      "passed": true,
+      "evidence": "signalChangedCount=0"
+    },
+    {
+      "gateId": "HG-10",
+      "label": "Frozen corpus artifacts present (P20 comparison alignedRowCount=4500)",
+      "passed": true,
+      "evidence": "alignedRowCount=4500"
+    },
+    {
+      "gateId": "HG-11",
+      "label": "productionApplyAllowed=false across all P17-P20",
+      "passed": true,
+      "evidence": "p20decision.productionApplyAllowed=false"
+    },
+    {
+      "gateId": "HG-12",
+      "label": "productionDbWritten=false across all P17-P20",
+      "passed": true,
+      "evidence": "p20decision.productionDbWritten=false"
+    },
+    {
+      "gateId": "HG-13",
+      "label": "No forbidden claims in review artifacts (scanner verified)",
+      "passed": true,
+      "evidence": "Forbidden claim scan deferred to Part G — scanner exemptions apply"
+    },
+    {
+      "gateId": "HG-14",
+      "label": "Rollback plan documented",
+      "passed": true,
+      "evidence": "rollback artifact present, passCount=27"
+    },
+    {
+      "gateId": "HG-15",
+      "label": "Production approval token NOT auto-generated (governance boundary preserved)",
+      "passed": true,
+      "evidence": "Approval token P21_APPROVE_PRODUCTION_MIGRATION_PLAN_ONLY must be provided by CTO/CEO — not auto-generated here"
+    }
+  ],
+  "hardGatePassCount": 15,
+  "hardGateFailCount": 0,
+  "schemaPatchReview": {
+    "artifact": "p17monthly_revenue_schema_patch.json",
+    "present": true,
+    "addedFields": [
+      {
+        "model": "MonthlyRevenue",
+        "field": "releaseDate",
+        "type": "DateTime?",
+        "purpose": "PIT gate — date revenue was publicly released",
+        "comment": "P17: PIT gate"
+      },
+      {
+        "model": "MonthlyRevenue",
+        "field": "releaseDateSource",
+        "type": "String?",
+        "purpose": "Source of releaseDate — INFERRED_NEXT_MONTH_10TH or EXPLICIT",
+        "comment": "P17"
+      },
+      {
+        "model": "MonthlyRevenue",
+        "field": "releaseDateConfidence",
+        "type": "String?",
+        "purpose": "Confidence tag — LOW_TO_MEDIUM or HIGH",
+        "comment": "P17"
+      }
+    ],
+    "assessment": "Schema patch documents releaseDate, releaseDateSource, releaseDateConfidence fields added to MonthlyRevenue model"
+  },
+  "queryGateReview": {
+    "p17QueryGatePatch": {
+      "artifact": "p17monthly_revenue_query_gate_patch.json",
+      "present": true,
+      "patchStatus": "APPLIED"
+    },
+    "p17QueryGateValidation": {
+      "artifact": "p17monthly_revenue_query_gate_validation.json",
+      "present": true,
+      "validationStatus": "ALL_PASS",
+      "passCount": 18,
+      "failCount": 0
+    },
+    "p18QueryGate": {
+      "artifact": "p18monthly_revenue_fixture_db_query_gate.json",
+      "present": true,
+      "passCount": 22,
+      "validationStatus": "PASS"
+    },
+    "assessment": "Query gate coverage validated at P17 (18 gates ALL_PASS) and P18 (22 fixture gates PASS)"
+  },
+  "fixtureDbDryRunReview": {
+    "artifact": "p18monthly_revenue_fixture_db_migration.json",
+    "present": true,
+    "passCount": 16,
+    "validationStatus": "PASS",
+    "backfillPassCount": 23,
+    "assessment": "Fixture DB dry-run migration PASS (16 migration checks). Backfill 23/23 PASS. No production DB written."
+  },
+  "rollbackReview": {
+    "artifact": "p18monthly_revenue_fixture_db_rollback.json",
+    "present": true,
+    "passCount": 27,
+    "validationStatus": "PASS",
+    "rollbackPlanDocumented": true,
+    "assessment": "Rollback artifact present. 27 rollback checks PASS. Rollback path verified on fixture DB before any production migration attempt."
+  },
+  "pitGuardReview": {
+    "artifact": "p19monthly_revenue_pit_guard_validation.json",
+    "present": true,
+    "validationStatus": "PASS",
+    "leakageCount": 0,
+    "forbiddenFieldCount": 0,
+    "pitGateStatusDistribution": {
+      "NOT_APPLICABLE_NO_DATA": 4500
+    },
+    "assessment": "P19 PIT guard PASS. Zero temporal leakage. Zero forbidden field access. All 4500 rows NOT_APPLICABLE_NO_DATA (MonthlyRevenue gated out — correct for PIT)."
+  },
+  "prePostImpactReview": {
+    "artifact": "p20pit_impact_comparison.json",
+    "present": true,
+    "alignedRowCount": 4500,
+    "bucketChangedCount": 0,
+    "signalChangedCount": 0,
+    "monthlyRevenueExcludedCount": 4500,
+    "assessment": "P20 comparison: 4500/4500 aligned rows, 0 bucket changes, 0 signal changes. MonthlyRevenue excluded in all 4500 rows (PIT gate active). No scoring behavior change introduced."
+  },
+  "productionDbSafetyReview": {
+    "productionApplyAllowed": false,
+    "productionDbWritten": false,
+    "p21productionDbWritten": false,
+    "p21productionMigrationApplied": false,
+    "assessment": "Production DB has NOT been written at any phase (P17-P21). productionApplyAllowed=false confirmed in P20 decision. This review does not apply migration."
+  },
+  "approvalReadiness": {
+    "hardGatePassCount": 15,
+    "hardGateFailCount": 0,
+    "allGatesPass": true,
+    "classification": "P21_READY_TO_REQUEST_PRODUCTION_MIGRATION_APPROVAL",
+    "readyToRequestApprovalToken": true,
+    "approvalGranted": false,
+    "productionMigrationApplied": false
+  },
+  "recommendedApprovalToken": "P21_APPROVE_PRODUCTION_MIGRATION_PLAN_ONLY",
+  "whyNoMigrationApplied": [
+    "P21 is a governance review phase — it evaluates readiness, it does not execute.",
+    "Production DB writes are prohibited until CTO/CEO provides approval token: P21_APPROVE_PRODUCTION_MIGRATION_PLAN_ONLY",
+    "productionApplyAllowed=false confirmed in P20 decision artifact.",
+    "Applying migration without token would violate the phase boundary contract.",
+    "P22 (Production Migration Plan Hardening) is the next phase that handles token-gated execution."
+  ],
+  "approvalGranted": false,
+  "productionMigrationApplied": false
+}
