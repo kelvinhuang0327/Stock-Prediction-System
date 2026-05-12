@@ -1,0 +1,105 @@
+{
+  "phase": "P18-HARDRESET",
+  "task": "MonthlyRevenue releaseDate fixture DB migration",
+  "date": "2026-05-12",
+  "validationStatus": "PASS",
+  "passCount": 16,
+  "failCount": 0,
+  "total": 16,
+  "gates": [
+    {
+      "label": "G1: Fixture DB does not exist before creation",
+      "status": "PASS"
+    },
+    {
+      "label": "G2: Fixture DB created",
+      "status": "PASS"
+    },
+    {
+      "label": "G3: Pre-migration schema lacks releaseDate",
+      "status": "PASS"
+    },
+    {
+      "label": "G4: Pre-migration schema lacks releaseDateSource",
+      "status": "PASS"
+    },
+    {
+      "label": "G5: Pre-migration schema lacks releaseDateConfidence",
+      "status": "PASS"
+    },
+    {
+      "label": "G6: Pre-migration has id/stockId/year/month/revenue",
+      "status": "PASS"
+    },
+    {
+      "label": "G7: Pre-migration rows seeded correctly (count=3)",
+      "status": "PASS"
+    },
+    {
+      "label": "G8: Migration SQL file readable",
+      "status": "PASS"
+    },
+    {
+      "label": "G9:  Post-migration has releaseDate",
+      "status": "PASS"
+    },
+    {
+      "label": "G10: Post-migration has releaseDateSource",
+      "status": "PASS"
+    },
+    {
+      "label": "G11: Post-migration has releaseDateConfidence",
+      "status": "PASS"
+    },
+    {
+      "label": "G12: Post-migration preserves original columns",
+      "status": "PASS"
+    },
+    {
+      "label": "G13: Existing rows survive migration (count=3)",
+      "status": "PASS"
+    },
+    {
+      "label": "G14: Migrated rows have NULL releaseDate initially",
+      "status": "PASS"
+    },
+    {
+      "label": "G15: productionApplyAllowed=false enforced (fixture only)",
+      "status": "PASS"
+    },
+    {
+      "label": "G16: Production DB not connected (no DATABASE_URL used)",
+      "status": "PASS"
+    }
+  ],
+  "fixtureDbPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/outputs/online_validation/fixture_db/p18_monthly_revenue_fixture.sqlite",
+  "migrationTarget": "FIXTURE_DB_ONLY",
+  "productionApplyAllowed": false,
+  "dryRunOnly": true,
+  "productionDbWritten": false,
+  "preMigrationColumns": [
+    "id",
+    "stockId",
+    "year",
+    "month",
+    "revenue",
+    "yoyGrowth",
+    "momGrowth",
+    "createdAt"
+  ],
+  "postMigrationColumns": [
+    "id",
+    "stockId",
+    "year",
+    "month",
+    "revenue",
+    "yoyGrowth",
+    "momGrowth",
+    "createdAt",
+    "releaseDate",
+    "releaseDateSource",
+    "releaseDateConfidence"
+  ],
+  "migrationSqlPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/prisma/migrations/20260512000000_monthly_revenue_release_date_pit_draft/migration.sql",
+  "disclaimer": "Does not constitute investment advice. Does not compute ROI, profit, alpha, win-rate, edge, or outperformance."
+}
