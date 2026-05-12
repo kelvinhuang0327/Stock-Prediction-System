@@ -1,0 +1,182 @@
+{
+  "phase": "P16-HARDRESET",
+  "task": "Query Gate Dry-Run",
+  "date": "2026-05-12",
+  "disclaimer": "Does not constitute investment advice. Governance / dry-run only. No production DB writes.",
+  "approvalToken": "P14_APPROVE_SCHEMA_MIGRATION_DRY_RUN_ONLY",
+  "productionApplyAllowed": false,
+  "dryRunOnly": true,
+  "productionDbWritten": false,
+  "p14QueryGateProposalReference": {
+    "proposalsFound": 3,
+    "ruleBasedStockAnalyzerFound": false,
+    "fundamentalResearchServiceFound": false
+  },
+  "scenarios": [
+    {
+      "scenario": "1. releaseDate=2024-02-10, asOfDate=2024-02-09 → unavailable",
+      "status": "PASS",
+      "detail": "available=false, reason=releaseDate (2024-02-10) > asOfDate (2024-02-09) — unavailable",
+      "result": {
+        "stockId": "TWN-001",
+        "releaseDate": "2024-02-10",
+        "asOfDate": "2024-02-09",
+        "available": false,
+        "reason": "releaseDate (2024-02-10) > asOfDate (2024-02-09) — unavailable",
+        "allowInferred": true,
+        "releaseDateSource": "OFFICIAL_TWSE"
+      }
+    },
+    {
+      "scenario": "2. releaseDate=2024-02-10, asOfDate=2024-02-10 → available (boundary)",
+      "status": "PASS",
+      "detail": "available=true, reason=releaseDate (2024-02-10) <= asOfDate (2024-02-10) — available",
+      "result": {
+        "stockId": "TWN-001",
+        "releaseDate": "2024-02-10",
+        "asOfDate": "2024-02-10",
+        "available": true,
+        "reason": "releaseDate (2024-02-10) <= asOfDate (2024-02-10) — available",
+        "allowInferred": true,
+        "releaseDateSource": "OFFICIAL_TWSE"
+      }
+    },
+    {
+      "scenario": "3. Inferred releaseDate, allowInferred=true, asOfDate after → available",
+      "status": "PASS",
+      "detail": "available=true, reason=releaseDate (2024-02-10) <= asOfDate (2024-02-11) — available",
+      "result": {
+        "stockId": "TWN-INF",
+        "releaseDate": "2024-02-10",
+        "asOfDate": "2024-02-11",
+        "available": true,
+        "reason": "releaseDate (2024-02-10) <= asOfDate (2024-02-11) — available",
+        "allowInferred": true,
+        "releaseDateSource": "INFERRED_NEXT_MONTH_10TH"
+      }
+    },
+    {
+      "scenario": "4. Inferred releaseDate, allowInferred=false → unavailable",
+      "status": "PASS",
+      "detail": "available=false, reason=inferred releaseDate but allowInferred=false — unavailable",
+      "result": {
+        "stockId": "TWN-INF",
+        "releaseDate": "2024-02-10",
+        "asOfDate": "2024-02-11",
+        "available": false,
+        "reason": "inferred releaseDate but allowInferred=false — unavailable",
+        "allowInferred": false,
+        "releaseDateSource": "INFERRED_NEXT_MONTH_10TH"
+      }
+    },
+    {
+      "scenario": "5. Missing releaseDate and no inference → unavailable",
+      "status": "PASS",
+      "detail": "available=false, reason=no releaseDate — unavailable",
+      "result": {
+        "stockId": "TWN-NRL",
+        "releaseDate": null,
+        "asOfDate": "2024-02-15",
+        "available": false,
+        "reason": "no releaseDate — unavailable",
+        "allowInferred": true
+      }
+    },
+    {
+      "scenario": "6. RuleBasedStockAnalyzer gate: releaseDate <= asOfDate",
+      "status": "PASS",
+      "detail": "before(2024-03-09)=false, after(2024-03-10)=true. Proposal found: false",
+      "result": {
+        "before": {
+          "stockId": "TWN-RBA",
+          "releaseDate": "2024-03-10",
+          "asOfDate": "2024-03-09",
+          "available": false,
+          "reason": "releaseDate (2024-03-10) > asOfDate (2024-03-09) — unavailable",
+          "allowInferred": true,
+          "releaseDateSource": "OFFICIAL_TWSE"
+        },
+        "after": {
+          "stockId": "TWN-RBA",
+          "releaseDate": "2024-03-10",
+          "asOfDate": "2024-03-10",
+          "available": true,
+          "reason": "releaseDate (2024-03-10) <= asOfDate (2024-03-10) — available",
+          "allowInferred": true,
+          "releaseDateSource": "OFFICIAL_TWSE"
+        },
+        "proposalFound": false
+      }
+    },
+    {
+      "scenario": "7. FundamentalResearchService gate: releaseDate <= asOfDate",
+      "status": "PASS",
+      "detail": "before(2024-04-09)=false, after(2024-04-10)=true. Proposal found: false",
+      "result": {
+        "before": {
+          "stockId": "TWN-FRS",
+          "releaseDate": "2024-04-10",
+          "asOfDate": "2024-04-09",
+          "available": false,
+          "reason": "releaseDate (2024-04-10) > asOfDate (2024-04-09) — unavailable",
+          "allowInferred": true,
+          "releaseDateSource": "OFFICIAL_TWSE"
+        },
+        "after": {
+          "stockId": "TWN-FRS",
+          "releaseDate": "2024-04-10",
+          "asOfDate": "2024-04-10",
+          "available": true,
+          "reason": "releaseDate (2024-04-10) <= asOfDate (2024-04-10) — available",
+          "allowInferred": true,
+          "releaseDateSource": "OFFICIAL_TWSE"
+        },
+        "proposalFound": false
+      }
+    },
+    {
+      "scenario": "8. Unreleased MonthlyRevenue excluded from scoring snapshot (asOfDate < releaseDate)",
+      "status": "PASS",
+      "detail": "available=false, asOfDate=2024-05-09 < releaseDate=2024-05-10",
+      "result": {
+        "stockId": "TWN-ACT",
+        "releaseDate": "2024-05-10",
+        "asOfDate": "2024-05-09",
+        "available": false,
+        "reason": "releaseDate (2024-05-10) > asOfDate (2024-05-09) — unavailable",
+        "allowInferred": true,
+        "releaseDateSource": "OFFICIAL_TWSE"
+      }
+    }
+  ],
+  "safetyGates": [
+    {
+      "gate": "productionApplyAllowed=false (structural)",
+      "status": "PASS"
+    },
+    {
+      "gate": "dryRunOnly=true (structural)",
+      "status": "PASS"
+    },
+    {
+      "gate": "no production DB connection (fixture-only)",
+      "status": "PASS"
+    },
+    {
+      "gate": "PIT boundary: asOfDate < releaseDate → unavailable",
+      "status": "PASS"
+    },
+    {
+      "gate": "PIT boundary: asOfDate === releaseDate → available",
+      "status": "PASS"
+    },
+    {
+      "gate": "allowInferred=false blocks inferred dates",
+      "status": "PASS"
+    }
+  ],
+  "allScenariosPass": true,
+  "allSafetyPass": true,
+  "validationStatus": "PASS",
+  "summary": "Query gate dry-run PASS. 8 scenarios verified. PIT boundary enforced: asOfDate < releaseDate → unavailable."
+}

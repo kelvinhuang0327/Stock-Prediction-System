@@ -1,0 +1,188 @@
+{
+  "phase": "P16-HARDRESET",
+  "task": "Fixture Backfill Dry-Run",
+  "date": "2026-05-12",
+  "disclaimer": "Does not constitute investment advice. Governance / dry-run only. No production DB writes.",
+  "approvalToken": "P14_APPROVE_SCHEMA_MIGRATION_DRY_RUN_ONLY",
+  "productionApplyAllowed": false,
+  "dryRunOnly": true,
+  "productionDbWritten": false,
+  "backfillResult": {
+    "validationStatus": "PASS",
+    "productionDbWritten": false,
+    "dryRunOnly": true,
+    "total": 10,
+    "inferred": 4,
+    "preserved": 2,
+    "skipped": 4,
+    "flagged": 0,
+    "results": [
+      {
+        "stockId": "TWN-001",
+        "year": 2024,
+        "month": 1,
+        "action": "INFERRED",
+        "releaseDate": "2024-02-10",
+        "releaseDateSource": "INFERRED_NEXT_MONTH_10TH",
+        "releaseDateConfidence": "LOW_TO_MEDIUM"
+      },
+      {
+        "stockId": "TWN-002",
+        "year": 2024,
+        "month": 12,
+        "action": "INFERRED",
+        "releaseDate": "2025-01-10",
+        "releaseDateSource": "INFERRED_NEXT_MONTH_10TH",
+        "releaseDateConfidence": "LOW_TO_MEDIUM"
+      },
+      {
+        "stockId": "TWN-003",
+        "year": 2024,
+        "month": 3,
+        "action": "PRESERVED",
+        "releaseDate": "2024-04-08",
+        "releaseDateSource": "OFFICIAL_TWSE",
+        "releaseDateConfidence": "HIGH"
+      },
+      {
+        "stockId": "TWN-004",
+        "year": null,
+        "month": 5,
+        "action": "SKIPPED",
+        "skipReason": "missing or invalid year"
+      },
+      {
+        "stockId": "TWN-005",
+        "year": 2024,
+        "month": null,
+        "action": "SKIPPED",
+        "skipReason": "missing or invalid month"
+      },
+      {
+        "stockId": "TWN-006",
+        "year": 2024,
+        "month": 13,
+        "action": "SKIPPED",
+        "skipReason": "invalid month: 13"
+      },
+      {
+        "stockId": "TWN-007",
+        "year": 2024,
+        "month": 6,
+        "action": "PRESERVED",
+        "releaseDate": "2024-07-05",
+        "releaseDateSource": "OFFICIAL_TWSE",
+        "releaseDateConfidence": "HIGH"
+      },
+      {
+        "stockId": "TWN-008",
+        "year": 2024,
+        "month": 2,
+        "action": "INFERRED",
+        "releaseDate": "2024-03-10",
+        "releaseDateSource": "INFERRED_NEXT_MONTH_10TH",
+        "releaseDateConfidence": "LOW_TO_MEDIUM",
+        "forbiddenFieldsDetected": [
+          "returnPct",
+          "realizedReturnClass"
+        ]
+      },
+      {
+        "stockId": "TWN-001",
+        "year": 2024,
+        "month": 1,
+        "action": "SKIPPED",
+        "skipReason": "duplicate stockId+period"
+      },
+      {
+        "stockId": "TWN-009",
+        "year": 2026,
+        "month": 11,
+        "action": "INFERRED",
+        "releaseDate": "2026-12-10",
+        "releaseDateSource": "INFERRED_NEXT_MONTH_10TH",
+        "releaseDateConfidence": "LOW_TO_MEDIUM"
+      }
+    ],
+    "errors": [],
+    "warnings": [
+      "Record TWN-008: forbidden outcome fields detected (not used for backfill): returnPct, realizedReturnClass",
+      "Duplicate period for TWN-001:2024:1 — skipping duplicate"
+    ],
+    "summary": "Backfill dry-run: 4 inferred, 2 preserved, 4 skipped, 0 flagged. No production DB written."
+  },
+  "scenarioChecks": [
+    {
+      "scenario": "1. Jan 2024 inferred releaseDate = 2024-02-10",
+      "status": "PASS",
+      "detail": "action=INFERRED, releaseDate=2024-02-10"
+    },
+    {
+      "scenario": "2. Dec 2024 inferred releaseDate = 2025-01-10",
+      "status": "PASS",
+      "detail": "action=INFERRED, releaseDate=2025-01-10"
+    },
+    {
+      "scenario": "3. Explicit releaseDate preserved (OFFICIAL_TWSE)",
+      "status": "PASS",
+      "detail": "action=PRESERVED, releaseDate=2024-04-08"
+    },
+    {
+      "scenario": "4. Missing year → SKIPPED",
+      "status": "PASS",
+      "detail": "action=SKIPPED, reason=missing or invalid year"
+    },
+    {
+      "scenario": "5. Missing month → SKIPPED",
+      "status": "PASS",
+      "detail": "action=SKIPPED, reason=missing or invalid month"
+    },
+    {
+      "scenario": "6. Invalid month (13) → SKIPPED",
+      "status": "PASS",
+      "detail": "action=SKIPPED, reason=invalid month: 13"
+    },
+    {
+      "scenario": "7. Authoritative releaseDate preserved",
+      "status": "PASS",
+      "detail": "action=PRESERVED, releaseDate=2024-07-05"
+    },
+    {
+      "scenario": "8. Outcome fields detected as warning, not used for backfill",
+      "status": "PASS",
+      "detail": "action=INFERRED, outcomeWarning=true"
+    },
+    {
+      "scenario": "9. Duplicate stockId+period → second SKIPPED",
+      "status": "PASS",
+      "detail": "TWN-001 results: [\"INFERRED\",\"SKIPPED\"]"
+    },
+    {
+      "scenario": "10. Future period inferred releaseDate = 2026-12-10",
+      "status": "PASS",
+      "detail": "action=INFERRED, releaseDate=2026-12-10"
+    }
+  ],
+  "safetyGates": [
+    {
+      "gate": "productionDbWritten === false",
+      "status": "PASS"
+    },
+    {
+      "gate": "dryRunOnly === true",
+      "status": "PASS"
+    },
+    {
+      "gate": "validationStatus PASS",
+      "status": "PASS"
+    },
+    {
+      "gate": "all inferred tagged with INFERRED_NEXT_MONTH_10TH",
+      "status": "PASS"
+    }
+  ],
+  "allScenarioPass": true,
+  "allSafetyPass": true,
+  "validationStatus": "PASS",
+  "summary": "Backfill dry-run PASS. 10 scenarios verified. 4 inferred, 2 preserved, 4 skipped. No production DB written."
+}
