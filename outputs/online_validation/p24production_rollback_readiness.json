@@ -1,0 +1,108 @@
+{
+  "phase": "P24-HARDRESET",
+  "part": "G",
+  "description": "Rollback readiness gate",
+  "generatedAt": "2026-05-12T07:18:16.611Z",
+  "tokenStatus": "VERIFIED",
+  "requiredToken": "P23_APPROVE_PRODUCTION_MIGRATION_EXECUTION_ONLY",
+  "migrationStatus": "PASS",
+  "productionDbTarget": "prisma/dev.db",
+  "backupFilePath": "prisma/dev.p24_premigration_backup_2026-05-12_0716.db",
+  "backupChecksum": "a5cf277182c161dfe97ba05f9b81528d6c8e477dd5ac0bec6810ffbb8711c6f8",
+  "rollbackSqlPath": "prisma/migrations/20260512000000_monthly_revenue_release_date_pit_draft/migration.sql",
+  "rollbackTriggers": [
+    "prisma migrate deploy failed with error",
+    "Backfill script produced incorrect releaseDate values (null or future date violations)",
+    "Query gate regression: releaseDate > asOfDate found in any row",
+    "Post-migration row count mismatch vs pre-migration baseline",
+    "Post-migration validation checklist has 1 or more FAIL items",
+    "Application error rate increased > 5% within 30 minutes post-migration",
+    "RuleBasedStockAnalyzer smoke test failed post-migration",
+    "alphaScore or recommendationBucket changed vs P20 baseline"
+  ],
+  "rollbackTriggerCount": 8,
+  "restoreSteps": [
+    "[PLACEHOLDER — requires P23 approval] Initiate maintenance window",
+    "[PLACEHOLDER — requires P23 approval] Verify backup file accessibility and checksum",
+    "[PLACEHOLDER — requires P23 approval] Restore DB from backup (see backupPlan.method.command)",
+    "[PLACEHOLDER — requires P23 approval] Run: npx prisma db pull — introspect schema after restore",
+    "Verify row count: SELECT COUNT(*) FROM MonthlyRevenue",
+    "Verify schema: PRAGMA table_info(MonthlyRevenue) — confirm releaseDate, releaseDateSource, releaseDateConfidence",
+    "Run query gate sample validation",
+    "Run RuleBasedStockAnalyzer smoke test",
+    "Confirm leakage check: SELECT COUNT(*) FROM MonthlyRevenue WHERE releaseDate > asOfDate — must be 0",
+    "[PLACEHOLDER — requires P23 approval] Resume production traffic"
+  ],
+  "restoreStepCount": 10,
+  "autoTriggerDisabled": true,
+  "currentRowCount": 2143,
+  "preBackupRowCount": 2143,
+  "checks": [
+    {
+      "id": "R01",
+      "label": "Backup file accessible",
+      "pass": true,
+      "detail": "prisma/dev.p24_premigration_backup_2026-05-12_0716.db"
+    },
+    {
+      "id": "R02",
+      "label": "Backup checksum recorded",
+      "pass": true,
+      "detail": "a5cf277182c161dfe97ba05f9b81528d6c8e477dd5ac0bec6810ffbb8711c6f8"
+    },
+    {
+      "id": "R03",
+      "label": "Rollback SQL reference exists",
+      "pass": true,
+      "detail": "prisma/migrations/20260512000000_monthly_revenue_release_date_pit_draft/migration.sql"
+    },
+    {
+      "id": "R04",
+      "label": "Restore procedure documented (≥5 steps)",
+      "pass": true,
+      "detail": "10 restore steps in P22 plan"
+    },
+    {
+      "id": "R05",
+      "label": "Rollback triggers documented (≥3)",
+      "pass": true,
+      "detail": "8 triggers in P22 plan"
+    },
+    {
+      "id": "R06",
+      "label": "Migration status known",
+      "pass": true,
+      "detail": "PASS"
+    },
+    {
+      "id": "R07",
+      "label": "Current DB row count recordable",
+      "pass": true,
+      "detail": "2143 rows"
+    },
+    {
+      "id": "R08",
+      "label": "Pre-backup row count recorded",
+      "pass": true,
+      "detail": "2143 rows pre-backup"
+    },
+    {
+      "id": "R09",
+      "label": "Auto-trigger disabled (manual rollback only)",
+      "pass": true,
+      "detail": "autoTrigger = false"
+    },
+    {
+      "id": "R10",
+      "label": "Restore command documented",
+      "pass": true,
+      "detail": "Restore command found in restore steps"
+    }
+  ],
+  "passCount": 10,
+  "totalCount": 10,
+  "rollbackReadinessStatus": "PASS",
+  "productionMigrationApplied": true,
+  "approvalGranted": false,
+  "disclaimer": "Does not constitute investment advice. Does not compute ROI, profit, alpha, win-rate, edge, or outperformance."
+}
