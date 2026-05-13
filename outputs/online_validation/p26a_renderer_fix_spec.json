@@ -1,0 +1,27 @@
+{
+  "specId": "P26A-RENDERER-FIX-SPEC",
+  "generatedAt": "2026-05-14T11:00:00.000Z",
+  "rendererVersion": "p26a-corpus-renderer-v1",
+  "implementedIn": "src/lib/onlineValidation/P26ACorpusReasonRenderer.ts",
+  "rules": {
+    "singleToken_nonEmpty_factors": "Apply enrichReasonFromExistingFactors -> ENRICHED",
+    "emptyFactorSnapshot": "Keep original reasonSnapshot -> FALLBACK_EMPTY",
+    "alreadyRich": "reasonSnapshot.length > 20 and not single-token -> keep -> ALREADY_RICH"
+  },
+  "outputShape": {
+    "renderedText": "string",
+    "outcome": "ENRICHED | ALREADY_RICH | FALLBACK_EMPTY",
+    "oldText": "original preserved",
+    "factorCount": "number",
+    "alphaScoreUnchanged": "always true",
+    "bucketUnchanged": "always true"
+  },
+  "forbiddenActions": [
+    "no alphaScore change",
+    "no bucket change",
+    "no DB write",
+    "no corpus mutation",
+    "no LLM"
+  ],
+  "disclaimer": "Does not constitute investment advice."
+}
