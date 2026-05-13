@@ -1,0 +1,55 @@
+{
+  "dropzonePath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/data/manual/monthly-revenue/p26f3-2-dropzone",
+  "inventoriedAt": "2026-05-13T06:37:05.743Z",
+  "totalFiles": 3,
+  "candidateSourceFiles": 0,
+  "ignoredFiles": 3,
+  "unsupportedFiles": 0,
+  "supportedFormatCounts": {
+    "csv": 0,
+    "json": 0,
+    "jsonl": 0
+  },
+  "classification": "SOURCE_NOT_PROVIDED",
+  "files": [
+    {
+      "fileName": ".gitkeep",
+      "filePath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/data/manual/monthly-revenue/p26f3-2-dropzone/.gitkeep",
+      "format": "unknown",
+      "isCandidate": false,
+      "isIgnored": true,
+      "fileSizeBytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtimeMs": 1778653228540.82,
+      "mtimeISO": "2026-05-13T06:20:28.540Z",
+      "suspectedPeriod": null
+    },
+    {
+      "fileName": "EXPECTED_SCHEMA.json",
+      "filePath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/data/manual/monthly-revenue/p26f3-2-dropzone/EXPECTED_SCHEMA.json",
+      "format": "json",
+      "isCandidate": false,
+      "isIgnored": true,
+      "fileSizeBytes": 2149,
+      "sha256": "86db541fdb677046200e97b199098ce7e758ed52176877543dec526e409cec9b",
+      "mtimeMs": 1778653258061.1748,
+      "mtimeISO": "2026-05-13T06:20:58.061Z",
+      "suspectedPeriod": null
+    },
+    {
+      "fileName": "README.md",
+      "filePath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/data/manual/monthly-revenue/p26f3-2-dropzone/README.md",
+      "format": "unknown",
+      "isCandidate": false,
+      "isIgnored": true,
+      "fileSizeBytes": 2698,
+      "sha256": "4980f7bb5eca779c59cba204ff809495b88330e4c354b286b677f2d3c8fc7905",
+      "mtimeMs": 1778653257966.7166,
+      "mtimeISO": "2026-05-13T06:20:57.966Z",
+      "suspectedPeriod": null
+    }
+  ],
+  "readOnly": true,
+  "dbWriteAllowed": false,
+  "corpusWriteAllowed": false
+}
