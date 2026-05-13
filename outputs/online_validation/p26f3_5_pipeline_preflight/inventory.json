@@ -1,0 +1,40 @@
+{
+  "stage": "inventory",
+  "dropzonePath": "/var/folders/tm/ft7d03r14b35h16hbjkjppbs_jv8xm/T/p26f3_5_preflight_dropzone",
+  "isSyntheticPreflight": true,
+  "candidateSourceFiles": 5,
+  "files": [
+    {
+      "name": "twse_monthly_revenue_2025_09_synthetic.csv",
+      "ext": ".csv",
+      "sha256": "0276b4d81415b0923222c98dc598509f3fc78c0a60d10bdffe9afafdab7e875e",
+      "isSynthetic": true
+    },
+    {
+      "name": "twse_monthly_revenue_2025_10_synthetic.csv",
+      "ext": ".csv",
+      "sha256": "b3f8d4f681fc2825ec8225856fc48ab22600c3f441450c61f689b260d71a2784",
+      "isSynthetic": true
+    },
+    {
+      "name": "twse_monthly_revenue_2025_11_synthetic.csv",
+      "ext": ".csv",
+      "sha256": "b78363260dcf93fb285c09330b260304115520e619da0d8775eeaa16a95dcc5f",
+      "isSynthetic": true
+    },
+    {
+      "name": "twse_monthly_revenue_2025_12_synthetic.csv",
+      "ext": ".csv",
+      "sha256": "29058689826340225e9e065a659f886b6b66ff2c5b4813c19bcb4f7d22e38582",
+      "isSynthetic": true
+    },
+    {
+      "name": "twse_monthly_revenue_2026_01_synthetic.csv",
+      "ext": ".csv",
+      "sha256": "79964dd2f7d42a7efb67443cdb7cae56be55d7710c832a81e0f3465427b9d4c5",
+      "isSynthetic": true
+    }
+  ],
+  "pass": true,
+  "expectedCandidateSourceFiles": 5
+}

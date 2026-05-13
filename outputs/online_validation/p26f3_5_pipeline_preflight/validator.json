@@ -1,0 +1,45 @@
+{
+  "stage": "validator",
+  "isSyntheticPreflight": true,
+  "acceptedRows": 125,
+  "rejectedRows": 0,
+  "expectedAcceptedRows": 125,
+  "files": [
+    {
+      "file": "twse_monthly_revenue_2025_09_synthetic.csv",
+      "rows": 25,
+      "accepted": 25,
+      "rejected": 0,
+      "rejectedDetail": []
+    },
+    {
+      "file": "twse_monthly_revenue_2025_10_synthetic.csv",
+      "rows": 25,
+      "accepted": 25,
+      "rejected": 0,
+      "rejectedDetail": []
+    },
+    {
+      "file": "twse_monthly_revenue_2025_11_synthetic.csv",
+      "rows": 25,
+      "accepted": 25,
+      "rejected": 0,
+      "rejectedDetail": []
+    },
+    {
+      "file": "twse_monthly_revenue_2025_12_synthetic.csv",
+      "rows": 25,
+      "accepted": 25,
+      "rejected": 0,
+      "rejectedDetail": []
+    },
+    {
+      "file": "twse_monthly_revenue_2026_01_synthetic.csv",
+      "rows": 25,
+      "accepted": 25,
+      "rejected": 0,
+      "rejectedDetail": []
+    }
+  ],
+  "pass": true
+}

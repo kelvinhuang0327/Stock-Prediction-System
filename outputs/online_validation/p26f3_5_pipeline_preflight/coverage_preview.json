@@ -1,0 +1,10 @@
+{
+  "stage": "coveragePreview",
+  "isSyntheticPreflight": true,
+  "totalSnapshotRows": 9000,
+  "matchedRows": 9000,
+  "coveredSymbolCount": 25,
+  "coveragePct": 100,
+  "pass": true,
+  "note": "releaseDate for synthetic fixture set to INFERRED_NEXT_MONTH_10TH; match depends on corpus asOfDate distribution"
+}

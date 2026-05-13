@@ -1,0 +1,19 @@
+{
+  "phase": "P26F3-5-HARDRESET",
+  "scannedAt": "2026-05-13T10:02:28.167Z",
+  "dropzonePath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/data/manual/monthly-revenue/p26f3-2-dropzone",
+  "classification": "P26F3_5_SOURCE_NOT_PROVIDED",
+  "candidateSourceFiles": 0,
+  "totalFilesInDropzone": 5,
+  "ignoredFiles": 5,
+  "acceptedRows": 0,
+  "matchedRows": 0,
+  "requiresExplicitImportApprovalToken": true,
+  "approvalTokenRequired": "P26F4_APPROVE_HISTORICAL_MONTHLY_REVENUE_IMPORT_ONLY",
+  "importAllowed": false,
+  "dbWritePerformed": false,
+  "operatorNextStep": "No candidate source files found in drop-zone. Download TWSE monthly revenue CSV files for 2025-09 through 2026-01 and place them in the drop-zone. See operator handoff packet: docs/manual-data/monthly-revenue/P26F3_5_OPERATOR_HANDOFF_PACKET.md",
+  "handoffPacket": "docs/manual-data/monthly-revenue/P26F3_5_OPERATOR_HANDOFF_PACKET.md",
+  "readOnly": true,
+  "disclaimer": "Does not constitute investment advice."
+}

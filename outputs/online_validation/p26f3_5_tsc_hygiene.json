@@ -1,0 +1,42 @@
+{
+  "phase": "P26F3-5-HARDRESET",
+  "targetFile": "src/app/api/admin/data-quality/route.ts",
+  "errorsFixed": [
+    {
+      "code": "TS1128",
+      "message": "Declaration or statement expected",
+      "cause": "Orphaned duplicate code block (lines 127-181) outside function body",
+      "resolution": "Removed duplicate block"
+    },
+    {
+      "code": "TS1005",
+      "message": "Expected token",
+      "cause": "Cascading syntax error from TS1128",
+      "resolution": "Fixed with TS1128 resolution"
+    }
+  ],
+  "behaviorInvariant": {
+    "apiResponseShapeUnchanged": true,
+    "adminAuthUnchanged": true,
+    "dataQualityLogicUnchanged": true,
+    "sqlPrismaQueryUnchanged": true,
+    "endpointsUnchanged": true,
+    "exportNamesUnchanged": true
+  },
+  "remainingErrors": [
+    {
+      "file": ".next/types/validator.ts",
+      "code": "TS2344",
+      "note": "Pre-existing Next.js route params type mismatch (not in data-quality scope)"
+    },
+    {
+      "file": "runtime/tw_self_opt_validation.ts",
+      "code": "various",
+      "note": "Pre-existing runtime file errors (not in data-quality scope)"
+    }
+  ],
+  "dataQualityTS1128Pass": true,
+  "dataQualityTS1005Pass": true,
+  "verdict": "PASS",
+  "disclaimer": "Does not constitute investment advice."
+}
