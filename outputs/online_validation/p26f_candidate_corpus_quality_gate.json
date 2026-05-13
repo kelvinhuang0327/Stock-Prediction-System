@@ -1,0 +1,14 @@
+{
+  "phase": "P26F-HARDRESET",
+  "p3CandidateRowCount": 4500,
+  "p19CandidateRowCount": 4500,
+  "allRowsParseable": true,
+  "allRowsHaveContext": true,
+  "allContextReadOnly": true,
+  "allContextEntersAlphaScoreFalse": true,
+  "noOutcomeFieldsInContext": true,
+  "originalP3Sha256Unchanged": true,
+  "originalP19Sha256Unchanged": true,
+  "noForbiddenClaims": true,
+  "status": "QUALITY_GATE_PASS"
+}

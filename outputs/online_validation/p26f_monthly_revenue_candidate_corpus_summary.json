@@ -1,0 +1,21 @@
+{
+  "phase": "P26F-HARDRESET",
+  "date": "2026-05-13",
+  "sourceMode": "REAL_SOURCE_PRESENT_NO_RELEASE_DATE",
+  "dbMonthlyRevenueTotal": 2143,
+  "dbReleaseDatePopulated": 0,
+  "dbReleaseDateNull": 2143,
+  "p3CandidateRows": 4500,
+  "p19CandidateRows": 4500,
+  "p3MatchedRows": 0,
+  "p19MatchedRows": 0,
+  "totalMatchedRows": 0,
+  "coverageRatio": 0,
+  "coverageClassification": "NONE",
+  "allContextReadOnly": true,
+  "allContextEntersAlphaScoreFalse": true,
+  "noOutcomeFields": true,
+  "originalP3CoverageRows": 0,
+  "originalP19CoverageRows": 0,
+  "status": "CANDIDATE_CORPUS_BUILT"
+}
