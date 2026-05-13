@@ -1,0 +1,97 @@
+{
+  "phase": "P26F4-or-P26A-FOLLOWUP-HARDRESET",
+  "generatedAt": "2026-05-14T10:00:00.000Z",
+  "gitHead": "5a04977 P26F3-5-HARDRESET",
+  "artifacts": {
+    "checks": [
+      {
+        "path": "outputs/online_validation/p26f3_5_pipeline_preflight_final_report.md",
+        "present": true
+      },
+      {
+        "path": "outputs/online_validation/p26f3_5_dropzone_scan_result.json",
+        "present": true
+      },
+      {
+        "path": "outputs/online_validation/p26f3_5_operator_handoff_packet_summary.json",
+        "present": true
+      },
+      {
+        "path": "docs/manual-data/monthly-revenue/P26F3_5_OPERATOR_HANDOFF_PACKET.md",
+        "present": true
+      },
+      {
+        "path": "scripts/run-p26f3-5-dropzone-conditional-scan.js",
+        "present": true
+      },
+      {
+        "path": "scripts/run-p26f3-5-pipeline-preflight.js",
+        "present": true
+      }
+    ],
+    "allPresent": true
+  },
+  "frozenCorpus": {
+    "checks": [
+      {
+        "corpus": "simulation_snapshot_corpus.jsonl",
+        "expected": 60,
+        "actual": 60,
+        "pass": true
+      },
+      {
+        "corpus": "p0hardreset_historical_replay_corpus.jsonl",
+        "expected": 4500,
+        "actual": 4500,
+        "pass": true
+      },
+      {
+        "corpus": "p1baseline_historical_replay_corpus.jsonl",
+        "expected": 9900,
+        "actual": 9900,
+        "pass": true
+      },
+      {
+        "corpus": "p3active_scoring_historical_replay_corpus.jsonl",
+        "expected": 4500,
+        "actual": 4500,
+        "pass": true
+      },
+      {
+        "corpus": "p19active_scoring_pit_replay_corpus.jsonl",
+        "expected": 4500,
+        "actual": 4500,
+        "pass": true
+      }
+    ],
+    "allPass": true
+  },
+  "dbBaseline": {
+    "sha256": "a5cf277182c161dfe97ba05f9b81528d6c8e477dd5ac0bec6810ffbb8711c6f8"
+  },
+  "scoringBaseline": {
+    "checks": [
+      {
+        "file": "RuleBasedStockAnalyzer.ts",
+        "expected": "bc3716cc8e74be304f2e262aac586a61760bb59d6c95e82a575c38e03ea7373d",
+        "actual": "bc3716cc8e74be304f2e262aac586a61760bb59d6c95e82a575c38e03ea7373d",
+        "pass": true
+      },
+      {
+        "file": "SignalFusionEngine.ts",
+        "expected": "b8ce3fa3ae63fd7edf6b6067dd8ccea63c02741454b93792e87bfbc1e95d2bf4",
+        "actual": "b8ce3fa3ae63fd7edf6b6067dd8ccea63c02741454b93792e87bfbc1e95d2bf4",
+        "pass": true
+      },
+      {
+        "file": "ActiveScoringSnapshotBuilder.ts",
+        "expected": "063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d",
+        "actual": "063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d",
+        "pass": true
+      }
+    ],
+    "allPass": true
+  },
+  "preflightPass": true,
+  "disclaimer": "Does not constitute investment advice."
+}

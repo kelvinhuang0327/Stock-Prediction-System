@@ -1,0 +1,417 @@
+{
+  "auditId": "P26A-9CASE-AUDIT",
+  "generatedAt": "2026-05-14T10:00:00.000Z",
+  "totalCases": 9,
+  "uniqueSymbolDateCombinations": 5,
+  "uniqueSymbols": [
+    "00738U",
+    "00891",
+    "1710"
+  ],
+  "taxonomySummary": {
+    "MONTHLY_REVENUE_BLOCKED_BY_SOURCE": 9,
+    "SNAPSHOT_FIELD_PRESENT_BUT_REASON_NOT_RENDERED": 9
+  },
+  "patchCandidateCount": 9,
+  "allBlockedByMonthlyRevenue": true,
+  "allHaveRendererUnderoutput": true,
+  "allFixableWithoutScoringChange": true,
+  "cases": [
+    {
+      "caseId": "P5-CASE-010",
+      "symbol": "1710",
+      "asOfDate": "2025-12-15",
+      "horizon": 5,
+      "bucket": "NEUTRAL",
+      "alphaScore": 68,
+      "reasonRaw": "技術偏多",
+      "reasonTokenCount": 1,
+      "factorSnapshotCount": 10,
+      "signalSnapshotCount": 10,
+      "factorSnapshotSample": [
+        "MA 趨勢: 多頭排列 (MA20(12.24) > MA60(12.19))",
+        "RSI(14): 60 (中性健康區間)",
+        "MACD: 0.01 (MACD > 0，多方動能)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ],
+      "completenessStatus": "PARTIAL",
+      "dataCoverage": "limited",
+      "scoringNote": "dataCoverage=limited dataPoints=452 recommendation=中性",
+      "auditClassification": "NO_TRIGGERED_FACTOR",
+      "underoutputTypes": [
+        "MONTHLY_REVENUE_BLOCKED_BY_SOURCE",
+        "SNAPSHOT_FIELD_PRESENT_BUT_REASON_NOT_RENDERED"
+      ],
+      "rootCause": "reasonSnapshot stored as flat string (1 token) but factorSnapshot has 10 signals. MonthlyRevenue absent (missingSources). completenessStatus=PARTIAL.",
+      "blockedByMonthlyRevenueSource": true,
+      "blockedByNewsEventSource": false,
+      "blockedByFinancialReportSource": false,
+      "isRendererUnderoutput": true,
+      "fixableWithoutScoringChange": true,
+      "fixNote": "Renderer fix: use factorSnapshot for multi-factor reason. Revenue: requires P26F4 import.",
+      "patchRecommendation": "PATCH_CANDIDATE_RENDERER",
+      "nextRoundRoute": "P26A-RENDERER-FIX or P26F4"
+    },
+    {
+      "caseId": "P5-CASE-011",
+      "symbol": "00738U",
+      "asOfDate": "2025-12-19",
+      "horizon": 5,
+      "bucket": "NEUTRAL",
+      "alphaScore": 63,
+      "reasonRaw": "技術偏多",
+      "reasonTokenCount": 1,
+      "factorSnapshotCount": 10,
+      "signalSnapshotCount": 10,
+      "factorSnapshotSample": [
+        "MA 趨勢: 多頭排列 (MA20(40.86) > MA60(38.08))",
+        "RSI(14): 57.58 (中性健康區間)",
+        "MACD: 0.91 (MACD > 0，多方動能)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ],
+      "completenessStatus": "PARTIAL",
+      "dataCoverage": "limited",
+      "scoringNote": "dataCoverage=limited dataPoints=500 recommendation=中性",
+      "auditClassification": "NO_TRIGGERED_FACTOR",
+      "underoutputTypes": [
+        "MONTHLY_REVENUE_BLOCKED_BY_SOURCE",
+        "SNAPSHOT_FIELD_PRESENT_BUT_REASON_NOT_RENDERED"
+      ],
+      "rootCause": "reasonSnapshot stored as flat string (1 token) but factorSnapshot has 10 signals. MonthlyRevenue absent (missingSources). completenessStatus=PARTIAL.",
+      "blockedByMonthlyRevenueSource": true,
+      "blockedByNewsEventSource": false,
+      "blockedByFinancialReportSource": false,
+      "isRendererUnderoutput": true,
+      "fixableWithoutScoringChange": true,
+      "fixNote": "Renderer fix: use factorSnapshot for multi-factor reason. Revenue: requires P26F4 import.",
+      "patchRecommendation": "PATCH_CANDIDATE_RENDERER",
+      "nextRoundRoute": "P26A-RENDERER-FIX or P26F4"
+    },
+    {
+      "caseId": "P5-CASE-013",
+      "symbol": "1710",
+      "asOfDate": "2025-12-15",
+      "horizon": 5,
+      "bucket": "NEUTRAL",
+      "alphaScore": 68,
+      "reasonRaw": "技術偏多",
+      "reasonTokenCount": 1,
+      "factorSnapshotCount": 10,
+      "signalSnapshotCount": 10,
+      "factorSnapshotSample": [
+        "MA 趨勢: 多頭排列 (MA20(12.24) > MA60(12.19))",
+        "RSI(14): 60 (中性健康區間)",
+        "MACD: 0.01 (MACD > 0，多方動能)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ],
+      "completenessStatus": "PARTIAL",
+      "dataCoverage": "limited",
+      "scoringNote": "dataCoverage=limited dataPoints=452 recommendation=中性",
+      "auditClassification": "NO_TRIGGERED_FACTOR",
+      "underoutputTypes": [
+        "MONTHLY_REVENUE_BLOCKED_BY_SOURCE",
+        "SNAPSHOT_FIELD_PRESENT_BUT_REASON_NOT_RENDERED"
+      ],
+      "rootCause": "reasonSnapshot stored as flat string (1 token) but factorSnapshot has 10 signals. MonthlyRevenue absent (missingSources). completenessStatus=PARTIAL.",
+      "blockedByMonthlyRevenueSource": true,
+      "blockedByNewsEventSource": false,
+      "blockedByFinancialReportSource": false,
+      "isRendererUnderoutput": true,
+      "fixableWithoutScoringChange": true,
+      "fixNote": "Renderer fix: use factorSnapshot for multi-factor reason. Revenue: requires P26F4 import.",
+      "patchRecommendation": "PATCH_CANDIDATE_RENDERER",
+      "nextRoundRoute": "P26A-RENDERER-FIX or P26F4"
+    },
+    {
+      "caseId": "P5-CASE-023",
+      "symbol": "00891",
+      "asOfDate": "2025-11-12",
+      "horizon": 20,
+      "bucket": "NEUTRAL",
+      "alphaScore": 63,
+      "reasonRaw": "技術偏多",
+      "reasonTokenCount": 1,
+      "factorSnapshotCount": 10,
+      "signalSnapshotCount": 10,
+      "factorSnapshotSample": [
+        "MA 趨勢: 空頭排列 (MA20(16.05) < MA60(16.58))",
+        "RSI(14): 54.92 (中性健康區間)",
+        "MACD: 0.12 (MACD > 0，多方動能)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ],
+      "completenessStatus": "PARTIAL",
+      "dataCoverage": "limited",
+      "scoringNote": "dataCoverage=limited dataPoints=500 recommendation=中性",
+      "auditClassification": "NO_TRIGGERED_FACTOR",
+      "underoutputTypes": [
+        "MONTHLY_REVENUE_BLOCKED_BY_SOURCE",
+        "SNAPSHOT_FIELD_PRESENT_BUT_REASON_NOT_RENDERED"
+      ],
+      "rootCause": "reasonSnapshot stored as flat string (1 token) but factorSnapshot has 10 signals. MonthlyRevenue absent (missingSources). completenessStatus=PARTIAL.",
+      "blockedByMonthlyRevenueSource": true,
+      "blockedByNewsEventSource": false,
+      "blockedByFinancialReportSource": false,
+      "isRendererUnderoutput": true,
+      "fixableWithoutScoringChange": true,
+      "fixNote": "Renderer fix: use factorSnapshot for multi-factor reason. Revenue: requires P26F4 import.",
+      "patchRecommendation": "PATCH_CANDIDATE_RENDERER",
+      "nextRoundRoute": "P26A-RENDERER-FIX or P26F4"
+    },
+    {
+      "caseId": "P5-CASE-026",
+      "symbol": "00891",
+      "asOfDate": "2025-11-12",
+      "horizon": 20,
+      "bucket": "NEUTRAL",
+      "alphaScore": 63,
+      "reasonRaw": "技術偏多",
+      "reasonTokenCount": 1,
+      "factorSnapshotCount": 10,
+      "signalSnapshotCount": 10,
+      "factorSnapshotSample": [
+        "MA 趨勢: 空頭排列 (MA20(16.05) < MA60(16.58))",
+        "RSI(14): 54.92 (中性健康區間)",
+        "MACD: 0.12 (MACD > 0，多方動能)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ],
+      "completenessStatus": "PARTIAL",
+      "dataCoverage": "limited",
+      "scoringNote": "dataCoverage=limited dataPoints=500 recommendation=中性",
+      "auditClassification": "NO_TRIGGERED_FACTOR",
+      "underoutputTypes": [
+        "MONTHLY_REVENUE_BLOCKED_BY_SOURCE",
+        "SNAPSHOT_FIELD_PRESENT_BUT_REASON_NOT_RENDERED"
+      ],
+      "rootCause": "reasonSnapshot stored as flat string (1 token) but factorSnapshot has 10 signals. MonthlyRevenue absent (missingSources). completenessStatus=PARTIAL.",
+      "blockedByMonthlyRevenueSource": true,
+      "blockedByNewsEventSource": false,
+      "blockedByFinancialReportSource": false,
+      "isRendererUnderoutput": true,
+      "fixableWithoutScoringChange": true,
+      "fixNote": "Renderer fix: use factorSnapshot for multi-factor reason. Revenue: requires P26F4 import.",
+      "patchRecommendation": "PATCH_CANDIDATE_RENDERER",
+      "nextRoundRoute": "P26A-RENDERER-FIX or P26F4"
+    },
+    {
+      "caseId": "P5-CASE-037",
+      "symbol": "00891",
+      "asOfDate": "2025-10-15",
+      "horizon": 60,
+      "bucket": "NEUTRAL",
+      "alphaScore": 63,
+      "reasonRaw": "技術偏多",
+      "reasonTokenCount": 1,
+      "factorSnapshotCount": 10,
+      "signalSnapshotCount": 10,
+      "factorSnapshotSample": [
+        "MA 趨勢: 空頭排列 (MA20(16.05) < MA60(16.58))",
+        "RSI(14): 54.92 (中性健康區間)",
+        "MACD: 0.12 (MACD > 0，多方動能)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ],
+      "completenessStatus": "PARTIAL",
+      "dataCoverage": "limited",
+      "scoringNote": "dataCoverage=limited dataPoints=500 recommendation=中性",
+      "auditClassification": "NO_TRIGGERED_FACTOR",
+      "underoutputTypes": [
+        "MONTHLY_REVENUE_BLOCKED_BY_SOURCE",
+        "SNAPSHOT_FIELD_PRESENT_BUT_REASON_NOT_RENDERED"
+      ],
+      "rootCause": "reasonSnapshot stored as flat string (1 token) but factorSnapshot has 10 signals. MonthlyRevenue absent (missingSources). completenessStatus=PARTIAL.",
+      "blockedByMonthlyRevenueSource": true,
+      "blockedByNewsEventSource": false,
+      "blockedByFinancialReportSource": false,
+      "isRendererUnderoutput": true,
+      "fixableWithoutScoringChange": true,
+      "fixNote": "Renderer fix: use factorSnapshot for multi-factor reason. Revenue: requires P26F4 import.",
+      "patchRecommendation": "PATCH_CANDIDATE_RENDERER",
+      "nextRoundRoute": "P26A-RENDERER-FIX or P26F4"
+    },
+    {
+      "caseId": "P5-CASE-053",
+      "symbol": "00738U",
+      "asOfDate": "2025-12-19",
+      "horizon": 5,
+      "bucket": "NEUTRAL",
+      "alphaScore": 63,
+      "reasonRaw": "技術偏多",
+      "reasonTokenCount": 1,
+      "factorSnapshotCount": 10,
+      "signalSnapshotCount": 10,
+      "factorSnapshotSample": [
+        "MA 趨勢: 多頭排列 (MA20(40.86) > MA60(38.08))",
+        "RSI(14): 57.58 (中性健康區間)",
+        "MACD: 0.91 (MACD > 0，多方動能)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ],
+      "completenessStatus": "PARTIAL",
+      "dataCoverage": "limited",
+      "scoringNote": "dataCoverage=limited dataPoints=500 recommendation=中性",
+      "auditClassification": "NO_TRIGGERED_FACTOR",
+      "underoutputTypes": [
+        "MONTHLY_REVENUE_BLOCKED_BY_SOURCE",
+        "SNAPSHOT_FIELD_PRESENT_BUT_REASON_NOT_RENDERED"
+      ],
+      "rootCause": "reasonSnapshot stored as flat string (1 token) but factorSnapshot has 10 signals. MonthlyRevenue absent (missingSources). completenessStatus=PARTIAL.",
+      "blockedByMonthlyRevenueSource": true,
+      "blockedByNewsEventSource": false,
+      "blockedByFinancialReportSource": false,
+      "isRendererUnderoutput": true,
+      "fixableWithoutScoringChange": true,
+      "fixNote": "Renderer fix: use factorSnapshot for multi-factor reason. Revenue: requires P26F4 import.",
+      "patchRecommendation": "PATCH_CANDIDATE_RENDERER",
+      "nextRoundRoute": "P26A-RENDERER-FIX or P26F4"
+    },
+    {
+      "caseId": "P5-CASE-054",
+      "symbol": "00891",
+      "asOfDate": "2025-12-30",
+      "horizon": 5,
+      "bucket": "NEUTRAL",
+      "alphaScore": 63,
+      "reasonRaw": "技術偏多",
+      "reasonTokenCount": 1,
+      "factorSnapshotCount": 10,
+      "signalSnapshotCount": 10,
+      "factorSnapshotSample": [
+        "MA 趨勢: 空頭排列 (MA20(16.05) < MA60(16.58))",
+        "RSI(14): 54.92 (中性健康區間)",
+        "MACD: 0.12 (MACD > 0，多方動能)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ],
+      "completenessStatus": "PARTIAL",
+      "dataCoverage": "limited",
+      "scoringNote": "dataCoverage=limited dataPoints=500 recommendation=中性",
+      "auditClassification": "NO_TRIGGERED_FACTOR",
+      "underoutputTypes": [
+        "MONTHLY_REVENUE_BLOCKED_BY_SOURCE",
+        "SNAPSHOT_FIELD_PRESENT_BUT_REASON_NOT_RENDERED"
+      ],
+      "rootCause": "reasonSnapshot stored as flat string (1 token) but factorSnapshot has 10 signals. MonthlyRevenue absent (missingSources). completenessStatus=PARTIAL.",
+      "blockedByMonthlyRevenueSource": true,
+      "blockedByNewsEventSource": false,
+      "blockedByFinancialReportSource": false,
+      "isRendererUnderoutput": true,
+      "fixableWithoutScoringChange": true,
+      "fixNote": "Renderer fix: use factorSnapshot for multi-factor reason. Revenue: requires P26F4 import.",
+      "patchRecommendation": "PATCH_CANDIDATE_RENDERER",
+      "nextRoundRoute": "P26A-RENDERER-FIX or P26F4"
+    },
+    {
+      "caseId": "P5-CASE-055",
+      "symbol": "1710",
+      "asOfDate": "2025-12-15",
+      "horizon": 5,
+      "bucket": "NEUTRAL",
+      "alphaScore": 68,
+      "reasonRaw": "技術偏多",
+      "reasonTokenCount": 1,
+      "factorSnapshotCount": 10,
+      "signalSnapshotCount": 10,
+      "factorSnapshotSample": [
+        "MA 趨勢: 多頭排列 (MA20(12.24) > MA60(12.19))",
+        "RSI(14): 60 (中性健康區間)",
+        "MACD: 0.01 (MACD > 0，多方動能)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ],
+      "completenessStatus": "PARTIAL",
+      "dataCoverage": "limited",
+      "scoringNote": "dataCoverage=limited dataPoints=452 recommendation=中性",
+      "auditClassification": "NO_TRIGGERED_FACTOR",
+      "underoutputTypes": [
+        "MONTHLY_REVENUE_BLOCKED_BY_SOURCE",
+        "SNAPSHOT_FIELD_PRESENT_BUT_REASON_NOT_RENDERED"
+      ],
+      "rootCause": "reasonSnapshot stored as flat string (1 token) but factorSnapshot has 10 signals. MonthlyRevenue absent (missingSources). completenessStatus=PARTIAL.",
+      "blockedByMonthlyRevenueSource": true,
+      "blockedByNewsEventSource": false,
+      "blockedByFinancialReportSource": false,
+      "isRendererUnderoutput": true,
+      "fixableWithoutScoringChange": true,
+      "fixNote": "Renderer fix: use factorSnapshot for multi-factor reason. Revenue: requires P26F4 import.",
+      "patchRecommendation": "PATCH_CANDIDATE_RENDERER",
+      "nextRoundRoute": "P26A-RENDERER-FIX or P26F4"
+    }
+  ],
+  "rootCauseSummary": {
+    "primaryCause": "SNAPSHOT_FIELD_PRESENT_BUT_REASON_NOT_RENDERED",
+    "secondaryCause": "MONTHLY_REVENUE_BLOCKED_BY_SOURCE",
+    "explanation": "All 9 cases: reasonSnapshot is a single-token string instead of structured multi-factor object. factorSnapshot has 10+ rich signals (MA/RSI/MACD/momentum/volume/volatility/institutional) but NOT surfaced in reasonSnapshot. Renderer receives pre-collapsed string, cannot decompose. MonthlyRevenue absent from all usedSources (in missingSources). alphaScore is correctly computed; this is a renderer/serialization issue, NOT a scoring formula problem."
+  },
+  "patchRecommendations": {
+    "rendererFix": {
+      "type": "PATCH_CANDIDATE_RENDERER",
+      "description": "Reason renderer should use factorSnapshot list to generate multi-factor reason text, not rely on pre-collapsed reasonSnapshot string.",
+      "scoringChangeRequired": false,
+      "corpusChangeRequired": false,
+      "dbWriteRequired": false,
+      "nextRound": "P26A-RENDERER-FIX",
+      "note": "Read-only audit finding only. No fix implemented in this round."
+    },
+    "monthlyRevenueFix": {
+      "type": "MONTHLY_REVENUE_BLOCKED_BY_SOURCE",
+      "description": "Operator must provide TWSE/MOPS CSV for 2025-09 to 2026-01. See P26F3_5_OPERATOR_HANDOFF_PACKET.md.",
+      "scoringChangeRequired": false,
+      "corpusChangeRequired": false,
+      "dbWriteRequired": true,
+      "nextRound": "P26F4 Controlled Import Gate"
+    }
+  },
+  "classification": "P26A_9CASE_AUDIT_COMPLETE_PATCH_CANDIDATE_FOUND",
+  "classificationRationale": "Renderer fix identified (no scoring change required). All 9 also blocked by MonthlyRevenue source gap (P26F4 required).",
+  "disclaimer": "Does not constitute investment advice. Read-only audit findings."
+}
