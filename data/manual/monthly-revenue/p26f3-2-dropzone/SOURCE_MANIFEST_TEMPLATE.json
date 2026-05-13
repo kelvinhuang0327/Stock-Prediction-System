@@ -1,0 +1,26 @@
+{
+  "_comment": "SOURCE_MANIFEST_ Fill in and rename to SOURCE_MANIFEST.json when submitting. This file will be ignored by the import scanner because TEMPLATE is in the filename.",TEMPLATE 
+  "manifestVersion": "p26f4-source-manifest-v1",
+  "createdBy": "operator",
+  "createdAt": "",
+  "sourceFiles": [
+    {
+      "filename": "",
+      "revenueMonth": "",
+      "releaseDate": "",
+      "sourceName": "",
+      "sourceUrl": "",
+      "sha256": "",
+      "rowCount": null,
+      "notes": ""
+    }
+  ],
+  "operatorAttestation": {
+    "realTwseOrMopsSource": false,
+    "notSyntheticFixture": false,
+    "notTemplateFile": false,
+    "noOutcomeFields": false,
+    "readyForDryRunOnly": false,
+    "approvalTokenNotIncluded": true
+  }
+}
