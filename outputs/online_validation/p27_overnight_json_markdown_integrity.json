@@ -1,0 +1,56 @@
+{
+  "auditId": "p27-overnight-json-markdown-integrity",
+  "generatedAt": "2026-05-13T15:22:05.052209+00:00",
+  "jsonValidation": {
+    "validJsonCount": 315,
+    "invalidJsonCount": 0,
+    "status": "PASS"
+  },
+  "jsonlValidation": {
+    "filesChecked": 13,
+    "allParsedClean": true,
+    "corpusDetails": [
+      {
+        "file": "simulation_snapshot_corpus.jsonl",
+        "physical": 60,
+        "parsed": 60,
+        "canonical": 60,
+        "status": "PASS"
+      },
+      {
+        "file": "p0hardreset_historical_replay_corpus.jsonl",
+        "physical": 4500,
+        "parsed": 4500,
+        "canonical": 4500,
+        "status": "PASS"
+      },
+      {
+        "file": "p1baseline_historical_replay_corpus.jsonl",
+        "physical": 9900,
+        "parsed": 9900,
+        "canonical": 9900,
+        "status": "PASS"
+      },
+      {
+        "file": "p3active_scoring_historical_replay_corpus.jsonl",
+        "physical": 4500,
+        "parsed": 4500,
+        "canonical": 4500,
+        "status": "PASS"
+      },
+      {
+        "file": "p19active_scoring_pit_replay_corpus.jsonl",
+        "physical": 4500,
+        "parsed": 4500,
+        "canonical": 4500,
+        "status": "PASS"
+      }
+    ]
+  },
+  "markdownLinkValidation": {
+    "status": "REVIEW",
+    "note": "Some historical reports reference paths that may not exist; no auto-fix applied. New overnight artifacts reference valid paths only."
+  },
+  "overallStatus": "PASS",
+  "disclaimer": "Observability only. No investment recommendations."
+}

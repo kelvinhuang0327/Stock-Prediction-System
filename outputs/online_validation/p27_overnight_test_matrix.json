@@ -1,0 +1,46 @@
+{
+  "auditId": "p27-overnight-test-matrix",
+  "generatedAt": "2026-05-13T15:22:05.052209+00:00",
+  "tests": [
+    {
+      "id": "F1a",
+      "suite": "p27_waiting_state_policy_guard.test.ts",
+      "tests": 18,
+      "passed": 18,
+      "status": "PASS"
+    },
+    {
+      "id": "F1b",
+      "suite": "p27_artifact_index_consistency.test.ts",
+      "tests": 11,
+      "passed": 11,
+      "status": "PASS"
+    },
+    {
+      "id": "F2",
+      "suite": "full onlineValidation/__tests__",
+      "suites": 95,
+      "tests": 2885,
+      "passed": 2885,
+      "durationS": 45.261,
+      "status": "PASS"
+    },
+    {
+      "id": "F3",
+      "suite": "admin/__tests__",
+      "status": "DEFERRED",
+      "note": "Not critical path for this audit"
+    },
+    {
+      "id": "F4",
+      "suite": "tsc --noEmit",
+      "status": "DEFERRED",
+      "note": "Pre-existing TS errors in data-quality route unrelated to this audit"
+    }
+  ],
+  "overallStatus": "PASS",
+  "totalTests": 2885,
+  "totalPassed": 2885,
+  "totalFailed": 0,
+  "disclaimer": "Observability only. No investment recommendations."
+}

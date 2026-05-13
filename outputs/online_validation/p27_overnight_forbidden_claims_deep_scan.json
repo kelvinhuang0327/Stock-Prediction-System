@@ -1,0 +1,11 @@
+{
+  "auditId": "p27-overnight-forbidden-claims-deep-scan",
+  "generatedAt": "2026-05-13T15:22:05.052209+00:00",
+  "hitsBeforeFilter": 4,
+  "hitsAfterFilter": 0,
+  "filteredHitsAllDisclaimers": true,
+  "filteredHitSummary": "4 hits in docs/manual-data: all are 'No ROI/profit/win-rate' disclaimer language",
+  "newArtifactsCheck": "PASS - all p27_overnight_* and ARTIFACT_INDEX_V2 files clean",
+  "status": "CLEAN",
+  "disclaimer": "Observability only. No investment recommendations."
+}
