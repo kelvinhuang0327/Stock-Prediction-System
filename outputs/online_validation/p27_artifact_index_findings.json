@@ -1,0 +1,81 @@
+{
+  "auditId": "p27-artifact-index-findings",
+  "generatedAt": "2026-05-13T15:08:49.581828+00:00",
+  "summary": {
+    "totalFiles": 658,
+    "finalReports": 42,
+    "missingPairCount": 50,
+    "unknownTypeCount": 267,
+    "orphanCount": 5,
+    "importReadyInFreezeArtifacts": 0
+  },
+  "findings": [
+    {
+      "id": "F1",
+      "title": "Two next_prompt files for source-arrival",
+      "severity": "INFO",
+      "files": [
+        "p26f4_next_prompt_when_source_present.md",
+        "p26_next_prompt_source_arrival_only.md"
+      ],
+      "recommendation": "p26_next_prompt_source_arrival_only.md is canonical. Other is superseded, label HISTORICAL."
+    },
+    {
+      "id": "F2",
+      "title": "p26f4_or_p26a orphan artifacts",
+      "severity": "INFO",
+      "files": [
+        "p26f4_or_p26a_followup_final_report.md",
+        "p26f4_or_p26a_followup_preflight.json",
+        "p26f4_or_p26a_followup_preflight.md",
+        "p26f4_or_p26a_route_decision.json",
+        "p26f4_or_p26a_route_decision.md"
+      ],
+      "recommendation": "Route-decision artifacts from earlier ambiguous state. Both paths resolved. Mark HISTORICAL."
+    },
+    {
+      "id": "F3",
+      "title": "Artifacts missing json/md pair",
+      "severity": "LOW",
+      "count": 50,
+      "sampleFiles": [
+        "p0hardreset_final_report.md",
+        "p12_corpus_quality_gate.json",
+        "p12_dashboard_metrics_contract.json",
+        "p12pit_feature_contract_final_report.md",
+        "p13monthly_revenue_final_report.md",
+        "p14monthly_revenue_final_report.md",
+        "p15migration_approval_final_report.md",
+        "p15migration_approval_preflight_review.json"
+      ],
+      "recommendation": "Most predate the json/md pair convention. Label INFO, no action required."
+    },
+    {
+      "id": "F4",
+      "title": "No import-ready language in freeze artifacts",
+      "severity": "PASS",
+      "importReadyFound": [],
+      "recommendation": "PASS - freeze markers show WAITING/BLOCKED correctly."
+    },
+    {
+      "id": "F5",
+      "title": "Corpus line counts match expectations",
+      "severity": "PASS",
+      "expected": {
+        "simulation": 60,
+        "p0": 4500,
+        "p1": 9900,
+        "p3": 4500,
+        "p19": 4500
+      },
+      "recommendation": "PASS - verified at pre-flight."
+    },
+    {
+      "id": "F6",
+      "title": "No stale prompt requiring empty drop-zone scan",
+      "severity": "PASS",
+      "recommendation": "PASS - governance artifacts block empty scans."
+    }
+  ],
+  "disclaimer": "Observability only. No investment recommendations."
+}

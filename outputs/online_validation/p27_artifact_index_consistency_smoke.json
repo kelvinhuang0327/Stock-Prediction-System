@@ -1,0 +1,25 @@
+{
+  "auditId": "p27-artifact-index-consistency-smoke",
+  "generatedAt": "2026-05-13T15:12:53.914582+00:00",
+  "dropzoneScan": {
+    "candidateSourceFiles": 0,
+    "classification": "P26F3_5_SOURCE_NOT_PROVIDED"
+  },
+  "dbInvariant": {
+    "changed": false
+  },
+  "corpusInvariant": {
+    "changed": false
+  },
+  "scoringInvariant": {
+    "changed": false
+  },
+  "tests": {
+    "total": 2885,
+    "passed": 2885,
+    "failed": 0,
+    "status": "PASS"
+  },
+  "status": "SMOKE_PASS",
+  "disclaimer": "Observability only. No investment recommendations."
+}

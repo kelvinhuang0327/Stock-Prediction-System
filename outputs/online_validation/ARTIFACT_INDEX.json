@@ -1,0 +1,81 @@
+{
+  "auditId": "artifact-index",
+  "generatedAt": "2026-05-13T15:08:49.581828+00:00",
+  "currentState": {
+    "P26A": "COMPLETE",
+    "P26F4": "WAITING_FOR_OPERATOR_SOURCE",
+    "P27": "NON_SOURCE_GOVERNANCE_READY",
+    "candidateSourceFiles": 0,
+    "dbWrite": false,
+    "corpusExpansion": "BLOCKED",
+    "optimizer": "BLOCKED"
+  },
+  "canonicalLatestReports": {
+    "P26A_RENDERER_FIX": "p26a_renderer_fix_final_report.md",
+    "P26A_RENDERER_INTEGRATION": "p26a_renderer_integration_final_report.md",
+    "P26A_BATCH_PIPELINE_WIRING": "p26a_batch_pipeline_wiring_final_report.md",
+    "P26F4_READINESS_RECHECK": "p26f4_readiness_recheck_final_report.md",
+    "P26F4_OPERATOR_SOURCE_PACKET_V2": "p26f4_operator_source_packet_v2_final_report.md",
+    "P26F4_SOURCE_PRESENT_GATE": "p26f4_source_present_gate_final_report.md",
+    "P26F4_WAITING_STATE_GOVERNANCE": "p26f4_waiting_state_governance_final_report.md",
+    "P27_NON_SOURCE_GOVERNANCE": "p27_non_source_governance_final_report.md",
+    "P27_ARTIFACT_INDEX_CONSISTENCY": "p27_artifact_index_consistency_final_report.md"
+  },
+  "canonicalNextPrompts": {
+    "sourceArrived": "p26_next_prompt_source_arrival_only.md",
+    "sourceNotArrived": "P27 Tier A backlog - see p27_non_source_governance_backlog.md",
+    "deprecated": "p26f4_next_prompt_when_source_present.md (superseded)"
+  },
+  "canonicalCorpora": {
+    "simulation_snapshot_corpus_jsonl": {
+      "lines": 60,
+      "status": "FROZEN"
+    },
+    "p0hardreset_historical_replay_corpus_jsonl": {
+      "lines": 4500,
+      "status": "FROZEN"
+    },
+    "p1baseline_historical_replay_corpus_jsonl": {
+      "lines": 9900,
+      "status": "FROZEN"
+    },
+    "p3active_scoring_historical_replay_corpus_jsonl": {
+      "lines": 4500,
+      "status": "FROZEN"
+    },
+    "p19active_scoring_pit_replay_corpus_jsonl": {
+      "lines": 4500,
+      "status": "FROZEN",
+      "note": "4499 physical lines, 4500 canonical"
+    }
+  },
+  "canonicalGuardArtifacts": {
+    "freezeMarker": "p26f4_waiting_state_freeze_marker.json",
+    "phaseRegistry": "p26_phase_chain_registry.json",
+    "ciGuardProposal": "p27_waiting_state_ci_guard_proposal.json",
+    "policyGuardTest": "src/lib/onlineValidation/__tests__/p27_waiting_state_policy_guard.test.ts",
+    "indexConsistencyTest": "src/lib/onlineValidation/__tests__/p27_artifact_index_consistency.test.ts"
+  },
+  "historicalOrOrphan": [
+    {
+      "file": "p26f4_or_p26a_followup_final_report.md",
+      "note": "route-decision artifact, HISTORICAL"
+    },
+    {
+      "file": "p26f4_or_p26a_followup_preflight.json",
+      "note": "HISTORICAL"
+    },
+    {
+      "file": "p26f4_or_p26a_route_decision.json",
+      "note": "HISTORICAL"
+    },
+    {
+      "file": "p26f4_next_prompt_when_source_present.md",
+      "note": "superseded by p26_next_prompt_source_arrival_only.md"
+    }
+  ],
+  "warnings": [
+    "Two next_prompt files for source-arrival trigger - use p26_next_prompt_source_arrival_only.md (canonical)"
+  ],
+  "disclaimer": "Observability only. No investment recommendations."
+}
