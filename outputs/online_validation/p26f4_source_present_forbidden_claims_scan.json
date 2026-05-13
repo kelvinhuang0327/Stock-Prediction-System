@@ -1,0 +1,28 @@
+{
+  "auditId": "p26f4-source-present-forbidden-claims-scan",
+  "generatedAt": "2026-05-13T14:21:38.619820+00:00",
+  "filesScanned": [
+    "outputs/online_validation/p26f4_source_present_gate_preflight.md",
+    "outputs/online_validation/p26f4_source_present_gate_dropzone_scan.md",
+    "docs/manual-data/monthly-revenue/P26F4_OPERATOR_SOURCE_PACKET_V2.md",
+    "docs/manual-data/monthly-revenue/P26F4_OPERATOR_FILE_QA_CHECKLIST.md",
+    "docs/manual-data/monthly-revenue/P26F4_AGENT_CONTROLLED_IMPORT_RUNBOOK.md",
+    "data/manual/monthly-revenue/p26f3-2-dropzone/SOURCE_MANIFEST_TEMPLATE.json"
+  ],
+  "forbiddenClaimsDetected": 0,
+  "hitsFound": [
+    {
+      "file": "P26F4_OPERATOR_SOURCE_PACKET_V2.md",
+      "match": "No ROI claims",
+      "verdict": "SAFE_DISCLAIMER"
+    },
+    {
+      "file": "P26F4_OPERATOR_FILE_QA_CHECKLIST.md",
+      "match": "No ROI/buy/sell/guaranteed claims",
+      "verdict": "SAFE_DISCLAIMER"
+    }
+  ],
+  "status": "CLEAN",
+  "classification": "P26F4_SOURCE_PRESENT_FORBIDDEN_CLAIMS_CLEAN",
+  "disclaimer": "Observability only. No investment recommendations."
+}

@@ -1,0 +1,45 @@
+{
+  "auditId": "p26f4-source-present-gate-dropzone-scan",
+  "generatedAt": "2026-05-13T14:19:56.823963+00:00",
+  "dropzonePath": "data/manual/monthly-revenue/p26f3-2-dropzone/",
+  "filesInDropzone": [
+    ".gitkeep",
+    "EXPECTED_FILENAMES.md",
+    "EXPECTED_SCHEMA.json",
+    "README.md",
+    "SOURCE_MANIFEST_TEMPLATE.json",
+    "TEMPLATE_DO_NOT_IMPORT_monthly_revenue.csv"
+  ],
+  "excludedFiles": [
+    {
+      "file": "TEMPLATE_DO_NOT_IMPORT_monthly_revenue.csv",
+      "reason": "DO_NOT_IMPORT in filename"
+    },
+    {
+      "file": "SOURCE_MANIFEST_TEMPLATE.json",
+      "reason": "TEMPLATE in filename"
+    },
+    {
+      "file": "README.md",
+      "reason": "in IGNORED_NAMES list"
+    },
+    {
+      "file": "EXPECTED_SCHEMA.json",
+      "reason": "in IGNORED_NAMES list"
+    },
+    {
+      "file": "EXPECTED_FILENAMES.md",
+      "reason": "EXPECTED_FILENAMES in filename"
+    },
+    {
+      "file": ".gitkeep",
+      "reason": "in IGNORED_NAMES list"
+    }
+  ],
+  "candidateSourceFiles": 0,
+  "routeDecision": "WAITING_FOR_OPERATOR_SOURCE",
+  "dryRunGate": "SKIPPED_NO_SOURCE",
+  "dbWrite": "BLOCKED",
+  "classification": "P26F4_WAITING_FOR_OPERATOR_SOURCE",
+  "disclaimer": "Observability only. No investment recommendations."
+}

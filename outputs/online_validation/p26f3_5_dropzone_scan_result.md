@@ -1,7 +1,7 @@
 # P26F3-5 Drop-zone Conditional Scan
 
 **Classification:** `P26F3_5_SOURCE_NOT_PROVIDED`
-**Scanned at:** 2026-05-13T14:11:08.015Z
+**Scanned at:** 2026-05-13T14:19:03.935Z
 
 ## Status
 

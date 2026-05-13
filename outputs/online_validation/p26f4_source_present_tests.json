@@ -1,0 +1,16 @@
+{
+  "auditId": "p26f4-source-present-tests",
+  "generatedAt": "2026-05-13T14:21:38.619820+00:00",
+  "testSuites": 93,
+  "testsPassed": 2856,
+  "testsFailed": 0,
+  "status": "ALL_PASS",
+  "jsonArtifactsValidated": [
+    "p26f4_source_present_gate_preflight.json",
+    "p26f4_source_present_gate_dropzone_scan.json",
+    "p26f4_source_present_token_check.json",
+    "p26f4_source_present_invariance.json"
+  ],
+  "importOccurred": false,
+  "disclaimer": "Observability only. No investment recommendations."
+}
