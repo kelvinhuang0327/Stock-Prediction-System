@@ -1,6 +1,6 @@
 {
   "auditVersion": "p4hardreset-walkthrough-v1",
-  "runDate": "2026-05-11",
+  "runDate": "2026-05-13",
   "totalCases": 58,
   "validation": {
     "totalCases": 58,
@@ -54,7 +54,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏多 / 法人買超",
       "closePriceAtPrediction": 15.35,
-      "stableHashKey": "1434|2025-10-23|5|Strong"
+      "stableHashKey": "1434|2025-10-23|5|Strong",
+      "factorSnapshot": [
+        "MA 趨勢: 多頭排列 (MA20(16.06) > MA60(15.64))",
+        "RSI(14): 46.15 (中性健康區間)",
+        "MACD: 0.01 (MACD > 0，多方動能)",
+        "近 20 日動能: -3.05% (近 20 日漲跌幅 負)",
+        "近 5 日報酬: -1.85% (近 5 日漲跌幅)",
+        "近 20 日報酬: -3.05% (近一個月漲跌幅)",
+        "量能變化: -13.36% (近 5 日均量 vs 20 日均量)",
+        "波動率: 3.25% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 7.96% (近 60 日最大回撤)",
+        "法人近 10 日買超: 1,081,000 (外資 1,011,000 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "high-score-negative",
@@ -73,7 +92,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏多 / 法人買超",
       "closePriceAtPrediction": 1330,
-      "stableHashKey": "2454|2025-11-05|5|Strong"
+      "stableHashKey": "2454|2025-11-05|5|Strong",
+      "factorSnapshot": [
+        "MA 趨勢: 多頭排列 (MA20(1413.5) > MA60(1331.5))",
+        "RSI(14): 42.11 (中性健康區間)",
+        "MACD: 21.89 (MACD > 0，多方動能)",
+        "近 20 日動能: 1.06% (近 20 日漲跌幅 正)",
+        "近 5 日報酬: 2.88% (近 5 日漲跌幅)",
+        "近 20 日報酬: 1.06% (近一個月漲跌幅)",
+        "量能變化: -29.7% (近 5 日均量 vs 20 日均量)",
+        "波動率: 6.11% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 14.87% (近 60 日最大回撤)",
+        "法人近 10 日買超: 1,937,737 (外資 -9,971,487 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "high-score-negative",
@@ -92,7 +130,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏多",
       "closePriceAtPrediction": 41.2,
-      "stableHashKey": "1717|2025-12-22|5|Strong"
+      "stableHashKey": "1717|2025-12-22|5|Strong",
+      "factorSnapshot": [
+        "MA 趨勢: 多頭排列 (MA20(40.16) > MA60(39.94))",
+        "RSI(14): 53.43 (中性健康區間)",
+        "MACD: 0.31 (MACD > 0，多方動能)",
+        "近 20 日動能: 2.63% (近 20 日漲跌幅 正)",
+        "近 5 日報酬: -2.5% (近 5 日漲跌幅)",
+        "近 20 日報酬: 2.63% (近一個月漲跌幅)",
+        "量能變化: -21.38% (近 5 日均量 vs 20 日均量)",
+        "波動率: 2.74% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 10.75% (近 60 日最大回撤)",
+        "法人近 10 日買超: 0 (外資 10,511,233 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "low-score-positive",
@@ -111,7 +168,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏空 / 動能走弱",
       "closePriceAtPrediction": 57.3,
-      "stableHashKey": "1536|2025-12-02|5|Watch"
+      "stableHashKey": "1536|2025-12-02|5|Watch",
+      "factorSnapshot": [
+        "MA 趨勢: 空頭排列 (MA20(58.13) < MA60(58.81))",
+        "RSI(14): 34.57 (偏離中性)",
+        "MACD: -0.53 (MACD < 0，空方動能)",
+        "近 20 日動能: -2.62% (近 20 日漲跌幅 負)",
+        "近 5 日報酬: -4.12% (近 5 日漲跌幅)",
+        "近 20 日報酬: -2.62% (近一個月漲跌幅)",
+        "量能變化: -36.47% (近 5 日均量 vs 20 日均量)",
+        "波動率: 3.07% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 12.3% (近 60 日最大回撤)",
+        "法人近 10 日買超: 0 (外資 -1,182,143 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "low-score-positive",
@@ -130,7 +206,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏空",
       "closePriceAtPrediction": 17.4,
-      "stableHashKey": "00903|2025-12-03|5|LowPriority"
+      "stableHashKey": "00903|2025-12-03|5|LowPriority",
+      "factorSnapshot": [
+        "MA 趨勢: 空頭排列 (MA20(13.09) < MA60(14.75))",
+        "RSI(14): 43.04 (中性健康區間)",
+        "MACD: -0.53 (MACD < 0，空方動能)",
+        "近 20 日動能: -13.55% (近 20 日漲跌幅 負)",
+        "近 5 日報酬: 2.06% (近 5 日漲跌幅)",
+        "近 20 日報酬: -13.55% (近一個月漲跌幅)",
+        "量能變化: -20.04% (近 5 日均量 vs 20 日均量)",
+        "波動率: 9.98% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 30.41% (近 60 日最大回撤)",
+        "法人近 10 日買超: 0 (外資 -18,000 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "low-score-positive",
@@ -149,7 +244,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏空",
       "closePriceAtPrediction": 8.99,
-      "stableHashKey": "00712|2025-11-24|5|Watch"
+      "stableHashKey": "00712|2025-11-24|5|Watch",
+      "factorSnapshot": [
+        "MA 趨勢: 空頭排列 (MA20(8.98) < MA60(9.65))",
+        "RSI(14): 35.46 (偏離中性)",
+        "MACD: -0.33 (MACD < 0，空方動能)",
+        "近 20 日動能: -12.24% (近 20 日漲跌幅 負)",
+        "近 5 日報酬: 3.43% (近 5 日漲跌幅)",
+        "近 20 日報酬: -12.24% (近一個月漲跌幅)",
+        "量能變化: -24.27% (近 5 日均量 vs 20 日均量)",
+        "波動率: 6.27% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 19.17% (近 60 日最大回撤)",
+        "法人近 10 日買超: 0 (外資 13,350,926 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "high-score-positive",
@@ -168,7 +282,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏多 / 動能轉強 / 法人買超",
       "closePriceAtPrediction": 32.45,
-      "stableHashKey": "1326|2026-01-12|5|Strong"
+      "stableHashKey": "1326|2026-01-12|5|Strong",
+      "factorSnapshot": [
+        "MA 趨勢: 多頭排列 (MA20(45.09) > MA60(38.49))",
+        "RSI(14): 44.2 (中性健康區間)",
+        "MACD: 1.36 (MACD > 0，多方動能)",
+        "近 20 日動能: 12.52% (近 20 日漲跌幅 正)",
+        "近 5 日報酬: 9.95% (近 5 日漲跌幅)",
+        "近 20 日報酬: 12.52% (近一個月漲跌幅)",
+        "量能變化: -2.56% (近 5 日均量 vs 20 日均量)",
+        "波動率: 15.29% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 18.24% (近 60 日最大回撤)",
+        "法人近 10 日買超: 1,789,000 (外資 136,231,077 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "high-score-positive",
@@ -187,7 +320,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏多",
       "closePriceAtPrediction": 39.35,
-      "stableHashKey": "1717|2025-12-04|5|Strong"
+      "stableHashKey": "1717|2025-12-04|5|Strong",
+      "factorSnapshot": [
+        "MA 趨勢: 多頭排列 (MA20(40.16) > MA60(39.94))",
+        "RSI(14): 53.43 (中性健康區間)",
+        "MACD: 0.31 (MACD > 0，多方動能)",
+        "近 20 日動能: 2.63% (近 20 日漲跌幅 正)",
+        "近 5 日報酬: -2.5% (近 5 日漲跌幅)",
+        "近 20 日報酬: 2.63% (近一個月漲跌幅)",
+        "量能變化: -21.38% (近 5 日均量 vs 20 日均量)",
+        "波動率: 2.74% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 10.75% (近 60 日最大回撤)",
+        "法人近 10 日買超: 0 (外資 10,511,233 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "high-score-positive",
@@ -206,7 +358,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏多 / 動能轉強 / 法人買超",
       "closePriceAtPrediction": 59.5,
-      "stableHashKey": "1717|2026-01-13|5|Strong"
+      "stableHashKey": "1717|2026-01-13|5|Strong",
+      "factorSnapshot": [
+        "MA 趨勢: 多頭排列 (MA20(63.44) > MA60(56.77))",
+        "RSI(14): 64.45 (偏離中性)",
+        "MACD: 2.59 (MACD > 0，多方動能)",
+        "近 20 日動能: 47.47% (近 20 日漲跌幅 正)",
+        "近 5 日報酬: 26.28% (近 5 日漲跌幅)",
+        "近 20 日報酬: 47.47% (近一個月漲跌幅)",
+        "量能變化: 2.01% (近 5 日均量 vs 20 日均量)",
+        "波動率: 18.03% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 23.04% (近 60 日最大回撤)",
+        "法人近 10 日買超: 8,656,976 (外資 22,375,392 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "neutral-or-insufficient",
@@ -225,7 +396,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏多",
       "closePriceAtPrediction": 12.35,
-      "stableHashKey": "1710|2025-12-15|5|Neutral"
+      "stableHashKey": "1710|2025-12-15|5|Neutral",
+      "factorSnapshot": [
+        "MA 趨勢: 多頭排列 (MA20(12.24) > MA60(12.19))",
+        "RSI(14): 60 (中性健康區間)",
+        "MACD: 0.01 (MACD > 0，多方動能)",
+        "近 20 日動能: -3.49% (近 20 日漲跌幅 負)",
+        "近 5 日報酬: 2.05% (近 5 日漲跌幅)",
+        "近 20 日報酬: -3.49% (近一個月漲跌幅)",
+        "量能變化: 28.06% (近 5 日均量 vs 20 日均量)",
+        "波動率: 2.34% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 8.59% (近 60 日最大回撤)",
+        "法人近 10 日買超: 0 (外資 -1,004,000 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "neutral-or-insufficient",
@@ -244,7 +434,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏多",
       "closePriceAtPrediction": 53.8,
-      "stableHashKey": "00738U|2025-12-19|5|Neutral"
+      "stableHashKey": "00738U|2025-12-19|5|Neutral",
+      "factorSnapshot": [
+        "MA 趨勢: 多頭排列 (MA20(40.86) > MA60(38.08))",
+        "RSI(14): 57.58 (中性健康區間)",
+        "MACD: 0.91 (MACD > 0，多方動能)",
+        "近 20 日動能: -2.46% (近 20 日漲跌幅 負)",
+        "近 5 日報酬: -2.37% (近 5 日漲跌幅)",
+        "近 20 日報酬: -2.46% (近一個月漲跌幅)",
+        "量能變化: 22.07% (近 5 日均量 vs 20 日均量)",
+        "波動率: 9.4% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 12.78% (近 60 日最大回撤)",
+        "法人近 10 日買超: 390 (外資 390 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "completeness-COMPLETE",
@@ -263,7 +472,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏空 / 動能走弱",
       "closePriceAtPrediction": 57.3,
-      "stableHashKey": "1536|2025-12-02|5|Watch"
+      "stableHashKey": "1536|2025-12-02|5|Watch",
+      "factorSnapshot": [
+        "MA 趨勢: 空頭排列 (MA20(58.13) < MA60(58.81))",
+        "RSI(14): 34.57 (偏離中性)",
+        "MACD: -0.53 (MACD < 0，空方動能)",
+        "近 20 日動能: -2.62% (近 20 日漲跌幅 負)",
+        "近 5 日報酬: -4.12% (近 5 日漲跌幅)",
+        "近 20 日報酬: -2.62% (近一個月漲跌幅)",
+        "量能變化: -36.47% (近 5 日均量 vs 20 日均量)",
+        "波動率: 3.07% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 12.3% (近 60 日最大回撤)",
+        "法人近 10 日買超: 0 (外資 -1,182,143 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "completeness-PARTIAL",
@@ -282,7 +510,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏多",
       "closePriceAtPrediction": 12.35,
-      "stableHashKey": "1710|2025-12-15|5|Neutral"
+      "stableHashKey": "1710|2025-12-15|5|Neutral",
+      "factorSnapshot": [
+        "MA 趨勢: 多頭排列 (MA20(12.24) > MA60(12.19))",
+        "RSI(14): 60 (中性健康區間)",
+        "MACD: 0.01 (MACD > 0，多方動能)",
+        "近 20 日動能: -3.49% (近 20 日漲跌幅 負)",
+        "近 5 日報酬: 2.05% (近 5 日漲跌幅)",
+        "近 20 日報酬: -3.49% (近一個月漲跌幅)",
+        "量能變化: 28.06% (近 5 日均量 vs 20 日均量)",
+        "波動率: 2.34% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 8.59% (近 60 日最大回撤)",
+        "法人近 10 日買超: 0 (外資 -1,004,000 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "high-score-negative",
@@ -301,7 +548,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏多 / 動能轉強 / 法人買超",
       "closePriceAtPrediction": 1500,
-      "stableHashKey": "2330|2025-10-31|20|Strong"
+      "stableHashKey": "2330|2025-10-31|20|Strong",
+      "factorSnapshot": [
+        "MA 趨勢: 多頭排列 (MA20(1476) > MA60(1458.67))",
+        "RSI(14): 59.57 (中性健康區間)",
+        "MACD: 21.67 (MACD > 0，多方動能)",
+        "近 20 日動能: 8.39% (近 20 日漲跌幅 正)",
+        "近 5 日報酬: 4.03% (近 5 日漲跌幅)",
+        "近 20 日報酬: 8.39% (近一個月漲跌幅)",
+        "量能變化: -17.06% (近 5 日均量 vs 20 日均量)",
+        "波動率: 2.5% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 8.94% (近 60 日最大回撤)",
+        "法人近 10 日買超: 6,469,943 (外資 4,880,808 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "high-score-negative",
@@ -320,7 +586,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏多 / 法人買超",
       "closePriceAtPrediction": 16,
-      "stableHashKey": "1434|2025-12-11|20|Strong"
+      "stableHashKey": "1434|2025-12-11|20|Strong",
+      "factorSnapshot": [
+        "MA 趨勢: 多頭排列 (MA20(16.06) > MA60(15.64))",
+        "RSI(14): 46.15 (中性健康區間)",
+        "MACD: 0.01 (MACD > 0，多方動能)",
+        "近 20 日動能: -3.05% (近 20 日漲跌幅 負)",
+        "近 5 日報酬: -1.85% (近 5 日漲跌幅)",
+        "近 20 日報酬: -3.05% (近一個月漲跌幅)",
+        "量能變化: -13.36% (近 5 日均量 vs 20 日均量)",
+        "波動率: 3.25% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 7.96% (近 60 日最大回撤)",
+        "法人近 10 日買超: 1,081,000 (外資 1,011,000 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "high-score-negative",
@@ -339,7 +624,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏多 / 動能轉強 / 法人買超",
       "closePriceAtPrediction": 422,
-      "stableHashKey": "1560|2026-01-07|20|Strong"
+      "stableHashKey": "1560|2026-01-07|20|Strong",
+      "factorSnapshot": [
+        "MA 趨勢: 多頭排列 (MA20(474.65) > MA60(428.65))",
+        "RSI(14): 43.04 (中性健康區間)",
+        "MACD: 9.15 (MACD > 0，多方動能)",
+        "近 20 日動能: 14.08% (近 20 日漲跌幅 正)",
+        "近 5 日報酬: 3.04% (近 5 日漲跌幅)",
+        "近 20 日報酬: 14.08% (近一個月漲跌幅)",
+        "量能變化: -10.61% (近 5 日均量 vs 20 日均量)",
+        "波動率: 9.24% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 13.93% (近 60 日最大回撤)",
+        "法人近 10 日買超: 433,000 (外資 2,998,108 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "low-score-positive",
@@ -358,7 +662,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏空 / 動能走弱",
       "closePriceAtPrediction": 7.29,
-      "stableHashKey": "1314|2025-10-14|20|LowPriority"
+      "stableHashKey": "1314|2025-10-14|20|LowPriority",
+      "factorSnapshot": [
+        "MA 趨勢: 空頭排列 (MA20(7.89) < MA60(7.93))",
+        "RSI(14): 52.17 (中性健康區間)",
+        "MACD: -0.06 (MACD < 0，空方動能)",
+        "近 20 日動能: -6.61% (近 20 日漲跌幅 負)",
+        "近 5 日報酬: -3.12% (近 5 日漲跌幅)",
+        "近 20 日報酬: -6.61% (近一個月漲跌幅)",
+        "量能變化: -26.05% (近 5 日均量 vs 20 日均量)",
+        "波動率: 6.98% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 20.82% (近 60 日最大回撤)",
+        "法人近 10 日買超: 0 (外資 12,426,700 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "low-score-positive",
@@ -377,7 +700,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏空 / 動能走弱",
       "closePriceAtPrediction": 7.51,
-      "stableHashKey": "1314|2025-10-31|20|LowPriority"
+      "stableHashKey": "1314|2025-10-31|20|LowPriority",
+      "factorSnapshot": [
+        "MA 趨勢: 空頭排列 (MA20(7.89) < MA60(7.93))",
+        "RSI(14): 52.17 (中性健康區間)",
+        "MACD: -0.06 (MACD < 0，空方動能)",
+        "近 20 日動能: -6.61% (近 20 日漲跌幅 負)",
+        "近 5 日報酬: -3.12% (近 5 日漲跌幅)",
+        "近 20 日報酬: -6.61% (近一個月漲跌幅)",
+        "量能變化: -26.05% (近 5 日均量 vs 20 日均量)",
+        "波動率: 6.98% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 20.82% (近 60 日最大回撤)",
+        "法人近 10 日買超: 0 (外資 12,426,700 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "low-score-positive",
@@ -396,7 +738,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏空",
       "closePriceAtPrediction": 30.27,
-      "stableHashKey": "0055|2025-12-08|20|LowPriority"
+      "stableHashKey": "0055|2025-12-08|20|LowPriority",
+      "factorSnapshot": [
+        "MA 趨勢: 多頭排列 (MA20(28.82) > MA60(28.54))",
+        "RSI(14): 37.29 (偏離中性)",
+        "MACD: -0.01 (MACD < 0，空方動能)",
+        "近 20 日動能: -0.9% (近 20 日漲跌幅 負)",
+        "近 5 日報酬: 0.91% (近 5 日漲跌幅)",
+        "近 20 日報酬: -0.9% (近一個月漲跌幅)",
+        "量能變化: -8.87% (近 5 日均量 vs 20 日均量)",
+        "波動率: 1.2% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 3.58% (近 60 日最大回撤)",
+        "法人近 10 日買超: 0 (外資 56,343 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "high-score-positive",
@@ -415,7 +776,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏多 / 法人買超",
       "closePriceAtPrediction": 1380,
-      "stableHashKey": "2454|2025-12-24|20|Strong"
+      "stableHashKey": "2454|2025-12-24|20|Strong",
+      "factorSnapshot": [
+        "MA 趨勢: 多頭排列 (MA20(1413.5) > MA60(1331.5))",
+        "RSI(14): 42.11 (中性健康區間)",
+        "MACD: 21.89 (MACD > 0，多方動能)",
+        "近 20 日動能: 1.06% (近 20 日漲跌幅 正)",
+        "近 5 日報酬: 2.88% (近 5 日漲跌幅)",
+        "近 20 日報酬: 1.06% (近一個月漲跌幅)",
+        "量能變化: -29.7% (近 5 日均量 vs 20 日均量)",
+        "波動率: 6.11% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 14.87% (近 60 日最大回撤)",
+        "法人近 10 日買超: 1,937,737 (外資 -9,971,487 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "high-score-positive",
@@ -434,7 +814,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏多 / 動能轉強 / 法人買超",
       "closePriceAtPrediction": 228,
-      "stableHashKey": "6415|2026-01-13|20|Strong"
+      "stableHashKey": "6415|2026-01-13|20|Strong",
+      "factorSnapshot": [
+        "MA 趨勢: 多頭排列 (MA20(267.08) > MA60(243.08))",
+        "RSI(14): 53.98 (中性健康區間)",
+        "MACD: 4.54 (MACD > 0，多方動能)",
+        "近 20 日動能: 7.52% (近 20 日漲跌幅 正)",
+        "近 5 日報酬: 11.83% (近 5 日漲跌幅)",
+        "近 20 日報酬: 7.52% (近一個月漲跌幅)",
+        "量能變化: 36.28% (近 5 日均量 vs 20 日均量)",
+        "波動率: 14.77% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 22.2% (近 60 日最大回撤)",
+        "法人近 10 日買超: 1,139,600 (外資 4,697,903 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "high-score-positive",
@@ -453,7 +852,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏多",
       "closePriceAtPrediction": 40.2,
-      "stableHashKey": "1717|2025-12-26|20|Strong"
+      "stableHashKey": "1717|2025-12-26|20|Strong",
+      "factorSnapshot": [
+        "MA 趨勢: 多頭排列 (MA20(40.16) > MA60(39.94))",
+        "RSI(14): 53.43 (中性健康區間)",
+        "MACD: 0.31 (MACD > 0，多方動能)",
+        "近 20 日動能: 2.63% (近 20 日漲跌幅 正)",
+        "近 5 日報酬: -2.5% (近 5 日漲跌幅)",
+        "近 20 日報酬: 2.63% (近一個月漲跌幅)",
+        "量能變化: -21.38% (近 5 日均量 vs 20 日均量)",
+        "波動率: 2.74% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 10.75% (近 60 日最大回撤)",
+        "法人近 10 日買超: 0 (外資 10,511,233 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "neutral-or-insufficient",
@@ -472,7 +890,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏多",
       "closePriceAtPrediction": 19.17,
-      "stableHashKey": "00891|2025-11-12|20|Neutral"
+      "stableHashKey": "00891|2025-11-12|20|Neutral",
+      "factorSnapshot": [
+        "MA 趨勢: 空頭排列 (MA20(16.05) < MA60(16.58))",
+        "RSI(14): 54.92 (中性健康區間)",
+        "MACD: 0.12 (MACD > 0，多方動能)",
+        "近 20 日動能: 6.38% (近 20 日漲跌幅 正)",
+        "近 5 日報酬: -2.82% (近 5 日漲跌幅)",
+        "近 20 日報酬: 6.38% (近一個月漲跌幅)",
+        "量能變化: 40.03% (近 5 日均量 vs 20 日均量)",
+        "波動率: 6.7% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 27.36% (近 60 日最大回撤)",
+        "法人近 10 日買超: 0 (外資 10,870,342 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "neutral-or-insufficient",
@@ -491,7 +928,26 @@
       "factorCount": 10,
       "reasonSnapshot": "法人買超",
       "closePriceAtPrediction": 248,
-      "stableHashKey": "2317|2025-11-06|20|Neutral"
+      "stableHashKey": "2317|2025-11-06|20|Neutral",
+      "factorSnapshot": [
+        "MA 趨勢: 空頭排列 (MA20(226.03) < MA60(232.16))",
+        "RSI(14): 46.25 (中性健康區間)",
+        "MACD: -0.86 (MACD < 0，空方動能)",
+        "近 20 日動能: 3.83% (近 20 日漲跌幅 正)",
+        "近 5 日報酬: 2.9% (近 5 日漲跌幅)",
+        "近 20 日報酬: 3.83% (近一個月漲跌幅)",
+        "量能變化: -5.01% (近 5 日均量 vs 20 日均量)",
+        "波動率: 5.44% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 17.56% (近 60 日最大回撤)",
+        "法人近 10 日買超: 56,307,613 (外資 12,906,961 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "completeness-COMPLETE",
@@ -510,7 +966,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏空 / 動能走弱",
       "closePriceAtPrediction": 7.88,
-      "stableHashKey": "1314|2025-12-08|20|LowPriority"
+      "stableHashKey": "1314|2025-12-08|20|LowPriority",
+      "factorSnapshot": [
+        "MA 趨勢: 空頭排列 (MA20(7.89) < MA60(7.93))",
+        "RSI(14): 52.17 (中性健康區間)",
+        "MACD: -0.06 (MACD < 0，空方動能)",
+        "近 20 日動能: -6.61% (近 20 日漲跌幅 負)",
+        "近 5 日報酬: -3.12% (近 5 日漲跌幅)",
+        "近 20 日報酬: -6.61% (近一個月漲跌幅)",
+        "量能變化: -26.05% (近 5 日均量 vs 20 日均量)",
+        "波動率: 6.98% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 20.82% (近 60 日最大回撤)",
+        "法人近 10 日買超: 0 (外資 12,426,700 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "completeness-PARTIAL",
@@ -529,7 +1004,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏多",
       "closePriceAtPrediction": 19.17,
-      "stableHashKey": "00891|2025-11-12|20|Neutral"
+      "stableHashKey": "00891|2025-11-12|20|Neutral",
+      "factorSnapshot": [
+        "MA 趨勢: 空頭排列 (MA20(16.05) < MA60(16.58))",
+        "RSI(14): 54.92 (中性健康區間)",
+        "MACD: 0.12 (MACD > 0，多方動能)",
+        "近 20 日動能: 6.38% (近 20 日漲跌幅 正)",
+        "近 5 日報酬: -2.82% (近 5 日漲跌幅)",
+        "近 20 日報酬: 6.38% (近一個月漲跌幅)",
+        "量能變化: 40.03% (近 5 日均量 vs 20 日均量)",
+        "波動率: 6.7% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 27.36% (近 60 日最大回撤)",
+        "法人近 10 日買超: 0 (外資 10,870,342 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "high-score-negative",
@@ -548,7 +1042,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏多",
       "closePriceAtPrediction": 14.15,
-      "stableHashKey": "1308|2026-01-28|60|Strong"
+      "stableHashKey": "1308|2026-01-28|60|Strong",
+      "factorSnapshot": [
+        "MA 趨勢: 多頭排列 (MA20(14.59) > MA60(13.85))",
+        "RSI(14): 53.11 (中性健康區間)",
+        "MACD: 0.46 (MACD > 0，多方動能)",
+        "近 20 日動能: 9.4% (近 20 日漲跌幅 正)",
+        "近 5 日報酬: -2.68% (近 5 日漲跌幅)",
+        "近 20 日報酬: 9.4% (近一個月漲跌幅)",
+        "量能變化: 40.1% (近 5 日均量 vs 20 日均量)",
+        "波動率: 5.83% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 17.56% (近 60 日最大回撤)",
+        "法人近 10 日買超: 0 (外資 -845,097 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "high-score-negative",
@@ -567,7 +1080,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏多 / 法人買超",
       "closePriceAtPrediction": 156.5,
-      "stableHashKey": "1513|2025-10-15|60|Strong"
+      "stableHashKey": "1513|2025-10-15|60|Strong",
+      "factorSnapshot": [
+        "MA 趨勢: 空頭排列 (MA20(149.23) < MA60(150.62))",
+        "RSI(14): 48 (中性健康區間)",
+        "MACD: 0.18 (MACD > 0，多方動能)",
+        "近 20 日動能: 1.7% (近 20 日漲跌幅 正)",
+        "近 5 日報酬: -0.99% (近 5 日漲跌幅)",
+        "近 20 日報酬: 1.7% (近一個月漲跌幅)",
+        "量能變化: -48.21% (近 5 日均量 vs 20 日均量)",
+        "波動率: 2.5% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 10.03% (近 60 日最大回撤)",
+        "法人近 10 日買超: 791,968 (外資 5,115,300 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "high-score-negative",
@@ -586,7 +1118,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏多 / 動能轉強 / 法人買超",
       "closePriceAtPrediction": 31.65,
-      "stableHashKey": "1605|2025-12-24|60|Strong"
+      "stableHashKey": "1605|2025-12-24|60|Strong",
+      "factorSnapshot": [
+        "MA 趨勢: 多頭排列 (MA20(30.8) > MA60(30.12))",
+        "RSI(14): 58.12 (中性健康區間)",
+        "MACD: 0.57 (MACD > 0，多方動能)",
+        "近 20 日動能: 6.18% (近 20 日漲跌幅 正)",
+        "近 5 日報酬: 4.09% (近 5 日漲跌幅)",
+        "近 20 日報酬: 6.18% (近一個月漲跌幅)",
+        "量能變化: 89.43% (近 5 日均量 vs 20 日均量)",
+        "波動率: 4.81% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 17.71% (近 60 日最大回撤)",
+        "法人近 10 日買超: 1,221,544 (外資 2,435,827 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "low-score-positive",
@@ -605,7 +1156,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏空",
       "closePriceAtPrediction": 30.6,
-      "stableHashKey": "0055|2025-11-03|60|LowPriority"
+      "stableHashKey": "0055|2025-11-03|60|LowPriority",
+      "factorSnapshot": [
+        "MA 趨勢: 多頭排列 (MA20(28.82) > MA60(28.54))",
+        "RSI(14): 37.29 (偏離中性)",
+        "MACD: -0.01 (MACD < 0，空方動能)",
+        "近 20 日動能: -0.9% (近 20 日漲跌幅 負)",
+        "近 5 日報酬: 0.91% (近 5 日漲跌幅)",
+        "近 20 日報酬: -0.9% (近一個月漲跌幅)",
+        "量能變化: -8.87% (近 5 日均量 vs 20 日均量)",
+        "波動率: 1.2% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 3.58% (近 60 日最大回撤)",
+        "法人近 10 日買超: 0 (外資 56,343 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "low-score-positive",
@@ -624,7 +1194,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏空 / 法人買超",
       "closePriceAtPrediction": 210,
-      "stableHashKey": "6415|2025-11-05|60|LowPriority"
+      "stableHashKey": "6415|2025-11-05|60|LowPriority",
+      "factorSnapshot": [
+        "MA 趨勢: 空頭排列 (MA20(198.88) < MA60(211.23))",
+        "RSI(14): 37.93 (偏離中性)",
+        "MACD: -4.17 (MACD < 0，空方動能)",
+        "近 20 日動能: -4.25% (近 20 日漲跌幅 負)",
+        "近 5 日報酬: -1.79% (近 5 日漲跌幅)",
+        "近 20 日報酬: -4.25% (近一個月漲跌幅)",
+        "量能變化: -46.98% (近 5 日均量 vs 20 日均量)",
+        "波動率: 8.9% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 29.75% (近 60 日最大回撤)",
+        "法人近 10 日買超: 88,400 (外資 -2,090,402 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "low-score-positive",
@@ -643,7 +1232,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏空 / 動能走弱",
       "closePriceAtPrediction": 7.22,
-      "stableHashKey": "1314|2025-10-16|60|LowPriority"
+      "stableHashKey": "1314|2025-10-16|60|LowPriority",
+      "factorSnapshot": [
+        "MA 趨勢: 空頭排列 (MA20(7.89) < MA60(7.93))",
+        "RSI(14): 52.17 (中性健康區間)",
+        "MACD: -0.06 (MACD < 0，空方動能)",
+        "近 20 日動能: -6.61% (近 20 日漲跌幅 負)",
+        "近 5 日報酬: -3.12% (近 5 日漲跌幅)",
+        "近 20 日報酬: -6.61% (近一個月漲跌幅)",
+        "量能變化: -26.05% (近 5 日均量 vs 20 日均量)",
+        "波動率: 6.98% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 20.82% (近 60 日最大回撤)",
+        "法人近 10 日買超: 0 (外資 12,426,700 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "high-score-positive",
@@ -662,7 +1270,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏多 / 法人買超",
       "closePriceAtPrediction": 149.5,
-      "stableHashKey": "1513|2025-10-28|60|Strong"
+      "stableHashKey": "1513|2025-10-28|60|Strong",
+      "factorSnapshot": [
+        "MA 趨勢: 空頭排列 (MA20(149.23) < MA60(150.62))",
+        "RSI(14): 48 (中性健康區間)",
+        "MACD: 0.18 (MACD > 0，多方動能)",
+        "近 20 日動能: 1.7% (近 20 日漲跌幅 正)",
+        "近 5 日報酬: -0.99% (近 5 日漲跌幅)",
+        "近 20 日報酬: 1.7% (近一個月漲跌幅)",
+        "量能變化: -48.21% (近 5 日均量 vs 20 日均量)",
+        "波動率: 2.5% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 10.03% (近 60 日最大回撤)",
+        "法人近 10 日買超: 791,968 (外資 5,115,300 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "high-score-positive",
@@ -681,7 +1308,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏多 / 動能轉強 / 法人買超",
       "closePriceAtPrediction": 317,
-      "stableHashKey": "1560|2025-12-01|60|Strong"
+      "stableHashKey": "1560|2025-12-01|60|Strong",
+      "factorSnapshot": [
+        "MA 趨勢: 多頭排列 (MA20(364.65) > MA60(332.13))",
+        "RSI(14): 76.77 (超買區，短期過熱)",
+        "MACD: 16.16 (MACD > 0，多方動能)",
+        "近 20 日動能: 23.14% (近 20 日漲跌幅 正)",
+        "近 5 日報酬: 7.02% (近 5 日漲跌幅)",
+        "近 20 日報酬: 23.14% (近一個月漲跌幅)",
+        "量能變化: -17.34% (近 5 日均量 vs 20 日均量)",
+        "波動率: 7.99% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 13.41% (近 60 日最大回撤)",
+        "法人近 10 日買超: 54,000 (外資 -129,151 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "high-score-positive",
@@ -700,7 +1346,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏多 / 動能轉強 / 法人買超",
       "closePriceAtPrediction": 1425,
-      "stableHashKey": "2330|2025-10-14|60|Strong"
+      "stableHashKey": "2330|2025-10-14|60|Strong",
+      "factorSnapshot": [
+        "MA 趨勢: 多頭排列 (MA20(1476) > MA60(1458.67))",
+        "RSI(14): 59.57 (中性健康區間)",
+        "MACD: 21.67 (MACD > 0，多方動能)",
+        "近 20 日動能: 8.39% (近 20 日漲跌幅 正)",
+        "近 5 日報酬: 4.03% (近 5 日漲跌幅)",
+        "近 20 日報酬: 8.39% (近一個月漲跌幅)",
+        "量能變化: -17.06% (近 5 日均量 vs 20 日均量)",
+        "波動率: 2.5% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 8.94% (近 60 日最大回撤)",
+        "法人近 10 日買超: 6,469,943 (外資 4,880,808 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "neutral-or-insufficient",
@@ -719,7 +1384,26 @@
       "factorCount": 10,
       "reasonSnapshot": "法人買超",
       "closePriceAtPrediction": 26.95,
-      "stableHashKey": "1402|2025-11-10|60|Neutral"
+      "stableHashKey": "1402|2025-11-10|60|Neutral",
+      "factorSnapshot": [
+        "MA 趨勢: 多頭排列 (MA20(28.17) > MA60(27.72))",
+        "RSI(14): 40.43 (中性健康區間)",
+        "MACD: -0.06 (MACD < 0，空方動能)",
+        "近 20 日動能: -4.14% (近 20 日漲跌幅 負)",
+        "近 5 日報酬: -1.42% (近 5 日漲跌幅)",
+        "近 20 日報酬: -4.14% (近一個月漲跌幅)",
+        "量能變化: -39.44% (近 5 日均量 vs 20 日均量)",
+        "波動率: 2.23% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 4.65% (近 60 日最大回撤)",
+        "法人近 10 日買超: 5,812,411 (外資 -2,121,071 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "neutral-or-insufficient",
@@ -738,7 +1422,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏多",
       "closePriceAtPrediction": 18.65,
-      "stableHashKey": "00891|2025-10-15|60|Neutral"
+      "stableHashKey": "00891|2025-10-15|60|Neutral",
+      "factorSnapshot": [
+        "MA 趨勢: 空頭排列 (MA20(16.05) < MA60(16.58))",
+        "RSI(14): 54.92 (中性健康區間)",
+        "MACD: 0.12 (MACD > 0，多方動能)",
+        "近 20 日動能: 6.38% (近 20 日漲跌幅 正)",
+        "近 5 日報酬: -2.82% (近 5 日漲跌幅)",
+        "近 20 日報酬: 6.38% (近一個月漲跌幅)",
+        "量能變化: 40.03% (近 5 日均量 vs 20 日均量)",
+        "波動率: 6.7% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 27.36% (近 60 日最大回撤)",
+        "法人近 10 日買超: 0 (外資 10,870,342 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "completeness-COMPLETE",
@@ -757,7 +1460,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏空 / 法人買超",
       "closePriceAtPrediction": 53.7,
-      "stableHashKey": "1210|2025-11-06|60|LowPriority"
+      "stableHashKey": "1210|2025-11-06|60|LowPriority",
+      "factorSnapshot": [
+        "MA 趨勢: 空頭排列 (MA20(51.4) < MA60(52.05))",
+        "RSI(14): 41.46 (中性健康區間)",
+        "MACD: -0.33 (MACD < 0，空方動能)",
+        "近 20 日動能: -3.42% (近 20 日漲跌幅 負)",
+        "近 5 日報酬: 0% (近 5 日漲跌幅)",
+        "近 20 日報酬: -3.42% (近一個月漲跌幅)",
+        "量能變化: -24.83% (近 5 日均量 vs 20 日均量)",
+        "波動率: 1.95% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 8.83% (近 60 日最大回撤)",
+        "法人近 10 日買超: 1,105,000 (外資 -3,818,140 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "completeness-PARTIAL",
@@ -776,7 +1498,26 @@
       "factorCount": 10,
       "reasonSnapshot": "法人買超",
       "closePriceAtPrediction": 26.95,
-      "stableHashKey": "1402|2025-11-10|60|Neutral"
+      "stableHashKey": "1402|2025-11-10|60|Neutral",
+      "factorSnapshot": [
+        "MA 趨勢: 多頭排列 (MA20(28.17) > MA60(27.72))",
+        "RSI(14): 40.43 (中性健康區間)",
+        "MACD: -0.06 (MACD < 0，空方動能)",
+        "近 20 日動能: -4.14% (近 20 日漲跌幅 負)",
+        "近 5 日報酬: -1.42% (近 5 日漲跌幅)",
+        "近 20 日報酬: -4.14% (近一個月漲跌幅)",
+        "量能變化: -39.44% (近 5 日均量 vs 20 日均量)",
+        "波動率: 2.23% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 4.65% (近 60 日最大回撤)",
+        "法人近 10 日買超: 5,812,411 (外資 -2,121,071 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "bucket-coverage-Watch",
@@ -795,7 +1536,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏空 / 動能走弱",
       "closePriceAtPrediction": 57.3,
-      "stableHashKey": "1536|2025-12-02|5|Watch"
+      "stableHashKey": "1536|2025-12-02|5|Watch",
+      "factorSnapshot": [
+        "MA 趨勢: 空頭排列 (MA20(58.13) < MA60(58.81))",
+        "RSI(14): 34.57 (偏離中性)",
+        "MACD: -0.53 (MACD < 0，空方動能)",
+        "近 20 日動能: -2.62% (近 20 日漲跌幅 負)",
+        "近 5 日報酬: -4.12% (近 5 日漲跌幅)",
+        "近 20 日報酬: -2.62% (近一個月漲跌幅)",
+        "量能變化: -36.47% (近 5 日均量 vs 20 日均量)",
+        "波動率: 3.07% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 12.3% (近 60 日最大回撤)",
+        "法人近 10 日買超: 0 (外資 -1,182,143 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "bucket-coverage-Watch",
@@ -814,7 +1574,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏空",
       "closePriceAtPrediction": 9.28,
-      "stableHashKey": "00712|2025-12-02|20|Watch"
+      "stableHashKey": "00712|2025-12-02|20|Watch",
+      "factorSnapshot": [
+        "MA 趨勢: 空頭排列 (MA20(8.98) < MA60(9.65))",
+        "RSI(14): 35.46 (偏離中性)",
+        "MACD: -0.33 (MACD < 0，空方動能)",
+        "近 20 日動能: -12.24% (近 20 日漲跌幅 負)",
+        "近 5 日報酬: 3.43% (近 5 日漲跌幅)",
+        "近 20 日報酬: -12.24% (近一個月漲跌幅)",
+        "量能變化: -24.27% (近 5 日均量 vs 20 日均量)",
+        "波動率: 6.27% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 19.17% (近 60 日最大回撤)",
+        "法人近 10 日買超: 0 (外資 13,350,926 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "decile-2-coverage",
@@ -833,7 +1612,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏空 / 動能走弱",
       "closePriceAtPrediction": 8.87,
-      "stableHashKey": "1314|2025-11-05|5|LowPriority"
+      "stableHashKey": "1314|2025-11-05|5|LowPriority",
+      "factorSnapshot": [
+        "MA 趨勢: 空頭排列 (MA20(7.89) < MA60(7.93))",
+        "RSI(14): 52.17 (中性健康區間)",
+        "MACD: -0.06 (MACD < 0，空方動能)",
+        "近 20 日動能: -6.61% (近 20 日漲跌幅 負)",
+        "近 5 日報酬: -3.12% (近 5 日漲跌幅)",
+        "近 20 日報酬: -6.61% (近一個月漲跌幅)",
+        "量能變化: -26.05% (近 5 日均量 vs 20 日均量)",
+        "波動率: 6.98% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 20.82% (近 60 日最大回撤)",
+        "法人近 10 日買超: 0 (外資 12,426,700 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "decile-2-coverage",
@@ -852,7 +1650,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏空 / 動能走弱",
       "closePriceAtPrediction": 8.23,
-      "stableHashKey": "1314|2025-11-28|5|LowPriority"
+      "stableHashKey": "1314|2025-11-28|5|LowPriority",
+      "factorSnapshot": [
+        "MA 趨勢: 空頭排列 (MA20(7.89) < MA60(7.93))",
+        "RSI(14): 52.17 (中性健康區間)",
+        "MACD: -0.06 (MACD < 0，空方動能)",
+        "近 20 日動能: -6.61% (近 20 日漲跌幅 負)",
+        "近 5 日報酬: -3.12% (近 5 日漲跌幅)",
+        "近 20 日報酬: -6.61% (近一個月漲跌幅)",
+        "量能變化: -26.05% (近 5 日均量 vs 20 日均量)",
+        "波動率: 6.98% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 20.82% (近 60 日最大回撤)",
+        "法人近 10 日買超: 0 (外資 12,426,700 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "decile-2-coverage",
@@ -871,7 +1688,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏空 / 動能走弱 / 法人買超",
       "closePriceAtPrediction": 234.5,
-      "stableHashKey": "2317|2026-01-05|5|LowPriority"
+      "stableHashKey": "2317|2026-01-05|5|LowPriority",
+      "factorSnapshot": [
+        "MA 趨勢: 空頭排列 (MA20(219.63) < MA60(223.23))",
+        "RSI(14): 26.43 (超賣區，可能反彈)",
+        "MACD: -5.97 (MACD < 0，空方動能)",
+        "近 20 日動能: -13.66% (近 20 日漲跌幅 負)",
+        "近 5 日報酬: -9.47% (近 5 日漲跌幅)",
+        "近 20 日報酬: -13.66% (近一個月漲跌幅)",
+        "量能變化: 11.15% (近 5 日均量 vs 20 日均量)",
+        "波動率: 4.27% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 20.49% (近 60 日最大回撤)",
+        "法人近 10 日買超: 8,187,549 (外資 45,543,972 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "decile-3-coverage",
@@ -890,7 +1726,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏空",
       "closePriceAtPrediction": 17.4,
-      "stableHashKey": "00903|2025-12-03|5|LowPriority"
+      "stableHashKey": "00903|2025-12-03|5|LowPriority",
+      "factorSnapshot": [
+        "MA 趨勢: 空頭排列 (MA20(13.09) < MA60(14.75))",
+        "RSI(14): 43.04 (中性健康區間)",
+        "MACD: -0.53 (MACD < 0，空方動能)",
+        "近 20 日動能: -13.55% (近 20 日漲跌幅 負)",
+        "近 5 日報酬: 2.06% (近 5 日漲跌幅)",
+        "近 20 日報酬: -13.55% (近一個月漲跌幅)",
+        "量能變化: -20.04% (近 5 日均量 vs 20 日均量)",
+        "波動率: 9.98% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 30.41% (近 60 日最大回撤)",
+        "法人近 10 日買超: 0 (外資 -18,000 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "decile-3-coverage",
@@ -909,7 +1764,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏空",
       "closePriceAtPrediction": 18.41,
-      "stableHashKey": "00903|2025-10-31|5|LowPriority"
+      "stableHashKey": "00903|2025-10-31|5|LowPriority",
+      "factorSnapshot": [
+        "MA 趨勢: 空頭排列 (MA20(13.09) < MA60(14.75))",
+        "RSI(14): 43.04 (中性健康區間)",
+        "MACD: -0.53 (MACD < 0，空方動能)",
+        "近 20 日動能: -13.55% (近 20 日漲跌幅 負)",
+        "近 5 日報酬: 2.06% (近 5 日漲跌幅)",
+        "近 20 日報酬: -13.55% (近一個月漲跌幅)",
+        "量能變化: -20.04% (近 5 日均量 vs 20 日均量)",
+        "波動率: 9.98% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 30.41% (近 60 日最大回撤)",
+        "法人近 10 日買超: 0 (外資 -18,000 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "decile-4-coverage",
@@ -928,7 +1802,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏空 / 法人買超",
       "closePriceAtPrediction": 89.9,
-      "stableHashKey": "1319|2025-12-12|5|LowPriority"
+      "stableHashKey": "1319|2025-12-12|5|LowPriority",
+      "factorSnapshot": [
+        "MA 趨勢: 空頭排列 (MA20(93.99) < MA60(95.52))",
+        "RSI(14): 69.32 (偏離中性)",
+        "MACD: 0.41 (MACD > 0，多方動能)",
+        "近 20 日動能: -1.42% (近 20 日漲跌幅 負)",
+        "近 5 日報酬: 1.89% (近 5 日漲跌幅)",
+        "近 20 日報酬: -1.42% (近一個月漲跌幅)",
+        "量能變化: -11.09% (近 5 日均量 vs 20 日均量)",
+        "波動率: 3.21% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 12.54% (近 60 日最大回撤)",
+        "法人近 10 日買超: 5,534,725 (外資 9,732,027 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "decile-4-coverage",
@@ -947,7 +1840,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏空 / 法人買超",
       "closePriceAtPrediction": 98.2,
-      "stableHashKey": "1319|2025-10-28|5|LowPriority"
+      "stableHashKey": "1319|2025-10-28|5|LowPriority",
+      "factorSnapshot": [
+        "MA 趨勢: 空頭排列 (MA20(93.99) < MA60(95.52))",
+        "RSI(14): 69.32 (偏離中性)",
+        "MACD: 0.41 (MACD > 0，多方動能)",
+        "近 20 日動能: -1.42% (近 20 日漲跌幅 負)",
+        "近 5 日報酬: 1.89% (近 5 日漲跌幅)",
+        "近 20 日報酬: -1.42% (近一個月漲跌幅)",
+        "量能變化: -11.09% (近 5 日均量 vs 20 日均量)",
+        "波動率: 3.21% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 12.54% (近 60 日最大回撤)",
+        "法人近 10 日買超: 5,534,725 (外資 9,732,027 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "decile-4-coverage",
@@ -966,7 +1878,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏空 / 法人買超",
       "closePriceAtPrediction": 95.2,
-      "stableHashKey": "1319|2025-11-25|5|LowPriority"
+      "stableHashKey": "1319|2025-11-25|5|LowPriority",
+      "factorSnapshot": [
+        "MA 趨勢: 空頭排列 (MA20(93.99) < MA60(95.52))",
+        "RSI(14): 69.32 (偏離中性)",
+        "MACD: 0.41 (MACD > 0，多方動能)",
+        "近 20 日動能: -1.42% (近 20 日漲跌幅 負)",
+        "近 5 日報酬: 1.89% (近 5 日漲跌幅)",
+        "近 20 日報酬: -1.42% (近一個月漲跌幅)",
+        "量能變化: -11.09% (近 5 日均量 vs 20 日均量)",
+        "波動率: 3.21% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 12.54% (近 60 日最大回撤)",
+        "法人近 10 日買超: 5,534,725 (外資 9,732,027 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "decile-5-coverage",
@@ -985,7 +1916,26 @@
       "factorCount": 10,
       "reasonSnapshot": "動能走弱 / 法人買超",
       "closePriceAtPrediction": 35.6,
-      "stableHashKey": "1326|2025-12-03|5|Neutral"
+      "stableHashKey": "1326|2025-12-03|5|Neutral",
+      "factorSnapshot": [
+        "MA 趨勢: 多頭排列 (MA20(32.71) > MA60(31.41))",
+        "RSI(14): 49.32 (中性健康區間)",
+        "MACD: -0.01 (MACD < 0，空方動能)",
+        "近 20 日動能: -9.45% (近 20 日漲跌幅 負)",
+        "近 5 日報酬: -2.73% (近 5 日漲跌幅)",
+        "近 20 日報酬: -9.45% (近一個月漲跌幅)",
+        "量能變化: -47.53% (近 5 日均量 vs 20 日均量)",
+        "波動率: 6.4% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 13.34% (近 60 日最大回撤)",
+        "法人近 10 日買超: 71,000 (外資 -13,877,845 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "decile-5-coverage",
@@ -1004,7 +1954,26 @@
       "factorCount": 10,
       "reasonSnapshot": "法人買超",
       "closePriceAtPrediction": 26.95,
-      "stableHashKey": "1402|2025-10-30|5|Neutral"
+      "stableHashKey": "1402|2025-10-30|5|Neutral",
+      "factorSnapshot": [
+        "MA 趨勢: 多頭排列 (MA20(28.17) > MA60(27.72))",
+        "RSI(14): 40.43 (中性健康區間)",
+        "MACD: -0.06 (MACD < 0，空方動能)",
+        "近 20 日動能: -4.14% (近 20 日漲跌幅 負)",
+        "近 5 日報酬: -1.42% (近 5 日漲跌幅)",
+        "近 20 日報酬: -4.14% (近一個月漲跌幅)",
+        "量能變化: -39.44% (近 5 日均量 vs 20 日均量)",
+        "波動率: 2.23% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 4.65% (近 60 日最大回撤)",
+        "法人近 10 日買超: 5,812,411 (外資 -2,121,071 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "decile-5-coverage",
@@ -1023,7 +1992,26 @@
       "factorCount": 10,
       "reasonSnapshot": "動能走弱 / 法人買超",
       "closePriceAtPrediction": 30.7,
-      "stableHashKey": "1326|2025-10-27|5|Neutral"
+      "stableHashKey": "1326|2025-10-27|5|Neutral",
+      "factorSnapshot": [
+        "MA 趨勢: 多頭排列 (MA20(32.71) > MA60(31.41))",
+        "RSI(14): 49.32 (中性健康區間)",
+        "MACD: -0.01 (MACD < 0，空方動能)",
+        "近 20 日動能: -9.45% (近 20 日漲跌幅 負)",
+        "近 5 日報酬: -2.73% (近 5 日漲跌幅)",
+        "近 20 日報酬: -9.45% (近一個月漲跌幅)",
+        "量能變化: -47.53% (近 5 日均量 vs 20 日均量)",
+        "波動率: 6.4% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 13.34% (近 60 日最大回撤)",
+        "法人近 10 日買超: 71,000 (外資 -13,877,845 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "decile-6-coverage",
@@ -1042,7 +2030,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏多",
       "closePriceAtPrediction": 53.8,
-      "stableHashKey": "00738U|2025-12-19|5|Neutral"
+      "stableHashKey": "00738U|2025-12-19|5|Neutral",
+      "factorSnapshot": [
+        "MA 趨勢: 多頭排列 (MA20(40.86) > MA60(38.08))",
+        "RSI(14): 57.58 (中性健康區間)",
+        "MACD: 0.91 (MACD > 0，多方動能)",
+        "近 20 日動能: -2.46% (近 20 日漲跌幅 負)",
+        "近 5 日報酬: -2.37% (近 5 日漲跌幅)",
+        "近 20 日報酬: -2.46% (近一個月漲跌幅)",
+        "量能變化: 22.07% (近 5 日均量 vs 20 日均量)",
+        "波動率: 9.4% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 12.78% (近 60 日最大回撤)",
+        "法人近 10 日買超: 390 (外資 390 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "decile-6-coverage",
@@ -1061,7 +2068,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏多",
       "closePriceAtPrediction": 19.87,
-      "stableHashKey": "00891|2025-12-30|5|Neutral"
+      "stableHashKey": "00891|2025-12-30|5|Neutral",
+      "factorSnapshot": [
+        "MA 趨勢: 空頭排列 (MA20(16.05) < MA60(16.58))",
+        "RSI(14): 54.92 (中性健康區間)",
+        "MACD: 0.12 (MACD > 0，多方動能)",
+        "近 20 日動能: 6.38% (近 20 日漲跌幅 正)",
+        "近 5 日報酬: -2.82% (近 5 日漲跌幅)",
+        "近 20 日報酬: 6.38% (近一個月漲跌幅)",
+        "量能變化: 40.03% (近 5 日均量 vs 20 日均量)",
+        "波動率: 6.7% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 27.36% (近 60 日最大回撤)",
+        "法人近 10 日買超: 0 (外資 10,870,342 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "decile-7-coverage",
@@ -1080,7 +2106,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏多",
       "closePriceAtPrediction": 12.35,
-      "stableHashKey": "1710|2025-12-15|5|Neutral"
+      "stableHashKey": "1710|2025-12-15|5|Neutral",
+      "factorSnapshot": [
+        "MA 趨勢: 多頭排列 (MA20(12.24) > MA60(12.19))",
+        "RSI(14): 60 (中性健康區間)",
+        "MACD: 0.01 (MACD > 0，多方動能)",
+        "近 20 日動能: -3.49% (近 20 日漲跌幅 負)",
+        "近 5 日報酬: 2.05% (近 5 日漲跌幅)",
+        "近 20 日報酬: -3.49% (近一個月漲跌幅)",
+        "量能變化: 28.06% (近 5 日均量 vs 20 日均量)",
+        "波動率: 2.34% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 8.59% (近 60 日最大回撤)",
+        "法人近 10 日買超: 0 (外資 -1,004,000 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "decile-8-coverage",
@@ -1099,7 +2144,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏多 / 法人買超",
       "closePriceAtPrediction": 15.35,
-      "stableHashKey": "1434|2025-10-23|5|Strong"
+      "stableHashKey": "1434|2025-10-23|5|Strong",
+      "factorSnapshot": [
+        "MA 趨勢: 多頭排列 (MA20(16.06) > MA60(15.64))",
+        "RSI(14): 46.15 (中性健康區間)",
+        "MACD: 0.01 (MACD > 0，多方動能)",
+        "近 20 日動能: -3.05% (近 20 日漲跌幅 負)",
+        "近 5 日報酬: -1.85% (近 5 日漲跌幅)",
+        "近 20 日報酬: -3.05% (近一個月漲跌幅)",
+        "量能變化: -13.36% (近 5 日均量 vs 20 日均量)",
+        "波動率: 3.25% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 7.96% (近 60 日最大回撤)",
+        "法人近 10 日買超: 1,081,000 (外資 1,011,000 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "decile-8-coverage",
@@ -1118,7 +2182,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏多 / 動能轉強 / 法人買超",
       "closePriceAtPrediction": 370,
-      "stableHashKey": "1560|2025-12-16|5|Strong"
+      "stableHashKey": "1560|2025-12-16|5|Strong",
+      "factorSnapshot": [
+        "MA 趨勢: 多頭排列 (MA20(364.65) > MA60(332.13))",
+        "RSI(14): 76.77 (超買區，短期過熱)",
+        "MACD: 16.16 (MACD > 0，多方動能)",
+        "近 20 日動能: 23.14% (近 20 日漲跌幅 正)",
+        "近 5 日報酬: 7.02% (近 5 日漲跌幅)",
+        "近 20 日報酬: 23.14% (近一個月漲跌幅)",
+        "量能變化: -17.34% (近 5 日均量 vs 20 日均量)",
+        "波動率: 7.99% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 13.41% (近 60 日最大回撤)",
+        "法人近 10 日買超: 54,000 (外資 -129,151 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     },
     {
       "label": "decile-10-coverage",
@@ -1137,7 +2220,26 @@
       "factorCount": 10,
       "reasonSnapshot": "技術偏多 / 動能轉強 / 法人買超",
       "closePriceAtPrediction": 32.45,
-      "stableHashKey": "1326|2026-01-12|5|Strong"
+      "stableHashKey": "1326|2026-01-12|5|Strong",
+      "factorSnapshot": [
+        "MA 趨勢: 多頭排列 (MA20(45.09) > MA60(38.49))",
+        "RSI(14): 44.2 (中性健康區間)",
+        "MACD: 1.36 (MACD > 0，多方動能)",
+        "近 20 日動能: 12.52% (近 20 日漲跌幅 正)",
+        "近 5 日報酬: 9.95% (近 5 日漲跌幅)",
+        "近 20 日報酬: 12.52% (近一個月漲跌幅)",
+        "量能變化: -2.56% (近 5 日均量 vs 20 日均量)",
+        "波動率: 15.29% (近 60 日收盤價標準差/均價)",
+        "近期最大回撤: 18.24% (近 60 日最大回撤)",
+        "法人近 10 日買超: 1,789,000 (外資 136,231,077 / 投信 0)"
+      ],
+      "usedSources": [
+        "StockQuote",
+        "InstitutionalChip"
+      ],
+      "missingSources": [
+        "MonthlyRevenue"
+      ]
     }
   ],
   "note": "Deterministic selection via djb2 stable hash. No Math.random used. Not investment advice."

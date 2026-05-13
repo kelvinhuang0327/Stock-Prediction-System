@@ -1,0 +1,40 @@
+{
+  "auditId": "P26A_BATCH_PIPELINE_WIRING_PATH_TRACE",
+  "generatedAt": "2026-05-13T21:42:25.428999Z",
+  "keyFindings": {
+    "reviewCaseCallers": [
+      "src/lib/onlineValidation/__tests__/P5WalkthroughReviewUtils.test.ts",
+      "src/lib/onlineValidation/__tests__/p26a_renderer_integration.test.ts",
+      "scripts/run-p5-walkthrough-review.js (batch runner)"
+    ],
+    "reviewCaseDefinedIn": "src/lib/onlineValidation/P5WalkthroughReviewUtils.ts",
+    "batchRunner": "scripts/run-p5-walkthrough-review.js",
+    "batchRunnerLoadsFrom": "outputs/online_validation/p4calibration_walkthrough_cases.json",
+    "p4CasesBuiltBy": "scripts/sample-p4-calibration-walkthrough-cases.js",
+    "buildScenarioGap": "buildScenario() does NOT include factorSnapshot/usedSources/missingSources in its output",
+    "p3CorpusHasFields": true,
+    "p3CorpusFieldPaths": {
+      "factorSnapshot": "row.activeScoringSnapshot.factorSnapshot",
+      "usedSources": "row.activeScoringSnapshot.usedSources",
+      "missingSources": "row.activeScoringSnapshot.missingSources"
+    },
+    "minimumSafeIntervention": [
+      "Add factorSnapshot/usedSources/missingSources to buildScenario() output",
+      "Create P26ACorpusRowAdapter.ts as a read-only adapter",
+      "Regenerate p4calibration_walkthrough_cases.json (still 58 cases)"
+    ]
+  },
+  "dataFlowTrace": {
+    "step1": "P3 corpus row => row.activeScoringSnapshot.factorSnapshot (10+ entries for P26A cases)",
+    "step2": "sample-p4-calibration-walkthrough-cases.js buildScenario() => MISSING factorSnapshot (gap)",
+    "step3": "p4calibration_walkthrough_cases.json => 58 cases WITHOUT factorSnapshot",
+    "step4": "run-p5-walkthrough-review.js loads cases => calls reviewCase()",
+    "step5": "reviewCase() with no factorSnapshot => renderer fires as FALLBACK_EMPTY",
+    "fix": "Add factorSnapshot/usedSources/missingSources in buildScenario() => renderer fires as ENRICHED"
+  },
+  "rendererIntegrationState": {
+    "reviewCaseIntegrated": true,
+    "firesAsENRICHED": "only when WalkthroughCaseInput.factorSnapshot is provided and non-empty",
+    "firesAsFALLBACK_EMPTY": "when factorSnapshot is empty or absent"
+  }
+}

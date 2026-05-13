@@ -95,6 +95,9 @@ function buildScenario(row, label, reason, horizonDecileMap) {
         reasonSnapshot: row.activeScoringSnapshot?.reasonSnapshot ?? null,
         closePriceAtPrediction: row.closePriceAtPrediction ?? null,
         stableHashKey: stableKey(row),
+        factorSnapshot: row.activeScoringSnapshot?.factorSnapshot ?? undefined,
+        usedSources: row.activeScoringSnapshot?.usedSources ?? undefined,
+        missingSources: row.activeScoringSnapshot?.missingSources ?? undefined,
     };
 }
 

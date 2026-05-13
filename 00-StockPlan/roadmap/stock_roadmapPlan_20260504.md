@@ -18,6 +18,180 @@ Version 1.3 CTO Alignment Update · 2026-05-11
 
 Version 1.5 CTO Alignment Update · 2026-05-13
 
+Version 1.6 CTO Alignment Update · 2026-05-13 v2
+
+## **0. CTO Alignment Update - 2026-05-13 v2 P26F3-4 Complete / Manual Source Acquisition P0**
+
+### **0.1 Inputs Reviewed**
+
+本次 update 依據：
+
+* 2026-05-13 v2 交接報告：`00-StockPlan/20260513/20260513v2.md`
+* P26A final report：`outputs/online_validation/p26a_feature_snapshot_v1_final_report.md`
+* P26B final report：`outputs/online_validation/p26b_event_news_pit_context_adapter_final_report.md`
+* P26C final report：`outputs/online_validation/p26c_financial_report_availability_contract_final_report.md`
+* P26D final report：`outputs/online_validation/p26d_targeted_post_migration_replay_coverage_final_report.md`
+* P26E final report：`outputs/online_validation/p26e_data_coverage_corpus_expansion_gate_final_report.md`
+* P26F / P26F2 / P26F3 / P26F3-4 monthly revenue source reports
+* Current DB verification on 2026-05-13:
+  * `MonthlyRevenue` schema includes `releaseDate`, `releaseDateSource`, `releaseDateConfidence`
+  * rows = 2143
+  * rows with `releaseDate` = 2143
+  * available months = 2026-02 and 2026-03 only
+  * releaseDate range = 2026-03-10 to 2026-04-10
+* Current git head：`b3385c9 P26F3-4-HARDRESET: TWSE MonthlyRevenue Manual Source Preparation Package`
+
+### **0.2 Strategic Goal Reconfirmation**
+
+Stock Prediction System 的兩大主軸不變：
+
+1. **台股股價預測研究能力**：用技術面、時事面、基本面、籌碼面、市場狀態，產出 PIT-safe、可解釋、可後驗的 prediction snapshot。
+2. **預測策略模擬優化能力**：用 shadow ledger、outcome write-back、PIT-safe replay、corpus expansion、walk-forward / simulation contract、optimizer readiness gate，逐步建立策略模擬與參數優化能力。
+
+v2 的 CTO 判斷是：P26A～P26F3-4 已經完成大量內部工程，但目前最重要的阻塞已經不是再寫更多 validator / adapter，而是 **取得真實 TWSE / MOPS historical MonthlyRevenue source files**。沒有 2025-09～2026-01 的官方月營收資料，P26F4 import gate、candidate corpus coverage、後續模擬優化都不能合理啟動。
+
+### **0.3 Current Implementation Status**
+
+| Area | Current Status | CTO Read |
+| :---- | :---- | :---- |
+| Prediction feature snapshot | P26A complete；P12 v1 refreshed；generic reason 24→9；9000 rows score/bucket invariance 0 mismatch | 主軸 A 有實質進展，但仍有 9 個 UNDEROUTPUT reason 需要後續修 |
+| Event/news PIT context | P26B complete；`publishedAt <= asOfDate` contract；read-only context；0 score impact | 時事面已能以 read-only metadata 進 snapshot，但尚未進 scoring |
+| FinancialReport PIT context | P26C complete；availabilityDate contract；read-only context；0 score impact | 基本面財報路線已建 contract，但尚未有 production-grade source mapping |
+| Targeted coverage comparison | P26D complete；P3+P19=9000；score/bucket 0 mismatch；coverage readiness = partial | 說明問題不是 scoring，而是 source coverage |
+| Data coverage expansion gate | P26E complete；overall = `PARTIAL_SOURCE_MAPPING_REQUIRED` | MonthlyRevenue 是下一個最可推進的 source；News/FinancialReport 仍 fixture-only |
+| MonthlyRevenue source mapping | P26F complete；read-only context mapping implemented；coverage = 0 | Mapping 可用，但 historical rows 不足 |
+| MonthlyRevenue releaseDate dry-run | P26F2 complete；2143 candidate releaseDates；coverage = 0 | 現有 DB 月份太晚：2026-02/03 releaseDate 均晚於 corpus max asOf=2026-02-11 |
+| Manual source acquisition package | P26F3-4 complete；TWSE request、filename manifest、template、operator checklist ready | 工具鏈 ready；等待真實 source files |
+| Drop-zone source status | candidateSourceFiles=0、acceptedRows=0、matchedRows=0、readyForP26F4=false | 目前 P0 blocker |
+| DB / corpus safety | DB row count 2143；frozen corpus 60/4500/9900/4500/4500 unchanged；safety/invariance PASS | 可安全等待 source；不可假造資料 |
+| TypeScript health | `src/app/api/admin/data-quality/route.ts` 仍有既有 TS1128/TS1005 errors | CI 訊號污染，列 P2 |
+
+### **0.4 Roadmap Alignment Audit**
+
+#### 已對齊
+
+* P26A～P26C 直接推進主軸 A：prediction snapshot 已開始具備 reason / event / financial context。
+* P26D～P26E 正確阻止直接 corpus expansion：coverage 仍不足，不能進 optimizer。
+* P26F～P26F3-4 正確將問題縮小到 MonthlyRevenue historical source gap。
+* 所有新 context 目前維持 read-only、`entersAlphaScore=false`、不改 bucket，避免用不成熟資料污染 scoring。
+
+#### 不對齊 / 必須調整
+
+| Roadmap Item | 舊判斷 | v2 CTO 調整 |
+| :---- | :---- | :---- |
+| P26A Feature Snapshot v1 | 原本是今日 P0 | 已完成，不再是 P0 |
+| P26B Event/News Adapter | 原本是 P1 | 已完成，後續改為 source acquisition plan，而非 scoring |
+| P26C FinancialReport Contract | 原本是 P2 | 已完成，後續仍不可進 scoring |
+| P26D replay comparison | 原本是 P3 | 已完成，結論 partial |
+| P26E / P26F source mapping | 原本是 P4 後續 | 已完成到 monthly revenue candidate path，但 coverage=0 |
+| P26F4 Controlled Import Gate | 可能被視為下一步 | 必須改成 conditional stage；acceptedRows=0 / matchedRows=0 時不可啟動 |
+| Optimizer / ML baseline | 中期可見 | 仍明確延後；目前沒有可用 source coverage 支撐 |
+
+### **0.5 Highest-Value Optimization Direction**
+
+下一階段最值得優化的方向是：
+
+```text
+P0 — Manual TWSE Historical MonthlyRevenue Data Acquisition Execution
+```
+
+原因：
+
+* P26F3-4 package 已 ready。
+* Drop-zone / validator / coverage preview / safety gate / scoring invariance gate 都 ready。
+* 目前唯一會讓 coverage 從 0 變成 >0 的動作，是取得 2025-09～2026-01 的官方歷史月營收 source。
+* 這會直接推進主軸 A 的基本面預測覆蓋，也會為主軸 B 的 corpus expansion / simulation readiness 提供真實資料基礎。
+* 任何繼續做內部工具、dashboard、optimizer 的工作，在 real source 進來前都只是低邊際價值內務。
+
+### **0.6 Reordered P0 to P10 Execution Plan**
+
+| Priority | Task | Goal | Gate / Definition of Done |
+| :---- | :---- | :---- | :---- |
+| **P0** | **Manual TWSE Historical MonthlyRevenue Data Acquisition Execution** | 取得 2025-09～2026-01、25 symbols 的 TWSE/MOPS 月營收 source，放入 drop-zone 並跑 acceptance validation | candidateSourceFiles > 0；acceptedRows > 0；matchedRows > 0；safety PASS；scoring invariance PASS；classification = `P0_TWSE_SOURCE_ACCEPTED_READY_FOR_P26F4` |
+| **P1** | **P26F4 Controlled Import Gate** | 在 P0 有真實 accepted source 後，建立 controlled import / DB diff / rollback / approval gate | dry-run import plan、duplicate handling、row diff preview、rollback plan、CTO approval token；未 approval 不得 DB write |
+| **P2** | **Fix Pre-existing TypeScript Error in data-quality route** | 清掉 `src/app/api/admin/data-quality/route.ts` 既有 TS1128/TS1005，恢復 CI / PR 訊號品質 | `npx tsc --noEmit` clean 或只剩明確非本輪外部問題；不改 scoring；不改 corpus |
+| **P3** | **Formal Historical MonthlyRevenue Import** | P1 approval 後才匯入 accepted historical MonthlyRevenue rows，補足 2025-09～2026-01 | DB write audit；releaseDate verified；row count diff report；rollback tested；no scoring path mutation |
+| **P4** | **Re-run P26F Candidate Corpus Coverage with Real Historical Rows** | DB 有 historical rows 後，重新產生 candidate context preview，確認 coverage > 0 | P3+P19=9000；matchedRows > 0；alphaScore / recommendationBucket mismatch = 0；original corpus unchanged |
+| **P5** | **Formal Corpus Expansion PR Gate** | 只有在 P4 coverage > 0 且 invariance pass 後，才提出 corpus expansion PR | PR artifact includes source provenance、PIT gate evidence、coverage delta、rollback/no-overwrite policy；不是 optimizer |
+| **P6** | **NewsEvent / FinancialReport Source Acquisition Plan** | MonthlyRevenue 路線解開後，回頭補時事面與財報的真實 source mapping | NewsEvent 不再 fixture-only；FinancialReport 有 availabilityDate source；仍 read-only until gates pass |
+| **P7** | **PIT-safe Feature Availability Registry v1** | 將 MonthlyRevenue / NewsEvent / FinancialReport / StockQuote / InstitutionalChip / MarketRegime 統一成 machine-readable availability registry | 每個 source 有 gateField、sourceStatus、coverage、freshness、known limitations；snapshot 可查 |
+| **P8** | **Backtest / Replay Observability Upgrade** | 在 corpus 有真實基本面覆蓋後，升級 replay observability：missing reason、source provenance、availability reason | replay output 能解釋每筆 candidate 的 data availability；不輸出 performance claim |
+| **P9** | **Strategy / Ranking Layer Readiness Review** | 評估 prediction snapshot 是否足以支撐 strategy ranking，不做 production promotion | score/bucket/reason/coverage/corpus maturity review；no ROI / no edge / no buy-sell |
+| **P10** | **Controlled Optimizer Exploration Gate** | 只有 P3/P4/P5/P8 gates 通過後，才允許 paper-only optimizer exploration | train/test split、sample size、horizon maturity、anti-overfit、manual approval；不得自動寫入 production scoring |
+
+### **0.7 Critical Blockers**
+
+1. **No real source files in drop-zone**：candidateSourceFiles=0，acceptedRows=0，matchedRows=0，readyForP26F4=false。
+2. **Historical MonthlyRevenue coverage gap**：目前 DB 只有 2026-02 / 2026-03；corpus asOf 需要 2025-09～2026-01 revenue 對應 releaseDate 2025-10-10～2026-02-10。
+3. **P26F4 is conditional, not next-by-default**：沒有 acceptedRows / matchedRows 前，import gate 只能 blocked。
+4. **TSC pre-existing error**：`data-quality/route.ts` 持續讓每輪報告都要註記 "pre-existing"，會降低 CI 訊號可信度。
+5. **NewsEvent / FinancialReport still fixture-only**：時事面與財報面雖有 PIT context adapter，但尚未有 real source corpus coverage。
+6. **Optimizer still blocked**：沒有 real source coverage、沒有 expanded corpus、沒有 replay observability，不能進策略優化。
+7. **Generated report hygiene risk**：部分 P26 markdown report 夾雜 script/debug-like text；JSON artifacts 與 tests 可用，但 human report generator 應在後續清理。
+
+### **0.8 Execution Policy**
+
+P0/P1/P3 涉及資料取得與 import gate，必須維持以下邊界：
+
+Allowed:
+
+* 讀取 drop-zone files。
+* 執行 inventory / validator / coverage preview / safety gate / scoring invariance。
+* 產出 readiness report。
+* 在 P1 建立 dry-run import plan 與 rollback plan。
+
+Not allowed:
+
+* 使用 template rows 當真實資料。
+* 使用 unknown / untraceable source。
+* 自行 fabricated historical revenue。
+* 在 P0 寫 DB。
+* 在 P0/P1 覆蓋 frozen corpus。
+* 修改 alphaScore / recommendationBucket。
+* 啟動 optimizer。
+* 宣稱 ROI、win-rate、alpha、edge、profit、outperform、buy/sell。
+
+### **0.9 Concrete Next Execution Order**
+
+1. Operator 依 `docs/manual-data/monthly-revenue/P26F3_4_OPERATOR_CHECKLIST.md` 取得 TWSE/MOPS source。
+2. 將 2025-09～2026-01 source files 放入 `data/manual/monthly-revenue/p26f3-2-dropzone/`。
+3. 重新執行 `node scripts/run-p26f3-3-dropzone-inventory.js`。
+4. 若 candidateSourceFiles=0，產出 `P0_SOURCE_NOT_PROVIDED`，停止。
+5. 若 candidateSourceFiles>0，執行 manual source validator。
+6. 若 acceptedRows=0，產出 rejected/source report，停止。
+7. 若 acceptedRows>0，執行 accepted source coverage preview。
+8. 若 matchedRows=0，產出 `P0_ACCEPTED_SOURCE_NO_COVERAGE`，停止。
+9. 若 matchedRows>0，執行 safety / scoring invariance。
+10. 全部 PASS 才標記 ready for P26F4；P26F4 仍需 explicit CTO approval。
+
+### **0.10 CEO Goal Contribution**
+
+#### 主軸 A — 台股股價預測
+
+P0/P1/P3 會補齊目前最缺的基本面歷史資料，讓 MonthlyRevenue 不再只是 schema / adapter，而能在 historical prediction snapshot 中產生真實可觀測 coverage。P6/P7 再把時事與財報補成同一套 PIT-safe feature registry。
+
+#### 主軸 B — 策略模擬與優化
+
+P4/P5/P8 才是進 simulation readiness 的實質入口：先讓 real-source coverage > 0，再擴 corpus，再升級 replay observability。P10 optimizer 必須等這些 gate 都過，否則只是對空資料做參數搜尋。
+
+### **0.11 Final CTO Recommendation**
+
+今天最應聚焦：
+
+```text
+P0 — Manual TWSE Historical MonthlyRevenue Data Acquisition Execution
+```
+
+不要再擴 validator，不要直接進 P26F4，不要進 optimizer。  
+下一個真正能推進系統能力的動作，是把官方歷史月營收 source 放進 drop-zone，讓 acceptedRows / matchedRows 從 0 變成正數。
+
+Final classification:
+
+```text
+ROADMAP_REPRIORITIZED_FOR_MANUAL_TWSE_MONTHLY_REVENUE_SOURCE_ACQUISITION
+NEXT_PHASE_P0_IS_TWSE_SOURCE_FILE_PLACEMENT_AND_ACCEPTANCE_VALIDATION
+```
+
 ## **0. CTO Alignment Update - 2026-05-13 P25 Complete / Prediction Feature Integration P0**
 
 ### **0.1 Inputs Reviewed**

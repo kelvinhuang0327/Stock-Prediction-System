@@ -1,6 +1,6 @@
 # P4 Calibration Walkthrough Cases
 
-**Version**: `p4hardreset-walkthrough-v1`  **Date**: 2026-05-11
+**Version**: `p4hardreset-walkthrough-v1`  **Date**: 2026-05-13
 **Total cases**: 58
 **Selection**: Deterministic (djb2 hash, no Math.random)
 
