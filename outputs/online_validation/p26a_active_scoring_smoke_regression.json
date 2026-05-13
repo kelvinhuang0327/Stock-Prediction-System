@@ -1,0 +1,52 @@
+{
+  "phase": "P26A-HARDRESET PART H",
+  "generatedAt": "2026-05-13T03:12:37.644Z",
+  "disclaimer": "Active scoring smoke regression. No investment recommendations. Research only.",
+  "totalChecks": 8,
+  "passCount": 8,
+  "failCount": 0,
+  "smokeStatus": "PASS",
+  "checks": [
+    {
+      "check": "P26AReasonFactorEnrichmentUtils.ts exists",
+      "status": "PASS",
+      "note": "9 required exports present"
+    },
+    {
+      "check": "P12FeatureContractV1Utils.ts exists",
+      "status": "PASS",
+      "note": "MonthlyRevenue REPAIRED + FinancialReport STILL_HIGH_RISK_NOT_PIT_GATED verified"
+    },
+    {
+      "check": "MonthlyRevenue PIT gate (filterMonthlyRevenueAvailableAsOf) referenced",
+      "status": "PASS",
+      "note": "releaseDate / filterMonthlyRevenueAvailableAsOf found in source"
+    },
+    {
+      "check": "P3 corpus: no outcomePrice/returnPct in scoreSnapshot",
+      "status": "PASS",
+      "note": "First 10 P3 rows: no outcomePrice/returnPct/realizedReturnClass in scoreSnapshot or factorSnapshot"
+    },
+    {
+      "check": "P26AReasonFactorEnrichmentUtils: no forbidden claim patterns in source",
+      "status": "PASS",
+      "note": "No hardcoded forbidden claims detected in output-generating code paths"
+    },
+    {
+      "check": "ActiveScoringSnapshotBuilder.ts baseline sha256 matches",
+      "status": "PASS",
+      "note": "sha256 matches baseline: 063a3bd524d20e9d..."
+    },
+    {
+      "check": "P26AReasonFactorEnrichmentUtils: no Math.random usage",
+      "status": "PASS",
+      "note": "No Math.random usage"
+    },
+    {
+      "check": "Frozen corpus line counts",
+      "status": "PASS",
+      "note": "{\"simulation_snapshot_corpus.jsonl\":\"60 ✓\",\"p0hardreset_historical_replay_corpus.jsonl\":\"4500 ✓\",\"p1baseline_historical_replay_corpus.jsonl\":\"9900 ✓\",\"p3active_scoring_historical_replay_corpus.jsonl\":\"4500 ✓\",\"p19active_scoring_pit_replay_corpus.jsonl\":\"4500 ✓\"}"
+    }
+  ],
+  "verdict": "ACTIVE_SCORING_SMOKE_PASS"
+}
