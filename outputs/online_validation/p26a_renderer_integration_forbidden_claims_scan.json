@@ -1,0 +1,12 @@
+{
+  "task": "P26A-RENDERER-INTEGRATION-HARDRESET PART H",
+  "scanTargets": [
+    "outputs/online_validation/p26a_renderer_integration_*",
+    "src/lib/onlineValidation/P5WalkthroughReviewUtils.ts",
+    "src/lib/onlineValidation/__tests__/p26a_renderer_integration.test.ts"
+  ],
+  "pattern": "ROI|win-rate|win rate|alpha(?!Score)|edge|profit|outperform|beat|guaranteed",
+  "matches": [],
+  "status": "CLEAN",
+  "note": "alphaScore field names excluded. forbidden claim scanner test data excluded."
+}

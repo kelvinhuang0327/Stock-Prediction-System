@@ -1,0 +1,16 @@
+{
+  "task": "P26A-RENDERER-INTEGRATION-HARDRESET PART B",
+  "primaryConsumer": "src/lib/onlineValidation/P5WalkthroughReviewUtils.ts reviewCase()",
+  "integrationType": "DISPLAY_PATH additive fields only",
+  "additiveFields": [
+    "renderedReason",
+    "renderedReasonFactorCount",
+    "reasonRendererVersion",
+    "reasonRendererOutcome",
+    "dataAvailabilityNote"
+  ],
+  "scoringPathModified": false,
+  "dbWriteRequired": false,
+  "corpusMutationRequired": false,
+  "apiRouteImpact": "None - no API route directly exposes reasonSnapshot"
+}

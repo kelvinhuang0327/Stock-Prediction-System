@@ -14,7 +14,20 @@
  *   evaluateOutcomeMismatchPattern
  *   summarizeWalkthroughFindings
  *   scanForbiddenClaims
+ *
+ * P26A-RENDERER-INTEGRATION-HARDRESET:
+ *   reviewCase() now integrates P26ACorpusReasonRenderer to enrich single-token
+ *   reasonSnapshot at read/display time using factorSnapshot content.
+ *   Additive fields added to CaseReviewResult: renderedReason, renderedReasonFactorCount,
+ *   reasonRendererVersion, reasonRendererOutcome, dataAvailabilityNote.
+ *   All existing fields preserved. No scoring change. No DB write.
  */
+
+import {
+  renderReasonFromCorpusSnapshot,
+  buildDataCoverageNote,
+  CORPUS_REASON_RENDERER_VERSION,
+} from './P26ACorpusReasonRenderer';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -38,6 +51,10 @@ export interface WalkthroughCaseInput {
   reasonSnapshot?: string | null;
   closePriceAtPrediction?: number | null;
   stableHashKey?: string;
+  // P26A-RENDERER-INTEGRATION: additive optional fields for display-time enrichment
+  factorSnapshot?: string[];     // from activeScoringSnapshot.factorSnapshot — used by renderer
+  usedSources?: string[];        // for data availability note
+  missingSources?: string[];     // for data availability note
 }
 
 export type ExplainabilityCompleteness = 'COMPLETE' | 'PARTIAL' | 'WEAK';
@@ -78,6 +95,12 @@ export interface CaseReviewResult {
   outcomeMismatchPattern: OutcomeMismatchPattern;
   followupCategory: FollowupCategory;
   limitationNotes: string[];
+  // P26A-RENDERER-INTEGRATION: additive display fields — do NOT use for scoring
+  renderedReason: string;
+  renderedReasonFactorCount: number;
+  reasonRendererVersion: string;
+  reasonRendererOutcome: string;
+  dataAvailabilityNote: string;
 }
 
 export interface WalkthroughSummary {
@@ -340,6 +363,12 @@ export function buildLimitationNotes(caseRow: WalkthroughCaseInput): string[] {
 
 /**
  * Produce a full CaseReviewResult for a single walkthrough case.
+ *
+ * P26A-RENDERER-INTEGRATION: Integrates P26ACorpusReasonRenderer at display time.
+ * If factorSnapshot is provided in caseRow, single-token reasonSnapshot is enriched.
+ * All existing fields (reasonSnapshotSummary, topSignalOrFactor, etc.) are preserved.
+ * New additive fields (renderedReason, renderedReasonFactorCount, etc.) are appended.
+ * No scoring change. No DB write. Deterministic.
  */
 export function reviewCase(caseRow: WalkthroughCaseInput, caseIndex: number): CaseReviewResult {
   const explainability = evaluateExplainability(caseRow);
@@ -363,6 +392,33 @@ export function reviewCase(caseRow: WalkthroughCaseInput, caseIndex: number): Ca
     ? caseRow.reasonSnapshot.trim().split('/')[0].trim()
     : '(no signal)';
 
+  // P26A-RENDERER-INTEGRATION: apply display-time renderer
+  // Build a minimal snapshot-compatible object for the renderer
+  const minimalSnapshot = {
+    reasonSnapshot: caseRow.reasonSnapshot ?? '',
+    factorSnapshot: caseRow.factorSnapshot ?? [],
+    alphaScore: caseRow.primaryScore ?? 0,
+    researchBucket: caseRow.researchBucket ?? '',
+    // Required fields for ActiveScoringSnapshot type compatibility
+    symbol: caseRow.symbol,
+    asOfDate: caseRow.originalAsOfDate,
+    horizonDays: caseRow.horizonDays,
+    usedSources: caseRow.usedSources ?? [],
+    missingSources: caseRow.missingSources ?? [],
+    completenessStatus: caseRow.scoringCompletenessStatus ?? 'UNKNOWN',
+    scoreSnapshot: { technicalScore: 0, chipScore: 0, momentumScore: 0, revenueScore: 0 },
+    signalTags: [],
+    stableHashKey: caseRow.stableHashKey ?? '',
+  };
+
+  const rendered = renderReasonFromCorpusSnapshot(minimalSnapshot as unknown as Parameters<typeof renderReasonFromCorpusSnapshot>[0]);
+
+  const dataAvailabilityNote = buildDataCoverageNote(
+    caseRow.usedSources ?? [],
+    caseRow.missingSources ?? [],
+    caseRow.originalAsOfDate,
+  );
+
   return {
     caseId: `P5-CASE-${String(caseIndex + 1).padStart(3, '0')}`,
     symbol: caseRow.symbol,
@@ -382,6 +438,12 @@ export function reviewCase(caseRow: WalkthroughCaseInput, caseIndex: number): Ca
     outcomeMismatchPattern,
     followupCategory,
     limitationNotes,
+    // Additive renderer fields — display only, NOT used for scoring
+    renderedReason: rendered.renderedText,
+    renderedReasonFactorCount: rendered.factorCount,
+    reasonRendererVersion: rendered.rendererVersion,
+    reasonRendererOutcome: rendered.outcome,
+    dataAvailabilityNote,
   };
 }
 

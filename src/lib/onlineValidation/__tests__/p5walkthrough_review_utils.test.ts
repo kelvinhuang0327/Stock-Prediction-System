@@ -255,6 +255,12 @@ describe('summarizeWalkthroughFindings', () => {
       outcomeMismatchPattern: 'HIGH_SCORE_POSITIVE_RETURN',
       followupCategory: 'READY_FOR_NEXT_AUDIT',
       limitationNotes: [],
+      // P26A-RENDERER-INTEGRATION additive fields
+      renderedReason: '技術偏多 / 法人買超',
+      renderedReasonFactorCount: 2,
+      reasonRendererVersion: 'p26a-corpus-renderer-v1',
+      reasonRendererOutcome: 'ALREADY_RICH',
+      dataAvailabilityNote: '',
       ...overrides,
     };
   }
