@@ -49,6 +49,26 @@ export async function evaluateGate(input: GateInput): Promise<TaskResult> {
 
   const acceptanceFailed = input.acceptanceResults.some((item) => !item.passed);
 
+  // Check ingest_contract for native price-analysis reports
+  let ingestability = { required: false, status: 'NOT_APPLICABLE', reportPath: null as string | null };
+  try {
+    const ingest = (input.contract && (input.contract as any).ingest_contract) || null;
+    if (ingest && ingest.kind === 'price_analysis_native_report') {
+      ingestability.required = true;
+      const reportPath = ingest.reportPath as string;
+      ingestability.reportPath = reportPath;
+      const exists = await fileExists(reportPath);
+      if (exists) {
+        ingestability.status = 'INGESTABLE';
+      } else {
+        ingestability.status = 'NON_INGESTABLE';
+        missingOutputs.push('native_report:' + reportPath);
+      }
+    }
+  } catch (err) {
+    // Ignore ingestability check failures — they should not crash gate evaluation
+  }
+
   let verdict: GateVerdict = 'PASS';
   let gateReason = input.gateReasonHint ?? '';
 
@@ -83,6 +103,7 @@ export async function evaluateGate(input: GateInput): Promise<TaskResult> {
     missing_required_outputs: missingOutputs,
     forbidden_change_violations: forbiddenViolations,
     acceptance_results: input.acceptanceResults,
+    ingestability,
     next_action:
       verdict === 'PASS'
         ? 'Continue to next planned task.'

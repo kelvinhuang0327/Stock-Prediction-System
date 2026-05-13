@@ -1,0 +1,95 @@
+{
+  "contract_version": "t11_v1",
+  "task": "T-11 Freshness Alert for MarketRegimeResult",
+  "generated_date": "2026-05-06",
+  "alert_levels": {
+    "FRESH": {
+      "rule": "freshnessLagDays <= 3",
+      "requiresAction": false,
+      "message_template": null,
+      "description": "Regime data is current. No action required."
+    },
+    "STALE": {
+      "rule": "freshnessLagDays >= 4 AND freshnessLagDays <= 7",
+      "requiresAction": true,
+      "message_template": "MarketRegimeResult is stale by {lag} calendar days.",
+      "description": "Regime data is mildly stale. Refresh recommended."
+    },
+    "CRITICAL_STALE": {
+      "rule": "freshnessLagDays > 7",
+      "requiresAction": true,
+      "message_template": "MarketRegimeResult is critically stale by {lag} calendar days. Immediate refresh required.",
+      "description": "Regime data is critically stale. Immediate refresh required."
+    },
+    "MISSING": {
+      "rule": "context.isAvailable === false",
+      "requiresAction": true,
+      "message_template": "No MarketRegimeResult found.",
+      "description": "No regime records exist in the database."
+    },
+    "FUTURE_DATE_ERROR": {
+      "rule": "context.freshnessStatus === 'FUTURE_DATE_ERROR' (persisted date > currentDate)",
+      "requiresAction": true,
+      "message_template": "Persisted regime date {date} is after currentDate {currentDate}.",
+      "description": "Data integrity error: regime date is in the future."
+    }
+  },
+  "alert_object_schema": {
+    "alertLevel": "FreshnessAlertLevel",
+    "freshnessLagDays": "number | null",
+    "lastRegimeDate": "string | null",
+    "currentDate": "string",
+    "message": "string | null",
+    "requiresAction": "boolean"
+  },
+  "examples": {
+    "FRESH": {
+      "alertLevel": "FRESH",
+      "freshnessLagDays": 0,
+      "lastRegimeDate": "2026-05-06",
+      "currentDate": "2026-05-06",
+      "message": null,
+      "requiresAction": false
+    },
+    "STALE": {
+      "alertLevel": "STALE",
+      "freshnessLagDays": 5,
+      "lastRegimeDate": "2026-05-01",
+      "currentDate": "2026-05-06",
+      "message": "MarketRegimeResult is stale by 5 calendar days.",
+      "requiresAction": true
+    },
+    "CRITICAL_STALE": {
+      "alertLevel": "CRITICAL_STALE",
+      "freshnessLagDays": 10,
+      "lastRegimeDate": "2026-04-26",
+      "currentDate": "2026-05-06",
+      "message": "MarketRegimeResult is critically stale by 10 calendar days. Immediate refresh required.",
+      "requiresAction": true
+    },
+    "MISSING": {
+      "alertLevel": "MISSING",
+      "freshnessLagDays": null,
+      "lastRegimeDate": null,
+      "currentDate": "2026-05-06",
+      "message": "No MarketRegimeResult found.",
+      "requiresAction": true
+    },
+    "FUTURE_DATE_ERROR": {
+      "alertLevel": "FUTURE_DATE_ERROR",
+      "freshnessLagDays": -1,
+      "lastRegimeDate": "2026-05-07",
+      "currentDate": "2026-05-06",
+      "message": "Persisted regime date 2026-05-07 is after currentDate 2026-05-06.",
+      "requiresAction": true
+    }
+  },
+  "guardrails": {
+    "no_buy_sell_signal": true,
+    "no_roi_win_rate": true,
+    "no_db_write": true,
+    "no_external_api_call": true,
+    "no_h001_h012": true,
+    "no_strategy_change": true
+  }
+}

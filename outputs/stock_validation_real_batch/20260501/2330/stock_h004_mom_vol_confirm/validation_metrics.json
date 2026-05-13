@@ -1,0 +1,17 @@
+{
+  "hypothesis_id": "STOCK_H004_MOM_VOL_CONFIRM",
+  "symbol": "2330",
+  "as_of_date": "2026-05-01",
+  "windows_tested": [
+    150,
+    500
+  ],
+  "windows_ok": [
+    500
+  ],
+  "avg_sharpe_annualized": 1.42,
+  "avg_roi_annualized": 0.4393,
+  "bh_fdr_pass_count": 0,
+  "promoted": "REJECTED",
+  "run_ts": "2026-05-05T09:41:38.658247+00:00"
+}

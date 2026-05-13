@@ -1,0 +1,118 @@
+{
+  "program": "Stock Prediction System P3 Research Retrospective",
+  "generated_at": "2026-05-05T23:58:11.451173Z",
+  "pipeline_range": "P3-04 to P3-13",
+  "stages": [
+    {
+      "stage": "P3-04",
+      "title": "GBGF Framework Migration",
+      "final_classification": "STOCK_FRAMEWORK_MIGRATION_READY",
+      "edge_found": false,
+      "scientific_validity_improved": true,
+      "summary": "Migrated GBGF from LotteryNew to Stock. No contamination. Smoke test passed."
+    },
+    {
+      "stage": "P3-05",
+      "title": "Synthetic Hypothesis Validation Pipeline",
+      "final_classification": "STOCK_HYPOTHESIS_PIPELINE_READY",
+      "edge_found": false,
+      "scientific_validity_improved": true,
+      "summary": "Built validation pipeline. 0/3 promoted on GBM noise - correctly avoided fake edge."
+    },
+    {
+      "stage": "P3-06",
+      "title": "Real Stock Data Adapter and PIT Guard",
+      "final_classification": "STOCK_REAL_DATA_PIPELINE_READY",
+      "edge_found": false,
+      "scientific_validity_improved": true,
+      "summary": "Built StockRealDomain and PointInTimeGuard. Full G01-G10 gates on 2330."
+    },
+    {
+      "stage": "P3-07",
+      "title": "Multi-Symbol Batch Validation H001-H003",
+      "final_classification": "STOCK_REAL_BATCH_NO_EDGE_FOUND",
+      "edge_found": false,
+      "scientific_validity_improved": true,
+      "summary": "H001-H003 no edge on real data across multiple symbols."
+    },
+    {
+      "stage": "P3-08",
+      "title": "V2 Hypotheses H004-H008",
+      "final_classification": "STOCK_HYPOTHESIS_V2_NO_EDGE_FOUND",
+      "edge_found": false,
+      "scientific_validity_improved": true,
+      "summary": "H004-H008 PIT-safe features. 124/124 tests pass. No edge found."
+    },
+    {
+      "stage": "P3-09",
+      "title": "Failed Hypothesis Diagnostics",
+      "final_classification": "STOCK_HYPOTHESIS_DIAGNOSTICS_COMPLETE",
+      "edge_found": false,
+      "scientific_validity_improved": true,
+      "summary": "H005/H002 have local observation value. H001 should retire. Signal sparse, universe insufficient."
+    },
+    {
+      "stage": "P3-10",
+      "title": "Controlled Refinement Plan and V3 Candidates",
+      "final_classification": "STOCK_REFINEMENT_PLAN_READY",
+      "edge_found": false,
+      "scientific_validity_improved": true,
+      "summary": "H009-H012 with anti-data-snooping guard. 89/89 tests pass."
+    },
+    {
+      "stage": "P3-11",
+      "title": "V3 Candidate Validation 8 Symbols",
+      "final_classification": "STOCK_V3_NO_EDGE_FOUND",
+      "edge_found": false,
+      "scientific_validity_improved": true,
+      "summary": "BH-FDR 0/32 pass. Review candidates 0. 8 symbols tested.",
+      "symbols_tested": 8,
+      "bh_fdr_pass_count": 0
+    },
+    {
+      "stage": "P3-12",
+      "title": "Signal Coverage Audit",
+      "final_classification": "SIGNAL_COVERAGE_AUDIT_COMPLETE",
+      "edge_found": false,
+      "scientific_validity_improved": true,
+      "summary": "1357 total symbols; 118 with ge500 rows; 112 stock-like. 8 tested = 3.5% of eligible. Recommended expand to 50.",
+      "db_stats": {
+        "total_symbols": 1357,
+        "ge_500_rows": 118,
+        "stock_like": 112,
+        "etf_like": 6,
+        "p311_tested": 8,
+        "untested_eligible": 229
+      }
+    },
+    {
+      "stage": "P3-13",
+      "title": "Expanded Universe Validation 50 Symbols",
+      "final_classification": "EXPANDED_UNIVERSE_NO_EDGE_FOUND",
+      "edge_found": false,
+      "scientific_validity_improved": true,
+      "summary": "50 symbols. 500d primary, 150d secondary. Primary BH-FDR 0/50 pass. Diagnostic BH-FDR 0/100 pass. H009/H010/H011 REJECTED. H012 OBSERVATION_ONLY.",
+      "symbols_tested": 50,
+      "primary_bh_fdr_pass_count": 0,
+      "diagnostic_bh_fdr_pass_count": 0,
+      "review_candidates": []
+    }
+  ],
+  "validated_components": {
+    "framework_validated": true,
+    "real_data_validated": true,
+    "pit_guard_validated": true,
+    "multi_symbol_validation_validated": true,
+    "expanded_universe_validation_validated": true,
+    "h001_h012_edge_rejected_or_observation_only": true
+  },
+  "key_conclusions": [
+    "No edge found across H001-H012 in any configuration tested",
+    "No-edge is a valid scientific conclusion, not a failure",
+    "Positive ROI without permutation/BH-FDR support is NOT evidence of edge",
+    "Rule-based OHLCV threshold hypotheses cannot be refined further",
+    "The problem is hypothesis design, not pipeline quality"
+  ],
+  "why_no_edge_is_valid": "Consistent no-edge across expanding universe sizes (8 to 50 symbols) and three hypothesis refinement generations indicates genuine absence of exploitable edge in rule-based OHLCV patterns.",
+  "why_h001_h012_cannot_be_refined_further": "Three refinement generations produced the same result. hypothesis_refinement_guard enforces MAX_CANDIDATE_COUNT=4. Further threshold adjustment is data snooping."
+}

@@ -1,0 +1,63 @@
+{
+  "task": "T-03 Existing Ops Report Audit",
+  "audit_date": "2026-05-06",
+  "findings": {
+    "existing_ops_report": false,
+    "existing_daily_ops_report": false,
+    "existing_api_route_ops": false,
+    "daily_report_engine_reusable": true,
+    "existing_guardrail_summary": false,
+    "existing_walk_forward_context_summary": true,
+    "existing_freshness_alert_summary": true,
+    "existing_do_not_interpret_as": false,
+    "notes": [
+      "No OpsReportEngine.ts or DailyOpsReport exists before this task.",
+      "No /api/report/ops route exists before this task.",
+      "T-06 produced t06_daily_ops_report.json artifact (Python), but no TypeScript implementation.",
+      "DailyReportEngine.ts is reusable — provides marketSummary.regimeContext (T-12).",
+      "marketRegimeResult.ts provides getLatestMarketRegimeContext() and computeFreshnessAlert() (T-09/T-11).",
+      "T-10 walk-forward skeleton provides 120 records with regime context (evidence-based, Python artifact).",
+      "T-11 freshnessAlert is available via computeFreshnessAlert().",
+      "T-12 regimeContext is available via getLatestMarketRegimeContext() + buildRegimeContextSummary()."
+    ]
+  },
+  "reusable_components": [
+    {
+      "name": "getLatestMarketRegimeContext()",
+      "file": "src/lib/marketRegimeResult.ts",
+      "use": "Fetches latest persisted MarketRegimeResult from DB"
+    },
+    {
+      "name": "computeFreshnessAlert()",
+      "file": "src/lib/marketRegimeResult.ts",
+      "use": "Computes freshness alert (FRESH/STALE/CRITICAL_STALE/MISSING/FUTURE_DATE_ERROR)"
+    },
+    {
+      "name": "DEFAULT_CURRENT_DATE",
+      "file": "src/lib/marketRegimeResult.ts",
+      "use": "Reference date for freshness computation (hardcoded, tech debt)"
+    },
+    {
+      "name": "generateDailyReport()",
+      "file": "src/lib/report/DailyReportEngine.ts",
+      "use": "Provides full daily report with marketSummary.regimeContext"
+    }
+  ],
+  "unsafe_components": [
+    {
+      "name": "generateDailyReport()",
+      "concern": "Heavy — calls many engines (events, topics, signals, candidates). Calling it just for Ops Report adds unnecessary overhead.",
+      "resolution": "OpsReportEngine uses getLatestMarketRegimeContext() directly. Does NOT call generateDailyReport()."
+    }
+  ],
+  "recommended_integration_path": "Create standalone OpsReportEngine.ts that uses getLatestMarketRegimeContext() + computeFreshnessAlert() directly. No dependency on heavy DailyReportEngine. Walk-forward summary from T-10 used as static evidence (Python artifact, not re-run from TS).",
+  "decision_answers": {
+    "1_should_add_ops_report_service": true,
+    "2_should_add_api_route": true,
+    "3_can_reuse_daily_report_engine": false,
+    "3_reuse_note": "Not recommended — too heavy. Use marketRegimeResult.ts directly.",
+    "4_needs_to_modify_daily_report_engine": false,
+    "5_needs_schema_migration": false,
+    "6_will_cause_db_write": false
+  }
+}

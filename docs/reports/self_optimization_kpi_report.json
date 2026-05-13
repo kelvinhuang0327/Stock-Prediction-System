@@ -1,0 +1,194 @@
+{
+  "generatedAt": "2026-04-30T15:10:03.753Z",
+  "insightSource": {
+    "id": 1,
+    "sourceTaskId": "price_analysis_quality__data_audit",
+    "insightType": "data_quality_issue",
+    "createdAt": "2026-04-30T14:07:15.626Z",
+    "expiresAt": "2026-05-07T14:38:15.624Z",
+    "regimeContext": "OPTIMIZATION",
+    "confidence": 1,
+    "severity": "high",
+    "evidence": [
+      "Stale quote age: 286.1395861111111h (threshold 48h)",
+      "Symbols affected: 53"
+    ]
+  },
+  "windowStatus": "INSUFFICIENT_RUNTIME_WINDOW",
+  "beforeWindow": {
+    "start": "2026-04-23T14:07:15.626Z",
+    "end": "2026-04-30T14:07:15.626Z",
+    "observedHours": 168,
+    "targetDays": 7,
+    "sufficientForOutcome": true
+  },
+  "afterWindow": {
+    "start": "2026-04-30T14:07:15.626Z",
+    "end": "2026-04-30T15:10:03.765Z",
+    "observedHours": 1.047,
+    "targetDays": 7,
+    "sufficientForOutcome": false
+  },
+  "kpiDefinitions": {
+    "executionQuality": [
+      "Proposal count, opened trade count, and full/pending/shadow distribution.",
+      "Rejected proposal count and gated proposal count derived from persisted decisionMeta trigger components.",
+      "Average triggerScore and average persisted positionSizing across proposals."
+    ],
+    "tradeQuality": [
+      "Closed-trade win rate, average pnlPct, average MFE, and average MAE.",
+      "Stop-hit rate, target-hit rate, and time-exit rate across closed trades only."
+    ],
+    "learningQuality": [
+      "TradeReviewReport count and +5 / -5 / time review mix.",
+      "StrategyLearningInsight count plus active / expired / refreshed OptimizationInsightRecord counts."
+    ],
+    "safety": [
+      "No all-strategy lockout if at least one proposal in-window remained executable or monitorable.",
+      "Duplicate insight rows from grouped OptimizationInsightRecord uniqueness check.",
+      "Hard-gate count where persisted trigger components show insight_gate tied to data_quality_issue.",
+      "Risk-floor bypass count where a trade exists for a proposal persisted as rejected."
+    ]
+  },
+  "dbQueryResult": {
+    "before": {
+      "executionQuality": {
+        "proposalCount": 10,
+        "tradeCount": 0,
+        "fullTradeCount": 0,
+        "pendingTradeCount": 0,
+        "shadowTradeCount": 0,
+        "noneStateProposalCount": 0,
+        "rejectedProposalCount": 10,
+        "gatedProposalCount": 0,
+        "averageTriggerScore": null,
+        "averagePositionSize": 0.1
+      },
+      "tradeQuality": {
+        "closedTradeCount": 0,
+        "winRate": null,
+        "averagePnlPct": null,
+        "averageMfePct": null,
+        "averageMaePct": null,
+        "stopHitRate": null,
+        "targetHitRate": null,
+        "timeExitRate": null
+      },
+      "learningQuality": {
+        "tradeReviewReportCount": 51,
+        "reviewDistribution": {
+          "plus5": 0,
+          "minus5": 0,
+          "time": 51
+        },
+        "strategyLearningInsightCount": 4,
+        "activeInsightCount": 1,
+        "expiredInsightCount": 0,
+        "refreshedInsightCount": 0
+      },
+      "safety": {
+        "noAllStrategyLockout": false,
+        "duplicateInsightRows": 0,
+        "dataQualityHardGateCount": 0,
+        "riskFloorBypassCount": 0
+      }
+    },
+    "after": {
+      "executionQuality": {
+        "proposalCount": 0,
+        "tradeCount": 0,
+        "fullTradeCount": 0,
+        "pendingTradeCount": 0,
+        "shadowTradeCount": 0,
+        "noneStateProposalCount": 0,
+        "rejectedProposalCount": 0,
+        "gatedProposalCount": 0,
+        "averageTriggerScore": null,
+        "averagePositionSize": null
+      },
+      "tradeQuality": {
+        "closedTradeCount": 0,
+        "winRate": null,
+        "averagePnlPct": null,
+        "averageMfePct": null,
+        "averageMaePct": null,
+        "stopHitRate": null,
+        "targetHitRate": null,
+        "timeExitRate": null
+      },
+      "learningQuality": {
+        "tradeReviewReportCount": 0,
+        "reviewDistribution": {
+          "plus5": 0,
+          "minus5": 0,
+          "time": 0
+        },
+        "strategyLearningInsightCount": 0,
+        "activeInsightCount": 1,
+        "expiredInsightCount": 0,
+        "refreshedInsightCount": 0
+      },
+      "safety": {
+        "noAllStrategyLockout": true,
+        "duplicateInsightRows": 0,
+        "dataQualityHardGateCount": 0,
+        "riskFloorBypassCount": 0
+      }
+    },
+    "comparison": {
+      "proposalCountDelta": -10,
+      "tradeCountDelta": 0,
+      "averageTriggerScoreDelta": null,
+      "averagePositionSizeDelta": null,
+      "winRateDelta": null,
+      "averagePnlPctDelta": null
+    }
+  },
+  "behaviorComparison": {
+    "proposalsGeneratedBeforeVsAfter": {
+      "before": 10,
+      "after": 0
+    },
+    "tradesOpenedBeforeVsAfter": {
+      "before": 0,
+      "after": 0
+    },
+    "tradeModeDistributionBeforeVsAfter": {
+      "before": {
+        "full": 0,
+        "pending": 0,
+        "shadow": 0
+      },
+      "after": {
+        "full": 0,
+        "pending": 0,
+        "shadow": 0
+      }
+    },
+    "sizingDistributionBeforeVsAfter": {
+      "beforeAverage": 0.1,
+      "afterAverage": null
+    },
+    "reviewDistributionBeforeVsAfter": {
+      "before": {
+        "plus5": 0,
+        "minus5": 0,
+        "time": 51
+      },
+      "after": {
+        "plus5": 0,
+        "minus5": 0,
+        "time": 0
+      }
+    }
+  },
+  "signalQuality": "INSUFFICIENT_DATA",
+  "conclusion": "The active insight is confirmed to change scoring behavior, but there is no post-insight proposal or trade outcome evidence yet to judge trade-quality improvement.",
+  "limitations": [
+    "After-window runtime is only 1.047h; minimum 72h target not met.",
+    "No closed trades exist in the after-window, so trade outcome KPIs are pending.",
+    "No proposals were generated after the insight activation timestamp yet."
+  ],
+  "nextRecommendation": "Re-run this KPI report after at least 72 hours of post-insight runtime and after closed trades and review reports have accumulated.",
+  "finalClassification": "BEHAVIOR_CHANGED_BUT_OUTCOME_PENDING"
+}

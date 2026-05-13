@@ -1,0 +1,65 @@
+{
+  "contract_name": "T-06 Daily Report Section Contract",
+  "version": "1.0.0",
+  "generated_at": "2026-05-06T14:15:00+08:00",
+  "section_name": "regimeAwareWalkForwardSummary",
+  "section_purpose": "Present today's market regime, regime confidence, recent regime distribution, walk-forward skeleton coverage, portfolio skeleton candidate count, data quality flags, PIT safety flags, guardrail status, and deferred feature status. Not a performance report.",
+  "required_fields": [
+    "report_date",
+    "latest_regime_date",
+    "latest_regime_label",
+    "latest_regime_confidence",
+    "latest_regime_evidence_flags",
+    "latest_walk_forward_date",
+    "latest_portfolio_size",
+    "latest_candidate_symbols",
+    "walk_forward_sample_days",
+    "walk_forward_regime_distribution",
+    "average_portfolio_size",
+    "low_confidence_days",
+    "missing_regime_days",
+    "dates_with_data_quality_flags",
+    "guardrail_status",
+    "guardrail_passed_checks",
+    "guardrail_failed_checks",
+    "pit_safety_status",
+    "forbidden_logic_status",
+    "deferred_features",
+    "readiness_verdict",
+    "next_actions"
+  ],
+  "forbidden_output_fields": [
+    "buy",
+    "sell",
+    "signal",
+    "roi",
+    "win_rate",
+    "alpha",
+    "edge",
+    "profit",
+    "recommendation",
+    "outperform"
+  ],
+  "output_rules": {
+    "json": "machine-readable, strict field contract",
+    "markdown": "human-readable, may include disclaimer prose",
+    "missing_data": "output null + data_quality_flags, do NOT impute"
+  },
+  "sources": {
+    "regime_data": "outputs/market_regime/p4_03b_market_regime_sample.json",
+    "walk_forward_data": "outputs/walk_forward/t05_walk_forward_sample.json",
+    "guardrail_data": "outputs/walk_forward/t05_guardrail_validation.json",
+    "readiness_data": "outputs/walk_forward/t05_readiness_decision.json"
+  },
+  "pit_safety_requirements": [
+    "report_date <= 2026-05-06 (TAIEX cap date)",
+    "latest_regime_date <= 2026-05-06",
+    "latest_walk_forward_date <= 2026-05-06",
+    "All regime data must be from PIT-safe classifier output"
+  ],
+  "integration_path": {
+    "current": "Standalone Python artifact (T-06 builder)",
+    "future_p1": "Add as new section to TypeScript DailyReportEngine",
+    "future_p2": "Persist to MarketRegimeResult DB table (schema proposed)"
+  }
+}

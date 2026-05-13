@@ -1,0 +1,174 @@
+{
+  "program": "Stock Prediction System",
+  "task": "P3-14 P4 Data Availability Audit",
+  "generated_at": "2026-05-06T00:01:04.209533Z",
+  "as_of_date": "2026-05-01",
+  "data_sources": [
+    {
+      "data_source": "StockQuote",
+      "exists": true,
+      "table_or_path": "prisma/dev.db / StockQuote",
+      "row_count": null,
+      "coverage": {
+        "total_symbols": 1357,
+        "date_range": "2017-04-05 to 2026-05-18",
+        "trading_days": 803,
+        "symbols_ge_500_rows": 181,
+        "symbols_ge_1000_rows": 0,
+        "note": "Max trading days in DB is ~803. No symbol has 1000+ rows given DB date range."
+      },
+      "pit_safe_possible": true,
+      "blocker": null,
+      "priority": "CRITICAL"
+    },
+    {
+      "data_source": "Stock metadata (name, industry, capital)",
+      "exists": true,
+      "table_or_path": "prisma/dev.db / Stock",
+      "row_count": 1358,
+      "coverage": {
+        "total_stocks": 1358,
+        "with_industry": 1084,
+        "distinct_industry_codes": 33,
+        "note": "Industry field contains numeric codes, not descriptive names. Many stocks have empty industry. ETF/stock classification not in schema - derived by symbol pattern heuristic."
+      },
+      "pit_safe_possible": true,
+      "blocker": "Industry metadata mostly numeric codes (e.g. 28, 24, 26). No ETF/stock flag in schema. Need mapping table for sector names.",
+      "priority": "HIGH"
+    },
+    {
+      "data_source": "InstitutionalChip (foreign, trust, dealer buy/sell)",
+      "exists": true,
+      "table_or_path": "prisma/dev.db / InstitutionalChip",
+      "row_count": 291068,
+      "coverage": {
+        "symbols": 1358,
+        "date_range": "2025-05-02 to 2026-05-05",
+        "note": "Only ~1 year of data. Insufficient for 500d window validation backtests."
+      },
+      "pit_safe_possible": true,
+      "blocker": "Only covers 2025-05-02 to 2026-05-05. Need historical backfill to 2020+ for robust validation.",
+      "priority": "HIGH"
+    },
+    {
+      "data_source": "MarketIndex (TAIEX and sector indices)",
+      "exists": true,
+      "table_or_path": "prisma/dev.db / MarketIndex",
+      "row_count": 2633,
+      "coverage": {
+        "distinct_indices": 298,
+        "date_range": "2017-12-01 to 2026-05-18",
+        "taiex_trading_days": 734,
+        "note": "TAIEX and multiple sector indices available. Good coverage 2017-2026."
+      },
+      "pit_safe_possible": true,
+      "blocker": null,
+      "priority": "CRITICAL"
+    },
+    {
+      "data_source": "MonthlyRevenue",
+      "exists": true,
+      "table_or_path": "prisma/dev.db / MonthlyRevenue",
+      "row_count": 2143,
+      "coverage": {
+        "symbols": 1074,
+        "date_range": "2026-02 to 2026-03",
+        "note": "Only 2 months of data (2026-02 to 2026-03). Extremely limited."
+      },
+      "pit_safe_possible": true,
+      "blocker": "Only 2 months of monthly revenue data. Need multi-year backfill for any event-based hypothesis.",
+      "priority": "MEDIUM"
+    },
+    {
+      "data_source": "FinancialReport (earnings, margins)",
+      "exists": true,
+      "table_or_path": "prisma/dev.db / FinancialReport",
+      "row_count": 957,
+      "coverage": {
+        "symbols": 957,
+        "note": "Limited quarterly data. Coverage and date range unclear."
+      },
+      "pit_safe_possible": true,
+      "blocker": "Limited historical depth. Need audit of quarter coverage before hypothesis design.",
+      "priority": "MEDIUM"
+    },
+    {
+      "data_source": "Short selling balance",
+      "exists": false,
+      "table_or_path": "DATA_SOURCE_MISSING",
+      "row_count": 0,
+      "coverage": {},
+      "pit_safe_possible": null,
+      "blocker": "No short selling balance table found in DB. Requires new data source.",
+      "priority": "LOW"
+    },
+    {
+      "data_source": "Margin balance",
+      "exists": false,
+      "table_or_path": "DATA_SOURCE_MISSING",
+      "row_count": 0,
+      "coverage": {},
+      "pit_safe_possible": null,
+      "blocker": "No margin balance table found in DB. InstitutionalChip has holders400/holders1000 but not standard margin balance.",
+      "priority": "LOW"
+    },
+    {
+      "data_source": "Sector index (OTC index, sub-sector)",
+      "exists": true,
+      "table_or_path": "prisma/dev.db / MarketIndex (sector indices available)",
+      "row_count": null,
+      "coverage": {
+        "note": "MarketIndex contains multiple sector-level indices in Chinese. Mapping to sector codes needed."
+      },
+      "pit_safe_possible": true,
+      "blocker": "Index names are in Chinese. Need mapping between Stock.industry codes and MarketIndex.name for sector-relative computations.",
+      "priority": "HIGH"
+    },
+    {
+      "data_source": "Dividend and ex-right event data",
+      "exists": false,
+      "table_or_path": "DATA_SOURCE_MISSING",
+      "row_count": 0,
+      "coverage": {},
+      "pit_safe_possible": null,
+      "blocker": "No dividend or ex-right table found. FinancialReport has earnings but not dividend schedule.",
+      "priority": "MEDIUM"
+    },
+    {
+      "data_source": "Data sync scripts",
+      "exists": true,
+      "table_or_path": "scripts/ directory",
+      "row_count": null,
+      "coverage": {
+        "note": "Multiple sync and backfill scripts exist in scripts/ directory"
+      },
+      "pit_safe_possible": true,
+      "blocker": null,
+      "priority": "MEDIUM"
+    }
+  ],
+  "summary": {
+    "data_sources_exist": 8,
+    "data_sources_missing": 3,
+    "critical_blockers": [
+      "InstitutionalChip only 1 year of history - need backfill to 2020+",
+      "MonthlyRevenue only 2 months - need multi-year backfill",
+      "Stock.industry has numeric codes with no name mapping",
+      "No dividend/ex-right event table"
+    ],
+    "immediately_usable": [
+      "StockQuote",
+      "MarketIndex (TAIEX)"
+    ],
+    "usable_after_backfill": [
+      "InstitutionalChip",
+      "MonthlyRevenue",
+      "FinancialReport"
+    ],
+    "requires_new_source": [
+      "short_selling_balance",
+      "margin_balance",
+      "dividend_ex_right_events"
+    ]
+  }
+}

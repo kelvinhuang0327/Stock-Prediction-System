@@ -1,13 +1,15 @@
 {
   "version": "1.0",
-  "schedulerEnabled": true,
-  "plannerProvider": "codex",
+  "schedulerEnabled": false,
+  "plannerProvider": "local-planner",
   "workerProvider": "copilot-daemon",
   "providerCooldowns": {},
   "scheduleMinutes": 10,
-  "nextPlannerRunAt": "2026-04-30T10:27:26.459Z",
-  "nextWorkerRunAt": "2026-04-30T10:40:32.805Z",
-  "lastPlannerRunAt": "2026-04-27T01:57:05.163Z",
-  "lastWorkerRunAt": "2026-04-30T10:30:32.805Z",
-  "updatedAt": "2026-04-30T10:30:32.805Z"
+  "nextPlannerRunAt": null,
+  "nextWorkerRunAt": "2026-05-05T10:10:12.100Z",
+  "lastPlannerRunAt": null,
+  "lastWorkerRunAt": "2026-05-05T10:00:12.100Z",
+  "updatedAt": "2026-05-05T10:00:12.100Z",
+  "workerCopilotModel": "gpt-5-mini",
+  "laneHeartbeats": {}
 }

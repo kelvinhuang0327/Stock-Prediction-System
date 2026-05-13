@@ -1,0 +1,68 @@
+{
+  "analysis_id": "P4_04_CONFIDENCE_SANITY_CHECK",
+  "analysis_date": "2026-05-06",
+  "generated_at": "2026-05-06T14:58:03.508851",
+  "confidence_min": 0.3846,
+  "confidence_max": 1.0,
+  "confidence_avg": 0.8167,
+  "confidence_median": 0.8462,
+  "confidence_distribution_buckets": {
+    "0.0-0.2": {
+      "count": 0,
+      "pct": 0.0
+    },
+    "0.2-0.4": {
+      "count": 8,
+      "pct": 2.7
+    },
+    "0.4-0.6": {
+      "count": 43,
+      "pct": 14.3
+    },
+    "0.6-0.8": {
+      "count": 56,
+      "pct": 18.7
+    },
+    "0.8-1.0": {
+      "count": 193,
+      "pct": 64.3
+    }
+  },
+  "confidence_by_label": {
+    "BEAR": {
+      "min": 0.8462,
+      "max": 0.8462,
+      "avg": 0.8462
+    },
+    "BULL": {
+      "min": 0.8462,
+      "max": 1.0,
+      "avg": 0.9072
+    },
+    "HIGH_VOLATILITY": {
+      "min": 1.0,
+      "max": 1.0,
+      "avg": 1.0
+    },
+    "SIDEWAYS": {
+      "min": 0.3846,
+      "max": 0.6923,
+      "avg": 0.601
+    }
+  },
+  "confidence_equals_1_count": 113,
+  "confidence_equals_0_count": 0,
+  "high_confidence_ratio": 0.6433,
+  "low_confidence_ratio": 0.0267,
+  "concentration_at_1_0": true,
+  "concentration_risk_note": "HIGH_VOLATILITY always 1.0 by design; BULL reaches 1.0 when all 11 indicators trigger. Not a defect.",
+  "anomalies": [
+    "HIGH_VOLATILITY confidence=1.0 always (override by design)"
+  ],
+  "calibration_redesign_needed": false,
+  "verdict": "PASS_WITH_WARNINGS",
+  "warnings": [
+    "37.7% records have confidence==1.0 -- acceptable given design",
+    "No performance-based calibration applied (by design)"
+  ]
+}

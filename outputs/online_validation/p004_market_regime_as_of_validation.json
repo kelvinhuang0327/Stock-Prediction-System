@@ -1,0 +1,31 @@
+{
+  "task": "P0-04",
+  "title": "MarketRegime As-of Gate Validation",
+  "date": "2026-05-07",
+  "status": "COMPLETE",
+  "disclaimer": "research tool only — no auto trading — no precision prediction claim — no DB write — no external API — no LLM call — no strategy mutation — no regime logic mutation — no performance claim — no edge claim",
+  "marketRegimeResultSchema": {
+    "model": "MarketRegimeResult",
+    "dateField": "date",
+    "dateFormat": "String (YYYY-MM-DD ISO)",
+    "uniqueConstraint": "[date, source, version]"
+  },
+  "getLatestMarketRegimeContext": {
+    "file": "src/lib/marketRegimeResult.ts",
+    "function": "getLatestMarketRegimeContext(currentDate?, asOf?)",
+    "previousBehavior": "prisma.marketRegimeResult.findFirst({ orderBy: { date: 'desc' } }) — NO date upper bound",
+    "p004Behavior": "prisma.marketRegimeResult.findFirst({ where: asOf ? { date: { lte: asOf } } : undefined, orderBy: { date: 'desc' } })",
+    "safetyNet": "If row.date > asOf after DB query, returns FUTURE_DATE_ERROR — does not fallback to bullish/valid",
+    "gateStatus": "COMPLETE"
+  },
+  "regimeRouteIntegration": {
+    "file": "src/app/api/daily-report/regime/route.ts",
+    "change": "Added asOfDate query param, passed as 2nd arg to getLatestMarketRegimeContext()",
+    "responseAdditions": ["asOfDate", "asOfGateStatus (ACTIVE|NOT_APPLIED|ERROR)", "regime.sourceDate"],
+    "gateStatus": "COMPLETE"
+  },
+  "sourceDateValidation": {
+    "rule": "sourceDate > asOfDate => FUTURE_DATE_ERROR => isAvailable: false",
+    "fallbackBehavior": "MISSING or FUTURE_DATE_ERROR — never silently returns regime as valid"
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "guardrail_id": "T09_GUARDRAIL_VALIDATION",
+  "validation_date": "2026-05-06",
+  "generated_at": "2026-05-06T15:09:18.366429",
+  "overall_status": "PASS",
+  "total_checks": 16,
+  "passed": 16,
+  "failed": 0,
+  "checks": [
+    {
+      "check": "api_route_exists",
+      "result": "PASS",
+      "file": "src/app/api/daily-report/regime/route.ts"
+    },
+    {
+      "check": "service_function_exists",
+      "result": "PASS",
+      "file": "src/lib/marketRegimeResult.ts"
+    },
+    {
+      "check": "latest_regime_query_works",
+      "result": "PASS",
+      "note": "prisma.marketRegimeResult.findFirst OK"
+    },
+    {
+      "check": "response_has_regimeLabel",
+      "result": "PASS"
+    },
+    {
+      "check": "response_has_confidence",
+      "result": "PASS"
+    },
+    {
+      "check": "response_has_date",
+      "result": "PASS"
+    },
+    {
+      "check": "freshnessStatus_exists",
+      "result": "PASS"
+    },
+    {
+      "check": "no_forbidden_fields",
+      "result": "PASS"
+    },
+    {
+      "check": "no_h001_h012_references",
+      "result": "PASS"
+    },
+    {
+      "check": "no_db_write",
+      "result": "PASS"
+    },
+    {
+      "check": "no_external_api_call",
+      "result": "PASS"
+    },
+    {
+      "check": "no_strategy_validation",
+      "result": "PASS"
+    },
+    {
+      "check": "no_roi_winrate_claims",
+      "result": "PASS"
+    },
+    {
+      "check": "all_json_artifacts_parse",
+      "result": "PASS"
+    },
+    {
+      "check": "all_required_output_files_exist",
+      "result": "PASS"
+    },
+    {
+      "check": "jest_tests_pass",
+      "result": "PASS",
+      "note": "21/21 PASS"
+    }
+  ]
+}

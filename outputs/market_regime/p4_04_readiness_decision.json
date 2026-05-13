@@ -1,0 +1,46 @@
+{
+  "readiness_id": "P4_04_READINESS_DECISION",
+  "decision_date": "2026-05-06",
+  "generated_at": "2026-05-06T14:59:28.991778",
+  "p4_04_formal_validation_pass": true,
+  "overall_verdict": "PASS_WITH_WARNINGS",
+  "readiness_answers": {
+    "1_p4_04_validation_pass": true,
+    "2_mrr_usable_as_daily_report_context": true,
+    "3_mrr_usable_as_walkforward_context": true,
+    "4_can_enter_typescript_dailyreportengine_integration": true,
+    "5_can_enter_scheduler_lane_integration": false,
+    "6_needs_confidence_calibration_redesign": false,
+    "7_needs_regime_transition_smoothing": false,
+    "8_has_pit_leakage_risk": false,
+    "9_has_h001_h012_leakage_risk": false,
+    "10_has_buy_sell_signal_leakage_risk": false,
+    "11_p0_blocker_remaining": false,
+    "12_recommended_next": "T-09: TypeScript DailyReportEngine integration"
+  },
+  "rationale": {
+    "scheduler_lane_not_ready": "Scheduler lane integration deferred -- TypeScript integration needed first",
+    "smoothing_deferred": "21 single-day churn periods are acceptable; smoothing is P2",
+    "calibration_ok": "HIGH_VOLATILITY confidence=1.0 by design; not a calibration defect",
+    "freshness_alert_needed": "Should add freshness alert when MarketRegimeResult max_date lags >3 trading days"
+  },
+  "next_task_recommendations": {
+    "P0_immediate": [
+      "T-09: TypeScript DailyReportEngine integration -- expose MarketRegimeResult latest via /api/daily-report/regime using Prisma Client"
+    ],
+    "P1_next": [
+      "T-10: Walk-forward context enrichment -- pass latest regime to WalkForward runs",
+      "T-11: Freshness alert -- add alert when MarketRegimeResult.max_date lags > 3 days"
+    ],
+    "P2_deferred": [
+      "Scheduler lane integration for MarketRegimePersistence",
+      "Regime transition smoothing (HMM or min-period filter)",
+      "Confidence calibration audit after 6+ months of data"
+    ],
+    "do_not_continue": [
+      "H013+ hypothesis design",
+      "Strategy validation based on regime",
+      "ROI / win-rate calculation per regime"
+    ]
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "task": "P0-01",
+  "taskName": "Future-Date Quarantine",
+  "artifactType": "future_date_quarantine",
+  "date": "2026-05-07",
+  "asOfDate": "2026-05-07",
+  "safetyLabels": [
+    "P0-01", "future-date quarantine", "read-only", "no DB write",
+    "no external API", "no LLM call", "research tool only"
+  ],
+  "quarantinePolicy": {
+    "strategy": "Detect future rows via detectFutureDateRows(); exclude via buildAsOfWhereClause() in all queries",
+    "deletionPolicy": "NO DELETION — rows remain in DB; excluded at query layer only",
+    "writePolicy": "NO DB WRITES — read-only quarantine observability"
+  },
+  "knownFutureDateObservations": [
+    {
+      "tableName": "StockQuote",
+      "observedFutureDate": "2026-05-18",
+      "todayDate": "2026-05-07",
+      "daysAhead": 11,
+      "gateCanExclude": true,
+      "status": "WARN",
+      "gateClause": "WHERE date <= '20260507'"
+    },
+    {
+      "tableName": "MarketIndex",
+      "observedFutureDate": "2026-05-18",
+      "todayDate": "2026-05-07",
+      "daysAhead": 11,
+      "gateCanExclude": true,
+      "status": "WARN",
+      "gateClause": "WHERE date <= '20260507'"
+    },
+    {
+      "tableName": "InstitutionalChip",
+      "observedFutureDate": "unknown — needs runtime check",
+      "gateCanExclude": true,
+      "status": "WARN"
+    }
+  ],
+  "overallStatus": "WARN",
+  "overallNote": "Future-date rows exist in DB but are excluded at query layer by buildAsOfWhereClause(). No rows deleted. WARN is expected until source data pipeline removes future rows.",
+  "observabilityNote": "Future-date quarantine observability. Research tool only. Not investment advice."
+}

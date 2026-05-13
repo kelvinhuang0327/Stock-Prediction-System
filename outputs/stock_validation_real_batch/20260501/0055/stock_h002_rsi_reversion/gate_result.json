@@ -29,15 +29,15 @@
       "win_rate": 0.7143,
       "edge_pp": 21.43,
       "tx_cost_bps": 10,
-      "p_value": 0.55,
+      "p_value": 0.75,
       "n_permutations": 20,
       "one_tailed": true,
       "symbol": "0055",
       "hypothesis_id": "STOCK_H002_RSI_REVERSION",
       "pit_passed": true,
       "pit_leakage": false,
-      "raw_p_value": 0.55,
-      "bh_fdr_q_value": 0.942857,
+      "raw_p_value": 0.75,
+      "bh_fdr_q_value": 1.0,
       "bh_fdr_pass": false
     },
     {
@@ -53,17 +53,17 @@
       "win_rate": 0.4615,
       "edge_pp": -3.85,
       "tx_cost_bps": 10,
-      "p_value": 0.3,
+      "p_value": 0.65,
       "n_permutations": 20,
       "one_tailed": true,
       "symbol": "0055",
       "hypothesis_id": "STOCK_H002_RSI_REVERSION",
       "pit_passed": true,
       "pit_leakage": false,
-      "raw_p_value": 0.3,
-      "bh_fdr_q_value": 0.72,
+      "raw_p_value": 0.65,
+      "bh_fdr_q_value": 1.0,
       "bh_fdr_pass": false
     }
   ],
-  "run_ts": "2026-05-05T06:08:26.863509+00:00"
+  "run_ts": "2026-05-05T09:58:35.260736+00:00"
 }

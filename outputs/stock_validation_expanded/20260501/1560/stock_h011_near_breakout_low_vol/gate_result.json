@@ -1,0 +1,49 @@
+{
+  "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+  "base_hypothesis_id": "STOCK_H006_LOW_VOL_BREAKOUT",
+  "symbol": "1560",
+  "as_of_date": "2026-05-01",
+  "status": "DATA_INSUFFICIENT",
+  "allowed_scope": "full_validation",
+  "promotion_allowed": false,
+  "primary_window": 500,
+  "secondary_window": 150,
+  "window_results": [
+    {
+      "status": "DATA_INSUFFICIENT",
+      "window_days": 500,
+      "error": "insufficient_oos",
+      "n_oos": 2,
+      "symbol": "1560",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "pit_passed": true,
+      "pit_leakage": false,
+      "primary_raw_p_value": 1.0,
+      "primary_bh_fdr_q_value": 1.0,
+      "primary_bh_fdr_pass": false,
+      "diagnostic_bh_fdr_q_value": 1.0,
+      "diagnostic_bh_fdr_pass": false,
+      "window_role": "primary",
+      "eligible_for_review": false
+    },
+    {
+      "status": "DATA_INSUFFICIENT",
+      "window_days": 150,
+      "error": "no_signals",
+      "actual_rows": 150,
+      "symbol": "1560",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "pit_passed": true,
+      "pit_leakage": false,
+      "primary_raw_p_value": 1.0,
+      "primary_bh_fdr_q_value": 1.0,
+      "primary_bh_fdr_pass": false,
+      "diagnostic_bh_fdr_q_value": 1.0,
+      "diagnostic_bh_fdr_pass": false,
+      "window_role": "secondary",
+      "eligible_for_review": false
+    }
+  ],
+  "run_ts": "2026-05-05T14:59:49.213656+00:00",
+  "pipeline_version": "P3-13"
+}

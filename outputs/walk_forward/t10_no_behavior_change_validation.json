@@ -1,0 +1,26 @@
+{
+  "task": "T-10 No-Behavior-Change Validation",
+  "generated_at": "2026-05-06T15:00:00+08:00",
+  "t05_sample": "outputs/walk_forward/t05_walk_forward_sample.json",
+  "t10_sample": "outputs/walk_forward/t10_walk_forward_regime_context_sample.json",
+  "checks": {
+    "total_records_unchanged": true,
+    "total_t05": 120,
+    "total_t10": 120,
+    "asof_date_sequence_unchanged": true,
+    "portfolio_size_unchanged": true,
+    "candidate_symbols_unchanged": true,
+    "candidate_selection_method_unchanged": true,
+    "placeholder_metrics_unchanged": true,
+    "forbidden_logic_flags_unchanged": true,
+    "no_forbidden_fields": true,
+    "forbidden_fields_found": [],
+    "no_h001_h012": true,
+    "only_allowed_new_field": true,
+    "new_fields_found": [
+      "regimeContext"
+    ],
+    "overall_result": "PASS"
+  },
+  "diff_summary": "Only new field is regimeContext per record and regime_context_summary in output root. All original fields are unchanged."
+}

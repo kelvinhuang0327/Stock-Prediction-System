@@ -1,0 +1,110 @@
+{
+  "task": "T-05B",
+  "title": "Walk-Forward Backtest Skeleton v2 — Readiness Decision",
+  "date": "2026-05-07",
+  "classification": "T05B_WALK_FORWARD_BACKTEST_SKELETON_COMPLETE",
+  "labels": ["T-05B", "observability-only", "no edge claim", "no production write", "no DB write", "no external API", "no LLM call", "no strategy mutation", "no H001-H012"],
+  "answers": {
+    "1_typescript_engine_created": {
+      "answer": true,
+      "detail": "src/lib/backtest/WalkForwardEngine.ts created with all 5 required exports: buildWalkForwardSkeleton, getRegimeContextForDate, buildMonthlyRebalanceSchedule, rankCandidatesRuleOnly, computeTurnoverStats"
+    },
+    "2_resolveCurrentDate_used": {
+      "answer": true,
+      "detail": "resolveCurrentDate() called in buildWalkForwardSkeleton(), getRegimeContextForDate(), rankCandidatesRuleOnly(). No hardcoded date cap."
+    },
+    "3_500day_lookback_contract": {
+      "answer": true,
+      "detail": "T05B_LOOKBACK_DAYS = 500 exported from WalkForwardEngine.ts. Default config uses this value."
+    },
+    "4_monthly_rebalance_skeleton": {
+      "answer": true,
+      "detail": "buildMonthlyRebalanceSchedule() is deterministic, handles empty range, handles no trading days, embedded in buildWalkForwardSkeleton() output."
+    },
+    "5_persisted_regime_read_only": {
+      "answer": true,
+      "detail": "regimeContextMap injected as Map<string, PersistedRegimeContext>. Engine never queries DB. Never mutates context map."
+    },
+    "6_explicit_missing_state": {
+      "answer": true,
+      "detail": "getRegimeContextForDate() returns dataAvailabilityFlag: 'MISSING' with isAvailable: false when no prior context exists. Never assumes BULL or valid."
+    },
+    "7_forbidden_fields_absent": {
+      "answer": true,
+      "detail": "containsForbiddenKey() test passes over all output. No buy/sell/roi/alpha/edge/profit/recommendation/outperform in field names."
+    },
+    "8_no_h001_h012": {
+      "answer": true,
+      "detail": "H_PATTERN = /H0(0[1-9]|1[0-2])\\b/ not present in engine output JSON. No ExperimentRegistry references."
+    },
+    "9_tests_pass": {
+      "answer": true,
+      "detail": "45/45 T-05B tests PASS. 8 suites / 134 tests PASS in full regression (T-12b + T-03 + T-04 + T-09 + T-11 + T-05B)."
+    },
+    "10_guardrail_complete": {
+      "answer": true,
+      "detail": "14/14 guardrail checks PASS. All JSON artifacts parse successfully."
+    },
+    "11_no_strategy_validation_performed": {
+      "answer": true,
+      "detail": "No ROI, no win-rate, no alpha, no edge computation. All performance fields are null placeholders."
+    },
+    "12_no_production_behavior_changed": {
+      "answer": true,
+      "detail": "Only new files added: WalkForwardEngine.ts and test. No existing production files modified."
+    }
+  },
+  "testSummary": {
+    "t05b_engine": "45/45 PASS",
+    "t12b_current_date": "PASS",
+    "t03_ops_engine": "PASS",
+    "t03_ops_api": "PASS",
+    "t04_safety_guard": "PASS",
+    "t04_safety_guard_route": "PASS",
+    "t09_market_regime_api": "PASS",
+    "t11_freshness_alert_api": "PASS",
+    "totalSuites": 8,
+    "totalTests": 134,
+    "allPass": true
+  },
+  "filesCreated": [
+    "src/lib/backtest/WalkForwardEngine.ts",
+    "src/lib/backtest/__tests__/t05b_walk_forward_engine.test.ts",
+    "outputs/backtest/t05b_existing_walk_forward_audit.json",
+    "outputs/backtest/t05b_existing_walk_forward_audit.md",
+    "outputs/backtest/t05b_walk_forward_contract.json",
+    "outputs/backtest/t05b_walk_forward_contract.md",
+    "outputs/backtest/t05b_walk_forward_skeleton.json",
+    "outputs/backtest/t05b_walk_forward_skeleton.md",
+    "outputs/backtest/t05b_guardrail_validation.json",
+    "outputs/backtest/t05b_guardrail_validation.md",
+    "outputs/backtest/t05b_readiness_decision.json",
+    "outputs/backtest/t05b_readiness_decision.md",
+    "outputs/system_readiness/t05b_next_execution_order_20260507.md"
+  ],
+  "nextRoundPriorities": {
+    "P0_Immediate": [
+      "T-05C or T-06: Build persisted MarketRegimeResult context loader that provides a populated Map<string, PersistedRegimeContext> for WalkForwardEngine injection",
+      "T-05C or T-06: Replace mock candidates with real StockQuote-based PIT-safe candidate selection"
+    ],
+    "P1_Next": [
+      "P4-05 Data Backfill: backfill InstitutionalChip, MonthlyRevenue, FinancialReport for >= 500 trading days",
+      "Integrate WalkForwardEngine.ts into DailyOpsReport observability layer"
+    ],
+    "DoNotDo": [
+      "Strategy validation",
+      "ROI computation",
+      "Win-rate computation",
+      "Alpha / edge claims",
+      "H001-H012 reactivation",
+      "ML model training before data foundation complete"
+    ]
+  },
+  "risks": [
+    "persistedMarketRegimeResult coverage risk: if DB has < 500 days of MarketRegimeResult, many records will show MISSING regime context",
+    "Python T-05 skeleton coexists with T-05B TS skeleton — operator must use T-05B for TypeScript pipeline",
+    "Monthly rebalance skeleton is structural only — not equivalent to a complete backtest",
+    "rankCandidatesRuleOnly is alphabetical deterministic only — not a strategy recommendation",
+    "Weekday-only date generation is a simplification — a full Taiwan trading calendar is needed for production accuracy"
+  ]
+}

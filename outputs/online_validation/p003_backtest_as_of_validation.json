@@ -1,0 +1,41 @@
+{
+  "task": "P0-03",
+  "title": "Backtest As-of Gate Validation",
+  "date": "2026-05-07",
+  "classification": "research_tool_only",
+  "noAutoTrading": true,
+  "noEdgeClaim": true,
+  "noPerformanceClaim": true,
+  "noDBWrite": true,
+  "noExternalAPI": true,
+  "noLLMCall": true,
+  "noStrategyMutation": true,
+  "routes": {
+    "/api/stocks/backtest": {
+      "status": "COMPLETE",
+      "changes": [
+        "Added asOfDate to POST body and GET query param",
+        "asOfDb passed to backtestFromDB as 4th arg",
+        "asOfDb passed to backtestFromDBRegimeAware as 8th arg",
+        "backtestFromDB: stockQuote WHERE date lte asOfDb",
+        "backtestFromDBRegimeAware: stockQuote WHERE date lte asOfDb",
+        "Response includes asOfDate, asOfGateStatus: ACTIVE, asOfGateNote"
+      ],
+      "existingLogicModified": false,
+      "backtestLogicModified": false
+    },
+    "/api/backtest/validate": {
+      "status": "COMPLETE",
+      "changes": [
+        "Added resolveAsOfDate import",
+        "Added asOfDate to body destructuring",
+        "asOfDb = resolveAsOfDate(asOfDateRaw).replace(/-/g,'')",
+        "stockQuote.findMany: date: { gte: startDateStr, lte: asOfDb }",
+        "Response includes asOfDate, asOfGateStatus: ACTIVE, asOfGateNote"
+      ],
+      "existingLogicModified": false
+    }
+  },
+  "preExistingQuirk": "backtestFromDB uses fromDate.toISOString().slice(0,10) for gte (YYYY-MM-DD format vs YYYYMMDD DB format). This is a pre-existing issue, not modified in P0-03.",
+  "futureRowProtection": "ACTIVE for both routes — all stockQuote queries now have lte: asOfDb upper bound"
+}

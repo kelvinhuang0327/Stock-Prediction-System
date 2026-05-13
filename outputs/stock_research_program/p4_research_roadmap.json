@@ -1,0 +1,219 @@
+{
+  "program": "Stock Prediction System",
+  "task": "P3-14 P4 Research Roadmap",
+  "generated_at": "2026-05-06T00:01:56.291861Z",
+  "p3_final_classification": "EXPANDED_UNIVERSE_NO_EDGE_FOUND",
+  "p4_objective": "Design and validate next-generation hypotheses with stronger economic priors, portfolio-level testing, and new data sources.",
+  "stages": [
+    {
+      "stage": "P4-01",
+      "title": "Data Source Expansion Audit",
+      "objective": "Confirm which new data sources are available, what historical depth exists, and what backfill is needed for next-gen hypothesis design.",
+      "prerequisites": [
+        "P3-14 complete",
+        "Access to prisma/dev.db"
+      ],
+      "expected_artifacts": [
+        "outputs/stock_data_expansion/p4_01_data_source_audit.json",
+        "outputs/stock_data_expansion/p4_01_data_source_audit.md",
+        "outputs/stock_data_expansion/p4_01_backfill_requirements.json",
+        "tests/test_stock_data_source_expansion.py"
+      ],
+      "tests_required": [
+        "StockQuote coverage verified",
+        "InstitutionalChip date range verified",
+        "MarketIndex sector indices inventoried",
+        "Stock.industry codes mapped",
+        "Missing data sources documented as DATA_SOURCE_MISSING"
+      ],
+      "success_criteria": [
+        "All existing tables audited with row count and date coverage",
+        "Missing data sources explicitly listed",
+        "Backfill requirements documented",
+        "No new hypothesis designed in this stage"
+      ],
+      "blocked_by": [],
+      "estimated_complexity": "LOW - read-only audit"
+    },
+    {
+      "stage": "P4-02",
+      "title": "Cross-Sectional Ranking Framework",
+      "objective": "Build universe-wide ranking system for stocks. Compute universe rank, sector rank (when available), and risk-adjusted rank from existing StockQuote data. This enables portfolio-level hypothesis testing.",
+      "prerequisites": [
+        "P4-01 complete",
+        "StockQuote data with >=30 eligible symbols"
+      ],
+      "expected_artifacts": [
+        "gbgf/domain/cross_sectional_ranker.py",
+        "scripts/run_cross_sectional_ranking.py",
+        "outputs/cross_sectional_ranking/{asOfDate}/ranking_snapshot.json",
+        "tests/test_cross_sectional_ranker.py"
+      ],
+      "tests_required": [
+        "Ranking is PIT-safe",
+        "No future data in rank computation",
+        "Rank is stable given same universe",
+        "Handles missing symbols gracefully",
+        "Sector rank uses available industry codes"
+      ],
+      "success_criteria": [
+        "Universe rank computable for all StockQuote symbols",
+        "Risk-adjusted rank (Sharpe-based) computable",
+        "Ranking is reproducible from lineage",
+        "No data leakage"
+      ],
+      "blocked_by": [
+        "P4-01"
+      ],
+      "estimated_complexity": "MEDIUM"
+    },
+    {
+      "stage": "P4-03",
+      "title": "Market Regime Classifier",
+      "objective": "Build a market regime classifier from TAIEX data (trend, volatility, bull/bear/sideways). All next-gen hypotheses will be conditioned on market regime to avoid regime-blind signals.",
+      "prerequisites": [
+        "P4-01 confirms MarketIndex TAIEX data coverage",
+        "P4-02 complete"
+      ],
+      "expected_artifacts": [
+        "gbgf/domain/market_regime_classifier.py",
+        "scripts/run_market_regime_classification.py",
+        "outputs/market_regime/{asOfDate}/regime_snapshot.json",
+        "tests/test_market_regime_classifier.py"
+      ],
+      "tests_required": [
+        "Regime computed from TAIEX only (PIT-safe)",
+        "Regime labels are discrete and stable",
+        "Historical regimes cover 2017-2026",
+        "No future TAIEX data used"
+      ],
+      "success_criteria": [
+        "At least 3 regime states defined (bull, bear, sideways)",
+        "TAIEX-based regime covers full StockQuote date range",
+        "Regime is reproducible from lineage",
+        "Regime switches are not too frequent (noise filter applied)"
+      ],
+      "blocked_by": [
+        "P4-01"
+      ],
+      "estimated_complexity": "MEDIUM"
+    },
+    {
+      "stage": "P4-04",
+      "title": "Portfolio-Level Backtester",
+      "objective": "Build a basket-level validation framework. Instead of single-stock permutation tests, validate top-N ranked baskets against random baskets. This provides higher statistical power and more realistic simulation.",
+      "prerequisites": [
+        "P4-02 cross-sectional ranking",
+        "P4-03 market regime",
+        "P4-01 data audit"
+      ],
+      "expected_artifacts": [
+        "gbgf/domain/portfolio_backtester.py",
+        "scripts/run_portfolio_level_backtest.py",
+        "outputs/portfolio_backtest/{asOfDate}/portfolio_summary.json",
+        "tests/test_portfolio_backtester.py"
+      ],
+      "tests_required": [
+        "Portfolio-level PIT guard",
+        "No look-ahead in basket construction",
+        "Permutation test on basket returns",
+        "BH-FDR across basket tests",
+        "No production write",
+        "Paper-only simulation"
+      ],
+      "success_criteria": [
+        "Top-N basket construction is PIT-safe",
+        "Permutation test uses >=500 basket shuffles",
+        "BH-FDR correction applied across all hypotheses",
+        "Regime-conditioned results reported separately",
+        "No auto-promotion"
+      ],
+      "blocked_by": [
+        "P4-02",
+        "P4-03"
+      ],
+      "estimated_complexity": "HIGH"
+    },
+    {
+      "stage": "P4-05",
+      "title": "Next-Gen Hypothesis Registry",
+      "objective": "Design and register new hypotheses (H013+) using the quality scoring rubric. Only hypotheses scoring >=70/100 may be registered. Economic rationale required. Stronger priors required.",
+      "prerequisites": [
+        "P3-14 design principles",
+        "P4-01 data audit",
+        "P4-02 ranking framework",
+        "P4-03 regime classifier"
+      ],
+      "expected_artifacts": [
+        "research/stock_hypothesis_registry_v4.json",
+        "outputs/stock_research_program/hypothesis_quality_scores.json",
+        "tests/test_stock_hypothesis_registry_v4.py"
+      ],
+      "tests_required": [
+        "All new hypotheses have quality_score >= 70",
+        "All hypotheses have economic_rationale",
+        "All hypotheses have stronger_prior defined",
+        "All hypotheses have retirement_rule",
+        "No threshold adjustment from P3 results",
+        "promotion_allowed=false for all new hypotheses at registration"
+      ],
+      "success_criteria": [
+        "At least 3 new hypotheses registered with quality_score >= 70",
+        "All hypotheses have required fields",
+        "No recycling of H001-H012 thresholds",
+        "Human review required flag set"
+      ],
+      "blocked_by": [
+        "P4-01",
+        "P4-02",
+        "P4-03"
+      ],
+      "estimated_complexity": "MEDIUM"
+    },
+    {
+      "stage": "P4-06",
+      "title": "P4 Batch Validation",
+      "objective": "Validate new hypotheses from P4-05 using the portfolio-level backtester from P4-04. Apply two-tier BH-FDR, permutation tests, and regime-conditioned analysis.",
+      "prerequisites": [
+        "P4-04 portfolio backtester",
+        "P4-05 hypothesis registry"
+      ],
+      "expected_artifacts": [
+        "scripts/run_stock_p4_batch_validation.py",
+        "outputs/stock_validation_p4/{asOfDate}/p4_validation_summary.json",
+        "outputs/stock_validation_p4/{asOfDate}/p4_bh_fdr_summary.json",
+        "outputs/stock_validation_p4/{asOfDate}/p4_anti_overfitting_report.md",
+        "tests/test_stock_p4_batch_validation.py"
+      ],
+      "tests_required": [
+        "PIT guard passes",
+        "No future data",
+        "BH-FDR primary and diagnostic tiers",
+        "Regime-conditioned results",
+        "No production write",
+        "Human review required before any promotion"
+      ],
+      "success_criteria": [
+        "All registered hypotheses tested",
+        "BH-FDR correction applied",
+        "REVIEW_CANDIDATE requires human approval",
+        "Anti-overfitting report generated",
+        "Results reproducible from lineage"
+      ],
+      "blocked_by": [
+        "P4-04",
+        "P4-05"
+      ],
+      "estimated_complexity": "HIGH"
+    }
+  ],
+  "governance": {
+    "no_production_write": true,
+    "no_auto_promotion": true,
+    "no_threshold_change_from_results": true,
+    "no_future_data_leakage": true,
+    "no_random_split": true,
+    "no_external_llm": true,
+    "human_review_required_before_promotion": true
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "task": "P0-03",
+  "title": "Readiness Decision — Remaining API As-of Gap Closure",
+  "date": "2026-05-07",
+  "classification": "research_tool_only",
+  "noAutoTrading": true,
+  "noEdgeClaim": true,
+  "noPerformanceClaim": true,
+  "noDBWrite": true,
+  "noExternalAPI": true,
+  "noLLMCall": true,
+  "noStrategyMutation": true,
+  "readinessStatus": "COMPLETE",
+  "finalClassification": "P003_REMAINING_API_AS_OF_GAP_CLOSURE_COMPLETE",
+  "testResults": {
+    "suites": 20,
+    "tests": 476,
+    "p003NewTests": 21,
+    "result": "PASS"
+  },
+  "apiIntegration": {
+    "/api/stocks/[id]/history": "COMPLETE",
+    "/api/stocks/backtest": "COMPLETE",
+    "/api/backtest/validate": "COMPLETE",
+    "/api/report/ops": "COMPLETE",
+    "StrategyScreenEngine": "COMPLETE",
+    "SignalFusionEngine/fuseBatch": "COMPLETE",
+    "RuleBasedStockAnalyzer": "COMPLETE",
+    "InstitutionalChip query path": "COMPLETE",
+    "MarketIndex query path": "AUDIT_ONLY"
+  },
+  "futureRowProtection": {
+    "StockQuote": "COMPLETE — lte: asOfDb on all affected routes",
+    "InstitutionalChip": "COMPLETE — lte: asOfDb in RuleBasedStockAnalyzer",
+    "MonthlyRevenue": "COMPLETE — year/month comparison in RuleBasedStockAnalyzer",
+    "MarketIndex": "AUDIT_ONLY — via MarketRegimeEngine, defer to P0-04",
+    "NewsEvent": "OUT_OF_SCOPE — no direct query path modified in P0-03",
+    "Fundamentals": "OUT_OF_SCOPE — MonthlyRevenue is gated; other fundamentals out of scope"
+  },
+  "nextStep": "P0-02B — Shadow Prediction Log Contract",
+  "pendingForP004": [
+    "MarketIndex date gate via MarketRegimeEngine",
+    "NewsEvent as-of gate (if applicable)",
+    "Deep fundamentals gate audit"
+  ],
+  "risks": [
+    "If DB still retains future rows, API layer must continue to exclude them",
+    "External proxy routes (history) cannot be fully gated at source — response-level filter is permanent",
+    "Existing alphaScore / recommendationBucket fields are research sorting only, not investment claims",
+    "Prediction log not yet enabled — P0-02B required before enabling",
+    "Strategy performance not validated in this task"
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "task": "T-05D",
+  "artifactType": "taiwan_trading_calendar_validation",
+  "generatedAt": "2026-05-07T00:00:00Z",
+  "safetyLabels": [
+    "T-05D",
+    "Taiwan trading calendar adapter",
+    "deterministic calendar",
+    "static override contract",
+    "no external API",
+    "no DB write",
+    "no LLM call",
+    "no strategy mutation",
+    "no performance claim",
+    "no edge claim"
+  ],
+  "sampleCalendarValidation": {
+    "rangeStart": "2025-04-07",
+    "rangeEnd": "2025-04-11",
+    "totalCalendarDays": 5,
+    "tradingDayCount": 5,
+    "weekendExcludedCount": 0,
+    "holidayOverrideExcludedCount": 0,
+    "specialTradingDayIncludedCount": 0,
+    "firstTradingDate": "2025-04-07",
+    "lastTradingDate": "2025-04-11",
+    "calendarBasis": "TAIWAN_TRADING_CALENDAR",
+    "coverageStatus": "PASS",
+    "note": "Apr 7-11 2025 (Mon-Fri), no built-in holidays in range, 5/5 trading days"
+  },
+  "sampleHolidayExclusion": {
+    "date": "2025-01-01",
+    "expectedTradingDay": false,
+    "reason": "New Year's Day (built-in static holiday)"
+  },
+  "sampleWeekendExclusion": {
+    "date": "2025-04-05",
+    "expectedTradingDay": false,
+    "reason": "Saturday — excluded by weekday filter"
+  },
+  "sampleSpecialTradingDay": {
+    "date": "2025-04-05",
+    "withSpecialOverride": true,
+    "expectedTradingDay": true,
+    "reason": "Included via specialTradingDayOverrides"
+  },
+  "sampleMonthlyRebalance": {
+    "rangeStart": "2025-04-01",
+    "rangeEnd": "2025-05-31",
+    "aprEntry": {
+      "monthKey": "2025-04",
+      "scheduledTradingDate": "2025-04-01",
+      "status": "AVAILABLE",
+      "note": "Apr 1 (Tue) is first trading day; Apr 3-4 are holidays"
+    },
+    "mayEntry": {
+      "monthKey": "2025-05",
+      "scheduledTradingDate": "2025-05-02",
+      "status": "AVAILABLE",
+      "note": "May 1 is Labor Day (built-in); first trading day is May 2 (Fri)"
+    }
+  },
+  "sample500DayLookback": {
+    "endDate": "2026-05-07",
+    "startDate": "2025-01-22",
+    "tradingDayCount_approx": "~350 trading days in 500 calendar days",
+    "calendarBasis": "TAIWAN_TRADING_CALENDAR",
+    "status": "VALIDATED_IN_TEST"
+  }
+}

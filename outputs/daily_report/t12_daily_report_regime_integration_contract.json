@@ -1,0 +1,88 @@
+{
+  "contract_version": "t12_v1",
+  "task": "T-12 DailyReportEngine Deeper Integration",
+  "generated_date": "2026-05-06",
+  "field_path": "marketSummary.regimeContext",
+  "interface_name": "RegimeContextSummary",
+  "schema": {
+    "source": "'PERSISTED_MARKET_REGIME_RESULT' | 'FALLBACK_LIVE_DETECT' | 'UNAVAILABLE'",
+    "date": "string | null",
+    "regimeLabel": "string | null",
+    "confidence": "number | null",
+    "taiexClose": "number | null",
+    "freshnessStatus": "string | null",
+    "freshnessLagDays": "number | null",
+    "freshnessAlert": {
+      "alertLevel": "FreshnessAlertLevel",
+      "freshnessLagDays": "number | null",
+      "lastRegimeDate": "string | null",
+      "currentDate": "string",
+      "message": "string | null",
+      "requiresAction": "boolean"
+    },
+    "fallbackUsed": "boolean",
+    "warning": "string | null"
+  },
+  "example_fresh": {
+    "source": "PERSISTED_MARKET_REGIME_RESULT",
+    "date": "2026-05-06",
+    "regimeLabel": "BULL",
+    "confidence": 1.0,
+    "taiexClose": 41138.85,
+    "freshnessStatus": "FRESH",
+    "freshnessLagDays": 0,
+    "freshnessAlert": {
+      "alertLevel": "FRESH",
+      "freshnessLagDays": 0,
+      "lastRegimeDate": "2026-05-06",
+      "currentDate": "2026-05-06",
+      "message": null,
+      "requiresAction": false
+    },
+    "fallbackUsed": false,
+    "warning": null
+  },
+  "example_missing": {
+    "source": "UNAVAILABLE",
+    "date": null,
+    "regimeLabel": null,
+    "confidence": null,
+    "taiexClose": null,
+    "freshnessStatus": "MISSING",
+    "freshnessLagDays": null,
+    "freshnessAlert": {
+      "alertLevel": "MISSING",
+      "freshnessLagDays": null,
+      "lastRegimeDate": null,
+      "currentDate": "2026-05-06",
+      "message": "No persisted MarketRegimeResult available.",
+      "requiresAction": true
+    },
+    "fallbackUsed": true,
+    "warning": "Persisted regime context not available."
+  },
+  "fallback_rules": {
+    "FRESH_available": "source=PERSISTED_MARKET_REGIME_RESULT, fallbackUsed=false, warning=null",
+    "STALE_available": "source=PERSISTED_MARKET_REGIME_RESULT, fallbackUsed=false, warning=freshnessAlert.message",
+    "CRITICAL_STALE_available": "source=PERSISTED_MARKET_REGIME_RESULT, fallbackUsed=false, warning=freshnessAlert.message",
+    "MISSING_no_records": "source=UNAVAILABLE, fallbackUsed=true, freshnessAlert.alertLevel=MISSING",
+    "ERROR_fetching": "source=UNAVAILABLE, fallbackUsed=true, freshnessAlert.alertLevel=MISSING"
+  },
+  "integration_points": {
+    "location_in_engine": "generateDailyReport() Promise.all + buildMarketSummary(regimeResult, persistedCtx)",
+    "new_function": "buildRegimeContextSummary(ctx: RegimeContext | undefined): RegimeContextSummary",
+    "import_added": "getLatestMarketRegimeContext, computeFreshnessAlert from @/lib/marketRegimeResult",
+    "interface_added_to": "MarketSummary (optional regimeContext?: RegimeContextSummary)",
+    "api_route_change": "None required — /api/report/daily automatically includes regimeContext via generateDailyReport()"
+  },
+  "guardrails": {
+    "no_buy_sell_signal": true,
+    "no_roi_win_rate": true,
+    "no_db_write": true,
+    "no_external_api_call": true,
+    "no_h001_h012": true,
+    "no_strategy_change": true,
+    "additive_only": true,
+    "no_detectRegime_removal": true
+  }
+}

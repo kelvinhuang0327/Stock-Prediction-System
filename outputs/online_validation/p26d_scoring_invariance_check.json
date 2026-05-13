@@ -1,0 +1,33 @@
+{
+  "phase": "P26D-HARDRESET",
+  "generatedAt": "2026-05-13",
+  "totalRows": 9000,
+  "p3Rows": 4500,
+  "p19Rows": 4500,
+  "mismatchedAlphaScoreCount": 0,
+  "mismatchedBucketCount": 0,
+  "nullAlphaScoreCount": 9000,
+  "monthlyRevenueContextEntersAlphaScore": false,
+  "newsEventContextEntersAlphaScore": false,
+  "financialReportContextEntersAlphaScore": false,
+  "baselineMismatch": false,
+  "baselineChecks": {
+    "ActiveScoringSnapshotBuilder.ts": {
+      "current": "063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d",
+      "expected": "063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d",
+      "match": true
+    },
+    "RuleBasedStockAnalyzer.ts": {
+      "current": "bc3716cc8e74be304f2e262aac586a61760bb59d6c95e82a575c38e03ea7373d",
+      "expected": "bc3716cc8e74be304f2e262aac586a61760bb59d6c95e82a575c38e03ea7373d",
+      "match": true
+    },
+    "SignalFusionEngine.ts": {
+      "current": "b8ce3fa3ae63fd7edf6b6067dd8ccea63c02741454b93792e87bfbc1e95d2bf4",
+      "expected": "b8ce3fa3ae63fd7edf6b6067dd8ccea63c02741454b93792e87bfbc1e95d2bf4",
+      "match": true
+    }
+  },
+  "classification": "SCORING_INVARIANCE_CONFIRMED",
+  "disclaimer": "No investment recommendations. No ROI/win-rate/profit/outperform/buy/sell claims."
+}

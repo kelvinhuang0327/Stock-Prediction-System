@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { apiCache } from '@/lib/cache';
 import { detectRegimeForPeriod, buildRegimeTimeline, MarketRegime, RegimeTimelineEntry } from '@/lib/market/MarketRegimeEngine';
+import { resolveAsOfDate } from '@/lib/data/AsOfDataGate';
 
 /**
  * POST /api/stocks/backtest
@@ -63,6 +64,7 @@ export async function POST(request: NextRequest) {
         regimeMode?: RegimeMode;
         allowedRegimes?: MarketRegime[];
         positionAdjustmentRules?: Partial<PositionAdjustmentRules>;
+        asOfDate?: string;
     };
     try {
         body = await request.json();
@@ -77,15 +79,20 @@ export async function POST(request: NextRequest) {
         regimeMode = 'ignore',
         allowedRegimes = ['Bull', 'Sideways'],
         positionAdjustmentRules: customRules,
+        asOfDate: asOfDateRaw,
     } = body;
     if (!symbol) {
         return NextResponse.json({ error: '缺少 symbol 參數' }, { status: 400 });
     }
 
+    // P0-03: as-of gate — all stockQuote queries must use date <= asOfDate.
+    const asOfDate = resolveAsOfDate(asOfDateRaw);
+    const asOfDb = asOfDate.replace(/-/g, ''); // YYYYMMDD for DB string comparison
+
     const posRules: PositionAdjustmentRules = { ...DEFAULT_POSITION_RULES, ...customRules };
     const isRegimeAware = regimeMode !== 'ignore';
 
-    const cacheKey = `backtest:${symbol}:${strategy}:${months}:${regimeMode}:${allowedRegimes.sort().join(',')}`;
+    const cacheKey = `backtest:${symbol}:${strategy}:${months}:${regimeMode}:${allowedRegimes.sort().join(',')}:${asOfDate}`;
     const cached = apiCache.get<any>(cacheKey);
     if (cached) return NextResponse.json(cached);
 
@@ -109,7 +116,7 @@ export async function POST(request: NextRequest) {
         }
 
         // Always run baseline
-        const baselineResult = await backtestFromDB(symbol, strategy, months);
+        const baselineResult = await backtestFromDB(symbol, strategy, months, asOfDb);
         if (!baselineResult) {
             return NextResponse.json({
                 symbol, strategy,
@@ -161,7 +168,7 @@ export async function POST(request: NextRequest) {
                 // Run regime-aware backtest
                 regimeAwareResult = await backtestFromDBRegimeAware(
                     symbol, strategy, months, regimeMode,
-                    allowedRegimes as MarketRegime[], posRules, timeline,
+                    allowedRegimes as MarketRegime[], posRules, timeline, asOfDb,
                 );
 
                 if (regimeAwareResult) {
@@ -208,6 +215,10 @@ export async function POST(request: NextRequest) {
             marketRegime,
             samplePeriod: baselineResult.period,
             dataLimitations: [...dataLimitations, ...regimeLimitations],
+            // P0-03: as-of gate fields
+            asOfDate,
+            asOfGateStatus: 'ACTIVE',
+            asOfGateNote: 'P0-03: stockQuote queries gated with date <= asOfDate. Historical data only.',
             // Regime-aware fields
             regimeAware: isRegimeAware && !!regimeAwareResult,
             regimeMode: isRegimeAware ? regimeMode : 'ignore',
@@ -298,6 +309,7 @@ export async function GET(request: NextRequest) {
             symbol, strategy, months,
             regimeMode: searchParams.get('regimeMode') || 'ignore',
             allowedRegimes: searchParams.get('allowedRegimes')?.split(',').filter(Boolean) || ['Bull', 'Sideways'],
+            asOfDate: searchParams.get('asOfDate') || undefined,
         }),
     });
     return POST(fakeRequest);
@@ -452,7 +464,7 @@ function runBacktest(
     };
 }
 
-async function backtestFromDB(symbol: string, strategy: string, months: number): Promise<BacktestResult | null> {
+async function backtestFromDB(symbol: string, strategy: string, months: number, asOfDb?: string): Promise<BacktestResult | null> {
     const fromDate = new Date();
     fromDate.setMonth(fromDate.getMonth() - months);
     const fromStr = fromDate.toISOString().slice(0, 10); // YYYY-MM-DD (matches DB format)
@@ -460,7 +472,7 @@ async function backtestFromDB(symbol: string, strategy: string, months: number):
     const quotes = await prisma.stockQuote.findMany({
         where: {
             stockId: symbol,
-            date: { gte: fromStr },
+            date: { gte: fromStr, ...(asOfDb ? { lte: asOfDb } : {}) },
         },
         orderBy: { date: 'asc' },
     });
@@ -487,13 +499,14 @@ async function backtestFromDBRegimeAware(
     allowedRegimes: MarketRegime[],
     posRules: PositionAdjustmentRules,
     timeline: Map<string, RegimeTimelineEntry>,
+    asOfDb?: string,
 ): Promise<BacktestResult | null> {
     const fromDate = new Date();
     fromDate.setMonth(fromDate.getMonth() - months);
     const fromStr = fromDate.toISOString().slice(0, 10);
 
     const quotes = await prisma.stockQuote.findMany({
-        where: { stockId: symbol, date: { gte: fromStr } },
+        where: { stockId: symbol, date: { gte: fromStr, ...(asOfDb ? { lte: asOfDb } : {}) } },
         orderBy: { date: 'asc' },
     });
 

@@ -55,9 +55,17 @@ function dailyReturns(prices: number[]): number[] {
 
 // ─── Engine ─────────────────────────────────────────────────────
 
-export async function detectRegime(): Promise<MarketRegimeResult> {
+/**
+ * P0-04: asOf param added. When provided, MarketIndex query is gated with
+ * date <= asOf so future-dated rows are excluded.
+ * Regime judgment logic (thresholds, weights, scoring) is NOT modified.
+ */
+export async function detectRegime(asOf?: string): Promise<MarketRegimeResult> {
     const rows = await prisma.marketIndex.findMany({
-        where: { name: 'TAIEX' },
+        where: {
+            name: 'TAIEX',
+            ...(asOf ? { date: { lte: asOf } } : {}),
+        },
         orderBy: { date: 'asc' },
         select: { date: true, value: true },
     });

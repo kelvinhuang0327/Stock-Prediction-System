@@ -29,20 +29,19 @@
       "family": "momentum",
       "human_review_required": true,
       "notes": "Classic momentum hypothesis. G03 FAIL expected on random mock data \u2014 no real edge.",
-      "last_validated_at": "2026-05-05T05:44:51.674149+00:00",
+      "last_validated_at": "2026-05-05T05:55:28.574169+00:00",
       "validation_result": {
         "status": "rejected",
         "criteria": {
           "roi_positive_all_windows": false,
-          "sharpe_positive_500d": false,
+          "sharpe_positive_500d": true,
           "perm_p_lt_005": false
         },
-        "primary_window_sharpe": -3.208,
-        "primary_perm_p": 0.366,
+        "primary_window_sharpe": 0.0843,
+        "primary_perm_p": 1.0,
         "reasons": [
           "ROI not positive across all windows",
-          "Sharpe \u2264 0 on primary window (-3.208)",
-          "Permutation p-value=0.366 \u2265 0.05 (not significant)"
+          "Permutation p-value=1.0 \u2265 0.05 (not significant)"
         ]
       }
     },
@@ -64,20 +63,19 @@
       "family": "mean_reversion",
       "human_review_required": true,
       "notes": "RSI-based short-term reversion. G03 FAIL expected on random mock data.",
-      "last_validated_at": "2026-05-05T05:44:51.674163+00:00",
+      "last_validated_at": "2026-05-05T05:55:28.574182+00:00",
       "validation_result": {
         "status": "rejected",
         "criteria": {
           "roi_positive_all_windows": false,
-          "sharpe_positive_500d": false,
+          "sharpe_positive_500d": true,
           "perm_p_lt_005": false
         },
-        "primary_window_sharpe": -2.2128,
-        "primary_perm_p": 0.53,
+        "primary_window_sharpe": 1.6464,
+        "primary_perm_p": 1.0,
         "reasons": [
           "ROI not positive across all windows",
-          "Sharpe \u2264 0 on primary window (-2.2128)",
-          "Permutation p-value=0.53 \u2265 0.05 (not significant)"
+          "Permutation p-value=1.0 \u2265 0.05 (not significant)"
         ]
       }
     },
@@ -101,18 +99,20 @@
       "family": "volume_price",
       "human_review_required": true,
       "notes": "Volume breakout. G03 FAIL expected on random mock data \u2014 no real volume pattern.",
-      "last_validated_at": "2026-05-05T05:44:51.674171+00:00",
+      "last_validated_at": "2026-05-05T05:55:28.574184+00:00",
       "validation_result": {
         "status": "rejected",
         "criteria": {
-          "roi_positive_all_windows": true,
-          "sharpe_positive_500d": true,
+          "roi_positive_all_windows": false,
+          "sharpe_positive_500d": false,
           "perm_p_lt_005": false
         },
-        "primary_window_sharpe": 1.6715,
-        "primary_perm_p": 0.926,
+        "primary_window_sharpe": -0.6602,
+        "primary_perm_p": 0.64,
         "reasons": [
-          "Permutation p-value=0.926 \u2265 0.05 (not significant)"
+          "ROI not positive across all windows",
+          "Sharpe \u2264 0 on primary window (-0.6602)",
+          "Permutation p-value=0.64 \u2265 0.05 (not significant)"
         ]
       }
     }

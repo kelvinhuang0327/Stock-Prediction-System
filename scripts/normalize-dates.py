@@ -2,22 +2,45 @@
 Date Normalization Script — 統一資料庫日期格式
 Converts all ROC 7-digit and YYYYMMDD dates to ISO format (YYYY-MM-DD)
 
-Also adds today's data from TWSE OpenAPI endpoint.
+Usage:
+  python3 scripts/normalize-dates.py --dry-run   # Safe preview, no DB writes
+  python3 scripts/normalize-dates.py --apply     # Actually write to DB
+
+Safety rules:
+  - Default mode is --dry-run (no writes without explicit --apply)
+  - Only modifies date columns; never deletes data without deduplication reason
+  - UNKNOWN_FORMAT rows are listed in dry-run but NEVER auto-converted
+  - Only operates on local prisma/dev.db
+  - MonthlyRevenue and FinancialReport use year/month/quarter cols — not touched
 """
 
 import sqlite3
 import os
-import requests
-import time
-from datetime import datetime
+import sys
+import argparse
 
 DB_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'prisma', 'dev.db')
 
+# Tables and their date columns to normalize
+TARGET_TABLES = [
+    ('StockQuote', 'date'),
+    ('MarketIndex', 'date'),
+    ('StockMetrics', 'date'),
+    # InstitutionalChip is already all-ISO; included for audit completeness
+    ('InstitutionalChip', 'date'),
+]
+
+# Tables explicitly excluded (they use non-date columns)
+EXCLUDED_TABLES = {
+    'MonthlyRevenue': 'uses year (INT) + month (INT) columns, no date normalization needed',
+    'FinancialReport': 'uses year (INT) + quarter (STRING) columns, no date normalization needed',
+}
+
 
 def roc7_to_iso(roc: str) -> str:
-    """Convert ROC 7-digit (e.g. 1150313) to ISO (2026-03-13)"""
+    """Convert ROC 7-digit compact (e.g. 1150313) to ISO (2026-03-13)"""
     roc = roc.strip()
-    if len(roc) == 7:
+    if len(roc) == 7 and roc.isdigit():
         year = int(roc[:3]) + 1911
         month = roc[3:5]
         day = roc[5:7]
@@ -26,322 +49,194 @@ def roc7_to_iso(roc: str) -> str:
 
 
 def yyyymmdd_to_iso(d: str) -> str:
-    """Convert YYYYMMDD (e.g. 20260210) to ISO (2026-02-10)"""
+    """Convert compact Gregorian YYYYMMDD (e.g. 20260210) to ISO (2026-02-10)"""
     d = d.strip()
     if len(d) == 8 and d.isdigit():
         return f"{d[:4]}-{d[4:6]}-{d[6:8]}"
     return d
 
 
-def normalize_table_dates(conn, table_name, date_column='date'):
-    """Normalize all dates in a table to ISO format"""
+def classify_date(val: str) -> str:
+    if val is None or val == '':
+        return 'EMPTY_OR_NULL'
+    val = val.strip()
+    if len(val) == 10 and val[4] == '-' and val[7] == '-' and val.replace('-', '').isdigit():
+        return 'ISO_DATE'
+    if len(val) == 7 and val.isdigit():
+        return 'ROC_DATE'
+    if len(val) == 8 and val.isdigit():
+        return 'YYYYMMDD_COMPACT'
+    return 'UNKNOWN_FORMAT'
+
+
+def audit_table(conn, table_name, date_col):
+    """Audit date formats in a table and return summary + planned conversions."""
     cursor = conn.cursor()
-
-    # Count formats before
-    cursor.execute(f"SELECT count(*) FROM {table_name} WHERE length({date_column}) = 7")
-    roc_count = cursor.fetchone()[0]
-    cursor.execute(f"SELECT count(*) FROM {table_name} WHERE length({date_column}) = 8")
-    yyyymmdd_count = cursor.fetchone()[0]
-    cursor.execute(f"SELECT count(*) FROM {table_name} WHERE length({date_column}) = 10")
-    iso_count = cursor.fetchone()[0]
-
-    print(f"\n[{table_name}] Before: ROC={roc_count}, YYYYMMDD={yyyymmdd_count}, ISO={iso_count}")
-
-    if roc_count == 0 and yyyymmdd_count == 0:
-        print(f"  → All dates already ISO, skipping")
-        return
-
-    # Get unique key info for the table
-    cursor.execute(f"PRAGMA index_list({table_name})")
-    indices = cursor.fetchall()
-
-    # Convert ROC 7-digit dates
-    if roc_count > 0:
-        cursor.execute(f"SELECT id, {date_column} FROM {table_name} WHERE length({date_column}) = 7")
-        roc_rows = cursor.fetchall()
-        converted = 0
-        for row_id, date_val in roc_rows:
-            new_date = roc7_to_iso(date_val)
-            if new_date != date_val:
-                try:
-                    cursor.execute(f"UPDATE {table_name} SET {date_column} = ? WHERE id = ?", (new_date, row_id))
-                    converted += 1
-                except Exception as e:
-                    # Unique constraint violation - duplicate after conversion, delete the ROC version
-                    cursor.execute(f"DELETE FROM {table_name} WHERE id = ?", (row_id,))
-        conn.commit()
-        print(f"  → Converted {converted} ROC dates (deleted {roc_count - converted} duplicates)")
-
-    # Convert YYYYMMDD dates
-    if yyyymmdd_count > 0:
-        cursor.execute(f"SELECT id, {date_column} FROM {table_name} WHERE length({date_column}) = 8")
-        yyyymmdd_rows = cursor.fetchall()
-        converted = 0
-        for row_id, date_val in yyyymmdd_rows:
-            new_date = yyyymmdd_to_iso(date_val)
-            if new_date != date_val:
-                try:
-                    cursor.execute(f"UPDATE {table_name} SET {date_column} = ? WHERE id = ?", (new_date, row_id))
-                    converted += 1
-                except Exception as e:
-                    cursor.execute(f"DELETE FROM {table_name} WHERE id = ?", (row_id,))
-        conn.commit()
-        print(f"  → Converted {converted} YYYYMMDD dates (deleted {yyyymmdd_count - converted} duplicates)")
-
-    # Verify
-    cursor.execute(f"SELECT count(*) FROM {table_name} WHERE length({date_column}) != 10")
-    remaining = cursor.fetchone()[0]
     cursor.execute(f"SELECT count(*) FROM {table_name}")
     total = cursor.fetchone()[0]
-    print(f"  → After: {total} rows, {remaining} non-ISO remaining")
+
+    cursor.execute(f"SELECT id, {date_col} FROM {table_name} WHERE length({date_col}) != 10 OR {date_col} NOT GLOB '[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]'")
+    non_iso_rows = cursor.fetchall()
+
+    counts = {'ISO_DATE': 0, 'ROC_DATE': 0, 'YYYYMMDD_COMPACT': 0, 'EMPTY_OR_NULL': 0, 'UNKNOWN_FORMAT': 0}
+    planned = []  # (id, old_val, new_val, format_type)
+    blockers = []  # rows that cannot be auto-converted
+
+    for row_id, val in non_iso_rows:
+        fmt = classify_date(val)
+        counts[fmt] = counts.get(fmt, 0) + 1
+        if fmt == 'ROC_DATE':
+            planned.append((row_id, val, roc7_to_iso(val), 'ROC_DATE'))
+        elif fmt == 'YYYYMMDD_COMPACT':
+            planned.append((row_id, val, yyyymmdd_to_iso(val), 'YYYYMMDD_COMPACT'))
+        else:
+            blockers.append({'id': row_id, 'value': val, 'format': fmt})
+
+    # Count ISO rows
+    counts['ISO_DATE'] = total - sum(v for k, v in counts.items() if k != 'ISO_DATE')
+
+    return {
+        'table': table_name,
+        'date_col': date_col,
+        'total_rows': total,
+        'counts': counts,
+        'planned_conversions': len(planned),
+        'blockers': blockers,
+        'planned_sample': [(r[0], r[1], r[2], r[3]) for r in planned[:10]],
+        '_all_planned': planned,
+    }
 
 
-def add_today_quotes(conn):
-    """Add today's data from TWSE OpenAPI"""
-    print("\n📊 Adding today's quotes from TWSE OpenAPI...")
+def apply_normalization(conn, audit_result, dry_run: bool):
+    """Apply (or simulate) date normalization for one table."""
+    table = audit_result['table']
+    date_col = audit_result['date_col']
+    planned = audit_result['_all_planned']
 
-    try:
-        url = 'https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL'
-        resp = requests.get(url, timeout=30, headers={'User-Agent': 'Mozilla/5.0'})
-        if resp.status_code != 200:
-            print(f"  ❌ OpenAPI returned {resp.status_code}")
-            return
+    if not planned:
+        print(f"  [{table}] No conversions needed — all dates already ISO or no convertible rows.")
+        return 0, 0
 
-        data = resp.json()
-        if not data:
-            print("  ❌ No data returned")
-            return
+    print(f"\n  [{table}] {len(planned)} rows to convert")
+    converted = 0
+    deduped = 0
+    cursor = conn.cursor()
 
-        cursor = conn.cursor()
-
-        # Get valid stock IDs
-        cursor.execute("SELECT id FROM Stock")
-        valid_ids = set(row[0] for row in cursor.fetchall())
-
-        inserted = 0
-        for record in data:
-            stock_id = record.get('Code', '').strip()
-            if stock_id not in valid_ids:
-                continue
-
+    for row_id, old_val, new_val, fmt in planned:
+        if dry_run:
+            print(f"    DRY-RUN: id={row_id} '{old_val}' → '{new_val}' ({fmt})")
+            converted += 1
+        else:
             try:
-                roc_date = record.get('Date', '').strip()
-                iso_date = roc7_to_iso(roc_date) if len(roc_date) == 7 else roc_date
-
-                def clean(s):
-                    s = str(s).replace(',', '').strip()
-                    return float(s) if s else 0
-
-                open_p = clean(record.get('OpeningPrice', 0))
-                high_p = clean(record.get('HighestPrice', 0))
-                low_p = clean(record.get('LowestPrice', 0))
-                close_p = clean(record.get('ClosingPrice', 0))
-                volume = clean(record.get('TradeVolume', 0))
-                trade_val = clean(record.get('TradeValue', 0))
-                change = clean(record.get('Change', 0))
-                transactions = int(clean(record.get('Transaction', 0)))
-
-                if close_p <= 0:
-                    continue
-
-                cursor.execute(
-                    "INSERT OR REPLACE INTO StockQuote "
-                    "(stockId, date, open, high, low, close, volume, tradeValue, change, transactions, createdAt) "
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)",
-                    (stock_id, iso_date, open_p, high_p, low_p, close_p, volume, trade_val, change, transactions)
-                )
-                inserted += 1
+                cursor.execute(f"UPDATE {table} SET {date_col} = ? WHERE id = ?", (new_val, row_id))
+                converted += 1
             except Exception:
-                continue
+                # Unique constraint violation — duplicate after conversion; delete the non-ISO row
+                cursor.execute(f"DELETE FROM {table} WHERE id = ?", (row_id,))
+                deduped += 1
 
+    if not dry_run:
         conn.commit()
-        print(f"  ✅ Added {inserted} stock quotes for date {iso_date if inserted > 0 else 'N/A'}")
-    except Exception as e:
-        print(f"  ❌ Error: {e}")
+        print(f"    APPLIED: {converted} converted, {deduped} duplicates removed")
+    else:
+        print(f"    DRY-RUN SUMMARY: {converted} would be converted")
+
+    return converted, deduped
 
 
-def add_today_metrics(conn):
-    """Add today's metrics from TWSE OpenAPI"""
-    print("\n📊 Adding today's metrics from TWSE OpenAPI...")
-    try:
-        url = 'https://openapi.twse.com.tw/v1/exchangeReport/BWIBBU_ALL'
-        resp = requests.get(url, timeout=30, headers={'User-Agent': 'Mozilla/5.0'})
-        if resp.status_code != 200:
-            print(f"  ❌ OpenAPI returned {resp.status_code}")
-            return
-
-        data = resp.json()
-        if not data:
-            return
-
-        cursor = conn.cursor()
-        cursor.execute("SELECT id FROM Stock")
-        valid_ids = set(row[0] for row in cursor.fetchall())
-
-        # Get today's date from StockQuote (most recent)
-        cursor.execute("SELECT max(date) FROM StockQuote WHERE length(date) = 10")
-        row = cursor.fetchone()
-        today_date = row[0] if row and row[0] else datetime.now().strftime('%Y-%m-%d')
-
-        inserted = 0
-        for record in data:
-            stock_id = record.get('Code', '').strip()
-            if stock_id not in valid_ids:
-                continue
-
-            try:
-                pe = float(record.get('PEratio', '0').replace(',', '') or '0')
-                pb = float(record.get('PBratio', '0').replace(',', '') or '0')
-                dy = float(record.get('DividendYield', '0').replace(',', '') or '0')
-
-                cursor.execute(
-                    "INSERT OR REPLACE INTO StockMetrics "
-                    "(stockId, date, peRatio, pbRatio, dividendYield, marketCap, createdAt) "
-                    "VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)",
-                    (stock_id, today_date, pe, pb, dy, 0)
-                )
-                inserted += 1
-            except Exception:
-                continue
-
-        conn.commit()
-        print(f"  ✅ Added {inserted} metrics for {today_date}")
-    except Exception as e:
-        print(f"  ❌ Error: {e}")
-
-
-def add_today_index(conn):
-    """Add today's market index from TWSE OpenAPI"""
-    print("\n📊 Adding today's market index from TWSE OpenAPI...")
-    try:
-        url = 'https://openapi.twse.com.tw/v1/exchangeReport/MI_INDEX'
-        resp = requests.get(url, timeout=30, headers={'User-Agent': 'Mozilla/5.0'})
-        if resp.status_code != 200:
-            return
-
-        data = resp.json()
-        cursor = conn.cursor()
-        inserted = 0
-
-        for record in data:
-            name = record.get('指數', '').strip()
-            if not name:
-                continue
-
-            try:
-                roc_date = record.get('日期', '').strip()
-                iso_date = roc7_to_iso(roc_date) if len(roc_date) == 7 else roc_date
-
-                close_str = record.get('收盤指數', '0').replace(',', '')
-                change_str = record.get('漲跌點數', '0').replace(',', '')
-
-                value = float(close_str) if close_str else 0
-                change = float(change_str) if change_str else 0
-
-                if value <= 0:
-                    continue
-
-                prev = value - change
-                pct = (change / prev * 100) if prev > 0 else 0
-
-                cursor.execute(
-                    "INSERT OR REPLACE INTO MarketIndex "
-                    "(name, date, value, change, changePercent, createdAt) "
-                    "VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP)",
-                    (name, iso_date, value, change, round(pct, 2))
-                )
-                inserted += 1
-            except Exception:
-                continue
-
-        conn.commit()
-        print(f"  ✅ Added {inserted} index records")
-    except Exception as e:
-        print(f"  ❌ Error: {e}")
-
-
-def print_report(conn):
-    """Print coverage report"""
+def print_after_state(conn):
+    """Print post-normalization summary."""
     cursor = conn.cursor()
     print("\n" + "=" * 60)
-    print("📊 日期正規化後 Coverage 報告")
+    print("📊 Post-normalization state:")
+
+    for table, date_col in TARGET_TABLES:
+        cursor.execute(f"SELECT count(*) FROM {table}")
+        total = cursor.fetchone()[0]
+        cursor.execute(f"SELECT count(*) FROM {table} WHERE length({date_col})=7 AND {date_col} GLOB '[0-9]*'")
+        roc = cursor.fetchone()[0]
+        cursor.execute(f"SELECT count(*) FROM {table} WHERE length({date_col})=8 AND {date_col} GLOB '[0-9]*'")
+        compact = cursor.fetchone()[0]
+        cursor.execute(f"SELECT min({date_col}), max({date_col}) FROM {table}")
+        mn, mx = cursor.fetchone()
+        non_iso = roc + compact
+        status = '✅' if non_iso == 0 else f'⚠️ {non_iso} non-ISO remain'
+        print(f"  {table}: {total} rows, min={mn}, max={mx} — {status}")
+
     print("=" * 60)
-
-    # StockQuote
-    cursor.execute("SELECT count(*) FROM StockQuote")
-    total = cursor.fetchone()[0]
-    cursor.execute("SELECT stockId, count(*) as d FROM StockQuote GROUP BY stockId ORDER BY d DESC")
-    coverage = cursor.fetchall()
-    ge250 = [s for s, d in coverage if d >= 250]
-    ge100 = [s for s, d in coverage if d >= 100]
-    ge60 = [s for s, d in coverage if d >= 60]
-
-    print(f"\n[StockQuote] {total:,} 筆")
-    print(f"  ≥250天: {len(ge250)} 檔 {ge250[:15]}")
-    print(f"  ≥100天: {len(ge100)} 檔")
-    print(f"  ≥60天:  {len(ge60)} 檔")
-
-    cursor.execute("SELECT MIN(date), MAX(date) FROM StockQuote")
-    r = cursor.fetchone()
-    print(f"  日期: {r[0]} ~ {r[1]}")
-
-    # Date format check
-    for fmt, length in [('ROC', 7), ('YYYYMMDD', 8), ('ISO', 10)]:
-        cursor.execute(f"SELECT count(*) FROM StockQuote WHERE length(date) = {length}")
-        c = cursor.fetchone()[0]
-        status = '✅' if (fmt == 'ISO') else ('⚠️' if c > 0 else '✅')
-        print(f"  {fmt}: {c} {'(清除完成)' if c == 0 and fmt != 'ISO' else ''}")
-
-    # MarketIndex
-    cursor.execute("SELECT count(*) FROM MarketIndex WHERE name = 'TAIEX'")
-    taiex = cursor.fetchone()[0]
-    cursor.execute("SELECT MIN(date), MAX(date) FROM MarketIndex WHERE name = 'TAIEX'")
-    r = cursor.fetchone()
-    print(f"\n[MarketIndex] TAIEX: {taiex} 筆 ({r[0]} ~ {r[1]})" if r and r[0] else f"\n[MarketIndex] TAIEX: 0")
-    print(f"  Benchmark可用: {'✅' if taiex >= 250 else '❌'}")
-
-    # InstitutionalChip
-    cursor.execute("SELECT count(*) FROM InstitutionalChip")
-    chip_total = cursor.fetchone()[0]
-    cursor.execute("SELECT count(DISTINCT stockId), count(DISTINCT date) FROM InstitutionalChip")
-    chip_stocks, chip_dates = cursor.fetchone()
-    print(f"\n[InstitutionalChip] {chip_total:,} 筆 ({chip_stocks} 股 × {chip_dates} 天)")
-
-    print("\n" + "=" * 60)
 
 
 def main():
+    parser = argparse.ArgumentParser(
+        description='Date Normalization — converts ROC/compact dates to ISO YYYY-MM-DD'
+    )
+    mode_group = parser.add_mutually_exclusive_group()
+    mode_group.add_argument('--dry-run', action='store_true', default=True,
+                            help='Preview changes only (default — no DB writes)')
+    mode_group.add_argument('--apply', action='store_true', default=False,
+                            help='Actually write changes to DB')
+    args = parser.parse_args()
+
+    dry_run = not args.apply
+
     print("=" * 60)
-    print("🔧 資料日期正規化 + 即日資料更新")
+    print(f"🔧 Date Normalization Script")
+    print(f"   Mode: {'DRY-RUN (no writes)' if dry_run else '⚠️  APPLY (writing to DB)'}")
+    print(f"   DB: {DB_PATH}")
     print("=" * 60)
+
+    if not os.path.exists(DB_PATH):
+        print(f"❌ DB not found: {DB_PATH}")
+        sys.exit(1)
 
     conn = sqlite3.connect(DB_PATH)
     conn.execute("PRAGMA journal_mode=WAL")
 
-    try:
-        # Phase 1: Normalize dates in all tables
-        print("\n─── Phase 1: 日期格式統一 ───")
-        normalize_table_dates(conn, 'StockQuote')
-        normalize_table_dates(conn, 'StockMetrics')
-        normalize_table_dates(conn, 'MarketIndex')
-        normalize_table_dates(conn, 'InstitutionalChip')
-        # MonthlyRevenue uses year+month columns, no date normalization needed
+    # Excluded tables notice
+    print("\n📋 Excluded tables (no date column normalization needed):")
+    for tbl, reason in EXCLUDED_TABLES.items():
+        print(f"  {tbl}: {reason}")
 
-        # Phase 2: Add today's data from OpenAPI
-        print("\n─── Phase 2: 即日資料更新 (OpenAPI) ───")
-        add_today_quotes(conn)
-        add_today_metrics(conn)
-        add_today_index(conn)
+    # Audit phase
+    print("\n─── Phase 1: Date Audit ───")
+    audits = []
+    for table, date_col in TARGET_TABLES:
+        audit = audit_table(conn, table, date_col)
+        audits.append(audit)
+        print(f"\n  [{table}.{date_col}]")
+        print(f"    total={audit['total_rows']}, ISO={audit['counts']['ISO_DATE']}, "
+              f"ROC={audit['counts']['ROC_DATE']}, YYYYMMDD={audit['counts']['YYYYMMDD_COMPACT']}, "
+              f"empty={audit['counts']['EMPTY_OR_NULL']}, unknown={audit['counts']['UNKNOWN_FORMAT']}")
+        print(f"    Planned conversions: {audit['planned_conversions']}")
+        if audit['blockers']:
+            print(f"    ⚠️  BLOCKERS (will NOT be auto-converted): {len(audit['blockers'])}")
+            for b in audit['blockers'][:5]:
+                print(f"      id={b['id']} value='{b['value']}' format={b['format']}")
 
-        # Report
-        print_report(conn)
+    # Summary before apply
+    total_planned = sum(a['planned_conversions'] for a in audits)
+    total_blockers = sum(len(a['blockers']) for a in audits)
+    print(f"\n──────────────────────────────────────────────────────────")
+    print(f"  Total rows to convert: {total_planned}")
+    print(f"  Total blockers (UNKNOWN_FORMAT / EMPTY): {total_blockers}")
+    if dry_run:
+        print(f"\n  ℹ️  DRY-RUN mode: no changes will be made.")
+        print(f"  Run with --apply to execute.")
 
-    except Exception as e:
-        print(f"\n❌ Error: {e}")
-        import traceback
-        traceback.print_exc()
-    finally:
-        conn.close()
+    # Apply phase
+    print("\n─── Phase 2: Normalization ───")
+    total_converted = 0
+    total_deduped = 0
+    for audit in audits:
+        c, d = apply_normalization(conn, audit, dry_run)
+        total_converted += c
+        total_deduped += d
+
+    if not dry_run:
+        print_after_state(conn)
+
+    conn.close()
+    print(f"\n✅ Done. Converted={total_converted}, Deduped={total_deduped}, Mode={'DRY-RUN' if dry_run else 'APPLIED'}")
 
 
 if __name__ == '__main__':

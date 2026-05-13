@@ -35,6 +35,7 @@ import {
 import {
   validateBacktestResult,
 } from '@/lib/backtest/AntiDeceptionValidator';
+import { resolveAsOfDate } from '@/lib/data/AsOfDataGate';
 
 const STRATEGIES = {
   asset_doubling: AssetDoublingAdapter,
@@ -50,6 +51,7 @@ export async function POST(request: NextRequest) {
       strategy: strategyKey = 'asset_doubling',
       months = 12,
       costs: costModel = 'discounted',
+      asOfDate: asOfDateRaw,
     } = body;
 
     if (!stockId) {
@@ -59,16 +61,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // P0-03: as-of gate — cap data queries to asOfDate.
+    const asOfDate = resolveAsOfDate(asOfDateRaw);
+    const asOfDb = asOfDate.replace(/-/g, ''); // YYYYMMDD for DB string comparison
+
     const validMonths = Math.max(3, Math.min(24, months));
     const startDate = new Date();
     startDate.setMonth(startDate.getMonth() - validMonths);
     const startDateStr = startDate.toISOString().slice(0, 10).replace(/-/g, '');
 
-    // Fetch historical data (point-in-time, chronological)
+    // Fetch historical data (point-in-time, chronological), capped at asOfDate
     const quotes = await prisma.stockQuote.findMany({
       where: {
         stockId,
-        date: { gte: startDateStr },
+        date: { gte: startDateStr, lte: asOfDb },
       },
       orderBy: { date: 'asc' },
     });
@@ -128,6 +134,11 @@ export async function POST(request: NextRequest) {
       },
       period: strategyResult.period,
       dataPoints: data.length,
+
+      // P0-03: as-of gate fields
+      asOfDate,
+      asOfGateStatus: 'ACTIVE',
+      asOfGateNote: 'P0-03: stockQuote queries gated with date <= asOfDate. Historical data only.',
 
       // Strategy results
       strategyMetrics: strategyResult.metrics,

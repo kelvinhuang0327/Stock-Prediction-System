@@ -1,0 +1,107 @@
+{
+  "taskId": "P0-02A",
+  "taskName": "MVP API As-of Gate Integration",
+  "date": "2026-05-07",
+  "auditType": "API As-of Gate Audit",
+  "observabilityOnly": true,
+  "noEdgeClaim": true,
+  "noProductionWrite": true,
+  "noDBWrite": true,
+  "noExternalAPI": true,
+  "noLLMCall": true,
+  "noStrategyMutation": true,
+  "noPerformanceClaim": true,
+  "apis": [
+    {
+      "route": "/api/strategy/screen",
+      "integrationStatus": "COMPLETE",
+      "asOfDateParam": true,
+      "asOfDateDefault": "resolveAsOfDate()",
+      "dbQueriesGated": ["stockQuote.groupBy (via StrategyScreenEngine asOf param)"],
+      "responseFields": ["asOfDate", "asOfGateStatus", "asOfGateNote"],
+      "limitations": ["fuseBatch() in StrategyScreenEngine does not fully propagate asOf to all sub-agents — documented partial coverage"],
+      "notes": "asOf is passed to runScreen() which uses it for stockQuote.groupBy. Full propagation to SignalFusionEngine is a P0-03 item."
+    },
+    {
+      "route": "/api/stocks/[id]/detail",
+      "integrationStatus": "COMPLETE",
+      "asOfDateParam": true,
+      "asOfDateDefault": "resolveAsOfDate()",
+      "dbQueriesGated": ["stockQuote.findMany (date lte asOfDateDb)", "runScreen asOf param"],
+      "responseFields": ["asOfDate", "asOfGateStatus", "asOfGateNote"],
+      "limitations": [
+        "institutionalChip queries are inside runScreen/ChipAgent — partially gated via asOf param",
+        "fundamentals (monthlyRevenue, financialReport) use year/quarter integers — no direct date gate possible",
+        "peerComparison and overlays are computed from existing data — no additional date gate needed"
+      ],
+      "notes": "Primary quote gate applied. runScreen gets asOf. Fundamentals limitation documented."
+    },
+    {
+      "route": "/api/stocks/[id]/history",
+      "integrationStatus": "BLOCKED",
+      "asOfDateParam": false,
+      "asOfDateDefault": null,
+      "dbQueriesGated": [],
+      "responseFields": [],
+      "limitations": ["External API proxy via twseApi.getHistorySeries(). No DB queries. Cannot add date <= asOfDate filter."],
+      "mitigation": "P0-03: Add as-of quarantine middleware or wrap twseApi response with date filter at consumer level.",
+      "notes": "BLOCKED — external dependency, no DB control."
+    },
+    {
+      "route": "/api/stocks/backtest",
+      "integrationStatus": "AUDIT_ONLY",
+      "asOfDateParam": false,
+      "asOfDateDefault": null,
+      "dbQueriesGated": [],
+      "responseFields": [],
+      "limitations": ["prisma.stockQuote.findMany uses gte only — no upper date bound. Future rows can appear in backtest data."],
+      "mitigation": "P0-03: Add lte: asOfDateDb to stockQuote.findMany in backtestFromDB(). Simple change but deferred to avoid scope creep.",
+      "notes": "AUDIT_ONLY — change is safe but deferred to P0-03."
+    },
+    {
+      "route": "/api/backtest/validate",
+      "integrationStatus": "AUDIT_ONLY",
+      "asOfDateParam": false,
+      "asOfDateDefault": null,
+      "dbQueriesGated": [],
+      "responseFields": [],
+      "limitations": ["prisma.stockQuote.findMany uses gte only — no upper date bound."],
+      "mitigation": "P0-03: Add lte: asOfDateDb to validation queries.",
+      "notes": "AUDIT_ONLY — deferred to P0-03."
+    },
+    {
+      "route": "/api/admin/data-quality",
+      "integrationStatus": "COMPLETE",
+      "asOfDateParam": true,
+      "asOfDateDefault": "resolveAsOfDate()",
+      "dbQueriesGated": ["read-only: latestDate comparison against asOfDateDb"],
+      "responseFields": ["asOfReadiness"],
+      "asOfReadinessFields": [
+        "asOfDate",
+        "asOfDateDb",
+        "futureRowsDetected",
+        "futureRowsExcludedByGate",
+        "futureRowsDetails",
+        "abnormalHistoricalRowsDetected",
+        "mvpUniverseTierSummary",
+        "readinessStatus",
+        "readinessNote",
+        "gateNote"
+      ],
+      "notes": "Full as-of readiness summary added to response. Lightweight — no additional DB queries beyond existing runQualityCheck()."
+    },
+    {
+      "route": "/api/report/ops",
+      "integrationStatus": "AUDIT_ONLY",
+      "notes": "OpsReportEngine already includes freshness checks. as-of integration handled via /api/admin/data-quality. No change needed this round."
+    }
+  ],
+  "futureDateProtection": {
+    "StockQuote": "GATED — date lte asOfDateDb in detail route. Partial in screen route via asOf param.",
+    "MarketIndex": "PARTIAL — not directly queried in screen/detail routes in P0-02A scope.",
+    "InstitutionalChip": "PARTIAL — gated inside runScreen via asOf param propagation.",
+    "NewsEvent": "NOT_GATED — no direct queries in P0-02A scope.",
+    "fundamentals": "NOT_GATED — year/quarter integers, no date field gate possible."
+  },
+  "generatedAt": "2026-05-07T00:00:00.000Z"
+}

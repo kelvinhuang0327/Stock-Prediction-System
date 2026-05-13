@@ -1,0 +1,47 @@
+{
+  "hypothesis_id": "STOCK_H008_ETF_DEF_MOMENTUM",
+  "symbol": "2330",
+  "as_of_date": "2026-05-01",
+  "status": "DATA_INSUFFICIENT",
+  "gate_statuses": {
+    "G01": "FAIL",
+    "G02": "PASS",
+    "G03": "FAIL",
+    "G04": "WARN",
+    "G05": "WARN",
+    "G06": "WARN",
+    "G07": "WARN",
+    "G08": "PASS",
+    "G09": "BLOCKED",
+    "G10": "BLOCKED"
+  },
+  "window_results": [
+    {
+      "status": "DATA_INSUFFICIENT",
+      "window_days": 150,
+      "error": "no_signals",
+      "actual_rows": 150,
+      "symbol": "2330",
+      "hypothesis_id": "STOCK_H008_ETF_DEF_MOMENTUM",
+      "pit_passed": true,
+      "pit_leakage": false,
+      "raw_p_value": 1.0,
+      "bh_fdr_q_value": 1.0,
+      "bh_fdr_pass": false
+    },
+    {
+      "status": "DATA_INSUFFICIENT",
+      "window_days": 500,
+      "error": "no_signals",
+      "actual_rows": 500,
+      "symbol": "2330",
+      "hypothesis_id": "STOCK_H008_ETF_DEF_MOMENTUM",
+      "pit_passed": true,
+      "pit_leakage": false,
+      "raw_p_value": 1.0,
+      "bh_fdr_q_value": 1.0,
+      "bh_fdr_pass": false
+    }
+  ],
+  "run_ts": "2026-05-05T09:41:38.658247+00:00"
+}

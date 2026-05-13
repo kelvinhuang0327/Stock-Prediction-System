@@ -1,0 +1,85 @@
+{
+  "snapshot": "BEFORE_NORMALIZATION",
+  "generated_at": "2026-05-06T10:51:53Z",
+  "tables": [
+    {
+      "table": "StockQuote",
+      "date_col": "date",
+      "row_count": 130497,
+      "min_date": "1150327",
+      "max_date": "2026-05-18",
+      "distinct_dates": 805,
+      "ISO_count": 129151,
+      "ROC_7_count": 1346,
+      "YYYYMMDD_8_count": 0,
+      "null_empty_count": 0,
+      "unknown_count": 0,
+      "iso_ratio_pct": 98.97,
+      "non_iso_samples": [
+        "1150327"
+      ]
+    },
+    {
+      "table": "MarketIndex",
+      "date_col": "date",
+      "row_count": 2900,
+      "min_date": "1150327",
+      "max_date": "2026-05-18",
+      "distinct_dates": 741,
+      "ISO_count": 2633,
+      "ROC_7_count": 267,
+      "YYYYMMDD_8_count": 0,
+      "null_empty_count": 0,
+      "unknown_count": 0,
+      "iso_ratio_pct": 90.79,
+      "non_iso_samples": [
+        "1150327"
+      ]
+    },
+    {
+      "table": "InstitutionalChip",
+      "date_col": "date",
+      "row_count": 291068,
+      "min_date": "2025-05-02",
+      "max_date": "2026-05-05",
+      "distinct_dates": 236,
+      "ISO_count": 291068,
+      "ROC_7_count": 0,
+      "YYYYMMDD_8_count": 0,
+      "null_empty_count": 0,
+      "unknown_count": 0,
+      "iso_ratio_pct": 100.0,
+      "non_iso_samples": []
+    },
+    {
+      "table": "StockMetrics",
+      "date_col": "date",
+      "row_count": 6425,
+      "min_date": "1150327",
+      "max_date": "2026-05-18",
+      "distinct_dates": 6,
+      "ISO_count": 5356,
+      "ROC_7_count": 1069,
+      "YYYYMMDD_8_count": 0,
+      "null_empty_count": 0,
+      "unknown_count": 0,
+      "iso_ratio_pct": 83.36,
+      "non_iso_samples": [
+        "1150327"
+      ]
+    }
+  ],
+  "non_date_tables": {
+    "MonthlyRevenue": {
+      "note": "uses year (INT) + month (INT) columns, not a date string col"
+    },
+    "FinancialReport": {
+      "note": "uses year (INT) + quarter (STRING) columns, not a date string col"
+    }
+  },
+  "taiex": {
+    "count": 734,
+    "min_date": "2017-12-01",
+    "max_date": "2026-03-17"
+  }
+}

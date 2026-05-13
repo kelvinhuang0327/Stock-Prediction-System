@@ -1,0 +1,41 @@
+{
+  "task": "P0-03",
+  "title": "StrategyScreenEngine asOf Propagation Validation",
+  "date": "2026-05-07",
+  "classification": "research_tool_only",
+  "noAutoTrading": true,
+  "noEdgeClaim": true,
+  "noPerformanceClaim": true,
+  "noDBWrite": true,
+  "noExternalAPI": true,
+  "noLLMCall": true,
+  "noStrategyMutation": true,
+  "propagationChain": [
+    {
+      "layer": "StrategyScreenEngine.runScreen()",
+      "change": "fuseBatch(batchSymbols) → fuseBatch(batchSymbols, asOf)",
+      "status": "COMPLETE"
+    },
+    {
+      "layer": "SignalFusionEngine.fuseBatch(symbols, asOf?)",
+      "change": "Added asOf? param; passes to fuseSignals(s, regime, asOf)",
+      "status": "COMPLETE"
+    },
+    {
+      "layer": "SignalFusionEngine.fuseSignals(symbol, regimeOverride?, asOf?)",
+      "change": "Added asOf? param; passes to analyzeStock(symbol, asOf)",
+      "status": "COMPLETE"
+    },
+    {
+      "layer": "RuleBasedStockAnalyzer.analyzeStock(symbol, asOf?)",
+      "change": "Gates stockQuote, institutionalChip, monthlyRevenue with lte: asOfDb",
+      "status": "COMPLETE"
+    }
+  ],
+  "backwardCompatibility": "All asOf params are optional — callers without asOf continue unchanged",
+  "strategyMutation": "NONE — alphaScore, confidence, and scoring logic not modified",
+  "marketIndexPath": {
+    "status": "AUDIT_ONLY",
+    "note": "MarketIndex is accessed via MarketRegimeEngine.detectRegime(). Shared with T-09/T-10. Deferred to P0-04."
+  }
+}

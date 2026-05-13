@@ -1,0 +1,81 @@
+{
+  "task": "T-12b",
+  "title": "Dynamic Current Date Source — Readiness Decision",
+  "date": "2026-05-06",
+  "classification": "T12B_DYNAMIC_CURRENT_DATE_SOURCE_COMPLETE",
+  "answers": {
+    "1_hardcoded_runtime_date_removed": {
+      "answer": true,
+      "detail": "DEFAULT_CURRENT_DATE removed from marketRegimeResult.ts; REPORT_DATE removed from regime route; OpsReportEngine updated"
+    },
+    "2_date_provider_complete": {
+      "answer": true,
+      "detail": "src/lib/time/currentDate.ts created with getCurrentDateISO() and resolveCurrentDate(). 15/15 tests PASS."
+    },
+    "3_api_supports_date_override": {
+      "answer": true,
+      "detail": "Both /api/daily-report/regime and /api/report/ops now accept ?date=YYYY-MM-DD. Falls back to resolveCurrentDate() if omitted."
+    },
+    "4_tests_can_use_fixed_date": {
+      "answer": true,
+      "detail": "Service-level tests pass explicit '2026-05-06' arg. API tests use jest.mock('@/lib/time/currentDate') returning '2026-05-06'."
+    },
+    "5_timezone_risk": {
+      "answer": "LOW",
+      "detail": "getCurrentDateISO() uses toISOString().slice(0,10) — UTC-based. Risk only on UTC midnight boundaries. Acceptable for daily ops."
+    },
+    "6_db_write": {
+      "answer": false,
+      "detail": "No DB write in any changed file."
+    },
+    "7_external_api_call": {
+      "answer": false,
+      "detail": "No external API call in any changed file."
+    },
+    "8_strategy_behavior_change": {
+      "answer": false,
+      "detail": "No strategy, hypothesis, ROI, win-rate, buy/sell/signal changes."
+    },
+    "9_p0_blocker": {
+      "answer": false,
+      "detail": "No blockers remain. All 106+15 tests PASS."
+    },
+    "10_next_round": {
+      "answer": "T-05 Walk-Forward Backtest Skeleton (redesigned for portfolio regime context, H001-H012 retired)",
+      "detail": "T-12b complete. Date risk eliminated. Next highest-leverage task is T-05 walk-forward skeleton for portfolio-level regime-aware backtest."
+    }
+  },
+  "test_summary": {
+    "t12b_current_date": "15/15 PASS",
+    "t09_service": "PASS",
+    "t09_api": "PASS",
+    "t11_service": "PASS",
+    "t11_api": "PASS",
+    "t12_integration": "PASS",
+    "t03_ops_engine": "PASS",
+    "t03_ops_api": "PASS",
+    "t04_safety_guard": "PASS",
+    "total_regression": "106/106 PASS",
+    "combined": "121/121 PASS"
+  },
+  "files_created": [
+    "src/lib/time/currentDate.ts",
+    "src/lib/time/__tests__/t12b_current_date.test.ts",
+    "outputs/daily_report/t12b_hardcoded_date_audit.json",
+    "outputs/daily_report/t12b_hardcoded_date_audit.md",
+    "outputs/daily_report/t12b_guardrail_validation.json",
+    "outputs/daily_report/t12b_guardrail_validation.md",
+    "outputs/daily_report/t12b_readiness_decision.json",
+    "outputs/daily_report/t12b_readiness_decision.md",
+    "outputs/system_readiness/t12b_next_execution_order_20260506.md"
+  ],
+  "files_modified": [
+    "src/lib/marketRegimeResult.ts",
+    "src/lib/report/OpsReportEngine.ts",
+    "src/app/api/daily-report/regime/route.ts",
+    "src/app/api/report/ops/route.ts",
+    "src/app/api/daily-report/regime/__tests__/t09_market_regime_api.test.ts",
+    "src/app/api/daily-report/regime/__tests__/t11_freshness_alert_api.test.ts",
+    "src/app/api/report/ops/__tests__/t03_ops_report_api.test.ts"
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "version": "v0",
+  "phase": "P26D-HARDRESET",
+  "generatedAt": "2026-05-13",
+  "coverageDimensions": {
+    "monthlyRevenueAvailableAsOf": {
+      "description": "MonthlyRevenue row is visible when releaseDate <= asOfDate (Taiwan UTC+8)",
+      "contextType": "MonthlyRevenue",
+      "gateField": "releaseDate",
+      "readOnly": true,
+      "entersAlphaScore": false
+    },
+    "monthlyRevenueReasonContextPresent": {
+      "description": "MonthlyRevenue rows have non-empty reasonContext after P26A enrichment",
+      "contextType": "MonthlyRevenue",
+      "gateField": "reasonContext",
+      "readOnly": true,
+      "entersAlphaScore": false
+    },
+    "monthlyRevenueFactorEvidencePresent": {
+      "description": "MonthlyRevenue rows have non-empty factorEvidence after P26A enrichment",
+      "contextType": "MonthlyRevenue",
+      "gateField": "factorEvidence",
+      "readOnly": true,
+      "entersAlphaScore": false
+    },
+    "newsEventContextVisibleAsOf": {
+      "description": "NewsEvent context visible when publishedAt <= asOfDate (Taiwan UTC+8). ingestedAt is observability only.",
+      "contextType": "NewsEvent",
+      "gateField": "publishedAt",
+      "readOnly": true,
+      "entersAlphaScore": false
+    },
+    "financialReportContextVisibleAsOf": {
+      "description": "FinancialReport context visible per availabilityDate priority: filingDate->announcementDate->publishedAt->availableAt",
+      "contextType": "FinancialReport",
+      "gateField": "availabilityDate",
+      "readOnly": true,
+      "entersAlphaScore": false
+    },
+    "contextReadOnly": {
+      "description": "All three context adapters are read-only — no mutation of input rows or corpus",
+      "contextType": "ALL",
+      "readOnly": true,
+      "entersAlphaScore": false
+    },
+    "entersAlphaScoreFalseForNewsAndFinancial": {
+      "description": "NewsEvent and FinancialReport contexts do not enter alphaScore or recommendationBucket computation",
+      "contextType": "NewsEvent|FinancialReport",
+      "readOnly": true,
+      "entersAlphaScore": false
+    },
+    "alphaScoreInvariant": {
+      "description": "alphaScore values in P3/P19 corpus are unchanged vs P26C baseline (0 mismatch)",
+      "contextType": "ScoringInvariant",
+      "readOnly": true,
+      "entersAlphaScore": false
+    },
+    "recommendationBucketInvariant": {
+      "description": "recommendationBucket values in P3/P19 corpus are unchanged vs P26C baseline (0 mismatch)",
+      "contextType": "ScoringInvariant",
+      "readOnly": true,
+      "entersAlphaScore": false
+    }
+  },
+  "replayTargetScope": {
+    "corpusFiles": [
+      "outputs/online_validation/p3active_scoring_historical_replay_corpus.jsonl",
+      "outputs/online_validation/p19active_scoring_pit_replay_corpus.jsonl"
+    ],
+    "fixtureTargets": [
+      "outputs/online_validation/fixtures/p26b_news_events_fixture.json",
+      "outputs/online_validation/fixtures/p26c_financial_reports_fixture.json"
+    ],
+    "walkthrough": "outputs/online_validation/p5walkthrough_review.json",
+    "reasonQualityCompare": "outputs/online_validation/p26a_walkthrough_reason_quality_compare.json",
+    "expectedP3Rows": 4500,
+    "expectedP19Rows": 4500,
+    "expectedTotalRows": 9000,
+    "asOfDate": "2026-05-13"
+  },
+  "excludedScope": {
+    "noCorpusRegeneration": true,
+    "noDBWrite": true,
+    "noScoringChange": true,
+    "noExternalAPI": true,
+    "noLLM": true,
+    "noMathRandom": true,
+    "noOutcomeFields": true,
+    "forbiddenFieldAccess": ["outcomePrice", "returnPct", "realizedReturnClass"],
+    "forbiddenClaims": ["ROI", "win-rate", "alpha edge", "profit guarantee", "outperform", "investment recommendation"]
+  },
+  "outputClassifications": {
+    "COVERAGE_READY_FOR_CORPUS_EXPANSION": "COVERAGE_READY_FOR_CORPUS_EXPANSION",
+    "COVERAGE_PARTIAL_NEEDS_SOURCE_MAPPING": "COVERAGE_PARTIAL_NEEDS_SOURCE_MAPPING",
+    "COVERAGE_BLOCKED_BY_ARTIFACTS": "COVERAGE_BLOCKED_BY_ARTIFACTS",
+    "SCORING_INVARIANCE_BROKEN": "SCORING_INVARIANCE_BROKEN",
+    "PIT_CONTEXT_GATE_BROKEN": "PIT_CONTEXT_GATE_BROKEN",
+    "FAILED_TESTS": "FAILED_TESTS"
+  },
+  "disclaimer": "No investment recommendations. No ROI/win-rate/profit/outperform/buy/sell claims. Research and coverage analysis only."
+}

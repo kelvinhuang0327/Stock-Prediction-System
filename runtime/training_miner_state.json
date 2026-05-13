@@ -8,15 +8,23 @@
     "weekly_deep__volatility_stop_validation": "2026-04-30T08:55:13.974Z",
     "intraday__data_freshness_audit": "2026-04-30T09:06:03.088Z",
     "intraday__lifecycle_stuck_detection": "2026-04-30T09:06:03.088Z",
-    "daily_cycle__time_exit_dominance": "2026-04-30T09:06:15.214Z"
+    "daily_cycle__time_exit_dominance": "2026-04-30T09:06:15.214Z",
+    "nightly_opt__indicator_coverage_check": "2026-05-04T08:17:29.770Z",
+    "nightly_opt__execution_layer_audit": "2026-05-04T08:17:29.770Z",
+    "nightly_opt__learning_layer_audit": "2026-05-04T08:17:29.771Z",
+    "nightly_opt__price_analysis_quality": "2026-05-04T08:17:29.771Z",
+    "nightly_opt__system_health": "2026-05-04T08:17:29.771Z",
+    "nightly_opt__code_quality": "2026-05-05T00:00:03.443Z",
+    "nightly_opt__ui_ux": "2026-05-05T00:00:03.443Z",
+    "nightly_opt__wiki_docs": "2026-05-05T00:00:03.443Z"
   },
   "dailyQuota": {
-    "date": "2026-04-30",
-    "low": 5,
-    "medium": 3,
+    "date": "2026-05-05",
+    "low": 3,
+    "medium": 0,
     "high": 0
   },
-  "lastRunAt": "2026-04-30T10:30:06.964Z",
+  "lastRunAt": "2026-05-05T10:30:05.763Z",
   "probeActivity": {
     "totalProbeAttempts": 0,
     "allowedProbes": 0,

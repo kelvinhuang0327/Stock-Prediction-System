@@ -1,0 +1,73 @@
+{
+  "task": "T-05E",
+  "title": "PIT-safe Candidate Data Adapter Validation",
+  "generatedAt": "2026-05-07T00:00:00.000Z",
+  "safetyLabels": [
+    "T-05E",
+    "PIT-safe candidate data adapter",
+    "read-only candidate snapshots",
+    "sourceDate <= rebalanceDate",
+    "no future data",
+    "no DB write",
+    "no external API",
+    "no LLM call",
+    "no strategy mutation",
+    "no performance claim",
+    "no edge claim"
+  ],
+  "testResults": {
+    "t05eTests": "51/51 PASS",
+    "t05bRegressionTests": "45/45 PASS",
+    "t05cRegressionTests": "45/45 PASS",
+    "t05dRegressionTests": "48/48 PASS",
+    "fullRegressionSuites": "11 suites / 278 tests PASS"
+  },
+  "functionValidation": {
+    "normalizeCandidateSnapshotDateKey": {
+      "returnsYYYYMMDD": "PASS",
+      "timezoneStable": "PASS",
+      "throwsOnInvalidInput": "PASS"
+    },
+    "loadCandidateSnapshotsForDate": {
+      "pitSafeDbQuery": "PASS",
+      "rejectsOrFlagsFutureData": "PASS",
+      "readOnly": "PASS",
+      "gracefulFallbackOnDbError": "PASS"
+    },
+    "mapStockDataToCandidateSnapshot": {
+      "neutralObservabilityShape": "PASS",
+      "handlesMissingFieldsExplicitly": "PASS",
+      "noForbiddenTerms": "PASS",
+      "handlesYYYYMMDDAndDashedFormats": "PASS"
+    },
+    "validateCandidateSnapshotFreshness": {
+      "passForValidSourceDate": "PASS",
+      "failForFutureSourceDate": "PASS",
+      "warnForMissingSourceDate": "PASS"
+    },
+    "validateCandidateSnapshotCoverage": {
+      "passWarnFailLogic": "PASS",
+      "countsInvalidFutureData": "PASS",
+      "noForbiddenTerms": "PASS"
+    }
+  },
+  "integrationValidation": {
+    "walkForwardEngineAcceptsCandidateSnapshots": "PASS",
+    "candidateSourcePITSAFE": "PASS",
+    "candidateSourceMOCKFallback": "PASS",
+    "t05bRegressionPreserved": "PASS",
+    "t05cRegressionPreserved": "PASS",
+    "t05dRegressionPreserved": "PASS"
+  },
+  "sourceCodeSafetyInspection": {
+    "noPrismaClientImport": "PASS",
+    "noExternalApiCalls": "PASS",
+    "noLlmImports": "PASS",
+    "noDbWriteOperations": "PASS"
+  },
+  "dataModels": {
+    "primarySource": "StockQuote",
+    "pitFilter": "date <= rebalanceDateYYYYMMDD",
+    "excludedModels": ["Prediction (signal field)", "InstitutionalChip (buy field names)", "Watchlist (personal portfolio)"]
+  }
+}

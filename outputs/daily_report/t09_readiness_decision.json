@@ -1,0 +1,41 @@
+{
+  "readiness_id": "T09_READINESS_DECISION",
+  "decision_date": "2026-05-06",
+  "generated_at": "2026-05-06T15:09:18.366429",
+  "t09_complete": true,
+  "overall_verdict": "PASS",
+  "components_delivered": {
+    "prisma_client_regenerated": true,
+    "service_function": "src/lib/marketRegimeResult.ts",
+    "api_route": "src/app/api/daily-report/regime/route.ts",
+    "tests_service": "src/lib/__tests__/t09_market_regime_service.test.ts",
+    "tests_api": "src/app/api/daily-report/regime/__tests__/t09_market_regime_api.test.ts",
+    "guardrails_in_response": true,
+    "freshness_check": true
+  },
+  "test_results": {
+    "total": 21,
+    "passed": 21,
+    "failed": 0
+  },
+  "typecheck": "PASS for new files (pre-existing errors unrelated to T-09)",
+  "next_task_recommendations": {
+    "P0_immediate": [
+      "T-10: Walk-forward context enrichment -- pass latest regime to WalkForward runs"
+    ],
+    "P1_next": [
+      "T-11: Freshness alert -- alert when max_date lags > 3 days via scheduler",
+      "T-12: DailyReportEngine integration -- update buildMarketSummary() to prefer persisted regime over live detectRegime()"
+    ],
+    "P2_deferred": [
+      "Scheduler lane integration for MarketRegimePersistence",
+      "UI component to display regime in DailyReport page",
+      "Regime transition smoothing"
+    ],
+    "do_not_continue": [
+      "H013+ hypothesis design",
+      "Strategy validation based on regime",
+      "ROI / win-rate calculation per regime"
+    ]
+  }
+}

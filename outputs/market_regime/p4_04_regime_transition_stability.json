@@ -1,0 +1,69 @@
+{
+  "analysis_id": "P4_04_REGIME_TRANSITION_STABILITY",
+  "analysis_date": "2026-05-06",
+  "generated_at": "2026-05-06T14:58:03.508851",
+  "total_days_analyzed": 300,
+  "total_transitions": 47,
+  "transition_rate_per_day": 0.1572,
+  "transition_matrix": {
+    "SIDEWAYS->BULL": 19,
+    "BULL->SIDEWAYS": 18,
+    "SIDEWAYS->BEAR": 3,
+    "BEAR->SIDEWAYS": 3,
+    "SIDEWAYS->HIGH_VOLATILITY": 1,
+    "HIGH_VOLATILITY->SIDEWAYS": 1,
+    "BULL->HIGH_VOLATILITY": 1,
+    "HIGH_VOLATILITY->BULL": 1
+  },
+  "total_distinct_periods": 48,
+  "avg_period_duration_days": 6.25,
+  "longest_period": {
+    "label": "BULL",
+    "start": "2025-09-03",
+    "end": "2025-11-13",
+    "length_days": 48
+  },
+  "shortest_period": {
+    "label": "BULL",
+    "start": "2025-01-20",
+    "end": "2025-01-20",
+    "length_days": 1
+  },
+  "churn_days_single_day_regime": 21,
+  "churn_rate": 0.07,
+  "abrupt_transitions_count": 21,
+  "high_volatility_adjacency_transitions": 4,
+  "low_confidence_dates": [],
+  "low_confidence_count": 0,
+  "transition_examples": [
+    {
+      "from": "SIDEWAYS",
+      "to": "BULL",
+      "at": "2025-01-20",
+      "prev_period_len": 3
+    },
+    {
+      "from": "BULL",
+      "to": "SIDEWAYS",
+      "at": "2025-01-21",
+      "prev_period_len": 1
+    },
+    {
+      "from": "SIDEWAYS",
+      "to": "BULL",
+      "at": "2025-02-11",
+      "prev_period_len": 8
+    }
+  ],
+  "validation": {
+    "excessive_churn": false,
+    "hv_distribution_reasonable": true,
+    "low_confidence_excessive": false,
+    "latest_regime_not_isolated": true
+  },
+  "verdict": "PASS_WITH_WARNINGS",
+  "warnings": [
+    "21 single-day periods (7.0% churn) -- acceptable; smoothing optional",
+    "HIGH_VOLATILITY confidence=1.0 by design (high_vol_override_applied)"
+  ]
+}

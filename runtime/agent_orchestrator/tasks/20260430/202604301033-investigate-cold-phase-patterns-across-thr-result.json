@@ -1,0 +1,42 @@
+{
+  "version": "1.0",
+  "task_id": 176,
+  "status": "COMPLETED",
+  "gate_verdict": "PASS",
+  "gate_reason": "",
+  "failure_provider": null,
+  "failure_reason": null,
+  "reset_hint": null,
+  "final_message": null,
+  "http_status": null,
+  "duration_seconds": 197,
+  "changed_files": [
+    "logs/launchd/backend.stdout.log",
+    "logs/launchd/planner-tick.stdout.log",
+    "logs/launchd/worker-daemon.stdout.log",
+    "logs/launchd/worker-tick.stdout.log",
+    "prisma/dev.db-shm",
+    "prisma/dev.db-wal",
+    "runtime/agent_orchestrator/llm_execution_events.jsonl",
+    "runtime/agent_orchestrator/llm_execution_policy_state.json",
+    "runtime/agent_orchestrator/runs.json",
+    "runtime/agent_orchestrator/scheduler_state.json",
+    "runtime/agent_orchestrator/task_index.json",
+    "runtime/agent_orchestrator/tasks/20260430/202604301026-audit-and-refresh-stale-docs-wiki-markdown-meta.json",
+    "runtime/training_reports/tw_self_audit.json",
+    "src/lib/jobs/JobOrchestrationService.ts",
+    "src/lib/jobs/__tests__/JobOrchestrationService.test.ts",
+    "src/lib/jobs/runJobWithOrchestration.ts"
+  ],
+  "error_markers_hit": [],
+  "missing_required_outputs": [],
+  "forbidden_change_violations": [],
+  "acceptance_results": [
+    {
+      "name": "Worker command completed",
+      "passed": true,
+      "evidence": "Process exited with code 0."
+    }
+  ],
+  "next_action": "Continue to next planned task."
+}

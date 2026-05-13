@@ -1,0 +1,91 @@
+{
+  "contract_name": "T-05 Portfolio Walk-Forward Contract",
+  "version": "1.0.0",
+  "generated_at": "2026-05-06T13:55:00+08:00",
+  "status": "SKELETON_ONLY",
+  "walk_forward_definition": {
+    "evaluation_unit": "portfolio",
+    "asof_date_based": true,
+    "rolling_window_rule": "ALL data selections must use date <= asof_date. NO exceptions.",
+    "future_return_in_selection": false,
+    "regime_source": "P4-03 classifier (build-market-regime-classifier.py)",
+    "feature_source": "P4-02 P4_03_READY features only (16 features)",
+    "retired_h001_h012": "MUST NOT BE USED",
+    "sample_window_max_days": 120,
+    "max_candidates_per_day": 10
+  },
+  "portfolio_construction": {
+    "method": "deterministic_mock_placeholder",
+    "selection_universe": "StockQuote symbols on asof_date, excl ETFs, alphabetical, top 10",
+    "no_alpha_claim": true,
+    "no_edge_claim": true,
+    "no_buy_sell_signal": true,
+    "threshold_optimization": false,
+    "candidate_selection_method": "deterministic_alphabetical_mock"
+  },
+  "evaluation_metrics_schema": {
+    "asof_date": "string ISO8601 required",
+    "regime_label": "string BULL|BEAR|SIDEWAYS|HIGH_VOLATILITY|LOW_CONFIDENCE|regime_missing required",
+    "regime_confidence": "float 0.0-1.0 required",
+    "portfolio_size": "int max=10 required",
+    "coverage_count": "int total stocks on asof_date",
+    "candidate_symbols": "array",
+    "candidate_selection_method": "deterministic_alphabetical_mock",
+    "available_feature_count": "int P4_03_READY features",
+    "missing_feature_count": "int",
+    "evaluation_window_start": "string asof_date minus 60 days",
+    "evaluation_window_end": "string equals asof_date",
+    "data_quality_flags": "array",
+    "pit_safety_flags": "array",
+    "forbidden_logic_flags": "object all false",
+    "placeholder_metrics": "object all null"
+  },
+  "forbidden_logic_flags_schema": {
+    "uses_h001_h012": false,
+    "uses_buy_sell_signal": false,
+    "uses_roi_optimization": false,
+    "uses_future_data": false,
+    "uses_chip_production_features": false,
+    "uses_revenue_financial_production_features": false
+  },
+  "placeholder_metrics_schema": {
+    "forward_return_placeholder": null,
+    "benchmark_return_placeholder": null,
+    "drawdown_placeholder": null,
+    "note": "ALL null. Skeleton only. Do not interpret as performance."
+  },
+  "prohibited_output_fields": [
+    "buy",
+    "sell",
+    "signal",
+    "roi",
+    "win_rate",
+    "alpha",
+    "edge"
+  ],
+  "regime_integration_rules": [
+    "Every asof_date must have regime_label and regime_confidence",
+    "Missing regime => label=regime_missing confidence=0.0",
+    "Regime must use only TAIEX data where date <= asof_date",
+    "Future regime imputation is FORBIDDEN",
+    "Regime does NOT adjust thresholds or portfolio selection logic"
+  ],
+  "pit_safety_rules": [
+    "All SQL queries must include WHERE date <= asof_date",
+    "No look-ahead",
+    "Regime from P4-03 is already PIT-safe",
+    "No future TAIEX dates (capped at 2026-05-06)",
+    "Feature window: 60-day lookback ending at asof_date"
+  ],
+  "not_in_scope": [
+    "H001-H012",
+    "Strategy optimization",
+    "ROI",
+    "Win rate",
+    "Production buy/sell signals",
+    "Chip/revenue/financial production features",
+    "ML training",
+    "Edge claims",
+    "Performance conclusions"
+  ]
+}

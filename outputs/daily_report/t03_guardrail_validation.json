@@ -1,0 +1,39 @@
+{
+  "task": "T-03 Daily Ops Report v1 Guardrail Validation",
+  "validation_date": "2026-05-06",
+  "total_checks": 22,
+  "passed_checks": 22,
+  "failed_checks": 0,
+  "result": "22/22 PASS",
+  "checks": [
+    { "id": "G01", "name": "OpsReportEngine.ts exists", "status": "PASS", "evidence": "src/lib/report/OpsReportEngine.ts created" },
+    { "id": "G02", "name": "API route /api/report/ops exists", "status": "PASS", "evidence": "src/app/api/report/ops/route.ts created" },
+    { "id": "G03", "name": "Report contains marketRegime", "status": "PASS", "evidence": "buildDailyOpsReport() returns marketRegime field" },
+    { "id": "G04", "name": "Report contains freshness", "status": "PASS", "evidence": "buildDailyOpsReport() returns freshness field" },
+    { "id": "G05", "name": "Report contains walkForward", "status": "PASS", "evidence": "buildDailyOpsReport() returns walkForward field (T-10 evidence)" },
+    { "id": "G06", "name": "Report contains guardrails", "status": "PASS", "evidence": "buildDailyOpsReport() returns guardrails field" },
+    { "id": "G07", "name": "Report contains doNotInterpretAs", "status": "PASS", "evidence": "buildDailyOpsReport() returns doNotInterpretAs array with 6 items" },
+    { "id": "G08", "name": "No forbidden field keys", "status": "PASS", "evidence": "Test 8 in t03_ops_report_engine.test.ts: containsForbiddenKey(report) = false. Tests 10 in t03_ops_report_api.test.ts: PASS" },
+    { "id": "G09", "name": "No H001-H012 in serialized output", "status": "PASS", "evidence": "guardrail field renamed to noLegacyHypotheses to avoid embedding hypothesis codes. H_PATTERN test PASS." },
+    { "id": "G10", "name": "No DB write", "status": "PASS", "evidence": "getLatestMarketRegimeContext() is read-only DB query. No prisma write operations in OpsReportEngine.ts." },
+    { "id": "G11", "name": "No external API call", "status": "PASS", "evidence": "OpsReportEngine.ts has no fetch/axios/http calls. guardrails.noExternalApiCall = true." },
+    { "id": "G12", "name": "No strategy validation", "status": "PASS", "evidence": "OpsReportEngine.ts does not call StrategyScreenEngine, MarketRegimeEngine, or any strategy engine." },
+    { "id": "G13", "name": "No ROI / win-rate fields", "status": "PASS", "evidence": "OpsGuardrails.noPerformanceEvidence = true. No roi/win_rate keys in any interface." },
+    { "id": "G14", "name": "No buy / sell / signal fields", "status": "PASS", "evidence": "OpsGuardrails.noBuySellContent = true. No buy/sell/signal keys in any interface." },
+    { "id": "G15", "name": "T-09 tests PASS", "status": "PASS", "evidence": "t09_market_regime_service.test.ts: 10/10, t09_market_regime_api.test.ts: 10/10" },
+    { "id": "G16", "name": "T-11 tests PASS", "status": "PASS", "evidence": "t11_freshness_alert.test.ts: 12/12, t11_freshness_alert_api.test.ts: 8/8" },
+    { "id": "G17", "name": "T-12 tests PASS", "status": "PASS", "evidence": "t12_daily_report_regime_integration.test.ts: 14/14 PASS" },
+    { "id": "G18", "name": "T-03 engine tests PASS", "status": "PASS", "evidence": "t03_ops_report_engine.test.ts: 15/15 PASS" },
+    { "id": "G19", "name": "T-03 API tests PASS", "status": "PASS", "evidence": "t03_ops_report_api.test.ts: 12/12 PASS" },
+    { "id": "G20", "name": "Combined test suite PASS", "status": "PASS", "evidence": "81/81 tests PASS across T-09 + T-11 + T-12 + T-03" },
+    { "id": "G21", "name": "All JSON artifacts parse", "status": "PASS", "evidence": "t03_existing_ops_report_audit.json, t03_daily_ops_report_contract.json, t03_guardrail_validation.json, t03_readiness_decision.json: all python3 -m json.tool validated" },
+    { "id": "G22", "name": "All required output files exist", "status": "PASS", "evidence": "OpsReportEngine.ts, route.ts, 2 test files, 10 artifact files created" }
+  ],
+  "combined_jest_results": {
+    "t09_tests": "20/20 PASS",
+    "t11_tests": "20/20 PASS",
+    "t12_tests": "14/14 PASS",
+    "t03_tests": "27/27 PASS",
+    "combined": "81/81 PASS"
+  }
+}

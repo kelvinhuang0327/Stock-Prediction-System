@@ -1,5 +1,5 @@
 /**
- * ActiveScoringSnapshotBuilder.ts — P3-HARDRESET PART B
+ * ActiveScoringSnapshotBuilder.ts — P3-HARDRESET PART B / P26A-HARDRESET PART E
  *
  * Builds an active scoring snapshot by calling RuleBasedStockAnalyzer.analyzeStock()
  * with a PIT-safe asOfDate parameter. This replaces the DefaultStockQuoteCandidateProvider
@@ -17,10 +17,15 @@
  * - EMPTY snapshots are still written to corpus (no silent skipping)
  * - never modifies SignalFusion / RuleBased scoring weights
  *
+ * P26A addition: enrichReasonFromExistingFactors is applied post-build to replace
+ * single-token generic reasonSnapshot with factor-evidence-backed text.
+ * alphaScore and researchBucket are NEVER modified by this enrichment.
+ *
  * Not investment advice. Not a trading system.
  */
 
 import { analyzeStock, StockAnalysisResult } from '@/lib/analysis/RuleBasedStockAnalyzer';
+import { enrichReasonFromExistingFactors } from './P26AReasonFactorEnrichmentUtils';
 
 // ─── Constants ─────────────────────────────────────────────────────────────
 
@@ -321,6 +326,13 @@ export async function buildActiveScoringSnapshot(
     };
 
     snapshot.completenessStatus = classifyScoringSnapshotCompleteness(snapshot);
+
+    // P26A-HARDRESET PART E: Enrich reasonSnapshot with factor evidence.
+    // This is read-only over factorSnapshot — does NOT change alphaScore or researchBucket.
+    // Invariance check (PART F) verifies alphaScore + recommendationBucket are unchanged.
+    if (snapshot.completenessStatus !== 'EMPTY' && snapshot.factorSnapshot.length > 0) {
+        snapshot.reasonSnapshot = enrichReasonFromExistingFactors(snapshot);
+    }
 
     return snapshot;
 }

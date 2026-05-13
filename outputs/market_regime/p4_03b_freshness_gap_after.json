@@ -1,0 +1,22 @@
+{
+  "task": "P4-03b Freshness Gap After Backfill",
+  "generated_at": "2026-05-06T13:43:39+08:00",
+  "taiex_max_before": "2026-05-05",
+  "taiex_max_after": "2026-05-06",
+  "taiex_row_count_before": 766,
+  "taiex_row_count_after": 767,
+  "rows_inserted": 1,
+  "taiex_min_date": "2017-12-01",
+  "stockquote_max_date": "2026-05-18",
+  "stockquote_count_unchanged": true,
+  "stockquote_count": 129151,
+  "non_iso_taiex_after": 0,
+  "duplicate_taiex_dates": 0,
+  "remaining_gap_start": "2026-05-07",
+  "remaining_gap_end": "2026-05-18",
+  "remaining_gap_reason": "StockQuote contains 1355 rows dated 2026-05-18 which is 12 calendar days in the future. TWSE does not publish future TAIEX data. This gap cannot be resolved by backfill - represents pre-loaded/synthetic future StockQuote data.",
+  "remaining_gap_type": "FUTURE_DATA_NOT_YET_PUBLISHED",
+  "gap_resolved_for_today": true,
+  "daily_report_regime_for_today": true,
+  "t05_walk_forward_can_use_latest_trading_day": true
+}

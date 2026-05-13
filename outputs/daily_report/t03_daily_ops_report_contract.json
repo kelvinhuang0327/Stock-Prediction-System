@@ -1,0 +1,169 @@
+{
+  "task": "T-03 Daily Ops Report Contract",
+  "version": "v1",
+  "contract_date": "2026-05-06",
+  "description": "Defines the structure of Daily Ops Report v1 — a system readiness and observability artifact.",
+  "disclaimer": "This is NOT a trading advisory. This is NOT a buy/sell content. This is NOT ROI evidence. This is NOT win-rate evidence. This is NOT proof of alpha or edge. This is a system readiness and observability artifact.",
+  "top_level_fields": [
+    "reportDate",
+    "generatedAt",
+    "status",
+    "summary",
+    "marketRegime",
+    "freshness",
+    "walkForward",
+    "guardrails",
+    "dataQuality",
+    "readiness",
+    "nextActions",
+    "doNotInterpretAs"
+  ],
+  "allowed_status_values": [
+    "PASS",
+    "PASS_WITH_WARNINGS",
+    "STALE_DATA",
+    "MISSING_DATA",
+    "GUARDRAIL_FAIL",
+    "BLOCKED"
+  ],
+  "status_rules": {
+    "PASS": "freshnessAlert.alertLevel = FRESH and persisted regime available",
+    "PASS_WITH_WARNINGS": "freshnessAlert.alertLevel = STALE",
+    "STALE_DATA": "freshnessAlert.alertLevel = CRITICAL_STALE",
+    "MISSING_DATA": "persisted regime not available (isAvailable = false)",
+    "GUARDRAIL_FAIL": "freshnessAlert.alertLevel = FUTURE_DATE_ERROR",
+    "BLOCKED": "catastrophic failure — manual intervention required"
+  },
+  "field_schemas": {
+    "marketRegime": {
+      "regimeLabel": "string | null",
+      "confidence": "number | null",
+      "date": "string | null (YYYY-MM-DD)",
+      "source": "PERSISTED_MARKET_REGIME_RESULT | UNAVAILABLE",
+      "freshnessStatus": "string | null",
+      "freshnessLagDays": "number | null",
+      "freshnessAlert": {
+        "alertLevel": "FRESH | STALE | CRITICAL_STALE | MISSING | FUTURE_DATE_ERROR",
+        "freshnessLagDays": "number | null",
+        "lastRegimeDate": "string | null",
+        "currentDate": "string",
+        "message": "string | null",
+        "requiresAction": "boolean"
+      },
+      "isAvailable": "boolean"
+    },
+    "freshness": {
+      "marketRegimeFreshness": "string (same as freshnessAlert.alertLevel)",
+      "freshnessLagDays": "number | null",
+      "requiresAction": "boolean",
+      "message": "string | null"
+    },
+    "walkForward": {
+      "contextAvailable": "boolean",
+      "sampleDays": "number",
+      "recordsWithRegimeContext": "number",
+      "recordsMissingRegimeContext": "number",
+      "pitSafe": "boolean",
+      "noBehaviorChange": "boolean",
+      "note": "string"
+    },
+    "guardrails": {
+      "noTradingAdvisory": "boolean",
+      "noBuySellContent": "boolean",
+      "noPerformanceEvidence": "boolean",
+      "noLegacyHypotheses": "boolean (covers retired H001-H012)",
+      "noForbiddenFields": "boolean",
+      "noDbWrite": "boolean",
+      "noExternalApiCall": "boolean"
+    },
+    "dataQuality": {
+      "marketRegimeResultAvailable": "boolean",
+      "latestRegimeDate": "string | null",
+      "freshnessAlertLevel": "string",
+      "pitSafe": "boolean"
+    },
+    "readiness": {
+      "operatorReady": "boolean",
+      "schedulerReady": "boolean",
+      "dashboardReady": "boolean",
+      "hardcodedDateRisk": "boolean",
+      "notes": "string[]"
+    },
+    "nextActions": "string[]",
+    "doNotInterpretAs": "string[]"
+  },
+  "example_output": {
+    "reportDate": "2026-05-06",
+    "generatedAt": "2026-05-06T09:00:00.000Z",
+    "status": "PASS",
+    "summary": "System health PASS. Market regime: BULL. Freshness: FRESH. All guardrails satisfied.",
+    "marketRegime": {
+      "regimeLabel": "BULL",
+      "confidence": 1.0,
+      "date": "2026-05-06",
+      "source": "PERSISTED_MARKET_REGIME_RESULT",
+      "freshnessStatus": "FRESH",
+      "freshnessLagDays": 0,
+      "freshnessAlert": {
+        "alertLevel": "FRESH",
+        "freshnessLagDays": 0,
+        "lastRegimeDate": "2026-05-06",
+        "currentDate": "2026-05-06",
+        "message": null,
+        "requiresAction": false
+      },
+      "isAvailable": true
+    },
+    "freshness": {
+      "marketRegimeFreshness": "FRESH",
+      "freshnessLagDays": 0,
+      "requiresAction": false,
+      "message": null
+    },
+    "walkForward": {
+      "contextAvailable": true,
+      "sampleDays": 120,
+      "recordsWithRegimeContext": 120,
+      "recordsMissingRegimeContext": 0,
+      "pitSafe": true,
+      "noBehaviorChange": true,
+      "note": "T-10 walk-forward skeleton: 120/120 records enriched with regime context."
+    },
+    "guardrails": {
+      "noTradingAdvisory": true,
+      "noBuySellContent": true,
+      "noPerformanceEvidence": true,
+      "noLegacyHypotheses": true,
+      "noForbiddenFields": true,
+      "noDbWrite": true,
+      "noExternalApiCall": true
+    },
+    "dataQuality": {
+      "marketRegimeResultAvailable": true,
+      "latestRegimeDate": "2026-05-06",
+      "freshnessAlertLevel": "FRESH",
+      "pitSafe": true
+    },
+    "readiness": {
+      "operatorReady": true,
+      "schedulerReady": true,
+      "dashboardReady": true,
+      "hardcodedDateRisk": true,
+      "notes": [
+        "DEFAULT_CURRENT_DATE is hardcoded to 2026-05-06. Replace with dynamic date source for production.",
+        "Freshness OK."
+      ]
+    },
+    "nextActions": ["No immediate action required. Continue daily monitoring."],
+    "doNotInterpretAs": [
+      "This is not a trading advisory.",
+      "This is not a buy/sell content.",
+      "This is not ROI evidence.",
+      "This is not win-rate evidence.",
+      "This is not proof of alpha or edge.",
+      "This is a system readiness and observability artifact."
+    ]
+  },
+  "forbidden_fields": ["buy", "sell", "signal", "roi", "win_rate", "alpha", "edge", "profit", "recommendation", "outperform"],
+  "forbidden_field_note": "Field keys MUST NOT be any of the above. Values may reference these concepts in negation context (e.g., doNotInterpretAs), but JSON keys must not use these names."
+}

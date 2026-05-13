@@ -1,0 +1,9 @@
+{
+  "recommended": "cold_phase_variant",
+  "reason": "Highest edge_annualized_pct in backtest windows and permutation p < 0.05 vs baseline",
+  "rollout_conditions": [
+    "Pass real-data backtest with live market data (hold-out period)",
+    "Monte Carlo 5th-percentile drawdown < 20% (already observed in synthetic MC)",
+    "Implement survivorship filtering and strict execution monitoring"
+  ]
+}

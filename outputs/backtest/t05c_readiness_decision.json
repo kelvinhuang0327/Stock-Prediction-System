@@ -1,0 +1,44 @@
+{
+  "task": "T-05C_REGIME_CONTEXT_LOADER_READINESS_DECISION",
+  "date": "2026-05-07",
+  "classification": "T05C_REGIME_CONTEXT_LOADER_COMPLETE",
+  "labels": [
+    "T-05C",
+    "read-only loader",
+    "persisted MarketRegimeResult only",
+    "no regime recomputation",
+    "no production write",
+    "no DB write except read query",
+    "no external API",
+    "no LLM call",
+    "no strategy mutation",
+    "no performance claim"
+  ],
+  "readinessAnswers": {
+    "loaderModuleCreated": true,
+    "resolveCurrentDateUsed": true,
+    "noHardcodedTodayCap": true,
+    "dbReadOnly": true,
+    "noExternalApi": true,
+    "noLlmCall": true,
+    "noRegimeRecomputation": true,
+    "explicitMissingStateOnDbError": true,
+    "mapKeyIsYYYYMMDD": true,
+    "injectableIntoBuildWalkForwardSkeleton": true,
+    "forbiddenFieldsAbsent": true,
+    "noLegacyHypotheses": true,
+    "guardrailPass": true,
+    "testsPass": true,
+    "artifactsParseSuccessfully": true
+  },
+  "testSummary": {
+    "t05cIndependent": "45/45 PASS",
+    "regression": "9 suites / 179 tests PASS",
+    "regressionCommand": "npx jest t12b t03 t04 t09 t11 t05b t05c --no-coverage"
+  },
+  "nextRound": {
+    "priority1": "T-05D Trading Calendar Adapter — replace weekday approximation with actual Taiwan trading calendar",
+    "priority2": "P4-05 Data Backfill — populate >= 500 days of MarketRegimeResult to enable meaningful coverage",
+    "forbidden": ["strategy validation", "ROI computation", "win-rate computation", "H001-H012 reactivation"]
+  }
+}

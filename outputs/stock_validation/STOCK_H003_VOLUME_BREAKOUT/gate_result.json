@@ -1,6 +1,6 @@
 {
   "hypothesis_id": "STOCK_H003_VOLUME_BREAKOUT",
-  "run_ts": "2026-05-05T05:44:51.673343+00:00",
+  "run_ts": "2026-05-05T05:55:28.572369+00:00",
   "dry_run": true,
   "pipeline": "GBGF_STOCK_VALIDATION_P3-05",
   "mock_data": true,
@@ -28,40 +28,40 @@
       "gate_id": "G03",
       "gate_name": "OOS Validation Gate",
       "status": "FAIL",
-      "message": "Only 0/2 OOS windows pass",
+      "message": "Only 0/3 OOS windows pass",
       "evidence": {
         "passing": 0,
-        "total": 2
+        "total": 3
       }
     },
     {
       "gate_id": "G04",
       "gate_name": "Permutation Null Gate",
       "status": "FAIL",
-      "message": "p=0.9260 >= 0.05 \u2014 strategy classified as noise",
+      "message": "p=0.6400 >= 0.05 \u2014 strategy classified as noise",
       "evidence": {
-        "p_value": 0.926
+        "p_value": 0.64
       }
     },
     {
       "gate_id": "G05",
       "gate_name": "Multiple Testing Gate",
-      "status": "FAIL",
-      "message": "Fails BH-FDR correction \u2014 likely noise after multiple testing",
+      "status": "PASS",
+      "message": "Passes BH-FDR correction",
       "evidence": {
-        "bh_fdr_pass": false
+        "bh_fdr_pass": true
       }
     },
     {
       "gate_id": "G06",
       "gate_name": "EV / ROI Gate",
-      "status": "PASS",
-      "message": "EV positive \u2014 strategy is monetizable",
+      "status": "WARN",
+      "message": "EV negative by design. Classification: EV_NEGATIVE_BY_DESIGN. Not recommended for production betting.",
       "evidence": {
-        "classification": "EV_POSITIVE",
-        "sharpe_annualized": 2.0221,
-        "cagr_annualized": 0.4702,
-        "win_rate": 0.6833,
+        "classification": "EV_NEGATIVE_BY_DESIGN",
+        "sharpe_annualized": -3.6293,
+        "cagr_annualized": -0.5839,
+        "win_rate": 0.3167,
         "n_oos_signals": 60,
         "transaction_cost_bps": 10,
         "pit_risks": [
@@ -116,70 +116,78 @@
   "promotion": {
     "status": "rejected",
     "criteria": {
-      "roi_positive_all_windows": true,
-      "sharpe_positive_500d": true,
+      "roi_positive_all_windows": false,
+      "sharpe_positive_500d": false,
       "perm_p_lt_005": false
     },
-    "primary_window_sharpe": 1.6715,
-    "primary_perm_p": 0.926,
+    "primary_window_sharpe": -0.6602,
+    "primary_perm_p": 0.64,
     "reasons": [
-      "Permutation p-value=0.926 \u2265 0.05 (not significant)"
+      "ROI not positive across all windows",
+      "Sharpe \u2264 0 on primary window (-0.6602)",
+      "Permutation p-value=0.64 \u2265 0.05 (not significant)"
     ]
   },
   "window_results": [
     {
       "window_days": 150,
-      "n_signals": 4,
-      "error": "insufficient_oos",
+      "n_signals": 6,
+      "mean_return": 0.005418,
+      "std_return": 0.024229,
+      "sharpe_annualized": 1.5875,
+      "win_rate": 0.5,
       "edge_pp": 0.0,
-      "sharpe": null,
-      "roi": null
+      "roi_annualized": 0.273059,
+      "tx_cost_bps": 15
     },
     {
       "window_days": 500,
-      "n_signals": 16,
-      "mean_return": 0.006411,
-      "std_return": 0.027228,
-      "sharpe_annualized": 1.6715,
-      "win_rate": 0.5625,
-      "edge_pp": 6.25,
-      "roi_annualized": 0.323095,
+      "n_signals": 15,
+      "mean_return": -0.003829,
+      "std_return": 0.041172,
+      "sharpe_annualized": -0.6602,
+      "win_rate": 0.5333,
+      "edge_pp": 3.3333,
+      "roi_annualized": -0.192972,
       "tx_cost_bps": 15
     },
     {
       "window_days": 1500,
-      "n_signals": 46,
-      "mean_return": 0.004343,
-      "std_return": 0.030628,
-      "sharpe_annualized": 1.0066,
-      "win_rate": 0.5217,
-      "edge_pp": 2.1739,
-      "roi_annualized": 0.21887,
+      "n_signals": 45,
+      "mean_return": 0.004544,
+      "std_return": 0.032533,
+      "sharpe_annualized": 0.9917,
+      "win_rate": 0.4889,
+      "edge_pp": -1.1111,
+      "roi_annualized": 0.229042,
       "tx_cost_bps": 15
     }
   ],
   "permutation_results": [
     {
-      "p_value": 1.0,
-      "n_permutations": 0,
-      "error": "insufficient_oos",
+      "observed_mean": 0.005418,
+      "null_mean": 0.005418,
+      "null_std": 0.0,
+      "p_value": 0.3,
+      "n_permutations": 50,
+      "one_tailed": true,
       "window_days": 150
     },
     {
-      "observed_mean": 0.006411,
-      "null_mean": 0.006411,
+      "observed_mean": -0.003829,
+      "null_mean": -0.003829,
       "null_std": 0.0,
-      "p_value": 0.926,
-      "n_permutations": 500,
+      "p_value": 0.64,
+      "n_permutations": 50,
       "one_tailed": true,
       "window_days": 500
     },
     {
-      "observed_mean": 0.004343,
-      "null_mean": 0.004343,
+      "observed_mean": 0.004544,
+      "null_mean": 0.004544,
       "null_std": 0.0,
-      "p_value": 0.938,
-      "n_permutations": 500,
+      "p_value": 0.0,
+      "n_permutations": 50,
       "one_tailed": true,
       "window_days": 1500
     }
@@ -187,21 +195,30 @@
   "bh_fdr_results": [
     {
       "hypothesis_id": "STOCK_H003_VOLUME_BREAKOUT",
+      "window": "150d",
+      "p_value": 0.3,
+      "bh_rank": 4,
+      "bh_threshold": 0.022222,
+      "bh_adjusted_p": 0.675,
+      "bh_pass": false
+    },
+    {
+      "hypothesis_id": "STOCK_H003_VOLUME_BREAKOUT",
       "window": "500d",
-      "p_value": 0.926,
-      "bh_rank": 7,
-      "bh_threshold": 0.04375,
-      "bh_adjusted_p": 1.0,
+      "p_value": 0.64,
+      "bh_rank": 6,
+      "bh_threshold": 0.033333,
+      "bh_adjusted_p": 0.96,
       "bh_pass": false
     },
     {
       "hypothesis_id": "STOCK_H003_VOLUME_BREAKOUT",
       "window": "1500d",
-      "p_value": 0.938,
-      "bh_rank": 8,
-      "bh_threshold": 0.05,
-      "bh_adjusted_p": 0.938,
-      "bh_pass": false
+      "p_value": 0.0,
+      "bh_rank": 1,
+      "bh_threshold": 0.005556,
+      "bh_adjusted_p": 0.0,
+      "bh_pass": true
     }
   ]
 }

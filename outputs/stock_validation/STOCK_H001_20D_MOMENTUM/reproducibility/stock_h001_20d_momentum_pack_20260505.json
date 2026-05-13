@@ -2,19 +2,19 @@
   "run_id": "STOCK_H001_20D_MOMENTUM-2026-05-05",
   "hypothesis_id": "STOCK_H001_20D_MOMENTUM",
   "pipeline_version": "P3-05",
-  "run_ts": "2026-05-05T05:44:51.661343+00:00",
+  "run_ts": "2026-05-05T05:55:28.560035+00:00",
   "source_artifact_sha256": {
-    "stock_hypothesis_registry.json": "4df160647bfa788f74ffa3cf2bb6168f32bcf45b4eb9def59e801ea67c586402",
-    "run_stock_validation.py": "6f9e3161e34d89eddcea63ad1638461532c33f51e479f0fecc2d32c852da2352"
+    "stock_hypothesis_registry.json": "7d77c971bacb0dc796c3ac8850e4c2f541bb13fd21ebc57d45ad77864cc5a64a",
+    "run_stock_validation.py": "7e55ff1a28c8d3d07e381cc91f6722c618bba16edbe36ecdb0905473b1f5060a"
   },
-  "gate_result_sha256": "a51befc74eac7faa8fb44af6bd60833babc1603ee52632c73474bef67f3cc99d",
+  "gate_result_sha256": "5fa3bb60fb0463ad1f251ffce79e5912eb904e43d069feb105d89ad07f179757",
   "gate_statuses": {
     "G01": "PASS",
     "G02": "PASS",
     "G03": "FAIL",
     "G04": "FAIL",
     "G05": "FAIL",
-    "G06": "WARN",
+    "G06": "PASS",
     "G07": "WARN",
     "G08": "PASS",
     "G09": "BLOCKED",
@@ -34,5 +34,5 @@
     500,
     1500
   ],
-  "n_permutations": 500
+  "n_permutations": 50
 }

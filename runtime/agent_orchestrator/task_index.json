@@ -3707,6 +3707,62 @@
         "confidenceScore": null,
         "regimeTaskType": "composite_8h_plan"
       }
+    },
+    {
+      "taskId": 174,
+      "title": "Build shadow strategy tracking in SIGNAL_SATURATED state, conduct signal quality analysis, and perform saturation meta-review with three validated candidate variants and promotion criteria.",
+      "slug": "build-shadow-strategy-tracking-in-signal-s",
+      "dayKey": "20260504",
+      "status": "PENDING_REVIEW",
+      "gateVerdict": "PASS",
+      "plannerProvider": "codex",
+      "workerProvider": "copilot-daemon",
+      "createdAt": "2026-05-04T07:41:29.015Z",
+      "updatedAt": "2026-05-04T07:41:51.904Z",
+      "lastOutputAt": "2026-05-04T07:41:51.904Z",
+      "latestProgressSummary": "Auto-committed 4 file(s) (sha: 37959dc). Awaiting CTO review.",
+      "promptPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260504/202605040741-build-shadow-strategy-tracking-in-signal-s-prompt.md",
+      "contractPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260504/202605040741-build-shadow-strategy-tracking-in-signal-s-contract.json",
+      "completedPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260504/202605040741-build-shadow-strategy-tracking-in-signal-s-completed.md",
+      "resultPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260504/202605040741-build-shadow-strategy-tracking-in-signal-s-result.json",
+      "metaPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260504/202605040741-build-shadow-strategy-tracking-in-signal-s-meta.json",
+      "workerLogPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260504/202605040741-build-shadow-strategy-tracking-in-signal-s-worker-stdout.log",
+      "plannerContext": {
+        "taskType": "shadow_strategy_tracking",
+        "game": null,
+        "regimeState": "SIGNAL_SATURATED",
+        "dedupeKey": "shadow_strategy_tracking|GLOBAL|SIGNAL_SATURATED",
+        "confidenceScore": 0.43333333333333335,
+        "regimeTaskType": "shadow_strategy_tracking"
+      }
+    },
+    {
+      "taskId": 175,
+      "title": "8-Hour Multi-Domain Optimization Sprint (系統 / 功能 / 模擬 / 實戰 / 自我學習)",
+      "slug": "8-hour-multi-domain-optimization-sprint",
+      "dayKey": "20260504",
+      "status": "PENDING_REVIEW",
+      "gateVerdict": "PASS",
+      "plannerProvider": "codex",
+      "workerProvider": "copilot-daemon",
+      "createdAt": "2026-05-04T08:17:45.335Z",
+      "updatedAt": "2026-05-04T08:25:59.996Z",
+      "lastOutputAt": "2026-05-04T08:25:59.995Z",
+      "latestProgressSummary": "Auto-committed 6 file(s) (sha: 9c13c52). Awaiting CTO review.",
+      "promptPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260504/202605040817-8-hour-multi-domain-optimization-sprint-prompt.md",
+      "contractPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260504/202605040817-8-hour-multi-domain-optimization-sprint-contract.json",
+      "completedPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260504/202605040817-8-hour-multi-domain-optimization-sprint-completed.md",
+      "resultPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260504/202605040817-8-hour-multi-domain-optimization-sprint-result.json",
+      "metaPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260504/202605040817-8-hour-multi-domain-optimization-sprint-meta.json",
+      "workerLogPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260504/202605040817-8-hour-multi-domain-optimization-sprint-worker-stdout.log",
+      "plannerContext": {
+        "taskType": "optimization_composite_8h",
+        "game": null,
+        "regimeState": "OPTIMIZATION",
+        "dedupeKey": "composite_8h_plan__2026-05-04",
+        "confidenceScore": null,
+        "regimeTaskType": "composite_8h_plan"
+      }
     }
   ]
 }

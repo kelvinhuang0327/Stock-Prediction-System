@@ -1,0 +1,29 @@
+{
+  "task": "P4-03b Freshness Gap Before",
+  "generated_at": "2026-05-06T13:43:39+08:00",
+  "taiex_row_count": 766,
+  "taiex_distinct_dates": 766,
+  "taiex_min_date": "2017-12-01",
+  "taiex_max_date": "2026-05-05",
+  "stockquote_max_date": "2026-05-18",
+  "gap_start": "2026-05-06",
+  "gap_end": "2026-05-18",
+  "gap_calendar_days": 13,
+  "expected_trading_dates_in_gap": [
+    "2026-05-06",
+    "2026-05-07",
+    "2026-05-08",
+    "2026-05-09",
+    "2026-05-12",
+    "2026-05-13",
+    "2026-05-14",
+    "2026-05-15",
+    "2026-05-16",
+    "2026-05-18"
+  ],
+  "marketindex_non_iso_count": 0,
+  "stockquote_non_iso_count": 0,
+  "gap_blocks_daily_report_latest_regime": true,
+  "gap_blocks_t05_walk_forward_latest_alignment": true,
+  "notes": "TAIEX ends 2026-05-05; StockQuote has 13 more calendar days. Regime classifier returns LOW_CONFIDENCE for 2026-05-06 to 2026-05-18."
+}

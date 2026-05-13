@@ -1,0 +1,34 @@
+{
+  "readiness_id": "T04_READINESS_DECISION",
+  "generated_at": "2026-05-06",
+  "task": "T-04 LLM Hard-Off / Safe-Run + Missing-TaskId Alert",
+  "answers": {
+    "1_llm_hard_off_complete": true,
+    "2_safe_run_mode_complete": true,
+    "3_missing_taskid_alert_complete": true,
+    "4_scheduler_cron_route_integrated": true,
+    "5_wrapper_proposal_if_not_integrated": "N/A — integration complete",
+    "6_ops_report_status_can_trigger_safe_run": true,
+    "7_db_write": false,
+    "8_external_api_call": false,
+    "9_llm_call": false,
+    "10_h001_h012_leakage": false,
+    "11_buy_sell_signal_leakage": false,
+    "12_p0_blocker_remains": false,
+    "13_next_round_recommendation": "T-05 Portfolio Walk-Forward Skeleton (P4-ready, rule-only, no H001-H012)"
+  },
+  "evidence": {
+    "SafetyGuard_ts": "src/lib/scheduler/SafetyGuard.ts — 3 functions: evaluateSafetyMode, validateTaskId, assertLlmAllowed",
+    "tests_pass": "29/29 PASS (25 unit + 4 route integration)",
+    "regression_pass": "56/56 PASS (T-03 + T-04)",
+    "cron_route_integrated": "src/app/api/cron/daily-sync/route.ts — evaluateSafetyMode() at handler top, BLOCKED returns 403",
+    "guardrails_pass": "30/30 PASS"
+  },
+  "classification": "T04_LLM_HARD_OFF_SAFE_RUN_MISSING_TASKID_ALERT_COMPLETE",
+  "outstanding_items": [
+    "DEFAULT_CURRENT_DATE = '2026-05-06' still hardcoded in marketRegimeResult.ts (T-12b)",
+    "Ops Report UI Dashboard not built (T-03b)",
+    "Orchestrator task routes not yet integrated with SafetyGuard (P1 next)"
+  ],
+  "source": "T04_READINESS_DECISION"
+}

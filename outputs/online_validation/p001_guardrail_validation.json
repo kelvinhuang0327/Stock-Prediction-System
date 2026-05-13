@@ -1,0 +1,37 @@
+{
+  "task": "P0-01",
+  "taskName": "Guardrail Validation",
+  "artifactType": "guardrail_validation",
+  "date": "2026-05-07",
+  "safetyLabels": [
+    "P0-01", "as-of data gate", "future-date quarantine", "MVP universe lock",
+    "research tool only", "no auto trading", "no precision prediction claim",
+    "no DB write", "no external API", "no LLM call", "no strategy mutation",
+    "no performance claim", "no edge claim"
+  ],
+  "guardrails": [
+    { "id": "G01", "check": "resolveAsOfDate uses resolveCurrentDate by default", "status": "PASS", "evidence": "83 tests pass; test 1a confirms" },
+    { "id": "G02", "check": "resolveAsOfDate throws InvalidAsOfDateError on invalid input", "status": "PASS", "evidence": "tests 3a-3c confirm" },
+    { "id": "G03", "check": "buildAsOfWhereClause produces date <= asOfDate only", "status": "PASS", "evidence": "tests 4a-5b confirm no gt condition" },
+    { "id": "G04", "check": "buildAsOfWhereClause uses YYYYMMDD format for DB", "status": "PASS", "evidence": "test 4e: lte = '20260507'" },
+    { "id": "G05", "check": "assertNoFutureDateUsage throws FutureDateViolationError", "status": "PASS", "evidence": "tests 7a-7d confirm" },
+    { "id": "G06", "check": "detectFutureDateRows is read-only (no DB writes)", "status": "PASS", "evidence": "test 9d: no write ops called" },
+    { "id": "G07", "check": "detectAbnormalHistoricalRows detects 1970-era dates", "status": "PASS", "evidence": "tests 10a-10e confirm" },
+    { "id": "G08", "check": "validateAsOfDataReadiness returns PASS/WARN/FAIL", "status": "PASS", "evidence": "tests 11a-11e confirm" },
+    { "id": "G09", "check": "No DB write operations in source files", "status": "PASS", "evidence": "tests 12d-12e scan source" },
+    { "id": "G10", "check": "No external API calls in source files", "status": "PASS", "evidence": "test 12b confirms" },
+    { "id": "G11", "check": "No LLM calls in source files", "status": "PASS", "evidence": "test 12c confirms" },
+    { "id": "G12", "check": "MVP universe tiers exclude future-dated records", "status": "PASS", "evidence": "test 8a confirms" },
+    { "id": "G13", "check": "validateMvpUniverseCoverage output contains no forbidden terms", "status": "PASS", "evidence": "test 10a confirms" },
+    { "id": "G14", "check": "No Prisma client direct import (injectable only)", "status": "PASS", "evidence": "test 12a confirms" }
+  ],
+  "forbiddenTermsChecked": [
+    "buy", "sell", "signal", "roi", "win_rate", "alpha", "edge",
+    "profit", "recommendation", "outperform", "guaranteed",
+    "H001", "H002", "H003", "H004", "H005", "H006",
+    "H007", "H008", "H009", "H010", "H011", "H012"
+  ],
+  "forbiddenTermsFoundInArtifacts": false,
+  "overallStatus": "PASS",
+  "observabilityNote": "P0-01 guardrail validation. All checks pass. Research tool only."
+}

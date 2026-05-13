@@ -1,0 +1,212 @@
+{
+  "program": "Stock Prediction System",
+  "task": "P4-01S — Evidence-First Data Foundation & Phase 1 Readiness Audit",
+  "workstream": "A — Data Source Expansion Audit",
+  "generated_at": "2026-05-06T10:00:00Z",
+  "auditor": "Worker Agent",
+  "evidence_method": "Direct SQLite queries on prisma/dev.db — no assumptions",
+  "data_sources": [
+    {
+      "table": "StockQuote",
+      "row_count": 130497,
+      "date_col": "date",
+      "min_date": "2017-04-05",
+      "max_date": "2026-05-18",
+      "distinct_dates": 805,
+      "distinct_symbols": 1357,
+      "symbols_ge_500_rows": 185,
+      "symbols_ge_200_rows": null,
+      "trading_day_depth_estimate": "~805 raw distinct dates; 127796 rows use ISO format (2017+), 2701 rows have non-ISO or ROC-format dates",
+      "date_format_issue": "CRITICAL — some rows contain ROC-calendar format '1150327' (民國115年3月27日) instead of ISO '2026-03-27'. Affects alignment with MarketIndex.",
+      "pit_safety_assessment": "PIT-safe possible if date is used as event-date (point-in-time close price). No future leakage from schema.",
+      "sufficient_500d": true,
+      "notes_500d": "185 symbols have >=500 rows. 127,796 rows are ISO-formatted. Full universe coverage exists for 2017–2026.",
+      "blockers": ["ROC-format date contamination (~2701 rows). Must normalize before alignment with MarketIndex TAIEX."],
+      "status": "IMMEDIATELY_USABLE",
+      "priority": "CRITICAL"
+    },
+    {
+      "table": "Stock",
+      "row_count": 1358,
+      "date_col": "listingDate",
+      "min_date": null,
+      "max_date": null,
+      "distinct_dates": null,
+      "distinct_symbols": 1358,
+      "symbol_coverage": "1358 total stocks in system",
+      "with_industry_code": 1084,
+      "without_industry_code": 274,
+      "distinct_industry_codes": 33,
+      "top_industry_codes": {
+        "28": 104, "24": 94, "26": 68, "25": 64, "22": 58,
+        "14": 55, "20": 51, "05": 50, "31": 46, "27": 45
+      },
+      "pit_safety_assessment": "PIT-safe for cross-sectional filtering. Industry codes are static metadata, not time-series.",
+      "sufficient_500d": "N/A — static metadata table",
+      "blockers": [
+        "industry field contains numeric codes only (e.g. '28', '24'). No descriptive sector names in schema.",
+        "274 stocks have NULL or empty industry code.",
+        "No ETF/stock flag in schema — must be derived by symbol pattern heuristic.",
+        "No listed/OTC classification field."
+      ],
+      "status": "PARTIALLY_USABLE",
+      "priority": "HIGH"
+    },
+    {
+      "table": "MarketIndex",
+      "row_count": 2900,
+      "date_col": "date",
+      "min_date": "2017-12-01",
+      "max_date": "2026-05-18",
+      "distinct_dates": 741,
+      "distinct_index_names": 298,
+      "taiex_specific": {
+        "row_count": 734,
+        "min_date": "2017-12-01",
+        "max_date": "2026-03-17",
+        "distinct_dates": 734,
+        "note": "TAIEX last updated 2026-03-17. StockQuote extends to 2026-05-18. Gap = ~47 trading days (Apr-May 2026)."
+      },
+      "sector_indices_present": true,
+      "sector_index_examples": [
+        "半導體類指數", "電子類指數", "金融保險類指數", "光電類指數",
+        "生技醫療類指數", "鋼鐵類指數", "塑膠類指數", "航運類指數",
+        "建材營造類指數", "電機機械類指數", "食品類指數", "化學類指數",
+        "紡織纖維類指數", "電子零組件類指數", "通信網路類指數",
+        "電腦及週邊設備類指數", "電器電纜類指數", "油電燃氣類指數",
+        "橡膠類指數", "資訊服務類指數", "數位雲端類指數"
+      ],
+      "date_format_issue": "One row with ROC-format date '1150327' detected (likely data ingestion artifact).",
+      "pit_safety_assessment": "PIT-safe. Index values represent published end-of-day data.",
+      "sufficient_500d": true,
+      "blockers": [
+        "TAIEX freshness gap: 2026-03-17 is the last entry. ~47 trading days stale.",
+        "Sector index names are Chinese strings — need mapping table to numeric industry codes.",
+        "ROC-format date artifact in 1 row."
+      ],
+      "status": "USABLE_WITH_FRESHNESS_FIX",
+      "priority": "CRITICAL"
+    },
+    {
+      "table": "InstitutionalChip",
+      "row_count": 291068,
+      "date_col": "date",
+      "min_date": "2025-05-02",
+      "max_date": "2026-05-05",
+      "distinct_dates": 236,
+      "distinct_symbols": 1358,
+      "trading_day_depth_estimate": "~236 trading days (~1 year)",
+      "pit_safety_assessment": "PIT-safe. Fields: foreignBuy, trustBuy, dealerBuy, totalBuy, holders400, holders1000.",
+      "sufficient_500d": false,
+      "notes_500d": "Only 236 distinct dates. Need 500+ trading days for reliable window backtesting.",
+      "blockers": [
+        "Only ~1 year of data (2025-05-02 to 2026-05-05).",
+        "Need backfill to 2020+ (~5 years) for robust 500d window validation.",
+        "No margin balance, short selling, or dealer net position breakdown."
+      ],
+      "status": "INSUFFICIENT_DEPTH",
+      "priority": "HIGH",
+      "backfill_required": true,
+      "backfill_script_exists": true,
+      "backfill_script_path": "scripts/backfill_chip_resilient.py"
+    },
+    {
+      "table": "MonthlyRevenue",
+      "row_count": 2143,
+      "date_col": "year + month",
+      "min_date": "2026-02",
+      "max_date": "2026-03",
+      "distinct_periods": 2,
+      "distinct_symbols": 1074,
+      "trading_day_depth_estimate": "2 months only",
+      "pit_safety_assessment": "PIT-safe if release-date offset applied (monthly revenue announced mid-following-month).",
+      "sufficient_500d": false,
+      "notes_500d": "Only 2 months of data. Need 60+ months for credible revenue trend/event hypotheses.",
+      "blockers": [
+        "Only 2026-02 and 2026-03 available.",
+        "Need multi-year backfill (~5 years = 60 months).",
+        "No backfill script found in scripts/ directory.",
+        "PIT offset: revenue for month M is released around day 10 of month M+1 — must account for this."
+      ],
+      "status": "CRITICALLY_INSUFFICIENT",
+      "priority": "HIGH",
+      "backfill_required": true,
+      "backfill_script_exists": false,
+      "backfill_script_path": null
+    },
+    {
+      "table": "FinancialReport",
+      "row_count": 957,
+      "date_col": "year + quarter",
+      "min_year": 2025,
+      "max_year": 2025,
+      "distinct_quarters": [["2025", "Q4", 957]],
+      "distinct_symbols": 957,
+      "trading_day_depth_estimate": "1 quarter only (2025 Q4)",
+      "pit_safety_assessment": "PIT-safe if report publication date is used (quarterly earnings released ~45 days after quarter end).",
+      "sufficient_500d": false,
+      "notes_500d": "Only 1 quarter available. Need 20+ quarters (5 years) for fundamental event hypotheses.",
+      "blockers": [
+        "Only 2025 Q4 data available.",
+        "Missing: ROE, ROA, cash flow, debt ratio — only eps, netIncome, grossMargin, operatingMargin exist.",
+        "No backfill script for FinancialReport (only ingest-financials.ts for current quarter).",
+        "Need 5 years of quarterly data for cross-sectional fundamental ranking."
+      ],
+      "status": "CRITICALLY_INSUFFICIENT",
+      "priority": "MEDIUM",
+      "backfill_required": true,
+      "backfill_script_exists": false,
+      "backfill_script_path": "scripts/ingest-financials.ts (incremental only, not backfill)"
+    },
+    {
+      "table": "StockMetrics",
+      "row_count": 6425,
+      "date_col": "date",
+      "min_date": "2026-05-18",
+      "max_date": "2026-05-18",
+      "distinct_symbols": 1074,
+      "fields": ["pe", "pb", "dividendYield"],
+      "notes": "Date range appears to be a single date (or ROC-format issue similar to StockQuote). Contains PE, PB, dividend yield — useful for valuation screening.",
+      "pit_safety_assessment": "PIT-safe if daily snapshots are stored. Current evidence suggests only latest values stored.",
+      "sufficient_500d": false,
+      "blockers": ["Likely stores only latest metrics snapshot, not time-series history."],
+      "status": "PARTIALLY_USABLE",
+      "priority": "MEDIUM"
+    },
+    {
+      "table": "ShortSellingBalance",
+      "row_count": 0,
+      "status": "DATA_SOURCE_MISSING",
+      "blockers": ["No short selling balance table found in DB. Requires new external data source (TWSE margin trading data)."],
+      "priority": "LOW"
+    },
+    {
+      "table": "MarginBalance",
+      "row_count": 0,
+      "status": "DATA_SOURCE_MISSING",
+      "blockers": ["No margin balance table found. InstitutionalChip has holders400/holders1000 (proxy) but not standard margin balance."],
+      "priority": "LOW"
+    },
+    {
+      "table": "DividendExRight",
+      "row_count": 0,
+      "status": "DATA_SOURCE_MISSING",
+      "blockers": ["No dividend or ex-right event table found. FinancialReport has earnings but not dividend schedule or ex-date."],
+      "priority": "MEDIUM"
+    }
+  ],
+  "summary": {
+    "immediately_usable": ["StockQuote (after date normalization)", "MarketIndex (after TAIEX freshness fix)"],
+    "partially_usable": ["Stock (industry mapping incomplete)", "StockMetrics (single-date snapshot)"],
+    "insufficient_depth": ["InstitutionalChip (~1 year)", "MonthlyRevenue (2 months)", "FinancialReport (1 quarter)"],
+    "data_source_missing": ["ShortSellingBalance", "MarginBalance", "DividendExRight"],
+    "critical_issues": [
+      "StockQuote / MarketIndex date format mismatch: ROC-calendar dates vs ISO dates contaminate alignment.",
+      "TAIEX freshness gap: last entry 2026-03-17, StockQuote extends to 2026-05-18 (~47 trading days stale).",
+      "InstitutionalChip depth insufficient for 500d window — only 236 trading days.",
+      "MonthlyRevenue: 2 months only, completely unusable for hypothesis design.",
+      "FinancialReport: 1 quarter only, completely unusable for fundamental hypothesis design."
+    ],
+    "p4_readiness_verdict": "P4-01 data foundation is PARTIALLY READY. StockQuote + MarketIndex can support P4-02 (Cross-Sectional Ranking) and P4-03 (Market Regime Classifier) after date alignment fix. P4-05 (Institutional Flow hypothesis) is BLOCKED pending InstitutionalChip backfill."
+  }
+}

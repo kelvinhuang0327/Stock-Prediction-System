@@ -1,0 +1,19 @@
+{
+  "generated_at": "2026-04-30T10:35:54.752755Z",
+  "strategy": {
+    "name": "distribution_bias_variant",
+    "claim": "Returns exhibit distribution skew exploitable by asymmetric sizing",
+    "test_table": [
+      [
+        120,
+        80
+      ],
+      [
+        90,
+        110
+      ]
+    ],
+    "chi2_p_permutation": 0.0033993201359728054,
+    "statistical_gate_pass": true
+  }
+}

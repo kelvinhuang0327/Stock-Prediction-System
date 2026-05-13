@@ -1,0 +1,34 @@
+{
+  "task": "P0-03",
+  "title": "Ops Report As-of Readiness Validation",
+  "date": "2026-05-07",
+  "classification": "research_tool_only",
+  "noAutoTrading": true,
+  "noEdgeClaim": true,
+  "noPerformanceClaim": true,
+  "noDBWrite": true,
+  "noExternalAPI": true,
+  "noLLMCall": true,
+  "noStrategyMutation": true,
+  "route": "/api/report/ops",
+  "status": "COMPLETE",
+  "changes": [
+    "Added resolveAsOfDate import",
+    "Added asOfDate query param (defaults via resolveAsOfDate())",
+    "Added asOfReadiness block to response",
+    "asOfReadiness contains: asOfDate, futureRowsDetected, futureRowsExcludedByGate, abnormalHistoricalRowsDetected, mvpUniverseTierSummary, readinessStatus, gateNote",
+    "futureRowsDetected: true when latest stockQuote.date > asOfDb",
+    "readinessStatus: WARN if future rows detected, PASS otherwise",
+    "OpsReportEngine not modified (preserves T-03 regression)"
+  ],
+  "opsReportEngineMutation": false,
+  "t03RegressionPreserved": true,
+  "requiredFields": {
+    "asOfDate": "PRESENT",
+    "futureRowsDetected": "PRESENT",
+    "futureRowsExcludedByGate": "PRESENT",
+    "abnormalHistoricalRowsDetected": "PRESENT",
+    "mvpUniverseTierSummary": "PRESENT",
+    "readinessStatus": "PRESENT"
+  }
+}

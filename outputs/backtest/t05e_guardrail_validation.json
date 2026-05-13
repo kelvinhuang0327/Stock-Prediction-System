@@ -1,0 +1,44 @@
+{
+  "task": "T-05E",
+  "title": "Guardrail Validation",
+  "generatedAt": "2026-05-07T00:00:00.000Z",
+  "safetyLabels": [
+    "T-05E",
+    "PIT-safe candidate data adapter",
+    "read-only candidate snapshots",
+    "sourceDate <= rebalanceDate",
+    "no future data",
+    "no DB write",
+    "no external API",
+    "no LLM call",
+    "no strategy mutation",
+    "no performance claim",
+    "no edge claim",
+    "no H001-H012"
+  ],
+  "guardrailChecks": {
+    "noDbWrite": "PASS",
+    "noExternalApiCall": "PASS",
+    "noLlmCall": "PASS",
+    "noBuySellOutput": "PASS",
+    "noPerformanceClaims": "PASS",
+    "noEdgeClaims": "PASS",
+    "noStrategyMutation": "PASS",
+    "pitSafetyEnforced": "PASS",
+    "futureDateRejected": "PASS",
+    "missingDateExplicit": "PASS",
+    "noLegacyHypotheses": "PASS",
+    "resolveCurrentDateUsed": "PASS",
+    "backwardCompatible": "PASS",
+    "noProductionPathModified": "PASS",
+    "observabilityOnly": "PASS"
+  },
+  "forbiddenTermsChecked": [
+    "buy", "sell", "signal", "roi", "win_rate", "alpha",
+    "edge", "profit", "recommendation", "outperform",
+    "H001", "H002", "H003", "H004", "H005", "H006",
+    "H007", "H008", "H009", "H010", "H011", "H012"
+  ],
+  "forbiddenTermsFoundInCandidateOutputs": "NONE",
+  "guardrailSummary": "15/15 PASS. No forbidden terms in candidate adapter outputs."
+}

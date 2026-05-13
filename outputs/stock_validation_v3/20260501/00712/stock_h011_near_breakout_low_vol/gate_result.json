@@ -1,0 +1,50 @@
+{
+  "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+  "base_hypothesis_id": "STOCK_H006_LOW_VOL_BREAKOUT",
+  "symbol": "00712",
+  "as_of_date": "2026-05-01",
+  "status": "REJECTED",
+  "allowed_scope": "full_validation",
+  "promotion_allowed": false,
+  "window_results": [
+    {
+      "status": "DATA_INSUFFICIENT",
+      "window_days": 150,
+      "error": "insufficient_oos",
+      "n_oos": 4,
+      "symbol": "00712",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "pit_passed": true,
+      "pit_leakage": false,
+      "raw_p_value": 1.0,
+      "bh_fdr_q_value": 1.0,
+      "bh_fdr_pass": false
+    },
+    {
+      "status": "OK",
+      "window_days": 500,
+      "actual_rows": 500,
+      "n_signals": 81,
+      "n_oos": 17,
+      "mean_return": 0.012055,
+      "std_return": 0.020741,
+      "sharpe_annualized": 4.1261,
+      "roi_annualized": 0.607557,
+      "win_rate": 0.6471,
+      "edge_pp": 14.71,
+      "tx_cost_bps": 10,
+      "p_value": 1.0,
+      "n_permutations": 500,
+      "one_tailed": true,
+      "forward_days": 5,
+      "symbol": "00712",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "pit_passed": true,
+      "pit_leakage": false,
+      "raw_p_value": 1.0,
+      "bh_fdr_q_value": 1.0,
+      "bh_fdr_pass": false
+    }
+  ],
+  "run_ts": "2026-05-05T09:56:40.900665+00:00"
+}

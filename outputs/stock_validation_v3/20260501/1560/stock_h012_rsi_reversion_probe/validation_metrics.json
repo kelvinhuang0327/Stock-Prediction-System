@@ -1,0 +1,15 @@
+{
+  "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+  "symbol": "1560",
+  "as_of_date": "2026-05-01",
+  "windows_tested": [
+    150,
+    500
+  ],
+  "windows_ok": [],
+  "avg_sharpe_annualized": 0.0,
+  "avg_roi_annualized": 0.0,
+  "bh_fdr_pass_count": 0,
+  "status": "OBSERVATION_ONLY",
+  "run_ts": "2026-05-05T09:56:40.900665+00:00"
+}

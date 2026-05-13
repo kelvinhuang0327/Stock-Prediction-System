@@ -1,0 +1,58 @@
+{
+  "task": "T-05B Existing Walk-Forward Audit",
+  "generatedAt": "2026-05-07T12:41:31+08:00",
+  "auditScope": "T-05B — Portfolio Walk-Forward Backtest Skeleton v2",
+  "labels": ["T-05B", "observability-only", "no edge claim", "no production write", "no DB write", "no external API", "no LLM call", "no strategy mutation", "no H001-H012"],
+  "existingComponents": {
+    "pythonSkeletonT05": {
+      "path": "scripts/build-portfolio-walk-forward-skeleton.py",
+      "status": "EXISTS_WITH_GAPS",
+      "gaps": [
+        "TODAY_CAP hardcoded as '2026-05-06'",
+        "Not TypeScript engine",
+        "compute_regime_for_date() inlines its own regime logic (not using persisted MarketRegimeResult)",
+        "No resolveCurrentDate() usage",
+        "DB dependency via sqlite3 (direct conn)"
+      ],
+      "reusablePatterns": [
+        "get_regime_context_from_db() PIT-safe read-only lookup pattern",
+        "forbidden_logic_flags structure",
+        "placeholder_metrics null pattern",
+        "pit_safety_flags pattern"
+      ]
+    },
+    "typeScriptWalkForwardValidator": {
+      "path": "src/lib/signals/WalkForwardValidator.ts",
+      "status": "EXISTS_DO_NOT_USE",
+      "reason": "Per-signal walk-forward only. References retired H001-H012 experiment registry. Must NOT be used in T-05B.",
+      "riskLevel": "HIGH"
+    },
+    "persistedMarketRegimeResult": {
+      "path": "src/lib/marketRegimeResult.ts",
+      "status": "AVAILABLE_READ_ONLY",
+      "usage": "getLatestMarketRegimeContext() returns RegimeContext (PersistedRegimeContext | MissingRegimeContext)",
+      "contract": "Read-only DB query. No writes. Uses resolveCurrentDate()."
+    },
+    "resolveCurrentDate": {
+      "path": "src/lib/time/currentDate.ts",
+      "status": "AVAILABLE",
+      "usage": "resolveCurrentDate(input?) — must use in T-05B. Eliminates hardcoded date cap.",
+      "contract": "Pure function. No DB. No external API. Falls back to system date on invalid input."
+    }
+  },
+  "forbiddenComponents": {
+    "h001h012References": {
+      "files": [
+        "src/lib/research/ExperimentRegistry.ts",
+        "src/lib/research/ExperimentRunner.ts",
+        "src/lib/research/ResearchCoverageEngine.ts",
+        "src/lib/signals/WalkForwardValidator.ts"
+      ],
+      "status": "MUST_NOT_USE",
+      "risk": "HIGH"
+    }
+  },
+  "t05bDecision": "CREATE_NEW_TYPESCRIPT_SKELETON",
+  "newFile": "src/lib/backtest/WalkForwardEngine.ts",
+  "rationale": "T-05B must be TypeScript, use resolveCurrentDate(), inject PersistedRegimeContext (no direct DB in engine), and never reference H001-H012."
+}

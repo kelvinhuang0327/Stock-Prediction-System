@@ -1,0 +1,72 @@
+{
+  "task": "T-05D",
+  "artifactType": "taiwan_trading_calendar_contract",
+  "generatedAt": "2026-05-07T00:00:00Z",
+  "safetyLabels": [
+    "T-05D",
+    "Taiwan trading calendar adapter",
+    "deterministic calendar",
+    "static override contract",
+    "no external API",
+    "no DB write",
+    "no LLM call",
+    "no strategy mutation",
+    "no performance claim",
+    "no edge claim"
+  ],
+  "moduleContract": {
+    "modulePath": "src/lib/backtest/TaiwanTradingCalendar.ts",
+    "exports": [
+      "normalizeTradingDateKey",
+      "isTaiwanTradingDay",
+      "buildTaiwanTradingCalendar",
+      "buildTaiwanTradingDateRange",
+      "buildMonthlyTradingRebalanceSchedule",
+      "validateTradingCalendarCoverage",
+      "TAIWAN_STATIC_HOLIDAYS_2024_2026"
+    ],
+    "errorClasses": ["InvalidTradingDateKeyError"],
+    "types": [
+      "TaiwanCalendarConfig",
+      "TaiwanTradingCalendarResult",
+      "TradingCalendarRebalanceEntry",
+      "TradingCalendarRebalanceSchedule",
+      "TradingCalendarCoverageSummary"
+    ]
+  },
+  "calendarBasisContract": {
+    "TAIWAN_TRADING_CALENDAR": "Uses built-in static holiday list + optional holidayOverrides. Excludes weekends. Includes specialTradingDayOverrides.",
+    "WEEKDAY_APPROXIMATION": "Fallback used by WalkForwardEngine when no tradingDates injected. Mon-Fri only, no holiday exclusion."
+  },
+  "lookbackContract": {
+    "maxLookbackDays": 500,
+    "dateKeyFormat": "YYYY-MM-DD",
+    "timezoneContract": "UTC (UTC-safe, locale-independent)",
+    "deterministicContract": "Same inputs always produce same output. No hidden state. No process.env dependencies."
+  },
+  "staticHolidayContract": {
+    "yearRange": "2024-2026",
+    "status": "APPROXIMATION_SKELETON",
+    "note": "Static holiday list is an observability approximation only. Authoritative data requires official TWSE calendar. Holiday list subject to annual maintenance.",
+    "holidayCount": 40
+  },
+  "walkForwardEngineIntegration": {
+    "addedField": "tradingDates?: string[]",
+    "addedTo": "WalkForwardConfig",
+    "calendarBasisField": "calendarBasis: 'TAIWAN_TRADING_CALENDAR' | 'WEEKDAY_APPROXIMATION'",
+    "addedTo2": "WalkForwardSkeletonOutput",
+    "backwardCompatible": true,
+    "existingTestsPreserved": "45/45 T-05B, 45/45 T-05C"
+  },
+  "safetyContract": {
+    "noDbWrite": true,
+    "noExternalApiCall": true,
+    "noLlmCall": true,
+    "noTradingClaims": true,
+    "noPerformanceClaims": true,
+    "noLegacyHypotheses": true,
+    "resolveCurrentDateUsed": true,
+    "noHardcodedTodayCap": true,
+    "observabilityOnly": true
+  }
+}

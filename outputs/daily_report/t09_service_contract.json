@@ -1,0 +1,37 @@
+{
+  "contract_id": "T09_SERVICE_CONTRACT",
+  "contract_date": "2026-05-06",
+  "generated_at": "2026-05-06T15:09:18.366429",
+  "service_file": "src/lib/marketRegimeResult.ts",
+  "function_name": "getLatestMarketRegimeContext",
+  "function_signature": "async (currentDate?: string) => Promise<RegimeContext>",
+  "default_current_date": "2026-05-06",
+  "freshness_rules": {
+    "FRESH": "lag <= 3 calendar days",
+    "STALE": "lag > 3 calendar days",
+    "MISSING": "no rows in DB or DB error",
+    "FUTURE_DATE_ERROR": "persisted date > currentDate"
+  },
+  "return_type_available": {
+    "isAvailable": true,
+    "date": "string",
+    "regimeLabel": "RegimeLabel",
+    "confidence": "number",
+    "taiexClose": "number | null",
+    "source": "string",
+    "version": "string",
+    "freshnessStatus": "FreshnessStatus",
+    "freshnessLagDays": "number",
+    "warning": "string | null"
+  },
+  "return_type_missing": {
+    "isAvailable": false,
+    "freshnessStatus": "MISSING",
+    "freshnessLagDays": -1,
+    "warning": "string"
+  },
+  "reads_from_table": "MarketRegimeResult",
+  "no_db_write": true,
+  "no_external_api": true,
+  "verdict": "PASS"
+}

@@ -1,0 +1,138 @@
+{
+  "program": "Stock Prediction System",
+  "task": "P3-14 Next-Gen Hypothesis Design Principles",
+  "generated_at": "2026-05-05T23:59:16.062680Z",
+  "version": "1.0",
+  "core_principles": [
+    {
+      "id": "P001",
+      "title": "No Pure Technical Indicator Rules",
+      "description": "Single OHLCV threshold rules are not sufficient. H001-H012 proved this. Every hypothesis needs structural economic rationale."
+    },
+    {
+      "id": "P002",
+      "title": "Stronger Prior Required",
+      "description": "At least one structural prior required per hypothesis.",
+      "valid_priors": [
+        "market_regime",
+        "sector_relative_strength",
+        "liquidity_regime",
+        "volatility_regime",
+        "event_context",
+        "institutional_flow",
+        "macro_index_regime",
+        "cross_sectional_ranking",
+        "risk_adjusted_relative_return"
+      ]
+    },
+    {
+      "id": "P003",
+      "title": "Economic Rationale First",
+      "description": "Write WHY the signal should exist before designing features. Rationale must be written before feature design."
+    },
+    {
+      "id": "P004",
+      "title": "PIT-Safe Feature Definition Required",
+      "description": "All features provably computable from information available at signal time. Enforced by point_in_time_guard."
+    },
+    {
+      "id": "P005",
+      "title": "Minimum Sample Size Defined Before Testing",
+      "description": "Minimum signals estimated upfront. If expected density x universe < 50 signals, hypothesis cannot be tested.",
+      "minimum_signals_for_promotion": 50
+    },
+    {
+      "id": "P006",
+      "title": "Required OOS Windows Specified",
+      "description": "Minimum OOS window 250 days. In-sample results cannot be used for promotion.",
+      "minimum_oos_window_days": 250
+    },
+    {
+      "id": "P007",
+      "title": "Permutation plus BH-FDR Required for Promotion",
+      "description": "Every hypothesis requires permutation test (>=500 shuffles) AND BH-FDR. Positive ROI alone is NOT edge.",
+      "minimum_permutations": 500,
+      "bh_fdr_alpha": 0.1
+    },
+    {
+      "id": "P008",
+      "title": "Retirement Rule Specified Upfront",
+      "description": "Each hypothesis defines retirement conditions before testing. If conditions met, retire regardless of partial positive results."
+    },
+    {
+      "id": "P009",
+      "title": "No Threshold Change From Results",
+      "description": "Thresholds set from economic rationale only, never from observed p-values. Enforced by hypothesis_refinement_guard."
+    },
+    {
+      "id": "P010",
+      "title": "Human Review Required Before Production",
+      "description": "No automated production promotion. human_review_required=true enforced in registry."
+    }
+  ],
+  "scoring_rubric": {
+    "description": "Hypothesis Quality Score 0-100. Minimum 70 required to enter validation.",
+    "minimum_to_proceed": 70,
+    "total_points": 100,
+    "dimensions": [
+      {
+        "name": "economic_rationale_strength",
+        "max_points": 20,
+        "description": "Clear testable economic rationale explaining why signal should exist"
+      },
+      {
+        "name": "feature_pit_safety",
+        "max_points": 20,
+        "description": "All features provably computable from data available at signal time"
+      },
+      {
+        "name": "universe_suitability",
+        "max_points": 15,
+        "description": "Eligible universe large enough for statistical testing"
+      },
+      {
+        "name": "expected_signal_density",
+        "max_points": 15,
+        "description": "How frequently signal is expected to occur"
+      },
+      {
+        "name": "testability_reproducibility",
+        "max_points": 15,
+        "description": "Can be reproduced by others with all parameters precisely defined"
+      },
+      {
+        "name": "overfitting_risk_control",
+        "max_points": 15,
+        "description": "Structural protections against overfitting"
+      }
+    ]
+  },
+  "required_hypothesis_fields": [
+    "hypothesis_id",
+    "name",
+    "economic_rationale",
+    "expected_failure_mode",
+    "stronger_prior",
+    "pit_safe_features",
+    "eligible_universe",
+    "minimum_sample_size",
+    "required_oos_windows",
+    "permutation_plan",
+    "bh_fdr_plan",
+    "retirement_rule",
+    "human_review_required",
+    "promotion_allowed",
+    "quality_score"
+  ],
+  "forbidden_actions": [
+    "Using single OHLCV threshold as entire hypothesis",
+    "Adjusting thresholds based on observed p-values",
+    "Promoting based on positive ROI alone",
+    "Skipping permutation test",
+    "Skipping BH-FDR correction",
+    "Adding hypothesis without quality_score >= 70",
+    "Auto-promoting without human review",
+    "Future data leakage",
+    "Random split without PIT enforcement"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "task": "P0-04",
+  "title": "Ops Report MarketRegime As-of Readiness",
+  "date": "2026-05-07",
+  "status": "COMPLETE",
+  "disclaimer": "research tool only — no auto trading — no precision prediction claim — no DB write — no external API — no LLM call — no strategy mutation — no regime logic mutation — no performance claim — no edge claim",
+  "opsRouteChanges": {
+    "file": "src/app/api/report/ops/route.ts",
+    "newBlock": "marketIndexAsOfReadiness",
+    "fields": [
+      "asOfDate",
+      "marketIndexFutureRowsDetected",
+      "marketIndexFutureRowsExcludedByGate",
+      "marketRegimeResultFutureRowsDetected",
+      "marketRegimeResultSourceDate",
+      "marketRegimeResultGateStatus",
+      "readinessStatus",
+      "gateNote"
+    ],
+    "marketIndexComparison": "MarketIndex.date (YYYYMMDD) vs asOfDb (YYYYMMDD) — lexicographic string comparison",
+    "marketRegimeResultComparison": "MarketRegimeResult.date (YYYY-MM-DD) vs asOfDate (YYYY-MM-DD) — string comparison",
+    "gateStatusValues": {
+      "PASS": "No future rows detected",
+      "WARN": "Future rows detected — gate active",
+      "WARN_FUTURE_EXCLUDED": "MarketRegimeResult has future sourceDate — excluded by gate",
+      "MISSING": "No MarketRegimeResult records found",
+      "UNAVAILABLE": "DB query failed"
+    }
+  },
+  "p003ReadinessPreserved": true,
+  "readOnly": true,
+  "noDBWrite": true
+}

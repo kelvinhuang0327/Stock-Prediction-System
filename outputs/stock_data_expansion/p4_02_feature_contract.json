@@ -1,0 +1,808 @@
+{
+  "program": "Stock Prediction System",
+  "task": "P4-02 PIT-Safe Feature Contract",
+  "generated_at": "2026-05-06T12:00:00Z",
+  "evidence_method": "Direct SQLite schema and row audit of prisma/dev.db",
+  "total_features": 31,
+  "feature_groups": {
+    "price_ohlcv": {
+      "count": 6,
+      "p4_03_ready": true
+    },
+    "market_regime": {
+      "count": 6,
+      "p4_03_ready": true
+    },
+    "industry_sector": {
+      "count": 4,
+      "p4_03_ready": true
+    },
+    "chip": {
+      "count": 5,
+      "p4_03_ready": false,
+      "note": "PROTOTYPE_ONLY 236 trading days"
+    },
+    "monthly_revenue": {
+      "count": 4,
+      "p4_03_ready": false,
+      "note": "INSUFFICIENT_HISTORY 2 months"
+    },
+    "financial_report": {
+      "count": 6,
+      "p4_03_ready": false,
+      "note": "LIMITED_COVERAGE 1 quarter"
+    }
+  },
+  "availability_summary": {
+    "READY": [
+      "daily_return",
+      "close_to_ma20",
+      "close_to_ma60",
+      "volume_ratio_20d",
+      "volatility_20d",
+      "volatility_60d",
+      "taiex_return_1d",
+      "taiex_return_20d",
+      "taiex_ma50",
+      "taiex_ma200",
+      "taiex_volatility_20d",
+      "market_breadth_proxy",
+      "industry_code",
+      "industry_name",
+      "sector_group",
+      "sector_index_return"
+    ],
+    "PROTOTYPE_ONLY": [
+      "foreign_net_buy",
+      "investment_trust_net_buy",
+      "dealer_net_buy",
+      "chip_net_buy_5d",
+      "chip_net_buy_20d"
+    ],
+    "LIMITED_COVERAGE": [
+      "revenue_mom",
+      "latest_revenue_available_asof",
+      "eps",
+      "gross_margin",
+      "operating_margin",
+      "latest_financial_report_asof"
+    ],
+    "INSUFFICIENT_HISTORY": [
+      "revenue_yoy",
+      "revenue_growth_trend_3m"
+    ],
+    "BLOCKED": [
+      "roe",
+      "debt_ratio"
+    ]
+  },
+  "pit_safety_summary": {
+    "PIT_SAFE": [
+      "daily_return",
+      "close_to_ma20",
+      "close_to_ma60",
+      "volume_ratio_20d",
+      "volatility_20d",
+      "volatility_60d",
+      "taiex_return_1d",
+      "taiex_return_20d",
+      "taiex_ma50",
+      "taiex_ma200",
+      "taiex_volatility_20d",
+      "market_breadth_proxy",
+      "industry_code",
+      "industry_name",
+      "sector_group",
+      "sector_index_return"
+    ],
+    "PIT_SAFE_WITH_ASOF_LAG": [
+      "foreign_net_buy",
+      "investment_trust_net_buy",
+      "dealer_net_buy",
+      "chip_net_buy_5d",
+      "chip_net_buy_20d",
+      "revenue_yoy",
+      "revenue_mom",
+      "revenue_growth_trend_3m",
+      "latest_revenue_available_asof",
+      "eps",
+      "gross_margin",
+      "operating_margin",
+      "latest_financial_report_asof"
+    ],
+    "NOT_PIT_SAFE": [],
+    "UNKNOWN_REQUIRES_REVIEW": [
+      "roe",
+      "debt_ratio"
+    ]
+  },
+  "recommended_usage_summary": {
+    "P4_03_READY": [
+      "daily_return",
+      "close_to_ma20",
+      "close_to_ma60",
+      "volume_ratio_20d",
+      "volatility_20d",
+      "volatility_60d",
+      "taiex_return_1d",
+      "taiex_return_20d",
+      "taiex_ma50",
+      "taiex_ma200",
+      "taiex_volatility_20d",
+      "market_breadth_proxy",
+      "industry_code",
+      "industry_name",
+      "sector_group",
+      "sector_index_return"
+    ],
+    "PORTFOLIO_WALKFORWARD_READY": [],
+    "PROTOTYPE_ONLY": [
+      "foreign_net_buy",
+      "investment_trust_net_buy",
+      "dealer_net_buy",
+      "chip_net_buy_5d",
+      "chip_net_buy_20d",
+      "latest_revenue_available_asof",
+      "eps",
+      "latest_financial_report_asof"
+    ],
+    "DEFER": [
+      "revenue_yoy",
+      "revenue_mom",
+      "revenue_growth_trend_3m",
+      "gross_margin",
+      "operating_margin"
+    ],
+    "DO_NOT_USE": [
+      "roe",
+      "debt_ratio"
+    ]
+  },
+  "features": [
+    {
+      "group": "price_ohlcv",
+      "feature_name": "daily_return",
+      "source_table": "StockQuote",
+      "source_columns": [
+        "close"
+      ],
+      "required_join_keys": [
+        "stockId",
+        "date"
+      ],
+      "lookback_window": "2 days",
+      "asof_rule": "close WHERE date<=asof_date; prior close T-1",
+      "PIT_safety_status": "PIT_SAFE",
+      "availability_status": "READY",
+      "min_required_history": "2 trading days",
+      "current_available_history": "185 symbols 500+ days",
+      "blocker": "None",
+      "recommended_usage": "P4_03_READY"
+    },
+    {
+      "group": "price_ohlcv",
+      "feature_name": "close_to_ma20",
+      "source_table": "StockQuote",
+      "source_columns": [
+        "close"
+      ],
+      "required_join_keys": [
+        "stockId",
+        "date"
+      ],
+      "lookback_window": "20 trading days",
+      "asof_rule": "Only rows WHERE date<=asof_date",
+      "PIT_safety_status": "PIT_SAFE",
+      "availability_status": "READY",
+      "min_required_history": "20 trading days",
+      "current_available_history": "245 symbols 200+ days",
+      "blocker": "None",
+      "recommended_usage": "P4_03_READY"
+    },
+    {
+      "group": "price_ohlcv",
+      "feature_name": "close_to_ma60",
+      "source_table": "StockQuote",
+      "source_columns": [
+        "close"
+      ],
+      "required_join_keys": [
+        "stockId",
+        "date"
+      ],
+      "lookback_window": "60 trading days",
+      "asof_rule": "Only rows WHERE date<=asof_date",
+      "PIT_safety_status": "PIT_SAFE",
+      "availability_status": "READY",
+      "min_required_history": "60 trading days",
+      "current_available_history": "245 symbols 200+ days",
+      "blocker": "None",
+      "recommended_usage": "P4_03_READY"
+    },
+    {
+      "group": "price_ohlcv",
+      "feature_name": "volume_ratio_20d",
+      "source_table": "StockQuote",
+      "source_columns": [
+        "volume"
+      ],
+      "required_join_keys": [
+        "stockId",
+        "date"
+      ],
+      "lookback_window": "20 trading days",
+      "asof_rule": "current volume / mean(volume, prior 20 days) WHERE date<=asof_date",
+      "PIT_safety_status": "PIT_SAFE",
+      "availability_status": "READY",
+      "min_required_history": "20 trading days",
+      "current_available_history": "245 symbols 200+ days",
+      "blocker": "None",
+      "recommended_usage": "P4_03_READY"
+    },
+    {
+      "group": "price_ohlcv",
+      "feature_name": "volatility_20d",
+      "source_table": "StockQuote",
+      "source_columns": [
+        "close"
+      ],
+      "required_join_keys": [
+        "stockId",
+        "date"
+      ],
+      "lookback_window": "20 trading days",
+      "asof_rule": "std(daily_return, prior 20 days) WHERE date<=asof_date",
+      "PIT_safety_status": "PIT_SAFE",
+      "availability_status": "READY",
+      "min_required_history": "20 trading days",
+      "current_available_history": "245 symbols 200+ days",
+      "blocker": "None",
+      "recommended_usage": "P4_03_READY"
+    },
+    {
+      "group": "price_ohlcv",
+      "feature_name": "volatility_60d",
+      "source_table": "StockQuote",
+      "source_columns": [
+        "close"
+      ],
+      "required_join_keys": [
+        "stockId",
+        "date"
+      ],
+      "lookback_window": "60 trading days",
+      "asof_rule": "std(daily_return, prior 60 days) WHERE date<=asof_date",
+      "PIT_safety_status": "PIT_SAFE",
+      "availability_status": "READY",
+      "min_required_history": "60 trading days",
+      "current_available_history": "245 symbols 200+ days",
+      "blocker": "None",
+      "recommended_usage": "P4_03_READY"
+    },
+    {
+      "group": "market_regime",
+      "feature_name": "taiex_return_1d",
+      "source_table": "MarketIndex",
+      "source_columns": [
+        "value"
+      ],
+      "required_join_keys": [
+        "date",
+        "name=TAIEX"
+      ],
+      "lookback_window": "2 days",
+      "asof_rule": "Only TAIEX WHERE date<=asof_date. If missing null.",
+      "PIT_safety_status": "PIT_SAFE",
+      "availability_status": "READY",
+      "min_required_history": "2 trading days",
+      "current_available_history": "766 TAIEX days",
+      "blocker": "None",
+      "recommended_usage": "P4_03_READY"
+    },
+    {
+      "group": "market_regime",
+      "feature_name": "taiex_return_20d",
+      "source_table": "MarketIndex",
+      "source_columns": [
+        "value"
+      ],
+      "required_join_keys": [
+        "date",
+        "name=TAIEX"
+      ],
+      "lookback_window": "20 trading days",
+      "asof_rule": "Only TAIEX WHERE date<=asof_date",
+      "PIT_safety_status": "PIT_SAFE",
+      "availability_status": "READY",
+      "min_required_history": "20 trading days",
+      "current_available_history": "766 TAIEX days",
+      "blocker": "None",
+      "recommended_usage": "P4_03_READY"
+    },
+    {
+      "group": "market_regime",
+      "feature_name": "taiex_ma50",
+      "source_table": "MarketIndex",
+      "source_columns": [
+        "value"
+      ],
+      "required_join_keys": [
+        "date",
+        "name=TAIEX"
+      ],
+      "lookback_window": "50 trading days",
+      "asof_rule": "mean(TAIEX value, prior 50 days WHERE date<=asof_date)",
+      "PIT_safety_status": "PIT_SAFE",
+      "availability_status": "READY",
+      "min_required_history": "50 trading days",
+      "current_available_history": "766 TAIEX days",
+      "blocker": "None",
+      "recommended_usage": "P4_03_READY"
+    },
+    {
+      "group": "market_regime",
+      "feature_name": "taiex_ma200",
+      "source_table": "MarketIndex",
+      "source_columns": [
+        "value"
+      ],
+      "required_join_keys": [
+        "date",
+        "name=TAIEX"
+      ],
+      "lookback_window": "200 trading days",
+      "asof_rule": "mean(TAIEX value, prior 200 days WHERE date<=asof_date)",
+      "PIT_safety_status": "PIT_SAFE",
+      "availability_status": "READY",
+      "min_required_history": "200 trading days",
+      "current_available_history": "766 TAIEX days",
+      "blocker": "None",
+      "recommended_usage": "P4_03_READY"
+    },
+    {
+      "group": "market_regime",
+      "feature_name": "taiex_volatility_20d",
+      "source_table": "MarketIndex",
+      "source_columns": [
+        "value"
+      ],
+      "required_join_keys": [
+        "date",
+        "name=TAIEX"
+      ],
+      "lookback_window": "20 trading days",
+      "asof_rule": "std(TAIEX daily_return, prior 20 days WHERE date<=asof_date)",
+      "PIT_safety_status": "PIT_SAFE",
+      "availability_status": "READY",
+      "min_required_history": "20 trading days",
+      "current_available_history": "766 TAIEX days",
+      "blocker": "None",
+      "recommended_usage": "P4_03_READY"
+    },
+    {
+      "group": "market_regime",
+      "feature_name": "market_breadth_proxy",
+      "source_table": "StockQuote",
+      "source_columns": [
+        "close",
+        "change"
+      ],
+      "required_join_keys": [
+        "date"
+      ],
+      "lookback_window": "1 trading day",
+      "asof_rule": "count(change>0)/count(total stocks on date) WHERE date=asof_date",
+      "PIT_safety_status": "PIT_SAFE",
+      "availability_status": "READY",
+      "min_required_history": "1 trading day",
+      "current_available_history": "803 distinct trading days",
+      "blocker": "None",
+      "recommended_usage": "P4_03_READY"
+    },
+    {
+      "group": "industry_sector",
+      "feature_name": "industry_code",
+      "source_table": "Stock",
+      "source_columns": [
+        "industry"
+      ],
+      "required_join_keys": [
+        "stockId"
+      ],
+      "lookback_window": "static",
+      "asof_rule": "Lookup Stock.industry by stockId. No time dependency.",
+      "PIT_safety_status": "PIT_SAFE",
+      "availability_status": "READY",
+      "min_required_history": "none",
+      "current_available_history": "1084 of 1358 stocks (79.8%)",
+      "blocker": "274 stocks without industry code",
+      "recommended_usage": "P4_03_READY"
+    },
+    {
+      "group": "industry_sector",
+      "feature_name": "industry_name",
+      "source_table": "Stock",
+      "source_columns": [
+        "industry"
+      ],
+      "required_join_keys": [
+        "stockId"
+      ],
+      "lookback_window": "static",
+      "asof_rule": "Map Stock.industry code to Chinese name via heuristic table (TWSE code 01-38, 91).",
+      "PIT_safety_status": "PIT_SAFE",
+      "availability_status": "READY",
+      "min_required_history": "none",
+      "current_available_history": "33 codes mapped; 1084 stocks covered",
+      "blocker": "Not official TWSE crosswalk - heuristic only",
+      "recommended_usage": "P4_03_READY"
+    },
+    {
+      "group": "industry_sector",
+      "feature_name": "sector_group",
+      "source_table": "Stock",
+      "source_columns": [
+        "industry"
+      ],
+      "required_join_keys": [
+        "stockId"
+      ],
+      "lookback_window": "static",
+      "asof_rule": "Map industry code to GICS-like sector group (11 groups).",
+      "PIT_safety_status": "PIT_SAFE",
+      "availability_status": "READY",
+      "min_required_history": "none",
+      "current_available_history": "33 codes to 11 sector groups",
+      "blocker": "Not official GICS - approximation",
+      "recommended_usage": "P4_03_READY"
+    },
+    {
+      "group": "industry_sector",
+      "feature_name": "sector_index_return",
+      "source_table": "MarketIndex",
+      "source_columns": [
+        "name",
+        "date",
+        "value",
+        "changePercent"
+      ],
+      "required_join_keys": [
+        "date",
+        "name matches sector pattern"
+      ],
+      "lookback_window": "1 trading day",
+      "asof_rule": "Join Stock.industry to MarketIndex sector name pattern. WHERE date<=asof_date.",
+      "PIT_safety_status": "PIT_SAFE",
+      "availability_status": "READY",
+      "min_required_history": "1 trading day",
+      "current_available_history": "75 sector indices in MarketIndex",
+      "blocker": "String-pattern join - not official crosswalk",
+      "recommended_usage": "P4_03_READY"
+    },
+    {
+      "group": "chip",
+      "feature_name": "foreign_net_buy",
+      "source_table": "InstitutionalChip",
+      "source_columns": [
+        "foreignBuy"
+      ],
+      "required_join_keys": [
+        "stockId",
+        "date"
+      ],
+      "lookback_window": "1 trading day",
+      "asof_rule": "date <= asof_date-1day (T+1 release rule). foreignBuy is NET (negative=selling).",
+      "PIT_safety_status": "PIT_SAFE_WITH_ASOF_LAG",
+      "availability_status": "PROTOTYPE_ONLY",
+      "min_required_history": "500 trading days for production",
+      "current_available_history": "236 trading days",
+      "blocker": "Only 236 days. PROTOTYPE_ONLY.",
+      "recommended_usage": "PROTOTYPE_ONLY"
+    },
+    {
+      "group": "chip",
+      "feature_name": "investment_trust_net_buy",
+      "source_table": "InstitutionalChip",
+      "source_columns": [
+        "trustBuy"
+      ],
+      "required_join_keys": [
+        "stockId",
+        "date"
+      ],
+      "lookback_window": "1 trading day",
+      "asof_rule": "date <= asof_date-1day (T+1 release rule). trustBuy is NET.",
+      "PIT_safety_status": "PIT_SAFE_WITH_ASOF_LAG",
+      "availability_status": "PROTOTYPE_ONLY",
+      "min_required_history": "500 trading days for production",
+      "current_available_history": "236 trading days",
+      "blocker": "Only 236 days. PROTOTYPE_ONLY.",
+      "recommended_usage": "PROTOTYPE_ONLY"
+    },
+    {
+      "group": "chip",
+      "feature_name": "dealer_net_buy",
+      "source_table": "InstitutionalChip",
+      "source_columns": [
+        "dealerBuy"
+      ],
+      "required_join_keys": [
+        "stockId",
+        "date"
+      ],
+      "lookback_window": "1 trading day",
+      "asof_rule": "date <= asof_date-1day (T+1 release rule). dealerBuy is NET.",
+      "PIT_safety_status": "PIT_SAFE_WITH_ASOF_LAG",
+      "availability_status": "PROTOTYPE_ONLY",
+      "min_required_history": "500 trading days for production",
+      "current_available_history": "236 trading days",
+      "blocker": "Only 236 days. PROTOTYPE_ONLY.",
+      "recommended_usage": "PROTOTYPE_ONLY"
+    },
+    {
+      "group": "chip",
+      "feature_name": "chip_net_buy_5d",
+      "source_table": "InstitutionalChip",
+      "source_columns": [
+        "foreignBuy",
+        "trustBuy",
+        "dealerBuy"
+      ],
+      "required_join_keys": [
+        "stockId",
+        "date"
+      ],
+      "lookback_window": "5 trading days",
+      "asof_rule": "sum(all net buys, prior 5 days WHERE date<=asof_date-1day)",
+      "PIT_safety_status": "PIT_SAFE_WITH_ASOF_LAG",
+      "availability_status": "PROTOTYPE_ONLY",
+      "min_required_history": "500 trading days for production",
+      "current_available_history": "236 trading days",
+      "blocker": "Only 236 days. PROTOTYPE_ONLY.",
+      "recommended_usage": "PROTOTYPE_ONLY"
+    },
+    {
+      "group": "chip",
+      "feature_name": "chip_net_buy_20d",
+      "source_table": "InstitutionalChip",
+      "source_columns": [
+        "foreignBuy",
+        "trustBuy",
+        "dealerBuy"
+      ],
+      "required_join_keys": [
+        "stockId",
+        "date"
+      ],
+      "lookback_window": "20 trading days",
+      "asof_rule": "sum(all net buys, prior 20 days WHERE date<=asof_date-1day)",
+      "PIT_safety_status": "PIT_SAFE_WITH_ASOF_LAG",
+      "availability_status": "PROTOTYPE_ONLY",
+      "min_required_history": "500 trading days for production",
+      "current_available_history": "236 trading days",
+      "blocker": "Only 236 days. PROTOTYPE_ONLY.",
+      "recommended_usage": "PROTOTYPE_ONLY"
+    },
+    {
+      "group": "monthly_revenue",
+      "feature_name": "revenue_yoy",
+      "source_table": "MonthlyRevenue",
+      "source_columns": [
+        "year",
+        "month",
+        "yoyGrowth"
+      ],
+      "required_join_keys": [
+        "stockId",
+        "year",
+        "month"
+      ],
+      "lookback_window": "13 months",
+      "asof_rule": "Available asof (year, month+1, day 15). Conservative lag. Pre-computed yoyGrowth field.",
+      "PIT_safety_status": "PIT_SAFE_WITH_ASOF_LAG",
+      "availability_status": "INSUFFICIENT_HISTORY",
+      "min_required_history": "13 months minimum",
+      "current_available_history": "2 months only (2026-02, 2026-03)",
+      "blocker": "Need 13 months minimum. Only 2 available.",
+      "recommended_usage": "DEFER"
+    },
+    {
+      "group": "monthly_revenue",
+      "feature_name": "revenue_mom",
+      "source_table": "MonthlyRevenue",
+      "source_columns": [
+        "year",
+        "month",
+        "momGrowth"
+      ],
+      "required_join_keys": [
+        "stockId",
+        "year",
+        "month"
+      ],
+      "lookback_window": "2 months",
+      "asof_rule": "Available asof (year, month+1, day 15). Pre-computed momGrowth field.",
+      "PIT_safety_status": "PIT_SAFE_WITH_ASOF_LAG",
+      "availability_status": "LIMITED_COVERAGE",
+      "min_required_history": "2 months",
+      "current_available_history": "2 months only",
+      "blocker": "Computable but insufficient for validation.",
+      "recommended_usage": "DEFER"
+    },
+    {
+      "group": "monthly_revenue",
+      "feature_name": "revenue_growth_trend_3m",
+      "source_table": "MonthlyRevenue",
+      "source_columns": [
+        "year",
+        "month",
+        "revenue"
+      ],
+      "required_join_keys": [
+        "stockId",
+        "year",
+        "month"
+      ],
+      "lookback_window": "3 months",
+      "asof_rule": "Use only months where available_date = (month+1, 15) <= asof_date.",
+      "PIT_safety_status": "PIT_SAFE_WITH_ASOF_LAG",
+      "availability_status": "INSUFFICIENT_HISTORY",
+      "min_required_history": "3 months",
+      "current_available_history": "2 months only",
+      "blocker": "Need 3 months minimum.",
+      "recommended_usage": "DEFER"
+    },
+    {
+      "group": "monthly_revenue",
+      "feature_name": "latest_revenue_available_asof",
+      "source_table": "MonthlyRevenue",
+      "source_columns": [
+        "year",
+        "month",
+        "revenue"
+      ],
+      "required_join_keys": [
+        "stockId"
+      ],
+      "lookback_window": "latest available with lag",
+      "asof_rule": "max(year,month) WHERE available_date<=asof_date. available_date=(month+1, day 15).",
+      "PIT_safety_status": "PIT_SAFE_WITH_ASOF_LAG",
+      "availability_status": "LIMITED_COVERAGE",
+      "min_required_history": "1 month",
+      "current_available_history": "2026-03 available asof 2026-04-15",
+      "blocker": "Limited to 2 months.",
+      "recommended_usage": "PROTOTYPE_ONLY"
+    },
+    {
+      "group": "financial_report",
+      "feature_name": "eps",
+      "source_table": "FinancialReport",
+      "source_columns": [
+        "year",
+        "quarter",
+        "eps"
+      ],
+      "required_join_keys": [
+        "stockId",
+        "year",
+        "quarter"
+      ],
+      "lookback_window": "1 quarter",
+      "asof_rule": "Q4 available March 31 next year; Q1 May 15; Q2 Aug 14; Q3 Nov 14.",
+      "PIT_safety_status": "PIT_SAFE_WITH_ASOF_LAG",
+      "availability_status": "LIMITED_COVERAGE",
+      "min_required_history": "8 quarters for trend",
+      "current_available_history": "2025-Q4 only (1 quarter)",
+      "blocker": "Only 2025-Q4. Cannot compute trend.",
+      "recommended_usage": "PROTOTYPE_ONLY"
+    },
+    {
+      "group": "financial_report",
+      "feature_name": "gross_margin",
+      "source_table": "FinancialReport",
+      "source_columns": [
+        "year",
+        "quarter",
+        "grossMargin"
+      ],
+      "required_join_keys": [
+        "stockId",
+        "year",
+        "quarter"
+      ],
+      "lookback_window": "1 quarter",
+      "asof_rule": "Same as eps asof lag rule.",
+      "PIT_safety_status": "PIT_SAFE_WITH_ASOF_LAG",
+      "availability_status": "LIMITED_COVERAGE",
+      "min_required_history": "4 quarters for trend",
+      "current_available_history": "2025-Q4 only; grossMargin is NULL in sample",
+      "blocker": "grossMargin appears NULL in current data.",
+      "recommended_usage": "DEFER"
+    },
+    {
+      "group": "financial_report",
+      "feature_name": "operating_margin",
+      "source_table": "FinancialReport",
+      "source_columns": [
+        "year",
+        "quarter",
+        "operatingMargin"
+      ],
+      "required_join_keys": [
+        "stockId",
+        "year",
+        "quarter"
+      ],
+      "lookback_window": "1 quarter",
+      "asof_rule": "Same as eps asof lag rule.",
+      "PIT_safety_status": "PIT_SAFE_WITH_ASOF_LAG",
+      "availability_status": "LIMITED_COVERAGE",
+      "min_required_history": "4 quarters for trend",
+      "current_available_history": "2025-Q4 only; operatingMargin is NULL in sample",
+      "blocker": "operatingMargin appears NULL in current data.",
+      "recommended_usage": "DEFER"
+    },
+    {
+      "group": "financial_report",
+      "feature_name": "roe",
+      "source_table": "FinancialReport",
+      "source_columns": [
+        "netIncome"
+      ],
+      "required_join_keys": [
+        "stockId",
+        "year",
+        "quarter"
+      ],
+      "lookback_window": "1 quarter",
+      "asof_rule": "Requires equity field not in schema. ROE = netIncome / equity.",
+      "PIT_safety_status": "UNKNOWN_REQUIRES_REVIEW",
+      "availability_status": "BLOCKED",
+      "min_required_history": "4 quarters",
+      "current_available_history": "Schema missing equity field",
+      "blocker": "No equity column in FinancialReport schema.",
+      "recommended_usage": "DO_NOT_USE"
+    },
+    {
+      "group": "financial_report",
+      "feature_name": "debt_ratio",
+      "source_table": "FinancialReport",
+      "source_columns": [],
+      "required_join_keys": [
+        "stockId",
+        "year",
+        "quarter"
+      ],
+      "lookback_window": "1 quarter",
+      "asof_rule": "Requires total_assets and total_debt - not in schema.",
+      "PIT_safety_status": "UNKNOWN_REQUIRES_REVIEW",
+      "availability_status": "BLOCKED",
+      "min_required_history": "4 quarters",
+      "current_available_history": "Schema missing balance sheet fields",
+      "blocker": "No balance sheet data in schema.",
+      "recommended_usage": "DO_NOT_USE"
+    },
+    {
+      "group": "financial_report",
+      "feature_name": "latest_financial_report_asof",
+      "source_table": "FinancialReport",
+      "source_columns": [
+        "year",
+        "quarter",
+        "eps",
+        "netIncome"
+      ],
+      "required_join_keys": [
+        "stockId"
+      ],
+      "lookback_window": "latest available with lag",
+      "asof_rule": "max(year,quarter) WHERE announcement_date<=asof_date using conservative schedule.",
+      "PIT_safety_status": "PIT_SAFE_WITH_ASOF_LAG",
+      "availability_status": "LIMITED_COVERAGE",
+      "min_required_history": "1 quarter",
+      "current_available_history": "2025-Q4 available asof 2026-03-31",
+      "blocker": "Only 1 quarter. Lookup only.",
+      "recommended_usage": "PROTOTYPE_ONLY"
+    }
+  ]
+}

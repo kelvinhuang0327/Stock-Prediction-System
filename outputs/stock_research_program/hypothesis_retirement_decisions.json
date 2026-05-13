@@ -1,0 +1,218 @@
+{
+  "program": "Stock Prediction System",
+  "task": "P3-14 Hypothesis Retirement Decisions",
+  "generated_at": "2026-05-05T23:59:16.062680Z",
+  "decisions": [
+    {
+      "hypothesis_id": "H001",
+      "name": "Simple Momentum Breakout",
+      "decision": "RETIRE",
+      "evidence_source": [
+        "P3-07 negative ROI across symbols",
+        "P3-09 diagnostics"
+      ],
+      "final_reason": "NEGATIVE_ROI across multiple symbols in real data. No positive signal direction.",
+      "allowed_future_use": "none",
+      "promotion_allowed": false,
+      "can_be_refined_again": false,
+      "refinement_lineage": [
+        "H001 failed, refined into H005 which also failed"
+      ]
+    },
+    {
+      "hypothesis_id": "H002",
+      "name": "Volume Spike Reversal",
+      "decision": "OBSERVATION_ONLY",
+      "evidence_source": [
+        "P3-09: local symbol effect on 2317 only"
+      ],
+      "final_reason": "LOCAL_SYMBOL_EFFECT only on 2317. High data snooping risk. Not generalizable.",
+      "allowed_future_use": "observation_only_on_previously_identified_symbols",
+      "promotion_allowed": false,
+      "can_be_refined_again": false,
+      "refinement_lineage": []
+    },
+    {
+      "hypothesis_id": "H003",
+      "name": "Volume Breakout Trend Follow",
+      "decision": "NEEDS_NEW_DATA",
+      "evidence_source": [
+        "P3-07: data insufficient",
+        "P3-09: weak volume breakout signal"
+      ],
+      "final_reason": "Volume breakout requires reliable volume regime context. Institutional flow data could provide stronger prior.",
+      "allowed_future_use": "candidate_for_redesign_with_institutional_flow_in_p4",
+      "promotion_allowed": false,
+      "can_be_refined_again": false,
+      "refinement_lineage": []
+    },
+    {
+      "hypothesis_id": "H004",
+      "name": "Crossover Momentum V2",
+      "decision": "ARCHIVE_NO_EDGE",
+      "evidence_source": [
+        "P3-08 no edge",
+        "P3-10 refined to H010",
+        "P3-13 H010 REJECTED on 50 symbols"
+      ],
+      "final_reason": "Refined successor H010 also failed in expanded validation.",
+      "allowed_future_use": "none",
+      "promotion_allowed": false,
+      "can_be_refined_again": false,
+      "refinement_lineage": [
+        "H004 -> H010 (P3-10) -> REJECTED (P3-13)"
+      ]
+    },
+    {
+      "hypothesis_id": "H005",
+      "name": "Pullback in Uptrend V2",
+      "decision": "ARCHIVE_NO_EDGE",
+      "evidence_source": [
+        "P3-08 no edge",
+        "P3-10 refined to H009",
+        "P3-13 H009 REJECTED on 50 symbols"
+      ],
+      "final_reason": "Refined successor H009 also failed in expanded validation.",
+      "allowed_future_use": "none",
+      "promotion_allowed": false,
+      "can_be_refined_again": false,
+      "refinement_lineage": [
+        "H005 -> H009 (P3-10) -> REJECTED (P3-13)"
+      ]
+    },
+    {
+      "hypothesis_id": "H006",
+      "name": "Near Breakout Low Volatility V2",
+      "decision": "ARCHIVE_NO_EDGE",
+      "evidence_source": [
+        "P3-08 no edge",
+        "P3-10 refined to H011",
+        "P3-13 H011 REJECTED on 50 symbols"
+      ],
+      "final_reason": "Refined successor H011 also failed in expanded validation.",
+      "allowed_future_use": "none",
+      "promotion_allowed": false,
+      "can_be_refined_again": false,
+      "refinement_lineage": [
+        "H006 -> H011 (P3-10) -> REJECTED (P3-13)"
+      ]
+    },
+    {
+      "hypothesis_id": "H007",
+      "name": "Relative Universe Strength V2",
+      "decision": "NEEDS_NEW_DATA",
+      "evidence_source": [
+        "P3-08: universe-relative features not reliably computable with OHLCV only"
+      ],
+      "final_reason": "Universe-relative framework requires cross-sectional data with sector/industry metadata. Current DB industry field is mostly empty.",
+      "allowed_future_use": "candidate_for_redesign_in_p4_cross_sectional_framework",
+      "promotion_allowed": false,
+      "can_be_refined_again": false,
+      "refinement_lineage": []
+    },
+    {
+      "hypothesis_id": "H008",
+      "name": "ETF Sector Rotation V2",
+      "decision": "NEEDS_NEW_DATA",
+      "evidence_source": [
+        "P3-12: ETF universe only 6 symbols with ge500 rows"
+      ],
+      "final_reason": "ETF universe too small. 6 ETF-like symbols with sufficient history. Test is underpowered.",
+      "allowed_future_use": "candidate_for_redesign_when_sector_index_data_available",
+      "promotion_allowed": false,
+      "can_be_refined_again": false,
+      "refinement_lineage": []
+    },
+    {
+      "hypothesis_id": "H009",
+      "name": "Pullback Uptrend 10D Hold",
+      "decision": "ARCHIVE_NO_EDGE",
+      "evidence_source": [
+        "P3-11: 0/32 BH-FDR pass",
+        "P3-13: 0/50 primary BH-FDR pass on 50 symbols, avg p=1.000"
+      ],
+      "final_reason": "EXPANDED_UNIVERSE_VALIDATION_NO_EDGE. Primary permutation p=1.000 across all 50 symbols.",
+      "allowed_future_use": "none",
+      "promotion_allowed": false,
+      "can_be_refined_again": false,
+      "refinement_lineage": [
+        "H005 -> H009 (P3-10) -> REJECTED (P3-13)"
+      ]
+    },
+    {
+      "hypothesis_id": "H010",
+      "name": "Momentum Plus Moderate Volume",
+      "decision": "ARCHIVE_NO_EDGE",
+      "evidence_source": [
+        "P3-11: 0/32 BH-FDR pass",
+        "P3-13: 0/50 primary BH-FDR pass on 50 symbols, avg p=1.000"
+      ],
+      "final_reason": "EXPANDED_UNIVERSE_VALIDATION_NO_EDGE. Primary permutation p=1.000 across all 50 symbols.",
+      "allowed_future_use": "none",
+      "promotion_allowed": false,
+      "can_be_refined_again": false,
+      "refinement_lineage": [
+        "H004 -> H010 (P3-10) -> REJECTED (P3-13)"
+      ]
+    },
+    {
+      "hypothesis_id": "H011",
+      "name": "Near Breakout Low Volatility",
+      "decision": "ARCHIVE_NO_EDGE",
+      "evidence_source": [
+        "P3-11: 0/32 BH-FDR pass",
+        "P3-13: 0/50 primary BH-FDR pass on 50 symbols, avg p=1.000"
+      ],
+      "final_reason": "EXPANDED_UNIVERSE_VALIDATION_NO_EDGE. Primary permutation p=1.000 across all 50 symbols.",
+      "allowed_future_use": "none",
+      "promotion_allowed": false,
+      "can_be_refined_again": false,
+      "refinement_lineage": [
+        "H006 -> H011 (P3-10) -> REJECTED (P3-13)"
+      ]
+    },
+    {
+      "hypothesis_id": "H012",
+      "name": "RSI Reversion Symbol-Specific Probe",
+      "decision": "OBSERVATION_ONLY",
+      "evidence_source": [
+        "P3-10: permanently scoped as exploratory_observation_only",
+        "P3-11 and P3-13: never eligible for promotion"
+      ],
+      "final_reason": "PERMANENTLY_OBSERVATION_ONLY. Symbol-specific probe (2317 only). Hard-locked by hypothesis_refinement_guard.",
+      "allowed_future_use": "observation_only_on_2317_specific_context",
+      "promotion_allowed": false,
+      "can_be_refined_again": false,
+      "refinement_lineage": []
+    }
+  ],
+  "summary": {
+    "total_hypotheses": 12,
+    "by_decision": {
+      "RETIRE": [
+        "H001"
+      ],
+      "ARCHIVE_NO_EDGE": [
+        "H004",
+        "H005",
+        "H006",
+        "H009",
+        "H010",
+        "H011"
+      ],
+      "OBSERVATION_ONLY": [
+        "H002",
+        "H012"
+      ],
+      "NEEDS_NEW_DATA": [
+        "H003",
+        "H007",
+        "H008"
+      ],
+      "KEEP_AS_BASELINE": [],
+      "DO_NOT_REFINE_FURTHER": []
+    },
+    "promotion_allowed_count": 0,
+    "can_be_refined_count": 0
+  }
+}

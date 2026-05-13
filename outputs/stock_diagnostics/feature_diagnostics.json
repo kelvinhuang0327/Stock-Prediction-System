@@ -1,0 +1,87 @@
+{
+  "generated_at": "2026-05-05T09:58:35Z",
+  "batch_date": "20260501",
+  "feature_diagnostics": [
+    {
+      "feature_key": "volume_zscore_20d",
+      "related_hypothesis": "STOCK_H004_MOM_VOL_CONFIRM",
+      "condition": "volume_zscore_20d > 1.0",
+      "description": "Volume z-score > 1.0 filter (1-sigma above mean volume)",
+      "potential_issue": "Only ~16% of days exceed +1σ in normal distribution; ETFs with stable volume may rarely trigger",
+      "avg_signals_per_window": 51.5,
+      "max_signals": 53,
+      "min_signals": 50,
+      "trigger_rate_500d": 0.103,
+      "ok_windows": 2,
+      "data_insufficient_windows": 2,
+      "diagnosed_issues": [
+        "ADEQUATE_TRIGGERS_BUT_NO_EDGE"
+      ]
+    },
+    {
+      "feature_key": "breakout_20d_high",
+      "related_hypothesis": "STOCK_H006_LOW_VOL_BREAKOUT",
+      "condition": "close > max(high[-20:]) AND volatility_20d <= p25(volatility_20d)",
+      "description": "Simultaneous low-vol AND 20d breakout — dual filter",
+      "potential_issue": "Low-vol periods rarely coincide with fresh 20d highs; Taiwan ETFs have smooth price curves",
+      "avg_signals_per_window": 24.0,
+      "max_signals": 27,
+      "min_signals": 21,
+      "trigger_rate_500d": 0.048,
+      "ok_windows": 2,
+      "data_insufficient_windows": 2,
+      "diagnosed_issues": [
+        "STRICT_FILTER_OVER_PRUNING"
+      ]
+    },
+    {
+      "feature_key": "universe_relative_strength",
+      "related_hypothesis": "STOCK_H007_RELATIVE_STRENGTH",
+      "condition": "return_20d > universe_median_return_20d",
+      "description": "Requires multi-symbol universe data on same date",
+      "potential_issue": "Single-symbol validation cannot compute universe median → DATA_INSUFFICIENT for all windows",
+      "avg_signals_per_window": 0,
+      "max_signals": 0,
+      "min_signals": 0,
+      "trigger_rate_500d": 0.0,
+      "ok_windows": 0,
+      "data_insufficient_windows": 4,
+      "diagnosed_issues": [
+        "ALL_WINDOWS_DATA_INSUFFICIENT",
+        "REQUIRES_MULTI_SYMBOL_UNIVERSE"
+      ]
+    },
+    {
+      "feature_key": "pullback_rule",
+      "related_hypothesis": "STOCK_H005_PULLBACK_UPTREND",
+      "condition": "close > ma60 AND return_5d < 0 AND return_20d > 0",
+      "description": "Triple-condition pullback filter",
+      "potential_issue": "Three simultaneous conditions may over-filter; ETFs often lack clear 60d trend + pullback combo",
+      "avg_signals_per_window": 60.7,
+      "max_signals": 87,
+      "min_signals": 21,
+      "trigger_rate_500d": 0.1213,
+      "ok_windows": 3,
+      "data_insufficient_windows": 1,
+      "diagnosed_issues": [
+        "ADEQUATE_TRIGGERS_BUT_NO_EDGE"
+      ]
+    },
+    {
+      "feature_key": "etf_defensive_momentum",
+      "related_hypothesis": "STOCK_H008_ETF_DEF_MOMENTUM",
+      "condition": "is_etf AND return_20d > 0 AND drawdown_20d > -0.05",
+      "description": "ETF-only with drawdown constraint",
+      "potential_issue": "Non-ETF symbols return 0 signals; 5% drawdown threshold may exclude many valid ETF periods",
+      "avg_signals_per_window": 195.5,
+      "max_signals": 311,
+      "min_signals": 80,
+      "trigger_rate_500d": 0.391,
+      "ok_windows": 2,
+      "data_insufficient_windows": 2,
+      "diagnosed_issues": [
+        "ADEQUATE_TRIGGERS_BUT_NO_EDGE"
+      ]
+    }
+  ]
+}

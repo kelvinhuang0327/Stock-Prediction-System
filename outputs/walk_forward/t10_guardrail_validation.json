@@ -1,0 +1,80 @@
+{
+  "task": "T-10 Guardrail Validation",
+  "generated_at": "2026-05-06T15:00:00+08:00",
+  "pass_count": 16,
+  "total_checks": 16,
+  "overall_result": "PASS",
+  "guardrails": [
+    {
+      "check": "regime_context_option_exists",
+      "result": "PASS"
+    },
+    {
+      "check": "enriched_sample_generated",
+      "result": "PASS"
+    },
+    {
+      "check": "every_record_has_regimeContext",
+      "result": "PASS"
+    },
+    {
+      "check": "every_regimeDate_lte_asofDate",
+      "result": "PASS"
+    },
+    {
+      "check": "no_future_regime_usage",
+      "result": "PASS"
+    },
+    {
+      "check": "no_db_write",
+      "result": "PASS"
+    },
+    {
+      "check": "no_external_api_call",
+      "result": "PASS"
+    },
+    {
+      "check": "no_change_to_candidate_selection",
+      "result": "PASS"
+    },
+    {
+      "check": "no_change_to_portfolio_size",
+      "result": "PASS"
+    },
+    {
+      "check": "no_change_to_placeholder_metrics",
+      "result": "PASS"
+    },
+    {
+      "check": "no_h001_h012",
+      "result": "PASS"
+    },
+    {
+      "check": "no_buy_sell_signal_fields",
+      "result": "PASS"
+    },
+    {
+      "check": "no_roi_win_rate_fields",
+      "result": "PASS"
+    },
+    {
+      "check": "no_alpha_edge_profit_fields",
+      "result": "PASS"
+    },
+    {
+      "check": "all_json_artifacts_parse",
+      "result": "PASS"
+    },
+    {
+      "check": "key_output_files_exist",
+      "result": "PASS",
+      "detail": {
+        "scripts/build-portfolio-walk-forward-skeleton.py": true,
+        "outputs/walk_forward/t10_existing_walk_forward_context_audit.json": true,
+        "outputs/walk_forward/t10_regime_context_contract.json": true,
+        "outputs/walk_forward/t10_walk_forward_regime_context_sample.json": true,
+        "outputs/walk_forward/t10_no_behavior_change_validation.json": true
+      }
+    }
+  ]
+}

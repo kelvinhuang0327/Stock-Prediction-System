@@ -9,6 +9,12 @@
  */
 
 import { detectRegime, type MarketRegimeResult } from '@/lib/market/MarketRegimeEngine';
+import {
+  getLatestMarketRegimeContext,
+  computeFreshnessAlert,
+  type RegimeContext,
+  type FreshnessAlert,
+} from '@/lib/marketRegimeResult';
 import { runScreen, type ScreenResult, type ScreenCandidate } from '@/lib/screen/StrategyScreenEngine';
 import { buildComparison, type DailyComparison } from './DailySnapshotEngine';
 import { prisma } from '@/lib/prisma';
@@ -96,12 +102,28 @@ export interface CrossMarketSummary {
   generatedAt: string;
 }
 
+// ─── Persisted Regime Context (T-12) ─────────────────────────────
+
+export interface RegimeContextSummary {
+  source: 'PERSISTED_MARKET_REGIME_RESULT' | 'FALLBACK_LIVE_DETECT' | 'UNAVAILABLE';
+  date: string | null;
+  regimeLabel: string | null;
+  confidence: number | null;
+  taiexClose: number | null;
+  freshnessStatus: string | null;
+  freshnessLagDays: number | null;
+  freshnessAlert: FreshnessAlert;
+  fallbackUsed: boolean;
+  warning: string | null;
+}
+
 export interface MarketSummary {
   regime: string;
   regimeConfidence: number;
   summary: string;
   keyFactors: string[];
   limitations: string[];
+  regimeContext?: RegimeContextSummary;
 }
 
 export interface CandidateDetail {
@@ -211,7 +233,7 @@ export async function generateDailyReport(params?: ReportParams): Promise<DailyR
   const candidateLimit = params?.candidateLimit ?? DEFAULT_CANDIDATE_LIMIT;
 
   // Run all data fetches in parallel
-  const [regimeResult, screenResult, watchlistData, dbStats, marketEvent, topicSurge, signalReliabilitySummary] = await Promise.all([
+  const [regimeResult, persistedRegimeCtx, screenResult, watchlistData, dbStats, marketEvent, topicSurge, signalReliabilitySummary] = await Promise.all([
     detectRegime().catch((): MarketRegimeResult => ({
       regime: 'Unknown' as const,
       confidence: 0,
@@ -221,6 +243,12 @@ export async function generateDailyReport(params?: ReportParams): Promise<DailyR
       dataPoints: 0,
       last_updated: new Date().toISOString(),
       limitations: ['MarketRegimeEngine 無法連線或資料不足'],
+    })),
+    getLatestMarketRegimeContext().catch((): RegimeContext => ({
+      isAvailable: false,
+      freshnessStatus: 'MISSING',
+      freshnessLagDays: -1,
+      warning: 'Failed to fetch persisted MarketRegimeResult',
     })),
     runScreen().catch((): ScreenResult => ({
       regime: 'Unknown',
@@ -328,7 +356,7 @@ export async function generateDailyReport(params?: ReportParams): Promise<DailyR
     generatedAt: new Date().toISOString(),
   };
 
-  const marketSummary = buildMarketSummary(regimeResult);
+  const marketSummary = buildMarketSummary(regimeResult, persistedRegimeCtx);
   const eventSummary = {
     ...marketEvent.summary,
     limitations:
@@ -379,14 +407,59 @@ export async function generateDailyReport(params?: ReportParams): Promise<DailyR
 
 // ─── Market Summary ──────────────────────────────────────────────
 
-function buildMarketSummary(regime: MarketRegimeResult): MarketSummary {
+function buildMarketSummary(regime: MarketRegimeResult, persistedCtx?: RegimeContext): MarketSummary {
   const summary = generateMarketNarrative(regime);
+
+  const regimeContext: RegimeContextSummary = buildRegimeContextSummary(persistedCtx);
+
   return {
     regime: regime.regime,
     regimeConfidence: regime.confidence,
     summary,
     keyFactors: regime.factors.map(f => `${f.name}: ${f.value} (${f.impact})`),
     limitations: regime.limitations,
+    regimeContext,
+  };
+}
+
+function buildRegimeContextSummary(ctx: RegimeContext | undefined): RegimeContextSummary {
+  if (!ctx || !ctx.isAvailable) {
+    const missingAlert: FreshnessAlert = {
+      alertLevel: 'MISSING',
+      freshnessLagDays: null,
+      lastRegimeDate: null,
+      currentDate: new Date().toISOString().split('T')[0],
+      message: 'No persisted MarketRegimeResult available.',
+      requiresAction: true,
+    };
+    return {
+      source: 'UNAVAILABLE',
+      date: null,
+      regimeLabel: null,
+      confidence: null,
+      taiexClose: null,
+      freshnessStatus: 'MISSING',
+      freshnessLagDays: null,
+      freshnessAlert: missingAlert,
+      fallbackUsed: true,
+      warning: ctx?.warning ?? 'Persisted regime context not available.',
+    };
+  }
+
+  const freshnessAlert = computeFreshnessAlert(ctx);
+  const isFresh = freshnessAlert.alertLevel === 'FRESH';
+
+  return {
+    source: 'PERSISTED_MARKET_REGIME_RESULT',
+    date: ctx.date,
+    regimeLabel: ctx.regimeLabel,
+    confidence: ctx.confidence,
+    taiexClose: ctx.taiexClose,
+    freshnessStatus: ctx.freshnessStatus,
+    freshnessLagDays: ctx.freshnessLagDays,
+    freshnessAlert,
+    fallbackUsed: false,
+    warning: isFresh ? null : (freshnessAlert.message ?? null),
   };
 }
 

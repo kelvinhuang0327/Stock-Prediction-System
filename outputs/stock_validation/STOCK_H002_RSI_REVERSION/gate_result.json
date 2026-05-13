@@ -1,6 +1,6 @@
 {
   "hypothesis_id": "STOCK_H002_RSI_REVERSION",
-  "run_ts": "2026-05-05T05:44:51.668016+00:00",
+  "run_ts": "2026-05-05T05:55:28.566150+00:00",
   "dry_run": true,
   "pipeline": "GBGF_STOCK_VALIDATION_P3-05",
   "mock_data": true,
@@ -38,9 +38,9 @@
       "gate_id": "G04",
       "gate_name": "Permutation Null Gate",
       "status": "FAIL",
-      "message": "p=0.5300 >= 0.05 \u2014 strategy classified as noise",
+      "message": "p=1.0000 >= 0.05 \u2014 strategy classified as noise",
       "evidence": {
-        "p_value": 0.53
+        "p_value": 1.0
       }
     },
     {
@@ -55,13 +55,13 @@
     {
       "gate_id": "G06",
       "gate_name": "EV / ROI Gate",
-      "status": "WARN",
-      "message": "EV negative by design. Classification: EV_NEGATIVE_BY_DESIGN. Not recommended for production betting.",
+      "status": "PASS",
+      "message": "EV positive \u2014 strategy is monetizable",
       "evidence": {
-        "classification": "EV_NEGATIVE_BY_DESIGN",
-        "sharpe_annualized": -1.0285,
-        "cagr_annualized": -0.2132,
-        "win_rate": 0.45,
+        "classification": "EV_POSITIVE",
+        "sharpe_annualized": 0.927,
+        "cagr_annualized": 0.2785,
+        "win_rate": 0.5,
         "n_oos_signals": 60,
         "transaction_cost_bps": 10,
         "pit_risks": [
@@ -117,77 +117,76 @@
     "status": "rejected",
     "criteria": {
       "roi_positive_all_windows": false,
-      "sharpe_positive_500d": false,
+      "sharpe_positive_500d": true,
       "perm_p_lt_005": false
     },
-    "primary_window_sharpe": -2.2128,
-    "primary_perm_p": 0.53,
+    "primary_window_sharpe": 1.6464,
+    "primary_perm_p": 1.0,
     "reasons": [
       "ROI not positive across all windows",
-      "Sharpe \u2264 0 on primary window (-2.2128)",
-      "Permutation p-value=0.53 \u2265 0.05 (not significant)"
+      "Permutation p-value=1.0 \u2265 0.05 (not significant)"
     ]
   },
   "window_results": [
     {
       "window_days": 150,
-      "n_signals": 30,
-      "mean_return": -0.001028,
-      "std_return": 0.028977,
-      "sharpe_annualized": -0.2518,
-      "win_rate": 0.5,
-      "edge_pp": 0.0,
-      "roi_annualized": -0.051806,
+      "n_signals": 31,
+      "mean_return": -0.002547,
+      "std_return": 0.023724,
+      "sharpe_annualized": -0.7621,
+      "win_rate": 0.4839,
+      "edge_pp": -1.6129,
+      "roi_annualized": -0.128354,
       "tx_cost_bps": 10
     },
     {
       "window_days": 500,
-      "n_signals": 99,
-      "mean_return": -0.011906,
-      "std_return": 0.038199,
-      "sharpe_annualized": -2.2128,
-      "win_rate": 0.3333,
-      "edge_pp": -16.6667,
-      "roi_annualized": -0.600075,
+      "n_signals": 104,
+      "mean_return": 0.007529,
+      "std_return": 0.032464,
+      "sharpe_annualized": 1.6464,
+      "win_rate": 0.6154,
+      "edge_pp": 11.5385,
+      "roi_annualized": 0.379451,
       "tx_cost_bps": 10
     },
     {
       "window_days": 1500,
-      "n_signals": 311,
-      "mean_return": 0.002549,
-      "std_return": 0.033153,
-      "sharpe_annualized": 0.5459,
-      "win_rate": 0.5241,
-      "edge_pp": 2.4116,
-      "roi_annualized": 0.128481,
+      "n_signals": 294,
+      "mean_return": 0.000411,
+      "std_return": 0.034896,
+      "sharpe_annualized": 0.0835,
+      "win_rate": 0.5034,
+      "edge_pp": 0.3401,
+      "roi_annualized": 0.02069,
       "tx_cost_bps": 10
     }
   ],
   "permutation_results": [
     {
-      "observed_mean": -0.001028,
-      "null_mean": -0.001028,
+      "observed_mean": -0.002547,
+      "null_mean": -0.002547,
       "null_std": 0.0,
-      "p_value": 0.272,
-      "n_permutations": 500,
+      "p_value": 0.5,
+      "n_permutations": 50,
       "one_tailed": true,
       "window_days": 150
     },
     {
-      "observed_mean": -0.011906,
-      "null_mean": -0.011906,
+      "observed_mean": 0.007529,
+      "null_mean": 0.007529,
       "null_std": 0.0,
-      "p_value": 0.53,
-      "n_permutations": 500,
+      "p_value": 1.0,
+      "n_permutations": 50,
       "one_tailed": true,
       "window_days": 500
     },
     {
-      "observed_mean": 0.002549,
-      "null_mean": 0.002549,
+      "observed_mean": 0.000411,
+      "null_mean": 0.000411,
       "null_std": 0.0,
-      "p_value": 0.256,
-      "n_permutations": 500,
+      "p_value": 0.28,
+      "n_permutations": 50,
       "one_tailed": true,
       "window_days": 1500
     }
@@ -196,28 +195,28 @@
     {
       "hypothesis_id": "STOCK_H002_RSI_REVERSION",
       "window": "150d",
-      "p_value": 0.272,
-      "bh_rank": 3,
-      "bh_threshold": 0.01875,
-      "bh_adjusted_p": 0.725333,
+      "p_value": 0.5,
+      "bh_rank": 5,
+      "bh_threshold": 0.027778,
+      "bh_adjusted_p": 0.9,
       "bh_pass": false
     },
     {
       "hypothesis_id": "STOCK_H002_RSI_REVERSION",
       "window": "500d",
-      "p_value": 0.53,
-      "bh_rank": 6,
-      "bh_threshold": 0.0375,
-      "bh_adjusted_p": 0.706667,
+      "p_value": 1.0,
+      "bh_rank": 9,
+      "bh_threshold": 0.05,
+      "bh_adjusted_p": 1.0,
       "bh_pass": false
     },
     {
       "hypothesis_id": "STOCK_H002_RSI_REVERSION",
       "window": "1500d",
-      "p_value": 0.256,
-      "bh_rank": 2,
-      "bh_threshold": 0.0125,
-      "bh_adjusted_p": 1.0,
+      "p_value": 0.28,
+      "bh_rank": 3,
+      "bh_threshold": 0.016667,
+      "bh_adjusted_p": 0.84,
       "bh_pass": false
     }
   ]

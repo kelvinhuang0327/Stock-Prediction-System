@@ -1,0 +1,63 @@
+{
+  "task": "T-10 Existing Walk-Forward Context Audit",
+  "generated_at": "2026-05-06T15:00:00+08:00",
+  "script_path": "scripts/build-portfolio-walk-forward-skeleton.py",
+  "current_output_fields": [
+    "asof_date",
+    "regime_label",
+    "regime_confidence",
+    "portfolio_size",
+    "coverage_count",
+    "candidate_symbols",
+    "candidate_selection_method",
+    "evaluation_window_start",
+    "evaluation_window_end",
+    "available_feature_count",
+    "missing_feature_count",
+    "data_quality_flags",
+    "pit_safety_flags",
+    "forbidden_logic_flags",
+    "placeholder_metrics"
+  ],
+  "regime_context_already_exists": false,
+  "script_reads_db": true,
+  "script_reads_db_tables": [
+    "MarketIndex",
+    "StockQuote"
+  ],
+  "script_writes_db": false,
+  "uses_h001_h012": false,
+  "contains_forbidden_fields": false,
+  "forbidden_field_check": {
+    "buy": false,
+    "sell": false,
+    "signal": false,
+    "roi": false,
+    "win_rate": false,
+    "alpha": false,
+    "edge": false,
+    "profit": false,
+    "recommendation": false,
+    "outperform": false
+  },
+  "reusable_parts": [
+    "get_taiex_dates() - PIT-safe date range query",
+    "compute_regime_for_date() - live regime compute (retained unchanged)",
+    "get_candidates_for_date() - deterministic alphabetical mock",
+    "get_coverage_for_date() - stock coverage count",
+    "compute_available_features() - feature availability count",
+    "build_walk_forward_record() - extended with include_regime_context param",
+    "run() - extended with regime_context param",
+    "main() - extended with --regime-context argparse flag"
+  ],
+  "unsafe_parts": [],
+  "recommended_enrichment_method": "Add --regime-context flag to argparse; pass through run() -> build_walk_forward_record(); call get_regime_context_from_db() per asof_date",
+  "decisions": {
+    "should_modify_build_portfolio_walk_forward_skeleton": true,
+    "modification_rationale": "Additive only: new --regime-context flag, new helper function, no change to existing logic",
+    "need_new_script": false,
+    "can_add_regime_context_option_only": true,
+    "will_affect_portfolio_candidate_selection": false,
+    "will_affect_placeholder_metrics": false
+  }
+}

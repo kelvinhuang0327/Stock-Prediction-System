@@ -1,0 +1,50 @@
+{
+  "run_id": "STOCK_H007_RELATIVE_STRENGTH-0055-2026-05-01",
+  "hypothesis_id": "STOCK_H007_RELATIVE_STRENGTH",
+  "symbol": "0055",
+  "pipeline_version": "P3-07/P3-08",
+  "registry": "stock_hypothesis_registry_v2.json",
+  "run_ts": "2026-05-05T09:41:38.841074+00:00",
+  "as_of_date": "2026-05-01",
+  "window_days_max": 1500,
+  "windows_evaluated": [
+    150,
+    500
+  ],
+  "n_permutations": 10,
+  "data_lineage": {
+    "data_source": "sqlite:prisma/dev.db:StockQuote",
+    "symbol": "0055",
+    "asOfDate": "2026-05-01",
+    "first_date": "2018-12-18",
+    "last_date": "2026-04-30",
+    "row_count": 743,
+    "max_feature_date": "2026-03-16",
+    "leakage_check_result": "PASS",
+    "pit_violations": [],
+    "window_days": 1500
+  },
+  "gate_statuses": {
+    "G01": "FAIL",
+    "G02": "PASS",
+    "G03": "FAIL",
+    "G04": "WARN",
+    "G05": "WARN",
+    "G06": "WARN",
+    "G07": "WARN",
+    "G08": "PASS",
+    "G09": "BLOCKED",
+    "G10": "BLOCKED"
+  },
+  "final_status": "DATA_INSUFFICIENT",
+  "safety_confirmations": {
+    "no_production_write": true,
+    "no_trade_execution": true,
+    "not_trading_advice": true,
+    "real_data_read_only": true,
+    "pit_guard_r01_r04": true,
+    "bh_fdr_corrected": true,
+    "no_random_split": true,
+    "time_based_split_only": true
+  }
+}

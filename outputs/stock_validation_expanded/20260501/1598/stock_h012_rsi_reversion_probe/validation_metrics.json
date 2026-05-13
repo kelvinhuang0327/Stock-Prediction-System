@@ -1,0 +1,17 @@
+{
+  "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+  "symbol": "1598",
+  "as_of_date": "2026-05-01",
+  "primary_window": 500,
+  "secondary_window": 150,
+  "primary_ok": 0,
+  "secondary_ok": 0,
+  "avg_primary_sharpe": 0.0,
+  "avg_primary_roi": 0.0,
+  "avg_secondary_sharpe": 0.0,
+  "avg_secondary_roi": 0.0,
+  "primary_bh_fdr_pass_count": 0,
+  "diagnostic_bh_fdr_pass_count": 0,
+  "status": "OBSERVATION_ONLY",
+  "run_ts": "2026-05-05T14:59:49.213656+00:00"
+}

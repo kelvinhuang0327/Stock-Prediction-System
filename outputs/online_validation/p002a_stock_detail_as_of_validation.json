@@ -1,0 +1,74 @@
+{
+  "taskId": "P0-02A",
+  "taskName": "Stock Detail As-of Gate Validation",
+  "date": "2026-05-07",
+  "observabilityOnly": true,
+  "noEdgeClaim": true,
+  "noProductionWrite": true,
+  "noDBWrite": true,
+  "noExternalAPI": true,
+  "noLLMCall": true,
+  "noStrategyMutation": true,
+  "route": "/api/stocks/[id]/detail",
+  "integrationStatus": "COMPLETE",
+  "changes": [
+    "Added asOfDate query param extraction from nextUrl.searchParams",
+    "asOfDate defaults to resolveAsOfDate() when not provided",
+    "asOfDateDb = asOfDate.replace(/-/g,'') for DB string comparison",
+    "stockQuote.findMany now uses { stockId: symbol, date: { lte: asOfDateDb } }",
+    "runScreen() now receives { ..., asOf: asOfDateDb }",
+    "cacheKey now includes asOfDate to prevent stale cache cross-gate",
+    "Response includes asOfDate, asOfGateStatus, asOfGateNote",
+    "StockDetailResponse interface updated with asOfDate, asOfGateStatus, asOfGateNote fields"
+  ],
+  "dbQueriesGated": [
+    {
+      "query": "stockQuote.findMany",
+      "before": "{ where: { stockId: symbol } }",
+      "after": "{ where: { stockId: symbol, date: { lte: asOfDateDb } } }",
+      "gateStatus": "GATED"
+    },
+    {
+      "query": "runScreen()",
+      "before": "no asOf param",
+      "after": "asOf: asOfDateDb passed",
+      "gateStatus": "PARTIALLY_GATED — via StrategyScreenEngine asOf"
+    }
+  ],
+  "ungatedQueries": [
+    {
+      "query": "prisma.monthlyRevenue.findMany",
+      "reason": "Uses year/quarter ordering, no date field available for gate",
+      "limitation": "Documented in asOfGateNote and limitations array"
+    },
+    {
+      "query": "prisma.financialReport.findMany",
+      "reason": "Uses year/quarter ordering, no date field available for gate",
+      "limitation": "Documented"
+    },
+    {
+      "query": "prisma.stockMetrics.findMany",
+      "reason": "Uses date desc ordering but no asOf filter added — deferred to P0-03",
+      "limitation": "Documented"
+    },
+    {
+      "query": "history",
+      "reason": "External API proxy BLOCKED",
+      "limitation": "Documented in response as BLOCKED"
+    }
+  ],
+  "historyRouteStatus": "BLOCKED — external API proxy, no DB queries",
+  "forbiddenFieldsCheck": {
+    "buy": "ABSENT",
+    "sell": "ABSENT",
+    "roi": "ABSENT",
+    "win_rate": "ABSENT",
+    "edge": "ABSENT",
+    "profit": "ABSENT",
+    "outperform": "ABSENT",
+    "guaranteed": "ABSENT",
+    "H001_H012": "ABSENT",
+    "note": "alphaScore and recommendationBucket field names preserved — not renamed"
+  },
+  "generatedAt": "2026-05-07T00:00:00.000Z"
+}

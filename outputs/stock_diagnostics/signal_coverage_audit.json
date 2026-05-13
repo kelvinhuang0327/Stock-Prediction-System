@@ -1,0 +1,691 @@
+{
+  "pipeline": "P3-12",
+  "run_ts": "2026-05-05T10:30:38.683221+00:00",
+  "as_of_date": "2026-05-01",
+  "universe_summary": {
+    "total_symbols": 1357,
+    "symbols_ge_150": 248,
+    "symbols_ge_300": 237,
+    "symbols_ge_500": 118,
+    "stock_symbols_ge_300": 215,
+    "etf_symbols_ge_300": 22,
+    "stock_symbols_ge_500": 112,
+    "etf_symbols_ge_500": 6,
+    "symbols_tested_in_p311": 8,
+    "untested_eligible_ge_300": 229
+  },
+  "universe_details": [
+    {
+      "symbol": "0055",
+      "iso_row_count": 743,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": true,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "00712",
+      "iso_row_count": 737,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": true,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "00903",
+      "iso_row_count": 737,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": true,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "00891",
+      "iso_row_count": 720,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": true,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "00830",
+      "iso_row_count": 657,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": true,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "00738U",
+      "iso_row_count": 595,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": true,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "1326",
+      "iso_row_count": 519,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "1560",
+      "iso_row_count": 518,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "1802",
+      "iso_row_count": 518,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "2330",
+      "iso_row_count": 517,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "2454",
+      "iso_row_count": 517,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "2317",
+      "iso_row_count": 516,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "6415",
+      "iso_row_count": 501,
+      "first_date": "2017-12-01",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "1210",
+      "iso_row_count": 500,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "1308",
+      "iso_row_count": 500,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "1314",
+      "iso_row_count": 500,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "1319",
+      "iso_row_count": 500,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "1402",
+      "iso_row_count": 500,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "1434",
+      "iso_row_count": 500,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "1513",
+      "iso_row_count": 500,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "1536",
+      "iso_row_count": 500,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "1598",
+      "iso_row_count": 500,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "1605",
+      "iso_row_count": 500,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "1710",
+      "iso_row_count": 500,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "1717",
+      "iso_row_count": 500,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "1789",
+      "iso_row_count": 500,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "1795",
+      "iso_row_count": 500,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "1903",
+      "iso_row_count": 500,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "1904",
+      "iso_row_count": 500,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "1907",
+      "iso_row_count": 500,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "2006",
+      "iso_row_count": 500,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "2015",
+      "iso_row_count": 500,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "2027",
+      "iso_row_count": 500,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "2105",
+      "iso_row_count": 500,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "2206",
+      "iso_row_count": 500,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "2231",
+      "iso_row_count": 500,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "2308",
+      "iso_row_count": 500,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "2312",
+      "iso_row_count": 500,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "2323",
+      "iso_row_count": 500,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "2360",
+      "iso_row_count": 500,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "2367",
+      "iso_row_count": 500,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "2368",
+      "iso_row_count": 500,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "2376",
+      "iso_row_count": 500,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "2383",
+      "iso_row_count": 500,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "2385",
+      "iso_row_count": 500,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "2393",
+      "iso_row_count": 500,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "2404",
+      "iso_row_count": 500,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "2439",
+      "iso_row_count": 500,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "2441",
+      "iso_row_count": 500,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    },
+    {
+      "symbol": "2455",
+      "iso_row_count": 500,
+      "first_date": "2018-12-18",
+      "last_date": "2026-04-30",
+      "eligible_150d": true,
+      "eligible_300d": true,
+      "eligible_500d": true,
+      "is_etf_like": false,
+      "data_quality_status": "OK"
+    }
+  ],
+  "candidate_coverage_summaries": [
+    {
+      "candidate_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "total_signal_count": 1850,
+      "avg_signal_rate": 0.1305,
+      "symbols_with_any_signal": 60,
+      "windows_data_insufficient": 31,
+      "total_windows": 60,
+      "likely_failure_mode": "DATA_TOO_SHORT"
+    },
+    {
+      "candidate_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "total_signal_count": 2584,
+      "avg_signal_rate": 0.1521,
+      "symbols_with_any_signal": 60,
+      "windows_data_insufficient": 22,
+      "total_windows": 60,
+      "likely_failure_mode": "SIGNAL_NOISY"
+    },
+    {
+      "candidate_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "total_signal_count": 1308,
+      "avg_signal_rate": 0.0719,
+      "symbols_with_any_signal": 51,
+      "windows_data_insufficient": 47,
+      "total_windows": 60,
+      "likely_failure_mode": "DATA_TOO_SHORT"
+    },
+    {
+      "candidate_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "total_signal_count": 340,
+      "avg_signal_rate": 0.5459,
+      "symbols_with_any_signal": 2,
+      "windows_data_insufficient": 58,
+      "total_windows": 60,
+      "likely_failure_mode": "DATA_TOO_SHORT"
+    }
+  ],
+  "coverage_by_window": {
+    "150": {
+      "total": 120,
+      "data_insufficient": 110,
+      "di_rate": 0.917
+    },
+    "500": {
+      "total": 120,
+      "data_insufficient": 48,
+      "di_rate": 0.4
+    }
+  },
+  "p311_vs_full_comparison": {
+    "p311_symbols_count": 8,
+    "p311_total_signals": 2089,
+    "full_universe_symbols": 22,
+    "full_universe_total_signals": 3993,
+    "signal_multiplier": 1.9
+  },
+  "top_blocking_conditions": [
+    {
+      "condition": "volume_zscore_gt_0p5",
+      "count": 60
+    },
+    {
+      "condition": "symbol_in_scope",
+      "count": 58
+    },
+    {
+      "condition": "return_5d_lt_0",
+      "count": 32
+    },
+    {
+      "condition": "close_near_breakout_0p98",
+      "count": 32
+    },
+    {
+      "condition": "volatility_low_p25",
+      "count": 28
+    },
+    {
+      "condition": "close_gt_ma60",
+      "count": 22
+    },
+    {
+      "condition": "return_20d_gt_0",
+      "count": 6
+    },
+    {
+      "condition": "rsi_oversold_lt30",
+      "count": 2
+    }
+  ],
+  "condition_attribution": {
+    "STOCK_H009_PULLBACK_10D_HOLD": {
+      "close_gt_ma60": 0.479,
+      "return_5d_lt_0": 0.4919,
+      "return_20d_gt_0": 0.4863,
+      "all_conditions": 0.1158
+    },
+    "STOCK_H010_MOM_MODERATE_VOLUME": {
+      "return_20d_gt_0": 0.4953,
+      "volume_zscore_gt_0p5": 0.2411,
+      "all_conditions": 0.1375
+    },
+    "STOCK_H011_NEAR_BREAKOUT_LOW_VOL": {
+      "volatility_low_p25": 0.2689,
+      "close_near_breakout_0p98": 0.2119,
+      "all_conditions": 0.082
+    },
+    "STOCK_H012_RSI_REVERSION_PROBE": {
+      "symbol_in_scope": 0.0333,
+      "all_conditions": 0.0179,
+      "rsi_oversold_lt30": 0.2352,
+      "rsi_overbought_gt70": 0.3027
+    }
+  },
+  "safety_confirmations": {
+    "no_hypothesis_added": true,
+    "no_threshold_changed": true,
+    "no_production_write": true,
+    "no_validation_run": true,
+    "no_promotion": true
+  }
+}

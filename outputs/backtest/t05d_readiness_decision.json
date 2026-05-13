@@ -1,0 +1,47 @@
+{
+  "task": "T-05D",
+  "artifactType": "readiness_decision",
+  "generatedAt": "2026-05-07T00:00:00Z",
+  "safetyLabels": [
+    "T-05D",
+    "Taiwan trading calendar adapter",
+    "deterministic calendar",
+    "static override contract",
+    "no external API",
+    "no DB write",
+    "no LLM call",
+    "no strategy mutation",
+    "no performance claim",
+    "no edge claim"
+  ],
+  "readinessDecision": {
+    "status": "READY",
+    "classification": "T05D_TAIWAN_TRADING_CALENDAR_ADAPTER_COMPLETE",
+    "summary": "Taiwan Trading Calendar Adapter is complete. 48/48 T-05D tests PASS. 10 suites / 227 tests regression PASS. 15/15 guardrails PASS. WalkForwardEngine updated with minimal backward-compatible change.",
+    "observabilityNote": "Calendar adapter provides deterministic trading date generation for observability skeleton. Not a production strategy. Not a trading conclusion.",
+    "nextStep": "T-05E: PIT-safe Candidate Data Adapter"
+  },
+  "testResults": {
+    "t05d_independent": "48/48 PASS",
+    "t05b_regression": "45/45 PASS",
+    "t05c_regression": "45/45 PASS",
+    "fullRegression": "10 suites / 227 tests PASS"
+  },
+  "guardrailSummary": {
+    "total": 15,
+    "pass": 15,
+    "warn": 0,
+    "fail": 0
+  },
+  "artifactsGenerated": [
+    "outputs/backtest/t05d_taiwan_trading_calendar_contract.json",
+    "outputs/backtest/t05d_taiwan_trading_calendar_contract.md",
+    "outputs/backtest/t05d_taiwan_trading_calendar_validation.json",
+    "outputs/backtest/t05d_taiwan_trading_calendar_validation.md",
+    "outputs/backtest/t05d_guardrail_validation.json",
+    "outputs/backtest/t05d_guardrail_validation.md",
+    "outputs/backtest/t05d_readiness_decision.json",
+    "outputs/backtest/t05d_readiness_decision.md",
+    "outputs/system_readiness/t05d_next_execution_order_20260507.md"
+  ]
+}

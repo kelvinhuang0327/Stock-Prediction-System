@@ -1,0 +1,121 @@
+{
+  "task": "T-05C_GUARDRAIL_VALIDATION",
+  "date": "2026-05-07",
+  "labels": [
+    "T-05C",
+    "read-only loader",
+    "persisted MarketRegimeResult only",
+    "no regime recomputation",
+    "no production write",
+    "no DB write except read query",
+    "no external API",
+    "no LLM call",
+    "no strategy mutation",
+    "no performance claim"
+  ],
+  "guardrailChecks": [
+    {
+      "id": 1,
+      "check": "no DB write (SELECT/findMany only)",
+      "result": "PASS",
+      "evidence": "loadRegimeContextMap uses findMany only. No create/update/delete/upsert calls."
+    },
+    {
+      "id": 2,
+      "check": "no external API call",
+      "result": "PASS",
+      "evidence": "Test 21 confirms fetch is not called. Source contains no fetch/axios/http calls."
+    },
+    {
+      "id": 3,
+      "check": "no LLM call",
+      "result": "PASS",
+      "evidence": "Test 22 confirms no openai/anthropic/createCompletion in source."
+    },
+    {
+      "id": 4,
+      "check": "no regime recomputation",
+      "result": "PASS",
+      "evidence": "mapMarketRegimeResultToPersistedContext reads and maps existing DB data only."
+    },
+    {
+      "id": 5,
+      "check": "no production prediction overwrite",
+      "result": "PASS",
+      "evidence": "Loader is read-only. No MarketRegimeResult is modified."
+    },
+    {
+      "id": 6,
+      "check": "no strategy behavior mutation",
+      "result": "PASS",
+      "evidence": "Loader produces Map for injection only. Does not modify WalkForwardEngine logic."
+    },
+    {
+      "id": 7,
+      "check": "resolveCurrentDate() used for date resolution",
+      "result": "PASS",
+      "evidence": "loadRegimeContextMap and mapMarketRegimeResultToPersistedContext use resolveCurrentDate()."
+    },
+    {
+      "id": 8,
+      "check": "no hardcoded TODAY_CAP",
+      "result": "PASS",
+      "evidence": "Test 41 confirms no TODAY_CAP in source code logic."
+    },
+    {
+      "id": 9,
+      "check": "persisted MarketRegimeResult is read-only context",
+      "result": "PASS",
+      "evidence": "Only SELECT query via findMany. Map is not written back to DB."
+    },
+    {
+      "id": 10,
+      "check": "Map<string, PersistedRegimeContext> injectable into buildWalkForwardSkeleton",
+      "result": "PASS",
+      "evidence": "Tests 34-35 confirm loader output can be injected and recordsWithRegimeContext > 0."
+    },
+    {
+      "id": 11,
+      "check": "JSON artifacts parse successfully",
+      "result": "PASS",
+      "evidence": "All t05c_*.json files parse without error."
+    },
+    {
+      "id": 12,
+      "check": "forbidden terms not used as output claims",
+      "result": "PASS",
+      "evidence": "Tests 14-15, 24-25, 32, 37-38, 43 confirm no forbidden key in any output object."
+    },
+    {
+      "id": 13,
+      "check": "no legacy hypotheses (no H001-H012 emitted)",
+      "result": "PASS",
+      "evidence": "Tests 15, 25, 38 confirm H_PATTERN not found in serialized output."
+    },
+    {
+      "id": 14,
+      "check": "no performance conclusion (no ROI/win-rate/alpha/edge/profit)",
+      "result": "PASS",
+      "evidence": "All placeholder metrics are null. Coverage summary contains only count/ratio fields."
+    },
+    {
+      "id": 15,
+      "check": "loader does not mutate injected contextMap",
+      "result": "PASS",
+      "evidence": "Test 40 confirms contextMap.size unchanged after buildWalkForwardSkeleton call."
+    }
+  ],
+  "forbiddenTermsChecked": [
+    "buy", "sell", "signal", "roi", "win_rate", "alpha", "edge",
+    "profit", "recommendation", "outperform",
+    "H001", "H002", "H003", "H004", "H005", "H006",
+    "H007", "H008", "H009", "H010", "H011", "H012"
+  ],
+  "summary": {
+    "totalChecks": 15,
+    "passed": 15,
+    "warned": 0,
+    "failed": 0,
+    "overallStatus": "PASS"
+  }
+}

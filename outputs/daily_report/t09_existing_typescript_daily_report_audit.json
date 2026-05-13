@@ -1,0 +1,40 @@
+{
+  "audit_id": "T09_EXISTING_TYPESCRIPT_DAILY_REPORT_AUDIT",
+  "audit_date": "2026-05-06",
+  "generated_at": "2026-05-06T15:09:18.366429",
+  "existing_daily_report_files": [
+    "src/lib/report/DailyReportEngine.ts",
+    "src/app/api/report/daily/route.ts",
+    "src/app/api/market/regime/route.ts",
+    "src/lib/market/MarketRegimeEngine.ts"
+  ],
+  "existing_api_routes": [
+    "src/app/api/report/daily -- uses DailyReportEngine",
+    "src/app/api/market/regime -- uses detectRegime() from MarketRegimeEngine (live compute)"
+  ],
+  "prisma_client_usage": "src/lib/prisma.ts -- PrismaClient singleton",
+  "daily_report_engine_exists": true,
+  "market_summary_exists": true,
+  "regime_section_already_persisted": false,
+  "api_router_pattern": "App Router (src/app/api/)",
+  "naming_conflict_note": "MarketRegimeResult is used as a TypeScript interface in MarketRegimeEngine.ts; Prisma model is accessed via prisma.marketRegimeResult (camelCase)",
+  "reusable_components": [
+    "src/lib/prisma.ts",
+    "App Router pattern from src/app/api/market/regime/route.ts"
+  ],
+  "components_not_to_reuse": [
+    "detectRegime() -- computes live from MarketIndex; T-09 must read persisted table"
+  ],
+  "production_db_write_risk": false,
+  "strategy_signal_leakage_risk": false,
+  "h001_h012_leakage_risk": false,
+  "recommended_integration_path": "New App Router API route: src/app/api/daily-report/regime/route.ts + service src/lib/marketRegimeResult.ts",
+  "answers": {
+    "add_api_route_or_service": "Both: new service function + new API route",
+    "app_router_or_pages_router": "App Router (src/app/api/)",
+    "needs_prisma_generate": true,
+    "prisma_generate_required": true,
+    "existing_daily_report_ui_to_integrate": "DailyReportEngine integration via proposal (marketSummary already has regime field)"
+  },
+  "verdict": "PASS"
+}

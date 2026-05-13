@@ -1,0 +1,50 @@
+{
+  "task": "P0-01",
+  "taskName": "MVP Universe Lock",
+  "artifactType": "mvp_universe_lock",
+  "date": "2026-05-07",
+  "asOfDate": "2026-05-07",
+  "safetyLabels": [
+    "P0-01", "MVP universe lock", "research tool only", "no auto trading",
+    "no precision prediction claim", "no performance claim", "no edge claim",
+    "no DB write", "no external API", "no LLM call"
+  ],
+  "universeCriteria": {
+    "tierA": {
+      "tier": "TierA",
+      "minQuoteCount": 250,
+      "requiresInstitutionalChip": true,
+      "excludeFutureDates": true,
+      "description": "Tier A: quoteCount >= 250 AND hasInstitutionalChip=true AND date <= 2026-05-07",
+      "expectedCount": "~244 stocks"
+    },
+    "walkForward": {
+      "tier": "WalkForward",
+      "minQuoteCount": 500,
+      "requiresInstitutionalChip": false,
+      "excludeFutureDates": true,
+      "description": "WalkForward: quoteCount >= 500 AND date <= 2026-05-07",
+      "expectedCount": "~185 stocks"
+    },
+    "limited": {
+      "tier": "Limited",
+      "minQuoteCount": 60,
+      "requiresInstitutionalChip": false,
+      "description": "Limited: quoteCount >= 60 AND date <= 2026-05-07"
+    },
+    "insufficient": {
+      "tier": "Insufficient",
+      "minQuoteCount": 0,
+      "description": "Insufficient: quoteCount < 60"
+    }
+  },
+  "moduleImplemented": "src/lib/data/MvpUniverseLock.ts",
+  "exports": [
+    "buildMvpUniverseCriteria",
+    "classifyMvpUniverseTier",
+    "filterUniverseByMvpTier",
+    "validateMvpUniverseCoverage"
+  ],
+  "testsPass": 83,
+  "observabilityNote": "MVP universe lock criteria definition. Research tool only. Tier classification is data coverage measurement only. Not investment advice. No performance claims."
+}

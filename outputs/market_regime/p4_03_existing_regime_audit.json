@@ -1,0 +1,133 @@
+{
+  "program": "Stock Prediction System",
+  "task": "P4-03 Existing Regime Logic Audit",
+  "generated_at": "2026-05-06",
+  "summary": "Existing MarketRegimeEngine found and audited. Reusable logic with extensions needed.",
+  "existing_files_found": [
+    {
+      "path": "src/lib/market/MarketRegimeEngine.ts",
+      "type": "TypeScript module",
+      "exports": [
+        "detectRegime",
+        "detectRegimeForPeriod",
+        "buildRegimeTimeline"
+      ],
+      "labels_used": [
+        "Bull",
+        "Bear",
+        "Sideways",
+        "Unknown"
+      ],
+      "features_used": [
+        "TAIEX price",
+        "MA50",
+        "MA200",
+        "momentum_20d",
+        "momentum_60d",
+        "volatility_20d"
+      ],
+      "missing_vs_p4_03": [
+        "HIGH_VOLATILITY label",
+        "LOW_CONFIDENCE label",
+        "market_breadth_proxy",
+        "evidence_flags",
+        "pit_safety_flags"
+      ],
+      "confidence_range": "0-100 (P4-03 requires 0-1)",
+      "pit_assessment": "PIT_SAFE - uses only historical rows from prisma query; rolling windows computed from prior rows only"
+    },
+    {
+      "path": "src/lib/__tests__/MarketRegimeEngine.test.ts",
+      "type": "Jest test",
+      "coverage": "detectRegime() only; 8 test cases covering 0/49/50/100/200+ data points, Bull/Bear/Sideways detection, confidence range, limitations presence",
+      "status": "TESTS_EXIST_AND_PASSING"
+    },
+    {
+      "path": "src/app/api/market/regime/route.ts",
+      "type": "Next.js API route",
+      "endpoint": "GET /api/market/regime",
+      "status": "ACTIVE - calls detectRegime(), 5-min cache, returns JSON",
+      "pit_assessment": "PIT_SAFE - live query, no future data used"
+    },
+    {
+      "path": "src/app/api/signals/regime-stratified/route.ts",
+      "type": "Next.js API route",
+      "status": "Research-only - does not affect alphaScore or production signals",
+      "dependency": "RegimeStratifiedEngine.ts"
+    }
+  ],
+  "existing_logic_summary": {
+    "algorithm": "Score-based weighted voting across 5 factors",
+    "factors": [
+      {
+        "name": "price_vs_ma50",
+        "weight": 2
+      },
+      {
+        "name": "price_vs_ma200",
+        "weight": 3
+      },
+      {
+        "name": "ma50_vs_ma200",
+        "weight": 2
+      },
+      {
+        "name": "momentum_20d",
+        "weight": 2,
+        "threshold": "2% bull / -2% bear"
+      },
+      {
+        "name": "momentum_60d",
+        "weight": 2,
+        "threshold": "5% bull / -5% bear"
+      },
+      {
+        "name": "volatility_penalty",
+        "weight": 1,
+        "threshold": ">30% annualized"
+      }
+    ],
+    "regime_thresholds": {
+      "bull": "bullRatio >= 0.7",
+      "bear": "bearRatio >= 0.7",
+      "sideways": "neither bull nor bear >= 0.7"
+    },
+    "confidence_adjustment": "Multiply by 0.6 if MA200 unavailable (< 200 data points)",
+    "data_coverage": "full >= 200 days / limited 50-199 days / insufficient < 50 days"
+  },
+  "reusable_components": [
+    "Score-based weighted factor logic (MA50/MA200/momentum/volatility)",
+    "buildRegimeTimeline() for rolling historical regime labels",
+    "Confidence reduction when MA200 unavailable",
+    "Limitations array pattern"
+  ],
+  "deprecated_or_unsafe_components": [
+    {
+      "component": "detectRegimeForPeriod()",
+      "concern": "Uses periodReturn as regime proxy - looks back from endDate and may reflect future information if called with a future endDate. For P4-03 rolling use, prefer buildRegimeTimeline() instead.",
+      "action": "DO_NOT_USE in P4-03 Python script; use rolling asof approach instead"
+    },
+    {
+      "component": "WalkForwardResult usage via regime-stratified",
+      "concern": "H001-H012 retired; regime-stratified results may reference retired experiments",
+      "action": "DEPRECATED for strategy validation; regime detection logic itself is safe to reuse"
+    }
+  ],
+  "pit_safety_concerns": [
+    "detectRegimeForPeriod(): uses periodReturn computed from full period - could leak if endDate is in the future",
+    "buildRegimeTimeline(): PIT-safe; evaluates only pricesUpToNow.slice(0, i+1) at each step",
+    "detectRegime(): PIT-safe for live use; not suitable for asof_date historical replay without modification"
+  ],
+  "p4_03_decision": {
+    "reuse_or_create_new": "EXTEND_LOGIC_IN_NEW_PYTHON_SCRIPT",
+    "rationale": [
+      "Existing TypeScript engine cannot be imported by Python script directly",
+      "Python script needed for direct SQLite access (no Prisma/Next.js runtime)",
+      "Logic is sound and PIT-safe - port the factor scoring to Python",
+      "Add missing features: market_breadth_proxy, HIGH_VOLATILITY, LOW_CONFIDENCE labels",
+      "Normalize confidence to 0-1 range",
+      "Add evidence_flags and pit_safety_flags per P4-03 requirements"
+    ],
+    "alignment_with_existing": "HIGH - same MA/momentum/volatility factor structure, same score-based voting"
+  }
+}

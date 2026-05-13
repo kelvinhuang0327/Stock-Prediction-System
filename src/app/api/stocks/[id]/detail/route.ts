@@ -12,6 +12,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { apiCache } from '@/lib/cache';
 import { runScreen } from '@/lib/screen/StrategyScreenEngine';
+// P0-02A: as-of gate
+import { resolveAsOfDate } from '@/lib/data/AsOfDataGate';
 import { detectRegime } from '@/lib/market/MarketRegimeEngine';
 import {
   calculateTechnicalSignals,
@@ -174,6 +176,10 @@ export interface StockDetailResponse {
   coverageTier: Pick<StockCoverage, 'tier' | 'tierLabel' | 'quoteDays' | 'hasChip' | 'capabilities' | 'limitations'>;
   limitations: string[];
   disclaimer: string;
+  // P0-02A: as-of gate fields
+  asOfDate: string;
+  asOfGateStatus: string;
+  asOfGateNote: string;
   generatedAt: string;
 }
 
@@ -185,7 +191,13 @@ export async function GET(
 ) {
   const { id } = await params;
   const symbol = id.toUpperCase();
-  const cacheKey = `stock:detail:${symbol}`;
+
+  // P0-02A: resolve asOfDate to cap all DB queries (default = current date)
+  const asOfDateRaw = _req.nextUrl.searchParams.get('asOfDate') ?? undefined;
+  const asOfDate = resolveAsOfDate(asOfDateRaw);
+  const asOfDateDb = asOfDate.replace(/-/g, ''); // YYYYMMDD for DB string comparison
+
+  const cacheKey = `stock:detail:${symbol}:${asOfDate}`;
   const cached = apiCache.get<StockDetailResponse>(cacheKey);
   if (cached) return NextResponse.json(cached);
 
@@ -203,7 +215,7 @@ export async function GET(
   ] = await Promise.all([
     prisma.stock.findUnique({ where: { id: symbol } }).catch(() => null),
     prisma.stockQuote.findMany({
-      where: { stockId: symbol },
+      where: { stockId: symbol, date: { lte: asOfDateDb } },
       orderBy: { date: 'desc' },
       take: 252,
     }).catch(() => []),
@@ -320,6 +332,8 @@ export async function GET(
         maxResults: 10,
         respectMarketRegime: true,
         includeBuckets: ['Strong Candidate', 'Watch', 'Neutral', 'Excluded'],
+        // P0-02A: pass asOf to gate all internal DB queries
+        asOf: asOfDateDb,
       });
       const candidate = screenResult.candidates.find((c) => c.symbol === symbol);
       const excluded = screenResult.excluded.find((e) => e.symbol === symbol);
@@ -648,6 +662,10 @@ export async function GET(
     limitations,
     disclaimer:
       '本頁所有評分、訊號與分析為模型推估結果，僅供研究參考，不構成投資建議。所有結果基於規則計算，不保證未來績效。',
+    // P0-02A: as-of gate metadata
+    asOfDate,
+    asOfGateStatus: 'ACTIVE',
+    asOfGateNote: 'StockQuote capped at asOfDate (date <= asOfDate). runScreen asOf enforced. history route is external-proxy BLOCKED. Fundamentals use year/quarter integers (no direct date gate). Research tool only.',
     generatedAt: new Date().toISOString(),
   };
 

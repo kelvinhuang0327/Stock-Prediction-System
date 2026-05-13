@@ -1,0 +1,15 @@
+# Worker Completion Summary
+
+- Provider: `copilot-daemon`
+- Task ID: 177
+- Execution mode: external command
+
+## Runtime Failure
+Command failed: bash scripts/orchestrator_worker_external.sh 177 "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260501/202605011400-8-hour-multi-domain-optimization-sprint-prompt.md" "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260501/202605011400-8-hour-multi-domain-optimization-sprint-contract.json" "copilot-daemon" "8-Hour Multi-Domain Optimization Sprint (系統 / 功能 / 模擬 / 實戰 / 自我學習)"
+scripts/orchestrator_worker_external.sh: line 88: 17776440363N: value too great for base (error token is "17776440363N")
+
+Changes   +120 -27
+Requests  0 Premium (9m 30s)
+Tokens    ↑ 1.5m • ↓ 10.5k • 1.4m (cached) • 4.5k (reasoning)
+scripts/orchestrator_worker_external.sh: line 99: 17776446143N: value too great for base (error token is "17776446143N")
+scripts/orchestrator_worker_external.sh: line 100: EXEC_END_MS: unbound variable

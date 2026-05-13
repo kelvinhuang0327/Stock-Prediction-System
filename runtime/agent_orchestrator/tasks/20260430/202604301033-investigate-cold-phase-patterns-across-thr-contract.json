@@ -1,0 +1,78 @@
+{
+  "version": "2.0",
+  "objective": "Investigate cold-phase patterns across three structured focuses: cold-phase strategy variants, hybrid entry timing, and distribution bias exploitation.",
+  "scope": [
+    "Phase 1: Perform structural analysis on Investigate cold-phase patterns across three structured focuses: cold-phase strategy variants, hybrid entry timing, and distribution bias exploitation., baseline the current production strategy, and document the existing edge / sharpe / drawdown before proposing any changes.",
+    "Phase 2: Generate at least 3 strategy variants for Investigate cold-phase patterns across three structured focuses: cold-phase strategy variants, hybrid entry timing, and distribution bias exploitation., each with explicit entry, exit, sizing, and risk-control hypotheses.",
+    "Phase 3: Run backtest batches at 150 / 500 / 1500 observations for every strategy variant and record edge, sharpe, drawdown, win rate, and stability notes in a comparable table.",
+    "Phase 4: Execute Monte Carlo simulation at least 1000 runs per strategy, then perform parameter optimization / sensitivity analysis to identify robust vs fragile settings.",
+    "Phase 5: Compare all variants against the existing strategy baseline, rank them quantitatively, and issue a final recommendation with rollout conditions and follow-up validation steps."
+  ],
+  "constraints": [
+    "Do not modify protected paths from project profile.",
+    "Do not claim completion without machine-readable quantitative evidence.",
+    "Every statistical conclusion must cite the corresponding backtest or Monte Carlo evidence.",
+    "If blocked by runtime or permissions, finalize with clear failure evidence rather than narrative-only output.",
+    "Statistical gate required: perm_p < 0.05 on cold-phase edge vs baseline.",
+    "Statistical gate required: Monte Carlo 5th-percentile drawdown < 20%.",
+    "Statistical gate required: McNemar test on hybrid vs cold-phase entry classification.",
+    "Statistical gate required: chi-squared p < 0.05 for distribution bias claim."
+  ],
+  "acceptance_tests": [
+    "The task outputs at least 3 strategy variants with explicit rules and assumptions.",
+    "The task includes backtest evidence for 150 / 500 / 1500 windows and reports edge / sharpe / drawdown for each strategy.",
+    "The task includes Monte Carlo results with at least 1000 runs per strategy plus parameter optimization findings.",
+    "The task compares all variants against the existing strategy and ends with a final recommendation."
+  ],
+  "required_outputs": [
+    "strategy_candidates_3_plus",
+    "backtest_report_150_500_1500",
+    "monte_carlo_report_1000_plus",
+    "comparison_matrix_vs_existing",
+    "final_recommendation",
+    "completed_markdown",
+    "task_result_json",
+    "changed_files_list",
+    "cold_phase_strategy_report.json",
+    "cold_phase_backtest_table.json",
+    "hybrid_entry_strategy_report.json",
+    "hybrid_backtest_table.json",
+    "distribution_bias_report.json",
+    "distribution_backtest_table.json",
+    "phase_execution_plan"
+  ],
+  "forbidden_changes": [
+    ".env",
+    "dev.db",
+    "prisma/migrations/",
+    "deploy/",
+    "archive/"
+  ],
+  "planner_context": {
+    "taskType": "investigate_cold_phase_patterns_across_three_structured_focuses_",
+    "game": null,
+    "regimeState": null,
+    "dedupeKey": "investigate_cold_phase_patterns_across_three_structured_focuses_|GLOBAL|UNSPECIFIED"
+  },
+  "handoff_questions": [
+    "Which recommended strategy (and focus) should move to the next validation cycle and why?",
+    "Which risk factors or weak assumptions still require a follow-up task?"
+  ],
+  "background": "Triggered when COLD_REGIME confidence >= 0.6. Covers C/D/H focus areas from external research protocol.",
+  "trigger_reason": "COLD_REGIME",
+  "expected_duration_hours": 8,
+  "target_files": [
+    "cold_phase_strategy_report.json",
+    "cold_phase_backtest_table.json",
+    "hybrid_entry_strategy_report.json",
+    "hybrid_backtest_table.json",
+    "distribution_bias_report.json",
+    "distribution_backtest_table.json"
+  ],
+  "statistical_requirements": [
+    "perm_p < 0.05 on cold-phase edge vs baseline",
+    "Monte Carlo 5th-percentile drawdown < 20%",
+    "McNemar test on hybrid vs cold-phase entry classification",
+    "chi-squared p < 0.05 for distribution bias claim"
+  ]
+}

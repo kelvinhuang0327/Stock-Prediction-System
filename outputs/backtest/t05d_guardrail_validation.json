@@ -1,0 +1,121 @@
+{
+  "task": "T-05D",
+  "artifactType": "guardrail_validation",
+  "generatedAt": "2026-05-07T00:00:00Z",
+  "safetyLabels": [
+    "T-05D",
+    "Taiwan trading calendar adapter",
+    "deterministic calendar",
+    "static override contract",
+    "no external API",
+    "no DB write",
+    "no LLM call",
+    "no strategy mutation",
+    "no performance claim",
+    "no edge claim"
+  ],
+  "forbiddenTermsChecked": [
+    "buy", "sell", "signal", "roi", "win_rate", "alpha",
+    "edge", "profit", "recommendation", "outperform",
+    "H001", "H002", "H003", "H004", "H005", "H006",
+    "H007", "H008", "H009", "H010", "H011", "H012"
+  ],
+  "guardrails": [
+    {
+      "id": "G01",
+      "name": "No DB write in TaiwanTradingCalendar.ts",
+      "status": "PASS",
+      "evidence": "No Prisma/DB imports. No write operations. Test 14 PASS."
+    },
+    {
+      "id": "G02",
+      "name": "No external API call",
+      "status": "PASS",
+      "evidence": "No fetch(), axios, or http(s):// calls. Test 14b PASS."
+    },
+    {
+      "id": "G03",
+      "name": "No LLM call",
+      "status": "PASS",
+      "evidence": "No openai/anthropic/langchain imports. Test 14c PASS."
+    },
+    {
+      "id": "G04",
+      "name": "No hardcoded TODAY_CAP",
+      "status": "PASS",
+      "evidence": "resolveCurrentDate() used. Non-comment lines checked. Test 14d PASS."
+    },
+    {
+      "id": "G05",
+      "name": "No forbidden field names in calendar output",
+      "status": "PASS",
+      "evidence": "TaiwanTradingCalendarResult, schedule, coverage — no buy/sell/roi/alpha/edge/profit/H001-H012. Test 13/13b/13c PASS."
+    },
+    {
+      "id": "G06",
+      "name": "No forbidden field names in skeleton output (excl. safety contract negation keys)",
+      "status": "PASS",
+      "evidence": "noBuySellOutput is a negation guardrail key, excluded. Test 13d PASS."
+    },
+    {
+      "id": "G07",
+      "name": "Calendar is deterministic",
+      "status": "PASS",
+      "evidence": "Same inputs always return same output. Test 7b PASS."
+    },
+    {
+      "id": "G08",
+      "name": "Saturday excluded from trading days",
+      "status": "PASS",
+      "evidence": "Test 3 PASS."
+    },
+    {
+      "id": "G09",
+      "name": "Sunday excluded from trading days",
+      "status": "PASS",
+      "evidence": "Test 4 PASS."
+    },
+    {
+      "id": "G10",
+      "name": "holidayOverrides properly excludes weekdays",
+      "status": "PASS",
+      "evidence": "Test 5 PASS."
+    },
+    {
+      "id": "G11",
+      "name": "specialTradingDayOverrides includes weekend dates",
+      "status": "PASS",
+      "evidence": "Test 6 PASS."
+    },
+    {
+      "id": "G12",
+      "name": "T-05B tests preserved (45/45)",
+      "status": "PASS",
+      "evidence": "WalkForwardEngine changes backward compatible. T-05B regression 45/45 PASS."
+    },
+    {
+      "id": "G13",
+      "name": "T-05C tests preserved (45/45)",
+      "status": "PASS",
+      "evidence": "No changes to RegimeContextLoader. T-05C regression 45/45 PASS."
+    },
+    {
+      "id": "G14",
+      "name": "Monthly rebalance produces no strategy/trading conclusions",
+      "status": "PASS",
+      "evidence": "Output fields are: monthKey, scheduledTradingDate, calendarBasis, availableTradingDaysInMonth, status. No forbidden terms."
+    },
+    {
+      "id": "G15",
+      "name": "500-day lookback contract supported",
+      "status": "PASS",
+      "evidence": "Test 18 PASS. ~350 trading days for 500-calendar-day range."
+    }
+  ],
+  "guardrailSummary": {
+    "total": 15,
+    "pass": 15,
+    "warn": 0,
+    "fail": 0
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "program": "Stock Prediction System",
+  "task": "P4-02 Readiness Decision",
+  "generated_at": "2026-05-06",
+  "verdicts": {
+    "p4_03_can_start": true,
+    "p4_04_blocked": true,
+    "p0_blockers_remain": false,
+    "pit_leakage_risk": false,
+    "next_round_recommendation": "P4-03_MARKET_REGIME_CLASSIFIER",
+    "need_to_backfill_chip_first": false,
+    "need_to_backfill_revenue_first": false,
+    "need_to_backfill_financial_first": false,
+    "t05_redesign_required": true,
+    "t05_redesign_parallel_to_p4_03": true
+  },
+  "p4_03_readiness": {
+    "verdict": "CAN_START",
+    "evidence": [
+      "TAIEX 766 trading days - exceeds 500d requirement",
+      "StockQuote 185 symbols with >= 500 trading days",
+      "MarketIndex/StockQuote 727 overlapping dates - JOIN safe",
+      "16 features are P4_03_READY (price + market regime + industry/sector)",
+      "All date fields 100% ISO - no date format blocker",
+      "build-p4-feature-foundation.py executes successfully"
+    ],
+    "features_available_for_p4_03": [
+      "daily_return",
+      "close_to_ma20",
+      "close_to_ma60",
+      "volume_ratio_20d",
+      "volatility_20d",
+      "volatility_60d",
+      "taiex_return_1d",
+      "taiex_return_20d",
+      "taiex_ma50",
+      "taiex_ma200",
+      "taiex_volatility_20d",
+      "market_breadth_proxy",
+      "industry_code",
+      "industry_name",
+      "sector_group",
+      "sector_index_return"
+    ]
+  },
+  "portfolio_walkforward_readiness": {
+    "verdict": "PARTIAL_READY",
+    "evidence": [
+      "16 P4_03_READY features also usable in walk-forward skeleton",
+      "T-05 deprecated - portfolio walk-forward skeleton (P4-04) requires redesign",
+      "Chip/revenue/financial features not yet available for full walk-forward"
+    ],
+    "features_available": [
+      "daily_return",
+      "close_to_ma20",
+      "close_to_ma60",
+      "volume_ratio_20d",
+      "volatility_20d",
+      "volatility_60d",
+      "taiex_return_1d",
+      "taiex_return_20d",
+      "taiex_ma50",
+      "taiex_ma200",
+      "taiex_volatility_20d",
+      "market_breadth_proxy",
+      "industry_code",
+      "industry_name",
+      "sector_group",
+      "sector_index_return"
+    ]
+  },
+  "prototype_only_features": [
+    "foreign_net_buy",
+    "investment_trust_net_buy",
+    "dealer_net_buy",
+    "chip_net_buy_5d",
+    "chip_net_buy_20d",
+    "eps",
+    "latest_financial_report_asof",
+    "latest_revenue_available_asof"
+  ],
+  "deferred_features": [
+    "revenue_yoy",
+    "revenue_mom",
+    "revenue_growth_trend_3m",
+    "gross_margin",
+    "operating_margin"
+  ],
+  "do_not_use_features": [
+    "roe",
+    "debt_ratio"
+  ],
+  "p4_04_blocker_detail": {
+    "institutional_chip": {
+      "current_days": 236,
+      "required_days": 500,
+      "gap": 264,
+      "status": "BLOCKED"
+    },
+    "monthly_revenue": {
+      "current_months": 2,
+      "required_months": 13,
+      "status": "INSUFFICIENT_HISTORY"
+    },
+    "financial_report": {
+      "current_quarters": 1,
+      "required_quarters": 8,
+      "status": "LIMITED_COVERAGE"
+    },
+    "t05_status": "DEPRECATED - H001-H012 all retired; needs portfolio walk-forward redesign"
+  },
+  "p0_blockers": [],
+  "pit_leakage_assessment": {
+    "verdict": "NO_LEAKAGE_IN_CURRENT_IMPLEMENTATION",
+    "evidence": [
+      "build-p4-feature-foundation.py applies strict date <= asof_date filter",
+      "MarketIndex: NULL fallback on missing dates (no forward-fill)",
+      "MonthlyRevenue: conservative (M+1)-15 lag applied",
+      "FinancialReport: TWSE quarterly announcement lag applied",
+      "InstitutionalChip: T+1 lag applied",
+      "PIT check in feature matrix output: 0 future-date rows detected"
+    ]
+  },
+  "next_round_decision": {
+    "primary": "P4-03 Market Regime Classifier",
+    "parallel": "T-05 Redesign as portfolio walk-forward skeleton (P4-04 prep)",
+    "rationale": "P4-03 has 16 production-ready features and 766d TAIEX. P4-04 still blocked by chip/revenue/financial depth."
+  }
+}

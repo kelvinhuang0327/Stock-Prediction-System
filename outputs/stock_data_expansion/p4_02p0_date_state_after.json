@@ -1,0 +1,89 @@
+{
+  "snapshot": "AFTER_NORMALIZATION_AND_TAIEX_REFRESH",
+  "generated_at": "2026-05-06T11:00:00Z",
+  "normalization_result": {
+    "total_converted": 0,
+    "total_deduped": 2682,
+    "note": "All 2682 ROC-format rows were duplicates of already-existing ISO rows for 2026-03-27; they were safely removed"
+  },
+  "taiex_refresh_result": {
+    "rows_added": 32,
+    "previous_max_date": "2026-03-17",
+    "new_max_date": "2026-05-05",
+    "months_fetched": [
+      "2026-03",
+      "2026-04",
+      "2026-05"
+    ]
+  },
+  "tables": [
+    {
+      "table": "StockQuote",
+      "date_col": "date",
+      "row_count": 129151,
+      "min_date": "1970-12-04",
+      "max_date": "2026-05-18",
+      "distinct_dates": 804,
+      "ISO_count": 129151,
+      "ROC_7_count": 0,
+      "YYYYMMDD_8_count": 0,
+      "null_empty_count": 0,
+      "unknown_count": 0,
+      "iso_ratio_pct": 100.0,
+      "non_iso_count": 0
+    },
+    {
+      "table": "MarketIndex",
+      "date_col": "date",
+      "row_count": 2665,
+      "min_date": "2017-12-01",
+      "max_date": "2026-05-18",
+      "distinct_dates": 767,
+      "ISO_count": 2665,
+      "ROC_7_count": 0,
+      "YYYYMMDD_8_count": 0,
+      "null_empty_count": 0,
+      "unknown_count": 0,
+      "iso_ratio_pct": 100.0,
+      "non_iso_count": 0
+    },
+    {
+      "table": "InstitutionalChip",
+      "date_col": "date",
+      "row_count": 291068,
+      "min_date": "2025-05-02",
+      "max_date": "2026-05-05",
+      "distinct_dates": 236,
+      "ISO_count": 291068,
+      "ROC_7_count": 0,
+      "YYYYMMDD_8_count": 0,
+      "null_empty_count": 0,
+      "unknown_count": 0,
+      "iso_ratio_pct": 100.0,
+      "non_iso_count": 0
+    },
+    {
+      "table": "StockMetrics",
+      "date_col": "date",
+      "row_count": 5356,
+      "min_date": "2026-03-27",
+      "max_date": "2026-05-18",
+      "distinct_dates": 5,
+      "ISO_count": 5356,
+      "ROC_7_count": 0,
+      "YYYYMMDD_8_count": 0,
+      "null_empty_count": 0,
+      "unknown_count": 0,
+      "iso_ratio_pct": 100.0,
+      "non_iso_count": 0
+    }
+  ],
+  "taiex": {
+    "count": 766,
+    "min_date": "2017-12-01",
+    "max_date": "2026-05-05",
+    "depth_days": 766,
+    "sufficient_for_500d_window": true
+  },
+  "stockquote_symbols_ge500": 185
+}

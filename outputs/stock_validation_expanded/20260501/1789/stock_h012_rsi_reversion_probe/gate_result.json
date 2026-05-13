@@ -1,0 +1,49 @@
+{
+  "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+  "base_hypothesis_id": "STOCK_H002_RSI_REVERSION",
+  "symbol": "1789",
+  "as_of_date": "2026-05-01",
+  "status": "OBSERVATION_ONLY",
+  "allowed_scope": "exploratory_observation_only",
+  "promotion_allowed": false,
+  "primary_window": 500,
+  "secondary_window": 150,
+  "window_results": [
+    {
+      "status": "DATA_INSUFFICIENT",
+      "window_days": 500,
+      "symbol": "1789",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "error": "symbol_not_in_scope",
+      "pit_passed": false,
+      "pit_leakage": false,
+      "p_value": 1.0,
+      "primary_raw_p_value": 1.0,
+      "primary_bh_fdr_q_value": 1.0,
+      "primary_bh_fdr_pass": false,
+      "diagnostic_bh_fdr_q_value": 1.0,
+      "diagnostic_bh_fdr_pass": false,
+      "window_role": "primary",
+      "eligible_for_review": false
+    },
+    {
+      "status": "DATA_INSUFFICIENT",
+      "window_days": 150,
+      "symbol": "1789",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "error": "symbol_not_in_scope",
+      "pit_passed": false,
+      "pit_leakage": false,
+      "p_value": 1.0,
+      "primary_raw_p_value": 1.0,
+      "primary_bh_fdr_q_value": 1.0,
+      "primary_bh_fdr_pass": false,
+      "diagnostic_bh_fdr_q_value": 1.0,
+      "diagnostic_bh_fdr_pass": false,
+      "window_role": "secondary",
+      "eligible_for_review": false
+    }
+  ],
+  "run_ts": "2026-05-05T14:59:49.213656+00:00",
+  "pipeline_version": "P3-13"
+}

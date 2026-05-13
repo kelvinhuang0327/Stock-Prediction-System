@@ -1,0 +1,122 @@
+{
+  "task": "T-06 Guardrail Validation",
+  "generated_at": "2026-05-06T14:18:00+08:00",
+  "overall_result": "PASS",
+  "total_checks": 22,
+  "passed": 22,
+  "failed": 0,
+  "checks": [
+    {
+      "check": "daily_report_section_json_parseable",
+      "result": "PASS",
+      "notes": "Loaded successfully"
+    },
+    {
+      "check": "daily_ops_report_json_parseable",
+      "result": "PASS",
+      "notes": "Loaded successfully"
+    },
+    {
+      "check": "no_h001_h012_in_section",
+      "result": "PASS",
+      "notes": "found=[]"
+    },
+    {
+      "check": "no_h001_h012_in_ops_report",
+      "result": "PASS",
+      "notes": "found=[]"
+    },
+    {
+      "check": "no_forbidden_fields_in_section",
+      "result": "PASS",
+      "notes": "found=[]"
+    },
+    {
+      "check": "no_forbidden_fields_in_ops_report",
+      "result": "PASS",
+      "notes": "found=[]"
+    },
+    {
+      "check": "no_production_write",
+      "result": "PASS",
+      "notes": "build-daily-regime-walkforward-report.py is read-only"
+    },
+    {
+      "check": "no_external_api_call",
+      "result": "PASS",
+      "notes": "Script reads only local artifact JSON files"
+    },
+    {
+      "check": "report_date_lte_20260506",
+      "result": "PASS",
+      "notes": "report_date=2026-05-06"
+    },
+    {
+      "check": "latest_regime_date_lte_20260506",
+      "result": "PASS",
+      "notes": "regime_date=2026-05-06"
+    },
+    {
+      "check": "latest_wf_date_lte_20260506",
+      "result": "PASS",
+      "notes": "wf_date=2026-05-06"
+    },
+    {
+      "check": "section_has_data_quality_flags",
+      "result": "PASS",
+      "notes": "field present"
+    },
+    {
+      "check": "section_has_pit_safety_status",
+      "result": "PASS",
+      "notes": "field present"
+    },
+    {
+      "check": "section_has_guardrail_status",
+      "result": "PASS",
+      "notes": "field present"
+    },
+    {
+      "check": "section_has_deferred_features",
+      "result": "PASS",
+      "notes": "field present"
+    },
+    {
+      "check": "pit_safety_status_is_safe",
+      "result": "PASS",
+      "notes": "status=SAFE"
+    },
+    {
+      "check": "guardrail_status_is_pass",
+      "result": "PASS",
+      "notes": "status=PASS"
+    },
+    {
+      "check": "ops_report_has_do_not_interpret_as",
+      "result": "PASS",
+      "notes": "field present"
+    },
+    {
+      "check": "ops_report_disclaimer_complete",
+      "result": "PASS",
+      "notes": "count=6"
+    },
+    {
+      "check": "section_has_regime_label",
+      "result": "PASS",
+      "notes": "field present"
+    },
+    {
+      "check": "section_has_regime_confidence",
+      "result": "PASS",
+      "notes": "field present"
+    },
+    {
+      "check": "section_has_walk_forward_distribution",
+      "result": "PASS",
+      "notes": "field present"
+    }
+  ],
+  "h001_h012_note": "H001-H012 exist in TypeScript codebase but are NOT referenced in T-06 artifacts",
+  "forbidden_fields_note": "'recommendation' exists as recommendationBucket in TS DailyReportEngine but is NOT in T-06 Python outputs"
+}

@@ -29,16 +29,16 @@
       "win_rate": 0.4,
       "edge_pp": -10.0,
       "tx_cost_bps": 10,
-      "p_value": 0.0,
+      "p_value": 0.1,
       "n_permutations": 20,
       "one_tailed": true,
       "symbol": "0055",
       "hypothesis_id": "STOCK_H001_20D_MOMENTUM",
       "pit_passed": true,
       "pit_leakage": false,
-      "raw_p_value": 0.0,
-      "bh_fdr_q_value": 0.0,
-      "bh_fdr_pass": true
+      "raw_p_value": 0.1,
+      "bh_fdr_q_value": 1.0,
+      "bh_fdr_pass": false
     },
     {
       "status": "OK",
@@ -53,17 +53,17 @@
       "win_rate": 0.3263,
       "edge_pp": -17.37,
       "tx_cost_bps": 10,
-      "p_value": 0.3,
+      "p_value": 0.35,
       "n_permutations": 20,
       "one_tailed": true,
       "symbol": "0055",
       "hypothesis_id": "STOCK_H001_20D_MOMENTUM",
       "pit_passed": true,
       "pit_leakage": false,
-      "raw_p_value": 0.3,
-      "bh_fdr_q_value": 0.9,
+      "raw_p_value": 0.35,
+      "bh_fdr_q_value": 1.0,
       "bh_fdr_pass": false
     }
   ],
-  "run_ts": "2026-05-05T06:08:26.863509+00:00"
+  "run_ts": "2026-05-05T09:58:35.260736+00:00"
 }

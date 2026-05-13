@@ -2,8 +2,9 @@
   "run_id": "STOCK_H001_20D_MOMENTUM-0055-2026-05-01",
   "hypothesis_id": "STOCK_H001_20D_MOMENTUM",
   "symbol": "0055",
-  "pipeline_version": "P3-07",
-  "run_ts": "2026-05-05T06:08:26.863509+00:00",
+  "pipeline_version": "P3-07/P3-08",
+  "registry": "stock_hypothesis_registry.json",
+  "run_ts": "2026-05-05T09:58:35.260736+00:00",
   "as_of_date": "2026-05-01",
   "window_days_max": 600,
   "windows_evaluated": [

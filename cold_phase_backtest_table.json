@@ -1,0 +1,29 @@
+{
+  "150": {
+    "edge_daily": 0.002140852318544196,
+    "edge_annualized_pct": 53.94947842731375,
+    "sharpe": 3.167310202831159,
+    "max_drawdown_pct": -9.067192798996434,
+    "total_return_pct": 35.19442107972011,
+    "win_rate": 0.6,
+    "stability_notes": "stable"
+  },
+  "500": {
+    "edge_daily": 0.001260882117433618,
+    "edge_annualized_pct": 31.774229359327173,
+    "sharpe": 1.9058458868682142,
+    "max_drawdown_pct": -10.18487068251344,
+    "total_return_pct": 83.45996327369578,
+    "win_rate": 0.578,
+    "stability_notes": "stable"
+  },
+  "1500": {
+    "edge_daily": 0.0007425068485623307,
+    "edge_annualized_pct": 18.711172583770736,
+    "sharpe": 1.158367916960864,
+    "max_drawdown_pct": -28.496660717696436,
+    "total_return_pct": 185.79703007737973,
+    "win_rate": 0.5473333333333333,
+    "stability_notes": "stable"
+  }
+}

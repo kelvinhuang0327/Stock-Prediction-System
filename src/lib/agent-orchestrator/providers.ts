@@ -768,12 +768,15 @@ export function resolveWorkerCommand(): string | undefined {
 
 export function interpolateCommand(template: string, input: WorkerExecutionInput): string {
   const replace = (source: string, token: string, value: string): string => source.split(token).join(value);
+  const resolvedModel =
+    input.workerCopilotModel ?? process.env['AGENT_ORCHESTRATOR_WORKER_MODEL'] ?? '';
   let output = template;
   output = replace(output, '{task_id}', String(input.taskId));
   output = replace(output, '{prompt_path}', input.promptPath);
   output = replace(output, '{contract_path}', input.contractPath);
   output = replace(output, '{provider}', input.workerProvider);
   output = replace(output, '{objective}', input.objective);
+  output = replace(output, '{model}', resolvedModel);
   return output;
 }
 

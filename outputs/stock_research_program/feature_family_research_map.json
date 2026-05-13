@@ -1,0 +1,188 @@
+{
+  "program": "Stock Prediction System",
+  "task": "P3-14 Feature Family Research Map",
+  "generated_at": "2026-05-06T00:00:13.094334Z",
+  "note": "This is a research map only. No hypotheses defined here. No validation performed.",
+  "feature_families": [
+    {
+      "id": "FF-A",
+      "name": "Cross-Sectional Relative Strength",
+      "description": "Ranking symbols by relative performance within a universe or sector",
+      "features": [
+        "sector_rank",
+        "universe_rank",
+        "risk_adjusted_rank",
+        "percentile_ranking"
+      ],
+      "expected_economic_rationale": "Relative strength is a documented anomaly - winners tend to persist short-term. Cross-sectional ranking removes market-wide drift and isolates stock-specific signal.",
+      "required_data_source": "StockQuote (exists), sector metadata (partially exists in Stock.industry but mostly empty)",
+      "current_availability": "PARTIAL",
+      "pit_risk": "LOW - rankings computed from available historical prices only",
+      "expected_signal_density": "HIGH - all symbols get a rank at each date",
+      "priority_score": 9,
+      "recommended_next_action": "P4-02 Cross-Sectional Ranking Framework - build universe rank from existing StockQuote data first, then add sector rank when industry metadata is populated"
+    },
+    {
+      "id": "FF-B",
+      "name": "Market Regime",
+      "description": "Classifying overall market state to condition hypotheses",
+      "features": [
+        "index_trend_regime",
+        "index_volatility_regime",
+        "bull_bear_sideways_classifier",
+        "volatility_compression_expansion"
+      ],
+      "expected_economic_rationale": "Strategy performance varies significantly by market regime. Bull-regime momentum and bear-regime reversal are well-documented. Regime-blind hypotheses suffer from averaging across very different conditions.",
+      "required_data_source": "MarketIndex table (EXISTS - TAIEX and sector indices, 2900 rows, 2017-2026)",
+      "current_availability": "EXISTS",
+      "pit_risk": "LOW - index values are published contemporaneously",
+      "expected_signal_density": "MEDIUM - regime changes less frequently than price signals",
+      "priority_score": 10,
+      "recommended_next_action": "P4-03 Market Regime Classifier - build TAIEX-based regime model from existing MarketIndex data"
+    },
+    {
+      "id": "FF-C",
+      "name": "Liquidity and Volume Regime",
+      "description": "Filtering signals by liquidity quality and volume persistence",
+      "features": [
+        "turnover_rate",
+        "liquidity_percentile",
+        "abnormal_volume_with_persistence",
+        "avoid_one_day_spike"
+      ],
+      "expected_economic_rationale": "Illiquid signals cannot be executed. Persistent abnormal volume is more meaningful than single-day spikes. Liquidity filtering removes false signals.",
+      "required_data_source": "StockQuote volume (EXISTS), capital/shares from Stock table (partially exists)",
+      "current_availability": "PARTIAL",
+      "pit_risk": "LOW",
+      "expected_signal_density": "MEDIUM",
+      "priority_score": 7,
+      "recommended_next_action": "Compute volume-based liquidity metrics from existing StockQuote data. Enhance with capital data if Stock.capital is populated."
+    },
+    {
+      "id": "FF-D",
+      "name": "Institutional and Flow Data",
+      "description": "Foreign investor, investment trust, dealer, and margin flows",
+      "features": [
+        "foreign_investor_net_buy",
+        "investment_trust_flow",
+        "dealer_flow",
+        "margin_balance",
+        "short_balance"
+      ],
+      "expected_economic_rationale": "Foreign institutional investors have information advantages and their sustained buying predicts price appreciation. Trust fund flows reflect fundamental-based demand.",
+      "required_data_source": "InstitutionalChip table (EXISTS - 291K rows, 1358 symbols, 2025-05-02 to 2026-05-05)",
+      "current_availability": "EXISTS - but only 1 year of history (2025-2026), insufficient for robust backtesting",
+      "pit_risk": "LOW - institutional data published next trading day",
+      "expected_signal_density": "HIGH - daily data",
+      "priority_score": 8,
+      "recommended_next_action": "P4-01 Data Audit - confirm historical depth. Only 1 year of institutional data may be insufficient for 500d window testing. Backfill required.",
+      "blocker": "InstitutionalChip only covers 2025-05-02 to 2026-05-05. Need historical data for at least 2022-2026 for robust validation."
+    },
+    {
+      "id": "FF-E",
+      "name": "Corporate Event Context",
+      "description": "Using earnings, dividends, monthly revenue, and ex-right events as conditioning",
+      "features": [
+        "earnings_surprise",
+        "dividend_yield",
+        "ex_right_ex_dividend_adjustment",
+        "monthly_revenue_growth"
+      ],
+      "expected_economic_rationale": "Corporate events create predictable price reactions. Revenue surprises and earnings beats have well-documented price drift. Ex-dividend effects are mechanical.",
+      "required_data_source": "MonthlyRevenue (EXISTS - 2143 rows, 1074 symbols, but only 2026-02 to 2026-03), FinancialReport (EXISTS - 957 rows, limited quarters)",
+      "current_availability": "PARTIAL - very limited history",
+      "pit_risk": "MEDIUM - revenue announced after period end, must use announcement date not report period",
+      "expected_signal_density": "LOW to MEDIUM - monthly/quarterly events",
+      "priority_score": 6,
+      "recommended_next_action": "P4-01 Data Audit - MonthlyRevenue and FinancialReport have very limited history. Need multi-year backfill before hypothesis design.",
+      "blocker": "MonthlyRevenue only has 2026-02 to 2026-03. Historical backfill critical."
+    },
+    {
+      "id": "FF-F",
+      "name": "Risk Management Features",
+      "description": "Downside risk metrics for position sizing and signal filtering",
+      "features": [
+        "max_drawdown",
+        "volatility_targeting",
+        "downside_volatility",
+        "stop_loss_simulation_paper_only"
+      ],
+      "expected_economic_rationale": "Risk-adjusted signals have better Sharpe. Position sizing by volatility targeting reduces left tail. Stop-loss levels define acceptable risk before entry.",
+      "required_data_source": "StockQuote (EXISTS - sufficient for computing historical volatility and drawdown)",
+      "current_availability": "EXISTS - computable from existing data",
+      "pit_risk": "LOW - historical volatility computed from past prices only",
+      "expected_signal_density": "N/A - these are filters and sizing tools, not signals",
+      "priority_score": 7,
+      "recommended_next_action": "Incorporate into all next-gen hypothesis designs as standard filters. Not a standalone hypothesis family."
+    },
+    {
+      "id": "FF-G",
+      "name": "Portfolio-Level Hypotheses",
+      "description": "Basket-level signals rather than single-stock signals",
+      "features": [
+        "top_n_ranking_basket",
+        "long_only_basket",
+        "sector_neutral_basket",
+        "etf_vs_stock_bucket_comparison"
+      ],
+      "expected_economic_rationale": "Portfolio-level signals average out idiosyncratic noise. Cross-sectional ranking strategies have stronger statistical power than single-stock tests. Sector-neutral removes industry-wide momentum.",
+      "required_data_source": "StockQuote (EXISTS), sector metadata (PARTIAL), ETF classification (PARTIAL)",
+      "current_availability": "PARTIAL",
+      "pit_risk": "LOW - rankings computed from available data",
+      "expected_signal_density": "HIGH - portfolio rebalanced periodically",
+      "priority_score": 9,
+      "recommended_next_action": "P4-04 Portfolio-Level Backtester - build basket validation framework. This represents the next qualitative leap from single-stock testing."
+    }
+  ],
+  "priority_ranking": [
+    {
+      "rank": 1,
+      "family": "FF-B",
+      "name": "Market Regime",
+      "priority_score": 10,
+      "reason": "Data exists now (TAIEX). Can be built immediately in P4-03."
+    },
+    {
+      "rank": 2,
+      "family": "FF-A",
+      "name": "Cross-Sectional Relative Strength",
+      "priority_score": 9,
+      "reason": "Data exists (StockQuote). High signal density. Well-documented anomaly."
+    },
+    {
+      "rank": 3,
+      "family": "FF-G",
+      "name": "Portfolio-Level Hypotheses",
+      "priority_score": 9,
+      "reason": "Higher statistical power than single-stock. Builds on FF-A ranking."
+    },
+    {
+      "rank": 4,
+      "family": "FF-D",
+      "name": "Institutional Flow",
+      "priority_score": 8,
+      "reason": "Data exists but only 1 year. Need backfill. High potential."
+    },
+    {
+      "rank": 5,
+      "family": "FF-C",
+      "name": "Liquidity and Volume Regime",
+      "priority_score": 7,
+      "reason": "Computable from existing data. Useful as filter."
+    },
+    {
+      "rank": 6,
+      "family": "FF-F",
+      "name": "Risk Management Features",
+      "priority_score": 7,
+      "reason": "Computable from existing data. Should be standard filter in all hypotheses."
+    },
+    {
+      "rank": 7,
+      "family": "FF-E",
+      "name": "Corporate Event Context",
+      "priority_score": 6,
+      "reason": "Limited history. Need major backfill before usable."
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+  "symbol": "1314",
+  "as_of_date": "2026-05-01",
+  "pipeline_version": "P3-13",
+  "seed": 1548237801,
+  "n_permutations": 500,
+  "bh_fdr_alpha": 0.1,
+  "tx_cost_bps": 10,
+  "primary_window": 500,
+  "secondary_window": 150,
+  "safety_confirmations": {
+    "no_production_write": true,
+    "no_trade_execution": true,
+    "not_trading_advice": true,
+    "real_data_read_only": true,
+    "primary_bh_fdr_corrected": true,
+    "diagnostic_bh_fdr_corrected": true,
+    "pit_guard_enforced": true,
+    "no_random_split": true,
+    "no_auto_promotion": true,
+    "refinement_guard_passed": true
+  },
+  "run_ts": "2026-05-05T14:59:49.213656+00:00"
+}

@@ -5,7 +5,7 @@ import { promisify } from 'node:util';
 const execFile = promisify(execFileCallback);
 
 export type LlmExecutionMode = 'safe-run' | 'hard-off';
-export type LlmSkipReason = 'GLOBAL_HARD_OFF' | 'SCHEDULER_DISABLED' | 'SAFE_RUN_BLOCK';
+export type LlmSkipReason = 'GLOBAL_HARD_OFF' | 'SCHEDULER_DISABLED' | 'SAFE_RUN_BLOCK' | 'PROVIDER_NOT_IN_ALLOWLIST';
 export type LlmCallerContext = 'background' | 'manual';
 
 export interface LlmPolicyDecision {
@@ -95,6 +95,7 @@ export async function recordLlmExecution(input: PolicyCommandInput): Promise<{ o
 
 export function getPolicySkipMessage(reason: LlmSkipReason | null): string {
   if (reason === 'GLOBAL_HARD_OFF') return 'GLOBAL_HARD_OFF — skip execution';
+  if (reason === 'PROVIDER_NOT_IN_ALLOWLIST') return 'PROVIDER_NOT_IN_ALLOWLIST — skip execution';
   if (reason === 'SAFE_RUN_BLOCK') return 'SAFE_RUN_BLOCK — skip execution';
   return 'SCHEDULER_DISABLED — skip execution';
 }

@@ -1,0 +1,103 @@
+{
+  "task": "T-05B_WALK_FORWARD_BACKTEST_SKELETON_V2",
+  "generatedAt": "2026-05-07T04:41:31.000Z",
+  "currentDate": "2026-05-07",
+  "lookbackDays": 500,
+  "rangeStart": "2024-12-27",
+  "rangeEnd": "2026-05-07",
+  "totalDays": 358,
+  "labels": ["T-05B", "observability-only", "no edge claim", "no production write", "no DB write", "no external API", "no LLM call", "no strategy mutation", "no H001-H012"],
+  "safetyContract": {
+    "noDbWrite": true,
+    "noExternalApiCall": true,
+    "noLlmCall": true,
+    "noBuySellOutput": true,
+    "noTradingClaims": true,
+    "noPerformanceClaims": true,
+    "noLegacyHypotheses": true,
+    "resolveCurrentDateUsed": true,
+    "noHardcodedTodayCap": true,
+    "persistedRegimeResultReadOnly": true,
+    "observabilityOnly": true
+  },
+  "summary": {
+    "totalRecords": 358,
+    "recordsWithRegimeContext": 0,
+    "recordsMissingRegimeContext": 358,
+    "regimeDistribution": {},
+    "totalRebalancePoints": 17,
+    "candidateCountRange": {
+      "min": 5,
+      "max": 5
+    },
+    "missingDataDays": 358
+  },
+  "note": "Sample artifact. regime context map was empty (no persisted MarketRegimeResult injected). In production use, inject a pre-loaded context map from getLatestMarketRegimeContext(). First 3 and last 1 records shown; full output contains all 358 records.",
+  "rebalanceSchedule": {
+    "rangeStart": "2024-12-27",
+    "rangeEnd": "2026-05-07",
+    "rebalanceCount": 17,
+    "observabilityNote": "Monthly rebalance skeleton only. Observability metadata only. No trading strategy conclusions.",
+    "entriesSample": [
+      { "rebalanceDate": "2024-12-27", "monthLabel": "2024-12", "tradingDayIndex": 0, "dataAvailabilityFlag": "AVAILABLE" },
+      { "rebalanceDate": "2025-01-02", "monthLabel": "2025-01", "tradingDayIndex": 5, "dataAvailabilityFlag": "AVAILABLE" },
+      { "rebalanceDate": "2025-02-03", "monthLabel": "2025-02", "tradingDayIndex": 27, "dataAvailabilityFlag": "AVAILABLE" },
+      { "rebalanceDate": "2025-03-03", "monthLabel": "2025-03", "tradingDayIndex": 47, "dataAvailabilityFlag": "AVAILABLE" },
+      { "rebalanceDate": "2026-04-01", "monthLabel": "2026-04", "tradingDayIndex": 331, "dataAvailabilityFlag": "AVAILABLE" },
+      { "rebalanceDate": "2026-05-04", "monthLabel": "2026-05", "tradingDayIndex": 354, "dataAvailabilityFlag": "AVAILABLE" }
+    ]
+  },
+  "recordsSample": [
+    {
+      "asofDate": "2024-12-27",
+      "regimeContextAvailable": false,
+      "regimeLabel": null,
+      "regimeConfidence": null,
+      "regimeFreshnessStatus": "MISSING",
+      "regimeFreshnessLagDays": null,
+      "candidateCount": 5,
+      "dataAvailabilityFlags": ["regime-context-missing"],
+      "pitSafetyNote": "PIT-safe: regime context date <= 2024-12-27",
+      "placeholderMetrics": {
+        "note": "Skeleton only. No performance conclusions.",
+        "forwardReturnPlaceholder": null,
+        "benchmarkReturnPlaceholder": null,
+        "drawdownPlaceholder": null
+      }
+    },
+    {
+      "asofDate": "2024-12-30",
+      "regimeContextAvailable": false,
+      "regimeLabel": null,
+      "regimeConfidence": null,
+      "regimeFreshnessStatus": "MISSING",
+      "regimeFreshnessLagDays": null,
+      "candidateCount": 5,
+      "dataAvailabilityFlags": ["regime-context-missing"],
+      "pitSafetyNote": "PIT-safe: regime context date <= 2024-12-30",
+      "placeholderMetrics": {
+        "note": "Skeleton only. No performance conclusions.",
+        "forwardReturnPlaceholder": null,
+        "benchmarkReturnPlaceholder": null,
+        "drawdownPlaceholder": null
+      }
+    },
+    {
+      "asofDate": "2024-12-31",
+      "regimeContextAvailable": false,
+      "regimeLabel": null,
+      "regimeConfidence": null,
+      "regimeFreshnessStatus": "MISSING",
+      "regimeFreshnessLagDays": null,
+      "candidateCount": 5,
+      "dataAvailabilityFlags": ["regime-context-missing"],
+      "pitSafetyNote": "PIT-safe: regime context date <= 2024-12-31",
+      "placeholderMetrics": {
+        "note": "Skeleton only. No performance conclusions.",
+        "forwardReturnPlaceholder": null,
+        "benchmarkReturnPlaceholder": null,
+        "drawdownPlaceholder": null
+      }
+    }
+  ]
+}

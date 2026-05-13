@@ -1,0 +1,41 @@
+{
+  "verification_id": "T08_PERSISTENCE_VERIFICATION",
+  "verification_date": "2026-05-06",
+  "generated_at": "2026-05-06T14:46:33.382246",
+  "overall_status": "PASS",
+  "checks": {
+    "table_exists": true,
+    "row_count": 300,
+    "row_count_matches_input": true,
+    "min_date": "2025-01-15",
+    "max_date": "2026-05-06",
+    "max_date_within_limit": true,
+    "unique_date_source_version_count": 300,
+    "duplicate_date_source_version_count": 0,
+    "no_duplicates": true,
+    "regime_label_distribution": {
+      "BEAR": 4,
+      "BULL": 126,
+      "HIGH_VOLATILITY": 63,
+      "SIDEWAYS": 107
+    },
+    "confidence_min": 0.3846,
+    "confidence_max": 1.0,
+    "confidence_avg": 0.81668,
+    "invalid_date_count": 0,
+    "future_date_count": 0,
+    "invalid_regime_label_count": 0,
+    "invalid_confidence_count": 0,
+    "forbidden_field_count_in_schema": 0,
+    "h001_h012_string_count_in_rows": 0,
+    "allowed_sources": [
+      "P4_03_MARKET_REGIME_CLASSIFIER"
+    ],
+    "allowed_versions": [
+      "p4_03b_v1"
+    ],
+    "latest_persisted_date_matches_classifier": true,
+    "only_allowed_source": true,
+    "only_allowed_version": true
+  }
+}

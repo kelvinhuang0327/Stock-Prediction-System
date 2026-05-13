@@ -1,0 +1,82 @@
+{
+  "task": "T-05E",
+  "title": "PIT-safe Candidate Data Adapter for WalkForwardEngine",
+  "generatedAt": "2026-05-07T00:00:00.000Z",
+  "contractVersion": "1.0.0",
+  "safetyLabels": [
+    "T-05E",
+    "PIT-safe candidate data adapter",
+    "read-only candidate snapshots",
+    "sourceDate <= rebalanceDate",
+    "no future data",
+    "no DB write",
+    "no external API",
+    "no LLM call",
+    "no strategy mutation",
+    "no performance claim",
+    "no edge claim",
+    "no H001-H012"
+  ],
+  "adapterPath": "src/lib/backtest/CandidateDataAdapter.ts",
+  "exportedFunctions": [
+    "normalizeCandidateSnapshotDateKey",
+    "mapStockDataToCandidateSnapshot",
+    "validateCandidateSnapshotFreshness",
+    "validateCandidateSnapshotCoverage",
+    "loadCandidateSnapshotsForDate"
+  ],
+  "exportedTypes": [
+    "CandidateSnapshot",
+    "CandidateRawRow",
+    "CandidateAdapterPrismaLike",
+    "CandidateDataAvailabilityStatus",
+    "CandidateSnapshotLoadConfig",
+    "CandidateSnapshotLoadResult",
+    "CandidateSnapshotFreshnessResult",
+    "CandidateSnapshotCoverageSummary",
+    "InvalidCandidateSnapshotDateKeyError"
+  ],
+  "pitSafetyContract": {
+    "sourceDateMustNotExceedRebalanceDate": true,
+    "dbQueryUsesLteFilter": true,
+    "futureDateRejectedWithINVALID_FUTURE_DATE": true,
+    "missingSourceDateMarkedExplicitly": true,
+    "noAutoFillForMissingData": true,
+    "readOnly": true
+  },
+  "walkForwardEngineIntegration": {
+    "newConfigField": "candidateSnapshots?: CandidateSnapshot[]",
+    "newOutputField": "candidateSource: 'PIT_SAFE_CANDIDATE_SNAPSHOT' | 'MOCK_OBSERVABILITY_ONLY'",
+    "mockFallbackPreserved": true,
+    "backwardCompatible": true
+  },
+  "candidateSnapshotShape": {
+    "allowedFields": [
+      "symbol",
+      "snapshotDate",
+      "sourceDate",
+      "dataFreshnessDays",
+      "dataAvailabilityStatus",
+      "observableFields",
+      "ruleOnlySortKey",
+      "exclusionReasons",
+      "sourceLabel"
+    ],
+    "forbiddenFields": [
+      "buy", "sell", "signal", "roi", "win_rate", "alpha",
+      "edge", "profit", "recommendation", "outperform",
+      "H001", "H002", "H003", "H004", "H005", "H006",
+      "H007", "H008", "H009", "H010", "H011", "H012"
+    ]
+  },
+  "coverageThresholds": {
+    "PASS": "coverageRatio >= 0.70 AND invalidFutureDataCount == 0",
+    "WARN": "coverageRatio >= 0.40 OR invalidFutureDataCount > 0",
+    "FAIL": "coverageRatio < 0.40 OR (invalidFutureDataCount > 0 AND availableRatio < 0.50)"
+  },
+  "dataSourceModels": {
+    "primary": "StockQuote (stockId, date YYYYMMDD, close, volume)",
+    "secondary": "Stock (id, name, industry, listingDate)",
+    "excluded": ["Prediction (has signal field)", "Watchlist (personal portfolio)", "InstitutionalChip (foreignBuy/trustBuy terms)"]
+  }
+}

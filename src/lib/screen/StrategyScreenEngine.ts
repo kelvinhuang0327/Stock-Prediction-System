@@ -129,7 +129,7 @@ export async function runScreen(params: ScreenParams = {}): Promise<ScreenResult
     // 1. Get market regime
     let regime: MarketRegimeResult;
     try {
-        regime = await detectRegime();
+        regime = await detectRegime(asOf);
     } catch {
         regime = {
             regime: 'Unknown', confidence: 0, factors: [],
@@ -164,7 +164,7 @@ export async function runScreen(params: ScreenParams = {}): Promise<ScreenResult
     const batchSymbols = symbols.slice(0, 80);
     let fusionResults: FusionResult[];
     try {
-        fusionResults = await fuseBatch(batchSymbols);
+        fusionResults = await fuseBatch(batchSymbols, asOf);
     } catch (err) {
         limitations.push('SignalFusionEngine 執行失敗');
         return emptyResult(regime, limitations, 'SignalFusionEngine batch 失敗');

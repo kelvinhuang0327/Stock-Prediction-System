@@ -1,0 +1,68 @@
+{
+  "contract_id": "T04_SAFETY_MODE_CONTRACT",
+  "version": "1.0.0",
+  "generated_at": "2026-05-06",
+  "task": "T-04 LLM Hard-Off / Safe-Run + Missing-TaskId Alert",
+  "safety_modes": {
+    "allowed_values": ["NORMAL", "SAFE_RUN", "LLM_HARD_OFF", "DEGRADED", "BLOCKED"],
+    "definitions": {
+      "NORMAL": "All operations permitted. taskId present and valid. Ops Report PASS. No hard-off env vars.",
+      "SAFE_RUN": "SAFE_RUN env or param enabled. LLM/external AI blocked. DB writes allowed.",
+      "LLM_HARD_OFF": "LLM_HARD_OFF env set. Strongest single-signal hard-off. External AI blocked.",
+      "DEGRADED": "Ops Report status is not PASS (e.g. STALE_DATA, MISSING_DATA). LLM blocked, proceed with caution.",
+      "BLOCKED": "Hard block: ops guardrail failure OR CRITICAL missing-taskId. No external AI, no DB write."
+    }
+  },
+  "task_id_alert_levels": {
+    "allowed_values": ["NONE", "WARNING", "CRITICAL"],
+    "rules": {
+      "NONE": "taskId exists and is non-empty string.",
+      "WARNING": "taskId missing but task is dry-run or non-mutating and does not call external AI. Action recommended but not blocking.",
+      "CRITICAL": "taskId missing AND task may mutate state OR task may call external AI. Task must be blocked."
+    }
+  },
+  "llm_hard_off_triggers": [
+    "safeRun parameter or env SAFE_RUN=true",
+    "env LLM_HARD_OFF=true",
+    "opsReportStatus !== 'PASS'",
+    "opsGuardrailOk === false",
+    "taskIdAlert.level === 'CRITICAL'"
+  ],
+  "safety_decision_schema": {
+    "mode": "SafetyMode",
+    "llmHardOff": "boolean — true if any hard-off trigger active",
+    "allowExternalAi": "boolean — false if llmHardOff",
+    "allowExternalApi": "boolean — false if llmHardOff",
+    "allowDbWrite": "boolean — false only in BLOCKED mode",
+    "taskIdAlert": {
+      "level": "TaskIdAlertLevel",
+      "message": "string | null",
+      "requiresAction": "boolean"
+    },
+    "reasons": "string[] — human-readable explanation of triggers",
+    "source": "literal 'T04_SAFETY_GUARD'"
+  },
+  "example_decision": {
+    "mode": "SAFE_RUN",
+    "llmHardOff": true,
+    "allowExternalAi": false,
+    "allowExternalApi": false,
+    "allowDbWrite": true,
+    "taskIdAlert": {
+      "level": "WARNING",
+      "message": "taskId missing for dry-run task",
+      "requiresAction": true
+    },
+    "reasons": ["SAFE_RUN mode is enabled."],
+    "source": "T04_SAFETY_GUARD"
+  },
+  "forbidden": [
+    "Do not automatically call LLM",
+    "Do not use LLM to supplement missing data",
+    "Do not continue a mutating task when CRITICAL taskId is missing",
+    "Do not embed H001-H012 hypothesis codes in field names",
+    "Do not include buy/sell/signal/roi/win_rate/alpha/edge/profit/recommendation/outperform as field keys"
+  ],
+  "implementation_file": "src/lib/scheduler/SafetyGuard.ts",
+  "source": "T04_SAFETY_MODE_CONTRACT"
+}

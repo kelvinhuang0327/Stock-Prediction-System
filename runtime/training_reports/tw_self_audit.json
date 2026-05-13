@@ -1,14 +1,16 @@
 {
-  "generatedAt": "2026-04-30T09:06:23.116Z",
+  "generatedAt": "2026-05-04T16:10:02.682Z",
   "schedulerEnabled": false,
   "thresholdsChanged": false,
-  "queuedOptimizationTasks": 1,
+  "queuedOptimizationTasks": 0,
   "runningOptimizationTasks": 0,
   "activeInsights": 0,
   "failedJobs": [],
   "delayedJobs": [
-    "training:tw-report",
-    "training:tw-worker-cycle"
+    "training:tw-optimization-miner",
+    "training:tw-worker-cycle",
+    "training:tw-weekly-deep-research",
+    "training:tw-self-audit"
   ],
   "missedCriticalJobs": [
     "training:tw-optimization-miner",
@@ -19,242 +21,242 @@
     "llmControl": {
       "version": "1.0",
       "mode": "safe-run",
-      "blocked_execution_count": 324,
-      "allowed_execution_count": 3,
+      "blocked_execution_count": 137,
+      "allowed_execution_count": 0,
       "last_llm_call_at": null,
-      "last_blocked_at": "2026-04-30T09:06:23.102561Z",
+      "last_blocked_at": "2026-05-04T16:09:51.671601Z",
       "last_skip_reason": "SCHEDULER_DISABLED",
       "last_caller": "worker",
       "last_provider": "copilot-daemon",
-      "last_model": "",
+      "last_model": "gpt-5-mini",
       "last_task_id": "",
-      "updated_at": "2026-04-30T09:06:23.102564Z",
+      "updated_at": "2026-05-04T16:09:51.671603Z",
       "scheduler_enabled": false,
       "state_path": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/llm_execution_policy_state.json",
       "event_log_path": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/llm_execution_events.jsonl"
     },
-    "plannerProvider": "codex",
+    "plannerProvider": "local-planner",
     "workerProvider": "copilot-daemon",
     "scheduleMinutes": 10,
     "nextPlannerRunAt": null,
-    "nextWorkerRunAt": "2026-04-30T09:16:23.111Z",
-    "lastPlannerRunAt": "2026-04-27T01:57:05.163Z",
-    "lastWorkerRunAt": "2026-04-30T09:06:23.111Z",
+    "nextWorkerRunAt": "2026-05-04T16:19:51.683Z",
+    "lastPlannerRunAt": null,
+    "lastWorkerRunAt": "2026-05-04T16:09:51.683Z",
     "taskCounts": {
-      "total": 173,
-      "queued": 1,
+      "total": 175,
+      "queued": 0,
       "running": 0,
-      "completed": 131,
+      "completed": 132,
       "failed": 1,
       "failedRateLimit": 1,
       "replanRequired": 28
     },
     "providerCooldowns": {},
     "latestTask": {
-      "taskId": 173,
+      "taskId": 175,
       "title": "8-Hour Multi-Domain Optimization Sprint (系統 / 功能 / 模擬 / 實戰 / 自我學習)",
       "slug": "8-hour-multi-domain-optimization-sprint",
-      "dayKey": "20260430",
-      "status": "QUEUED",
-      "gateVerdict": null,
+      "dayKey": "20260504",
+      "status": "PENDING_REVIEW",
+      "gateVerdict": "PASS",
       "plannerProvider": "codex",
       "workerProvider": "copilot-daemon",
-      "createdAt": "2026-04-30T08:55:13.852Z",
-      "updatedAt": "2026-04-30T08:55:13.852Z",
-      "lastOutputAt": "2026-04-30T08:55:13.852Z",
-      "latestProgressSummary": "Planner created prompt + contract.",
-      "promptPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260430/202604300855-8-hour-multi-domain-optimization-sprint-prompt.md",
-      "contractPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260430/202604300855-8-hour-multi-domain-optimization-sprint-contract.json",
-      "completedPath": null,
-      "resultPath": null,
-      "metaPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260430/202604300855-8-hour-multi-domain-optimization-sprint-meta.json",
-      "workerLogPath": null,
+      "createdAt": "2026-05-04T08:17:45.335Z",
+      "updatedAt": "2026-05-04T08:25:59.996Z",
+      "lastOutputAt": "2026-05-04T08:25:59.995Z",
+      "latestProgressSummary": "Auto-committed 6 file(s) (sha: 9c13c52). Awaiting CTO review.",
+      "promptPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260504/202605040817-8-hour-multi-domain-optimization-sprint-prompt.md",
+      "contractPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260504/202605040817-8-hour-multi-domain-optimization-sprint-contract.json",
+      "completedPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260504/202605040817-8-hour-multi-domain-optimization-sprint-completed.md",
+      "resultPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260504/202605040817-8-hour-multi-domain-optimization-sprint-result.json",
+      "metaPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260504/202605040817-8-hour-multi-domain-optimization-sprint-meta.json",
+      "workerLogPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260504/202605040817-8-hour-multi-domain-optimization-sprint-worker-stdout.log",
       "plannerContext": {
         "taskType": "optimization_composite_8h",
         "game": null,
         "regimeState": "OPTIMIZATION",
-        "dedupeKey": "composite_8h_plan__2026-04-30",
+        "dedupeKey": "composite_8h_plan__2026-05-04",
         "confidenceScore": null,
         "regimeTaskType": "composite_8h_plan"
       }
     },
     "recentRuns": [
       {
-        "runId": "worker-1777539983107",
+        "runId": "worker-1777910991675",
         "tickType": "worker",
-        "startedAt": "2026-04-30T09:06:23.031Z",
-        "finishedAt": "2026-04-30T09:06:23.107Z",
+        "startedAt": "2026-05-04T16:09:51.623Z",
+        "finishedAt": "2026-05-04T16:09:51.675Z",
         "status": "skipped",
         "reason": "SCHEDULER_DISABLED — skip execution",
         "taskId": null
       },
       {
-        "runId": "worker-1777539949302",
+        "runId": "worker-1777910930086",
         "tickType": "worker",
-        "startedAt": "2026-04-30T09:05:49.232Z",
-        "finishedAt": "2026-04-30T09:05:49.302Z",
+        "startedAt": "2026-05-04T16:08:50.012Z",
+        "finishedAt": "2026-05-04T16:08:50.086Z",
         "status": "skipped",
         "reason": "SCHEDULER_DISABLED — skip execution",
         "taskId": null
       },
       {
-        "runId": "worker-1777539936605",
-        "tickType": "worker",
-        "startedAt": "2026-04-30T09:05:36.546Z",
-        "finishedAt": "2026-04-30T09:05:36.605Z",
-        "status": "skipped",
-        "reason": "SCHEDULER_DISABLED — skip execution",
-        "taskId": null
-      },
-      {
-        "runId": "worker-1777539874818",
-        "tickType": "worker",
-        "startedAt": "2026-04-30T09:04:34.718Z",
-        "finishedAt": "2026-04-30T09:04:34.818Z",
-        "status": "skipped",
-        "reason": "SCHEDULER_DISABLED — skip execution",
-        "taskId": null
-      },
-      {
-        "runId": "worker-1777539813061",
-        "tickType": "worker",
-        "startedAt": "2026-04-30T09:03:32.979Z",
-        "finishedAt": "2026-04-30T09:03:33.061Z",
-        "status": "skipped",
-        "reason": "SCHEDULER_DISABLED — skip execution",
-        "taskId": null
-      },
-      {
-        "runId": "worker-1777539787297",
-        "tickType": "worker",
-        "startedAt": "2026-04-30T09:03:07.241Z",
-        "finishedAt": "2026-04-30T09:03:07.297Z",
-        "status": "skipped",
-        "reason": "SCHEDULER_DISABLED — skip execution",
-        "taskId": null
-      },
-      {
-        "runId": "worker-1777539787234",
-        "tickType": "worker",
-        "startedAt": "2026-04-30T09:03:07.157Z",
-        "finishedAt": "2026-04-30T09:03:07.234Z",
-        "status": "skipped",
-        "reason": "SCHEDULER_DISABLED — skip execution",
-        "taskId": null
-      },
-      {
-        "runId": "worker-1777539755473",
-        "tickType": "worker",
-        "startedAt": "2026-04-30T09:02:35.398Z",
-        "finishedAt": "2026-04-30T09:02:35.473Z",
-        "status": "skipped",
-        "reason": "SCHEDULER_DISABLED — skip execution",
-        "taskId": null
-      },
-      {
-        "runId": "worker-1777539751021",
-        "tickType": "worker",
-        "startedAt": "2026-04-30T09:02:30.884Z",
-        "finishedAt": "2026-04-30T09:02:31.021Z",
-        "status": "skipped",
-        "reason": "SCHEDULER_DISABLED — skip execution",
-        "taskId": null
-      },
-      {
-        "runId": "worker-1777439244132",
-        "tickType": "worker",
-        "startedAt": "2026-04-29T05:07:22.270Z",
-        "finishedAt": "2026-04-29T05:07:24.132Z",
-        "status": "skipped",
-        "reason": "SCHEDULER_DISABLED — skip execution",
-        "taskId": null
-      },
-      {
-        "runId": "worker-1777439166904",
-        "tickType": "worker",
-        "startedAt": "2026-04-29T05:06:06.778Z",
-        "finishedAt": "2026-04-29T05:06:06.904Z",
-        "status": "skipped",
-        "reason": "SCHEDULER_DISABLED — skip execution",
-        "taskId": null
-      },
-      {
-        "runId": "worker-1777439102484",
-        "tickType": "worker",
-        "startedAt": "2026-04-29T05:05:02.296Z",
-        "finishedAt": "2026-04-29T05:05:02.484Z",
-        "status": "skipped",
-        "reason": "SCHEDULER_DISABLED — skip execution",
-        "taskId": null
-      },
-      {
-        "runId": "worker-1777439038761",
-        "tickType": "worker",
-        "startedAt": "2026-04-29T05:03:58.594Z",
-        "finishedAt": "2026-04-29T05:03:58.761Z",
-        "status": "skipped",
-        "reason": "SCHEDULER_DISABLED — skip execution",
-        "taskId": null
-      },
-      {
-        "runId": "worker-1777438974716",
-        "tickType": "worker",
-        "startedAt": "2026-04-29T05:02:54.590Z",
-        "finishedAt": "2026-04-29T05:02:54.716Z",
-        "status": "skipped",
-        "reason": "SCHEDULER_DISABLED — skip execution",
-        "taskId": null
-      },
-      {
-        "runId": "worker-1777438911328",
-        "tickType": "worker",
-        "startedAt": "2026-04-29T05:01:51.220Z",
-        "finishedAt": "2026-04-29T05:01:51.328Z",
-        "status": "skipped",
-        "reason": "SCHEDULER_DISABLED — skip execution",
-        "taskId": null
-      },
-      {
-        "runId": "worker-1777438847487",
-        "tickType": "worker",
-        "startedAt": "2026-04-29T05:00:47.364Z",
-        "finishedAt": "2026-04-29T05:00:47.487Z",
-        "status": "skipped",
-        "reason": "SCHEDULER_DISABLED — skip execution",
-        "taskId": null
-      },
-      {
-        "runId": "planner-1777438822854",
+        "runId": "planner-1777910917962",
         "tickType": "planner",
-        "startedAt": "2026-04-29T05:00:22.768Z",
-        "finishedAt": "2026-04-29T05:00:22.854Z",
+        "startedAt": "2026-05-04T16:08:37.912Z",
+        "finishedAt": "2026-05-04T16:08:37.962Z",
         "status": "skipped",
         "reason": "SCHEDULER_DISABLED — skip execution",
         "taskId": null
       },
       {
-        "runId": "worker-1777438817340",
+        "runId": "worker-1777910916444",
         "tickType": "worker",
-        "startedAt": "2026-04-29T05:00:17.245Z",
-        "finishedAt": "2026-04-29T05:00:17.340Z",
+        "startedAt": "2026-05-04T16:08:36.393Z",
+        "finishedAt": "2026-05-04T16:08:36.444Z",
         "status": "skipped",
         "reason": "SCHEDULER_DISABLED — skip execution",
         "taskId": null
       },
       {
-        "runId": "worker-1777438781039",
+        "runId": "worker-1777910868566",
         "tickType": "worker",
-        "startedAt": "2026-04-29T04:59:40.924Z",
-        "finishedAt": "2026-04-29T04:59:41.039Z",
+        "startedAt": "2026-05-04T16:07:48.495Z",
+        "finishedAt": "2026-05-04T16:07:48.566Z",
         "status": "skipped",
         "reason": "SCHEDULER_DISABLED — skip execution",
         "taskId": null
       },
       {
-        "runId": "worker-1777438717535",
+        "runId": "worker-1777910807028",
         "tickType": "worker",
-        "startedAt": "2026-04-29T04:58:37.412Z",
-        "finishedAt": "2026-04-29T04:58:37.535Z",
+        "startedAt": "2026-05-04T16:06:46.973Z",
+        "finishedAt": "2026-05-04T16:06:47.028Z",
+        "status": "skipped",
+        "reason": "SCHEDULER_DISABLED — skip execution",
+        "taskId": null
+      },
+      {
+        "runId": "planner-1777910775215",
+        "tickType": "planner",
+        "startedAt": "2026-05-04T16:06:15.165Z",
+        "finishedAt": "2026-05-04T16:06:15.215Z",
+        "status": "skipped",
+        "reason": "SCHEDULER_DISABLED — skip execution",
+        "taskId": null
+      },
+      {
+        "runId": "worker-1777910772629",
+        "tickType": "worker",
+        "startedAt": "2026-05-04T16:06:12.579Z",
+        "finishedAt": "2026-05-04T16:06:12.629Z",
+        "status": "skipped",
+        "reason": "SCHEDULER_DISABLED — skip execution",
+        "taskId": null
+      },
+      {
+        "runId": "worker-1777910745533",
+        "tickType": "worker",
+        "startedAt": "2026-05-04T16:05:45.457Z",
+        "finishedAt": "2026-05-04T16:05:45.533Z",
+        "status": "skipped",
+        "reason": "SCHEDULER_DISABLED — skip execution",
+        "taskId": null
+      },
+      {
+        "runId": "worker-1777910683979",
+        "tickType": "worker",
+        "startedAt": "2026-05-04T16:04:43.907Z",
+        "finishedAt": "2026-05-04T16:04:43.979Z",
+        "status": "skipped",
+        "reason": "SCHEDULER_DISABLED — skip execution",
+        "taskId": null
+      },
+      {
+        "runId": "worker-1777910622452",
+        "tickType": "worker",
+        "startedAt": "2026-05-04T16:03:42.378Z",
+        "finishedAt": "2026-05-04T16:03:42.452Z",
+        "status": "skipped",
+        "reason": "SCHEDULER_DISABLED — skip execution",
+        "taskId": null
+      },
+      {
+        "runId": "worker-1777910561097",
+        "tickType": "worker",
+        "startedAt": "2026-05-04T16:02:41.028Z",
+        "finishedAt": "2026-05-04T16:02:41.097Z",
+        "status": "skipped",
+        "reason": "SCHEDULER_DISABLED — skip execution",
+        "taskId": null
+      },
+      {
+        "runId": "worker-1777910499577",
+        "tickType": "worker",
+        "startedAt": "2026-05-04T16:01:39.527Z",
+        "finishedAt": "2026-05-04T16:01:39.577Z",
+        "status": "skipped",
+        "reason": "SCHEDULER_DISABLED — skip execution",
+        "taskId": null
+      },
+      {
+        "runId": "worker-1777910438119",
+        "tickType": "worker",
+        "startedAt": "2026-05-04T16:00:38.070Z",
+        "finishedAt": "2026-05-04T16:00:38.119Z",
+        "status": "skipped",
+        "reason": "SCHEDULER_DISABLED — skip execution",
+        "taskId": null
+      },
+      {
+        "runId": "worker-1777910438039",
+        "tickType": "worker",
+        "startedAt": "2026-05-04T16:00:37.959Z",
+        "finishedAt": "2026-05-04T16:00:38.039Z",
+        "status": "skipped",
+        "reason": "SCHEDULER_DISABLED — skip execution",
+        "taskId": null
+      },
+      {
+        "runId": "worker-1777910405511",
+        "tickType": "worker",
+        "startedAt": "2026-05-04T16:00:05.461Z",
+        "finishedAt": "2026-05-04T16:00:05.511Z",
+        "status": "skipped",
+        "reason": "SCHEDULER_DISABLED — skip execution",
+        "taskId": null
+      },
+      {
+        "runId": "worker-1777910376668",
+        "tickType": "worker",
+        "startedAt": "2026-05-04T15:59:36.616Z",
+        "finishedAt": "2026-05-04T15:59:36.668Z",
+        "status": "skipped",
+        "reason": "SCHEDULER_DISABLED — skip execution",
+        "taskId": null
+      },
+      {
+        "runId": "planner-1777910316675",
+        "tickType": "planner",
+        "startedAt": "2026-05-04T15:58:36.626Z",
+        "finishedAt": "2026-05-04T15:58:36.675Z",
+        "status": "skipped",
+        "reason": "SCHEDULER_DISABLED — skip execution",
+        "taskId": null
+      },
+      {
+        "runId": "worker-1777910315321",
+        "tickType": "worker",
+        "startedAt": "2026-05-04T15:58:35.270Z",
+        "finishedAt": "2026-05-04T15:58:35.321Z",
+        "status": "skipped",
+        "reason": "SCHEDULER_DISABLED — skip execution",
+        "taskId": null
+      },
+      {
+        "runId": "worker-1777910315266",
+        "tickType": "worker",
+        "startedAt": "2026-05-04T15:58:35.203Z",
+        "finishedAt": "2026-05-04T15:58:35.266Z",
         "status": "skipped",
         "reason": "SCHEDULER_DISABLED — skip execution",
         "taskId": null
@@ -278,41 +280,41 @@
     }
   },
   "training": {
-    "schedulerPid": 63969,
+    "schedulerPid": 2641,
     "startedAt": null,
     "uptimeSeconds": null,
     "layers": {
       "intraday_monitor": {
         "layer": "intraday_monitor",
-        "lastRunAt": "2026-04-30T09:06:03.086Z",
+        "lastRunAt": "2026-05-04T16:00:02.661Z",
         "lastStatus": "success",
         "nextDueAt": null,
-        "runCount": 1,
-        "lastSummary": "open_trades=72 active_insights=0 expired_insights=0 tasks_mined=2 quota_low=1 latest_snapshot=rolling-sim-2026-04-17"
+        "runCount": 17,
+        "lastSummary": "open_trades=0 active_insights=0 expired_insights=0 tasks_mined=0 quota_low=0 latest_snapshot=rolling-sim-2026-04-17"
       },
       "daily_cycle": {
         "layer": "daily_cycle",
-        "lastRunAt": "2026-04-30T09:06:03.093Z",
-        "lastStatus": "success",
+        "lastRunAt": null,
+        "lastStatus": "never_ran",
         "nextDueAt": null,
-        "runCount": 1,
-        "lastSummary": "snapshot=19 proposals=5 orders=0 reviews=0 learning_insight=112 active_insights=0 insight_stacking=ok gated_setups=none recovery_signals=none tasks_mined=1"
+        "runCount": 0,
+        "lastSummary": null
       },
       "nightly_opt": {
         "layer": "nightly_opt",
-        "lastRunAt": "2026-04-30T09:06:15.218Z",
+        "lastRunAt": "2026-05-04T08:17:29.769Z",
         "lastStatus": "success",
         "nextDueAt": null,
         "runCount": 1,
-        "lastSummary": "tasks_mined=0 tasks_skipped=16 reports_processed=2 active_insights=0 quota_remaining_low=0 quota_remaining_medium=0"
+        "lastSummary": "tasks_mined=5 tasks_skipped=11 reports_processed=2 active_insights=0 quota_remaining_low=0 quota_remaining_medium=3"
       },
       "weekly_deep": {
         "layer": "weekly_deep",
-        "lastRunAt": "2026-04-30T09:06:15.237Z",
+        "lastRunAt": "2026-05-04T08:26:00.102Z",
         "lastStatus": "success",
         "nextDueAt": null,
-        "runCount": 1,
-        "lastSummary": "tasks_mined=0 tasks_skipped=16 gated_setup_types=none recovery_signals=none recovery_events=0 probe_successes=0 time_exit_rate=100% quota_remaining_low=0"
+        "runCount": 2,
+        "lastSummary": "tasks_mined=0 tasks_skipped=16 gated_setup_types=none recovery_signals=none recovery_events=0 probe_successes=0 time_exit_rate=72% quota_remaining_low=0"
       }
     },
     "insightCounts": {
@@ -335,45 +337,69 @@
     },
     "taskLog": [
       {
-        "dedupeKey": "daily_cycle__time_exit_dominance",
-        "title": "Time-Exit Dominance Analysis — Daily Pulse",
-        "source": "time_exit_dominance",
-        "layer": "daily_cycle",
+        "dedupeKey": "nightly_opt__system_health",
+        "title": "System Health & Job Runner Audit",
+        "source": "system_health",
+        "layer": "nightly_opt",
         "risk": "low",
-        "startedAt": "2026-04-30T09:06:03.093Z",
-        "finishedAt": "2026-04-30T09:06:03.093Z",
+        "startedAt": "2026-05-04T08:17:29.769Z",
+        "finishedAt": "2026-05-04T08:17:29.769Z",
         "status": "success",
-        "summary": "mined: Time-Exit Dominance Analysis — Daily Pulse",
-        "insightsCandidates": 0
+        "summary": "mined: System Health & Job Runner Audit",
+        "insightsCandidates": 2
       },
       {
-        "dedupeKey": "intraday__lifecycle_stuck_detection",
-        "title": "Open-Trade Lifecycle Stuck Detection",
-        "source": "lifecycle_stuck_detection",
-        "layer": "intraday_monitor",
+        "dedupeKey": "nightly_opt__price_analysis_quality",
+        "title": "Price Analysis & Research Snapshot Quality Review",
+        "source": "price_analysis_quality",
+        "layer": "nightly_opt",
         "risk": "low",
-        "startedAt": "2026-04-30T09:06:03.086Z",
-        "finishedAt": "2026-04-30T09:06:03.086Z",
+        "startedAt": "2026-05-04T08:17:29.769Z",
+        "finishedAt": "2026-05-04T08:17:29.769Z",
         "status": "success",
-        "summary": "mined: Open-Trade Lifecycle Stuck Detection",
-        "insightsCandidates": 0
+        "summary": "mined: Price Analysis & Research Snapshot Quality Review",
+        "insightsCandidates": 2
       },
       {
-        "dedupeKey": "intraday__data_freshness_audit",
-        "title": "Quote Freshness Audit — Intraday",
-        "source": "data_freshness_audit",
-        "layer": "intraday_monitor",
+        "dedupeKey": "nightly_opt__learning_layer_audit",
+        "title": "Learning Layer Signal Quality Audit",
+        "source": "learning_layer_audit",
+        "layer": "nightly_opt",
         "risk": "low",
-        "startedAt": "2026-04-30T09:06:03.086Z",
-        "finishedAt": "2026-04-30T09:06:03.086Z",
+        "startedAt": "2026-05-04T08:17:29.769Z",
+        "finishedAt": "2026-05-04T08:17:29.769Z",
         "status": "success",
-        "summary": "mined: Quote Freshness Audit — Intraday",
-        "insightsCandidates": 0
+        "summary": "mined: Learning Layer Signal Quality Audit",
+        "insightsCandidates": 2
+      },
+      {
+        "dedupeKey": "nightly_opt__execution_layer_audit",
+        "title": "Execution Layer Code Quality Audit",
+        "source": "execution_layer_audit",
+        "layer": "nightly_opt",
+        "risk": "low",
+        "startedAt": "2026-05-04T08:17:29.769Z",
+        "finishedAt": "2026-05-04T08:17:29.769Z",
+        "status": "success",
+        "summary": "mined: Execution Layer Code Quality Audit",
+        "insightsCandidates": 2
+      },
+      {
+        "dedupeKey": "nightly_opt__indicator_coverage_check",
+        "title": "Indicator History Depth Check — Nightly",
+        "source": "indicator_coverage_check",
+        "layer": "nightly_opt",
+        "risk": "low",
+        "startedAt": "2026-05-04T08:17:29.769Z",
+        "finishedAt": "2026-05-04T08:17:29.769Z",
+        "status": "success",
+        "summary": "mined: Indicator History Depth Check — Nightly",
+        "insightsCandidates": 2
       }
     ],
     "quotaRemaining": {
       "low": 0,
-      "medium": 0,
+      "medium": 3,
       "high": 1
     }
   },
@@ -391,7 +417,7 @@
     {
       "severity": "P2",
       "title": "Review insight and observability hygiene",
-      "detail": "Active insights=0; delayed jobs=training:tw-report, training:tw-worker-cycle. Prune stale insights and keep dashboard metrics current."
+      "detail": "Active insights=0; delayed jobs=training:tw-optimization-miner, training:tw-worker-cycle, training:tw-weekly-deep-research, training:tw-self-audit. Prune stale insights and keep dashboard metrics current."
     }
   ],
   "reportPath": "runtime/training_reports/tw_self_audit.json"

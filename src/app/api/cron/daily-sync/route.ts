@@ -9,6 +9,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { runAllSyncs, type SyncJob } from '@/lib/data/SyncScheduler';
+import { evaluateSafetyMode } from '@/lib/scheduler/SafetyGuard';
 import { syncService } from '@/lib/services/syncService';
 import { createDailySnapshot } from '@/lib/report/DailySnapshotEngine';
 import { generateDailyAlerts } from '@/lib/notify/DailyAlertEngine';
@@ -225,6 +226,35 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    // T-04 Safety Guard: evaluate before executing any sync jobs
+    const taskId = req.headers.get('x-task-id') ?? req.nextUrl.searchParams.get('taskId') ?? undefined;
+    const safeRun = process.env.SAFE_RUN === 'true' || req.nextUrl.searchParams.get('safeRun') === 'true';
+
+    const safety = evaluateSafetyMode({
+      taskId,
+      safeRun,
+      dryRun: false,
+      mayMutateState: true,      // daily-sync writes DB records
+      mayCallExternalAi: false,  // daily-sync does not call LLM directly
+    });
+
+    if (safety.mode === 'BLOCKED') {
+      return NextResponse.json(
+        {
+          ok: false,
+          error: 'Request blocked by SafetyGuard.',
+          safety: {
+            mode: safety.mode,
+            llmHardOff: safety.llmHardOff,
+            taskIdAlert: { level: safety.taskIdAlert.level, requiresAction: safety.taskIdAlert.requiresAction },
+          },
+          reasons: safety.reasons,
+          timestamp: new Date().toISOString(),
+        },
+        { status: 403 },
+      );
+    }
+
     console.log('[CRON] Daily sync triggered at', new Date().toISOString());
 
     const jobs = buildDailySyncJobs();
@@ -239,6 +269,11 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({
       ok: true,
       summary: { total: results.length, success, failed, totalRecords },
+      safety: {
+        mode: safety.mode,
+        llmHardOff: safety.llmHardOff,
+        taskIdAlert: { level: safety.taskIdAlert.level, requiresAction: safety.taskIdAlert.requiresAction },
+      },
       results: results.map(r => ({
         endpoint: r.endpoint,
         status: r.status,

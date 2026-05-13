@@ -1,0 +1,101 @@
+{
+  "task": "T-06 Existing Daily Report / Ops Report Audit",
+  "generated_at": "2026-05-06T14:15:00+08:00",
+  "existing_files_found": [
+    {
+      "file": "src/lib/report/DailyReportEngine.ts",
+      "type": "TypeScript",
+      "purpose": "Core daily report generator. Integrates MarketRegimeEngine, StrategyScreenEngine, signal reliability, topic/theme engines.",
+      "reuse": "REFERENCE_ONLY",
+      "db_write": false,
+      "produces_buy_sell": false,
+      "has_regime_section": true,
+      "has_walkforward_section": false,
+      "notes": "Has `marketSummary.regime` (TS engine, not P4-03). No walk-forward section. Has `recommendationBucket` field (candidate-level, not a buy/sell signal)."
+    },
+    {
+      "file": "src/lib/report/DailySnapshotEngine.ts",
+      "type": "TypeScript",
+      "purpose": "Creates daily snapshots via prisma. Upserts MarketSnapshot, CandidateSnapshot, WatchlistSnapshot.",
+      "reuse": "DO_NOT_USE",
+      "db_write": true,
+      "produces_buy_sell": false,
+      "has_regime_section": false,
+      "has_walkforward_section": false,
+      "notes": "Has DB writes (prisma.create/upsert). T-06 Python builder must NOT touch these tables."
+    },
+    {
+      "file": "src/app/api/report/daily/route.ts",
+      "type": "TypeScript API",
+      "purpose": "REST GET endpoint for daily report. Calls generateDailyReport(). Cached 300s.",
+      "reuse": "REFERENCE_ONLY",
+      "db_write": false,
+      "produces_buy_sell": false,
+      "notes": "T-06 output can be added as a new section to this endpoint later."
+    },
+    {
+      "file": "src/app/report/daily/page.tsx",
+      "type": "React page",
+      "purpose": "Daily report UI page. Fetches from /api/report/daily.",
+      "reuse": "REFERENCE_ONLY",
+      "notes": "No walk-forward or regime-aware section yet."
+    },
+    {
+      "file": "scripts/build-market-regime-classifier.py",
+      "type": "Python",
+      "purpose": "P4-03 PIT-safe regime classifier. Source of regime output.",
+      "reuse": "YES_IMPORT_PATTERN",
+      "notes": "T-06 consumes its output artifacts, not the script directly."
+    },
+    {
+      "file": "scripts/build-portfolio-walk-forward-skeleton.py",
+      "type": "Python",
+      "purpose": "T-05 portfolio walk-forward skeleton. Source of walk-forward output.",
+      "reuse": "YES_IMPORT_PATTERN",
+      "notes": "T-06 consumes t05_walk_forward_sample.json, t05_guardrail_validation.json."
+    },
+    {
+      "file": "src/components/research/DailyFundamentalObservationCard.tsx",
+      "type": "React component",
+      "purpose": "Displays fundamental observation summary in UI.",
+      "reuse": "REFERENCE_ONLY",
+      "notes": "Pattern reference for new UI section if needed."
+    }
+  ],
+  "existing_modules_summary": {
+    "daily_report_engine": "ACTIVE (TypeScript, uses TS MarketRegimeEngine)",
+    "daily_snapshot_engine": "ACTIVE (TypeScript, has DB writes via prisma)",
+    "regime_section_in_report": "YES (TS engine: Bull/Bear/Sideways/Unknown) - NOT P4-03",
+    "walkforward_section_in_report": "NO",
+    "python_daily_report": "NONE (T-06 creates first Python daily report builder)"
+  },
+  "report_outputs_currently_generated": [
+    "DailyReport JSON via /api/report/daily",
+    "MarketSnapshot DB rows via DailySnapshotEngine",
+    "CandidateSnapshot DB rows via DailySnapshotEngine"
+  ],
+  "regime_section_exists": true,
+  "regime_section_uses_p4_03": false,
+  "walkforward_section_exists": false,
+  "daily_report_has_db_write": true,
+  "daily_report_produces_buy_sell": false,
+  "reusable_components": [
+    "Artifact output format from build-market-regime-classifier.py",
+    "PIT-safe date query pattern from build-portfolio-walk-forward-skeleton.py",
+    "JSON section structure from p4_03b_market_regime_sample.json"
+  ],
+  "must_not_reuse": [
+    "DailySnapshotEngine.ts (has DB writes)",
+    "StrategyScreenEngine (tied to production signal system)",
+    "ExperimentRegistry.ts (H001-H012)"
+  ],
+  "reference_only": [
+    "DailyReportEngine.ts (TypeScript, add Python complement as new section)"
+  ],
+  "pit_safety_concerns": [
+    "DailySnapshotEngine writes snapshots - T-06 must NOT write to same tables",
+    "TS MarketRegimeEngine uses full lookback (may have lookahead risk in some modes)"
+  ],
+  "production_write_risk": "LOW for T-06 Python builder (read-only design)",
+  "decision": "CREATE_NEW_PYTHON_BUILDER - no existing Python daily report; T-06 creates standalone artifact"
+}

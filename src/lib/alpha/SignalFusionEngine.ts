@@ -222,9 +222,10 @@ function normalizeWeights(
 export async function fuseSignals(
     symbol: string,
     regimeOverride?: MarketRegimeResult | null,
+    asOf?: string,
 ): Promise<FusionResult> {
-    // 1. Get stock analysis from RuleBasedStockAnalyzer
-    const analysis = await analyzeStock(symbol);
+    // 1. Get stock analysis from RuleBasedStockAnalyzer (P0-03: pass asOf for date gate)
+    const analysis = await analyzeStock(symbol, asOf);
 
     // 2. Get market regime (use override if provided, for batch efficiency)
     let regime: MarketRegimeResult;
@@ -232,7 +233,7 @@ export async function fuseSignals(
         regime = regimeOverride;
     } else {
         try {
-            regime = await detectRegime();
+        regime = await detectRegime(asOf);
         } catch {
             regime = {
                 regime: 'Unknown', confidence: 0, factors: [],
@@ -385,11 +386,12 @@ export async function fuseSignals(
 
 export async function fuseBatch(
     symbols: string[],
+    asOf?: string,
 ): Promise<FusionResult[]> {
     // Single regime call shared across all stocks
     let regime: MarketRegimeResult;
     try {
-        regime = await detectRegime();
+        regime = await detectRegime(asOf);
     } catch {
         regime = {
             regime: 'Unknown', confidence: 0, factors: [],
@@ -400,7 +402,7 @@ export async function fuseBatch(
     }
 
     const results = await Promise.all(
-        symbols.map(s => fuseSignals(s, regime)),
+        symbols.map(s => fuseSignals(s, regime, asOf)),
     );
 
     return results;

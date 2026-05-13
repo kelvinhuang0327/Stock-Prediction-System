@@ -1,0 +1,65 @@
+{
+  "taskId": "P0-02A",
+  "taskName": "Strategy Screen As-of Gate Validation",
+  "date": "2026-05-07",
+  "observabilityOnly": true,
+  "noEdgeClaim": true,
+  "noProductionWrite": true,
+  "noDBWrite": true,
+  "noExternalAPI": true,
+  "noLLMCall": true,
+  "noStrategyMutation": true,
+  "route": "/api/strategy/screen",
+  "integrationStatus": "COMPLETE",
+  "changes": [
+    "Added asOfDate query param to GET handler",
+    "Added asOfDate body field to POST handler",
+    "asOfDate defaults to resolveAsOfDate() when not provided",
+    "asOf (YYYYMMDD) passed to runScreen() params",
+    "Response includes asOfDate, asOfGateStatus, asOfGateNote"
+  ],
+  "asOfDateFlow": {
+    "GET": "searchParams.get('asOfDate') → resolveAsOfDate() → asOfDate.replace(/-/g,'') → passed as asOf to runScreen()",
+    "POST": "body.asOfDate → resolveAsOfDate() → asOfDate.replace(/-/g,'') → passed as asOf to runScreen()"
+  },
+  "engineBehavior": {
+    "StrategyScreenEngine": "ScreenParams.asOf already existed. Used in stockQuote.groupBy filter.",
+    "fuseBatch": "Does NOT propagate asOf to SignalFusionEngine sub-agents — documented limitation. P0-03 item.",
+    "scoring": "Not modified. alphaScore/recommendationBucket field names preserved."
+  },
+  "testCoverage": {
+    "testFile": "src/app/api/strategy/screen/__tests__/p002a_strategy_screen_as_of_gate.test.ts",
+    "testsCount": 14,
+    "testsPassed": 14,
+    "coveredCases": [
+      "accepts explicit asOfDate (GET)",
+      "defaults to resolveAsOfDate() (GET)",
+      "passes asOf YYYYMMDD to runScreen (GET)",
+      "does not pass future asOf beyond gate (GET)",
+      "response includes asOfDate and asOfGateStatus (GET)",
+      "response includes asOfGateNote (GET)",
+      "response does not include forbidden fields (GET)",
+      "accepts explicit asOfDate in body (POST)",
+      "defaults to resolveAsOfDate() (POST)",
+      "passes asOf YYYYMMDD to runScreen (POST)",
+      "POST response includes asOfDate and asOfGateStatus",
+      "no DB write / no external API / no LLM (POST)",
+      "does not modify existing scoring params",
+      "asOf is YYYYMMDD format"
+    ]
+  },
+  "forbiddenFieldsCheck": {
+    "buy": "ABSENT",
+    "sell": "ABSENT",
+    "roi": "ABSENT",
+    "win_rate": "ABSENT",
+    "alpha_new": "ABSENT — existing alphaScore field preserved, not renamed",
+    "edge": "ABSENT",
+    "profit": "ABSENT",
+    "recommendation_new": "ABSENT — existing recommendationBucket preserved, not renamed",
+    "outperform": "ABSENT",
+    "guaranteed": "ABSENT",
+    "H001_H012": "ABSENT"
+  },
+  "generatedAt": "2026-05-07T00:00:00.000Z"
+}

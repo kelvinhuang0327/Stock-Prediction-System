@@ -1,0 +1,70 @@
+{
+  "task": "T-05B Walk-Forward Contract",
+  "generatedAt": "2026-05-07T12:41:31+08:00",
+  "labels": ["T-05B", "observability-only", "no edge claim", "no production write", "no DB write", "no external API", "no LLM call", "no strategy mutation", "no H001-H012"],
+  "engineFile": "src/lib/backtest/WalkForwardEngine.ts",
+  "exportedFunctions": [
+    {
+      "name": "buildWalkForwardSkeleton",
+      "signature": "(config?: WalkForwardConfig, regimeContextMap?: Map<string, PersistedRegimeContext>) => WalkForwardSkeletonOutput",
+      "contract": {
+        "usesResolveCurrentDate": true,
+        "noHardcodedDateCap": true,
+        "lookbackDays": 500,
+        "noDbWrite": true,
+        "noExternalApiCall": true,
+        "noLlmCall": true,
+        "persistedRegimeContextReadOnly": true,
+        "outputType": "observability-only"
+      }
+    },
+    {
+      "name": "getRegimeContextForDate",
+      "signature": "(date: string, contextMap: Map<string, PersistedRegimeContext>) => RegimeContextForDate",
+      "contract": {
+        "pitSafe": true,
+        "returnsExplicitMissingState": true,
+        "neverRecomputesRegime": true,
+        "neverWritesDb": true,
+        "neverAssumesValidOnMissing": true
+      }
+    },
+    {
+      "name": "buildMonthlyRebalanceSchedule",
+      "signature": "(rangeStart: string, rangeEnd: string, tradingDates: string[]) => MonthlyRebalanceSchedule",
+      "contract": {
+        "deterministic": true,
+        "noImplicitStateDependent": true,
+        "handlesEmptyRange": true,
+        "handlesNoTradingDays": true,
+        "outputType": "schedule-and-observability-metadata-only"
+      }
+    },
+    {
+      "name": "rankCandidatesRuleOnly",
+      "signature": "(candidates: string[], asofDate: string, regimeContext?: RegimeContextForDate) => RankCandidatesResult",
+      "contract": {
+        "deterministic": true,
+        "rankingBasis": "ALPHABETICAL_DETERMINISTIC",
+        "noTradingOutput": true,
+        "outputFields": ["rankingBasis", "ruleOnlyScore", "observableReasons", "dataAvailabilityFlags"]
+      }
+    },
+    {
+      "name": "computeTurnoverStats",
+      "signature": "(previousCandidates: string[], currentCandidates: string[], periodStart: string, periodEnd: string, rebalanceCount: number, missingDataCount: number) => TurnoverStats",
+      "contract": {
+        "outputFields": ["candidateAddedCount", "candidateRemovedCount", "candidateRetainedCount", "overlapRatio", "rebalanceCount", "missingDataCount"],
+        "noPerformanceFields": true,
+        "noTradingAdvisory": true
+      }
+    }
+  ],
+  "lookbackContract": {
+    "constant": "T05B_LOOKBACK_DAYS",
+    "value": 500,
+    "unit": "calendar days"
+  },
+  "forbiddenOutputFields": ["buy", "sell", "signal", "roi", "win_rate", "alpha", "edge", "profit", "recommendation", "outperform"],
+  "forbiddenHypotheses": ["H001", "H002", "H003", "H004", "H005", "H006", "H007", "H008", "H009", "H010", "H011", "H012"]
+}

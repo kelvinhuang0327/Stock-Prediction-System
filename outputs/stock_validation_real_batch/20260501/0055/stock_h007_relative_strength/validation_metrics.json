@@ -1,0 +1,15 @@
+{
+  "hypothesis_id": "STOCK_H007_RELATIVE_STRENGTH",
+  "symbol": "0055",
+  "as_of_date": "2026-05-01",
+  "windows_tested": [
+    150,
+    500
+  ],
+  "windows_ok": [],
+  "avg_sharpe_annualized": 0.0,
+  "avg_roi_annualized": 0.0,
+  "bh_fdr_pass_count": 0,
+  "promoted": "DATA_INSUFFICIENT",
+  "run_ts": "2026-05-05T09:41:38.841074+00:00"
+}

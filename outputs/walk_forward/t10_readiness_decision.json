@@ -1,0 +1,55 @@
+{
+  "task": "T-10 Readiness Decision",
+  "generated_at": "2026-05-06T15:00:00+08:00",
+  "answers": {
+    "1_t10_regime_context_enrichment_complete": true,
+    "2_no_behavior_change_maintained": true,
+    "3_can_serve_as_walk_forward_context": true,
+    "4_can_connect_to_t12_dailyreportengine": true,
+    "5_can_connect_to_t11_freshness_alert": true,
+    "6_pit_leakage_risk": false,
+    "6_pit_leakage_detail": "All regimeDate <= asofDate enforced by SQL WHERE date <= asof_date and guardrail check",
+    "7_future_regime_risk": false,
+    "7_future_regime_detail": "FUTURE_DATE_ERROR guardrail implemented; no rows found with regimeDate > asofDate",
+    "8_h001_h012_leakage_risk": false,
+    "9_buy_sell_signal_leakage_risk": false,
+    "10_roi_win_rate_edge_leakage_risk": false,
+    "11_p0_blocker_remaining": false,
+    "12_next_round_recommendation": "T-11 Freshness Alert implementation"
+  },
+  "evidence": {
+    "total_records": 120,
+    "records_with_regime_context": 120,
+    "records_missing_regime_context": 0,
+    "pit_safe": true,
+    "guardrail_result": "16/16 PASS",
+    "no_behavior_change_result": "11/11 PASS",
+    "regime_label_distribution": {
+      "BULL": 62,
+      "SIDEWAYS": 18,
+      "HIGH_VOLATILITY": 40
+    },
+    "freshness_status": {
+      "FRESH": 120
+    },
+    "max_freshness_lag_days": 0
+  },
+  "next_round_priorities": {
+    "P0_Immediate": [
+      "T-11 Freshness Alert: implement staleness alert for MarketRegimeResult (lag > 3d) and integrate into DailyReport"
+    ],
+    "P1_Next": [
+      "T-12 DailyReportEngine deeper integration: replace live detectRegime() call with persisted MarketRegimeResult lookup",
+      "T-03 Daily Ops Report v1: wire DailyReportEngine to /api/report/daily with full regime+freshness context"
+    ],
+    "P2_Deferred": [
+      "P4-05 Data Backfill: backfill InstitutionalChip, MonthlyRevenue, FinancialReport for >= 500 trading days",
+      "P4-06 Walk-Forward actual metric computation (requires data backfill first)"
+    ],
+    "Do_Not_Continue": [
+      "H001-H012 hypothesis reactivation",
+      "Strategy validation / ROI computation",
+      "ML model training (P4-07) before data foundation is complete"
+    ]
+  }
+}

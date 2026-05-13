@@ -1,0 +1,99 @@
+{
+  "taskName": "P0-02B",
+  "artifactType": "shadow_prediction_log_artifact_preview",
+  "writeMode": "DRY_RUN",
+  "asOfDate": "2026-05-07",
+  "generatedAt": "2026-05-07T00:00:00.000Z",
+  "runId": "p002b-preview-run",
+  "universeTier": "MVP_CORE",
+  "entryCount": 2,
+  "batchValidationStatus": "PASS",
+  "observabilityOnly": true,
+  "noProductionWrite": true,
+  "entries": [
+    {
+      "logVersion": "p002b-v1",
+      "taskName": "P0-02B",
+      "runId": "p002b-preview-run",
+      "asOfDate": "2026-05-07",
+      "generatedAt": "2026-05-07T00:00:00.000Z",
+      "universeTier": "MVP_CORE",
+      "symbol": "2330",
+      "stockName": "TSMC",
+      "researchBucket": "Strong",
+      "scoreSnapshot": {
+        "researchScore": 82.0,
+        "confidenceScore": 68,
+        "technicalScore": 85,
+        "chipScore": 75,
+        "fundamentalScore": 90,
+        "marketAdjustment": 5
+      },
+      "confidenceSnapshot": 68,
+      "factorSnapshot": ["institutional concentration improving", "revenue trend positive"],
+      "riskSnapshot": ["sector concentration risk"],
+      "limitationSnapshot": ["limited chip data for this period"],
+      "dataCoverageSnapshot": {
+        "coverage": "full",
+        "usedSources": ["price", "chip", "revenue"],
+        "missingSources": []
+      },
+      "sourceDateBasis": {
+        "sourceDate": "2026-05-06",
+        "sourceType": "stockQuote",
+        "missingDataFlags": []
+      },
+      "targetHorizons": [
+        { "horizonLabel": "5D", "outcomeStatus": "PENDING", "outcomeWriteBackAllowed": false },
+        { "horizonLabel": "20D", "outcomeStatus": "PENDING", "outcomeWriteBackAllowed": false }
+      ],
+      "validationStatus": "PASS",
+      "validationMessages": [],
+      "guardrailStatus": "PASS",
+      "duplicateKey": "2026-05-07|2330|MVP_CORE|p002b-preview-run",
+      "writeMode": "DRY_RUN"
+    },
+    {
+      "logVersion": "p002b-v1",
+      "taskName": "P0-02B",
+      "runId": "p002b-preview-run",
+      "asOfDate": "2026-05-07",
+      "generatedAt": "2026-05-07T00:00:00.000Z",
+      "universeTier": "MVP_CORE",
+      "symbol": "2454",
+      "stockName": "MediaTek",
+      "researchBucket": "Watch",
+      "scoreSnapshot": {
+        "researchScore": 61.5,
+        "confidenceScore": 52,
+        "technicalScore": 65,
+        "chipScore": 60,
+        "fundamentalScore": 58,
+        "marketAdjustment": 0
+      },
+      "confidenceSnapshot": 52,
+      "factorSnapshot": ["momentum neutral", "foreign holding stable"],
+      "riskSnapshot": ["earnings variability noted"],
+      "limitationSnapshot": [],
+      "dataCoverageSnapshot": {
+        "coverage": "limited",
+        "usedSources": ["price", "chip"],
+        "missingSources": ["revenue"]
+      },
+      "sourceDateBasis": {
+        "sourceDate": "2026-05-06",
+        "sourceType": "stockQuote",
+        "missingDataFlags": ["revenue missing"]
+      },
+      "targetHorizons": [
+        { "horizonLabel": "5D", "outcomeStatus": "PENDING", "outcomeWriteBackAllowed": false },
+        { "horizonLabel": "20D", "outcomeStatus": "PENDING", "outcomeWriteBackAllowed": false }
+      ],
+      "validationStatus": "PASS",
+      "validationMessages": [],
+      "guardrailStatus": "PASS",
+      "duplicateKey": "2026-05-07|2454|MVP_CORE|p002b-preview-run",
+      "writeMode": "DRY_RUN"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # GBGF Real Stock Batch Evaluation — P3-07
 
-**Run date:** 2026-05-05 06:08 UTC
+**Run date:** 2026-05-05 09:58 UTC
 **As-of date:** 2026-05-01
 **Pipeline:** P3-07
 

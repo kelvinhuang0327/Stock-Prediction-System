@@ -1,0 +1,255 @@
+{
+  "contract_id": "T07_DAILY_PIPELINE_CONTRACT",
+  "contract_date": "2026-05-06",
+  "pipeline_name": "dailyRegimeAwareReportPipeline",
+  "version": "1.0.0",
+  "default_mode": "dry-run",
+  "safety_rules": [
+    "Default mode is dry-run. --apply must be explicitly passed.",
+    "dry-run must not write any DB table.",
+    "apply may ONLY write MarketIndex via backfill-taiex-gap.py --apply.",
+    "No StockQuote mutation allowed.",
+    "No production DB write allowed.",
+    "No buy/sell signal generation.",
+    "No strategy validation.",
+    "No ROI or win-rate calculation.",
+    "No H013+ design. No H001-H012 reuse.",
+    "No paid API calls. TAIEX TWSE API only allowed in taiex_backfill_if_needed stage.",
+    "No LLM data fabrication.",
+    "If TAIEX API fails, pipeline marks stage DEGRADED, not fabricated.",
+    "All forbidden fields must be absent: buy, sell, signal, roi, win_rate, alpha, edge, profit, recommendation, outperform."
+  ],
+  "pipeline_stages": [
+    {
+      "stage_name": "freshness_check",
+      "stage_index": 1,
+      "command": "python3 scripts/backfill-taiex-gap.py --dry-run",
+      "input_files": [
+        "prisma/dev.db (MarketIndex table)"
+      ],
+      "output_files": [
+        "stdout: gap_count, would_insert records"
+      ],
+      "writes_db": false,
+      "calls_external_api": false,
+      "allowed_to_fail": false,
+      "retry_policy": {
+        "max_retries": 0,
+        "reason": "read-only, deterministic"
+      },
+      "guardrails": [
+        "dry-run only",
+        "no DB write",
+        "no external API"
+      ],
+      "success_criteria": "exit code 0, stdout shows freshness gap analysis",
+      "failure_classification": "FAIL_STAGE_EXECUTION"
+    },
+    {
+      "stage_name": "taiex_backfill_if_needed",
+      "stage_index": 2,
+      "command": "python3 scripts/backfill-taiex-gap.py --apply",
+      "command_dry_run": "SKIPPED (only runs if gap detected AND mode=apply)",
+      "input_files": [
+        "prisma/dev.db (MarketIndex table)",
+        "TWSE FMTQIK API (TAIEX historical)"
+      ],
+      "output_files": [
+        "prisma/dev.db MarketIndex (new rows only if gap)"
+      ],
+      "writes_db": true,
+      "writes_tables": [
+        "MarketIndex"
+      ],
+      "calls_external_api": true,
+      "external_api_url": "https://www.twse.com.tw/rwd/zh/TAIEX/MI_5MINS_HIST",
+      "allowed_to_fail": true,
+      "retry_policy": {
+        "max_retries": 1,
+        "reason": "network instability"
+      },
+      "guardrails": [
+        "Only runs if stage 1 detected gap AND pipeline mode=apply",
+        "Only writes MarketIndex",
+        "Never writes StockQuote",
+        "If API fails, marks stage DEGRADED, pipeline continues"
+      ],
+      "success_criteria": "exit code 0, MarketIndex gap filled or confirmed up-to-date",
+      "failure_classification": "PASS_WITH_DEGRADED_FRESHNESS"
+    },
+    {
+      "stage_name": "market_regime_classifier",
+      "stage_index": 3,
+      "command": "python3 scripts/build-market-regime-classifier.py --output outputs/market_regime/p4_03b_market_regime_sample.json",
+      "input_files": [
+        "prisma/dev.db (MarketIndex table)"
+      ],
+      "output_files": [
+        "outputs/market_regime/p4_03b_market_regime_sample.json"
+      ],
+      "writes_db": false,
+      "calls_external_api": false,
+      "allowed_to_fail": false,
+      "retry_policy": {
+        "max_retries": 0,
+        "reason": "deterministic from DB"
+      },
+      "guardrails": [
+        "No DB write",
+        "No external API",
+        "Output must have asof_date, regime_label, regime_confidence",
+        "No forbidden fields"
+      ],
+      "success_criteria": "exit code 0, JSON output file exists and parses",
+      "failure_classification": "FAIL_STAGE_EXECUTION"
+    },
+    {
+      "stage_name": "portfolio_walk_forward_skeleton",
+      "stage_index": 4,
+      "command": "python3 scripts/build-portfolio-walk-forward-skeleton.py --output outputs/walk_forward/t05_walk_forward_sample.json",
+      "input_files": [
+        "prisma/dev.db (StockQuote, MarketIndex, Stock tables)",
+        "outputs/market_regime/p4_03b_market_regime_sample.json"
+      ],
+      "output_files": [
+        "outputs/walk_forward/t05_walk_forward_sample.json"
+      ],
+      "writes_db": false,
+      "calls_external_api": false,
+      "allowed_to_fail": false,
+      "retry_policy": {
+        "max_retries": 0,
+        "reason": "deterministic mock skeleton"
+      },
+      "guardrails": [
+        "No DB write",
+        "No external API",
+        "candidate_selection_method must be deterministic_alphabetical_mock",
+        "No forbidden fields"
+      ],
+      "success_criteria": "exit code 0, JSON output file exists with >=1 record",
+      "failure_classification": "FAIL_STAGE_EXECUTION"
+    },
+    {
+      "stage_name": "daily_report_builder",
+      "stage_index": 5,
+      "command": "python3 scripts/build-daily-regime-walkforward-report.py --output-json outputs/daily_report/t06_daily_report_section.json --output-md outputs/daily_report/t06_daily_report_section.md",
+      "input_files": [
+        "outputs/market_regime/p4_03b_market_regime_sample.json",
+        "outputs/walk_forward/t05_walk_forward_sample.json"
+      ],
+      "output_files": [
+        "outputs/daily_report/t06_daily_report_section.json",
+        "outputs/daily_report/t06_daily_report_section.md",
+        "outputs/daily_report/t06_daily_ops_report.json",
+        "outputs/daily_report/t06_daily_ops_report.md"
+      ],
+      "writes_db": false,
+      "calls_external_api": false,
+      "allowed_to_fail": false,
+      "retry_policy": {
+        "max_retries": 0,
+        "reason": "deterministic from artifacts"
+      },
+      "guardrails": [
+        "No DB write",
+        "No external API",
+        "Output must include do_not_interpret_as",
+        "No forbidden fields"
+      ],
+      "success_criteria": "exit code 0, all 4 output files exist, JSON parses, do_not_interpret_as present",
+      "failure_classification": "FAIL_STAGE_EXECUTION"
+    },
+    {
+      "stage_name": "guardrail_validation",
+      "stage_index": 6,
+      "command": "internal guardrail check",
+      "input_files": [
+        "outputs/daily_report/t06_daily_report_section.json",
+        "outputs/daily_report/t06_daily_ops_report.json"
+      ],
+      "output_files": [
+        "outputs/scheduler/t07_guardrail_validation.json"
+      ],
+      "writes_db": false,
+      "calls_external_api": false,
+      "allowed_to_fail": false,
+      "retry_policy": {
+        "max_retries": 0,
+        "reason": "pure validation"
+      },
+      "guardrails": [
+        "Check forbidden fields: buy, sell, signal, roi, win_rate, alpha, edge, profit, recommendation, outperform",
+        "Check do_not_interpret_as present",
+        "Check no H001-H012 references",
+        "Check report_date <= 2026-05-06"
+      ],
+      "success_criteria": "All guardrail checks PASS",
+      "failure_classification": "FAIL_GUARDRAIL"
+    },
+    {
+      "stage_name": "artifact_validation",
+      "stage_index": 7,
+      "command": "pipeline runner internal check",
+      "input_files": [
+        "all output files from stages 3-6"
+      ],
+      "output_files": [],
+      "writes_db": false,
+      "calls_external_api": false,
+      "allowed_to_fail": false,
+      "retry_policy": {
+        "max_retries": 0,
+        "reason": "pure validation"
+      },
+      "guardrails": [
+        "All required artifacts exist",
+        "All JSON artifacts parse",
+        "File sizes > 0"
+      ],
+      "success_criteria": "All artifacts exist and parse",
+      "failure_classification": "FAIL_ARTIFACT_VALIDATION"
+    },
+    {
+      "stage_name": "readiness_decision",
+      "stage_index": 8,
+      "command": "pipeline runner internal - writes pipeline run summary",
+      "input_files": [
+        "all stage results"
+      ],
+      "output_files": [
+        "outputs/scheduler/t07_pipeline_run_summary.json",
+        "outputs/scheduler/t07_pipeline_run_summary.md"
+      ],
+      "writes_db": false,
+      "calls_external_api": false,
+      "allowed_to_fail": false,
+      "retry_policy": {
+        "max_retries": 0,
+        "reason": "summary generation"
+      },
+      "guardrails": [
+        "final_pipeline_status must be one of allowed values"
+      ],
+      "success_criteria": "Run summary JSON created and parses",
+      "failure_classification": "FAIL_STAGE_EXECUTION",
+      "allowed_final_pipeline_status": [
+        "PASS",
+        "PASS_WITH_DEGRADED_FRESHNESS",
+        "FAIL_GUARDRAIL",
+        "FAIL_ARTIFACT_VALIDATION",
+        "FAIL_STAGE_EXECUTION",
+        "BLOCKED_EXTERNAL_API",
+        "BLOCKED_SAFETY_RULE"
+      ]
+    }
+  ],
+  "daily_outputs": [
+    "outputs/daily_report/t06_daily_ops_report.json",
+    "outputs/daily_report/t06_daily_ops_report.md",
+    "outputs/scheduler/t07_pipeline_run_summary.json",
+    "outputs/scheduler/t07_pipeline_run_summary.md",
+    "outputs/scheduler/t07_guardrail_validation.json",
+    "outputs/scheduler/t07_guardrail_validation.md"
+  ]
+}

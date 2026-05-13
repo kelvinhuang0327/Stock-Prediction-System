@@ -1,0 +1,46 @@
+{
+  "task": "P0-04",
+  "title": "MarketIndex As-of Gate Audit",
+  "date": "2026-05-07",
+  "status": "COMPLETE",
+  "disclaimer": "research tool only — no auto trading — no precision prediction claim — no DB write — no external API — no LLM call — no strategy mutation — no regime logic mutation — no performance claim — no edge claim",
+  "marketIndexSchema": {
+    "model": "MarketIndex",
+    "dateField": "date",
+    "dateFormat": "String (YYYY-MM-DD)",
+    "primaryFilter": "name = 'TAIEX'"
+  },
+  "queryPaths": [
+    {
+      "function": "detectRegime()",
+      "file": "src/lib/market/MarketRegimeEngine.ts",
+      "previousBehavior": "prisma.marketIndex.findMany({ where: { name: 'TAIEX' } }) — NO date upper bound",
+      "p004Behavior": "prisma.marketIndex.findMany({ where: { name: 'TAIEX', ...(asOf ? { date: { lte: asOf } } : {}) } })",
+      "gateStatus": "COMPLETE"
+    },
+    {
+      "function": "detectRegimeForPeriod(startDate, endDate)",
+      "file": "src/lib/market/MarketRegimeEngine.ts",
+      "previousBehavior": "date: { gte: startDate, lte: endDate } — already bounded",
+      "p004Behavior": "unchanged — already correct",
+      "gateStatus": "ALREADY_SAFE"
+    },
+    {
+      "function": "buildRegimeTimeline(startDate, endDate)",
+      "file": "src/lib/market/MarketRegimeEngine.ts",
+      "previousBehavior": "date: { lte: endDate } — already bounded",
+      "p004Behavior": "unchanged — already correct",
+      "gateStatus": "ALREADY_SAFE"
+    }
+  ],
+  "callersOutOfScope": [
+    "src/app/api/stocks/[id]/detail/route.ts — detectRegime() — P0-05 candidate",
+    "src/app/api/market/regime/route.ts — detectRegime() — P0-05 candidate",
+    "src/lib/relevance/RelevanceInsightsService.ts — detectRegime() — P0-05 candidate",
+    "src/lib/notify/DailyAlertEngine.ts — detectRegime() — P0-05 candidate",
+    "src/lib/report/DailyReportEngine.ts — detectRegime() — P0-05 candidate",
+    "src/lib/portfolio/PortfolioImpactEngine.ts — detectRegime() — P0-05 candidate",
+    "src/lib/autonomous/AutonomousResearchEngine.ts — detectRegime() — P0-05 candidate"
+  ],
+  "backwardCompatibility": "asOf is optional — all existing callers without asOf continue unchanged"
+}
