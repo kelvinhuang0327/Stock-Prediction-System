@@ -1,0 +1,58 @@
+{
+  "phase": "P26B-HARDRESET",
+  "part": "PART_H_REASON_CONTEXT_SMOKE",
+  "generatedAt": "2026-05-13",
+  "asOfDate": "2026-05-13",
+  "symbol": "2330",
+  "visibleEventCount": 3,
+  "emptySummary": "No news events published on or before 2026-05-13 were found for 2330. Event context: empty.",
+  "populatedSummary": "3 news event(s) published on or before 2026-05-13 were recorded for 2330. Categories observed: EARNINGS, REGULATORY. This is read-only context metadata and does not affect the research score.",
+  "checksTotal": 8,
+  "checksPassed": 8,
+  "checksFailed": 0,
+  "allPassed": true,
+  "checks": [
+    {
+      "name": "CHECK 1: neutral description for no visible events",
+      "passed": true,
+      "detail": "No news events published on or before 2026-05-13 were found for 2330. Event cont"
+    },
+    {
+      "name": "CHECK 2: neutral description with visible events",
+      "passed": true,
+      "detail": "3 news event(s) published on or before 2026-05-13 were recorded for 2330. Catego"
+    },
+    {
+      "name": "CHECK 3: empty context mentions asOfDate and symbol",
+      "passed": true,
+      "detail": "asOfDate=2026-05-13, symbol=2330"
+    },
+    {
+      "name": "CHECK 4: populated context mentions visible event count",
+      "passed": true,
+      "detail": "visibleCount=3"
+    },
+    {
+      "name": "CHECK 5: no factor score derived from NewsEvent",
+      "passed": true,
+      "detail": "No factorScore/alphaContribution fields"
+    },
+    {
+      "name": "CHECK 6: scoreSnapshot not modified by event context",
+      "passed": true,
+      "detail": "No scoreSnapshot in eventNewsContext"
+    },
+    {
+      "name": "CHECK 7: readOnly=true",
+      "passed": true,
+      "detail": "readOnly=true"
+    },
+    {
+      "name": "CHECK 8: entersAlphaScore=false",
+      "passed": true,
+      "detail": "entersAlphaScore=false"
+    }
+  ],
+  "verdict": "REASON_CONTEXT_SMOKE_PASS",
+  "disclaimer": "No investment recommendations. No ROI/win-rate/profit/outperform/buy/sell claims."
+}

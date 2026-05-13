@@ -1,0 +1,65 @@
+{
+  "phase": "P26B-HARDRESET",
+  "part": "PART_F_PIT_LEAKAGE_VALIDATION",
+  "generatedAt": "2026-05-13",
+  "asOfDate": "2026-05-13",
+  "symbol": "2330",
+  "checksTotal": 10,
+  "checksPassed": 10,
+  "checksFailed": 0,
+  "allPassed": true,
+  "checks": [
+    {
+      "name": "CHECK 1: publishedAt <= asOfDate is visible",
+      "passed": true,
+      "detail": "publishedAt=2026-05-10T09:00:00Z, ingestedAt=2026-05-15T08:00:00Z"
+    },
+    {
+      "name": "CHECK 2: publishedAt > asOfDate is excluded",
+      "passed": true,
+      "detail": "publishedAt=2026-05-20T09:00:00Z, ingestedAt=2026-05-12T08:00:00Z"
+    },
+    {
+      "name": "CHECK 3: ingestedAt early does NOT grant visibility to future publishedAt",
+      "passed": true,
+      "detail": "ingestedAt=2026-05-12T08:00:00Z (before asOf) but publishedAt=2026-05-20T09:00:00Z (future) → correctly excluded"
+    },
+    {
+      "name": "CHECK 4: ingestedAt after asOfDate does NOT block past publishedAt visibility",
+      "passed": true,
+      "detail": "ingestedAt=2026-05-15T08:00:00Z (after asOf) but publishedAt=2026-05-10T09:00:00Z → correctly visible"
+    },
+    {
+      "name": "CHECK 5: missing publishedAt is not visible",
+      "passed": true,
+      "detail": "publishedAt=null"
+    },
+    {
+      "name": "CHECK 6: different symbol event not in target symbol context",
+      "passed": true,
+      "detail": "event symbol=0050, target=2330"
+    },
+    {
+      "name": "CHECK 7: output does not contain outcome fields",
+      "passed": true,
+      "detail": "clean"
+    },
+    {
+      "name": "CHECK 8: output does not contain buy/sell/recommendation claims",
+      "passed": true,
+      "detail": "clean"
+    },
+    {
+      "name": "CHECK 9: output marks entersAlphaScore=false",
+      "passed": true,
+      "detail": "entersAlphaScore=false"
+    },
+    {
+      "name": "CHECK 10: output marks readOnly=true",
+      "passed": true,
+      "detail": "readOnly=true"
+    }
+  ],
+  "verdict": "P26B_PIT_LEAKAGE_VALIDATION_PASS",
+  "disclaimer": "No investment recommendations. No ROI/win-rate/profit/outperform/buy/sell claims."
+}

@@ -1,0 +1,34 @@
+{
+  "phase": "P26B-HARDRESET",
+  "generatedAt": "2026-05-13",
+  "preflightStatus": "P26B_PREFLIGHT_PASS",
+  "p26aArtifacts": {
+    "allPresent": true,
+    "artifacts": [
+      "p26a_feature_snapshot_v1_final_report.md",
+      "p12pit_feature_contract_v1.json",
+      "p12pit_feature_contract_v1.md",
+      "p26a_scoring_invariance_check.json",
+      "p26a_walkthrough_reason_quality_compare.json",
+      "p26a_active_scoring_smoke_regression.json",
+      "p26a_scoring_underoutput_audit.json"
+    ]
+  },
+  "p26aFinalClassification": "P26A_FEATURE_SNAPSHOT_V1_COMPLETE",
+  "frozenCorpus": {
+    "simulation_snapshot_corpus.jsonl": 60,
+    "p0hardreset_historical_replay_corpus.jsonl": 4500,
+    "p1baseline_historical_replay_corpus.jsonl": 9900,
+    "p3active_scoring_historical_replay_corpus.jsonl": 4500,
+    "p19active_scoring_pit_replay_corpus.jsonl": 4500,
+    "note": "p19 wc-l shows 4499 due to trailing newline; non-empty parser confirms 4500"
+  },
+  "codeBaselineSnapshot": {
+    "ActiveScoringSnapshotBuilder.ts": "063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d",
+    "RuleBasedStockAnalyzer.ts": "bc3716cc8e74be304f2e262aac586a61760bb59d6c95e82a575c38e03ea7373d",
+    "SignalFusionEngine.ts": "b8ce3fa3ae63fd7edf6b6067dd8ccea63c02741454b93792e87bfbc1e95d2bf4",
+    "P26AReasonFactorEnrichmentUtils.ts": "b1d8323b399b3bde012aacb8b50a9bed1a0a91eb4f88724b5cc1fa1d89ba46ef",
+    "P12FeatureContractV1Utils.ts": "eed17a32458b255ae04525b6bb3ad6bf3585199282f77271e79898a9fce5f2a3"
+  },
+  "verdict": "Proceed to Parts B-M"
+}
