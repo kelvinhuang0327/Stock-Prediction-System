@@ -12,7 +12,7 @@ const ROOT = path.resolve(__dirname, '..');
 const DROPZONE = path.join(ROOT, 'data/manual/monthly-revenue/p26f3-2-dropzone');
 const OUT = path.join(ROOT, 'outputs/online_validation');
 
-const IGNORED_NAMES = ['README.md', 'EXPECTED_SCHEMA.json', '.gitkeep', '.gitignore', '.DS_Store'];
+const IGNORED_NAMES = ['README.md', 'EXPECTED_SCHEMA.json', 'EXPECTED_FILENAMES.md', '.gitkeep', '.gitignore', '.DS_Store'];
 const CANDIDATE_EXTS = ['.csv', '.json', '.jsonl', '.ndjson'];
 
 function detectFormat(name) {
@@ -55,7 +55,7 @@ if (fs.existsSync(DROPZONE)) {
     const fp = path.join(DROPZONE, name);
     let stat;
     try { stat = fs.statSync(fp); } catch { continue; }
-    const ignored = name.startsWith('.') || IGNORED_NAMES.includes(name);
+    const ignored = name.startsWith('.') || IGNORED_NAMES.includes(name) || /DO_NOT_IMPORT|TEMPLATE/i.test(name);
     const ext = path.extname(name).toLowerCase();
     const isCandidate = !ignored && CANDIDATE_EXTS.includes(ext);
     const format = detectFormat(name);

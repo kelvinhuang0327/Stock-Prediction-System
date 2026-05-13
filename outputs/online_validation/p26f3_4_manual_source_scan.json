@@ -1,0 +1,22 @@
+{
+  "dropzonePath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/data/manual/monthly-revenue/p26f3-2-dropzone",
+  "scannedAt": "2026-05-13T06:45:15.671Z",
+  "files": [
+    {
+      "fileName": "TEMPLATE_DO_NOT_IMPORT_monthly_revenue.csv",
+      "format": "csv",
+      "rowCount": 0,
+      "parseStatus": "empty",
+      "parseError": null,
+      "accepted": [],
+      "rejected": []
+    }
+  ],
+  "totalRows": 0,
+  "acceptedRows": 0,
+  "rejectedRows": 0,
+  "classification": "P26F3_2_SOURCE_NOT_PROVIDED_PACKAGE_READY",
+  "readOnly": true,
+  "dbWriteAllowed": false,
+  "corpusWriteAllowed": false
+}

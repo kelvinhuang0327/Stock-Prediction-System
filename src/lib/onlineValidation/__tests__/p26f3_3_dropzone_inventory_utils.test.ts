@@ -44,6 +44,30 @@ describe('P26F33 Dropzone Inventory Utils', () => {
       expect(inv.ignoredFiles).toBe(1);
     });
 
+    it('ignores EXPECTED_FILENAMES.md', () => {
+      const tmpDir = makeTmpDir();
+      fs.writeFileSync(path.join(tmpDir, 'EXPECTED_FILENAMES.md'), '# filenames');
+      const inv = inventoryDropzone(tmpDir);
+      expect(inv.candidateSourceFiles).toBe(0);
+      expect(inv.ignoredFiles).toBe(1);
+    });
+
+    it('ignores TEMPLATE_DO_NOT_IMPORT files', () => {
+      const tmpDir = makeTmpDir();
+      fs.writeFileSync(path.join(tmpDir, 'TEMPLATE_DO_NOT_IMPORT_monthly_revenue.csv'), 'stockId\n');
+      const inv = inventoryDropzone(tmpDir);
+      expect(inv.candidateSourceFiles).toBe(0);
+      expect(inv.ignoredFiles).toBe(1);
+    });
+
+    it('ignores files with DO_NOT_IMPORT in name', () => {
+      const tmpDir = makeTmpDir();
+      fs.writeFileSync(path.join(tmpDir, 'DO_NOT_IMPORT_data.json'), '[]');
+      const inv = inventoryDropzone(tmpDir);
+      expect(inv.candidateSourceFiles).toBe(0);
+      expect(inv.ignoredFiles).toBe(1);
+    });
+
     it('ignores EXPECTED_SCHEMA.json', () => {
       const tmpDir = makeTmpDir();
       fs.writeFileSync(path.join(tmpDir, 'EXPECTED_SCHEMA.json'), '{}');

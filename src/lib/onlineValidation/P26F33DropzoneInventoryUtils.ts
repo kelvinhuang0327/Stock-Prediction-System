@@ -36,7 +36,7 @@ export interface DropzoneInventory {
   corpusWriteAllowed: false;
 }
 
-const IGNORED_NAMES = ["README.md", "EXPECTED_SCHEMA.json", ".gitkeep", ".gitignore", ".DS_Store"];
+const IGNORED_NAMES = ["README.md", "EXPECTED_SCHEMA.json", "EXPECTED_FILENAMES.md", ".gitkeep", ".gitignore", ".DS_Store"];
 const CANDIDATE_EXTS = [".csv", ".json", ".jsonl", ".ndjson"];
 
 function detectFormat(fileName: string): string {
@@ -83,7 +83,7 @@ export function inventoryDropzone(dropzonePath: string): DropzoneInventory {
     const fp = path.join(dropzonePath, name);
     let stat: ReturnType<typeof fs.statSync>;
     try { stat = fs.statSync(fp); } catch { continue; }
-    const ignored = name.startsWith(".") || IGNORED_NAMES.includes(name);
+    const ignored = name.startsWith(".") || IGNORED_NAMES.includes(name) || /DO_NOT_IMPORT|TEMPLATE/i.test(name);
     const ext = path.extname(name).toLowerCase();
     const isCandidate = !ignored && CANDIDATE_EXTS.includes(ext);
     const format = detectFormat(name);

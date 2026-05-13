@@ -1,0 +1,27 @@
+{
+  "phase": "P26F3-4-HARDRESET",
+  "generatedAt": "2026-05-13T06:48:30.899188+00:00",
+  "templateFile": "data/manual/monthly-revenue/p26f3-2-dropzone/TEMPLATE_DO_NOT_IMPORT_monthly_revenue.csv",
+  "templateType": "HEADER_ONLY_NO_DATA",
+  "headers": [
+    "stockId",
+    "year",
+    "month",
+    "revenue",
+    "releaseDate",
+    "sourceName",
+    "sourceFileName",
+    "companyName",
+    "yoyGrowth",
+    "momGrowth",
+    "accumulatedRevenue",
+    "accumulatedYoyGrowth",
+    "sourceUrl",
+    "sourceHash"
+  ],
+  "dataRows": 0,
+  "validatorWillIgnore": true,
+  "reason": "Filename contains DO_NOT_IMPORT pattern - excluded from candidate files",
+  "dbWriteAllowed": false,
+  "corpusWriteAllowed": false
+}
