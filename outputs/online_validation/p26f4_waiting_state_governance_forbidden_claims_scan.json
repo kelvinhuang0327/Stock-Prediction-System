@@ -1,0 +1,15 @@
+{
+  "auditId": "p26f4-waiting-state-governance-forbidden-claims-scan",
+  "generatedAt": "2026-05-13T14:30:02.569022+00:00",
+  "forbiddenClaimsDetected": 0,
+  "status": "CLEAN",
+  "filesScanned": [
+    "p26f4_waiting_state_freeze_marker.md",
+    "p26_phase_chain_registry.md",
+    "PHASE_INDEX.md",
+    "P26F4_WAITING_STATE_POLICY.md",
+    "p26_governance_next_actions.md",
+    "p26_next_prompt_source_arrival_only.md"
+  ],
+  "disclaimer": "Observability only. No investment recommendations."
+}

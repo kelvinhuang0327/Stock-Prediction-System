@@ -1,0 +1,61 @@
+{
+  "auditId": "p26-phase-chain-registry",
+  "generatedAt": "2026-05-13T14:27:40.891875+00:00",
+  "phases": [
+    {
+      "phase": "P26A-RENDERER-FIX",
+      "commit": "3411614",
+      "finalClassification": "P26A_RENDERER_FIX_COMPLETE",
+      "sourceDependency": "none",
+      "status": "COMPLETE",
+      "testsResult": "PASS"
+    },
+    {
+      "phase": "P26A-RENDERER-INTEGRATION",
+      "commit": "a0145fa",
+      "finalClassification": "P26A_RENDERER_INTEGRATION_COMPLETE",
+      "sourceDependency": "none",
+      "status": "COMPLETE",
+      "testsResult": "PASS"
+    },
+    {
+      "phase": "P26A-BATCH-PIPELINE-WIRING",
+      "commit": "ba39187",
+      "finalClassification": "P26A_BATCH_PIPELINE_WIRING_COMPLETE",
+      "sourceDependency": "none",
+      "status": "COMPLETE",
+      "testsResult": "22/22 PASS"
+    },
+    {
+      "phase": "P26F4-READINESS-RECHECK",
+      "commit": "12dcb27",
+      "finalClassification": "P26F4_WAITING_FOR_OPERATOR_SOURCE",
+      "sourceDependency": "TWSE/MOPS MonthlyRevenue (required, not yet provided)",
+      "status": "BLOCKED_BY_OPERATOR_SOURCE",
+      "testsResult": "2856/2856 PASS"
+    },
+    {
+      "phase": "P26F4-OPERATOR-SOURCE-PACKET-V2",
+      "commit": "c0f4713",
+      "finalClassification": "P26F4_OPERATOR_SOURCE_PACKET_V2_READY_WAITING_FOR_SOURCE",
+      "sourceDependency": "TWSE/MOPS MonthlyRevenue (required, not yet provided)",
+      "status": "WAITING_FOR_OPERATOR",
+      "testsResult": "2856/2856 PASS"
+    },
+    {
+      "phase": "P26F4-SOURCE-PRESENT-GATE",
+      "commit": "59fe20a",
+      "finalClassification": "P26F4_WAITING_FOR_OPERATOR_SOURCE",
+      "sourceDependency": "TWSE/MOPS MonthlyRevenue (required, not yet provided)",
+      "status": "WAITING_FOR_OPERATOR",
+      "testsResult": "2856/2856 PASS"
+    }
+  ],
+  "chains": {
+    "P26A": "COMPLETE",
+    "P26F4_import": "BLOCKED_BY_OPERATOR_SOURCE",
+    "corpusExpansion": "NOT_ALLOWED_YET",
+    "optimizer": "NOT_ALLOWED_YET"
+  },
+  "disclaimer": "Observability only. No investment recommendations."
+}

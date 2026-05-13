@@ -1,0 +1,20 @@
+{
+  "auditId": "p26f4-stale-prompt-audit",
+  "generatedAt": "2026-05-13T14:27:40.891875+00:00",
+  "filesScanned": [
+    "outputs/online_validation/*p26f4*",
+    "docs/manual-data/monthly-revenue/P26F4_*",
+    "outputs/online_validation/*next_prompt*"
+  ],
+  "staleInstructionsFound": [],
+  "stalePatterns": {
+    "repeatedEmptyScanAsMainTask": false,
+    "dryRunWithoutSource": false,
+    "importWithoutToken": false,
+    "corpusExpansionWithoutSource": false,
+    "optimizerWithoutSource": false
+  },
+  "verdict": "NO_STALE_INSTRUCTIONS_FOUND",
+  "note": "p26f4_next_prompt_when_source_present.md correctly gates on operator source confirmation before running gate",
+  "disclaimer": "Observability only. No investment recommendations."
+}
