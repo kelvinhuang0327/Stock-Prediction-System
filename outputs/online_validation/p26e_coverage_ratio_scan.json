@@ -1,0 +1,45 @@
+{
+  "phase": "P26E-HARDRESET",
+  "date": "2026-05-13",
+  "totalCorpusRows": 9000,
+  "perSource": {
+    "MonthlyRevenue": {
+      "sourceCategory": "MonthlyRevenue",
+      "sourceState": "REAL_DATA_PRESENT_BUT_NOT_MAPPED",
+      "fixtureCoverageOnly": false,
+      "coverageCount": 0,
+      "totalRows": 9000,
+      "coverageRatio": 0,
+      "coverageClassification": "NONE",
+      "isRealDataPresent": true
+    },
+    "NewsEvent": {
+      "sourceCategory": "NewsEvent",
+      "sourceState": "FIXTURE_ONLY",
+      "fixtureCoverageOnly": true,
+      "coverageCount": 0,
+      "coverageRatio": 0,
+      "coverageClassification": "NONE",
+      "notes": "Fixture-only source not counted as real corpus coverage"
+    },
+    "FinancialReport": {
+      "sourceCategory": "FinancialReport",
+      "sourceState": "FIXTURE_ONLY",
+      "fixtureCoverageOnly": true,
+      "coverageCount": 0,
+      "coverageRatio": 0,
+      "coverageClassification": "NONE",
+      "notes": "Fixture-only source not counted as real corpus coverage"
+    }
+  },
+  "summary": {
+    "anyRealCoverage": false,
+    "allFixtureOnly": false,
+    "outcomeFieldsInSummary": false
+  },
+  "outcomeFieldsValidation": {
+    "valid": true,
+    "violations": []
+  },
+  "status": "PASS"
+}
