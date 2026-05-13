@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "P26F3-2 Manual MonthlyRevenue Source Schema",
+  "description": "Expected schema for manual TWSE monthly revenue drop-zone files. Does not constitute investment advice.",
+  "type": "object",
+  "version": "v1",
+  "targetPeriods": ["2025-09", "2025-10", "2025-11", "2025-12", "2026-01"],
+  "targetSymbols": [
+    "0055","00712","00738U","00830","00891","00903",
+    "1210","1308","1314","1319","1326","1402","1434",
+    "1513","1536","1560","1598","1605","1710","1717",
+    "1802","2317","2330","2454","6415"
+  ],
+  "acceptedFormats": ["csv", "json", "jsonl"],
+  "requiredFields": {
+    "stockId": { "type": "string", "description": "Taiwan stock code (or use symbol)" },
+    "symbol": { "type": "string", "description": "Taiwan stock code (or use stockId)" },
+    "year": { "type": "integer", "minimum": 2025, "maximum": 2026 },
+    "month": { "type": "integer", "minimum": 1, "maximum": 12 },
+    "revenue": { "type": ["number", "string"], "description": "Monthly revenue in TWD thousands" },
+    "releaseDate": { "type": "string", "format": "date", "description": "Official TWSE release date YYYY-MM-DD" },
+    "sourceName": { "type": "string", "enum": ["TWSE", "MOPS", "OFFICIAL", "MANUAL"], "description": "Must not be UNKNOWN" },
+    "sourceFileName": { "type": "string", "description": "Original filename for audit trail" }
+  },
+  "optionalFields": {
+    "companyName": { "type": "string" },
+    "yoyGrowth": { "type": ["number", "null"] },
+    "momGrowth": { "type": ["number", "null"] },
+    "accumulatedRevenue": { "type": ["number", "null"] },
+    "accumulatedYoyGrowth": { "type": ["number", "null"] },
+    "sourceUrl": { "type": "string" },
+    "sourceHash": { "type": "string" }
+  },
+  "forbiddenFields": ["outcomePrice", "returnPct", "realizedReturnClass"],
+  "constraints": {
+    "dbWriteAllowed": false,
+    "corpusWriteAllowed": false,
+    "scoringChangeAllowed": false,
+    "optimizerAllowed": false,
+    "externalFetchAllowed": false,
+    "fabricatedDataAllowed": false,
+    "unknownSourceAllowed": false,
+    "outputMode": "MANUAL_SOURCE_ACCEPTANCE_ONLY"
+  }
+}

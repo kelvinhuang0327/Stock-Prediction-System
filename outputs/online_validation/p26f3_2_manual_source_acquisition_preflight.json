@@ -1,0 +1,63 @@
+{
+  "phase": "P26F3-2-HARDRESET",
+  "date": "2026-05-13",
+  "p26f3Classification": "P26F3_SOURCE_NOT_FOUND_TEMPLATE_ONLY",
+  "p26f3RealSourceRows": 0,
+  "p26f3TemplateRows": 125,
+  "p26f3DBWrite": false,
+  "p26f3PITSafety": "PASS",
+  "p26f3ScoringInvariance": "PASS",
+  "p26f3QualityGate": "PASS",
+  "p26f3ArtifactsPresent": true,
+  "dbMonthlyRevenueRowCount": 2143,
+  "dbReleaseDateColumnExists": false,
+  "dbMigrationStatus": "PENDING",
+  "targetPeriods": [
+    "2025-09",
+    "2025-10",
+    "2025-11",
+    "2025-12",
+    "2026-01"
+  ],
+  "targetSymbols": [
+    "0055",
+    "00712",
+    "00738U",
+    "00830",
+    "00891",
+    "00903",
+    "1210",
+    "1308",
+    "1314",
+    "1319",
+    "1326",
+    "1402",
+    "1434",
+    "1513",
+    "1536",
+    "1560",
+    "1598",
+    "1605",
+    "1710",
+    "1717",
+    "1802",
+    "2317",
+    "2330",
+    "2454",
+    "6415"
+  ],
+  "frozenCorpus": {
+    "simulation": 60,
+    "p0": 4500,
+    "p1": 9900,
+    "p3": 4500,
+    "p19": 4500
+  },
+  "codeBaselineSnapshot": {
+    "ActiveScoringSnapshotBuilder.ts": "063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d",
+    "RuleBasedStockAnalyzer.ts": "bc3716cc8e74be304f2e262aac586a61760bb59d6c95e82a575c38e03ea7373d",
+    "SignalFusionEngine.ts": "b8ce3fa3ae63fd7edf6b6067dd8ccea63c02741454b93792e87bfbc1e95d2bf4"
+  },
+  "dropzoneEmpty": true,
+  "status": "PREFLIGHT_PASS"
+}

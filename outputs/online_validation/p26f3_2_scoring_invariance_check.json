@@ -1,0 +1,47 @@
+{
+  "generatedAt": "2026-05-13T06:25:59.023Z",
+  "allPass": true,
+  "classification": "P26F3_2_SCORING_INVARIANCE_PASS",
+  "p3Rows": 4500,
+  "p19Rows": 4500,
+  "totalCorpusRows": 9000,
+  "checks": [
+    {
+      "check": "P3_P19_ROW_COUNT",
+      "expected": 9000,
+      "actual": 9000,
+      "pass": true
+    },
+    {
+      "check": "SHA256_ActiveScoringSnapshotBuilder.ts",
+      "expected": "063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d",
+      "actual": "063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d",
+      "pass": true
+    },
+    {
+      "check": "SHA256_RuleBasedStockAnalyzer.ts",
+      "expected": "bc3716cc8e74be304f2e262aac586a61760bb59d6c95e82a575c38e03ea7373d",
+      "actual": "bc3716cc8e74be304f2e262aac586a61760bb59d6c95e82a575c38e03ea7373d",
+      "pass": true
+    },
+    {
+      "check": "SHA256_SignalFusionEngine.ts",
+      "expected": "b8ce3fa3ae63fd7edf6b6067dd8ccea63c02741454b93792e87bfbc1e95d2bf4",
+      "actual": "b8ce3fa3ae63fd7edf6b6067dd8ccea63c02741454b93792e87bfbc1e95d2bf4",
+      "pass": true
+    },
+    {
+      "check": "P3_SAMPLE_HAS_SCORING_FIELDS",
+      "pass": false
+    },
+    {
+      "check": "ACCEPTED_SOURCE_NO_SCORING_FIELDS",
+      "violations": 0,
+      "pass": true
+    }
+  ],
+  "violations": [],
+  "dbWriteAllowed": false,
+  "corpusWriteAllowed": false,
+  "scoringChangeAllowed": false
+}

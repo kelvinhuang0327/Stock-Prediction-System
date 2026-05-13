@@ -1,0 +1,74 @@
+{
+  "generatedAt": "2026-05-13T06:26:02.680Z",
+  "allPass": true,
+  "classification": "P26F3_2_SAFETY_GATE_PASS",
+  "checks": [
+    {
+      "check": "DB_ROW_COUNT",
+      "expected": 2143,
+      "actual": 2143,
+      "pass": true
+    },
+    {
+      "check": "CORPUS_simulation_snapshot_corpus.jsonl",
+      "expected": 60,
+      "actual": 60,
+      "pass": true
+    },
+    {
+      "check": "CORPUS_p0hardreset_historical_replay_corpus.jsonl",
+      "expected": 4500,
+      "actual": 4500,
+      "pass": true
+    },
+    {
+      "check": "CORPUS_p1baseline_historical_replay_corpus.jsonl",
+      "expected": 9900,
+      "actual": 9900,
+      "pass": true
+    },
+    {
+      "check": "CORPUS_p3active_scoring_historical_replay_corpus.jsonl",
+      "expected": 4500,
+      "actual": 4500,
+      "pass": true
+    },
+    {
+      "check": "CORPUS_p19active_scoring_pit_replay_corpus.jsonl",
+      "expected": 4500,
+      "actual": 4500,
+      "pass": true
+    },
+    {
+      "check": "SHA256_ActiveScoringSnapshotBuilder.ts",
+      "expected": "063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d",
+      "actual": "063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d",
+      "pass": true
+    },
+    {
+      "check": "SHA256_RuleBasedStockAnalyzer.ts",
+      "expected": "bc3716cc8e74be304f2e262aac586a61760bb59d6c95e82a575c38e03ea7373d",
+      "actual": "bc3716cc8e74be304f2e262aac586a61760bb59d6c95e82a575c38e03ea7373d",
+      "pass": true
+    },
+    {
+      "check": "SHA256_SignalFusionEngine.ts",
+      "expected": "b8ce3fa3ae63fd7edf6b6067dd8ccea63c02741454b93792e87bfbc1e95d2bf4",
+      "actual": "b8ce3fa3ae63fd7edf6b6067dd8ccea63c02741454b93792e87bfbc1e95d2bf4",
+      "pass": true
+    },
+    {
+      "check": "NO_OUTCOME_FIELDS",
+      "violations": 0,
+      "pass": true
+    },
+    {
+      "check": "DRY_RUN_ONLY",
+      "violations": 0,
+      "pass": true
+    }
+  ],
+  "violations": [],
+  "dbWriteAllowed": false,
+  "corpusWriteAllowed": false
+}
