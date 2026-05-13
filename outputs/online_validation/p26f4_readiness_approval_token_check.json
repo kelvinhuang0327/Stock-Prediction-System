@@ -1,0 +1,12 @@
+{
+  "auditId": "p26f4-readiness-approval-token-check",
+  "generatedAt": "2026-05-13T14:01:06.108142+00:00",
+  "requiredToken": "P26F4_APPROVE_HISTORICAL_MONTHLY_REVENUE_IMPORT_ONLY",
+  "tokenProvided": false,
+  "tokenStatus": "TOKEN_NOT_PROVIDED",
+  "reason": "No approval token was found in the current task context. candidateSourceFiles=0 also makes import gate inapplicable.",
+  "importBlocked": true,
+  "importBlockReason": "No source files in drop-zone AND no approval token provided",
+  "classification": "TOKEN_NOT_PROVIDED",
+  "disclaimer": "Import requires explicit operator-provided token. No auto-download. No synthetic fixture import."
+}
