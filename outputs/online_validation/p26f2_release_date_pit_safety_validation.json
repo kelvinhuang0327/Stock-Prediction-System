@@ -1,0 +1,75 @@
+{
+  "phase": "P26F2-HARDRESET",
+  "totalTests": 13,
+  "passedTests": 13,
+  "failedTests": 0,
+  "tests": [
+    {
+      "id": 1,
+      "description": "candidateReleaseDate <= asOfDate → visible",
+      "passed": true
+    },
+    {
+      "id": 2,
+      "description": "candidateReleaseDate > asOfDate → not visible",
+      "passed": true
+    },
+    {
+      "id": 3,
+      "description": "candidateReleaseDate === asOfDate → visible",
+      "passed": true
+    },
+    {
+      "id": 4,
+      "description": "candidateReleaseDate = \"INVALID\" → not visible",
+      "passed": true
+    },
+    {
+      "id": 5,
+      "description": "missing candidateReleaseDate → not visible",
+      "passed": true
+    },
+    {
+      "id": 6,
+      "description": "year=2026, month=2 → candidateReleaseDate = 2026-03-10 (deterministic)",
+      "passed": true
+    },
+    {
+      "id": 7,
+      "description": "year=2026, month=12 → candidateReleaseDate = 2027-01-10 (December rolls over)",
+      "passed": true
+    },
+    {
+      "id": 8,
+      "description": "year=2026, month=3 → candidateReleaseDate = 2026-04-10",
+      "passed": true
+    },
+    {
+      "id": 9,
+      "description": "year=2025, month=12, asOfDate=2026-03-11 → visible (2026-01-10 <= 2026-03-11)",
+      "passed": true
+    },
+    {
+      "id": 10,
+      "description": "dryRunOnly=true always",
+      "passed": true
+    },
+    {
+      "id": 11,
+      "description": "productionWriteAllowed=false always",
+      "passed": true
+    },
+    {
+      "id": 12,
+      "description": "no outcome fields in candidates",
+      "passed": true
+    },
+    {
+      "id": 13,
+      "description": "deterministic: same input → same candidateReleaseDate",
+      "passed": true
+    }
+  ],
+  "allPassed": true,
+  "status": "PIT_SAFETY_VALIDATION_PASS"
+}

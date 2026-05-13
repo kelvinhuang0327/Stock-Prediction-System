@@ -1,0 +1,17 @@
+{
+  "phase": "P26F2-HARDRESET",
+  "candidateRowCount": 2143,
+  "allDryRunOnly": true,
+  "allProductionWriteDisabled": true,
+  "noOutcomeFields": true,
+  "noForbiddenClaims": true,
+  "dbWriteDetected": false,
+  "dbMonthlyRevenueCountUnchanged": true,
+  "frozenCorpusSha256Unchanged": true,
+  "jsonlParseable": true,
+  "candidateCountMatch": true,
+  "allRequiredFieldsPresent": true,
+  "allCandidateDatesValid": true,
+  "dbCountAfter": 2143,
+  "status": "QUALITY_GATE_PASS"
+}
