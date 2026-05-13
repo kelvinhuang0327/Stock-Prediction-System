@@ -1,0 +1,19 @@
+{
+  "auditId": "p27-next-workstream-decision",
+  "generatedAt": "2026-05-13T14:44:09.265953+00:00",
+  "currentState": {
+    "P26A": "COMPLETE",
+    "P26F4": "WAITING_FOR_OPERATOR_SOURCE",
+    "candidateSourceFiles": 0
+  },
+  "decision": "Do not schedule empty drop-zone scan as primary task. Proceed with non-source governance hardening.",
+  "recommendedNextIfNoSource": "P27_WAITING_STATE_POLICY_GUARD",
+  "recommendedNextIfSourceArrives": "Use p26_next_prompt_source_arrival_only.md",
+  "explicitlyBlocked": [
+    "import",
+    "corpus expansion",
+    "optimizer",
+    "repeated empty scan"
+  ],
+  "disclaimer": "Observability only. No investment recommendations."
+}

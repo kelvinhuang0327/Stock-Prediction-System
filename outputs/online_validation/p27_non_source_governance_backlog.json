@@ -1,0 +1,137 @@
+{
+  "auditId": "p27-non-source-governance-backlog",
+  "generatedAt": "2026-05-13T14:44:09.265953+00:00",
+  "items": [
+    {
+      "itemId": "P27-A1",
+      "title": "Artifact index consistency check",
+      "dependency": "none",
+      "allowedNow": true,
+      "risk": "LOW",
+      "expectedArtifacts": [
+        "outputs/online_validation/p27_artifact_index_consistency.md"
+      ],
+      "suggestedPromptName": "P27_ARTIFACT_INDEX_CONSISTENCY"
+    },
+    {
+      "itemId": "P27-A2",
+      "title": "Phase registry consistency audit",
+      "dependency": "none",
+      "allowedNow": true,
+      "risk": "LOW",
+      "expectedArtifacts": [
+        "outputs/online_validation/p27_phase_registry_consistency.md"
+      ],
+      "suggestedPromptName": "P27_PHASE_REGISTRY_CONSISTENCY"
+    },
+    {
+      "itemId": "P27-A3",
+      "title": "Stale prompt audit automation (test-based)",
+      "dependency": "none",
+      "allowedNow": true,
+      "risk": "LOW",
+      "expectedArtifacts": [
+        "src/lib/onlineValidation/__tests__/p27_waiting_state_policy_guard.test.ts"
+      ],
+      "suggestedPromptName": "P27_WAITING_STATE_POLICY_GUARD"
+    },
+    {
+      "itemId": "P27-A4",
+      "title": "Forbidden claims scanner consolidation",
+      "dependency": "none",
+      "allowedNow": true,
+      "risk": "LOW",
+      "expectedArtifacts": [
+        "scripts/run-p27-forbidden-claims-scan.js"
+      ],
+      "suggestedPromptName": "P27_FORBIDDEN_CLAIMS_SCANNER_CONSOLIDATION"
+    },
+    {
+      "itemId": "P27-A5",
+      "title": "Report naming convention audit",
+      "dependency": "none",
+      "allowedNow": true,
+      "risk": "LOW",
+      "expectedArtifacts": [
+        "outputs/online_validation/p27_report_naming_audit.md"
+      ],
+      "suggestedPromptName": "P27_REPORT_NAMING_AUDIT"
+    },
+    {
+      "itemId": "P27-A6",
+      "title": "CI guard proposal for waiting-state policy",
+      "dependency": "none",
+      "allowedNow": true,
+      "risk": "LOW",
+      "expectedArtifacts": [
+        "outputs/online_validation/p27_waiting_state_ci_guard_proposal.md"
+      ],
+      "suggestedPromptName": "P27_CI_GUARD_PROPOSAL"
+    },
+    {
+      "itemId": "P27-B1",
+      "title": "Source-present gate",
+      "dependency": "TWSE/MOPS source files in drop-zone",
+      "allowedNow": false,
+      "risk": "N/A (blocked)",
+      "expectedArtifacts": [
+        "p26f4_source_present_gate_final_report.md (update)"
+      ],
+      "suggestedPromptName": "p26_next_prompt_source_arrival_only.md"
+    },
+    {
+      "itemId": "P27-B2",
+      "title": "Source manifest validation",
+      "dependency": "SOURCE_MANIFEST.json present and complete",
+      "allowedNow": false,
+      "risk": "N/A (blocked)",
+      "expectedArtifacts": [
+        "p26f4_manifest_validation.json"
+      ],
+      "suggestedPromptName": "p26_next_prompt_source_arrival_only.md"
+    },
+    {
+      "itemId": "P27-B3",
+      "title": "Dry-run gate",
+      "dependency": "source files present, manifest valid",
+      "allowedNow": false,
+      "risk": "N/A (blocked)",
+      "expectedArtifacts": [
+        "p26f4_dry_run_gate.json"
+      ],
+      "suggestedPromptName": "p26_next_prompt_source_arrival_only.md"
+    },
+    {
+      "itemId": "P27-B4",
+      "title": "Controlled import",
+      "dependency": "dry-run PASS + approval token",
+      "allowedNow": false,
+      "risk": "HIGH (DB write)",
+      "expectedArtifacts": [
+        "p26f4_controlled_import_result.json"
+      ],
+      "suggestedPromptName": "p26_next_prompt_source_arrival_only.md"
+    },
+    {
+      "itemId": "P27-C1",
+      "title": "Corpus expansion gate decision",
+      "dependency": "controlled import complete + coverage preview PASS",
+      "allowedNow": false,
+      "risk": "HIGH (corpus change)",
+      "expectedArtifacts": [
+        "p27_corpus_expansion_gate.json"
+      ],
+      "suggestedPromptName": "P27_CORPUS_EXPANSION_GATE (future)"
+    },
+    {
+      "itemId": "P27-D1",
+      "title": "Optimizer on expanded corpus",
+      "dependency": "corpus expansion authorized",
+      "allowedNow": false,
+      "risk": "HIGH",
+      "expectedArtifacts": [],
+      "suggestedPromptName": "future -- not schedulable yet"
+    }
+  ],
+  "disclaimer": "Observability only. No investment recommendations."
+}
