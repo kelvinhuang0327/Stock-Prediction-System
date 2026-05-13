@@ -1,0 +1,43 @@
+{
+  "version": "p26c-financial-report-availability-contract-v0",
+  "generatedAt": "2026-05-13",
+  "phase": "P26C-HARDRESET",
+  "pitStatus": "READ_ONLY_METADATA_ONLY",
+  "pitVisibilityRule": "visible iff availabilityDate <= asOfDate (Asia/Taipei end-of-day)",
+  "availabilityDatePriority": [
+    "filingDate",
+    "announcementDate",
+    "publishedAt",
+    "availableAt"
+  ],
+  "forbiddenVisibilityGates": [
+    "periodEndDate",
+    "fiscalYear",
+    "fiscalQuarter",
+    "periodStartDate",
+    "ingestedAt",
+    "createdAt",
+    "updatedAt"
+  ],
+  "timezoneRule": "asOfDate uses Asia/Taipei day boundary (UTC+8). availabilityDate UTC timestamps compared after normalizing to Taiwan date.",
+  "entersAlphaScore": false,
+  "entersRecommendationBucket": false,
+  "entersReasonContext": true,
+  "entersFactorSnapshot": false,
+  "readOnly": true,
+  "nonGoals": [
+    "FinancialReport does not enter alphaScore calculation",
+    "FinancialReport does not enter recommendationBucket determination",
+    "No production integration with external financial data API in this sprint",
+    "No EPS/margin factor activation in scoring",
+    "No performance improvement claimed from FinancialReport context"
+  ],
+  "forbiddenFields": [
+    "outcomePrice",
+    "returnPct",
+    "realizedReturnClass",
+    "futurePriceMovement",
+    "postAsOfReport"
+  ],
+  "disclaimer": "Read-only metadata contract only. Not for investment use. No financial projections."
+}
