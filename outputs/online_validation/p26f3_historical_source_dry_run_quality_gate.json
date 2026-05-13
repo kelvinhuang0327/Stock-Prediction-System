@@ -1,0 +1,80 @@
+{
+  "phase": "P26F3-HARDRESET",
+  "date": "2026-05-13",
+  "candidateRowCount": 125,
+  "realSourceRows": 0,
+  "templateOnlyRows": 125,
+  "allDryRunOnly": true,
+  "allDbWriteDisabled": true,
+  "allCorpusWriteDisabled": true,
+  "noOutcomeFields": true,
+  "noForbiddenClaims": true,
+  "templateIsNotRealCoverage": true,
+  "dbWriteDetected": false,
+  "dbMonthlyRevenueCountUnchanged": true,
+  "frozenCorpusSha256Unchanged": true,
+  "checks": [
+    {
+      "name": "JSONL parseable",
+      "passed": true,
+      "detail": "125 rows"
+    },
+    {
+      "name": "Candidate count = 125",
+      "passed": true,
+      "detail": "actual=125"
+    },
+    {
+      "name": "All dryRunOnly=true",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "All dbWriteAllowed=false",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "All corpusWriteAllowed=false",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "No outcome fields",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Template-only vs real-source separated",
+      "passed": true,
+      "detail": "real=0, template=125"
+    },
+    {
+      "name": "DB row count unchanged (2143)",
+      "passed": true,
+      "detail": "actual=2143"
+    },
+    {
+      "name": "Frozen corpus unchanged",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "No external API fetch",
+      "passed": true,
+      "detail": "script uses local data only"
+    },
+    {
+      "name": "No forbidden claims in candidates",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "All rows have sourceType",
+      "passed": true,
+      "detail": ""
+    }
+  ],
+  "allPassed": true,
+  "status": "QUALITY_GATE_PASS"
+}
