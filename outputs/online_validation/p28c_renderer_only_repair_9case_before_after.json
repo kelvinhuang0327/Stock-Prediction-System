@@ -1,0 +1,119 @@
+{
+  "generatedAt": "2026-05-15T04:38:36.000Z",
+  "patchPhase": "P28C",
+  "totalCases": 9,
+  "enrichedCount": 9,
+  "allAlphaScoreUnchanged": true,
+  "allBucketUnchanged": true,
+  "classification": "P28C_RENDERER_ONLY_REPAIR_COMPLETE",
+  "cases": [
+    {
+      "caseIndex": 1,
+      "symbol": "1710",
+      "repairFamily": "scoreSnapshot_zero_label",
+      "before_reasonSnapshot": "技術偏多",
+      "after_outcome": "ENRICHED",
+      "after_rendererVersion": "p26a-corpus-renderer-v2",
+      "after_renderedText": "技術面偏多，多頭排列（MA20(45.20），RSI 62.5，MACD 0.45 / 法人偏多買超（法人近 10 日買超: 外資淨買入 1200 張）",
+      "alphaScoreUnchanged": true,
+      "bucketUnchanged": true,
+      "repairApplied": true
+    },
+    {
+      "caseIndex": 2,
+      "symbol": "00738U",
+      "repairFamily": "scoreSnapshot_zero_label",
+      "before_reasonSnapshot": "技術偏空",
+      "after_outcome": "ENRICHED",
+      "after_rendererVersion": "p26a-corpus-renderer-v2",
+      "after_renderedText": "技術面偏空，空頭排列（MA20 < MA60），RSI 38，MACD -0.2",
+      "alphaScoreUnchanged": true,
+      "bucketUnchanged": true,
+      "repairApplied": true
+    },
+    {
+      "caseIndex": 3,
+      "symbol": "00738U",
+      "repairFamily": "scoreSnapshot_zero_label",
+      "before_reasonSnapshot": "法人賣超",
+      "after_outcome": "ENRICHED",
+      "after_rendererVersion": "p26a-corpus-renderer-v2",
+      "after_renderedText": "技術面偏空，空頭排列（MA20 < MA60），RSI 35 / 法人中性（法人近 10 日買超: 外資淨賣出 500 張）",
+      "alphaScoreUnchanged": true,
+      "bucketUnchanged": true,
+      "repairApplied": true
+    },
+    {
+      "caseIndex": 4,
+      "symbol": "1710",
+      "repairFamily": "scoreSnapshot_zero_label",
+      "before_reasonSnapshot": "動能轉強",
+      "after_outcome": "ENRICHED",
+      "after_rendererVersion": "p26a-corpus-renderer-v2",
+      "after_renderedText": "技術面偏多，多頭排列（MA20 > MA60），RSI 65，MACD 0.52",
+      "alphaScoreUnchanged": true,
+      "bucketUnchanged": true,
+      "repairApplied": true
+    },
+    {
+      "caseIndex": 5,
+      "symbol": "00738U",
+      "repairFamily": "scoreSnapshot_zero_label",
+      "before_reasonSnapshot": "動能走弱",
+      "after_outcome": "ENRICHED",
+      "after_rendererVersion": "p26a-corpus-renderer-v2",
+      "after_renderedText": "技術面偏空，空頭排列（MA20 < MA60），RSI 28，MACD -0.4",
+      "alphaScoreUnchanged": true,
+      "bucketUnchanged": true,
+      "repairApplied": true
+    },
+    {
+      "caseIndex": 6,
+      "symbol": "00891",
+      "repairFamily": "mixed_signals_no_template",
+      "before_reasonSnapshot": "技術偏多",
+      "after_outcome": "ENRICHED",
+      "after_rendererVersion": "p26a-corpus-renderer-v2",
+      "after_renderedText": "技術面偏多，空頭排列（MA20(16.05），RSI 54.92，MACD 0.12 / 法人中性（法人近 10 日買超: 外資淨賣出 800 張） / 混合信號：MA 趨勢（空頭排列 (MA20(16.05) < MA60(16.58))）與 MACD（0.12 (MACD > 0，多方動能)）方向分歧，技術信號需審慎解讀",
+      "alphaScoreUnchanged": true,
+      "bucketUnchanged": true,
+      "repairApplied": true
+    },
+    {
+      "caseIndex": 7,
+      "symbol": "00891",
+      "repairFamily": "mixed_signals_no_template",
+      "before_reasonSnapshot": "技術偏多",
+      "after_outcome": "ENRICHED",
+      "after_rendererVersion": "p26a-corpus-renderer-v2",
+      "after_renderedText": "技術面偏多，空頭排列（MA20(15.90），RSI 52.1，MACD 0.08 / 混合信號：MA 趨勢（空頭排列 (MA20(15.90) < MA60(16.40))）與 MACD（0.08 (MACD > 0，多方動能)）方向分歧，技術信號需審慎解讀",
+      "alphaScoreUnchanged": true,
+      "bucketUnchanged": true,
+      "repairApplied": true
+    },
+    {
+      "caseIndex": 8,
+      "symbol": "00891",
+      "repairFamily": "mixed_signals_no_template",
+      "before_reasonSnapshot": "技術偏多",
+      "after_outcome": "ENRICHED",
+      "after_rendererVersion": "p26a-corpus-renderer-v2",
+      "after_renderedText": "技術面偏多，空頭排列（MA20(15.80），MACD 0.05 / 混合信號：MA 趨勢（空頭排列 (MA20(15.80) < MA60(16.30))）與 MACD（0.05 (MACD > 0，多方動能)）方向分歧，技術信號需審慎解讀",
+      "alphaScoreUnchanged": true,
+      "bucketUnchanged": true,
+      "repairApplied": true
+    },
+    {
+      "caseIndex": 9,
+      "symbol": "00891",
+      "repairFamily": "mixed_signals_no_template",
+      "before_reasonSnapshot": "技術偏多",
+      "after_outcome": "ENRICHED",
+      "after_rendererVersion": "p26a-corpus-renderer-v2",
+      "after_renderedText": "技術面偏多，空頭排列（MA20(15.70），MACD 0.09 / 混合信號：MA 趨勢（空頭排列 (MA20(15.70) < MA60(16.20))）與 MACD（0.09 (MACD > 0，多方動能)）方向分歧，技術信號需審慎解讀",
+      "alphaScoreUnchanged": true,
+      "bucketUnchanged": true,
+      "repairApplied": true
+    }
+  ]
+}

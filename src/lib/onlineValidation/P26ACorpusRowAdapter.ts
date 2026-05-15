@@ -105,5 +105,7 @@ export function corpusRowToWalkthroughCaseInput(row: CorpusRow): WalkthroughCase
     factorSnapshot: snap?.factorSnapshot ?? undefined,
     usedSources: snap?.usedSources ?? undefined,
     missingSources: snap?.missingSources ?? undefined,
+    // P28C-RENDERER-REPAIR: pass actual scoreSnapshot so renderer uses real tech/chip scores
+    scoreSnapshot: snap?.scoreSnapshot as { technicalScore: number; chipScore: number; [key: string]: number } ?? undefined,
   };
 }

@@ -1,0 +1,49 @@
+{
+  "phase": "P28C",
+  "part": "G",
+  "checkedAt": "2026-05-15",
+  "label": "INVARIANCE_RECHECK",
+  "result": "ALL_FROZEN_FILES_UNCHANGED",
+  "frozenFiles": [
+    {
+      "file": "prisma/dev.db",
+      "expectedSha256": "a5cf277182c161dfe97ba05f9b81528d6c8e477dd5ac0bec6810ffbb8711c6f8",
+      "actualSha256": "a5cf277182c161dfe97ba05f9b81528d6c8e477dd5ac0bec6810ffbb8711c6f8",
+      "match": true
+    },
+    {
+      "file": "src/lib/analysis/RuleBasedStockAnalyzer.ts",
+      "expectedSha256": "bc3716cc8e74be304f2e262aac586a61760bb59d6c95e82a575c38e03ea7373d",
+      "actualSha256": "bc3716cc8e74be304f2e262aac586a61760bb59d6c95e82a575c38e03ea7373d",
+      "match": true
+    },
+    {
+      "file": "src/lib/alpha/SignalFusionEngine.ts",
+      "expectedSha256": "b8ce3fa3ae63fd7edf6b6067dd8ccea63c02741454b93792e87bfbc1e95d2bf4",
+      "actualSha256": "b8ce3fa3ae63fd7edf6b6067dd8ccea63c02741454b93792e87bfbc1e95d2bf4",
+      "match": true
+    },
+    {
+      "file": "src/lib/onlineValidation/ActiveScoringSnapshotBuilder.ts",
+      "expectedSha256": "063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d",
+      "actualSha256": "063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d",
+      "match": true
+    }
+  ],
+  "corpusLineCounts": {
+    "p3active_scoring_historical_replay_corpus.jsonl": 4500,
+    "simulation_snapshot_corpus.jsonl": 60,
+    "p26f2_monthly_revenue_release_date_candidates.jsonl": 2143,
+    "p26f3_monthly_revenue_historical_source_candidates.jsonl": 125,
+    "shadow_prediction_ledger.jsonl": 2
+  },
+  "corpusBaseline": {
+    "p3active": 4500,
+    "simulation": 60,
+    "p26f2": 2143,
+    "p26f3": 125,
+    "shadow": 2
+  },
+  "corpusMatch": true,
+  "gitDiffFrozenFilesEmpty": true
+}

@@ -96,6 +96,26 @@ export interface ReasonValidationResult {
 
 // ─── Factor Evidence Builder ─────────────────────────────────────────────────
 
+// ─── P28C: MA-based direction inference ──────────────────────────────────────
+
+/**
+ * inferDirectionFromMATrend
+ *
+ * P28C-RENDERER-REPAIR: Pure fallback function.
+ * When scoreSnapshot.technicalScore is 0 or unavailable, infers direction
+ * from the 'MA 趨勢' factor in factorSnapshot.
+ *
+ * Returns '偏多' | '偏空' | '中性'.
+ * Pure function — no side effects, no mutation.
+ */
+export function inferDirectionFromMATrend(factors: string[]): '偏多' | '偏空' | '中性' {
+    const maTrend = factors.find(f => f.startsWith('MA 趨勢'));
+    if (!maTrend) return '中性';
+    if (maTrend.includes('多頭排列') || maTrend.includes('多方')) return '偏多';
+    if (maTrend.includes('空頭排列') || maTrend.includes('空方')) return '偏空';
+    return '中性';
+}
+
 /**
  * buildFactorEvidenceBlock
  *
@@ -256,7 +276,12 @@ export function enrichReasonFromExistingFactors(snapshot: ActiveScoringSnapshot)
     // ── Technical dimension ──
     const techScore = snapshot.scoreSnapshot.technicalScore;
     if (ev.maContext || ev.rsiContext || ev.macdContext || ev.momentumContext) {
-        const techLabel = techScore >= 65 ? '偏多' : techScore <= 35 ? '偏空' : '中性';
+        // P28C-RENDERER-REPAIR: when techScore=0 (unset/missing), infer direction from MA trend
+        // to avoid incorrect '中性' label for cases with MA 多頭排列
+        const techLabel = techScore >= 65 ? '偏多'
+            : techScore <= 35 && techScore > 0 ? '偏空'
+            : techScore === 0 ? inferDirectionFromMATrend(snapshot.factorSnapshot)
+            : '中性';
         const techParts: string[] = [`技術面${techLabel}`];
         if (ev.maContext) techParts.push(_extractValue(ev.maContext) + '（' + _extractNote(ev.maContext) + '）');
         if (ev.rsiContext) techParts.push('RSI ' + _extractValue(ev.rsiContext));

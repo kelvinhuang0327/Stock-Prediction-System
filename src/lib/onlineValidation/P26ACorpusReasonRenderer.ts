@@ -33,7 +33,42 @@ import type { ActiveScoringSnapshot } from './ActiveScoringSnapshotBuilder';
 
 // ─── Renderer version ────────────────────────────────────────────────────────
 
-export const CORPUS_REASON_RENDERER_VERSION = 'p26a-corpus-renderer-v1';
+// P28C-RENDERER-REPAIR: bumped from v1 to v2 (scoreSnapshot pass-through + mixed-signal template)
+export const CORPUS_REASON_RENDERER_VERSION = 'p26a-corpus-renderer-v2';
+
+// ─── P28C: Mixed-signal detection ──────────────────────────────────────────
+
+/**
+ * detectMixedSignal
+ *
+ * P28C-RENDERER-REPAIR: Detects when MA trend and MACD point in opposite directions.
+ * Returns true when MA 空頭排列 + MACD 多方動能, or MA 多頭排列 + MACD 空方動能.
+ * Pure function — no side effects.
+ */
+export function detectMixedSignal(factors: string[]): boolean {
+    const maTrend = factors.find(f => f.startsWith('MA 趨勢')) ?? '';
+    const macd = factors.find(f => f.startsWith('MACD')) ?? '';
+
+    const maBearish = maTrend.includes('空頭排列') || maTrend.includes('空方');
+    const maBullish = maTrend.includes('多頭排列') || maTrend.includes('多方');
+    const macdBullish = macd.includes('MACD > 0') || macd.includes('多方動能');
+    const macdBearish = macd.includes('MACD < 0') || macd.includes('空方動能');
+
+    return (maBearish && macdBullish) || (maBullish && macdBearish);
+}
+
+/**
+ * buildMixedSignalNote
+ *
+ * Returns a neutral annotation noting that MA and MACD signals are contradictory.
+ * Observational note — no trading signal implied. No buy/sell recommendation.
+ */
+export function buildMixedSignalNote(factors: string[]): string {
+    const maTrend = factors.find(f => f.startsWith('MA 趨勢')) ?? '';
+    const macd = factors.find(f => f.startsWith('MACD')) ?? '';
+    if (!maTrend && !macd) return '';
+    return `混合信號：MA 趨勢（${maTrend.split(':')[1]?.trim() ?? ''}）與 MACD（${macd.split(':')[1]?.trim() ?? ''}）方向分歧，技術信號需審慎解讀`;
+}
 
 // ─── Single-token detection ───────────────────────────────────────────────────
 
@@ -147,8 +182,14 @@ export function renderReasonFromCorpusSnapshot(snapshot: ActiveScoringSnapshot):
     // Single token or short generic reason → enrich from factorSnapshot
     const enriched = enrichReasonFromExistingFactors(snapshot);
 
+    // P28C-RENDERER-REPAIR TR-03: append mixed-signal note if MA/MACD contradict
+    const factors = snapshot.factorSnapshot ?? [];
+    const mixedSignal = detectMixedSignal(factors);
+    const mixedNote = mixedSignal ? ' / ' + buildMixedSignalNote(factors) : '';
+    const renderedText = enriched + mixedNote;
+
     return {
-        renderedText: enriched,
+        renderedText,
         outcome: 'ENRICHED',
         oldText,
         factorCount,

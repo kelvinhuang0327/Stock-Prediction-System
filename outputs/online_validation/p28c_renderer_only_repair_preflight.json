@@ -1,0 +1,63 @@
+{
+  "classification": "P28C_RENDERER_ONLY_REPAIR_PREFLIGHT",
+  "timestamp": "2026-05-15T00:00:00Z",
+  "phase": "P28C",
+  "gate": "PASS",
+  "gitState": {
+    "headCommit": "0ca055b",
+    "headMessage": "P28B: Add reason template coverage repair plan",
+    "branch": "main",
+    "status": "clean_source_files (log/runtime files modified, source unchanged)"
+  },
+  "p28bArtifactsVerified": {
+    "p28b_reason_template_coverage_final_report.md": true,
+    "p28b_reason_template_repair_spec.json": true,
+    "P28BReasonTemplateCoveragePlanner.ts": true,
+    "p28b_reason_template_coverage_plan.test.ts": true,
+    "p28_next_prompt_renderer_repair_only.md": true
+  },
+  "frozenFileSHA256": {
+    "prisma/dev.db": "a5cf277182c161dfe97ba05f9b81528d6c8e477dd5ac0bec6810ffbb8711c6f8",
+    "src/lib/analysis/RuleBasedStockAnalyzer.ts": "bc3716cc8e74be304f2e262aac586a61760bb59d6c95e82a575c38e03ea7373d",
+    "src/lib/alpha/SignalFusionEngine.ts": "b8ce3fa3ae63fd7edf6b6067dd8ccea63c02741454b93792e87bfbc1e95d2bf4",
+    "src/lib/onlineValidation/ActiveScoringSnapshotBuilder.ts": "063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d"
+  },
+  "frozenFilesStatus": "ALL_MATCH_P28B_BASELINE",
+  "corpusRowCounts": {
+    "p3active_scoring_historical_replay_corpus.jsonl": 4500,
+    "simulation_snapshot_corpus.jsonl": 60,
+    "p26f2_monthly_revenue_release_date_candidates.jsonl": 2143,
+    "p26f3_monthly_revenue_historical_source_candidates.jsonl": 125,
+    "shadow_prediction_ledger.jsonl": 2,
+    "total": 6830
+  },
+  "corpusStatus": "UNCHANGED_FROM_P28B_BASELINE",
+  "rendererFilesToModify": [
+    "src/lib/onlineValidation/P5WalkthroughReviewUtils.ts",
+    "src/lib/onlineValidation/P26ACorpusRowAdapter.ts",
+    "src/lib/onlineValidation/P26AReasonFactorEnrichmentUtils.ts",
+    "src/lib/onlineValidation/P26ACorpusReasonRenderer.ts"
+  ],
+  "frozenFilesNotToModify": [
+    "prisma/dev.db",
+    "src/lib/analysis/RuleBasedStockAnalyzer.ts",
+    "src/lib/alpha/SignalFusionEngine.ts",
+    "src/lib/onlineValidation/ActiveScoringSnapshotBuilder.ts",
+    "outputs/online_validation/*.jsonl"
+  ],
+  "repairFamilies": [
+    {
+      "id": "scoreSnapshot_zero_label",
+      "cases": 5,
+      "description": "minimalSnapshot in reviewCase() hardcodes scoreSnapshot zeros, causing wrong direction label",
+      "rootCause": "P5WalkthroughReviewUtils.ts reviewCase() constructs minimalSnapshot with scoreSnapshot all zeros"
+    },
+    {
+      "id": "mixed_signals_no_template",
+      "cases": 4,
+      "description": "00891 cases with MA 空頭排列 + MACD 多方動能 — no mixed-signal aggregation template",
+      "rootCause": "P26ACorpusReasonRenderer.ts lacks TR-03 mixed-signal path"
+    }
+  ],
+  "preflightDecision": "PROCEED_WITH_P28C_RENDERER_ONLY_REPAIR"
+}

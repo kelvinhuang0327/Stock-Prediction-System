@@ -55,6 +55,8 @@ export interface WalkthroughCaseInput {
   factorSnapshot?: string[];     // from activeScoringSnapshot.factorSnapshot — used by renderer
   usedSources?: string[];        // for data availability note
   missingSources?: string[];     // for data availability note
+  // P28C-RENDERER-REPAIR: pass actual scoreSnapshot so renderer uses real tech/chip scores
+  scoreSnapshot?: { technicalScore: number; chipScore: number; [key: string]: number };
 }
 
 export type ExplainabilityCompleteness = 'COMPLETE' | 'PARTIAL' | 'WEAK';
@@ -406,7 +408,7 @@ export function reviewCase(caseRow: WalkthroughCaseInput, caseIndex: number): Ca
     usedSources: caseRow.usedSources ?? [],
     missingSources: caseRow.missingSources ?? [],
     completenessStatus: caseRow.scoringCompletenessStatus ?? 'UNKNOWN',
-    scoreSnapshot: { technicalScore: 0, chipScore: 0, momentumScore: 0, revenueScore: 0 },
+    scoreSnapshot: caseRow.scoreSnapshot ?? { technicalScore: 0, chipScore: 0, momentumScore: 0, revenueScore: 0 },
     signalTags: [],
     stableHashKey: caseRow.stableHashKey ?? '',
   };
