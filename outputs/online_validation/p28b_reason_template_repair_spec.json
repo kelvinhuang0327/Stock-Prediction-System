@@ -1,0 +1,186 @@
+{
+  "specId": "p28b-no-scoring-change-repair-spec",
+  "generatedAt": "2026-05-19T00:00:00.000Z",
+  "phase": "P28B-REASON-TEMPLATE-COVERAGE-HARDRESET",
+  "title": "No-Scoring-Change Renderer Repair Specification",
+  "version": "1.0.0",
+
+  "repairPrinciple": {
+    "statement": "All repairs are renderer-only, additive, backward-compatible, deterministic, and do not change the scoring formula.",
+    "rules": [
+      "RENDERER_ONLY: No change to alphaScore, researchBucket, technicalScore, chipScore, momentumScore, or revenueScore computation",
+      "ADDITIVE: New fields added to output types must be optional with backward-compatible defaults",
+      "BACKWARD_COMPATIBLE: Existing tests must pass without modification",
+      "DETERMINISTIC: Same input snapshot → same renderedReason output (no randomness, no timestamps in reason text)",
+      "NO_SCORING_CHANGE: Forbidden to read scoreSnapshot.* and use it for anything except direction label in renderedReason text",
+      "NO_CORPUS_WRITE: Corpus JSONL files must not be written",
+      "NO_DB_WRITE: prisma/dev.db must not be written",
+      "NO_INVESTMENT_CLAIM: Output text must not contain ROI, win-rate, alpha, edge, profit, outperform, beat, buy, sell, guaranteed, or investment recommendation language",
+      "NO_SCORING_FILE_MODIFY: RuleBasedStockAnalyzer.ts, SignalFusionEngine.ts, ActiveScoringSnapshotBuilder.ts must not be modified"
+    ]
+  },
+
+  "inputContract": {
+    "description": "The renderer accepts an enriched snapshot object. New optional fields added in P28C must default gracefully.",
+    "fields": {
+      "required": [
+        { "name": "reasonSnapshot", "type": "string", "description": "Collapsed reason text from corpus (e.g. '技術偏多')" },
+        { "name": "factorSnapshot", "type": "string[]", "description": "Array of factor evidence strings from corpus" }
+      ],
+      "optional": [
+        { "name": "scoreSnapshot", "type": "{ technicalScore: number; chipScore: number; momentumScore: number; revenueScore: number }", "description": "NEW — actual scores from activeScoringSnapshot, used only for direction labels in rendered text. Default: all zeros (current behavior)" },
+        { "name": "usedSources", "type": "string[]", "description": "Data sources used in scoring" },
+        { "name": "missingSources", "type": "string[]", "description": "Data sources missing at score time" },
+        { "name": "alphaScore", "type": "number", "description": "READ-ONLY reference — must not be modified by renderer" },
+        { "name": "researchBucket", "type": "string", "description": "READ-ONLY reference — must not be modified by renderer" },
+        { "name": "asOfDate", "type": "string", "description": "Date of snapshot for data coverage note" },
+        { "name": "symbol", "type": "string", "description": "Stock symbol for display context only" }
+      ]
+    },
+    "invariants": [
+      "alphaScore must equal corpus activeScoringSnapshot.alphaScore at all times",
+      "researchBucket must equal corpus activeScoringSnapshot.researchBucket at all times",
+      "scoreSnapshot values used only for direction label text — never for computing alphaScore or bucket"
+    ]
+  },
+
+  "outputContract": {
+    "description": "Renderer output fields. All scoring fields pass through read-only.",
+    "fields": {
+      "primary": [
+        { "name": "renderedReason", "type": "string", "description": "Enriched multi-factor reason text for display. Observational only." },
+        { "name": "outcome", "type": "RendererOutcome", "description": "'ENRICHED' | 'ALREADY_RICH' | 'FALLBACK_EMPTY' | 'FALLBACK_NO_SNAPSHOT'" },
+        { "name": "rendererVersion", "type": "string", "description": "Version string of renderer (e.g. 'P26A-v3'). Bumped on each repair." },
+        { "name": "alphaScoreUnchanged", "type": "true", "description": "Always true — renderer does not change scoring" },
+        { "name": "bucketUnchanged", "type": "true", "description": "Always true — renderer does not change scoring" }
+      ],
+      "additive": [
+        { "name": "renderedReasonFactorCount", "type": "number", "description": "Count of factor evidence blocks in renderedReason" },
+        { "name": "dataAvailabilityNote", "type": "string | null", "description": "Note about missing data sources, if any" },
+        { "name": "reasonRendererOutcome", "type": "string", "description": "Same as outcome for CaseReviewResult compatibility" },
+        { "name": "reasonRendererVersion", "type": "string", "description": "Same as rendererVersion for CaseReviewResult compatibility" }
+      ]
+    }
+  },
+
+  "templateRules": [
+    {
+      "ruleId": "TR-01",
+      "name": "scoreSnapshot_passthrough",
+      "trigger": "WalkthroughCaseInput.scoreSnapshot present (non-null, not all-zero)",
+      "action": "Use actual scoreSnapshot values for direction labels in renderedReason",
+      "fallback": "If scoreSnapshot absent or all-zero, infer direction from factorSnapshot MA trend text",
+      "noScoringChange": true,
+      "targetFiles": ["P5WalkthroughReviewUtils.ts", "P26ACorpusRowAdapter.ts"]
+    },
+    {
+      "ruleId": "TR-02",
+      "name": "ma_direction_inference_fallback",
+      "trigger": "scoreSnapshot.technicalScore === 0 AND factorSnapshot contains MA trend text",
+      "action": "Call inferDirectionFromMATrend(factorText) → '偏多' | '偏空' | '中性'",
+      "inferenceLogic": [
+        "If MA factorText contains '多頭排列' → '偏多'",
+        "If MA factorText contains '空頭排列' → '偏空'",
+        "Otherwise → '中性'"
+      ],
+      "noScoringChange": true,
+      "targetFiles": ["P26AReasonFactorEnrichmentUtils.ts"]
+    },
+    {
+      "ruleId": "TR-03",
+      "name": "mixed_signal_template",
+      "trigger": "MA direction = '空頭排列' AND MACD direction = '多方動能' (or vice versa)",
+      "action": "Output mixed-signal template: '技術面呈現分歧訊號：{MA context}，但 MACD 顯示{MACD context}。整體訊號中性，建議觀察後續動向。'",
+      "constraints": [
+        "Must not contain buy/sell recommendation",
+        "Must use '建議觀察' not '建議買入/賣出'",
+        "Must attribute each signal to its factor"
+      ],
+      "noScoringChange": true,
+      "targetFiles": ["P26ACorpusReasonRenderer.ts"]
+    },
+    {
+      "ruleId": "TR-04",
+      "name": "no_triggered_factor_context_note",
+      "trigger": "factorSnapshotCount > 0 AND reasonSnapshot is single-token generic",
+      "action": "Append context note: '（系統偵測 {factorSnapshotCount} 項因子，但各項訊號強度均未達閾值，暫以技術面概覽呈現）'",
+      "constraints": [
+        "Must not claim scoring was wrong",
+        "Must not suggest alphaScore is incorrect",
+        "Must be observational only"
+      ],
+      "noScoringChange": true,
+      "targetFiles": ["P26ACorpusReasonRenderer.ts"]
+    },
+    {
+      "ruleId": "TR-05",
+      "name": "monthly_revenue_missing_note",
+      "trigger": "missingSources contains 'MonthlyRevenue' (or equivalent)",
+      "action": "Add inline note in revenue section: '月營收資料暫缺（截至 {asOfDate}），待資料更新後補充'",
+      "noScoringChange": true,
+      "targetFiles": ["P26ACorpusReasonRenderer.ts"]
+    },
+    {
+      "ruleId": "TR-06",
+      "name": "chip_direction_passthrough",
+      "trigger": "scoreSnapshot.chipScore present (non-zero)",
+      "action": "Use actual chipScore for chip direction label in renderedReason",
+      "fallback": "If chipScore=0, use '籌碼面中性' as default chip label",
+      "noScoringChange": true,
+      "targetFiles": ["P26AReasonFactorEnrichmentUtils.ts"]
+    }
+  ],
+
+  "safetyRules": [
+    "SR-01: Renderer output must NEVER be stored back to corpus or DB",
+    "SR-02: renderedReason is display-only — must never influence alphaScore or bucket",
+    "SR-03: All template strings must pass forbidden-claims regex scan before deploy",
+    "SR-04: Renderer must be idempotent — calling twice with same input produces identical output",
+    "SR-05: New optional fields on WalkthroughCaseInput must not break existing callers (no required fields added)",
+    "SR-06: rendererVersion must be bumped when output format changes"
+  ],
+
+  "patchBoundary": {
+    "allowedToModify": [
+      {
+        "file": "src/lib/onlineValidation/P26AReasonFactorEnrichmentUtils.ts",
+        "allowedChanges": [
+          "Add inferDirectionFromMATrend(maContext: string) pure function",
+          "Use inferDirectionFromMATrend as fallback in enrichReasonFromExistingFactors when technicalScore=0",
+          "Add chip direction fallback when chipScore=0"
+        ]
+      },
+      {
+        "file": "src/lib/onlineValidation/P26ACorpusReasonRenderer.ts",
+        "allowedChanges": [
+          "Add mixed-signal aggregation template (TR-03)",
+          "Add NO_TRIGGERED_FACTOR context note (TR-04)",
+          "Add monthly revenue missing note (TR-05)",
+          "Bump rendererVersion"
+        ]
+      },
+      {
+        "file": "src/lib/onlineValidation/P26ACorpusRowAdapter.ts",
+        "allowedChanges": [
+          "Pass activeScoringSnapshot.scoreSnapshot through to WalkthroughCaseInput.scoreSnapshot (additive optional field)"
+        ]
+      },
+      {
+        "file": "src/lib/onlineValidation/P5WalkthroughReviewUtils.ts",
+        "allowedChanges": [
+          "Add optional scoreSnapshot field to WalkthroughCaseInput interface",
+          "Use WalkthroughCaseInput.scoreSnapshot in minimalSnapshot construction when available"
+        ]
+      }
+    ],
+    "forbidden": [
+      "src/lib/analysis/RuleBasedStockAnalyzer.ts — NO MODIFICATION",
+      "src/lib/alpha/SignalFusionEngine.ts — NO MODIFICATION",
+      "src/lib/onlineValidation/ActiveScoringSnapshotBuilder.ts — NO MODIFICATION",
+      "outputs/online_validation/*_corpus.jsonl — NO WRITES",
+      "prisma/dev.db — NO WRITES"
+    ]
+  },
+
+  "disclaimer": "Observability only. No investment recommendations. All repairs are renderer-only and do not change scoring formula."
+}

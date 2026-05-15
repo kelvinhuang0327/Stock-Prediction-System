@@ -1,0 +1,191 @@
+{
+  "runId": "p28b-readonly-prototype-run",
+  "generatedAt": "2026-05-15T04:18:20.965Z",
+  "phase": "P28B-REASON-TEMPLATE-COVERAGE-HARDRESET",
+  "snapshotCount": 3,
+  "invarianceCheck": {
+    "alphaScoreUnchanged": true,
+    "bucketUnchanged": true,
+    "noScoringChange": true
+  },
+  "plans": [
+    {
+      "planId": "p28b-plan-1",
+      "generatedAt": "2026-05-15T04:18:20.964Z",
+      "inputSymbol": "1710",
+      "inputAlphaScore": 68,
+      "inputBucket": "NEUTRAL",
+      "alphaScoreUnchanged": true,
+      "bucketUnchanged": true,
+      "inferredTechDirection": "偏多",
+      "hasMixedSignal": false,
+      "hasMonthlyRevenueMissing": true,
+      "factorSnapshotCount": 10,
+      "isGenericSingleToken": true,
+      "entries": [
+        {
+          "repairFamily": "scoreSnapshot_zero_label",
+          "gapIds": [
+            "G6-1",
+            "G6-2",
+            "G3-1",
+            "G3-2"
+          ],
+          "templateRuleIds": [
+            "TR-01",
+            "TR-02"
+          ],
+          "proposedAction": "Pass scoreSnapshot from corpus through WalkthroughCaseInput; add inferDirectionFromMATrend() fallback. Inferred direction: 偏多",
+          "requiresScoringChange": false,
+          "safeToImplementNow": true,
+          "patchTargetFiles": [
+            "src/lib/onlineValidation/P5WalkthroughReviewUtils.ts",
+            "src/lib/onlineValidation/P26ACorpusRowAdapter.ts",
+            "src/lib/onlineValidation/P26AReasonFactorEnrichmentUtils.ts"
+          ]
+        },
+        {
+          "repairFamily": "no_triggered_factor_note",
+          "gapIds": [
+            "G5-3"
+          ],
+          "templateRuleIds": [
+            "TR-04"
+          ],
+          "proposedAction": "Append context note: '（系統偵測 10 項因子，但各項訊號強度均未達閾值，暫以技術面概覽呈現）'",
+          "requiresScoringChange": false,
+          "safeToImplementNow": true,
+          "patchTargetFiles": [
+            "src/lib/onlineValidation/P26ACorpusReasonRenderer.ts"
+          ]
+        },
+        {
+          "repairFamily": "monthly_revenue_missing_note",
+          "gapIds": [],
+          "templateRuleIds": [
+            "TR-05"
+          ],
+          "proposedAction": "Add inline revenue missing note: '月營收資料暫缺（截至 2025-12-15），待資料更新後補充'",
+          "requiresScoringChange": false,
+          "safeToImplementNow": true,
+          "patchTargetFiles": [
+            "src/lib/onlineValidation/P26ACorpusReasonRenderer.ts"
+          ]
+        }
+      ],
+      "disclaimer": "Observability only. No investment recommendations. alphaScore and bucket are not modified."
+    },
+    {
+      "planId": "p28b-plan-2",
+      "generatedAt": "2026-05-15T04:18:20.965Z",
+      "inputSymbol": "00891",
+      "inputAlphaScore": 63,
+      "inputBucket": "NEUTRAL",
+      "alphaScoreUnchanged": true,
+      "bucketUnchanged": true,
+      "inferredTechDirection": "偏空",
+      "hasMixedSignal": true,
+      "hasMonthlyRevenueMissing": true,
+      "factorSnapshotCount": 5,
+      "isGenericSingleToken": true,
+      "entries": [
+        {
+          "repairFamily": "scoreSnapshot_zero_label",
+          "gapIds": [
+            "G6-1",
+            "G6-2",
+            "G3-1",
+            "G3-2"
+          ],
+          "templateRuleIds": [
+            "TR-01",
+            "TR-02"
+          ],
+          "proposedAction": "Pass scoreSnapshot from corpus through WalkthroughCaseInput; add inferDirectionFromMATrend() fallback. Inferred direction: 偏空",
+          "requiresScoringChange": false,
+          "safeToImplementNow": true,
+          "patchTargetFiles": [
+            "src/lib/onlineValidation/P5WalkthroughReviewUtils.ts",
+            "src/lib/onlineValidation/P26ACorpusRowAdapter.ts",
+            "src/lib/onlineValidation/P26AReasonFactorEnrichmentUtils.ts"
+          ]
+        },
+        {
+          "repairFamily": "mixed_signals_no_template",
+          "gapIds": [
+            "G5-2"
+          ],
+          "templateRuleIds": [
+            "TR-03"
+          ],
+          "proposedAction": "Add mixed-signal aggregation template: output neutral context with explicit signal conflict explanation. No buy/sell recommendation.",
+          "requiresScoringChange": false,
+          "safeToImplementNow": true,
+          "patchTargetFiles": [
+            "src/lib/onlineValidation/P26ACorpusReasonRenderer.ts"
+          ]
+        },
+        {
+          "repairFamily": "no_triggered_factor_note",
+          "gapIds": [
+            "G5-3"
+          ],
+          "templateRuleIds": [
+            "TR-04"
+          ],
+          "proposedAction": "Append context note: '（系統偵測 5 項因子，但各項訊號強度均未達閾值，暫以技術面概覽呈現）'",
+          "requiresScoringChange": false,
+          "safeToImplementNow": true,
+          "patchTargetFiles": [
+            "src/lib/onlineValidation/P26ACorpusReasonRenderer.ts"
+          ]
+        },
+        {
+          "repairFamily": "monthly_revenue_missing_note",
+          "gapIds": [],
+          "templateRuleIds": [
+            "TR-05"
+          ],
+          "proposedAction": "Add inline revenue missing note: '月營收資料暫缺（截至 2025-11-12），待資料更新後補充'",
+          "requiresScoringChange": false,
+          "safeToImplementNow": true,
+          "patchTargetFiles": [
+            "src/lib/onlineValidation/P26ACorpusReasonRenderer.ts"
+          ]
+        }
+      ],
+      "disclaimer": "Observability only. No investment recommendations. alphaScore and bucket are not modified."
+    },
+    {
+      "planId": "p28b-plan-3",
+      "generatedAt": "2026-05-15T04:18:20.965Z",
+      "inputSymbol": "00738U",
+      "inputAlphaScore": 63,
+      "inputBucket": "NEUTRAL",
+      "alphaScoreUnchanged": true,
+      "bucketUnchanged": true,
+      "inferredTechDirection": "中性",
+      "hasMixedSignal": false,
+      "hasMonthlyRevenueMissing": true,
+      "factorSnapshotCount": 0,
+      "isGenericSingleToken": true,
+      "entries": [
+        {
+          "repairFamily": "monthly_revenue_missing_note",
+          "gapIds": [],
+          "templateRuleIds": [
+            "TR-05"
+          ],
+          "proposedAction": "Add inline revenue missing note: '月營收資料暫缺（截至 2025-12-19），待資料更新後補充'",
+          "requiresScoringChange": false,
+          "safeToImplementNow": true,
+          "patchTargetFiles": [
+            "src/lib/onlineValidation/P26ACorpusReasonRenderer.ts"
+          ]
+        }
+      ],
+      "disclaimer": "Observability only. No investment recommendations. alphaScore and bucket are not modified."
+    }
+  ],
+  "disclaimer": "Observability only. No investment recommendations."
+}

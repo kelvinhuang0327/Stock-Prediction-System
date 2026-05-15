@@ -1,0 +1,262 @@
+{
+  "recapId": "p28b-p28a-findings-recap",
+  "generatedAt": "2026-05-19T00:00:00.000Z",
+  "phase": "P28B-REASON-TEMPLATE-COVERAGE-HARDRESET",
+  "sourceArtifacts": [
+    "outputs/online_validation/p28a_underoutput_case_list.json",
+    "outputs/online_validation/p28a_underoutput_classification.json",
+    "outputs/online_validation/p28a_per_case_audit_snapshots.json",
+    "outputs/online_validation/p28a_reason_template_branch_coverage.json",
+    "outputs/online_validation/p28a_scoring_underoutput_audit_final_report.md"
+  ],
+
+  "p28aConclusion": {
+    "finalClassification": "P28A_SCORING_UNDEROUTPUT_AUDIT_COMPLETE",
+    "scoringCorrect": true,
+    "alphaScoreCorrect": true,
+    "bucketCorrect": true,
+    "rootCause": "reason serialization / renderer collapse — NOT scoring formula, NOT corpus, NOT DB",
+    "fixableWithoutScoringChange": true,
+    "noScoringChangeRequired": true,
+    "noAlphaScoreAdjustmentRequired": true,
+    "noBucketAdjustmentRequired": true
+  },
+
+  "caseSummary": {
+    "totalCases": 9,
+    "classification": "9/9 = NO_TRIGGERED_FACTOR",
+    "uniqueSymbols": 3,
+    "uniqueSymbolDateCombinations": 5,
+    "allBlockedByMonthlyRevenue": true,
+    "allRendererUnderoutput": true,
+    "allFixableWithoutScoringChange": true
+  },
+
+  "caseTable": [
+    {
+      "caseId": "P5-CASE-010",
+      "symbol": "1710",
+      "asOfDate": "2025-12-15",
+      "horizon": 5,
+      "alphaScore": 68,
+      "bucket": "NEUTRAL",
+      "reasonSnapshot": "技術偏多",
+      "reasonTokenCount": 1,
+      "factorSnapshotCount": 10,
+      "factorSnapshotSample": [
+        "MA 趨勢: 多頭排列 (MA20(12.24) > MA60(12.19))",
+        "RSI(14): 60 (中性健康區間)",
+        "MACD: 0.01 (MACD > 0，多方動能)"
+      ],
+      "blockedByMonthlyRevenue": true,
+      "classification": "NO_TRIGGERED_FACTOR",
+      "alphaScoreInvariant": true,
+      "bucketInvariant": true,
+      "candidateRendererRepairFamily": "technicalBullish_scoreSnapshot_zero_label",
+      "rootCause": "factorSnapshot has 10 rich signals but reasonSnapshot collapsed to single token; scoreSnapshot.technicalScore=0 in minimalSnapshot causes wrong direction label in enriched output"
+    },
+    {
+      "caseId": "P5-CASE-011",
+      "symbol": "00738U",
+      "asOfDate": "2025-12-19",
+      "horizon": 5,
+      "alphaScore": 63,
+      "bucket": "NEUTRAL",
+      "reasonSnapshot": "技術偏多",
+      "reasonTokenCount": 1,
+      "factorSnapshotCount": 10,
+      "factorSnapshotSample": [
+        "MA 趨勢: 多頭排列 (MA20(40.86) > MA60(38.08))",
+        "RSI(14): 57.58 (中性健康區間)",
+        "MACD: 0.91 (MACD > 0，多方動能)"
+      ],
+      "blockedByMonthlyRevenue": true,
+      "classification": "NO_TRIGGERED_FACTOR",
+      "alphaScoreInvariant": true,
+      "bucketInvariant": true,
+      "candidateRendererRepairFamily": "technicalBullish_scoreSnapshot_zero_label",
+      "rootCause": "Same as P5-CASE-010; MA 多頭排列 but enriched label = '技術面偏空' due to zero scoreSnapshot"
+    },
+    {
+      "caseId": "P5-CASE-013",
+      "symbol": "1710",
+      "asOfDate": "2025-12-15",
+      "horizon": 5,
+      "alphaScore": 68,
+      "bucket": "NEUTRAL",
+      "reasonSnapshot": "技術偏多",
+      "reasonTokenCount": 1,
+      "factorSnapshotCount": 10,
+      "factorSnapshotSample": [
+        "MA 趨勢: 多頭排列 (MA20(12.24) > MA60(12.19))",
+        "RSI(14): 60 (中性健康區間)",
+        "MACD: 0.01 (MACD > 0，多方動能)"
+      ],
+      "blockedByMonthlyRevenue": true,
+      "classification": "NO_TRIGGERED_FACTOR",
+      "alphaScoreInvariant": true,
+      "bucketInvariant": true,
+      "candidateRendererRepairFamily": "technicalBullish_scoreSnapshot_zero_label",
+      "rootCause": "Duplicate of P5-CASE-010 (same symbol/date, different horizon test iteration)"
+    },
+    {
+      "caseId": "P5-CASE-023",
+      "symbol": "00891",
+      "asOfDate": "2025-11-12",
+      "horizon": 20,
+      "alphaScore": 63,
+      "bucket": "NEUTRAL",
+      "reasonSnapshot": "技術偏多",
+      "reasonTokenCount": 1,
+      "factorSnapshotCount": 10,
+      "factorSnapshotSample": [
+        "MA 趨勢: 空頭排列 (MA20(16.05) < MA60(16.58))",
+        "RSI(14): 54.92 (中性健康區間)",
+        "MACD: 0.12 (MACD > 0，多方動能)"
+      ],
+      "blockedByMonthlyRevenue": true,
+      "classification": "NO_TRIGGERED_FACTOR",
+      "alphaScoreInvariant": true,
+      "bucketInvariant": true,
+      "candidateRendererRepairFamily": "mixed_signals_no_unified_template",
+      "rootCause": "Mixed signals: MA 空頭排列 + MACD 多方動能; no template for mixed signal aggregation; reasonSnapshot collapsed to single token"
+    },
+    {
+      "caseId": "P5-CASE-026",
+      "symbol": "00891",
+      "asOfDate": "2025-11-12",
+      "horizon": 20,
+      "alphaScore": 63,
+      "bucket": "NEUTRAL",
+      "reasonSnapshot": "技術偏多",
+      "reasonTokenCount": 1,
+      "factorSnapshotCount": 10,
+      "factorSnapshotSample": [
+        "MA 趨勢: 空頭排列 (MA20(16.05) < MA60(16.58))",
+        "RSI(14): 54.92 (中性健康區間)",
+        "MACD: 0.12 (MACD > 0，多方動能)"
+      ],
+      "blockedByMonthlyRevenue": true,
+      "classification": "NO_TRIGGERED_FACTOR",
+      "alphaScoreInvariant": true,
+      "bucketInvariant": true,
+      "candidateRendererRepairFamily": "mixed_signals_no_unified_template",
+      "rootCause": "Same as P5-CASE-023 (duplicate symbol/date)"
+    },
+    {
+      "caseId": "P5-CASE-037",
+      "symbol": "00891",
+      "asOfDate": "2025-10-15",
+      "horizon": 60,
+      "alphaScore": 63,
+      "bucket": "NEUTRAL",
+      "reasonSnapshot": "技術偏多",
+      "reasonTokenCount": 1,
+      "factorSnapshotCount": 10,
+      "factorSnapshotSample": [
+        "MA 趨勢: 空頭排列 (MA20(16.05) < MA60(16.58))",
+        "RSI(14): 54.92 (中性健康區間)",
+        "MACD: 0.12 (MACD > 0，多方動能)"
+      ],
+      "blockedByMonthlyRevenue": true,
+      "classification": "NO_TRIGGERED_FACTOR",
+      "alphaScoreInvariant": true,
+      "bucketInvariant": true,
+      "candidateRendererRepairFamily": "mixed_signals_no_unified_template",
+      "rootCause": "Same as P5-CASE-023 but horizon=60"
+    },
+    {
+      "caseId": "P5-CASE-053",
+      "symbol": "00738U",
+      "asOfDate": "2025-12-19",
+      "horizon": 5,
+      "alphaScore": 63,
+      "bucket": "NEUTRAL",
+      "reasonSnapshot": "技術偏多",
+      "reasonTokenCount": 1,
+      "factorSnapshotCount": 10,
+      "factorSnapshotSample": [
+        "MA 趨勢: 多頭排列 (MA20(40.86) > MA60(38.08))",
+        "RSI(14): 57.58 (中性健康區間)",
+        "MACD: 0.91 (MACD > 0，多方動能)"
+      ],
+      "blockedByMonthlyRevenue": true,
+      "classification": "NO_TRIGGERED_FACTOR",
+      "alphaScoreInvariant": true,
+      "bucketInvariant": true,
+      "candidateRendererRepairFamily": "technicalBullish_scoreSnapshot_zero_label",
+      "rootCause": "Same as P5-CASE-011 (duplicate symbol/date, different run context)"
+    },
+    {
+      "caseId": "P5-CASE-054",
+      "symbol": "00891",
+      "asOfDate": "2025-12-30",
+      "horizon": 5,
+      "alphaScore": 63,
+      "bucket": "NEUTRAL",
+      "reasonSnapshot": "技術偏多",
+      "reasonTokenCount": 1,
+      "factorSnapshotCount": 10,
+      "factorSnapshotSample": [
+        "MA 趨勢: 空頭排列 (MA20(16.05) < MA60(16.58))",
+        "RSI(14): 54.92 (中性健康區間)",
+        "MACD: 0.12 (MACD > 0，多方動能)"
+      ],
+      "blockedByMonthlyRevenue": true,
+      "classification": "NO_TRIGGERED_FACTOR",
+      "alphaScoreInvariant": true,
+      "bucketInvariant": true,
+      "candidateRendererRepairFamily": "mixed_signals_no_unified_template",
+      "rootCause": "Mixed signals: MA 空頭排列 + MACD 多方動能; reasonSnapshot collapsed"
+    },
+    {
+      "caseId": "P5-CASE-055",
+      "symbol": "1710",
+      "asOfDate": "2025-12-15",
+      "horizon": 5,
+      "alphaScore": 68,
+      "bucket": "NEUTRAL",
+      "reasonSnapshot": "技術偏多",
+      "reasonTokenCount": 1,
+      "factorSnapshotCount": 10,
+      "factorSnapshotSample": [
+        "MA 趨勢: 多頭排列 (MA20(12.24) > MA60(12.19))",
+        "RSI(14): 60 (中性健康區間)",
+        "MACD: 0.01 (MACD > 0，多方動能)"
+      ],
+      "blockedByMonthlyRevenue": true,
+      "classification": "NO_TRIGGERED_FACTOR",
+      "alphaScoreInvariant": true,
+      "bucketInvariant": true,
+      "candidateRendererRepairFamily": "technicalBullish_scoreSnapshot_zero_label",
+      "rootCause": "Same as P5-CASE-010 (duplicate symbol/date, different run context)"
+    }
+  ],
+
+  "rendererRepairFamilies": {
+    "technicalBullish_scoreSnapshot_zero_label": {
+      "caseCount": 5,
+      "description": "factorSnapshot present (10 items), MA 多頭排列 signals, but minimalSnapshot.scoreSnapshot.technicalScore=0 causes enriched label to be '偏空' instead of '偏多'",
+      "affectedCases": ["P5-CASE-010", "P5-CASE-011", "P5-CASE-013", "P5-CASE-053", "P5-CASE-055"]
+    },
+    "mixed_signals_no_unified_template": {
+      "caseCount": 4,
+      "description": "Mixed signals: MA 空頭排列 but MACD 多方動能; no template for mixed-signal aggregation; renderer produces partial enrichment without unified directional summary",
+      "affectedCases": ["P5-CASE-023", "P5-CASE-026", "P5-CASE-037", "P5-CASE-054"]
+    }
+  },
+
+  "invarianceConfirmation": {
+    "scoringFilesUnchanged": true,
+    "alphaScoreNotModified": true,
+    "bucketNotModified": true,
+    "corpusUnchanged": true,
+    "dbUnchanged": true,
+    "p3InvarianceRows": 4500,
+    "p19InvarianceRows": 4499,
+    "totalInvarianceRows": 8999,
+    "invarianceStatus": "PASS"
+  },
+
+  "disclaimer": "Observability only. No investment recommendations. Scoring is CORRECT. This is a renderer output coverage issue only."
+}

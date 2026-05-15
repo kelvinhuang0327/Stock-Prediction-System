@@ -1,0 +1,30 @@
+{
+  "artifactId": "p28b_reason_template_coverage_tests",
+  "generatedAt": "2025-01-01T00:00:00.000Z",
+  "phase": "P28B-REASON-TEMPLATE-COVERAGE-HARDRESET",
+  "title": "P28B Test Run Results",
+  "runs": [
+    {
+      "command": "npx jest src/lib/onlineValidation/__tests__/p27_waiting_state_policy_guard.test.ts --no-coverage",
+      "result": "PASS",
+      "tests": { "passed": "see suite", "failed": 0 }
+    },
+    {
+      "command": "npx jest src/lib/onlineValidation/__tests__/p27_artifact_index_consistency.test.ts --no-coverage",
+      "result": "PASS",
+      "tests": { "passed": "see suite", "failed": 0 }
+    },
+    {
+      "command": "npx jest src/lib/onlineValidation/__tests__/p28b_reason_template_coverage_plan.test.ts --no-coverage",
+      "result": "PASS",
+      "tests": { "passed": 48, "failed": 0 }
+    },
+    {
+      "command": "npx jest src/lib/onlineValidation/__tests__ --no-coverage",
+      "result": "PASS",
+      "tests": { "suites": 96, "passed": 2933, "failed": 0, "time": "65.346s" }
+    }
+  ],
+  "overallResult": "ALL_PASS",
+  "disclaimer": "Observability only. No investment recommendations."
+}

@@ -1,0 +1,258 @@
+{
+  "matrixId": "p28b-reason-template-coverage-gap-matrix",
+  "generatedAt": "2026-05-19T00:00:00.000Z",
+  "phase": "P28B-REASON-TEMPLATE-COVERAGE-HARDRESET",
+  "totalFactorFamilies": 10,
+  "totalGapsIdentified": 13,
+  "totalNeedingScoringChange": 0,
+  "totalSafeToFixNow": 10,
+
+  "factorFamilies": [
+    {
+      "id": "FF-01",
+      "factorFamily": "technical",
+      "factorNames": ["MA 趨勢", "RSI(14)", "MACD", "近 20 日動能", "布林通道"],
+      "currentlyCovered": true,
+      "coveredBranchCount": 2,
+      "coveredBranches": ["MA 多頭排列 → 技術偏多 label", "MA 空頭排列 → 技術偏空 label"],
+      "uncoveredBranchCount": 2,
+      "uncoveredBranches": [
+        "mixed: MA bearish + MACD bullish → no unified template (4 cases: P5-CASE-023, 026, 037, 054)",
+        "direction label inverted when scoreSnapshot.technicalScore=0 despite MA 多頭排列 present (5 cases: P5-CASE-010, 011, 013, 053, 055)"
+      ],
+      "weakBranchCount": 1,
+      "weakBranches": [
+        "RSI(14) overbought/oversold context missing from template output even when factor present"
+      ],
+      "impactedCases": ["P5-CASE-010", "P5-CASE-011", "P5-CASE-013", "P5-CASE-023", "P5-CASE-026", "P5-CASE-037", "P5-CASE-053", "P5-CASE-054", "P5-CASE-055"],
+      "gapIds": ["G5-1", "G5-2", "G6-1", "G6-2"],
+      "needsScoringChange": false,
+      "safeToFixNow": true,
+      "fixType": "renderer-only",
+      "priority": "CRITICAL"
+    },
+    {
+      "id": "FF-02",
+      "factorFamily": "chip",
+      "factorNames": ["法人買超", "法人賣超", "外資動向", "投信動向"],
+      "currentlyCovered": true,
+      "coveredBranchCount": 2,
+      "coveredBranches": ["net buy → positive chip context", "net sell → negative chip context"],
+      "uncoveredBranchCount": 1,
+      "uncoveredBranches": [
+        "chip direction also affected by chipScore=0 zero bug — may produce wrong label when chipScore passthrough missing"
+      ],
+      "weakBranchCount": 1,
+      "weakBranches": [
+        "Chip score direction label not confirmed correct for 9-case set since only technicalScore verified"
+      ],
+      "impactedCases": ["P5-CASE-010", "P5-CASE-011", "P5-CASE-013", "P5-CASE-053", "P5-CASE-055"],
+      "gapIds": ["G6-1"],
+      "needsScoringChange": false,
+      "safeToFixNow": true,
+      "fixType": "renderer-only (scoreSnapshot passthrough)",
+      "priority": "HIGH"
+    },
+    {
+      "id": "FF-03",
+      "factorFamily": "volume",
+      "factorNames": ["成交量", "量能比"],
+      "currentlyCovered": false,
+      "coveredBranchCount": 0,
+      "coveredBranches": [],
+      "uncoveredBranchCount": 2,
+      "uncoveredBranches": [
+        "Above-average volume context missing from renderer output",
+        "Volume contraction context (possible distribution) missing from renderer output"
+      ],
+      "weakBranchCount": 0,
+      "weakBranches": [],
+      "impactedCases": [],
+      "gapIds": [],
+      "needsScoringChange": false,
+      "safeToFixNow": true,
+      "fixType": "renderer extension — add volume context block when factor present",
+      "priority": "MEDIUM"
+    },
+    {
+      "id": "FF-04",
+      "factorFamily": "momentum",
+      "factorNames": ["近 20 日動能", "價格加速度"],
+      "currentlyCovered": true,
+      "coveredBranchCount": 1,
+      "coveredBranches": ["positive momentum → 動能偏多"],
+      "uncoveredBranchCount": 1,
+      "uncoveredBranches": [
+        "Momentum context may be wrong when momentumScore=0 due to zeros bug"
+      ],
+      "weakBranchCount": 1,
+      "weakBranches": [
+        "Momentum context merged into technical block — no standalone momentum note"
+      ],
+      "impactedCases": ["P5-CASE-010", "P5-CASE-011", "P5-CASE-013", "P5-CASE-053", "P5-CASE-055"],
+      "gapIds": ["G6-1"],
+      "needsScoringChange": false,
+      "safeToFixNow": true,
+      "fixType": "renderer-only (scoreSnapshot passthrough fixes momentum direction)",
+      "priority": "HIGH"
+    },
+    {
+      "id": "FF-05",
+      "factorFamily": "volatility",
+      "factorNames": ["布林通道", "ATR"],
+      "currentlyCovered": false,
+      "coveredBranchCount": 0,
+      "coveredBranches": [],
+      "uncoveredBranchCount": 2,
+      "uncoveredBranches": [
+        "Bollinger band squeeze context missing from renderer output",
+        "High ATR (expansion) context missing from renderer output"
+      ],
+      "weakBranchCount": 0,
+      "weakBranches": [],
+      "impactedCases": [],
+      "gapIds": [],
+      "needsScoringChange": false,
+      "safeToFixNow": true,
+      "fixType": "renderer extension — add volatility context block when factor present",
+      "priority": "LOW"
+    },
+    {
+      "id": "FF-06",
+      "factorFamily": "marketRegime",
+      "factorNames": ["市場情境", "大盤趨勢", "TAIEX 相關"],
+      "currentlyCovered": false,
+      "coveredBranchCount": 0,
+      "coveredBranches": [],
+      "uncoveredBranchCount": 3,
+      "uncoveredBranches": [
+        "Bull regime context missing from renderer output",
+        "Bear regime context missing from renderer output",
+        "Sideways / uncertain regime context missing from renderer output"
+      ],
+      "weakBranchCount": 0,
+      "weakBranches": [],
+      "impactedCases": [],
+      "gapIds": [],
+      "needsScoringChange": false,
+      "safeToFixNow": true,
+      "fixType": "renderer extension — add regime context block from signalSnapshot.regime when available",
+      "priority": "MEDIUM"
+    },
+    {
+      "id": "FF-07",
+      "factorFamily": "monthlyRevenueDataAvailability",
+      "factorNames": ["月營收", "營收年增率"],
+      "currentlyCovered": true,
+      "coveredBranchCount": 1,
+      "coveredBranches": ["Revenue data present → include revenue context"],
+      "uncoveredBranchCount": 1,
+      "uncoveredBranches": [
+        "Revenue data missing → renderer currently skips revenue block entirely (no inline note)"
+      ],
+      "weakBranchCount": 0,
+      "weakBranches": [],
+      "impactedCases": ["P5-CASE-010", "P5-CASE-011", "P5-CASE-013", "P5-CASE-023", "P5-CASE-026", "P5-CASE-037", "P5-CASE-053", "P5-CASE-054", "P5-CASE-055"],
+      "gapIds": [],
+      "needsScoringChange": false,
+      "safeToFixNow": true,
+      "fixType": "renderer extension — add '月營收資料暫缺，待更新' inline note when revenue missing",
+      "priority": "MEDIUM",
+      "note": "All 9 underoutput cases have MonthlyRevenue in missingSources"
+    },
+    {
+      "id": "FF-08",
+      "factorFamily": "missingSourceNotes",
+      "factorNames": ["usedSources", "missingSources"],
+      "currentlyCovered": true,
+      "coveredBranchCount": 1,
+      "coveredBranches": ["buildDataCoverageNote() produces used/missing summary at end of renderedText"],
+      "uncoveredBranchCount": 1,
+      "uncoveredBranches": [
+        "Missing source note is appended at end — not integrated into body of reason text for context"
+      ],
+      "weakBranchCount": 1,
+      "weakBranches": [
+        "Data coverage note does not distinguish impact-level (revenue missing may affect revenueScore direction)"
+      ],
+      "impactedCases": [],
+      "gapIds": [],
+      "needsScoringChange": false,
+      "safeToFixNow": true,
+      "fixType": "renderer enhancement — inline data note in relevant factor section",
+      "priority": "LOW"
+    },
+    {
+      "id": "FF-09",
+      "factorFamily": "genericFallbackReason",
+      "factorNames": ["技術偏多", "技術偏空", "法人買超", "法人賣超"],
+      "currentlyCovered": true,
+      "coveredBranchCount": 2,
+      "coveredBranches": [
+        "SINGLE_TOKEN_GENERIC_REASONS matched → trigger ENRICHED pathway",
+        "Non-matched text → ALREADY_RICH pathway"
+      ],
+      "uncoveredBranchCount": 1,
+      "uncoveredBranches": [
+        "NO_TRIGGERED_FACTOR case: factorSnapshot present (count=10) but no factor exceeded threshold → needs dedicated context note explaining 'factors present but below threshold'"
+      ],
+      "weakBranchCount": 0,
+      "weakBranches": [],
+      "impactedCases": ["P5-CASE-010", "P5-CASE-011", "P5-CASE-013", "P5-CASE-023", "P5-CASE-026", "P5-CASE-037", "P5-CASE-053", "P5-CASE-054", "P5-CASE-055"],
+      "gapIds": ["G5-3"],
+      "needsScoringChange": false,
+      "safeToFixNow": true,
+      "fixType": "renderer extension — add NO_TRIGGERED_FACTOR context note when factorCount>0 and reason is single-token",
+      "priority": "HIGH"
+    },
+    {
+      "id": "FF-10",
+      "factorFamily": "multiFactorAggregation",
+      "factorNames": ["ALL — when multiple factor families present simultaneously"],
+      "currentlyCovered": true,
+      "coveredBranchCount": 1,
+      "coveredBranches": ["Multiple factors → concatenated evidence block"],
+      "uncoveredBranchCount": 2,
+      "uncoveredBranches": [
+        "Mixed-direction aggregation (MA bearish + MACD bullish) — no unified summary template",
+        "All-neutral aggregation (no dominant direction) — no neutral-context template"
+      ],
+      "weakBranchCount": 1,
+      "weakBranches": [
+        "Concatenated output may exceed reasonable display length with 10 factors — no summarization or weighting"
+      ],
+      "impactedCases": ["P5-CASE-023", "P5-CASE-026", "P5-CASE-037", "P5-CASE-054"],
+      "gapIds": ["G5-2"],
+      "needsScoringChange": false,
+      "safeToFixNow": true,
+      "fixType": "renderer extension — add mixed-signal template and neutral-context template",
+      "priority": "CRITICAL"
+    }
+  ],
+
+  "gapSummary": {
+    "CRITICAL": 2,
+    "HIGH": 3,
+    "MEDIUM": 3,
+    "LOW": 2,
+    "totalNeedingScoringChange": 0,
+    "totalSafeToFixNow": 10
+  },
+
+  "repairFamilyMapping": {
+    "scoreSnapshot_zero_label": {
+      "gapIds": ["G6-1", "G6-2", "G3-1", "G3-2"],
+      "factorFamilies": ["FF-01", "FF-02", "FF-04"],
+      "affectedCases": 5,
+      "caseIds": ["P5-CASE-010", "P5-CASE-011", "P5-CASE-013", "P5-CASE-053", "P5-CASE-055"]
+    },
+    "mixed_signals_no_template": {
+      "gapIds": ["G5-2"],
+      "factorFamilies": ["FF-01", "FF-10"],
+      "affectedCases": 4,
+      "caseIds": ["P5-CASE-023", "P5-CASE-026", "P5-CASE-037", "P5-CASE-054"]
+    }
+  },
+
+  "disclaimer": "Observability only. No investment recommendations. No scoring change required or permitted."
+}

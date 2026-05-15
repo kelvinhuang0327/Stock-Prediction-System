@@ -1,0 +1,16 @@
+{
+  "artifactId": "p28b_reason_template_coverage_forbidden_claims_scan",
+  "generatedAt": "2025-01-01T00:00:00.000Z",
+  "phase": "P28B-REASON-TEMPLATE-COVERAGE-HARDRESET",
+  "title": "P28B Forbidden Claims Scan",
+  "scanPattern": "ROI|win-rate|win rate|alpha(?!Score)|edge|profit|outperform|beat|買入|賣出|guaranteed|investment recommendation|投資建議",
+  "scanTargets": [
+    "outputs/online_validation/p28b_*",
+    "src/lib/onlineValidation/P28B*",
+    "src/lib/onlineValidation/__tests__/p28b_*"
+  ],
+  "scanResult": "CLEAN",
+  "note": "Matches found are all in meta/disclaimer text (e.g. 'No investment recommendations'), scan pattern definitions, or constraint documentation — not actual investment claims or recommendations.",
+  "verdict": "NO_FORBIDDEN_CLAIMS_IN_OUTPUT",
+  "disclaimer": "Observability only. No investment recommendations."
+}
