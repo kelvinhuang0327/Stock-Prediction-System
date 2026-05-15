@@ -1,0 +1,35 @@
+{
+  "generatedAt": "2026-05-15T05:00:53.918Z",
+  "phase": "P28D",
+  "part": "D - P3/P19 Corpus Regression Sweep",
+  "sweepResults": [
+    {
+      "corpus": "p3active_scoring_historical_replay_corpus.jsonl",
+      "parsedLineCount": 4500,
+      "sampledCount": 286,
+      "rendererErrorCount": 0,
+      "fallbackEmptyCount": 0,
+      "alphaScoreMismatchCount": 0,
+      "bucketMismatchCount": 0,
+      "outcomeLeakageCount": 0,
+      "determinismCheck": true
+    },
+    {
+      "corpus": "p19active_scoring_pit_replay_corpus.jsonl",
+      "parsedLineCount": 4500,
+      "sampledCount": 286,
+      "rendererErrorCount": 0,
+      "fallbackEmptyCount": 0,
+      "alphaScoreMismatchCount": 0,
+      "bucketMismatchCount": 0,
+      "outcomeLeakageCount": 0,
+      "determinismCheck": true
+    }
+  ],
+  "allRendererErrorCountZero": true,
+  "allAlphaScoreMismatchZero": true,
+  "allBucketMismatchZero": true,
+  "allOutcomeLeakageZero": true,
+  "noDBWrite": true,
+  "noCorpusWrite": true
+}

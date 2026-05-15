@@ -1,0 +1,77 @@
+{
+  "phase": "P28D-POST-RENDERER-REPAIR-VALIDATION-HARDRESET",
+  "part": "B - Integrated Renderer Path Trace",
+  "generatedAt": "2026-05-15T00:00:00.000Z",
+  "rendererVersion": "p26a-corpus-renderer-v2",
+  "pathTrace": {
+    "step1_corpusRow": {
+      "source": "P3 / P19 JSONL corpus row (read-only)",
+      "fields_read": ["activeScoringSnapshot.factorSnapshot", "activeScoringSnapshot.scoreSnapshot", "activeScoringSnapshot.reasonSnapshot", "activeScoringSnapshot.usedSources", "activeScoringSnapshot.missingSources", "activeScoringSnapshot.alphaScore", "researchBucket"],
+      "fields_NOT_written": "all — read-only"
+    },
+    "step2_corpusRowToWalkthroughCaseInput": {
+      "file": "src/lib/onlineValidation/P26ACorpusRowAdapter.ts",
+      "function": "corpusRowToWalkthroughCaseInput(row)",
+      "p28c_additions": ["scoreSnapshot pass-through from activeScoringSnapshot.scoreSnapshot"],
+      "backward_compat": "All existing fields preserved. scoreSnapshot is additive optional field.",
+      "alphaScore_touched": false,
+      "bucket_touched": false,
+      "db_write": false,
+      "corpus_write": false
+    },
+    "step3_reviewCase": {
+      "file": "src/lib/onlineValidation/P5WalkthroughReviewUtils.ts",
+      "function": "reviewCase(caseRow, caseIndex)",
+      "p28c_additions": ["scoreSnapshot? optional field added to WalkthroughCaseInput interface", "minimalSnapshot uses caseRow.scoreSnapshot ?? { technicalScore: 0, chipScore: 0, ... }"],
+      "renderer_called": "renderReasonFromCorpusSnapshot(minimalSnapshot)",
+      "result_fields_additive": ["renderedReason", "renderedReasonFactorCount", "reasonRendererVersion", "reasonRendererOutcome", "dataAvailabilityNote"],
+      "existing_fields_preserved": ["reasonSnapshotSummary", "topSignalOrFactor", "score", "researchBucket", "explainabilityCompleteness", "scoreBucketConsistency"],
+      "alphaScore_touched": false,
+      "bucket_touched": false
+    },
+    "step4_renderReasonFromCorpusSnapshot": {
+      "file": "src/lib/onlineValidation/P26ACorpusReasonRenderer.ts",
+      "function": "renderReasonFromCorpusSnapshot(snapshot)",
+      "version": "p26a-corpus-renderer-v2",
+      "logic": {
+        "if_factorCount_0": "return FALLBACK_EMPTY (preserve original reasonSnapshot)",
+        "if_already_rich": "return ALREADY_RICH (reasonSnapshot.length > 20 and not single-token)",
+        "if_single_token": "call enrichReasonFromExistingFactors() -> ENRICHED; then check detectMixedSignal() -> append buildMixedSignalNote() if true"
+      },
+      "p28c_additions": ["detectMixedSignal(factors)", "buildMixedSignalNote(factors)", "mixed-signal note appended to renderedText"],
+      "alphaScoreUnchanged": true,
+      "bucketUnchanged": true
+    },
+    "step5_enrichReasonFromExistingFactors": {
+      "file": "src/lib/onlineValidation/P26AReasonFactorEnrichmentUtils.ts",
+      "function": "enrichReasonFromExistingFactors(snapshot)",
+      "p28c_additions": ["inferDirectionFromMATrend() fallback when techScore === 0"],
+      "reads_from": "snapshot.factorSnapshot (read-only)",
+      "reads_scoreSnapshot": "snapshot.scoreSnapshot.technicalScore, snapshot.scoreSnapshot.chipScore",
+      "writes": "none",
+      "pure_function": true
+    }
+  },
+  "validationChecks": {
+    "renderReasonFromCorpusSnapshot_uses_v2": true,
+    "scoreSnapshot_pass_through_from_corpus_to_WalkthroughCaseInput": true,
+    "mixed_signal_note_only_in_display_renderer_path": true,
+    "reasonSnapshot_backward_compatible": true,
+    "alphaScore_read_only": true,
+    "bucket_read_only": true,
+    "API_display_path_additive_not_breaking": true,
+    "new_fields_all_additive": true,
+    "no_existing_field_removed": true,
+    "no_DB_write": true,
+    "no_corpus_mutation": true
+  },
+  "p28cCaseSummary": {
+    "totalCases": 9,
+    "allEnriched": 9,
+    "allV2": 9,
+    "allAlphaScoreUnchanged": true,
+    "allBucketUnchanged": true,
+    "scoreSnapshot_zero_label_family": 5,
+    "mixed_signals_no_template_family": 4
+  }
+}
