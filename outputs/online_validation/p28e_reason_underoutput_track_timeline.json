@@ -1,0 +1,114 @@
+{
+  "phase": "P28E",
+  "part": "B - P28 Track Timeline / Evidence Chain",
+  "generatedAt": "2026-05-22T00:00:00Z",
+  "trackName": "P26A / P28A-P28D Reason Underoutput Renderer Repair Track",
+  "scoringInvariantThroughoutTrack": true,
+  "phases": [
+    {
+      "phase": "P26A",
+      "commit": "b330b42 / 3411614 / a0145fa / ba39187",
+      "date": "2026-05-13",
+      "classification": "P26A_FEATURE_SNAPSHOT_V1_COMPLETE (subsequent renderer fix chain a0145fa/ba39187)",
+      "scope": "Prediction Feature Snapshot v1 + Reason / Factor Enrichment + P12 v1 contract refresh",
+      "keyFinding": "Generic reason cases reduced from 24/58 to 9 SCORING_UNDEROUTPUT residuals; the 9 underoutput cases left for follow-up",
+      "testsResult": "Full suite PASS (P26A baseline)",
+      "invariance": "DB / corpus / scoring files unchanged",
+      "nextAction": "Audit the 9 SCORING_UNDEROUTPUT cases (read-only)",
+      "closureRelevance": "Origin of the 9-case underoutput backlog that this track closes"
+    },
+    {
+      "phase": "P28A",
+      "commit": "1cf0252",
+      "date": "2026-05-15",
+      "classification": "P28A_SCORING_UNDEROUTPUT_AUDIT_COMPLETE",
+      "scope": "Read-only audit + classification + reason template branch coverage map of 9 cases",
+      "keyFinding": "All 9 cases classified as NO_TRIGGERED_FACTOR (100%). Scoring is correct; serialization/renderer is the underoutput source.",
+      "testsResult": "2885/2885 onlineValidation tests PASS",
+      "invariance": "DB / 5 corpus / 3 scoring files sha256 unchanged",
+      "nextAction": "Design renderer-only repair plan (no scoring change)",
+      "closureRelevance": "Established the audit baseline that subsequent fixes must respect"
+    },
+    {
+      "phase": "P28B",
+      "commit": "0ca055b",
+      "date": "2026-05-15",
+      "classification": "P28B_REASON_TEMPLATE_COVERAGE_PLAN_READY",
+      "scope": "Repair plan: identify two families, design four template rules (TR-01..TR-04)",
+      "repairFamilies": {
+        "scoreSnapshot_zero_label": {
+          "cases": 5,
+          "caseIds": ["P5-CASE-010", "P5-CASE-011", "P5-CASE-013", "P5-CASE-053", "P5-CASE-055"],
+          "symbols": ["1710", "00738U"],
+          "rootCause": "reviewCase() built minimalSnapshot with hardcoded zero scoreSnapshot; enrichment inferred direction = '偏空' even when MA showed '多頭排列'"
+        },
+        "mixed_signals_no_template": {
+          "cases": 4,
+          "caseIds": ["P5-CASE-023", "P5-CASE-026", "P5-CASE-037", "P5-CASE-054"],
+          "symbols": ["00891"],
+          "rootCause": "MA 空頭排列 + MACD 多方動能 contradiction without a unified template"
+        }
+      },
+      "templateRules": ["TR-01 scoreSnapshot passthrough", "TR-02 inferDirectionFromMATrend fallback", "TR-03 Mixed-signal aggregation template", "TR-04 NO_TRIGGERED_FACTOR context note"],
+      "testsResult": "Plan-only phase; no production code changes",
+      "invariance": "DB / corpus / scoring files unchanged",
+      "nextAction": "Implement renderer-only repair (P28C)",
+      "closureRelevance": "Codified the exact repair scope that P28C implemented"
+    },
+    {
+      "phase": "P28C",
+      "commit": "73ce251",
+      "date": "2026-05-15",
+      "classification": "P28C_RENDERER_ONLY_REPAIR_COMPLETE",
+      "scope": "Renderer-only repair implementation",
+      "implementation": {
+        "rendererVersionBump": "p26a-corpus-renderer-v1 -> p26a-corpus-renderer-v2",
+        "filesChanged": [
+          "src/lib/onlineValidation/P26ACorpusReasonRenderer.ts",
+          "src/lib/onlineValidation/P26AReasonFactorEnrichmentUtils.ts",
+          "src/lib/onlineValidation/P26ACorpusRowAdapter.ts",
+          "src/lib/onlineValidation/P5WalkthroughReviewUtils.ts"
+        ],
+        "newFunctions": ["detectMixedSignal", "buildMixedSignalNote", "inferDirectionFromMATrend", "scoreSnapshot passthrough on WalkthroughCaseInput"]
+      },
+      "testsResult": "p28c_renderer_only_repair.test.ts 43/43 PASS; p28c_9case_before_after_generator.test.ts 9/9 PASS; 2976/2976 onlineValidation tests PASS",
+      "invariance": "DB / 5 corpus / 3 scoring files sha256 unchanged; alphaScore + bucket unchanged on 9 before/after cases",
+      "nextAction": "Integrated validation against P3/P19 corpora + API/display backward compat audit",
+      "closureRelevance": "The actual code change that closes the underoutput; nothing in scoring path touched"
+    },
+    {
+      "phase": "P28D",
+      "commit": "6801e0e",
+      "date": "2026-05-15",
+      "classification": "P28D_POST_RENDERER_VALIDATION_COMPLETE",
+      "scope": "Integrated validation: 9-case end-to-end + P3/P19 sweep + backward compat + invariance + forbidden claims + boundary",
+      "validation": {
+        "9CaseIntegratedReview": {"totalCases": 9, "allV2": true, "allEnriched": true, "allFactorCountGe3": true, "allAlphaScoreUnchanged": true, "allBucketUnchanged": true},
+        "p3p19Sweep": {
+          "p3": {"parsedLineCount": 4500, "sampledCount": 286, "rendererErrorCount": 0, "fallbackEmptyCount": 0, "alphaScoreMismatchCount": 0, "bucketMismatchCount": 0, "outcomeLeakageCount": 0, "determinismCheck": true},
+          "p19": {"parsedLineCount": 4500, "sampledCount": 286, "rendererErrorCount": 0, "fallbackEmptyCount": 0, "alphaScoreMismatchCount": 0, "bucketMismatchCount": 0, "outcomeLeakageCount": 0, "determinismCheck": true},
+          "totalSampledRows": 572,
+          "totalParsedRows": 9000,
+          "note": "Sample-based regression sweep across both corpora; 0 errors across all families F1-F6"
+        },
+        "apiDisplayBackwardCompat": {"verdict": "BACKWARD_COMPATIBLE", "additiveFieldsOnly": true, "breakingChanges": 0},
+        "invariance": "DB / 3 scoring files / 5 corpus byte-level UNCHANGED"
+      },
+      "testsResult": "2997/2997 jest PASS; 99 suites PASS",
+      "invariance": "All frozen baselines UNCHANGED",
+      "nextAction": "Formal closure of the reason underoutput track",
+      "closureRelevance": "Final independent validation; clears the way for P28E closure"
+    }
+  ],
+  "evidenceChainConsistency": {
+    "9CasesIdentifiedInP28A": 9,
+    "9CasesRepairPlannedInP28B": 9,
+    "9CasesRepairedInP28C": 9,
+    "9CasesValidatedInP28D": 9,
+    "scoringFilesTouched": 0,
+    "dbWrites": 0,
+    "corpusMutations": 0,
+    "rendererVersionAtTrackEnd": "p26a-corpus-renderer-v2"
+  },
+  "verdict": "EVIDENCE_CHAIN_COHERENT_AND_SCORING_INVARIANT"
+}

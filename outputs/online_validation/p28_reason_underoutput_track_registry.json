@@ -1,0 +1,92 @@
+{
+  "registryName": "P28 Reason Underoutput Track Registry",
+  "generatedAt": "2026-05-22T00:00:00Z",
+  "trackState": "REASON_UNDEROUTPUT_TRACK_CLOSED",
+  "rendererVersion": "p26a-corpus-renderer-v2",
+  "phases": [
+    {
+      "phase": "P26A",
+      "role": "ORIGIN_OF_BACKLOG",
+      "status": "COMPLETE",
+      "commitGroup": ["b330b42", "3411614", "a0145fa", "ba39187"],
+      "finalClassification": "P26A_FEATURE_SNAPSHOT_V1_COMPLETE (renderer subchain)",
+      "canonicalReport": "p26a_feature_snapshot_v1_final_report.md"
+    },
+    {
+      "phase": "P28A",
+      "role": "AUDIT",
+      "status": "COMPLETE",
+      "commit": "1cf0252",
+      "finalClassification": "P28A_SCORING_UNDEROUTPUT_AUDIT_COMPLETE",
+      "canonicalReport": "p28a_scoring_underoutput_audit_final_report.md"
+    },
+    {
+      "phase": "P28B",
+      "role": "REPAIR_PLAN",
+      "status": "COMPLETE",
+      "commit": "0ca055b",
+      "finalClassification": "P28B_REASON_TEMPLATE_COVERAGE_PLAN_READY",
+      "canonicalReport": "p28b_reason_template_coverage_final_report.md"
+    },
+    {
+      "phase": "P28C",
+      "role": "RENDERER_ONLY_REPAIR",
+      "status": "COMPLETE",
+      "commit": "73ce251",
+      "finalClassification": "P28C_RENDERER_ONLY_REPAIR_COMPLETE",
+      "canonicalReport": "p28c_renderer_only_repair_final_report.md",
+      "rendererVersionBump": "p26a-corpus-renderer-v1 -> p26a-corpus-renderer-v2"
+    },
+    {
+      "phase": "P28D",
+      "role": "INTEGRATED_VALIDATION",
+      "status": "COMPLETE",
+      "commit": "6801e0e",
+      "finalClassification": "P28D_POST_RENDERER_VALIDATION_COMPLETE",
+      "canonicalReport": "p28d_post_renderer_validation_final_report.md"
+    },
+    {
+      "phase": "P28E",
+      "role": "FORMAL_CLOSURE",
+      "status": "COMPLETE",
+      "commit": "(this commit)",
+      "finalClassification": "P28E_REASON_UNDEROUTPUT_TRACK_CLOSED",
+      "canonicalReport": "p28e_reason_underoutput_closure_final_report.md",
+      "closureMarker": "p28_reason_underoutput_closure_marker.json"
+    }
+  ],
+  "scopingScope": {
+    "casesIdentified": 9,
+    "casesRepaired": 9,
+    "casesValidated": 9,
+    "scoringFilesTouched": 0,
+    "dbWrites": 0,
+    "corpusMutations": 0
+  },
+  "residualMonitoring": {
+    "f8MixedSignalWithoutNote": 0,
+    "f9ShortOutputNotFallbackEmpty": 0,
+    "f10FactorTriggeredNoKeyword": 0,
+    "f7DataAvailabilityNoteMissing_informational": 558,
+    "f7Note": "P3/P19 corpora pre-date MonthlyRevenue PIT repair; informational only, not blocking."
+  },
+  "p26F4State": "WAITING_FOR_OPERATOR_SOURCE",
+  "canonicalSourceArrivalPrompt": "p26_next_prompt_source_arrival_only.md",
+  "nextRoundPolicy": {
+    "sourceNotArrived": {
+      "mandatedTask": "P29-A PIT-safe Feature Availability Registry v1 (paper design)",
+      "forbiddenAlternatives": ["P27_REPORT_NAMING_AUDIT", "P27_FORBIDDEN_CLAIMS_SCANNER_CONSOLIDATION", "P27_PHASE_REGISTRY_CONSISTENCY"],
+      "reason": "CEO mandate: axis-A continuation enforced; P27 housekeeping is P10 priority only.",
+      "promptArtifact": "p28_next_prompt_after_reason_underoutput_closure.md (Route D)"
+    },
+    "sourceArrived": {
+      "mandatedTask": "P26F4 source-present gate / manifest validation / dry-run / token gate",
+      "promptArtifact": "p26_next_prompt_source_arrival_only.md"
+    },
+    "blockingResidualFound": {
+      "mandatedTask": "P28F renderer-only residual repair",
+      "applicableThisClosure": false
+    }
+  },
+  "disclaimer": "Observability only. Not investment advice."
+}

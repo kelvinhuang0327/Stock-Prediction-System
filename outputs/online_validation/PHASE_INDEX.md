@@ -21,6 +21,22 @@
 
 **Blocker:** Operator must provide real TWSE/MOPS MonthlyRevenue CSV (2025-09 ~ 2026-01) + SOURCE_MANIFEST.json
 
+## P28 Reason Underoutput Track — CLOSED
+| Phase | Commit | Status |
+|-------|--------|--------|
+| P28A — Scoring Underoutput Audit | 1cf0252 | COMPLETE |
+| P28B — Reason Template Coverage Plan | 0ca055b | COMPLETE |
+| P28C — Renderer-only Repair (renderer v2) | 73ce251 | COMPLETE |
+| P28D — Post-Renderer Validation | 6801e0e | COMPLETE |
+| P28E — Reason Underoutput Closure | _(this commit)_ | COMPLETE |
+
+**Track verdict:** `REASON_UNDEROUTPUT_TRACK_CLOSED`. Renderer at `p26a-corpus-renderer-v2`. No scoring change. No DB / corpus mutation.
+
+## Next Round Policy
+- **Source NOT arrived (CEO Route D mandate):** execute `P29-A PIT-safe Feature Availability Registry v1` (paper design). See `p28_next_prompt_after_reason_underoutput_closure.md`.
+- **Source arrived:** run `p26_next_prompt_source_arrival_only.md`.
+- **P27 housekeeping (naming audit / scanner consolidation / phase registry):** DEPRIORITIZED to P10. Forbidden as next-round main task.
+
 ## Blocked Actions
 - P26F4 import
 - corpus expansion

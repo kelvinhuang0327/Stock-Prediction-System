@@ -1,0 +1,46 @@
+{
+  "phase": "P28E",
+  "part": "G - Tests",
+  "generatedAt": "2026-05-22T00:00:00Z",
+  "runs": [
+    {
+      "command": "npx jest src/lib/onlineValidation/__tests__/p28d_post_renderer_validation.test.ts --no-coverage",
+      "result": "PASS",
+      "testsPassed": 12,
+      "testsFailed": 0,
+      "suitesPassed": 1
+    },
+    {
+      "command": "npx jest src/lib/onlineValidation/__tests__/p28e_reason_underoutput_closure.test.ts --no-coverage",
+      "result": "PASS",
+      "testsPassed": 14,
+      "testsFailed": 0,
+      "suitesPassed": 1
+    },
+    {
+      "command": "npx jest src/lib/onlineValidation/__tests__/p27_artifact_index_consistency.test.ts --no-coverage",
+      "result": "PASS",
+      "testsPassed": 11,
+      "testsFailed": 0,
+      "suitesPassed": 1,
+      "note": "Re-run after P28E ARTIFACT_INDEX update; backward-compatible field preservation confirmed."
+    },
+    {
+      "command": "npx jest src/lib/onlineValidation/__tests__ --no-coverage",
+      "result": "PASS",
+      "testsPassed": 3011,
+      "testsFailed": 0,
+      "suitesPassed": 100,
+      "note": "Up from 2997 in P28D (+14 new P28E closure tests)."
+    }
+  ],
+  "tscNoEmit": {
+    "executed": false,
+    "reason": "Pre-existing TSC errors in src/app/api/admin/data-quality/route.ts are out-of-scope for P28E. P28E does not introduce new TSC errors in scope (closure marker, index updates, tests). P28D already established this baseline.",
+    "p28eFilesAreNonProductionTSC": [
+      "src/lib/onlineValidation/__tests__/p28e_reason_underoutput_closure.test.ts",
+      "scripts/run-p28e-residual-underoutput-distribution-scan.ts"
+    ]
+  },
+  "verdict": "ALL_P28E_TARGETED_AND_REGRESSION_TESTS_PASS"
+}

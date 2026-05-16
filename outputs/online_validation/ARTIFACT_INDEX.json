@@ -5,10 +5,13 @@
     "P26A": "COMPLETE",
     "P26F4": "WAITING_FOR_OPERATOR_SOURCE",
     "P27": "NON_SOURCE_GOVERNANCE_READY",
+    "P28_reason_underoutput_track": "CLOSED",
+    "P28_rendererVersion": "p26a-corpus-renderer-v2",
     "candidateSourceFiles": 0,
     "dbWrite": false,
     "corpusExpansion": "BLOCKED",
-    "optimizer": "BLOCKED"
+    "optimizer": "BLOCKED",
+    "nextAxisARound": "P29-A PIT-safe Feature Availability Registry v1 (paper design, CEO Route D mandate)"
   },
   "canonicalLatestReports": {
     "P26A_RENDERER_FIX": "p26a_renderer_fix_final_report.md",
@@ -19,13 +22,20 @@
     "P26F4_SOURCE_PRESENT_GATE": "p26f4_source_present_gate_final_report.md",
     "P26F4_WAITING_STATE_GOVERNANCE": "p26f4_waiting_state_governance_final_report.md",
     "P27_NON_SOURCE_GOVERNANCE": "p27_non_source_governance_final_report.md",
-    "P27_ARTIFACT_INDEX_CONSISTENCY": "p27_artifact_index_consistency_final_report.md"
+    "P27_ARTIFACT_INDEX_CONSISTENCY": "p27_artifact_index_consistency_final_report.md",
+    "P28A_SCORING_UNDEROUTPUT_AUDIT": "p28a_scoring_underoutput_audit_final_report.md",
+    "P28B_REASON_TEMPLATE_COVERAGE_PLAN": "p28b_reason_template_coverage_final_report.md",
+    "P28C_RENDERER_ONLY_REPAIR": "p28c_renderer_only_repair_final_report.md",
+    "P28D_POST_RENDERER_VALIDATION": "p28d_post_renderer_validation_final_report.md",
+    "P28E_REASON_UNDEROUTPUT_CLOSURE": "p28e_reason_underoutput_closure_final_report.md"
   },
   "canonicalNextPrompts": {
     "sourceArrived": "p26_next_prompt_source_arrival_only.md",
-    "sourceNotArrived": "P27 Tier A backlog - see p27_non_source_governance_backlog.md",
+    "sourceNotArrived": "P27 Tier A backlog - see p27_non_source_governance_backlog.md (DEPRIORITIZED to P10 by CEO Route D; do not use as next-round main task while axis-A advancement is available)",
+    "sourceNotArrived_axisAContinuation_CEORouteD": "p28_next_prompt_after_reason_underoutput_closure.md",
     "deprecated": "p26f4_next_prompt_when_source_present.md (superseded)"
   },
+  "ceoRouteDMandate": "When source is not arrived, the next-round main task must be P29-A PIT-safe Feature Availability Registry v1 (paper design). P27 naming audit / scanner consolidation / phase registry housekeeping are explicitly forbidden as next-round main task.",
   "canonicalCorpora": {
     "simulation_snapshot_corpus_jsonl": {
       "lines": 60,
@@ -52,9 +62,12 @@
   "canonicalGuardArtifacts": {
     "freezeMarker": "p26f4_waiting_state_freeze_marker.json",
     "phaseRegistry": "p26_phase_chain_registry.json",
+    "p28TrackRegistry": "p28_reason_underoutput_track_registry.json",
+    "p28ClosureMarker": "p28_reason_underoutput_closure_marker.json",
     "ciGuardProposal": "p27_waiting_state_ci_guard_proposal.json",
     "policyGuardTest": "src/lib/onlineValidation/__tests__/p27_waiting_state_policy_guard.test.ts",
-    "indexConsistencyTest": "src/lib/onlineValidation/__tests__/p27_artifact_index_consistency.test.ts"
+    "indexConsistencyTest": "src/lib/onlineValidation/__tests__/p27_artifact_index_consistency.test.ts",
+    "p28eClosureTest": "src/lib/onlineValidation/__tests__/p28e_reason_underoutput_closure.test.ts"
   },
   "historicalOrOrphan": [
     {

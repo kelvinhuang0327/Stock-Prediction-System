@@ -1,0 +1,64 @@
+{
+  "markerType": "REASON_UNDEROUTPUT_TRACK_CLOSURE",
+  "closureState": "REASON_UNDEROUTPUT_TRACK_CLOSED",
+  "closedAtUtc": "2026-05-22T00:00:00Z",
+  "closedAtPhase": "P28E",
+  "closedAtCommitParent": "6801e0e",
+  "closedPhases": ["P26A", "P28A", "P28B", "P28C", "P28D", "P28E"],
+  "rendererVersion": "p26a-corpus-renderer-v2",
+  "scope": {
+    "originalCases": "P26A residual 9 SCORING_UNDEROUTPUT cases",
+    "p3p19IntegratedValidation": "P28D regression sweep + 9-case integrated review",
+    "apiDisplayBackwardCompatibility": "no breaking changes, additive fields only"
+  },
+  "invariance": {
+    "scoringFiles": "UNCHANGED (RuleBasedStockAnalyzer.ts / SignalFusionEngine.ts / ActiveScoringSnapshotBuilder.ts)",
+    "db": "UNCHANGED (prisma/dev.db)",
+    "corpora": "UNCHANGED (simulation/p0/p1/p3/p19)",
+    "alphaScoreFormulaChanges": 0,
+    "recommendationBucketChanges": 0
+  },
+  "residualMonitoring": {
+    "f8_mixedSignalWithoutNote": 0,
+    "f9_shortOutputNotFallbackEmpty": 0,
+    "f10_factorTriggeredNoKeyword": 0,
+    "f7_dataAvailabilityNoteMissing_informational": 558,
+    "f7Note": "F7 is informational only. P3/P19 corpora pre-date MonthlyRevenue PIT repair; every row has missingSources=[MonthlyRevenue]. Renderer correctly does not fabricate a coverage note. Expected to clear naturally once future expanded corpora include rows with real MonthlyRevenue availability."
+  },
+  "whatRemainsOpen": [
+    "P26F4 MonthlyRevenue source still WAITING_FOR_OPERATOR_SOURCE",
+    "Corpus expansion still BLOCKED (gated on operator source + dry-run + approval token)",
+    "Optimizer / backtest still BLOCKED (gated on corpus expansion)",
+    "PIT-safe Feature Availability Registry v1 NOT YET STARTED (CEO-flagged as next axis-A round)"
+  ],
+  "allowedNextActions": {
+    "RouteA_sourceNotArrived_AxisAContinuation_CEORecommended": {
+      "priority": "P0",
+      "task": "P29-A PIT-safe Feature Availability Registry v1 (paper design)",
+      "scope": "Unify Quote / MarketRegime / InstitutionalChip / MonthlyRevenue / FinancialReport / NewsEvent into machine-readable availability registry. Paper design only. No DB / no corpus / no scoring change.",
+      "reference": "outputs/online_validation/p28_next_prompt_after_reason_underoutput_closure.md (Route D)"
+    },
+    "RouteB_sourceArrived": {
+      "priority": "OPERATOR_CONDITIONAL",
+      "task": "Source-present gate / manifest validation / dry-run / token gate",
+      "reference": "outputs/online_validation/p26_next_prompt_source_arrival_only.md"
+    },
+    "RouteC_blockingResidualFound": {
+      "priority": "NOT_APPLICABLE_THIS_CLOSURE",
+      "note": "Residual scan returned 0 blocking. This route would only activate if F8/F9/F10>0."
+    },
+    "RouteDisExplicitlyAxisAdvancement": {
+      "priority": "P0_FOR_NEXT_ROUND",
+      "task": "P29-A PIT-safe Feature Availability Registry v1 (paper design)",
+      "ceoMandate": "Route D is the only acceptable non-operator-gated next round. P27 naming audit / scanner consolidation / phase registry housekeeping are explicitly forbidden as next-round main task."
+    }
+  },
+  "ceoGovernanceNotes": [
+    "P28A->P28D is the first real axis-A advancement since 2026-05-13 P26A.",
+    "P28E formal closure prevents drift on the renderer repair.",
+    "Route D pre-commit enforces that the next round advances axis A (PIT registry), not P27 housekeeping.",
+    "Strategic P0 (operator MonthlyRevenue source acquisition) is unchanged."
+  ],
+  "doNotCloseConditionsNotMet": false,
+  "verdict": "TRACK_CLOSED_CLEAN"
+}

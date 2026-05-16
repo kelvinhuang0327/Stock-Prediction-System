@@ -9,12 +9,14 @@
 
 | Phase | Status |
 |-------|--------|
- ba39187) |
+| P26A | **COMPLETE** (commit ba39187) |
 | P26F4 | **WAITING_FOR_OPERATOR_SOURCE** (candidateSourceFiles = 0) |
 | P27 | **NON_SOURCE_GOVERNANCE_READY** (commit ea5ee51) |
-| DB write |  no write since baseline |BLOCKED 
-| Corpus expansion |  all 5 corpora frozen |BLOCKED 
-| Optimizer |  requires P26F4 import first |BLOCKED 
+| P28 reason underoutput track | **CLOSED** (P28A→P28E; renderer v2; closure marker present) |
+| DB write | BLOCKED — no write since baseline |
+| Corpus expansion | BLOCKED — all 5 corpora frozen |
+| Optimizer | BLOCKED — requires P26F4 import first |
+| Next axis-A round | **P29-A PIT-safe Feature Availability Registry v1** (paper design; CEO Route D mandate) |
 
 ---
 
@@ -31,6 +33,11 @@
 |  Waiting State Governance | p26f4_waiting_state_governance_final_report.md |P26F4 
 |  Non-Source Governance | p27_non_source_governance_final_report.md |P27 
 |  Artifact Index Consistency | p27_artifact_index_consistency_final_report.md |P27 
+| P28A Scoring Underoutput Audit | p28a_scoring_underoutput_audit_final_report.md |
+| P28B Reason Template Coverage Plan | p28b_reason_template_coverage_final_report.md |
+| P28C Renderer-only Repair | p28c_renderer_only_repair_final_report.md |
+| P28D Post-Renderer Validation | p28d_post_renderer_validation_final_report.md |
+| P28E Reason Underoutput Closure | p28e_reason_underoutput_closure_final_report.md |
 
 ---
 
@@ -39,9 +46,11 @@
 | Trigger | Use This Prompt |
 |---------|----------------|
 | Operator confirms source placed in drop-zone | **p26_next_prompt_source_arrival_only.md** |
-| Source NOT yet arrived | **P27 Tier A  see p27_non_source_governance_backlog.md |backlog** 
+| Source NOT yet arrived (CEO Route D, axis-A continuation) | **p28_next_prompt_after_reason_underoutput_closure.md** (Route D: P29-A PIT-safe Feature Availability Registry v1) |
+| Source NOT yet arrived (P27 housekeeping ONLY if axis-A round complete) | `p27_non_source_governance_backlog.md` (deprioritized to P10) |
 
- Note:** `p26f4_next_prompt_when_source_present.md` is SUPERSEDED by `p26_next_prompt_source_arrival_only.md`. Use the latter.> **
+> **Note:** `p26f4_next_prompt_when_source_present.md` is SUPERSEDED by `p26_next_prompt_source_arrival_only.md`. Use the latter.
+> **CEO Route D mandate:** When source is not arrived, the **next-round main task** must be `P29-A PIT-safe Feature Availability Registry v1` (paper design). P27 naming audit / scanner consolidation / phase registry housekeeping are explicitly forbidden as next-round main task.
 
 ---
 
@@ -65,9 +74,12 @@
 |-------|------|
 | P26F4 freeze marker (source of truth) | p26f4_waiting_state_freeze_marker.json |
 | Phase chain registry | p26_phase_chain_registry.json |
+| P28 reason underoutput track registry | p28_reason_underoutput_track_registry.json |
+| P28 closure marker | p28_reason_underoutput_closure_marker.json |
 | CI guard proposal | p27_waiting_state_ci_guard_proposal.json |
 | Policy guard test | src/lib/onlineValidation/__tests__/p27_waiting_state_policy_guard.test.ts |
 | Index consistency test | src/lib/onlineValidation/__tests__/p27_artifact_index_consistency.test.ts |
+| P28E closure test | src/lib/onlineValidation/__tests__/p28e_reason_underoutput_closure.test.ts |
 
 ---
 
