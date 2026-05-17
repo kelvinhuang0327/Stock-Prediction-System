@@ -1,0 +1,33 @@
+{
+  "phase": "P29A",
+  "part": "H - Invariance Re-check",
+  "generatedAt": "2026-05-23T00:00:00Z",
+  "classification": "P29A_INVARIANCE_PASS",
+  "verdict": "ALL_FROZEN_FILES_UNCHANGED",
+  "db": {
+    "path": "prisma/dev.db",
+    "baseline": "a5cf277182c161dfe97ba05f9b81528d6c8e477dd5ac0bec6810ffbb8711c6f8",
+    "current": "a5cf277182c161dfe97ba05f9b81528d6c8e477dd5ac0bec6810ffbb8711c6f8",
+    "match": true
+  },
+  "scoringFiles": [
+    {
+      "file": "RuleBasedStockAnalyzer.ts",
+      "baseline": "bc3716cc8e74be304f2e262aac586a61760bb59d6c95e82a575c38e03ea7373d",
+      "current": "bc3716cc8e74be304f2e262aac586a61760bb59d6c95e82a575c38e03ea7373d",
+      "match": true
+    },
+    {
+      "file": "SignalFusionEngine.ts",
+      "baseline": "b8ce3fa3ae63fd7edf6b6067dd8ccea63c02741454b93792e87bfbc1e95d2bf4",
+      "current": "b8ce3fa3ae63fd7edf6b6067dd8ccea63c02741454b93792e87bfbc1e95d2bf4",
+      "match": true
+    },
+    {
+      "file": "ActiveScoringSnapshotBuilder.ts",
+      "baseline": "063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d",
+      "current": "063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d",
+      "match": true
+    }
+  ]
+}

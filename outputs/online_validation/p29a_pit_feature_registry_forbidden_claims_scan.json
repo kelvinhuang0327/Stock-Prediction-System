@@ -1,0 +1,39 @@
+{
+  "phase": "P29A",
+  "part": "I - Forbidden Claims Scan",
+  "generatedAt": "2026-05-23T00:00:00Z",
+  "verdict": "CLEAN",
+  "totalHitsRaw": 9,
+  "totalNonDisclaimerHits": 0,
+  "hitsReviewed": [
+    {
+      "file": "p29a_feature_source_inventory.json",
+      "match": "buy/sell direction",
+      "context": "derivedMetrics for InstitutionalChip: 'foreign net buy/sell direction'",
+      "classification": "FACTUAL_CHIP_DATA_DESCRIPTION",
+      "verdict": "ALLOWED — describes factual chip flow direction, not investment recommendation"
+    },
+    {
+      "file": "p29a_pit_feature_availability_registry_v1.json / preflight / inventory",
+      "match": "alpha in SignalFusionEngine.ts file path",
+      "context": "evidenceArtifacts: 'src/lib/alpha/SignalFusionEngine.ts'",
+      "classification": "FILE_PATH_REFERENCE",
+      "verdict": "ALLOWED — regex matched 'alpha' in file path, not an alpha performance claim"
+    },
+    {
+      "file": "p29a_pit_feature_availability_registry_v1.json",
+      "match": "edge",
+      "context": "'timezone edge', 'edge cases (split dates...)', 'T+1 lag edge cases'",
+      "classification": "TECHNICAL_CONTEXT",
+      "verdict": "ALLOWED — 'edge' used in 'timezone edge' and 'edge cases', not 'trading edge'"
+    },
+    {
+      "file": "runtime/agent_orchestrator/llm_usage.jsonl (boundary check)",
+      "match": "modified .jsonl",
+      "context": "Pre-existing runtime log in runtime/agent_orchestrator/, not frozen corpus in outputs/online_validation/",
+      "classification": "PRE_EXISTING_RUNTIME_FILE",
+      "verdict": "ALLOWED — not a forbidden corpus modification"
+    }
+  ],
+  "allNewArtifactsClean": true
+}

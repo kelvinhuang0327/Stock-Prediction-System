@@ -1,0 +1,39 @@
+{
+  "phase": "P29A",
+  "part": "F - Route D Continuation from P28E",
+  "generatedAt": "2026-05-23T00:00:00Z",
+  "routeD": {
+    "triggeredBy": "P28E closure + CEO mandate",
+    "p28eClassification": "P28E_REASON_UNDEROUTPUT_TRACK_CLOSED",
+    "p28eCommit": "455c86a",
+    "ceoMandateText": "Route D is the only acceptable non-operator-gated next round. P27 naming audit / scanner consolidation / phase registry housekeeping are explicitly forbidden as next-round main task.",
+    "isP27Housekeeping": false,
+    "isAxisAContinuation": true,
+    "axisAContribution": "PIT-safe Feature Availability Registry v1 defines the contract structure for all 6 feature sources. This is the structural foundation for P29-B (NewsEvent/FinancialReport source plan) and future formal PIT gate validation.",
+    "p26f4State": "WAITING_FOR_OPERATOR_SOURCE",
+    "parallelismNote": "P29-A runs in parallel with operator source acquisition. Completing P29-A does not depend on operator and does not affect P26F4 state."
+  },
+  "previewNextRounds": [
+    {
+      "taskId": "P29-B",
+      "taskName": "NewsEvent / FinancialReport Real Source Acquisition Plan",
+      "type": "axis-A research",
+      "sourceRequired": false,
+      "note": "Research and document real source options for both FinancialReport and NewsEvent. No DB write. No scoring change."
+    },
+    {
+      "taskId": "P29-C",
+      "taskName": "Backtest / Simulation Contract Paper Design",
+      "type": "axis-B paper design",
+      "sourceRequired": false,
+      "note": "Define unified backtest/replay/simulation contract. No DB write. No optimizer execution."
+    },
+    {
+      "taskId": "P30",
+      "taskName": "Formal PIT Gate Validation Audit",
+      "type": "axis-A validation",
+      "sourceRequired": false,
+      "note": "Formally audit PIT gates for StockQuote / MarketRegime / InstitutionalChip to advance status from AVAILABLE_NEEDS_VALIDATION to AVAILABLE_PIT_SAFE."
+    }
+  ]
+}

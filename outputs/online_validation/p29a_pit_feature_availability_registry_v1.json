@@ -1,0 +1,228 @@
+{
+  "registryName": "PIT-safe Feature Availability Registry",
+  "registryVersion": "v1",
+  "contractRef": "p29a-registry-contract-v1",
+  "generatedAt": "2026-05-23T00:00:00Z",
+  "phase": "P29A-HARDRESET",
+  "paperDesignOnly": true,
+  "noProductionScoringImpact": true,
+  "p26f4State": "WAITING_FOR_OPERATOR_SOURCE",
+  "sources": [
+    {
+      "sourceName": "TWSE_TPEX_Quote",
+      "displayName": "Stock Quote (TWSE / TPEX)",
+      "sourceFamily": "price_and_technicals",
+      "sourceStatus": "AVAILABLE_NEEDS_VALIDATION",
+      "gateField": "date",
+      "pitDateField": "date",
+      "pitRule": "WHERE date <= asOfDate; both are YYYYMMDD strings; lexicographic comparison is sufficient because format is zero-padded. Applied in AsOfDataGate.buildWhereClause().",
+      "coverageWindow": "Full TWSE/TPEX trading history available; minimum 20 days required for MA20",
+      "freshnessRule": "Sourced from TWSE OpenAPI / twstock Python; updated daily after market close",
+      "entersAlphaScore": true,
+      "signalFusionWeightStock": 0.35,
+      "signalFusionWeightETF": 0.50,
+      "entersRendererOnly": false,
+      "requiredForCorpusExpansion": true,
+      "knownLimitations": [
+        "PIT gate relies on string comparison; timezone edge (market close = 13:30 Asia/Taipei) not yet formally encoded",
+        "No formal walk-forward calibration of technical indicator PIT safety",
+        "Minimum 20 days needed; < 20 triggers missingSources=[StockQuote（不足 20 天）]"
+      ],
+      "allowedWhenMissing": "Return early from scoring; set scoringAvailable=false; alphaScore=0; researchBucket=Neutral",
+      "fallbackBehavior": "Abort scoring with EMPTY completeness status",
+      "forbiddenBehavior": "Must NOT use any quote with date > asOfDate. Must NOT infer prices from future data.",
+      "pitValidationNote": "NEEDS_VALIDATION — PIT gate is implemented but not formally back-tested for edge cases (split dates, holiday adjustments)",
+      "evidenceArtifacts": [
+        "src/lib/data/AsOfDataGate.ts",
+        "src/lib/analysis/RuleBasedStockAnalyzer.ts",
+        "outputs/online_validation/p12pit_feature_contract_v1.json"
+      ]
+    },
+    {
+      "sourceName": "MarketRegime",
+      "displayName": "Market Regime (Bull / Bear / Neutral)",
+      "sourceFamily": "market_context",
+      "sourceStatus": "AVAILABLE_NEEDS_VALIDATION",
+      "gateField": "asOf parameter",
+      "pitDateField": "asOf (passed to detectRegime())",
+      "pitRule": "detectRegime(asOf) reads TAIEX (0050 proxy) quotes with date <= asOfDate only. Regime classification and confidence are functions of historical quotes up to asOfDate.",
+      "coverageWindow": "TAIEX quote history; confidence increases with more history",
+      "freshnessRule": "Recomputed on each scoring call; no cache needed if asOf is fixed",
+      "entersAlphaScore": true,
+      "signalFusionWeightStock": 0.15,
+      "signalFusionWeightETF": 0.25,
+      "entersRendererOnly": true,
+      "requiredForCorpusExpansion": false,
+      "knownLimitations": [
+        "Unknown regime still grants partial score credit (5 of 20 pts) rather than 0 — conservative design choice",
+        "Regime classification algorithm not formally audited for Taiwan market cycles",
+        "No regime-specific walk-forward calibration yet"
+      ],
+      "allowedWhenMissing": "Score with reduced regime weight (5 pts); continue scoring without regime adjustment",
+      "fallbackBehavior": "Use Unknown regime; scale adjustment to 0 in SignalFusionEngine; continue",
+      "forbiddenBehavior": "Must NOT look ahead to future TAIEX prices. Must NOT use regime computed after asOfDate.",
+      "pitValidationNote": "NEEDS_VALIDATION — regime engine PIT safety is structurally correct but not formally audited",
+      "evidenceArtifacts": [
+        "src/lib/alpha/SignalFusionEngine.ts",
+        "src/lib/market/MarketRegimeEngine.ts",
+        "outputs/online_validation/p12pit_feature_contract_v1.json"
+      ]
+    },
+    {
+      "sourceName": "InstitutionalChip",
+      "displayName": "Institutional Chip / 法人籌碼",
+      "sourceFamily": "chip_and_flow",
+      "sourceStatus": "AVAILABLE_NEEDS_VALIDATION",
+      "gateField": "date",
+      "pitDateField": "date",
+      "pitRule": "WHERE date <= asOfDate (YYYYMMDD string). Net 10-day foreign + investment trust + dealer flow computed from available days up to asOfDate.",
+      "coverageWindow": "TWSE T+1 disclosure; data available for most listed stocks",
+      "freshnessRule": "TWSE discloses institutional chip the next trading day; delay of 1 day is by design",
+      "entersAlphaScore": true,
+      "signalFusionWeightStock": 0.25,
+      "signalFusionWeightETF": 0.25,
+      "entersRendererOnly": false,
+      "requiredForCorpusExpansion": false,
+      "knownLimitations": [
+        "Missing chip sets missingSources=[InstitutionalChip] and chipScore=0 with weight redistribution",
+        "Only net-10d aggregate exposed in factorSnapshot; individual daily records not in renderer output",
+        "ETFs may have different chip disclosure patterns"
+      ],
+      "allowedWhenMissing": "Set chipScore=0; redistribute chip weight to technical in SignalFusionEngine",
+      "fallbackBehavior": "Score with chipScore=0 and weight redistribution; continue",
+      "forbiddenBehavior": "Must NOT use chip data from dates after asOfDate. Must NOT impute chip from future filings.",
+      "pitValidationNote": "NEEDS_VALIDATION — PIT gate implemented but not formally back-tested for T+1 lag edge cases",
+      "evidenceArtifacts": [
+        "src/lib/analysis/RuleBasedStockAnalyzer.ts",
+        "outputs/online_validation/p12pit_feature_contract_v1.json"
+      ]
+    },
+    {
+      "sourceName": "MonthlyRevenue",
+      "displayName": "Monthly Revenue / 月營收",
+      "sourceFamily": "fundamental",
+      "sourceStatus": "REPAIRED_BUT_SOURCE_GATED",
+      "gateField": "releaseDate",
+      "pitDateField": "releaseDate",
+      "pitRule": "WHERE releaseDate <= asOfDate. If releaseDate is null and allowInferredReleaseDate=true, infer as 10th of following month (INFERRED_NEXT_MONTH_10TH). Applied in filterMonthlyRevenueAvailableAsOf().",
+      "coverageWindow": "DB has 2143 rows; months available = 2026-02 and 2026-03 only. Historical 2025-09 to 2026-01 NOT YET ACQUIRED.",
+      "freshnessRule": "TWSE discloses MonthlyRevenue by 10th of following month. releaseDate is that disclosure date.",
+      "entersAlphaScore": true,
+      "signalFusionWeightStock": 0.25,
+      "signalFusionWeightETF": 0.0,
+      "entersRendererOnly": false,
+      "requiredForCorpusExpansion": true,
+      "sourceGatedNote": "Although PIT gate is repaired (P17/P24/P25), the historical source files for 2025-09 to 2026-01 have not been acquired from TWSE/MOPS. P26F4 is WAITING_FOR_OPERATOR_SOURCE.",
+      "p26f4ImportApprovalToken": "P26F4_APPROVE_HISTORICAL_MONTHLY_REVENUE_IMPORT_ONLY",
+      "knownLimitations": [
+        "2025-09 to 2026-01 historical data missing → P3/P19 corpus rows have missingSources=[MonthlyRevenue]",
+        "YoY computation requires >= 13 months; most current DB rows insufficient for YoY",
+        "All 2143 rows use INFERRED_NEXT_MONTH_10TH as releaseDateSource"
+      ],
+      "allowedWhenMissing": "Set missingSources=[MonthlyRevenue]; set fundamental weight=0 in SignalFusionEngine; continue scoring with technical/chip/regime",
+      "fallbackBehavior": "Redistribute fundamental weight to remaining active sources; note in factorSnapshot as '月營收：資料暫缺'",
+      "forbiddenBehavior": "Must NOT use MonthlyRevenue rows with releaseDate > asOfDate. Must NOT fabricate revenue data. Must NOT import without P26F4 approval token.",
+      "pitRepairHistory": [
+        "P17-HARDRESET: releaseDate column added and helper implemented",
+        "P24-HARDRESET: production migration executed; 2143 rows backfilled",
+        "P25-HARDRESET: post-migration observability smoke PASS"
+      ],
+      "evidenceArtifacts": [
+        "src/lib/onlineValidation/MonthlyRevenueAvailability.ts",
+        "outputs/online_validation/p12pit_feature_contract_v1.json",
+        "outputs/online_validation/p24production_backfill_gate.json",
+        "outputs/online_validation/p25post_migration_observability_final_report.md"
+      ]
+    },
+    {
+      "sourceName": "FinancialReport",
+      "displayName": "Financial Report / 財務報告",
+      "sourceFamily": "fundamental",
+      "sourceStatus": "HIGH_RISK_SOURCE_ABSENT",
+      "gateField": null,
+      "pitDateField": null,
+      "pitRule": "NOT IMPLEMENTED. Would require availabilityDate (= filingDate on TWSE) <= asOfDate. periodEndDate and fiscalQuarter are NOT valid PIT gate fields.",
+      "coverageWindow": "Unknown — no systematic source acquisition plan yet",
+      "freshnessRule": "Unknown — TWSE filing calendar varies by report type",
+      "entersAlphaScore": false,
+      "signalFusionWeightStock": 0.0,
+      "signalFusionWeightETF": 0.0,
+      "entersRendererOnly": false,
+      "requiredForCorpusExpansion": false,
+      "knownLimitations": [
+        "No availabilityDate governance in current Prisma schema",
+        "P26C drafted availabilityDate contract v0 (paper design only)",
+        "Real source is manual TWSE; no automated ingestion",
+        "Risk of look-ahead contamination if periodEndDate is used as gate"
+      ],
+      "allowedWhenMissing": "Continue scoring without FinancialReport. It is not currently used.",
+      "fallbackBehavior": "No fallback needed; source is not in scoring path",
+      "forbiddenBehavior": "Must NOT enter alphaScore until sourceStatus = AVAILABLE_PIT_SAFE. Must NOT use periodEndDate or fiscalQuarter as PIT gate. Must NOT be activated without explicit contract update.",
+      "activationRequirements": [
+        "Implement availabilityDate field in FinancialReport DB schema",
+        "Backfill availabilityDate from TWSE filingDate records",
+        "Verify PIT gate in AsOfDataGate",
+        "Add to P12 v2 contract with pitStatus=REPAIRED",
+        "Update this registry entry to REPAIRED_BUT_SOURCE_GATED or AVAILABLE_PIT_SAFE"
+      ],
+      "evidenceArtifacts": [
+        "src/lib/fundamental/FinancialReportSync.ts",
+        "outputs/online_validation/p26c_financial_report_availability_contract_v0.json",
+        "outputs/online_validation/p12pit_feature_contract_v1.json"
+      ]
+    },
+    {
+      "sourceName": "NewsEvent",
+      "displayName": "News Event / 時事新聞",
+      "sourceFamily": "event_and_news",
+      "sourceStatus": "HIGH_RISK_SOURCE_ABSENT",
+      "gateField": "publishedAt",
+      "pitDateField": "publishedAt",
+      "pitRule": "Must gate by publishedAt <= asOfDate (Asia/Taipei end-of-day). ingestedAt is NOT a valid PIT gate. P26B contract v0 established this rule but real PIT-safe source is not yet verified.",
+      "coverageWindow": "RSS/Cnyes events available in DB but publishedAt reliability not audited",
+      "freshnessRule": "publishedAt sourced from news feed; may default to ingest time if not available",
+      "entersAlphaScore": false,
+      "signalFusionWeightStock": 0.0,
+      "signalFusionWeightETF": 0.0,
+      "entersRendererOnly": false,
+      "requiredForCorpusExpansion": false,
+      "p26bContract": "p26b-event-news-pit-contract-v0 (pitStatus=READ_ONLY_METADATA_ONLY)",
+      "knownLimitations": [
+        "publishedAt may default to ingest time when feed does not provide timestamp",
+        "Mock events mixed with RSS events in live path",
+        "No real source with verified PIT-safe publishedAt for all events",
+        "ingestedAt is always FORBIDDEN as PIT gate — it reflects system ingestion, not event publication time"
+      ],
+      "allowedWhenMissing": "Continue without news context. No scoring impact.",
+      "fallbackBehavior": "Omit news context from snapshot; no scoring change",
+      "forbiddenBehavior": "Must NOT enter alphaScore. Must NOT use ingestedAt as PIT gate. Must NOT treat mock events as real events for scoring.",
+      "activationRequirements": [
+        "Audit publishedAt reliability across all RSS/Cnyes sources",
+        "Separate mock events from real events at DB level",
+        "Verify publishedAt <= asOfDate gate for all event queries",
+        "Update P26B contract to AVAILABLE_PIT_SAFE",
+        "Update this registry entry accordingly"
+      ],
+      "evidenceArtifacts": [
+        "src/lib/events/EventIngestionService.ts",
+        "outputs/online_validation/p26b_event_news_pit_contract_v0.json",
+        "outputs/online_validation/p12pit_feature_contract_v1.json"
+      ]
+    }
+  ],
+  "summary": {
+    "totalSources": 6,
+    "entersAlphaScore": ["TWSE_TPEX_Quote", "MarketRegime", "InstitutionalChip", "MonthlyRevenue"],
+    "doesNotEnterAlphaScore": ["FinancialReport", "NewsEvent"],
+    "highRiskSources": ["FinancialReport", "NewsEvent"],
+    "sourceGatedSources": ["MonthlyRevenue"],
+    "fullPITSafeSources": [],
+    "needsValidation": ["TWSE_TPEX_Quote", "MarketRegime", "InstitutionalChip"]
+  },
+  "nextSteps": [
+    "P29-B: NewsEvent / FinancialReport Real Source Acquisition Plan",
+    "P29-C: Backtest / Simulation Contract Paper Design",
+    "Future P30: formal PIT gate validation for TWSE_TPEX_Quote / MarketRegime / InstitutionalChip to move status → AVAILABLE_PIT_SAFE"
+  ],
+  "disclaimer": "Paper design. Registry v1 is not consumed by any production scoring path. Not investment advice."
+}
