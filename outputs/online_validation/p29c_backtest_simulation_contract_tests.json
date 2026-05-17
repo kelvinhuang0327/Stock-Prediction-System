@@ -1,0 +1,4 @@
+{"phase":"P29C","runs":[
+  {"command":"npx jest ...p29c_backtest_simulation_contract.test.ts","result":"PASS","testsPassed":23},
+  {"command":"npx jest src/lib/onlineValidation/__tests__","result":"PASS","testsPassed":3078,"suitesPassed":103}
+],"verdict":"ALL_P29C_TESTS_PASS"}

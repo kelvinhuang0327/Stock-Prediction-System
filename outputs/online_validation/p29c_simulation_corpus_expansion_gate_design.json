@@ -1,0 +1,24 @@
+{
+  "phase": "P29C", "part": "E - Simulation Corpus Expansion Gate Design",
+  "generatedAt": "2026-05-25T00:00:00Z", "paperDesignOnly": true,
+  "currentCorpusState": {
+    "simulation_snapshot_corpus.jsonl": {"lines": 60, "symbols": 2, "status": "BLOCKED", "coverageRatio": "~0.2333 (documented in roadmap)"}
+  },
+  "expansionBlockedUntil": [
+    "P26F4: MonthlyRevenue historical source imported AND post-import coverage preview PASS",
+    "PIT feature registry updated (all active scoring sources at AVAILABLE_NEEDS_VALIDATION or better)",
+    "Feature coverage threshold: >= target symbols × target asOfDates × target horizons",
+    "No HIGH_RISK_SOURCE_ABSENT source entering alphaScore",
+    "No outcome fields in scoring snapshot (leakage gate PASS)",
+    "Existing frozen corpus preserved (sha256 unchanged)",
+    "CTO expansion approval token provided"
+  ],
+  "expansionPolicy": {
+    "newEntriesLabeled": "paper-only / observability-only until validated",
+    "frozenCorpusSeparated": "Existing 60 sim-corpus-v0 entries must remain unchanged",
+    "newCorpusVersion": "sim-corpus-v1 (proposed)",
+    "duplicateKey": "corpusEntryKey must be unique across all versions"
+  },
+  "expansionIsNotOptimizer": "Expanding corpus does NOT mean running optimizer. Optimizer gate requires additional prerequisites (see PART G).",
+  "disclaimer": "Paper design only. Not investment advice."
+}

@@ -1,0 +1,46 @@
+{
+  "schemaName": "Backtest Output Schema Draft",
+  "schemaVersion": "p29c-backtest-output-v1",
+  "generatedAt": "2026-05-25T00:00:00Z",
+  "paperDesignOnly": true,
+  "sampleEntry": {
+    "schemaVersion": "p29c-backtest-output-v1",
+    "mode": "paper_only",
+    "generatedAt": "YYYY-MM-DDTHH:MM:SSZ",
+    "inputSnapshotRef": "p3active_scoring_historical_replay_corpus.jsonl#row_N",
+    "asOfDate": "YYYY-MM-DD",
+    "symbol": "NNNN",
+    "horizon": "5D",
+    "alphaScore": null,
+    "recommendationBucket": "",
+    "featureAvailabilitySnapshot": {
+      "StockQuote": "AVAILABLE_NEEDS_VALIDATION",
+      "MarketRegime": "AVAILABLE_NEEDS_VALIDATION",
+      "InstitutionalChip": "AVAILABLE_NEEDS_VALIDATION",
+      "MonthlyRevenue": "REPAIRED_BUT_SOURCE_GATED",
+      "FinancialReport": "HIGH_RISK_SOURCE_ABSENT",
+      "NewsEvent": "HIGH_RISK_SOURCE_ABSENT"
+    },
+    "outcome": {
+      "outcomeJoinDate": "YYYY-MM-DD",
+      "outcomePrice": null,
+      "returnPct": null,
+      "realizedReturnClass": "",
+      "holdingWindow": "5D"
+    },
+    "leakageControls": {
+      "featuresFrozenBeforeOutcomeJoin": true,
+      "outcomeExcludedFromScoringInput": true,
+      "pitRegistryGatePassed": false,
+      "noHighRiskSourceInAlphaScore": true
+    },
+    "disclaimer": "paper-only simulation output; not investment advice; no buy/sell recommendation"
+  },
+  "fieldConstraints": {
+    "mode": "Must be 'paper_only' in P29C",
+    "alphaScore": "From frozen corpus; NOT recomputed with outcome",
+    "outcome": "Joined only after featuresFrozenBeforeOutcomeJoin=true",
+    "leakageControls.pitRegistryGatePassed": "false until formal P30 audit"
+  },
+  "disclaimer": "Paper design only. Not investment advice."
+}
