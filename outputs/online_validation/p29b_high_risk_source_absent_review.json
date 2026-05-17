@@ -1,0 +1,75 @@
+{
+  "phase": "P29B",
+  "part": "B - HIGH_RISK_SOURCE_ABSENT Review",
+  "generatedAt": "2026-05-24T00:00:00Z",
+  "sourceRegistryRef": "p29a_pit_feature_availability_registry_v1.json",
+  "sources": [
+    {
+      "sourceName": "FinancialReport",
+      "currentStatus": "HIGH_RISK_SOURCE_ABSENT",
+      "currentlyEntersAlphaScore": false,
+      "currentlyEntersRendererOnly": false,
+      "whyHighRisk": [
+        "DB schema (prisma/schema.prisma FinancialReport model) has NO availabilityDate, filingDate, or releaseDate field",
+        "Without a PIT-safe gate field, any FinancialReport query would implicitly use all data up to query time (look-ahead contamination)",
+        "P26C identified this gap and drafted a paper-only availabilityDate contract v0",
+        "No production integration exists; data was manually imported with no date governance"
+      ],
+      "knownMissingFields": ["availabilityDate", "filingDate", "announcementDate"],
+      "pitRisk": "HIGH — using periodEndDate or fiscalQuarter as proxy for availability is incorrect; MOPS filing dates can be weeks or months after the reporting period ends",
+      "leakageRisk": "HIGH — a Q1 report (Jan-Mar period) is not filed until ~May 15; using the period end date Mar 31 as the asOf gate would leak the report into predictions made before May 15",
+      "sourceAcquisitionBlocker": "No systematic download from MOPS; no filingDate captured in DB schema",
+      "minimumEvidenceToUpgrade": [
+        "Add filingDate (or availabilityDate) column to FinancialReport Prisma schema",
+        "Backfill filingDate from MOPS for existing DB rows",
+        "Verify that filingDate <= asOfDate gate works for at least 2 quarters of historical data",
+        "Dry-run import with manifest attestation",
+        "Update P29A registry entry to SOURCE_PRESENT_AWAITING_VALIDATION",
+        "Explicit CTO approval token to upgrade to AVAILABLE_NEEDS_VALIDATION"
+      ],
+      "evidenceFiles": [
+        "prisma/schema.prisma (model FinancialReport — no date gate field)",
+        "outputs/online_validation/p26c_financial_report_availability_contract_v0.json",
+        "outputs/online_validation/p29a_pit_feature_availability_registry_v1.json"
+      ]
+    },
+    {
+      "sourceName": "NewsEvent",
+      "currentStatus": "HIGH_RISK_SOURCE_ABSENT",
+      "currentlyEntersAlphaScore": false,
+      "currentlyEntersRendererOnly": false,
+      "whyHighRisk": [
+        "DB schema has publishedAt but EventIngestionService shows it may default to ingest time when source doesn't provide a reliable timestamp",
+        "Mock events (sourceType='mock') are currently mixed with RSS events in the live ingestion path",
+        "No verificationStatus or sourceUrl field for audit trail",
+        "trustLevel field exists (official/mainstream/secondary/unknown) but not all RSS sources have verified publishedAt",
+        "P26B established the contract rule (publishedAt <= asOfDate, ingestedAt forbidden) but did not verify all current event rows comply"
+      ],
+      "knownMissingFields": ["verificationStatus", "sourceUrl (rawUrl exists but not indexed)", "officialAnnouncementId"],
+      "pitRisk": "HIGH — if publishedAt defaults to ingestedAt (system ingestion time), historical replay using asOfDate-gated queries would see events that were ingested after asOf but whose publishedAt was set to ingest time",
+      "leakageRisk": "MEDIUM-HIGH — post-announcement events (e.g., market reaction analysis, analyst reports) may have publishedAt close to ingest time rather than event time",
+      "sourceAcquisitionBlocker": "No separation of mock vs. verified-real events; publishedAt reliability not audited across all current DB rows",
+      "minimumEvidenceToUpgrade": [
+        "Audit all existing NewsEvent rows: how many have publishedAt != ingestedAt (within 60 seconds)?",
+        "Separate mock events from RSS events in DB (or add sourceType='mock' exclusion to PIT queries)",
+        "For official company announcements: use TWSE/MOPS announcement date as authoritative publishedAt",
+        "Dry-run import of manually curated event CSV with verified publishedAt",
+        "Update P29A registry entry to SOURCE_PRESENT_AWAITING_VALIDATION",
+        "Explicit CTO approval token to upgrade to AVAILABLE_NEEDS_VALIDATION"
+      ],
+      "evidenceFiles": [
+        "prisma/schema.prisma (model NewsEvent)",
+        "src/lib/events/EventIngestionService.ts",
+        "outputs/online_validation/p26b_event_news_pit_contract_v0.json",
+        "outputs/online_validation/p29a_pit_feature_availability_registry_v1.json"
+      ]
+    }
+  ],
+  "sharedFindings": {
+    "neither_enters_alpha_score": true,
+    "both_require_pit_gate_before_activation": true,
+    "both_blocked_without_source_manifest": true,
+    "upgrade_path_is_manual_not_automatic": true
+  },
+  "disclaimer": "Research analysis only. Not investment advice."
+}

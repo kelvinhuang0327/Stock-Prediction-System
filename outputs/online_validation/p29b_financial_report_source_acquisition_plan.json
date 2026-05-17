@@ -1,0 +1,177 @@
+{
+  "phase": "P29B",
+  "part": "C - FinancialReport Source Acquisition Plan",
+  "generatedAt": "2026-05-24T00:00:00Z",
+  "paperDesignOnly": true,
+  "noDBWrite": true,
+  "noScoringChange": true,
+  "sourceName": "FinancialReport",
+  "sourcePurpose": "Quarterly financial statements (EPS, net income, gross margin, operating margin) for Taiwan-listed stocks, available after MOPS filing date. Used to compute earnings trend and fundamental quality context.",
+  "possibleSourceTypes": [
+    {
+      "type": "MOPS_OFFICIAL_FILING",
+      "description": "公開資訊觀測站 (MOPS) financial statement downloads",
+      "url_pattern": "https://mops.twse.com.tw/mops/web/ajax_t164sb03",
+      "format": "HTML table or CSV export",
+      "filingDateAvailable": true,
+      "reliability": "HIGH — authoritative Taiwan source",
+      "recommended": true,
+      "notes": "Must capture filingDate (公告日期) from MOPS page header, NOT the report period end date"
+    },
+    {
+      "type": "MANUAL_STRUCTURED_CSV",
+      "description": "Operator manually constructs CSV from official MOPS disclosures",
+      "format": "CSV",
+      "filingDateAvailable": true,
+      "reliability": "HIGH if sourced from MOPS with filingDate captured",
+      "recommended": true,
+      "notes": "Preferred for initial acquisition; requires operator to record filingDate per row"
+    },
+    {
+      "type": "THIRD_PARTY_FINANCIAL_API",
+      "description": "Commercial APIs (e.g., TEJ, Fugle API) that provide structured financial data",
+      "format": "JSON / CSV",
+      "filingDateAvailable": "varies by provider",
+      "reliability": "MEDIUM — verify filingDate is MOPS filing date, not period end date",
+      "recommended": false,
+      "notes": "Not recommended for initial acquisition without filingDate provenance audit"
+    }
+  ],
+  "requiredFields": {
+    "mandatory": [
+      { "field": "symbol", "type": "string", "description": "Taiwan stock symbol (e.g., '2330')" },
+      { "field": "year", "type": "integer", "description": "Fiscal year (e.g., 2024)" },
+      { "field": "quarter", "type": "integer (1-4)", "description": "Fiscal quarter" },
+      { "field": "filingDate", "type": "string (YYYY-MM-DD)", "description": "MOPS public disclosure date — THE PIT gate field. NOT period end date." },
+      { "field": "eps", "type": "float", "description": "Earnings per share for the quarter" },
+      { "field": "netIncome", "type": "float (TWD thousands)", "description": "Net income for the quarter" },
+      { "field": "sourceName", "type": "string", "description": "Data source identifier (e.g., 'MOPS-manual-2026-05')" },
+      { "field": "sourceUrl", "type": "string", "description": "MOPS URL or reference to original disclosure page" }
+    ],
+    "optional": [
+      { "field": "grossMargin", "type": "float (ratio)", "description": "Gross profit / revenue" },
+      { "field": "operatingMargin", "type": "float (ratio)", "description": "Operating income / revenue" },
+      { "field": "revenue", "type": "float (TWD thousands)", "description": "Quarterly revenue (cross-check vs MonthlyRevenue)" },
+      { "field": "sourceChecksum", "type": "string (sha256)", "description": "Checksum of source file for audit trail" }
+    ],
+    "forbidden": [
+      { "field": "periodEndDate", "reason": "NOT a valid PIT gate — is the end of the reporting period, not the disclosure date" },
+      { "field": "outcomePrice", "reason": "Outcome leakage" },
+      { "field": "returnPct", "reason": "Outcome leakage" },
+      { "field": "realizedReturnClass", "reason": "Outcome leakage" },
+      { "field": "analystRevision", "reason": "Post-hoc data that may embed future information" }
+    ]
+  },
+  "pitSafeRule": {
+    "gateField": "filingDate",
+    "rule": "A FinancialReport row is PIT-available at asOfDate iff filingDate <= asOfDate",
+    "timezone": "filingDate is Taiwan business day (Asia/Taipei); compare date portion only",
+    "inferenceRule": "No inference of filingDate from periodEndDate is allowed. If filingDate is unavailable, the row MUST NOT be used.",
+    "disclosureCalendar": {
+      "Q1_report_deadline": "~May 15 of same year (2 months after Mar 31 quarter end)",
+      "Q2_report_deadline": "~Aug 14 of same year (2 months after Jun 30 quarter end)",
+      "Q3_report_deadline": "~Nov 14 of same year (2 months after Sep 30 quarter end)",
+      "Q4_annual_report_deadline": "~Mar 31 of following year (3 months after Dec 31 year end)",
+      "note": "Actual filingDate may be earlier than deadline. Capture MOPS 公告日期 per row."
+    }
+  },
+  "dropZoneProposal": {
+    "path": "data/manual/financial-report/p29b-dropzone/",
+    "createIfNotExists": true,
+    "subfolders": [
+      "data/manual/financial-report/p29b-dropzone/source-files/",
+      "data/manual/financial-report/p29b-dropzone/manifest/"
+    ]
+  },
+  "expectedFilenamePattern": "financial_report_<YYYY>_Q<N>_<sourceLabel>.csv",
+  "expectedFilenameExamples": [
+    "financial_report_2024_Q1_mops_manual.csv",
+    "financial_report_2024_Q2_mops_manual.csv",
+    "financial_report_2024_Q3_mops_manual.csv",
+    "financial_report_2024_Q4_mops_manual.csv"
+  ],
+  "manifestFields": {
+    "required": [
+      "sourceLabel",
+      "fiscalYear",
+      "fiscalQuarter",
+      "rowCount",
+      "symbolCount",
+      "filingDateRangeMin",
+      "filingDateRangeMax",
+      "sourceName",
+      "sourceUrl",
+      "preparedBy",
+      "preparedAt",
+      "sha256"
+    ],
+    "attestation": {
+      "realOfficialSource": true,
+      "notSyntheticFixture": true,
+      "noOutcomeFields": true,
+      "filingDateCapturedFromMOPS": true,
+      "readyForDryRunOnly": true,
+      "approvalTokenNotIncluded": true
+    }
+  },
+  "validatorGates": [
+    "symbol field non-empty and matches known universe",
+    "year field is integer 2000-2035",
+    "quarter field is integer 1-4",
+    "filingDate field is valid YYYY-MM-DD string",
+    "filingDate is after period end date (Q1 end Mar 31 → filingDate >= Apr 01)",
+    "filingDate is within plausible disclosure window (Q1 → no later than Jul 31)",
+    "eps field is parseable float",
+    "netIncome field is parseable float",
+    "sourceName field non-empty",
+    "no outcomePrice / returnPct / realizedReturnClass field",
+    "no duplicate (symbol, year, quarter) entries",
+    "row count matches manifest rowCount"
+  ],
+  "statusTransitionCriteria": [
+    {
+      "from": "HIGH_RISK_SOURCE_ABSENT",
+      "to": "SOURCE_PRESENT_AWAITING_VALIDATION",
+      "conditions": ["source CSV files present in drop-zone", "manifest filled with attestations", "no missing required fields"]
+    },
+    {
+      "from": "SOURCE_PRESENT_AWAITING_VALIDATION",
+      "to": "AVAILABLE_NEEDS_VALIDATION",
+      "conditions": [
+        "validator dry-run PASS (all validator gates pass)",
+        "filingDate range covers target asOfDate period",
+        "zero outcome fields detected",
+        "CTO approval token provided"
+      ],
+      "approvalToken": "P29B_APPROVE_FINANCIAL_REPORT_DRY_RUN_ONLY"
+    },
+    {
+      "from": "AVAILABLE_NEEDS_VALIDATION",
+      "to": "AVAILABLE_PIT_SAFE",
+      "conditions": [
+        "Formal PIT gate audit (P30)",
+        "Back-test coverage analysis shows no leakage",
+        "scoring invariance confirmed",
+        "Separate CTO approval token"
+      ]
+    }
+  ],
+  "forbiddenBehavior": [
+    "Must NOT enter alphaScore until sourceStatus = AVAILABLE_PIT_SAFE",
+    "Must NOT use periodEndDate as PIT gate under any circumstances",
+    "Must NOT import without explicit approval token",
+    "Must NOT infer filingDate from period end date or quarter label",
+    "Must NOT add outcome fields to the source CSV",
+    "Must NOT use restated financials without capturing the restatement date"
+  ],
+  "schemaChangesRequired": {
+    "prismaModel": "FinancialReport",
+    "fieldsToAdd": [
+      { "field": "filingDate", "type": "DateTime?", "note": "MOPS public disclosure date — PIT gate field" },
+      { "field": "sourceName", "type": "String?", "note": "Source identifier for audit trail" },
+      { "field": "sourceUrl", "type": "String?", "note": "MOPS URL or reference" }
+    ],
+    "note": "Schema changes are paper-design only in P29B. Actual migration requires separate P29C-DB or P30 phase with CTO approval."
+  },
+  "disclaimer": "Paper design only. Not for investment use. No performance claims."
+}

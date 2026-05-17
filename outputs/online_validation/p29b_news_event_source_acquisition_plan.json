@@ -1,0 +1,293 @@
+{
+  "phase": "P29B",
+  "part": "D - NewsEvent Source Acquisition Plan",
+  "generatedAt": "2026-05-24T00:00:00Z",
+  "paperDesignOnly": true,
+  "noDBWrite": true,
+  "noScoringChange": true,
+  "sourceName": "NewsEvent",
+  "sourcePurpose": "Verified company-related events with reliable publishedAt timestamps, enabling PIT-safe event context in prediction snapshots. Priority: official TWSE/MOPS announcements with authoritative timestamps.",
+  "possibleSourceTypes": [
+    {
+      "type": "TWSE_MOPS_OFFICIAL_ANNOUNCEMENTS",
+      "description": "公開資訊觀測站 (MOPS) official company announcements — 重大訊息",
+      "url_pattern": "https://mops.twse.com.tw/mops/web/t57sb01_q1",
+      "publishedAtField": "announcementDate (公告日期時間) — highly reliable, system-timestamped by MOPS",
+      "reliability": "HIGH — official TWSE/MOPS timestamp, not broker or media lag",
+      "recommended": true,
+      "trustLevel": "official",
+      "notes": "Best PIT-safe source. Announcement time is recorded to-the-minute by MOPS. Covers: earnings, dividends, capital changes, material events."
+    },
+    {
+      "type": "TWSE_NEWS_RELEASE",
+      "description": "TWSE official news releases",
+      "url_pattern": "https://www.twse.com.tw/en/news/",
+      "publishedAtField": "releaseDate (公告日期) — reliable",
+      "reliability": "HIGH",
+      "recommended": true,
+      "trustLevel": "official",
+      "notes": "Market-wide announcements, trading halts, exchange-level events"
+    },
+    {
+      "type": "MANUAL_CURATED_EVENT_CSV",
+      "description": "Operator manually constructs verified event CSV from MOPS announcements",
+      "format": "CSV",
+      "publishedAtField": "publishedAt — must be captured from original MOPS announcement, NOT from media re-publication time",
+      "reliability": "HIGH if sourced from MOPS with verified timestamp",
+      "recommended": true,
+      "notes": "Preferred for initial phase; operator records MOPS announcement date/time per event"
+    },
+    {
+      "type": "RSS_CNYES_OR_MEDIA",
+      "description": "Existing RSS/Cnyes news events in current DB",
+      "publishedAtField": "publishedAt — UNRELIABLE for some sources; may default to ingest time",
+      "reliability": "LOW-MEDIUM — publishedAt reliability not audited; mock events mixed in",
+      "recommended": false,
+      "notes": "Not recommended for PIT-safe corpus until publishedAt audit passes. Can be used as supplementary after audit."
+    }
+  ],
+  "requiredFields": {
+    "mandatory": [
+      {
+        "field": "eventId",
+        "type": "string",
+        "description": "Unique identifier (MOPS announcement ID preferred)"
+      },
+      {
+        "field": "symbol",
+        "type": "string",
+        "description": "Taiwan stock symbol; empty string for market-wide events"
+      },
+      {
+        "field": "publishedAt",
+        "type": "string (ISO-8601 UTC)",
+        "description": "THE PIT gate field. Must be MOPS announcement datetime, NOT media re-publication time."
+      },
+      {
+        "field": "eventType",
+        "type": "string (enum)",
+        "description": "See eventTaxonomy below"
+      },
+      {
+        "field": "eventTitle",
+        "type": "string",
+        "description": "Official announcement title or event headline"
+      },
+      {
+        "field": "sourceName",
+        "type": "string",
+        "description": "Source identifier (e.g., 'MOPS-official', 'TWSE-announcement')"
+      },
+      {
+        "field": "sourceUrl",
+        "type": "string",
+        "description": "URL to original MOPS announcement or official source"
+      },
+      {
+        "field": "verificationStatus",
+        "type": "string (enum: VERIFIED_OFFICIAL | UNVERIFIED)",
+        "description": "Whether publishedAt is from an authoritative official source"
+      }
+    ],
+    "optional": [
+      {
+        "field": "eventSummary",
+        "type": "string",
+        "description": "Brief description of the event content"
+      },
+      {
+        "field": "confidence",
+        "type": "float (0-1)",
+        "description": "Confidence in publishedAt accuracy"
+      },
+      {
+        "field": "mopsAnnouncementId",
+        "type": "string",
+        "description": "MOPS 公告編號 for deduplication"
+      },
+      {
+        "field": "relatedSymbols",
+        "type": "string[] (JSON)",
+        "description": "Additional symbols affected by the event"
+      },
+      {
+        "field": "sourceChecksum",
+        "type": "string (sha256)",
+        "description": "Checksum of source file"
+      }
+    ],
+    "forbidden": [
+      {
+        "field": "marketReaction",
+        "reason": "Post-hoc outcome that embeds future price movement"
+      },
+      {
+        "field": "postAnnouncementReturn",
+        "reason": "Outcome leakage"
+      },
+      {
+        "field": "analystResponse",
+        "reason": "Post-hoc data often published days after announcement"
+      },
+      {
+        "field": "ingestedAt",
+        "reason": "NOT a PIT gate; reflects system ingestion time, not event time"
+      },
+      {
+        "field": "outcomePrice",
+        "reason": "Outcome leakage"
+      },
+      {
+        "field": "returnPct",
+        "reason": "Outcome leakage"
+      },
+      {
+        "field": "realizedReturnClass",
+        "reason": "Outcome leakage"
+      }
+    ]
+  },
+  "eventTaxonomy": {
+    "enumValues": [
+      "EARNINGS_ANNOUNCEMENT",
+      "DIVIDEND_ANNOUNCEMENT",
+      "CAPITAL_REDUCTION",
+      "CAPITAL_INCREASE",
+      "MATERIAL_INFORMATION",
+      "REGULATORY_PENALTY",
+      "LITIGATION_EVENT",
+      "MANAGEMENT_CHANGE",
+      "SUPPLY_CHAIN_EVENT",
+      "CUSTOMER_CONTRACT",
+      "PRODUCT_LAUNCH",
+      "STRATEGIC_INVESTMENT",
+      "SHARE_BUYBACK",
+      "TRADING_HALT",
+      "MARKET_WIDE_EVENT",
+      "OTHER_OFFICIAL"
+    ],
+    "notes": "Taxonomy is additive. Future phases may add sub-types. No sentiment labels (bullish/bearish) in taxonomy — sentiment must not be baked into event records.",
+    "forbidden": [
+      "BULLISH_EVENT",
+      "BEARISH_EVENT",
+      "BUY_SIGNAL",
+      "SELL_SIGNAL",
+      "any_outcome_derived_label"
+    ]
+  },
+  "pitSafeRule": {
+    "gateField": "publishedAt",
+    "rule": "A NewsEvent row is PIT-available at asOfDate iff publishedAt <= asOfDate (Asia/Taipei end-of-day UTC+8) ingestedAt is NEVER a valid PIT gate.",
+    "timezone": "publishedAt is stored in UTC ISO-8601; compare with asOfDate end-of-day = 23:59:59.999 Asia/Taipei = next day 15:59:59.999 UTC",
+    "forbiddenGateFields": [
+      "ingestedAt",
+      "createdAt",
+      "updatedAt"
+    ],
+    "mockEventRule": "Mock events (sourceType='mock', verificationStatus!='VERIFIED_OFFICIAL') must be excluded from PIT-safe corpus queries"
+  },
+  "existingDBAuditRequired": {
+    "queries": [
+      "SELECT COUNT(*) FROM NewsEvent WHERE ABS(JULIANDAY(publishedAt) - JULIANDAY(ingestedAt)) < 0.001 -- same-second = ingest default",
+      "SELECT COUNT(*) FROM NewsEvent WHERE source LIKE '%mock%' OR source LIKE '%Mock%'",
+      "SELECT source, COUNT(*) FROM NewsEvent GROUP BY source ORDER BY COUNT(*) DESC -- source distribution"
+    ],
+    "expectedFindings": "Some fraction of rows likely have publishedAt ≈ ingestedAt (unreliable). These rows must be excluded from PIT-safe queries until re-audited.",
+    "auditOutcome": "Only rows with VERIFIED_OFFICIAL verificationStatus or publishedAt significantly before ingestedAt (>60s gap) should be used"
+  },
+  "dropZoneProposal": {
+    "path": "data/manual/news-event/p29b-dropzone/",
+    "createIfNotExists": true,
+    "subfolders": [
+      "data/manual/news-event/p29b-dropzone/source-files/",
+      "data/manual/news-event/p29b-dropzone/manifest/"
+    ]
+  },
+  "expectedFilenamePattern": "news_events_<YYYY>_<MM>_<sourceLabel>.csv",
+  "expectedFilenameExamples": [
+    "news_events_2025_09_mops_official.csv",
+    "news_events_2025_10_mops_official.csv",
+    "news_events_2025_12_twse_announcements.csv"
+  ],
+  "manifestFields": {
+    "required": [
+      "sourceLabel",
+      "periodStart",
+      "periodEnd",
+      "rowCount",
+      "symbolCount",
+      "eventTypeDistribution",
+      "verifiedOfficialCount",
+      "sourceName",
+      "preparedBy",
+      "preparedAt",
+      "sha256"
+    ],
+    "attestation": {
+      "realOfficialSource": true,
+      "publishedAtFromMOPSOrTWSE": true,
+      "noMockEventsIncluded": true,
+      "noOutcomeFields": true,
+      "noSentimentLabels": true,
+      "readyForDryRunOnly": true,
+      "approvalTokenNotIncluded": true
+    }
+  },
+  "validatorGates": [
+    "eventId field non-empty",
+    "publishedAt field is valid ISO-8601 datetime",
+    "publishedAt is not in the future relative to preparedAt",
+    "eventType is a valid enum value from taxonomy",
+    "verificationStatus is VERIFIED_OFFICIAL or UNVERIFIED (no other values)",
+    "sourceName field non-empty",
+    "sourceUrl field non-empty for VERIFIED_OFFICIAL rows",
+    "no ingestedAt field present (not a PIT gate and must not be imported as such)",
+    "no outcomePrice / returnPct / realizedReturnClass field",
+    "no sentiment labels (BULLISH_EVENT, BEARISH_EVENT, BUY_SIGNAL, SELL_SIGNAL)",
+    "row count matches manifest rowCount",
+    "no duplicate eventId entries"
+  ],
+  "statusTransitionCriteria": [
+    {
+      "from": "HIGH_RISK_SOURCE_ABSENT",
+      "to": "SOURCE_PRESENT_AWAITING_VALIDATION",
+      "conditions": [
+        "source CSV files present in drop-zone",
+        "manifest filled with attestations",
+        "verificationStatus field present on all rows"
+      ]
+    },
+    {
+      "from": "SOURCE_PRESENT_AWAITING_VALIDATION",
+      "to": "AVAILABLE_NEEDS_VALIDATION",
+      "conditions": [
+        "validator dry-run PASS",
+        "publishedAt != ingestedAt for >95% of VERIFIED_OFFICIAL rows",
+        "zero outcome fields detected",
+        "zero sentiment labels detected",
+        "CTO approval token provided"
+      ],
+      "approvalToken": "P29B_APPROVE_NEWS_EVENT_DRY_RUN_ONLY"
+    },
+    {
+      "from": "AVAILABLE_NEEDS_VALIDATION",
+      "to": "AVAILABLE_PIT_SAFE",
+      "conditions": [
+        "Formal PIT gate audit (P30)",
+        "Historical replay shows no leakage in replay corpus",
+        "scoring invariance confirmed",
+        "Separate CTO approval token"
+      ]
+    }
+  ],
+  "forbiddenBehavior": [
+    "Must NOT enter alphaScore until sourceStatus = AVAILABLE_PIT_SAFE",
+    "Must NOT use ingestedAt as PIT gate under any circumstances",
+    "Must NOT include mock events in PIT-safe source files",
+    "Must NOT include sentiment labels derived from market reaction",
+    "Must NOT import without explicit approval token",
+    "Must NOT use RSS/media re-publication time as publishedAt proxy",
+    "Must NOT include outcomePrice, returnPct, or realizedReturnClass fields in any source CSV"
+  ],
+  "disclaimer": "Paper design only. Not for investment use. No performance claims."
+}

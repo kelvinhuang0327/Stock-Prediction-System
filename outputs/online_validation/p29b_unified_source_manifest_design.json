@@ -1,0 +1,40 @@
+{
+  "phase": "P29B", "part": "E - Unified Source Manifest / Drop-zone Design",
+  "generatedAt": "2026-05-24T00:00:00Z", "paperDesignOnly": true,
+  "financialReportManifestTemplate": {
+    "schemaVersion": "p29b-financial-report-manifest-v1",
+    "sourceLabel": "<operator_provided_label>",
+    "fiscalYear": 0, "fiscalQuarter": 0,
+    "rowCount": 0, "symbolCount": 0,
+    "filingDateRangeMin": "YYYY-MM-DD", "filingDateRangeMax": "YYYY-MM-DD",
+    "sourceName": "MOPS-manual-<YYYY-MM>",
+    "sourceUrl": "https://mops.twse.com.tw/...",
+    "preparedBy": "<operator_id>", "preparedAt": "YYYY-MM-DDTHH:MM:SSZ", "sha256": "<file_sha256>",
+    "attestation": {
+      "realOfficialSource": true, "notSyntheticFixture": true, "noOutcomeFields": true,
+      "filingDateCapturedFromMOPS": true, "readyForDryRunOnly": true, "approvalTokenNotIncluded": true
+    }
+  },
+  "newsEventManifestTemplate": {
+    "schemaVersion": "p29b-news-event-manifest-v1",
+    "sourceLabel": "<operator_provided_label>",
+    "periodStart": "YYYY-MM-DD", "periodEnd": "YYYY-MM-DD",
+    "rowCount": 0, "symbolCount": 0,
+    "eventTypeDistribution": {},
+    "verifiedOfficialCount": 0, "unverifiedCount": 0,
+    "sourceName": "MOPS-official-<YYYY-MM>",
+    "preparedBy": "<operator_id>", "preparedAt": "YYYY-MM-DDTHH:MM:SSZ", "sha256": "<file_sha256>",
+    "attestation": {
+      "realOfficialSource": true, "publishedAtFromMOPSOrTWSE": true,
+      "noMockEventsIncluded": true, "noOutcomeFields": true,
+      "noSentimentLabels": true, "readyForDryRunOnly": true, "approvalTokenNotIncluded": true
+    }
+  },
+  "sharedRules": {
+    "approvalTokenPolicy": "Manifest must NOT include approval token. Token is provided separately by CTO in prompt.",
+    "checksumPolicy": "sha256 of each source file must match manifest sha256 field before validation proceeds.",
+    "dryRunDefault": "All imports are dry-run only until explicit approval token is provided.",
+    "noProductionImport": "Placing files in drop-zone does NOT trigger automatic import."
+  },
+  "disclaimer": "Paper design only. Not investment advice."
+}
