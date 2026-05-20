@@ -240,3 +240,58 @@ User directive: agents hand off tasks between sessions, and fragmented branch to
 ### Next Hard Gate
 
 Branch policy established. Next task should verify `main` HEAD and proceed from `branch_policy.md` onboarding checklist.
+
+---
+
+## Section 12 — P29I: Quote / Regime / Chip PIT Validation Audit (2026-05-20)
+
+**Classification:** `P29I_QUOTE_REGIME_CHIP_PIT_SAFE_CONFIRMED`  
+**Git Base:** `98b5dfb` (P29X)  
+**Disclaimer:** Structural audit only — no investment advice, no performance claims.
+
+### Objective
+
+Verify that the three sources currently in the alphaScore pipeline (Quote, Regime, Chip) have a PIT-safe trust foundation after mainline consolidation. If evidence insufficient, mark `NEEDS_MORE_EVIDENCE`.
+
+### Rules Defined
+
+15 PIT Safety Rules (PSR-01 to PSR-15) across DATE_INTEGRITY, FUTURE_FIELD_REJECTION, LABEL_CONTAMINATION, GATE_EFFECTIVENESS, ALPHA_SCORE_GOVERNANCE, PUBLICATION_LAG, SIMULATION_BOUNDARY categories.
+
+### Scan Results
+
+| Source | Result |
+|--------|--------|
+| Quote | `PASS_PIT_SAFE` — gate present, normalizePitDateToIso applied |
+| Regime | `PASS_PIT_SAFE` — ISO-to-ISO gate, asOf propagated |
+| Chip | `WARN_ASSUMPTION_REQUIRED` — gate present, C-F05 lag assumption documented |
+| MonthlyRevenue | `PASS_PIT_SAFE` — correctly excluded (STRUCTURAL_PLACEHOLDER_ONLY) |
+| FinancialReport | `PASS_PIT_SAFE` — correctly blocked (HIGH_RISK_SOURCE_ABSENT) |
+| NewsEvent | `PASS_PIT_SAFE` — correctly blocked (HIGH_RISK_SOURCE_ABSENT) |
+
+Overall: `ALL_PIT_SAFE`
+
+### Test Evidence
+
+- P29I suite: 33/33 PASS
+- P29F/P29E/P29G regression: 224/224 PASS
+- Full suite: 3348/3348 PASS (109 suites)
+
+### New Files
+
+- `src/lib/onlineValidation/p29i/PitSafetyRules.ts` — 15 PSR rules
+- `src/lib/onlineValidation/p29i/QuoteRegimeChipPitAuditScanner.ts` — scanner + canonical inputs
+- `src/lib/onlineValidation/__tests__/p29i_quote_regime_chip_pit_audit.test.ts` — 33 tests
+
+### Artifacts
+
+- `outputs/online_validation/p29i_preflight_mainline_status.json` / `.md`
+- `outputs/online_validation/p29i_source_path_inventory.json` / `.md`
+- `outputs/online_validation/p29i_pit_safety_rules.md`
+- `outputs/online_validation/p29i_pit_audit_scan.json` / `.md`
+- `outputs/online_validation/p29i_test_baseline.json` / `.md`
+- `outputs/online_validation/p29i_forbidden_claims_scan.json` / `.md`
+- `outputs/online_validation/p29i_final_report.md`
+
+### Next Hard Gate
+
+Before any source can `entersAlphaScore: true`, a data-activation audit is required. MonthlyRevenue, FinancialReport, NewsEvent each require independent PIT-safety audit before activation. C-F05 Chip lag must be validated in production before T+0 chip data used in same-day scoring.

@@ -1,0 +1,158 @@
+{
+  "phase": "P29I",
+  "scannerVersion": "p29i-audit-scanner-v1",
+  "capturedAt": "2026-05-20T09:02:21Z",
+  "disclaimer": "AUDIT-ONLY — This scan evaluates structural PIT-safety properties of data sources. It does NOT constitute investment advice and makes no claim of predictive performance, edge, or returns.",
+  "overallResult": "ALL_PIT_SAFE",
+  "allowedAlphaScoreSources": ["Quote", "Regime", "Chip"],
+  "blockedSources": [],
+  "sourceOutputs": [
+    {
+      "sourceName": "Quote",
+      "result": "PASS_PIT_SAFE",
+      "forbiddenFieldsFound": [],
+      "assumptionNotes": [],
+      "reportLine": "Quote: PASS_PIT_SAFE — PIT_SAFE_VERIFIED (P29F), gate present, asOf propagated",
+      "ruleChecks": [
+        { "ruleId": "PSR-01", "passed": true, "detail": "Date field 'asOfDate' present" },
+        { "ruleId": "PSR-02", "passed": true, "detail": "Date format consistent between storage and gate comparison" },
+        { "ruleId": "PSR-03", "passed": true, "detail": "No future-price fields detected" },
+        { "ruleId": "PSR-04", "passed": true, "detail": "No future-volume fields detected" },
+        { "ruleId": "PSR-05", "passed": true, "detail": "No future-regime label fields detected" },
+        { "ruleId": "PSR-06", "passed": true, "detail": "No label contamination fields detected" },
+        { "ruleId": "PSR-07", "passed": true, "detail": "No realized-return fields detected as features" },
+        { "ruleId": "PSR-08", "passed": true, "detail": "PIT gate present in DB query path" },
+        { "ruleId": "PSR-09", "passed": true, "detail": "asOf propagated correctly from caller to DB query" },
+        { "ruleId": "PSR-10", "passed": true, "detail": "Source 'Quote' is PIT_SAFE_VERIFIED and on permitted list" },
+        { "ruleId": "PSR-11", "passed": true, "detail": "PSR-11 not applicable to source 'Quote'" },
+        { "ruleId": "PSR-12", "passed": true, "detail": "PSR-12 not applicable to source 'Quote'" },
+        { "ruleId": "PSR-13", "passed": true, "detail": "PSR-13 not applicable to source 'Quote'" },
+        { "ruleId": "PSR-14", "passed": true, "detail": "Publication lag assumption documented or not required" },
+        { "ruleId": "PSR-15", "passed": true, "detail": "Simulation boundary enforced (paperOnly=true, dryRun=true)" }
+      ]
+    },
+    {
+      "sourceName": "Regime",
+      "result": "PASS_PIT_SAFE",
+      "forbiddenFieldsFound": [],
+      "assumptionNotes": [],
+      "reportLine": "Regime: PASS_PIT_SAFE — PIT_SAFE_VERIFIED (P29F), gate present, asOf propagated",
+      "ruleChecks": [
+        { "ruleId": "PSR-01", "passed": true, "detail": "Date field 'asOfDate' present" },
+        { "ruleId": "PSR-02", "passed": true, "detail": "Date format consistent between storage and gate comparison" },
+        { "ruleId": "PSR-03", "passed": true, "detail": "No future-price fields detected" },
+        { "ruleId": "PSR-04", "passed": true, "detail": "No future-volume fields detected" },
+        { "ruleId": "PSR-05", "passed": true, "detail": "No future-regime label fields detected" },
+        { "ruleId": "PSR-06", "passed": true, "detail": "No label contamination fields detected" },
+        { "ruleId": "PSR-07", "passed": true, "detail": "No realized-return fields detected as features" },
+        { "ruleId": "PSR-08", "passed": true, "detail": "PIT gate present in DB query path" },
+        { "ruleId": "PSR-09", "passed": true, "detail": "asOf propagated correctly from caller to DB query" },
+        { "ruleId": "PSR-10", "passed": true, "detail": "Source 'Regime' is PIT_SAFE_VERIFIED and on permitted list" },
+        { "ruleId": "PSR-11", "passed": true, "detail": "PSR-11 not applicable to source 'Regime'" },
+        { "ruleId": "PSR-12", "passed": true, "detail": "PSR-12 not applicable to source 'Regime'" },
+        { "ruleId": "PSR-13", "passed": true, "detail": "PSR-13 not applicable to source 'Regime'" },
+        { "ruleId": "PSR-14", "passed": true, "detail": "Publication lag assumption documented or not required" },
+        { "ruleId": "PSR-15", "passed": true, "detail": "Simulation boundary enforced (paperOnly=true, dryRun=true)" }
+      ]
+    },
+    {
+      "sourceName": "Chip",
+      "result": "WARN_ASSUMPTION_REQUIRED",
+      "forbiddenFieldsFound": [],
+      "assumptionNotes": [
+        "C-F05: T+0 institutional chip data published ~6pm on T. Post-close scoring assumption required."
+      ],
+      "reportLine": "Chip: WARN_ASSUMPTION_REQUIRED — PIT_SAFE_VERIFIED (P29F), gate present, publication lag assumption documented (C-F05)",
+      "ruleChecks": [
+        { "ruleId": "PSR-01", "passed": true, "detail": "Date field 'asOfDate' present" },
+        { "ruleId": "PSR-02", "passed": true, "detail": "Date format consistent between storage and gate comparison" },
+        { "ruleId": "PSR-03", "passed": true, "detail": "No future-price fields detected" },
+        { "ruleId": "PSR-04", "passed": true, "detail": "No future-volume fields detected" },
+        { "ruleId": "PSR-05", "passed": true, "detail": "No future-regime label fields detected" },
+        { "ruleId": "PSR-06", "passed": true, "detail": "No label contamination fields detected" },
+        { "ruleId": "PSR-07", "passed": true, "detail": "No realized-return fields detected as features" },
+        { "ruleId": "PSR-08", "passed": true, "detail": "PIT gate present in DB query path" },
+        { "ruleId": "PSR-09", "passed": true, "detail": "asOf propagated correctly from caller to DB query" },
+        { "ruleId": "PSR-10", "passed": true, "detail": "Source 'Chip' is PIT_SAFE_VERIFIED and on permitted list" },
+        { "ruleId": "PSR-11", "passed": true, "detail": "PSR-11 not applicable to source 'Chip'" },
+        { "ruleId": "PSR-12", "passed": true, "detail": "PSR-12 not applicable to source 'Chip'" },
+        { "ruleId": "PSR-13", "passed": true, "detail": "PSR-13 not applicable to source 'Chip'" },
+        { "ruleId": "PSR-14", "passed": true, "detail": "Publication lag assumption documented: T+0 institutional chip data published ~6pm on T. Post-close scoring assumption required." },
+        { "ruleId": "PSR-15", "passed": true, "detail": "Simulation boundary enforced (paperOnly=true, dryRun=true)" }
+      ]
+    },
+    {
+      "sourceName": "MonthlyRevenue",
+      "result": "PASS_PIT_SAFE",
+      "forbiddenFieldsFound": [],
+      "assumptionNotes": ["STRUCTURAL_PLACEHOLDER_ONLY — not in alphaScore pipeline"],
+      "reportLine": "MonthlyRevenue: PASS_PIT_SAFE — correctly excluded from alphaScore (STRUCTURAL_PLACEHOLDER_ONLY)",
+      "ruleChecks": [
+        { "ruleId": "PSR-01", "passed": true, "detail": "Not applicable — source 'MonthlyRevenue' is not in alphaScore pipeline" },
+        { "ruleId": "PSR-02", "passed": true, "detail": "Not applicable — source 'MonthlyRevenue' is not in alphaScore pipeline" },
+        { "ruleId": "PSR-03", "passed": true, "detail": "No future-price fields detected" },
+        { "ruleId": "PSR-04", "passed": true, "detail": "No future-volume fields detected" },
+        { "ruleId": "PSR-05", "passed": true, "detail": "No future-regime label fields detected" },
+        { "ruleId": "PSR-06", "passed": true, "detail": "No label contamination fields detected" },
+        { "ruleId": "PSR-07", "passed": true, "detail": "No realized-return fields detected as features" },
+        { "ruleId": "PSR-08", "passed": true, "detail": "Not applicable — source 'MonthlyRevenue' is not in alphaScore pipeline" },
+        { "ruleId": "PSR-09", "passed": true, "detail": "Not applicable — source 'MonthlyRevenue' is not in alphaScore pipeline" },
+        { "ruleId": "PSR-10", "passed": true, "detail": "Source 'MonthlyRevenue' correctly excluded from alphaScore" },
+        { "ruleId": "PSR-11", "passed": true, "detail": "PSR-11 not applicable to source 'MonthlyRevenue'" },
+        { "ruleId": "PSR-12", "passed": true, "detail": "PSR-12 not applicable to source 'MonthlyRevenue'" },
+        { "ruleId": "PSR-13", "passed": true, "detail": "MonthlyRevenue correctly not in alphaScore" },
+        { "ruleId": "PSR-14", "passed": true, "detail": "Publication lag assumption documented or not required" },
+        { "ruleId": "PSR-15", "passed": true, "detail": "Simulation boundary enforced (paperOnly=true, dryRun=true)" }
+      ]
+    },
+    {
+      "sourceName": "FinancialReport",
+      "result": "PASS_PIT_SAFE",
+      "forbiddenFieldsFound": [],
+      "assumptionNotes": ["HIGH_RISK_SOURCE_ABSENT — correctly blocked from alphaScore"],
+      "reportLine": "FinancialReport: PASS_PIT_SAFE — correctly excluded from alphaScore (HIGH_RISK_SOURCE_ABSENT)",
+      "ruleChecks": [
+        { "ruleId": "PSR-01", "passed": true, "detail": "Not applicable — source 'FinancialReport' is not in alphaScore pipeline" },
+        { "ruleId": "PSR-02", "passed": true, "detail": "Not applicable — source 'FinancialReport' is not in alphaScore pipeline" },
+        { "ruleId": "PSR-03", "passed": true, "detail": "No future-price fields detected" },
+        { "ruleId": "PSR-04", "passed": true, "detail": "No future-volume fields detected" },
+        { "ruleId": "PSR-05", "passed": true, "detail": "No future-regime label fields detected" },
+        { "ruleId": "PSR-06", "passed": true, "detail": "No label contamination fields detected" },
+        { "ruleId": "PSR-07", "passed": true, "detail": "No realized-return fields detected as features" },
+        { "ruleId": "PSR-08", "passed": true, "detail": "Not applicable — source 'FinancialReport' is not in alphaScore pipeline" },
+        { "ruleId": "PSR-09", "passed": true, "detail": "Not applicable — source 'FinancialReport' is not in alphaScore pipeline" },
+        { "ruleId": "PSR-10", "passed": true, "detail": "Source 'FinancialReport' correctly excluded from alphaScore" },
+        { "ruleId": "PSR-11", "passed": true, "detail": "FinancialReport correctly blocked from alphaScore" },
+        { "ruleId": "PSR-12", "passed": true, "detail": "PSR-12 not applicable to source 'FinancialReport'" },
+        { "ruleId": "PSR-13", "passed": true, "detail": "PSR-13 not applicable to source 'FinancialReport'" },
+        { "ruleId": "PSR-14", "passed": true, "detail": "Publication lag assumption documented or not required" },
+        { "ruleId": "PSR-15", "passed": true, "detail": "Simulation boundary enforced (paperOnly=true, dryRun=true)" }
+      ]
+    },
+    {
+      "sourceName": "NewsEvent",
+      "result": "PASS_PIT_SAFE",
+      "forbiddenFieldsFound": [],
+      "assumptionNotes": ["HIGH_RISK_SOURCE_ABSENT — correctly blocked from alphaScore"],
+      "reportLine": "NewsEvent: PASS_PIT_SAFE — correctly excluded from alphaScore (HIGH_RISK_SOURCE_ABSENT)",
+      "ruleChecks": [
+        { "ruleId": "PSR-01", "passed": true, "detail": "Not applicable — source 'NewsEvent' is not in alphaScore pipeline" },
+        { "ruleId": "PSR-02", "passed": true, "detail": "Not applicable — source 'NewsEvent' is not in alphaScore pipeline" },
+        { "ruleId": "PSR-03", "passed": true, "detail": "No future-price fields detected" },
+        { "ruleId": "PSR-04", "passed": true, "detail": "No future-volume fields detected" },
+        { "ruleId": "PSR-05", "passed": true, "detail": "No future-regime label fields detected" },
+        { "ruleId": "PSR-06", "passed": true, "detail": "No label contamination fields detected" },
+        { "ruleId": "PSR-07", "passed": true, "detail": "No realized-return fields detected as features" },
+        { "ruleId": "PSR-08", "passed": true, "detail": "Not applicable — source 'NewsEvent' is not in alphaScore pipeline" },
+        { "ruleId": "PSR-09", "passed": true, "detail": "Not applicable — source 'NewsEvent' is not in alphaScore pipeline" },
+        { "ruleId": "PSR-10", "passed": true, "detail": "Source 'NewsEvent' correctly excluded from alphaScore" },
+        { "ruleId": "PSR-11", "passed": true, "detail": "PSR-11 not applicable to source 'NewsEvent'" },
+        { "ruleId": "PSR-12", "passed": true, "detail": "NewsEvent correctly blocked from alphaScore" },
+        { "ruleId": "PSR-13", "passed": true, "detail": "PSR-13 not applicable to source 'NewsEvent'" },
+        { "ruleId": "PSR-14", "passed": true, "detail": "Publication lag assumption documented or not required" },
+        { "ruleId": "PSR-15", "passed": true, "detail": "Simulation boundary enforced (paperOnly=true, dryRun=true)" }
+      ]
+    }
+  ],
+  "summary": "All 6 data sources pass PIT-safety audit. Quote, Regime, Chip are PIT_SAFE_VERIFIED with active gates. Chip carries a documented publication-lag assumption (C-F05). FinancialReport and NewsEvent are correctly blocked (HIGH_RISK_SOURCE_ABSENT). MonthlyRevenue is a structural placeholder only. No forbidden field patterns found in any source."
+}

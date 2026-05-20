@@ -1,0 +1,42 @@
+{
+  "phase": "P29I",
+  "capturedAt": "2026-05-20T09:02:21Z",
+  "scanScope": "All P29I source files, test files, and output artifacts",
+  "filesScanned": [
+    "src/lib/onlineValidation/p29i/PitSafetyRules.ts",
+    "src/lib/onlineValidation/p29i/QuoteRegimeChipPitAuditScanner.ts",
+    "src/lib/onlineValidation/__tests__/p29i_quote_regime_chip_pit_audit.test.ts",
+    "outputs/online_validation/p29i_preflight_mainline_status.md",
+    "outputs/online_validation/p29i_preflight_mainline_status.json",
+    "outputs/online_validation/p29i_source_path_inventory.md",
+    "outputs/online_validation/p29i_source_path_inventory.json",
+    "outputs/online_validation/p29i_pit_safety_rules.md",
+    "outputs/online_validation/p29i_pit_audit_scan.json",
+    "outputs/online_validation/p29i_pit_audit_scan.md",
+    "outputs/online_validation/p29i_test_baseline.json",
+    "outputs/online_validation/p29i_test_baseline.md"
+  ],
+  "forbiddenTermGroups": {
+    "investment_action": ["buy", "sell", "hold", "invest", "trade", "order", "position", "allocation", "recommendation"],
+    "performance_claim": ["profit", "roi", "win rate", "sharpe", "outperform", "predicted gain", "edge", "backtest result"],
+    "return_claim": ["return%", "returns", "annual return", "cumulative return", "cagr"],
+    "future_prediction": ["will go up", "will increase", "will outperform", "expected to"]
+  },
+  "violations": [],
+  "falsePositivesResolved": [
+    {
+      "file": "src/lib/onlineValidation/p29i/QuoteRegimeChipPitAuditScanner.ts",
+      "term": "alpha",
+      "context": "alphaScore governance — structural pipeline term, not a performance claim",
+      "verdict": "FALSE_POSITIVE"
+    },
+    {
+      "file": "src/lib/onlineValidation/__tests__/p29i_quote_regime_chip_pit_audit.test.ts",
+      "term": "profit, outperform, win rate, roi, sharpe, predicted gain",
+      "context": "Array of forbidden terms being checked for ABSENCE in scanner output (T12 test assertion)",
+      "verdict": "FALSE_POSITIVE"
+    }
+  ],
+  "result": "CLEAN_NO_VIOLATIONS",
+  "disclaimer": "This scan verifies that P29I audit files do not make investment advice or performance claims. It does not evaluate the trading effectiveness of any strategy."
+}

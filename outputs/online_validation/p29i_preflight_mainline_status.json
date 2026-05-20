@@ -1,0 +1,43 @@
+{
+  "phase": "P29I",
+  "capturedAt": "2026-05-20T00:00:00.000Z",
+  "gitHead": "98b5dfbc3da798cba8d06cc42e1fc90c47c9d615",
+  "currentBranch": "main",
+  "branchCheck": "PASS_ON_MAIN",
+  "lastCommits": [
+    "98b5dfb P29X: Consolidate mainline and archive merged branches",
+    "676266d P29G: Paper Simulation Dry-run Runner",
+    "53cbdd2 P29H: Re-implement P29E paper simulation scaffold on main HEAD",
+    "1c5a270 P29F-Repair: Fix Quote Chip PIT date normalization",
+    "0165d79 P29F: Audit Quote Regime Chip PIT validation"
+  ],
+  "localBranches": [
+    "main (ACTIVE)",
+    "merged/20260520/claude-frosty-borg-e85827",
+    "merged/20260520/claude-frosty-visvesvaraya-ff0e3f",
+    "merged/20260520/claude-loving-mirzakhani-b7a453",
+    "merged/20260520/claude-objective-kalam-b00477",
+    "merged/20260520/claude-optimistic-spence-419897",
+    "merged/20260520/claude-quirky-black-eb3d86",
+    "merged/20260520/claude-stupefied-cray-62e312"
+  ],
+  "runtimeDirtyFiles": [
+    "prisma/dev.db",
+    "prisma/dev.db-shm",
+    "prisma/dev.db-wal",
+    "runtime/agent_orchestrator/llm_usage.jsonl",
+    "runtime/agent_orchestrator/pids/backend.pid",
+    "runtime/training_reports/tw_weekly_deep_research.json",
+    "logs/launchd/*"
+  ],
+  "runtimeDirtyClassification": "PRE_EXISTING_RUNTIME_SIDE_EFFECTS_NOT_STAGED",
+  "preconditions": {
+    "onMain": true,
+    "p29xCommitted": true,
+    "p29gCommitted": true,
+    "p29fRepairCommitted": true,
+    "noClaude_branches": true,
+    "noActiveWorktrees": true
+  },
+  "preflight": "PASS"
+}
