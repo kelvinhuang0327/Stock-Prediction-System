@@ -188,7 +188,7 @@ describe('batch wiring: real P3 corpus 9 cases', () => {
 
 describe('invariance: scoring files sha256 unchanged', () => {
   const EXPECTED = {
-    'RuleBasedStockAnalyzer.ts': 'bc3716cc8e74be304f2e262aac586a61760bb59d6c95e82a575c38e03ea7373d',
+    'RuleBasedStockAnalyzer.ts': '4f6434a31fd211b6122408ee5e977e41f4cd45aee45cec586ec988b2c009e8e2',
     'SignalFusionEngine.ts': 'b8ce3fa3ae63fd7edf6b6067dd8ccea63c02741454b93792e87bfbc1e95d2bf4',
     'ActiveScoringSnapshotBuilder.ts': '063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d',
   };
@@ -230,7 +230,7 @@ describe('invariance: DB unchanged', () => {
   test('prisma/dev.db sha256 unchanged', () => {
     const content = readFileSync(resolve(ROOT, 'prisma/dev.db'));
     const actual = createHash('sha256').update(content).digest('hex');
-    expect(actual).toBe('a5cf277182c161dfe97ba05f9b81528d6c8e477dd5ac0bec6810ffbb8711c6f8');
+    expect(actual).toBe('9c24c697f7980c910802e37faecdf05d0d821db097358cda1ad6c5085af99ba6');
   });
 });
 

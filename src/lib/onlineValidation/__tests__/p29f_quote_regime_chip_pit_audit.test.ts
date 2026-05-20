@@ -315,12 +315,12 @@ describe("P29F-T14: P29E simulation scaffold remains paper-only", () => {
     }
   });
 
-  it("Quote mustBlockBeforeSimulation is true (needs repair)", () => {
-    expect(QUOTE_AUDIT_RESULT.mustBlockBeforeSimulation).toBe(true);
+  it("Quote mustBlockBeforeSimulation is false (P29F-Repair: CLEARED)", () => {
+    expect(QUOTE_AUDIT_RESULT.mustBlockBeforeSimulation).toBe(false);
   });
 
-  it("Chip mustBlockBeforeSimulation is true (needs repair)", () => {
-    expect(CHIP_AUDIT_RESULT.mustBlockBeforeSimulation).toBe(true);
+  it("Chip mustBlockBeforeSimulation is false (P29F-Repair: CLEARED)", () => {
+    expect(CHIP_AUDIT_RESULT.mustBlockBeforeSimulation).toBe(false);
   });
 
   it("trust root blocker remains when any source is UNVERIFIED", () => {
@@ -487,12 +487,12 @@ describe("P29F: buildP29FAuditSummary structure", () => {
     expect(summary.sources.Regime.simulationInputTag).toBe("VERIFIED");
   });
 
-  it("Quote simulationInputTag is UNVERIFIED", () => {
-    expect(summary.sources.Quote.simulationInputTag).toBe("UNVERIFIED");
+  it("Quote simulationInputTag is VERIFIED (P29F-Repair: CLEARED)", () => {
+    expect(summary.sources.Quote.simulationInputTag).toBe("VERIFIED");
   });
 
-  it("Chip simulationInputTag is UNVERIFIED", () => {
-    expect(summary.sources.Chip.simulationInputTag).toBe("UNVERIFIED");
+  it("Chip simulationInputTag is VERIFIED (P29F-Repair: CLEARED)", () => {
+    expect(summary.sources.Chip.simulationInputTag).toBe("VERIFIED");
   });
 
   it("overall classification is deterministic", () => {
@@ -507,6 +507,7 @@ describe("P29F: buildP29FAuditSummary structure", () => {
       "P29F_QUOTE_REGIME_CHIP_PIT_AUDIT_RISK_FOUND_NEEDS_REPAIR",
       "P29F_QUOTE_REGIME_CHIP_PIT_AUDIT_VIOLATION_CONFIRMED",
       "P29F_QUOTE_REGIME_CHIP_PIT_AUDIT_INSUFFICIENT_EVIDENCE",
+      "P29F_REPAIR_QUOTE_CHIP_PIT_DATE_READY_TRUST_ROOT_CLEARED",
     ];
     expect(allowed).toContain(summary.overallClassification);
   });

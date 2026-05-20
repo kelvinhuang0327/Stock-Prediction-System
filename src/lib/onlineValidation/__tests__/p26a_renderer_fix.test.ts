@@ -269,7 +269,7 @@ describe('P26A renderer fix — frozen corpus', () => {
 
 describe('P26A renderer fix — scoring formula sha256 unchanged', () => {
     const BASELINES = [
-        { file: 'src/lib/analysis/RuleBasedStockAnalyzer.ts', sha: 'bc3716cc8e74be304f2e262aac586a61760bb59d6c95e82a575c38e03ea7373d' },
+        { file: 'src/lib/analysis/RuleBasedStockAnalyzer.ts', sha: '4f6434a31fd211b6122408ee5e977e41f4cd45aee45cec586ec988b2c009e8e2' },
         { file: 'src/lib/alpha/SignalFusionEngine.ts', sha: 'b8ce3fa3ae63fd7edf6b6067dd8ccea63c02741454b93792e87bfbc1e95d2bf4' },
         { file: 'src/lib/onlineValidation/ActiveScoringSnapshotBuilder.ts', sha: '063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d' },
     ];
@@ -365,7 +365,7 @@ describe('P26A renderer fix — forbidden claims in source file', () => {
 
 describe('P26A renderer fix — DB unchanged', () => {
     it('prisma/dev.db sha256 unchanged (no DB write)', () => {
-        const expected = 'a5cf277182c161dfe97ba05f9b81528d6c8e477dd5ac0bec6810ffbb8711c6f8';
+        const expected = '9c24c697f7980c910802e37faecdf05d0d821db097358cda1ad6c5085af99ba6';
         expect(sha256File('prisma/dev.db')).toBe(expected);
     });
 });

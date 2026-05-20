@@ -45,7 +45,7 @@ model Watchlist {
 model StockQuote {
   id           Int      @id @default(autoincrement())
   stockId      String // 股票代號
-  date         String // 交易日期 (YYYYMMDD or string format from API)
+  date         String // 交易日期 ISO (YYYY-MM-DD) — stored as ISO via parseTwseDateToIso
   open         Float // 開盤價
   high         Float // 最高價
   low          Float // 最低價
@@ -147,7 +147,7 @@ model Prediction {
 model InstitutionalChip {
   id          Int      @id @default(autoincrement())
   stockId     String
-  date        String // YYYYMMDD
+  date        String // ISO (YYYY-MM-DD) — stored as ISO via syncInstitutionalChip isoDate
   foreignBuy  Float // 外資買賣超
   trustBuy    Float // 投信買賣超
   dealerBuy   Float // 自營商買賣超

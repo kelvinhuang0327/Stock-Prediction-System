@@ -49,6 +49,26 @@ export interface StockAnalysisResult {
     last_updated: string | null;
 }
 
+// ─── PIT Gate Helpers ───────────────────────────────────────────
+
+/**
+ * normalizePitDateToIso — PIT gate date normalization helper (P29F-Repair).
+ * Accepts ISO (YYYY-MM-DD) or compact YYYYMMDD; always returns ISO YYYY-MM-DD.
+ * StockQuote and InstitutionalChip store dates as ISO; gate must use ISO-to-ISO
+ * comparison to preserve lexicographic ordering. YYYYMMDD vs ISO comparison
+ * fails: "2026-05-21" lte "20260520" evaluates to TRUE (ASCII '-' < '0').
+ * Throws on unrecognised format to prevent silent gate bypass.
+ */
+export function normalizePitDateToIso(input: string): string {
+    if (/^\d{4}-\d{2}-\d{2}$/.test(input)) {
+        return input; // already ISO
+    }
+    if (/^\d{8}$/.test(input)) {
+        return `${input.slice(0, 4)}-${input.slice(4, 6)}-${input.slice(6, 8)}`;
+    }
+    throw new Error(`[PIT] Invalid date format for normalizePitDateToIso: "${input}". Expected YYYY-MM-DD or YYYYMMDD.`);
+}
+
 // ─── Analyzer ───────────────────────────────────────────────────
 
 export async function analyzeStock(symbol: string, asOf?: string): Promise<StockAnalysisResult> {
@@ -56,15 +76,16 @@ export async function analyzeStock(symbol: string, asOf?: string): Promise<Stock
     const stockName = stock?.name || symbol;
     const isETF = symbol.length >= 4 && (symbol.startsWith('00') || symbol.startsWith('01'));
 
-    // P0-03: Gate all data queries to date <= asOfDate when asOf is provided.
-    // DB stores dates as YYYYMMDD strings; string lexicographic comparison works correctly.
-    const asOfDb = asOf ? asOf.replace(/-/g, '') : null;
+    // P0-03 / P29F-Repair: Gate all data queries to date <= asOfDate when asOf is provided.
+    // StockQuote and InstitutionalChip store dates as ISO (YYYY-MM-DD).
+    // Normalize asOf to ISO to ensure correct lexicographic comparison on the date column.
+    const asOfIso = asOf ? normalizePitDateToIso(asOf) : null;
 
-    // For MonthlyRevenue (stored as year/month ints), derive year+month cap.
+    // For MonthlyRevenue (stored as year/month ints), derive year+month cap from ISO.
     let revenueAsOfWhere: object = { stockId: symbol };
-    if (asOfDb) {
-        const asOfYear = parseInt(asOfDb.slice(0, 4), 10);
-        const asOfMonth = parseInt(asOfDb.slice(4, 6), 10);
+    if (asOfIso) {
+        const asOfYear = parseInt(asOfIso.slice(0, 4), 10);
+        const asOfMonth = parseInt(asOfIso.slice(5, 7), 10);
         revenueAsOfWhere = {
             stockId: symbol,
             OR: [
@@ -76,12 +97,12 @@ export async function analyzeStock(symbol: string, asOf?: string): Promise<Stock
 
     const [quotes, chips, revenues] = await Promise.all([
         prisma.stockQuote.findMany({
-            where: { stockId: symbol, ...(asOfDb ? { date: { lte: asOfDb } } : {}) },
+            where: { stockId: symbol, ...(asOfIso ? { date: { lte: asOfIso } } : {}) },
             orderBy: { date: 'asc' },
             take: 500,
         }),
         prisma.institutionalChip.findMany({
-            where: { stockId: symbol, ...(asOfDb ? { date: { lte: asOfDb } } : {}) },
+            where: { stockId: symbol, ...(asOfIso ? { date: { lte: asOfIso } } : {}) },
             orderBy: { date: 'desc' },
             take: 60,
         }),

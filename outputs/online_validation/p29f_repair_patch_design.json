@@ -1,0 +1,103 @@
+{
+  "reportId": "p29f-repair-patch-design",
+  "generatedAt": "2026-05-21T00:00:00Z",
+  "patchStrategy": "Strategy A — ISO normalization helper; remove YYYYMMDD conversion",
+  "rationale": "Minimal, surgical change. Does not alter scoring math, thresholds, alphaScore formula, or any invariant file. Fixes only the PIT gate date comparison.",
+  "patches": [
+    {
+      "id": "PATCH-1",
+      "file": "src/lib/analysis/RuleBasedStockAnalyzer.ts",
+      "type": "LOGIC_FIX",
+      "changes": [
+        {
+          "description": "Add normalizePitDateToIso helper function (exported for testability)",
+          "before": "// ─── Analyzer ───",
+          "after": "// ─── PIT Gate Helpers ───\nexport function normalizePitDateToIso(input) { ... }\n// ─── Analyzer ───"
+        },
+        {
+          "description": "Replace asOfDb (YYYYMMDD) with asOfIso (ISO) in analyzeStock",
+          "before": "const asOfDb = asOf ? asOf.replace(/-/g, '') : null;",
+          "after": "const asOfIso = asOf ? normalizePitDateToIso(asOf) : null;"
+        },
+        {
+          "description": "Fix MonthlyRevenue asOfMonth slice offset",
+          "before": "const asOfMonth = parseInt(asOfDb.slice(4, 6), 10);",
+          "after": "const asOfMonth = parseInt(asOfIso.slice(5, 7), 10);",
+          "note": "ISO slice offset 5 (after 'YYYY-') vs YYYYMMDD offset 4 — both yield 2-digit month"
+        },
+        {
+          "description": "Fix StockQuote PIT gate query",
+          "before": "date: { lte: asOfDb }",
+          "after": "date: { lte: asOfIso }",
+          "context": "prisma.stockQuote.findMany"
+        },
+        {
+          "description": "Fix InstitutionalChip PIT gate query",
+          "before": "date: { lte: asOfDb }",
+          "after": "date: { lte: asOfIso }",
+          "context": "prisma.institutionalChip.findMany"
+        }
+      ],
+      "invariantFilesUnchanged": ["SignalFusionEngine.ts", "ActiveScoringSnapshotBuilder.ts"],
+      "scoringUnchanged": true
+    },
+    {
+      "id": "PATCH-2",
+      "file": "prisma/schema.prisma",
+      "type": "COMMENT_FIX",
+      "changes": [
+        {
+          "description": "Fix InstitutionalChip.date comment: YYYYMMDD → ISO",
+          "before": "date  String // YYYYMMDD",
+          "after": "date  String // ISO (YYYY-MM-DD) — stored as ISO via syncInstitutionalChip isoDate"
+        }
+      ],
+      "noMigrationRequired": true
+    },
+    {
+      "id": "PATCH-3",
+      "file": "src/lib/onlineValidation/p29f/quoteRegimeChipPitAudit.ts",
+      "type": "RECLASSIFICATION",
+      "changes": [
+        "QUOTE_AUDIT_RESULT.classification: PIT_UNVERIFIED_NEEDS_REPAIR → PIT_SAFE_VERIFIED",
+        "QUOTE_AUDIT_RESULT.riskLevel: MEDIUM_HIGH → LOW",
+        "QUOTE_AUDIT_RESULT.mustBlockBeforeSimulation: true → false",
+        "QUOTE_AUDIT_RESULT.simulationInputTag: UNVERIFIED → VERIFIED",
+        "CHIP_AUDIT_RESULT.classification: PIT_UNVERIFIED_NEEDS_REPAIR → PIT_SAFE_VERIFIED",
+        "CHIP_AUDIT_RESULT.riskLevel: MEDIUM → LOW",
+        "CHIP_AUDIT_RESULT.mustBlockBeforeSimulation: true → false",
+        "CHIP_AUDIT_RESULT.simulationInputTag: UNVERIFIED → VERIFIED",
+        "buildP29FAuditSummary: overallClassification updated to P29F_REPAIR_QUOTE_CHIP_PIT_DATE_READY_TRUST_ROOT_CLEARED",
+        "buildP29FAuditSummary: nextRoundDecision: trust-root CLEARED message"
+      ]
+    },
+    {
+      "id": "PATCH-4",
+      "file": "src/lib/onlineValidation/__tests__/p29f_quote_regime_chip_pit_audit.test.ts",
+      "type": "TEST_ASSERTION_UPDATE",
+      "changes": [
+        "Quote mustBlockBeforeSimulation: toBe(true) → toBe(false)",
+        "Chip mustBlockBeforeSimulation: toBe(true) → toBe(false)",
+        "Quote simulationInputTag: 'UNVERIFIED' → 'VERIFIED'",
+        "Chip simulationInputTag: 'UNVERIFIED' → 'VERIFIED'",
+        "overallClassification assertion: updated to new classification string"
+      ]
+    },
+    {
+      "id": "PATCH-5",
+      "file": "src/lib/onlineValidation/__tests__/p29f_repair_quote_chip_pit_date.test.ts",
+      "type": "NEW_TEST_FILE",
+      "testCount": 17,
+      "testGroups": [
+        "T01-T05: normalizePitDateToIso ISO input passthrough",
+        "T06-T09: normalizePitDateToIso YYYYMMDD to ISO conversion",
+        "T10-T11: normalizePitDateToIso invalid input rejection",
+        "T12: PROOF of old bug — ISO vs YYYYMMDD comparison broken",
+        "T13: PROOF of fix — ISO vs ISO comparison correct",
+        "T14: same-day ISO passes gate",
+        "T15: past ISO passes gate",
+        "T16-T17: round-trip YYYYMMDD→ISO / ISO→ISO gate correctness"
+      ]
+    }
+  ]
+}

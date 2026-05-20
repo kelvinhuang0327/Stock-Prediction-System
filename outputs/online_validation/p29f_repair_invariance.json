@@ -1,0 +1,35 @@
+{
+  "reportId": "p29f-repair-invariance",
+  "generatedAt": "2026-05-21T00:00:00Z",
+  "invarianceCheckPassed": true,
+  "invariantFiles": [
+    {
+      "file": "src/lib/alpha/SignalFusionEngine.ts",
+      "expectedSha256": "b8ce3fa3ae63fd7edf6b6067dd8ccea63c02741454b93792e87bfbc1e95d2bf4",
+      "actualSha256": "b8ce3fa3ae63fd7edf6b6067dd8ccea63c02741454b93792e87bfbc1e95d2bf4",
+      "match": true,
+      "note": "Alpha score formula, signal weights, bucket thresholds — all unchanged"
+    },
+    {
+      "file": "src/lib/onlineValidation/ActiveScoringSnapshotBuilder.ts",
+      "expectedSha256": "063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d",
+      "actualSha256": "063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d",
+      "match": true,
+      "note": "Snapshot builder pipeline — unchanged"
+    }
+  ],
+  "scoringImpactCheck": {
+    "alphaScoreFormulaChanged": false,
+    "bucketLogicChanged": false,
+    "signalWeightsChanged": false,
+    "thresholdsChanged": false,
+    "newScoringLinesAdded": false,
+    "patternSearchResult": "grep for alpha|score|bucket|weight|threshold|signal|fuse in diff additions → 0 matches"
+  },
+  "patchedFileScoringUnchanged": {
+    "file": "src/lib/analysis/RuleBasedStockAnalyzer.ts",
+    "onlyChangeType": "DATE_NORMALIZATION_IN_PIT_GATE",
+    "description": "normalizePitDateToIso helper added; asOfDb→asOfIso in PIT gate queries only. Scoring calculation section is downstream of data fetch — unchanged.",
+    "newSha256AfterRepair": "4f6434a31fd211b6122408ee5e977e41f4cd45aee45cec586ec988b2c009e8e2"
+  }
+}

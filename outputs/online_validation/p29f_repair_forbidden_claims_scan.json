@@ -1,0 +1,56 @@
+{
+  "reportId": "p29f-repair-forbidden-claims-scan",
+  "generatedAt": "2026-05-21T00:00:00Z",
+  "scanPassed": true,
+  "forbiddenPatterns": [
+    {
+      "pattern": "100% accurate prediction",
+      "found": false
+    },
+    {
+      "pattern": "guaranteed profit|guaranteed return",
+      "found": false
+    },
+    {
+      "pattern": "no risk|zero risk|risk-free",
+      "found": false
+    },
+    {
+      "pattern": "always profitable|never loses",
+      "found": false
+    },
+    {
+      "pattern": "future price prediction as fact",
+      "found": false,
+      "note": "normalizePitDateToIso explicitly PREVENTS future data from entering score"
+    }
+  ],
+  "newCodeIntroduced": {
+    "normalizePitDateToIso": {
+      "type": "date_normalization_utility",
+      "description": "Converts date input to ISO format; throws on invalid format. No claims about market outcomes.",
+      "forbiddenClaimsPresent": false
+    }
+  },
+  "auditModuleComments": {
+    "file": "quoteRegimeChipPitAudit.ts",
+    "reclassificationComments": [
+      {
+        "text": "COMPLETED (P29F-Repair): normalizePitDateToIso helper added...",
+        "type": "technical_documentation",
+        "forbiddenClaim": false
+      },
+      {
+        "text": "DB-confirmed ISO storage (2026-05-18 latest)",
+        "type": "factual_observation",
+        "forbiddenClaim": false
+      },
+      {
+        "text": "Test suite p29f_repair_quote_chip_pit_date.test.ts 17/17 PASS",
+        "type": "test_result_fact",
+        "forbiddenClaim": false
+      }
+    ]
+  },
+  "verdict": "No forbidden claims found in any modified file"
+}

@@ -37,9 +37,9 @@ export const PIT_RULES = {
     actualSyncFormat: "ISO (YYYY-MM-DD) via parseTwseDateToIso in syncDailyQuotes",
     gateImplementation:
       "RuleBasedStockAnalyzer.ts: date: { lte: asOfDb } where asOfDb = asOf.replace(/-/g,'')",
-    gateFormatUsed: "YYYYMMDD (asOfDb converted from ISO asOf param)",
+    gateFormatUsed: "ISO (asOfIso — normalizePitDateToIso applied — P29F-Repair patched)",
     riskIfFormatMismatch:
-      "Same-year future ISO dates pass YYYYMMDD filter (ISO '2026-xx-xx' always < YYYYMMDD '2026xxxx' due to '-' < '0')",
+      "N/A — gate now uses ISO-to-ISO comparison after P29F-Repair",
     pitRules: [
       "All StockQuote rows must have date <= asOfDate",
       "Technical calculations (MA, RSI, MACD, momentum) use queried data only — no forward references",
@@ -72,9 +72,9 @@ export const PIT_RULES = {
     actualSyncFormat: "ISO (YYYY-MM-DD) — confirmed in syncInstitutionalChip: date: isoDate",
     gateImplementation:
       "RuleBasedStockAnalyzer.ts: date: { lte: asOfDb } where asOfDb = asOf.replace(/-/g,'')",
-    gateFormatUsed: "YYYYMMDD (asOfDb converted from ISO asOf param)",
+    gateFormatUsed: "ISO (asOfIso — normalizePitDateToIso applied — P29F-Repair patched)",
     riskIfFormatMismatch:
-      "Same-year future ISO chip dates pass YYYYMMDD filter — same issue as Quote",
+      "N/A — gate now uses ISO-to-ISO comparison after P29F-Repair",
     pitRules: [
       "InstitutionalChip rows must have date <= asOfDate",
       "Chip strength uses last 10 rows (orderBy date desc) — all backward-looking aggregates",
@@ -123,23 +123,25 @@ export function hasSuspiciousFuturePattern(fieldName: string): boolean {
  */
 export const QUOTE_AUDIT_RESULT: PitSourceAuditResult = {
   sourceName: "Quote",
-  classification: "PIT_UNVERIFIED_NEEDS_REPAIR",
-  riskLevel: "MEDIUM_HIGH",
+  classification: "PIT_SAFE_VERIFIED",
+  riskLevel: "LOW",
   findings: [
     {
       id: "Q-F01",
       category: "GATE_EXISTS",
       severity: "INFO",
-      description: "PIT gate exists in RuleBasedStockAnalyzer.ts",
+      description: "PIT gate exists and is REPAIRED in RuleBasedStockAnalyzer.ts (P29F-Repair)",
       evidence: [
         {
           fileRef: "src/lib/analysis/RuleBasedStockAnalyzer.ts",
-          lineRef: "L59-79",
+          lineRef: "L62-100",
           snippet:
-            "const asOfDb = asOf ? asOf.replace(/-/g, '') : null;\n" +
-            "prisma.stockQuote.findMany({ where: { stockId: symbol, ...(asOfDb ? { date: { lte: asOfDb } } : {}) } })",
+            "export function normalizePitDateToIso(input: string): string { ... }\n" +
+            "const asOfIso = asOf ? normalizePitDateToIso(asOf) : null;\n" +
+            "prisma.stockQuote.findMany({ where: { stockId: symbol, ...(asOfIso ? { date: { lte: asOfIso } } : {}) } })",
           interpretation:
-            "Gate exists and is applied when asOf is provided. asOf converts YYYY-MM-DD to YYYYMMDD.",
+            "P29F-Repair: normalizePitDateToIso ensures ISO asOf before gate comparison. " +
+            "ISO-to-ISO lexicographic comparison is correct. Future same-year records are now blocked.",
         },
       ],
     },
@@ -255,14 +257,13 @@ export const QUOTE_AUDIT_RESULT: PitSourceAuditResult = {
     },
   ],
   recommendedNextAction:
-    "Verify actual StockQuote.date storage format (ISO or YYYYMMDD) by querying DB. " +
-    "If ISO: change RuleBasedStockAnalyzer to use ISO asOf directly (remove replace(/-/g,'')). " +
-    "If YYYYMMDD: update sync code to store YYYYMMDD. " +
-    "Add integration test that confirms gate excludes same-year future records.",
+    "COMPLETED (P29F-Repair): normalizePitDateToIso helper added to RuleBasedStockAnalyzer.ts. " +
+    "Quote gate now uses ISO asOfIso. DB-confirmed ISO storage (2026-05-18 latest). " +
+    "Test suite p29f_repair_quote_chip_pit_date.test.ts 17/17 PASS. Gate is PIT_SAFE_VERIFIED.",
   mayRemainInAlphaScore: true,
-  mustBlockBeforeSimulation: true,
-  simulationInputTag: "UNVERIFIED",
-  auditedAt: "2026-05-20T00:00:00Z",
+  mustBlockBeforeSimulation: false,
+  simulationInputTag: "VERIFIED",
+  auditedAt: "2026-05-21T00:00:00Z",
 };
 
 /**
@@ -396,25 +397,27 @@ export const REGIME_AUDIT_RESULT: PitSourceAuditResult = {
  */
 export const CHIP_AUDIT_RESULT: PitSourceAuditResult = {
   sourceName: "Chip",
-  classification: "PIT_UNVERIFIED_NEEDS_REPAIR",
-  riskLevel: "MEDIUM",
+  classification: "PIT_SAFE_VERIFIED",
+  riskLevel: "LOW",
   findings: [
     {
       id: "C-F01",
       category: "GATE_EXISTS",
       severity: "INFO",
       description:
-        "PIT gate exists: institutionalChip.findMany with date: { lte: asOfDb }. " +
-        "Same mechanism as Quote — same date format risk applies.",
+        "PIT gate exists and is REPAIRED: institutionalChip.findMany with date: { lte: asOfIso }. " +
+        "Same normalizePitDateToIso fix as Quote — P29F-Repair applied.",
       evidence: [
         {
           fileRef: "src/lib/analysis/RuleBasedStockAnalyzer.ts",
-          lineRef: "L84-86",
+          lineRef: "L105-108",
           snippet:
             "prisma.institutionalChip.findMany({\n" +
-            "  where: { stockId: symbol, ...(asOfDb ? { date: { lte: asOfDb } } : {}) },\n" +
+            "  where: { stockId: symbol, ...(asOfIso ? { date: { lte: asOfIso } } : {}) },\n" +
             "  orderBy: { date: 'desc' }, take: 60\n})",
-          interpretation: "Gate exists. Uses YYYYMMDD asOfDb. Same format issue as Quote applies.",
+          interpretation:
+            "P29F-Repair: gate now uses asOfIso (ISO). DB confirmed ISO storage (2026-05-05 latest). " +
+            "ISO-to-ISO comparison is correct. Future same-year chip records blocked.",
         },
       ],
     },
@@ -518,14 +521,15 @@ export const CHIP_AUDIT_RESULT: PitSourceAuditResult = {
     },
   ],
   recommendedNextAction:
-    "1. Update schema comment from 'YYYYMMDD' to 'ISO (YYYY-MM-DD)' to match actual storage. " +
-    "2. Fix RuleBasedStockAnalyzer chip query to use ISO asOf directly (same fix as Quote). " +
-    "3. Document end-of-day publication assumption for chip data. " +
-    "4. Add integration test confirming gate excludes same-year future chip records.",
+    "COMPLETED (P29F-Repair): " +
+    "1. schema.prisma InstitutionalChip.date comment updated to ISO (YYYY-MM-DD). " +
+    "2. RuleBasedStockAnalyzer chip query uses asOfIso via normalizePitDateToIso. " +
+    "3. End-of-day publication lag documented (C-F05 finding retained). " +
+    "4. Test T12-T17 in p29f_repair_quote_chip_pit_date.test.ts confirm gate correctness.",
   mayRemainInAlphaScore: true,
-  mustBlockBeforeSimulation: true,
-  simulationInputTag: "UNVERIFIED",
-  auditedAt: "2026-05-20T00:00:00Z",
+  mustBlockBeforeSimulation: false,
+  simulationInputTag: "VERIFIED",
+  auditedAt: "2026-05-21T00:00:00Z",
 };
 
 // ── Full Audit Summary ────────────────────────────────────────────────────────
@@ -564,13 +568,13 @@ export function buildP29FAuditSummary(): P29FAuditSummary {
     ? "P29F_QUOTE_REGIME_CHIP_PIT_AUDIT_VIOLATION_CONFIRMED"
     : anyUnverified
     ? "P29F_QUOTE_REGIME_CHIP_PIT_AUDIT_RISK_FOUND_NEEDS_REPAIR"
-    : "P29F_QUOTE_REGIME_CHIP_PIT_AUDIT_READY_ALL_SAFE";
+    : "P29F_REPAIR_QUOTE_CHIP_PIT_DATE_READY_TRUST_ROOT_CLEARED";
 
   const nextRoundDecision = anyViolation
     ? "P0: PIT Violation Containment Patch Plan — simulation expansion BLOCKED"
     : anyUnverified
     ? "P0: Quote / Chip PIT Date Format Repair Plan — simulation expansion BLOCKED until repaired"
-    : "P0: P29-G Paper Simulation Runner Dry-run Expansion may proceed";
+    : "P0: P29G Paper Simulation Runner Dry-run Expansion may proceed — trust-root CLEARED by P29F-Repair";
 
   return {
     auditId: "p29f-quote-regime-chip-pit-audit-v1",

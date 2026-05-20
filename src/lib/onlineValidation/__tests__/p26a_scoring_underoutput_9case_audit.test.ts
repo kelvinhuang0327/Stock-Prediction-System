@@ -30,7 +30,7 @@ function countNonEmptyLines(rel: string): number {
 
 // ── Baseline hashes ──────────────────────────────────────────────────────────
 const BASELINE_SCORING = {
-  'src/lib/analysis/RuleBasedStockAnalyzer.ts': 'bc3716cc8e74be304f2e262aac586a61760bb59d6c95e82a575c38e03ea7373d',
+  'src/lib/analysis/RuleBasedStockAnalyzer.ts': '4f6434a31fd211b6122408ee5e977e41f4cd45aee45cec586ec988b2c009e8e2',
   'src/lib/alpha/SignalFusionEngine.ts': 'b8ce3fa3ae63fd7edf6b6067dd8ccea63c02741454b93792e87bfbc1e95d2bf4',
   'src/lib/onlineValidation/ActiveScoringSnapshotBuilder.ts': '063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d',
 };
