@@ -1,0 +1,67 @@
+{
+  "audit_id": "P29H-p29e-source-audit",
+  "audit_date": "2026-05-20",
+
+  "p29e_commit": "51d15df4ab3991a146b230593c1e966e69abeaa6",
+  "audit_method": "git show 51d15df --name-only + per-file content review",
+
+  "files_added": [
+    {
+      "path": "src/lib/onlineValidation/p29e/PaperSimulationOutputSchema.ts",
+      "lines": 130,
+      "purpose": "Define PaperSimulationOutput interface, FORBIDDEN_OUTPUT_FIELDS, assertNoForbiddenFields",
+      "touches_forbidden_files": false,
+      "imports_production_scoring": false,
+      "writes_to_db": false,
+      "mutates_corpus": false,
+      "makes_performance_claims": false
+    },
+    {
+      "path": "src/lib/onlineValidation/p29e/LeakageGatePlaceholder.ts",
+      "lines": 167,
+      "purpose": "Structural leakage gate: checks future-labeled fields, outcome fields, mutation flags, paper-only marker, notInvestmentRecommendation",
+      "touches_forbidden_files": false,
+      "imports_production_scoring": false,
+      "writes_to_db": false,
+      "mutates_corpus": false,
+      "makes_performance_claims": false
+    },
+    {
+      "path": "src/lib/onlineValidation/p29e/PaperSimulationScaffoldRunner.ts",
+      "lines": 145,
+      "purpose": "Paper-only runner: constructs PaperSimulationOutput, runs leakage gate, dryRun=true by default",
+      "touches_forbidden_files": false,
+      "imports_production_scoring": false,
+      "imports_prisma": false,
+      "writes_to_db": false,
+      "mutates_corpus": false,
+      "makes_performance_claims": false,
+      "does_not_reference": ["RuleBasedStockAnalyzer", "SignalFusionEngine", "ActiveScoringSnapshotBuilder", "prisma", "Optimizer"]
+    },
+    {
+      "path": "src/lib/onlineValidation/__tests__/p29e_paper_simulation_scaffold.test.ts",
+      "lines": 542,
+      "purpose": "56 tests across 20 describe groups covering: runner existence, dryRun default, paper-only constraints, mutation flags, leakage gate, forbidden fields, determinism, isolation checks",
+      "touches_forbidden_files": false,
+      "reads_forbidden_files_for_assertion": false
+    }
+  ],
+
+  "safety_assessment": {
+    "overall": "SAFE_TO_RE-IMPLEMENT",
+    "no_forbidden_file_mutations": true,
+    "no_production_scoring_imports": true,
+    "no_corpus_mutations": true,
+    "no_db_writes": true,
+    "no_performance_claims": true,
+    "self_contained_within_p29e_module": true,
+    "only_internal_imports": ["./PaperSimulationOutputSchema", "./LeakageGatePlaceholder"]
+  },
+
+  "output_files_in_commit": {
+    "count": 24,
+    "note": "outputs/online_validation/p29e_*.{json,md} — these will be re-created from scratch as part of P29H scaffold repair; NOT cherry-picked"
+  },
+
+  "re_implementation_verdict": "PROCEED — all 4 source/test files are self-contained scaffold infrastructure with no forbidden touchpoints. Option B re-implementation is safe."
+}

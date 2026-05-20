@@ -1,0 +1,57 @@
+{
+  "audit_id": "P29H-preflight-git-topology",
+  "audit_date": "2026-05-20",
+  "timezone": "Asia/Taipei",
+  "auditor": "P29H Senior Mainline Repair Agent",
+
+  "head": {
+    "sha": "1c5a270b0be185a9f06d870305ed93f07950c69b",
+    "branch": "main",
+    "message": "P29F-Repair: Fix Quote Chip PIT date normalization"
+  },
+
+  "dirty_state": {
+    "pre_existing_dirty_files": [
+      "00-StockPlan/roadmap/stock_roadmapPlan_20260504.md",
+      "logs/launchd/*.log (multiple)",
+      "outputs/online_validation/p26f3_5_dropzone_scan_result.{json,md}",
+      "outputs/online_validation/p28c_renderer_only_repair_9case_before_after.json",
+      "outputs/online_validation/p28d_9case_integrated_review_validation.json",
+      "outputs/online_validation/p28d_p3_p19_renderer_regression_sweep.json",
+      "prisma/dev.db (runtime writes from backend services)",
+      "runtime/agent_orchestrator/llm_usage.jsonl"
+    ],
+    "note": "All dirty files are pre-existing from running backend services. None modified by this audit."
+  },
+
+  "P29E_commit": {
+    "short": "51d15df",
+    "full": "51d15df4ab3991a146b230593c1e966e69abeaa6",
+    "message": "P29E: Add paper simulation scaffold",
+    "author": "kelvin",
+    "date": "2026-05-19T20:53:58+08:00",
+    "exists_in_repo": true,
+    "branches_containing": ["claude/frosty-borg-e85827"],
+    "is_ancestor_of_HEAD": false
+  },
+
+  "P29D_commit": {
+    "short": "ecd5c86",
+    "message": "P29D: Add FinancialReport and NewsEvent manual drop-zone scaffold",
+    "exists_in_repo": true,
+    "branches_containing": ["claude/objective-kalam-b00477"],
+    "is_ancestor_of_HEAD": false,
+    "note": "p29d_dropzone_scaffold.test.ts IS present in main — P29D functionality may have been re-integrated via a different commit path"
+  },
+
+  "topology": {
+    "shared_ancestor": "2da1203 (P29C)",
+    "main_at_HEAD": "P29F-Repair (1c5a270)",
+    "local_only_branches": [
+      "claude/frosty-borg-e85827 → 51d15df (P29E)",
+      "claude/objective-kalam-b00477 → ecd5c86 (P29D)"
+    ]
+  },
+
+  "repair_approach": "Option B — re-implement P29E scaffold directly on current main HEAD; no cherry-pick/merge/rebase"
+}
