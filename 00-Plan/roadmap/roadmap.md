@@ -354,3 +354,67 @@ Validate the Chip C-F05 T+0 availability assumption and audit MonthlyRevenue sou
 - Chip → add `availableAt` to schema + populate in sync + reschedule cron → re-audit → `CHIP_LAG_CONFIRMED`
 - MonthlyRevenue → repair `syncRealRevenue()` to populate `releaseDate` + backfill → re-audit → `MONTHLY_REVENUE_READY_FOR_SOURCE_PRESENT_DRY_RUN`
 - Hard constraint: `MonthlyRevenue.entersAlphaScore = false` always regardless of dry-run readiness
+
+---
+
+## Section 14 — P29K: MonthlyRevenue releaseDate Sync Repair + Chip availableAt Schema Readiness
+
+**Commit:** (P29K)  
+**Status:** ✅ COMPLETE  
+**Date:** 2026-05-20
+
+### Goals
+
+1. Resolve P29J `MONTHLY_REVENUE_NEEDS_SCHEMA_REPAIR` — repair `syncRealRevenue()` to write `releaseDate`
+2. Produce chip `availableAt` readiness plan (migration deferred to P29L)
+
+### MonthlyRevenue Repair
+
+**Root cause confirmed:** `syncRealRevenue()` upsert omitted `releaseDate`, `releaseDateSource`, `releaseDateConfidence` from both `create` and `update` blocks.
+
+**Fix:** Added `buildMonthlyRevenueReleaseDatePayload(year, month)` call inside `syncRealRevenue()` loop. Both `create` and `update` now include the three releaseDate fields.
+
+**Policy:** `INFERRED_NEXT_MONTH_10TH` — deterministic fallback since TWSE API `/opendata/t187ap05_L` never provides an explicit `releaseDate` or `announcementDate`.
+
+| Field | Value |
+|---|---|
+| `releaseDateSource` | `"INFERRED_NEXT_MONTH_10TH"` |
+| `releaseDateConfidence` | `"LOW"` |
+| PIT-safe | ✅ — always after last day of revenue month |
+| `entersAlphaScore` | `false` (always) |
+
+
+ `entersAlphaScoret  `entersAlphaScoretstitutionalChip` has no `availableAt` fie `entersAlphaScoret  `entersAlphaScoretstitutionalChip` has no `availableAt` fie `entersAlphaScoret  d, deferred to P29L.
+
+### Test Evidence
+
+- P29K suite: 68/68 PASS (15 test groups, T01–T15)
+- P29J regression: 76/76 PASS
+- P29I regression: 33/33 PASS
+- Full onlineValidation suite: 3492/3492 PASS (111 suites)
+
+### New Files
+
+- `src/lib/onlineValidation/p29k/MonthlyRevenueReleaseDatePolicy.ts`
+- `src/lib/onlineValidation/p29k/ChipAvailableAtReadinessPlan.ts`
+- `src/lib/onlineValidation/__tests__/p29k_monthly_revenue_release_date_repair.test.ts` (68 tests)
+
+### Modified Files
+
+- `src/lib/services/syncService.ts` — `syncRealRevenue()` only
+
+### Artifacts
+
+- `outputs/online_validation/p29k_preflight_mainline_status.json/.md`
+- `outputs/online_validation/p29k_monthly_revenue_sync_path_inventory.json/.md`
+- `outputs/online_validation/p29k_chip_available_at_readiness_plan.json/.md`
+- `outputs/online_validation/p29k_test_baseline.json`
+- `outputs/online_validation/p29k_forbidden_claims_scan.json`
+- `outputs/online_validation/p29k_final_report.md`
+
+### Next Hard Gates (P29L)
+
+1. Chip `availableAt` schema migration (5-step plan → execute)
+2. MonthlyRevenue historical backfill (existing NULL `releaseDate` rows)
+3. Re-audit → `MONTHLY_REVENUE_READY_FOR_SOURCE_PRESENT_DRY_RUN` + `CHIP_LAG_CONFIRMED`
+4. Hard constraint: `MonthlyRevenue.entersAlphaScore = false` always

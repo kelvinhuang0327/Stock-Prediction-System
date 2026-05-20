@@ -602,3 +602,51 @@ MonthlyRevenue schema 結構已具備 PIT-safe 的 releaseDate 追蹤能力，PI
 4. **硬性約束：`entersAlphaScore = false` 永遠成立** — 進入 dry-run 不代表 alpha 資格
 
 此追記不包含任何 ROI / win-rate / alpha / edge / profit / outperform / buy / sell 宣稱。
+
+---
+
+## 第 19 節 — P29K: MonthlyRevenue releaseDate 修復 + Chip availableAt 方案
+
+**日期：** 2026-05-20  
+**狀態：** ✅ COMPLETE
+
+### 核心決策
+
+**P29J 識別的 source-readiness blocker 在 P29K 完成解除（部分）：**
+
+1. `syncRealRevenue()` 修復完成 — upsert 現在寫入 `releaseDate`、`releaseDateSource`、`releaseDateConfidence`
+2. Chip `availableAt` 方案產出，migration 延至 P29L
+
+### 技術分析
+
+**為何使用 INFERRED_NEXT_MONTH_10TH？**
+
+TWSE API `/opendata/t187ap05_L` 只回傳 `code, name, month, revenue, yoyGrowth, momGrowth`，完全沒有 `releaseDate` 或 `announcementDate`。無法從上游取得明確日期。
+
+台灣法規：上市公司必須在次月 10 日前公告月營收。此規則是 deterministic、PIT-safe、conservative 的。
+
+**為何 `entersAlphaScore = false`？**
+
+月營收是基本面參考資訊，不是 alpha 訊號。P17/P26F mapping contract 中已明文規定，P29K 不改變此約束。
+
+**Chip availableAt 為何延至 P29L？**
+
+Schema migration 需要 `prisma migrate dev`、backfill script、`ChipLagEvidenceAudit` 更新。這是一個獨立的工作包，與 P29K 的 MonthlyRevenue 修復無耦合。延至 P29L 保持 P29K 聚焦。
+
+### 測試結果
+
+| 測試範圍 | 通過 / 總計 |
+|---|---|
+| P29K targeted (68 tests, T01–T15) | 68/68 ✅ |
+| P29J regression | 76/76 ✅ |
+| P29I regression | 33/33 ✅ |
+| Full onlineValidation suite (111 suites) | 3492/3492 ✅ |
+
+### P29L 門檻
+
+1. Chip `availableAt` migration 執行（5-step plan 已產出）
+2. MonthlyRevenue 歷史 NULL 回填
+3. 重新審計 → `CHIP_LAG_CONFIRMED` + `MONTHLY_REVENUE_READY_FOR_SOURCE_PRESENT_DRY_RUN`
+4. 硬性約束：`entersAlphaScore = false` 永遠成立
+
+此追記不包含任何 guaranteed profit / guaranteed return / risk-free / outperform / buy / sell 宣稱。

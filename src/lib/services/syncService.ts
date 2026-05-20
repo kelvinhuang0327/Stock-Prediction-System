@@ -2,6 +2,7 @@ import { prisma } from '../prisma';
 import { twseApi } from '../api/twseApi';
 import { access, readFile } from 'node:fs/promises';
 import path from 'node:path';
+import { buildMonthlyRevenueReleaseDatePayload } from '@/lib/onlineValidation/p29k/MonthlyRevenueReleaseDatePolicy';
 import {
     upsertFinancialReports,
     type RawFinancialReportInput,
@@ -305,6 +306,10 @@ export const syncService = {
             for (const rev of revenues) {
                 const year = parseInt(rev.month.slice(0, 3)) + 1911;
                 const month = parseInt(rev.month.slice(3));
+                // P29K: Compute inferred releaseDate (INFERRED_NEXT_MONTH_10TH).
+                // TWSE getMonthlyRevenueSummary() never provides an explicit releaseDate.
+                // Taiwan statutory rule: monthly revenue released by 10th of following month.
+                const releaseDatePayload = buildMonthlyRevenueReleaseDatePayload(year, month);
 
                 await prisma.monthlyRevenue.upsert({
                     where: {
@@ -317,7 +322,10 @@ export const syncService = {
                     update: {
                         revenue: rev.revenue,
                         yoyGrowth: rev.yoyGrowth,
-                        momGrowth: rev.momGrowth
+                        momGrowth: rev.momGrowth,
+                        releaseDate: releaseDatePayload.releaseDate,
+                        releaseDateSource: releaseDatePayload.releaseDateSource,
+                        releaseDateConfidence: releaseDatePayload.releaseDateConfidence,
                     },
                     create: {
                         stockId: rev.code,
@@ -325,7 +333,10 @@ export const syncService = {
                         month,
                         revenue: rev.revenue,
                         yoyGrowth: rev.yoyGrowth,
-                        momGrowth: rev.momGrowth
+                        momGrowth: rev.momGrowth,
+                        releaseDate: releaseDatePayload.releaseDate,
+                        releaseDateSource: releaseDatePayload.releaseDateSource,
+                        releaseDateConfidence: releaseDatePayload.releaseDateConfidence,
                     }
                 });
                 count++;

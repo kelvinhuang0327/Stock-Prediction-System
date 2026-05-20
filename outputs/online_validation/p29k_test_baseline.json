@@ -1,0 +1,31 @@
+{
+  "auditId": "P29K-TEST-BASELINE",
+  "capturedAt": "2026-05-20T00:00:00.000Z",
+  "p29kTargeted": {
+    "file": "src/lib/onlineValidation/__tests__/p29k_monthly_revenue_release_date_repair.test.ts",
+    "suitesPass": 1,
+    "testGroups": 15,
+    "testsPass": 68,
+    "testsFail": 0
+  },
+  "regressionP29J": {
+    "file": "src/lib/onlineValidation/__tests__/p29j_chip_lag_and_monthly_revenue_readiness.test.ts",
+    "testsPass": 76,
+    "testsFail": 0
+  },
+  "regressionP29I": {
+    "file": "src/lib/onlineValidation/__tests__/p29i_quote_regime_chip_pit_audit.test.ts",
+    "testsPass": 33,
+    "testsFail": 0
+  },
+  "fullOnlineValidationSuite": {
+    "suites": 111,
+    "testsPass": 3492,
+    "testsFail": 0
+  },
+  "forbiddenDiffStatus": "CLEAN",
+  "forbiddenFilesModified": [],
+  "allowedModifications": [
+    "src/lib/services/syncService.ts — syncRealRevenue() only (P29K repair)"
+  ]
+}
