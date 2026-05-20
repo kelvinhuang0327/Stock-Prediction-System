@@ -1,0 +1,58 @@
+{
+  "auditId": "P29L-PREFLIGHT-MAINLINE-STATUS",
+  "capturedAt": "2026-05-20T00:00:00.000Z",
+  "repo": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System",
+  "branch": "main",
+  "headCommit": "ecfa744e9fd9c31e331604bc67e517135d6d7cf2",
+  "headCommitMessage": "P29K: Repair MonthlyRevenue releaseDate sync write + Chip availableAt readiness plan (deferred P29L)",
+  "status": "PROCEED",
+  "dirtyFiles": {
+    "runtimeDrift": [
+      "prisma/dev.db",
+      "prisma/dev.db-shm",
+      "prisma/dev.db-wal",
+      "runtime/agent_orchestrator/llm_usage.jsonl",
+      "runtime/agent_orchestrator/pids/backend.pid",
+      "runtime/training_reports/tw_weekly_deep_research.json",
+      "logs/launchd/backend.stderr.log",
+      "logs/launchd/backend.stdout.log",
+      "logs/launchd/main-service.stderr.log",
+      "logs/launchd/main-service.stdout.log",
+      "logs/launchd/planner-tick.stderr.log",
+      "logs/launchd/planner-tick.stdout.log",
+      "logs/launchd/start_all.log",
+      "logs/launchd/stop_all.log",
+      "logs/launchd/worker-daemon.stderr.log",
+      "logs/launchd/worker-daemon.stdout.log",
+      "logs/launchd/worker-tick.stderr.log",
+      "logs/launchd/smoke.log"
+    ],
+    "preExistingOutputDrift": [
+      "outputs/online_validation/p26f3_5_dropzone_scan_result.json",
+      "outputs/online_validation/p26f3_5_dropzone_scan_result.md",
+      "outputs/online_validation/p28c_renderer_only_repair_9case_before_after.json",
+      "outputs/online_validation/p28d_9case_integrated_review_validation.json",
+      "outputs/online_validation/p28d_p3_p19_renderer_regression_sweep.json"
+    ],
+    "benignText": ["00-StockPlan/roadmap/stock_roadmapPlan_20260504.md"],
+    "untracked": [
+      "00-StockPlan/20260514/",
+      "00-StockPlan/20260515/",
+      "data/manual/financial-report/",
+      "data/manual/news-event/",
+      "generate_artifacts.py",
+      "p28c_9case_validation.js",
+      "src/lib/onlineValidation/__tests__/p29d_dropzone_scaffold.test.ts",
+      "various p29g_preflight outputs"
+    ]
+  },
+  "dirtyClassification": "BENIGN — all drift is runtime, pre-existing, or untracked; no forbidden files staged",
+  "forbiddenFilesModified": [],
+  "stagedFiles": [],
+  "p29kBaseline": {
+    "commit": "ecfa744",
+    "testsPass": 3492,
+    "testsFail": 0,
+    "suites": 111
+  }
+}

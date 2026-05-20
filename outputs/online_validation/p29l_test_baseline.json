@@ -1,0 +1,42 @@
+{
+  "baselineId": "P29L-TEST-BASELINE",
+  "capturedAt": "2026-05-20T00:00:00.000Z",
+  "priorBaselineId": "P29K-TEST-BASELINE",
+  "priorBaselineCommit": "ecfa744",
+  "p29lTargetedTest": {
+    "suite": "src/lib/onlineValidation/__tests__/p29l_chip_available_at_and_monthly_revenue_backfill.test.ts",
+    "pass": 96,
+    "fail": 0,
+    "total": 96,
+    "groups": ["T01", "T02", "T03", "T04", "T05", "T06", "T07", "T08", "T09", "T10", "T11", "T12", "T13", "T14", "T15"],
+    "status": "PASS"
+  },
+  "regressionSuites": [
+    {
+      "suite": "src/lib/onlineValidation/__tests__/p29k_monthly_revenue_release_date_repair.test.ts",
+      "pass": 68,
+      "fail": 0,
+      "total": 68,
+      "status": "PASS"
+    },
+    {
+      "suite": "src/lib/onlineValidation/__tests__/p29j_chip_lag_and_monthly_revenue_readiness.test.ts",
+      "pass": 76,
+      "fail": 0,
+      "total": 76,
+      "status": "PASS"
+    },
+    {
+      "suite": "src/lib/onlineValidation/__tests__/p29i_quote_regime_chip_pit_audit.test.ts",
+      "pass": 33,
+      "fail": 0,
+      "total": 33,
+      "status": "PASS"
+    }
+  ],
+  "forbiddenDiffStatus": "BENIGN",
+  "entersAlphaScoreViolation": false,
+  "investmentAdviceViolation": false,
+  "forbiddenClaimsViolation": false,
+  "overallStatus": "PASS"
+}

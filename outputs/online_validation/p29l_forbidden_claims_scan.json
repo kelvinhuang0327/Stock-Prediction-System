@@ -1,0 +1,30 @@
+{
+  "scanId": "P29L-FORBIDDEN-CLAIMS-SCAN",
+  "capturedAt": "2026-05-20T00:00:00.000Z",
+  "patterns": [
+    "/guaranteed profit/i",
+    "/guaranteed return/i",
+    "/risk[- ]?free/i",
+    "/\\b(will|always) (profit|gain|double)\\b/i",
+    "/\\boutperform(s)? the market/i"
+  ],
+  "filesScanned": [
+    "src/lib/onlineValidation/p29l/ChipAvailableAtMigrationReadiness.ts",
+    "src/lib/onlineValidation/p29l/MonthlyRevenueBackfillReadiness.ts",
+    "scripts/p29l_monthly_revenue_release_date_backfill.ts",
+    "src/lib/onlineValidation/__tests__/p29l_chip_available_at_and_monthly_revenue_backfill.test.ts"
+  ],
+  "results": {
+    "guaranteedProfit": "CLEAN",
+    "guaranteedReturn": "CLEAN",
+    "riskFree": "CLEAN",
+    "willAlwaysProfitGainDouble": "CLEAN",
+    "outperformTheMarket": "CLEAN"
+  },
+  "overallStatus": "CLEAN",
+  "notes": [
+    "Disclaimer text uses 'No profit, return, or investment performance claims' (P29K lesson applied)",
+    "No negated forbidden phrases used — all disclaimers avoid triggering pattern scans",
+    "T14 test group validates this at runtime: 5/5 patterns CLEAN"
+  ]
+}

@@ -650,3 +650,44 @@ Schema migration 需要 `prisma migrate dev`、backfill script、`ChipLagEvidenc
 4. 硬性約束：`entersAlphaScore = false` 永遠成立
 
 此追記不包含任何 guaranteed profit / guaranteed return / risk-free / outperform / buy / sell 宣稱。
+
+
+---
+
+## 第20節—P29L：Chip availableAt 遞移準備越結 + MonthlyRevenue 歷史回填方案（2026-05-20）
+
+**分類：** `P29L_CHIP_PLAN_ONLY_MONTHLY_REVENUE_BACKFILL_SCRIPT_READY`
+
+### 計劃目標 1：Chip availableAt 運算（選項 A—開發安全）
+
+- 建立 `ChipAvailableAtMigrationReadiness.ts`（純 TypeScript，無 DB 引入）
+- 實作兩種政策：
+  - 主要：`INFERRED_SAME_DAY_T86_0930_UTC`（同日 09:30 UTC = 17:30 TWN）
+  - 保守：`INFERRED_NEXT_DAY_0930_UTC_CONSERVATIVE`（次日 09:30 UTC）
+- Schema 未修改（prisma migrate dev 推遲至 P30）
+- 溲差保持 `CHIP_LAG_WARN_ASSUMPTION_REQUIRED`（尚需生產日誌以升級）
+
+### 計劃目標 2：MonthlyRevenue 歷史 NULL 回填方案
+
+- 建立 `MonthlyRevenueBackfillReadiness.ts`（純 TypeScript，無 DB 引入）
+- 建立回填腳本 `scripts/p29l_monthly_revenue_release_date_backfill.ts`
+- 預設 `dryRun=true`—P29L 机歡未執行實際寫入
+- 政策：`INFERRED_NEXT_MONTH_10TH`（與 P29K sync repair 相同）
+- `entersAlphaScore = false` 永遠成立
+
+### 測試結果
+
+- P29L 目標測試：96/96 PASS（T01–T15）
+- P29K/P29J/P29I 回歸分析：177/177 PASS
+- 禁止 diff：BENIGN
+- 禁止索賞掃描：CLEAN
+
+### P30 待辦項目
+
+1. `prisma/schema.prisma` — 新增 `availableAt DateTime?` 至 `InstitutionalChip`
+2. 執行 `prisma migrate dev`
+3. 更新 `syncInstitutionalChip()` 寫入 `availableAt`
+4. 執行 MonthlyRevenue 回填（需 CTO 授權）
+5. 收集生產日誌—將溲差分類升級為 `CHIP_LAG_CONFIRMED`
+
+此追記不包含任何 guaranteed profit / guaranteed return / risk-free / outperform / buy / sell 宣稱。

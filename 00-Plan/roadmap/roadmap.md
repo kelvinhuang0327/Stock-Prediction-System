@@ -418,3 +418,44 @@ Validate the Chip C-F05 T+0 availability assumption and audit MonthlyRevenue sou
 2. MonthlyRevenue historical backfill (existing NULL `releaseDate` rows)
 3. Re-audit → `MONTHLY_REVENUE_READY_FOR_SOURCE_PRESENT_DRY_RUN` + `CHIP_LAG_CONFIRMED`
 4. Hard constraint: `MonthlyRevenue.entersAlphaScore = false` always
+
+
+
+---
+
+## Section 15 — P29L: Chip availableAt Migration Readiness + MonthlyRevenue Historical Backfill (2026-05-20)
+
+**Commit:** Pending
+**Classification:** `P29L_CHIP_PLAN_ONLY_MONTHLY_REVENUE_BACKFILL_SCRIPT_READY`
+
+### Goal 1: Chip availableAt Migration (Option A — dev-safe)
+
+- `ChipAvailableAtMigrationReadiness.ts` created (pure TypeScript, no DB imports)
+- Two policies implemented:
+  - Primary: `INFERRED_SAME_DAY_T86_0930_UTC` — chipDate at 09:30 UTC = 17:30 TWN same day
+  - Conservative: `INFERRED_NEXT_DAY_0930_UTC_CONSERVATIVE` — next-day 09:30 UTC (for backfill)
+- Schema NOT modified (prisma migrate dev deferred to P30)
+- Chip lag stays `CHIP_LAG_WARN_ASSUMPTION_REQUIRED` — prod logs still required for upgrade
+
+### Goal 2: MonthlyRevenue Historical NULL Backfill Plan
+
+- `MonthlyRevenueBackfillReadiness.ts` created (pure TypeScript, no DB imports)
+- Backfill script `scripts/p29l_monthly_revenue_release_date_backfill.ts` created
+- Default: `dryRun=true` — NOT applied in P29L session
+- Policy: `INFERRED_NEXT_MONTH_10TH` (same as P29K sync repair)
+- `entersAlphaScore = false` ALWAYS
+
+### Test Results
+
+- P29L targeted: 96/96 PASS (T01-T15)
+- P29K/P29J/P29I regression: 177/177 PASS
+- Forbidden diff: BENIGN
+- Forbidden claims scan: CLEAN
+
+### Pending for P30
+
+1. `prisma/schema.prisma` — add `availableAt DateTime?` to `InstitutionalChip`
+2. Run `prisma migrate dev`
+3. Update `syncInstitutionalChip()` to write `availableAt`
+4. Apply MonthlyRevenue backfill (requires CTO auth)
+5. Collect prod logs — upgrade lag to `CHIP_LAG_CONFIRMED`

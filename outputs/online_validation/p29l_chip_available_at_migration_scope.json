@@ -1,0 +1,76 @@
+{
+  "auditId": "P29L-CHIP-AVAILABLE-AT-MIGRATION-SCOPE",
+  "capturedAt": "2026-05-20T00:00:00.000Z",
+  "disclaimer": "Structural audit-only. Does not constitute investment advice. No profit, return, or investment performance claims. Results must not be used as buy/sell/hold signals.",
+  "scopeMatrix": [
+    {
+      "item": 1,
+      "targetModel": "InstitutionalChip",
+      "targetFile": "prisma/schema.prisma (lines 147-162)",
+      "currentFields": ["id", "stockId", "date", "foreignBuy", "trustBuy", "dealerBuy", "totalBuy", "holders400", "holders1000", "createdAt"],
+      "missingField": "availableAt",
+      "proposedField": "availableAt DateTime? // P29L: time when T86 chip data becomes publicly available (~17:30 TWN = 09:30 UTC on trade date)",
+      "migrationRequired": true,
+      "syncPathExists": true,
+      "syncPath": "src/lib/services/syncService.ts:syncInstitutionalChip() — writes to InstitutionalChip, currently no availableAt write",
+      "testFixturesNeedUpdate": false,
+      "productionLogRequirement": "REQUIRED for CHIP_LAG_CONFIRMED — prod logs must confirm actual data arrival time before upgrading classification",
+      "riskClassification": "LOW — additive nullable field, no breaking changes",
+      "recommendedAction": "Option A (P29L): Create pure migration readiness module with availableAt computation policy. Do NOT modify prisma/schema.prisma or run prisma migrate dev in this session. Final: CHIP_AVAILABLE_AT_MIGRATION_PLAN_READY"
+    },
+    {
+      "item": 2,
+      "targetModel": "syncInstitutionalChip() function",
+      "targetFile": "src/lib/services/syncService.ts (lines 401-475)",
+      "currentBehavior": "Upserts {stockId, date, foreignBuy, trustBuy, dealerBuy, totalBuy} — no availableAt write",
+      "missingField": "availableAt",
+      "proposedChange": "availableAt = computeChipAvailableAt(isoDate) — same-day 09:30 UTC policy",
+      "migrationRequired": false,
+      "syncPathExists": true,
+      "syncPath": "Only needs schema field before code change can be applied",
+      "testFixturesNeedUpdate": true,
+      "productionLogRequirement": "None for code change; required for CHIP_LAG_CONFIRMED re-classification",
+      "riskClassification": "LOW — sync is already running, field is nullable",
+      "recommendedAction": "Document sync update plan in ChipAvailableAtMigrationReadiness.ts. Implement sync code change AFTER schema migration is validated."
+    },
+    {
+      "item": 3,
+      "targetModel": "ChipLagEvidenceAudit (P29J)",
+      "targetFile": "src/lib/onlineValidation/p29j/ChipLagEvidenceAudit.ts",
+      "currentClassification": "CHIP_LAG_WARN_ASSUMPTION_REQUIRED",
+      "missingEvidence": "availableAt field + populated data + production log cross-check",
+      "migrationRequired": false,
+      "syncPathExists": false,
+      "testFixturesNeedUpdate": true,
+      "productionLogRequirement": "REQUIRED — P29J classification cannot be upgraded to CHIP_LAG_CONFIRMED without prod logs",
+      "riskClassification": "NONE in P29L — audit stays WARN",
+      "recommendedAction": "Maintain CHIP_LAG_WARN_ASSUMPTION_REQUIRED. Re-audit only after schema migration + sync update + prod logs collected."
+    },
+    {
+      "item": 4,
+      "targetModel": "MonthlyRevenue historical backfill",
+      "targetFile": "prisma/schema.prisma + prisma/dev.db (existing rows)",
+      "currentState": "releaseDate = NULL for all rows before P29K sync repair date",
+      "missingField": "releaseDate (NULL values, field exists but was never written before P29K)",
+      "proposedChange": "Backfill script: UPDATE MonthlyRevenue SET releaseDate = NEXT_MONTH_10TH(year, month) WHERE releaseDate IS NULL",
+      "migrationRequired": false,
+      "syncPathExists": true,
+      "syncPath": "scripts/p29l_monthly_revenue_release_date_backfill.ts — dryRun=true by default",
+      "testFixturesNeedUpdate": false,
+      "productionLogRequirement": "None — backfill uses deterministic policy",
+      "riskClassification": "LOW — idempotent, nullable field update, never writes entersAlphaScore",
+      "recommendedAction": "Create dryRun=true backfill script. NOT applied in P29L session. Final: BACKFILL_SCRIPT_READY_NOT_APPLIED"
+    }
+  ],
+  "timingEvidence": {
+    "cronUtc": "0 7 * * 1-5",
+    "cronTwn": "15:00 TWN",
+    "t86AvailabilityTwn": "~17:30 TWN",
+    "timingGapMinutes": 150,
+    "effectiveChipDate": "T-1 (previous trading day)",
+    "primaryAvailableAtPolicy": "INFERRED_SAME_DAY_T86_0930_UTC — availableAt = chipDate at 09:30 UTC (17:30 TWN)",
+    "conservativeAvailableAtPolicy": "INFERRED_NEXT_DAY_0930_UTC_CONSERVATIVE — availableAt = chipDate + 1 day at 09:30 UTC"
+  },
+  "p29lSelectedOption": "Option A — dev-safe schema readiness only. Schema NOT modified. prisma/dev.db NOT touched.",
+  "finalClassificationTarget": "CHIP_AVAILABLE_AT_MIGRATION_PLAN_READY"
+}
