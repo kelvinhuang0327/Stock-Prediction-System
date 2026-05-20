@@ -1,0 +1,31 @@
+{
+  "phase": "P30",
+  "capturedAt": "2026-05-20T00:00:00.000Z",
+  "reviewSubject": "P29L artifacts",
+  "chipAvailableAtMigrationReadiness": {
+    "classification": "CHIP_AVAILABLE_AT_MIGRATION_PLAN_READY",
+    "hasAvailableAt": false,
+    "schemaModifiedInSession": false,
+    "migrationNeeded": true,
+    "canClaimChipLagConfirmed": false,
+    "lagStatus": "CHIP_LAG_WARN_ASSUMPTION_REQUIRED",
+    "prodLogsRequired": true,
+    "entersAlphaScore": false
+  },
+  "monthlyRevenueBackfillReadiness": {
+    "classification": "BACKFILL_SCRIPT_READY_NOT_APPLIED",
+    "dryRunDefault": true,
+    "scriptPath": "scripts/p29l_monthly_revenue_release_date_backfill.ts",
+    "applied": false,
+    "entersAlphaScore": false
+  },
+  "backfillScript": {
+    "path": "scripts/p29l_monthly_revenue_release_date_backfill.ts",
+    "ready": true,
+    "applied": false,
+    "dryRun": true,
+    "policy": "INFERRED_NEXT_MONTH_10TH"
+  },
+  "p29lFinalClassification": "P29L_CHIP_PLAN_ONLY_MONTHLY_REVENUE_BACKFILL_SCRIPT_READY",
+  "disclaimer": "Structural backfill readiness plan only. Does not constitute investment advice. No profit, return, or investment performance claims. entersAlphaScore = false."
+}

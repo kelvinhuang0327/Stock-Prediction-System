@@ -691,3 +691,43 @@ Schema migration 需要 `prisma migrate dev`、backfill script、`ChipLagEvidenc
 5. 收集生產日誌—將溲差分類升級為 `CHIP_LAG_CONFIRMED`
 
 此追記不包含任何 guaranteed profit / guaranteed return / risk-free / outperform / buy / sell 宣稱。
+
+
+---
+
+## 第21節—P30：Chip Schema Migration + Backfill Dry-Run（2026-05-20）
+
+**分類：** `P30_CHIP_SCHEMA_READY_BACKFILL_WAITING_FOR_AUTH`
+
+### 技術決策
+
+| 決策 | 選擇 | 理由 |
+|---|---|---|
+| Schema 修改 | 在 P30 執行 | P29L Option A 設計決定 — dev-safe |
+| Migration 是否套用 | 未套用 | 約束：不可執行 `prisma migrate dev` |
+| Backfill 是否套用 | 未套用 | 0 null rows，且無授權語句 |
+| Write policy 設計 | 純 TypeScript 模組 | 無 DB 存取，確定性，可測試 |
+
+### 關鍵發現
+
+1. **Chip Schema**: `availableAt DateTime?` 已加入 `InstitutionalChip`，migration SQL 已建立但未套用
+2. **MonthlyRevenue**: 2143 筆資料，0 筆 NULL releaseDate — 回填為 no-op
+3. **Chip Lag**: 維持 `CHIP_LAG_WARN_ASSUMPTION_REQUIRED` — 需要生產日誌才能升級
+
+### CTO 評估
+
+- [Aligned] Schema 修改為 additive nullable field — 無 breaking change
+- [Aligned] `entersAlphaScore = false` 不變量維持
+- [Aligned] 測試回歸通過 (322/322 核心測試)
+- [Resolved] MonthlyRevenue 回填已為 no-op — P29K sync repair 已完整填充所有資料
+- [Blocked] Chip schema migration 需要 CTO 授權執行 `prisma migrate dev`
+- [Pending] `syncInstitutionalChip()` 更新等待 schema migration 套用後進行
+
+### P31 必要工作
+
+1. `prisma migrate dev` 授權執行（Chip availableAt 欄位）
+2. `syncInstitutionalChip()` 更新寫入 `availableAt`
+3. 歷史 Chip 資料回填（`computeChipAvailableAtConservative`）
+4. 生產日誌收集 → 升級 `CHIP_LAG_CONFIRMED`
+
+此追記不包含任何 guaranteed profit / guaranteed return / risk-free / outperform / buy / sell 宣稱。

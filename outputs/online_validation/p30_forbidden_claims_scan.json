@@ -1,0 +1,70 @@
+{
+  "phase": "P30",
+  "capturedAt": "2026-05-20T00:00:00.000Z",
+  "scanTargets": [
+    "src/lib/onlineValidation/p30/ChipAvailableAtWritePolicy.ts",
+    "src/lib/onlineValidation/__tests__/p30_chip_available_at_schema_and_backfill_gate.test.ts",
+    "prisma/migrations/20260520000000_add_chip_available_at/migration.sql",
+    "outputs/online_validation/p30_preflight_mainline_status.json",
+    "outputs/online_validation/p30_p29l_artifact_review.json",
+    "outputs/online_validation/p30_chip_schema_migration_readiness.json",
+    "outputs/online_validation/p30_monthly_revenue_backfill_dry_run.json",
+    "outputs/online_validation/p30_chip_available_at_write_policy.md"
+  ],
+  "forbiddenTerms": [
+    "buy (as investment advice)",
+    "sell",
+    "hold (as recommendation)",
+    "ROI",
+    "win-rate",
+    "alpha claim",
+    "edge",
+    "profit (as positive claim)",
+    "outperform (as positive claim)",
+    "investment recommendation",
+    "guaranteed",
+    "expected return"
+  ],
+  "findings": [
+    {
+      "term": "buy",
+      "occurrences": "Multiple — all in 'buy/sell/hold signals' prohibition context or 'foreignBuy/trustBuy/dealerBuy' field names",
+      "context": "PROHIBITION or FIELD_NAME",
+      "verdict": "BENIGN"
+    },
+    {
+      "term": "sell",
+      "occurrences": "Multiple — all in 'buy/sell/hold signals' prohibition context",
+      "context": "PROHIBITION",
+      "verdict": "BENIGN"
+    },
+    {
+      "term": "profit",
+      "occurrences": "Multiple — all in 'No profit, return, or investment performance claims' prohibition context",
+      "context": "PROHIBITION",
+      "verdict": "BENIGN"
+    },
+    {
+      "term": "ROI",
+      "occurrences": "In CHIP_AVAILABLE_AT_WRITE_DISCLAIMER: 'Does not compute ROI, profit...'",
+      "context": "PROHIBITION",
+      "verdict": "BENIGN"
+    },
+    {
+      "term": "alpha",
+      "occurrences": "Multiple — all in 'entersAlphaScore = false' context or prohibition",
+      "context": "PROHIBITION_OR_FIELD_NAME",
+      "verdict": "BENIGN"
+    },
+    {
+      "term": "outperformance",
+      "occurrences": "In disclaimer: 'does not compute ROI, profit, alpha, win-rate, edge, or outperformance'",
+      "context": "PROHIBITION",
+      "verdict": "BENIGN"
+    }
+  ],
+  "positiveInvestmentClaims": "NONE_FOUND",
+  "classification": "CLEAN",
+  "summary": "All instances of investment-related terms appear exclusively in prohibition/disclaimer context or as technical field names (foreignBuy, trustBuy, dealerBuy). No positive investment advice, return claims, or performance guarantees found in any P30 artifact.",
+  "entersAlphaScore": false
+}

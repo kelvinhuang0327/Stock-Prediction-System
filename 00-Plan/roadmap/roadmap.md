@@ -459,3 +459,75 @@ Validate the Chip C-F05 T+0 availability assumption and audit MonthlyRevenue sou
 3. Update `syncInstitutionalChip()` to write `availableAt`
 4. Apply MonthlyRevenue backfill (requires CTO auth)
 5. Collect prod logs — upgrade lag to `CHIP_LAG_CONFIRMED`
+
+
+
+---
+
+## Section 16 — P30: Chip Schema Migration + Backfill Dry-Run (2026-05-20)
+
+**Commit:** Pending
+**Classification:** `P30_CHIP_SCHEMA_READY_BACKFILL_WAITING_FOR_AUTH`
+
+### Goal 1: Chip availableAt Schema Migration
+
+- `prisma/schema.prisma` updated — `availableAt DateTime?` added to `InstitutionalChip`
+- `@@index([availableAt])` added for PIT range query performance
+- Migration SQL artifact created: `prisma/migrations/20260520000000_add_chip_available_at/migration.sql`
+- Migration NOT applied to dev DB (constraint: `prisma migrate dev` not authorized in P30)
+- Chip lag stays `CHIP_LAG_WARN_ASSUMPTION_REQUIRED` — prod logs still required for upgrade
+
+### Goal 2: ChipAvailableAtWritePolicy
+
+- `ChipAvailableAtWritePolicy.ts` created (pure TypeScript, no DB imports)
+- `computeChipWriteAvailableAt(isoDate, mode)` — PRIMARY or CONSERVATIVE policy
+- `buildChipUpsertAvailableAt(isoDate, sourcePayloadAvailableAt?)` — upsert decision
+- `validateWriteDoesNotAlterChipNumerics(original, updated)` — numeric safety check
+- `assertEntersAlphaScoreFalse(result)` — runtime invariant guard
+- `entersAlphaScore = false` hardcoded as const — cannot be overridden
+
+### Goal 3: MonthlyRevenue Backfill Dry-Run
+
+- Dry-run executed: found **0 null rows** in 2143 total MonthlyRevenue rows
+- All rows already have `releaseDate` populated (P29K sync repair was complete)
+- Backfill is a no-op — authorization gate remains open as formality
+- `entersAlphaScore = false` always
+
+### Test Results
+
+- P30 targeted: 49/49 PASS (T01-T06, 6 describe blocks)
+- P29L regression: 96/96 PASS
+- P29K/J/I regression: 177/177 PASS
+- Full onlineValidation: 3633/3637 PASS (4 pre-existing failures, no P30 regressions)
+- Forbidden diff: BENIGN (only schema additive change)
+- Forbidden claims scan: CLEAN
+
+### New Files
+
+- `src/lib/onlineValidation/p30/ChipAvailableAtWritePolicy.ts`
+- `src/lib/onlineValidation/__tests__/p30_chip_available_at_schema_and_backfill_gate.test.ts` (49 tests)
+- `prisma/migrations/20260520000000_add_chip_available_at/migration.sql`
+
+### Modified Files
+
+- `prisma/schema.prisma` — added `availableAt DateTime?` + `@@index([availableAt])` to `InstitutionalChip`
+
+### Artifacts
+
+- `outputs/online_validation/p30_preflight_mainline_status.json/.md`
+- `outputs/online_validation/p30_p29l_artifact_review.json/.md`
+- `outputs/online_validation/p30_chip_schema_migration_readiness.json/.md`
+- `outputs/online_validation/p30_chip_available_at_write_policy.md`
+- `outputs/online_validation/p30_monthly_revenue_backfill_dry_run.json/.md`
+- `outputs/online_validation/p30_test_baseline.json/.md`
+- `outputs/online_validation/p30_forbidden_claims_scan.json/.md`
+- `outputs/online_validation/p30_reaudit_result.json/.md`
+- `outputs/online_validation/p30_final_report.md`
+
+### Next Hard Gates (P31)
+
+1. Run `prisma migrate dev` (requires CTO authorization) to apply chip schema migration
+2. Update `syncInstitutionalChip()` to write `availableAt = computeChipAvailableAt(isoDate).availableAt`
+3. Backfill existing chip rows with `computeChipAvailableAtConservative(date)` for null `availableAt`
+4. Collect production T86 publication logs → upgrade lag to `CHIP_LAG_CONFIRMED`
+5. Hard constraint: `InstitutionalChip.entersAlphaScore = false` always

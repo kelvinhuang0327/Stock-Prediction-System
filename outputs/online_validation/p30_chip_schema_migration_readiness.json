@@ -1,0 +1,20 @@
+{
+  "phase": "P30",
+  "capturedAt": "2026-05-20T00:00:00.000Z",
+  "schemaModel": "InstitutionalChip",
+  "hadAvailableAtBefore": false,
+  "availableAtAddedInP30": true,
+  "migrationArtifactCreated": true,
+  "migrationFile": "prisma/migrations/20260520000000_add_chip_available_at/migration.sql",
+  "migrationAppliedToDevDb": false,
+  "migrationAppliedToProdDb": false,
+  "schemaChangeType": "additive_nullable_field",
+  "breakingChange": false,
+  "indexAdded": "@@index([availableAt])",
+  "lagWarningMaintained": true,
+  "canClaimChipLagConfirmed": false,
+  "prodLogsRequired": true,
+  "entersAlphaScore": false,
+  "classification": "CHIP_SCHEMA_READY_MIGRATION_ARTIFACT_CREATED_NOT_APPLIED",
+  "disclaimer": "Structural migration readiness only. Does not constitute investment advice. No profit, return, or investment performance claims. InstitutionalChip entersAlphaScore = false. Results must not be used as buy/sell/hold signals."
+}

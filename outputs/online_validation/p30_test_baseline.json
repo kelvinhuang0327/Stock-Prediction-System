@@ -1,0 +1,50 @@
+{
+  "phase": "P30",
+  "capturedAt": "2026-05-20T00:00:00.000Z",
+  "p30Tests": {
+    "suite": "p30_chip_available_at_schema_and_backfill_gate",
+    "passed": 49,
+    "failed": 0,
+    "total": 49,
+    "status": "PASS"
+  },
+  "p29lRegression": {
+    "suite": "p29l_chip_available_at_and_monthly_revenue_backfill",
+    "passed": 96,
+    "failed": 0,
+    "total": 96,
+    "status": "PASS"
+  },
+  "p29kjkiRegression": {
+    "suites": [
+      "p29k_monthly_revenue_release_date_repair",
+      "p29j_chip_lag_and_monthly_revenue_readiness",
+      "p29i_quote_regime_chip_pit_audit"
+    ],
+    "passed": 177,
+    "failed": 0,
+    "total": 177,
+    "status": "PASS"
+  },
+  "fullOnlineValidationSuite": {
+    "suitesRun": 113,
+    "suitesPassed": 109,
+    "suitesFailed": 4,
+    "testsPassed": 3633,
+    "testsFailed": 4,
+    "testsTotal": 3637,
+    "status": "PRE_EXISTING_FAILURES_ONLY",
+    "failedSuites": [
+      "p29d_dropzone_scaffold",
+      "p26a_renderer_fix",
+      "p26a_batch_pipeline_wiring",
+      "p27_waiting_state_policy_guard"
+    ],
+    "note": "All 4 failing suites are pre-existing failures documented in MEMORY.md. No P30 regressions introduced."
+  },
+  "forbiddenDiff": {
+    "status": "BENIGN",
+    "note": "prisma/dev.db and runtime/agent_orchestrator/llm_usage.jsonl appear in full git diff as pre-existing runtime modifications, not from P30 changes. P30 modified only: prisma/schema.prisma (additive), new source/test/output files."
+  },
+  "entersAlphaScore": false
+}

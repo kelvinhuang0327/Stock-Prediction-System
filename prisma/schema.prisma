@@ -155,11 +155,13 @@ model InstitutionalChip {
   holders400  Float? // 400張以上大戶持股比
   holders1000 Float? // 1000張以上大戶持股比
   createdAt   DateTime @default(now())
+  availableAt DateTime? // P30: PIT gate — when T86 data became publicly available (~17:30 TWN = 09:30 UTC same day)
 
   stock Stock @relation(fields: [stockId], references: [id])
 
   @@unique([stockId, date])
   @@index([date])
+  @@index([availableAt])
 }
 
 model MonthlyRevenue {
