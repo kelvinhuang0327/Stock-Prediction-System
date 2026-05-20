@@ -1,0 +1,47 @@
+{
+  "auditId": "P29J-TEST-BASELINE",
+  "capturedAt": "2026-05-15T00:00:00.000Z",
+  "testFile": "src/lib/onlineValidation/__tests__/p29j_chip_lag_and_monthly_revenue_readiness.test.ts",
+  "totalTests": 76,
+  "passed": 76,
+  "failed": 0,
+  "skipped": 0,
+  "status": "ALL_PASS",
+
+  "testGroups": [
+    { "id": "T01", "name": "Chip schema has no availability timestamp", "tests": 6, "status": "PASS" },
+    { "id": "T02", "name": "Chip classification is CHIP_LAG_WARN_ASSUMPTION_REQUIRED", "tests": 8, "status": "PASS" },
+    { "id": "T03", "name": "detectForbiddenChipFields rejects future-looking fields", "tests": 5, "status": "PASS" },
+    { "id": "T04", "name": "detectForbiddenChipFields rejects outcome/target leakage", "tests": 5, "status": "PASS" },
+    { "id": "T05", "name": "MonthlyRevenue releaseDate requirement unsatisfied", "tests": 5, "status": "PASS" },
+    { "id": "T06", "name": "MonthlyRevenue asOfDate normalization adequate", "tests": 4, "status": "PASS" },
+    { "id": "T07", "name": "MonthlyRevenue entersAlphaScore always false", "tests": 3, "status": "PASS" },
+    { "id": "T08", "name": "MonthlyRevenue dry-run readiness blocked by missing metadata", "tests": 9, "status": "PASS" },
+    { "id": "T09", "name": "FinancialReport remains HIGH_RISK_SOURCE_ABSENT", "tests": 5, "status": "PASS" },
+    { "id": "T10", "name": "NewsEvent remains HIGH_RISK_SOURCE_ABSENT", "tests": 5, "status": "PASS" },
+    { "id": "T11", "name": "Both reports deterministic", "tests": 4, "status": "PASS" },
+    { "id": "T12", "name": "Both reports serialize to JSON without loss", "tests": 4, "status": "PASS" },
+    { "id": "T13", "name": "Report text contains no investment advice keywords", "tests": 4, "status": "PASS" },
+    { "id": "T14", "name": "Forbidden claims scan is clean", "tests": 4, "status": "PASS" },
+    { "id": "T15", "name": "No DB/corpus/scoring file mutation", "tests": 5, "status": "PASS" }
+  ],
+
+  "regressionStatus": {
+    "p29iSuite": { "tests": 95, "status": "ALL_PASS" },
+    "p29gSuite": { "tests": 45, "status": "ALL_PASS" },
+    "p29eSuite": { "tests": 27, "status": "ALL_PASS" },
+    "fullOnlineValidationSuite": { "suites": 110, "tests": 3424, "status": "ALL_PASS" }
+  },
+
+  "forbiddenDiffStatus": {
+    "result": "CLEAN",
+    "checkedPatterns": [
+      "prisma/dev.db (modified but pre-existing — benign)",
+      "*.jsonl (runtime/agent_orchestrator/llm_usage.jsonl — benign)",
+      "RuleBasedStockAnalyzer.ts — NOT modified",
+      "SignalFusionEngine.ts — NOT modified",
+      "ActiveScoringSnapshotBuilder.ts — NOT modified",
+      "MarketRegimeEngine.ts — NOT modified"
+    ]
+  }
+}

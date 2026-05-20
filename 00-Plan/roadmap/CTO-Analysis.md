@@ -508,3 +508,97 @@ PSR-08/09（gate 存在 / asOf 傳播）**僅適用於 `permittedInAlphaScore: t
 - C-F05（Chip 發佈延遲）需在生產環境中正式驗證後，才能依賴 T+0 籌碼資料進行當日評分
 
 此追記不包含任何 ROI / win-rate / alpha / edge / profit / outperform / buy / sell 宣稱。
+
+---
+
+## 第 18 節 — P29J：Chip C-F05 延遲證據 + MonthlyRevenue 啟用準備度審計（2026-05-15）
+
+### 審計目標
+
+1. **Chip C-F05 延遲驗證**：核實目前 Chip source 的 T+0 / T+1 可用性假設，判斷是否可信任同日籌碼評分。
+2. **MonthlyRevenue 啟用準備度**：盤點 MonthlyRevenue 是否具備足夠的 metadata / asOfDate / releaseDate，判斷是否可從 `STRUCTURAL_PLACEHOLDER_ONLY` 進入 source-present dry-run gate。
+
+---
+
+### Chip 延遲審計結果
+
+**分類：`CHIP_LAG_WARN_ASSUMPTION_REQUIRED`**
+
+| 證據項目 | 發現 |
+|---|---|
+| Schema 可用性時間戳 | 不存在（`availableAt` / `releaseDate` / `generatedAt` 均缺失） |
+| Cron 排程 | `0 7 * * 1-5` = 15:00 TWN (UTC+8) |
+| TWSE T86 發佈時間 | ~17:30 TWN |
+| Cron 早於 T86 幾分鐘 | **早 2.5 小時** → cron 執行時 T86 資料尚未發佈 |
+| Cron 時的有效籌碼 | **T-1（前一交易日）** |
+| PIT gate 是否存在 | ✅ 存在（`date lte normalizePitDateToIso(asOf)`） |
+| C-F05 假設一致性 | ✅ 一致 — 假設已正確說明「prior day data」分支 |
+
+**CTO 判斷：**  
+籌碼來源透過排程 cron 的有效資料為 T-1，並非 T+0。C-F05 假設覆蓋了 T-1 情況，故假設無誤。PIT gate 正確套用。**無法將分類升級至 `CHIP_LAG_CONFIRMED`**，除非：
+- 在 schema 加入 `availableAt DateTime` 欄位
+- 有生產環境 log 佐證 T+0 籌碼資料實際可取得
+
+Chip 維持在 `ALPHA_SCORE_PERMITTED_SOURCES`（P29I 確認），此分類為 **WARN（警告）**，非阻塞。
+
+---
+
+### MonthlyRevenue 啟用準備度結果
+
+**分類：`MONTHLY_REVENUE_NEEDS_SCHEMA_REPAIR`**
+
+| 證據項目 | 發現 |
+|---|---|
+| Schema model | 存在（`MonthlyRevenue`） |
+| `releaseDate` 欄位 | 存在於 schema（DateTime? nullable） |
+| 生產 DB 中的 `releaseDate` | **NULL — sync 從未寫入** |
+| `syncRealRevenue()` upsert 欄位 | `revenue, yoyGrowth, momGrowth` — 不含 `releaseDate` |
+| `announcementDate` | 不存在 |
+| PIT gate | ✅ 存在（`filterMonthlyRevenueAvailableAsOf()`，有推斷機制） |
+| 推斷規則 | `INFERRED_NEXT_MONTH_10TH` — 可信度 LOW_TO_MEDIUM |
+| `entersAlphaScore` | **false（永遠為 false，硬性約束）** |
+
+**CTO 判斷：**  
+MonthlyRevenue schema 結構已具備 PIT-safe 的 releaseDate 追蹤能力，PIT gate 亦存在。**但 `syncRealRevenue()` 從未填入 `releaseDate`**，導致所有記錄為 NULL。無法晉級至 `MONTHLY_REVENUE_READY_FOR_SOURCE_PRESENT_DRY_RUN`，必須先完成 sync 修復。
+
+---
+
+### 測試基線
+
+| 套件 | 測試數 | 結果 |
+|---|---|---|
+| P29J（新增） | 76/76 | ✅ ALL_PASS |
+| P29I 回歸 | 95/95 | ✅ ALL_PASS |
+| P29G 回歸 | 45/45 | ✅ ALL_PASS |
+| P29E 回歸 | 27/27 | ✅ ALL_PASS |
+| 全套（110 個套件） | 3424/3424 | ✅ ALL_PASS |
+
+---
+
+### 治理約束確認（P29J 後）
+
+| 來源 | 分類 | entersAlphaScore |
+|---|---|---|
+| MonthlyRevenue | `MONTHLY_REVENUE_NEEDS_SCHEMA_REPAIR` | `false` 永遠 |
+| FinancialReport | `HIGH_RISK_SOURCE_ABSENT` | `false` 永遠 |
+| NewsEvent | `HIGH_RISK_SOURCE_ABSENT` | `false` 永遠 |
+| Chip | `CHIP_LAG_WARN_ASSUMPTION_REQUIRED` | 在 `ALPHA_SCORE_PERMITTED_SOURCES`（P29I） |
+
+---
+
+### 後續啟用路徑
+
+**Chip：**
+1. 在 `prisma.InstitutionalChip` 新增 `availableAt DateTime`
+2. 在 `syncInstitutionalChip()` upsert 時填入 `availableAt`
+3. 將 cron 調整至 T86 發佈後（~18:00 TWN = 10:00 UTC）
+4. 透過生產 log 確認 T+0 資料可取得
+5. 重新審計 → 升級至 `CHIP_LAG_CONFIRMED`
+
+**MonthlyRevenue：**
+1. 修復 `syncRealRevenue()`：在每次 upsert 時填入 `releaseDate`
+2. 回填歷史記錄（使用 `INFERRED_NEXT_MONTH_10TH` 規則）
+3. 重新審計 → 升級至 `MONTHLY_REVENUE_READY_FOR_SOURCE_PRESENT_DRY_RUN`
+4. **硬性約束：`entersAlphaScore = false` 永遠成立** — 進入 dry-run 不代表 alpha 資格
+
+此追記不包含任何 ROI / win-rate / alpha / edge / profit / outperform / buy / sell 宣稱。

@@ -295,3 +295,62 @@ Overall: `ALL_PIT_SAFE`
 ### Next Hard Gate
 
 Before any source can `entersAlphaScore: true`, a data-activation audit is required. MonthlyRevenue, FinancialReport, NewsEvent each require independent PIT-safety audit before activation. C-F05 Chip lag must be validated in production before T+0 chip data used in same-day scoring.
+
+---
+
+## Section 13 — P29J: Chip C-F05 Lag Evidence + MonthlyRevenue Activation Readiness (2026-05-15)
+
+### Objective
+
+Validate the Chip C-F05 T+0 availability assumption and audit MonthlyRevenue source readiness to advance from `STRUCTURAL_PLACEHOLDER_ONLY`.
+
+### Chip Audit Findings
+
+| Evidence | Finding |
+|---|---|
+| Schema availability field | ABSENT (`availableAt` / `releaseDate` / `generatedAt` all missing) |
+| Cron time | `0 7 * * 1-5` = 15:00 TWN |
+| T86 availability | ~17:30 TWN — cron fires 2.5h early |
+| Effective chip at cron time | **T-1** |
+| PIT gate | EXISTS ✅ |
+| C-F05 assumption | CONSISTENT — covers T-1 branch |
+
+**Classification:** `CHIP_LAG_WARN_ASSUMPTION_REQUIRED`
+
+### MonthlyRevenue Audit Findings
+
+| Evidence | Finding |
+|---|---|
+| Schema releaseDate field | EXISTS but never populated by sync |
+| `syncRealRevenue()` upsert | `revenue, yoyGrowth, momGrowth` only — `releaseDate = NULL` |
+| PIT gate | EXISTS (inference fallback only — LOW_TO_MEDIUM confidence) |
+| `entersAlphaScore` | `false` (always) |
+
+**Classification:** `MONTHLY_REVENUE_NEEDS_SCHEMA_REPAIR`
+
+### Test Evidence
+
+- P29J suite: 76/76 PASS
+- P29I / P29G / P29E regression: 167/167 PASS
+- Full suite: 3424/3424 PASS (110 suites)
+
+### New Files
+
+- `src/lib/onlineValidation/p29j/ChipLagEvidenceAudit.ts`
+- `src/lib/onlineValidation/p29j/MonthlyRevenueReadinessAudit.ts`
+- `src/lib/onlineValidation/__tests__/p29j_chip_lag_and_monthly_revenue_readiness.test.ts` (76 tests)
+
+### Artifacts
+
+- `outputs/online_validation/p29j_preflight_mainline_status.json`
+- `outputs/online_validation/p29j_chip_lag_evidence_inventory.json` / `.md`
+- `outputs/online_validation/p29j_monthly_revenue_readiness_inventory.json` / `.md`
+- `outputs/online_validation/p29j_test_baseline.json`
+- `outputs/online_validation/p29j_forbidden_claims_scan.json`
+- `outputs/online_validation/p29j_final_report.md`
+
+### Next Hard Gate
+
+- Chip → add `availableAt` to schema + populate in sync + reschedule cron → re-audit → `CHIP_LAG_CONFIRMED`
+- MonthlyRevenue → repair `syncRealRevenue()` to populate `releaseDate` + backfill → re-audit → `MONTHLY_REVENUE_READY_FOR_SOURCE_PRESENT_DRY_RUN`
+- Hard constraint: `MonthlyRevenue.entersAlphaScore = false` always regardless of dry-run readiness

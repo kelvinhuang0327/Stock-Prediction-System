@@ -1,0 +1,38 @@
+{
+  "auditId": "P29J-FORBIDDEN-CLAIMS-SCAN",
+  "capturedAt": "2026-05-15T00:00:00.000Z",
+  "status": "CLEAN",
+  "scannedArtifacts": [
+    {
+      "artifact": "ChipLagEvidenceAudit.ts (CHIP_AUDIT_DISCLAIMER)",
+      "text": "Structural audit-only. Does not constitute investment advice. No ROI, profit, alpha, win-rate, edge, or outperformance claims. Results must not be used as buy/sell/hold signals.",
+      "forbiddenClaimFound": false,
+      "notes": "Disclaimer explicitly denies all financial claims. 'No ROI' is a denial, not a claim."
+    },
+    {
+      "artifact": "MonthlyRevenueReadinessAudit.ts (MONTHLY_REVENUE_AUDIT_DISCLAIMER)",
+      "text": "Structural audit-only. Does not constitute investment advice. No ROI, profit, alpha, win-rate, edge, or outperformance claims. Results must not be used as buy/sell/hold signals.",
+      "forbiddenClaimFound": false,
+      "notes": "Disclaimer explicitly denies all financial claims. 'No ROI' is a denial, not a claim."
+    },
+    {
+      "artifact": "p29j_chip_lag_evidence_inventory.json (disclaimer field)",
+      "forbiddenClaimFound": false
+    },
+    {
+      "artifact": "p29j_monthly_revenue_readiness_inventory.json (disclaimer field)",
+      "forbiddenClaimFound": false
+    }
+  ],
+  "forbiddenPatternsChecked": [
+    "guaranteed profit",
+    "guaranteed return",
+    "risk-free",
+    "will (always) profit",
+    "outperforms the market",
+    "buy signal",
+    "sell signal",
+    "hold signal"
+  ],
+  "conclusion": "No investment advice, financial performance claims, win-rate claims, alpha claims, or edge claims found in any P29J artifact."
+}

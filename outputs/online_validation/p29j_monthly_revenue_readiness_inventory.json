@@ -1,0 +1,77 @@
+{
+  "auditId": "P29J-MONTHLY-REVENUE-READINESS-INVENTORY",
+  "capturedAt": "2026-05-15T00:00:00.000Z",
+  "sourceModel": "MonthlyRevenue",
+  "classification": "MONTHLY_REVENUE_NEEDS_SCHEMA_REPAIR",
+  "p29gStatus": "STRUCTURAL_PLACEHOLDER_ONLY",
+  "entersAlphaScore": false,
+
+  "schemaStatus": {
+    "modelExists": true,
+    "hasYearMonthFields": true,
+    "hasReleaseDateField": true,
+    "releaseDateFieldType": "DateTime? (nullable)",
+    "hasReleaseDateSourceField": true,
+    "hasReleaseDateConfidenceField": true,
+    "hasAnnouncementDateField": false,
+    "hasAvailabilityDateField": false,
+    "asOfDateApproach": "year_month_int_pair",
+    "conclusion": "Schema has releaseDate field with full source/confidence metadata — but the field is never populated by syncRealRevenue(). Always NULL in production DB."
+  },
+
+  "syncStatus": {
+    "syncFunction": "syncRealRevenue()",
+    "syncSource": "TWSE getMonthlyRevenueSummary()",
+    "upsertFields": ["revenue", "yoyGrowth", "momGrowth"],
+    "notUpsertedFields": ["releaseDate", "releaseDateSource", "releaseDateConfidence"],
+    "effectiveReleaseDateInDB": "NULL",
+    "syncRepairNeeded": true,
+    "repairAction": "Add releaseDate population on upsert (from TWSE publish date or INFERRED_NEXT_MONTH_10TH rule)"
+  },
+
+  "pitGateStatus": {
+    "gateFunction": "filterMonthlyRevenueAvailableAsOf(revenues, asOf, { allowInferredReleaseDate: true })",
+    "gateExists": true,
+    "allowsInference": true,
+    "inferenceRule": "INFERRED_NEXT_MONTH_10TH",
+    "inferenceConfidence": "LOW_TO_MEDIUM",
+    "gateNote": "PIT gate exists and is applied in RuleBasedStockAnalyzer.ts. Infers releaseDate as next-month 10th when NULL. Confidence: LOW_TO_MEDIUM — not explicitly set by sync."
+  },
+
+  "releaseDateRequirement": {
+    "satisfied": false,
+    "reasons": [
+      "releaseDate field exists in schema but syncRealRevenue() never populates it",
+      "All records have releaseDate = NULL in production DB",
+      "No announcementDate or availabilityDate alternative"
+    ]
+  },
+
+  "asOfDateNormalization": {
+    "adequate": true,
+    "notes": [
+      "year + month int pair uniquely identifies revenue period",
+      "filterMonthlyRevenueAvailableAsOf() handles year/month comparison correctly",
+      "Normalization adequate for PIT gate — blocked only by releaseDate NULL issue"
+    ]
+  },
+
+  "dryRunReadiness": "BLOCKED — syncRealRevenue() must populate releaseDate before dry-run gate activation",
+
+  "activationRequirements": [
+    "1. Repair syncRealRevenue(): populate releaseDate on each upsert (from TWSE API or INFERRED_NEXT_MONTH_10TH)",
+    "2. Set releaseDateSource='EXPLICIT' or 'INFERRED' and releaseDateConfidence accordingly",
+    "3. Run migration to backfill historical releaseDate using INFERRED_NEXT_MONTH_10TH rule",
+    "4. Re-audit to advance classification to MONTHLY_REVENUE_READY_FOR_SOURCE_PRESENT_DRY_RUN",
+    "5. Hard constraint: entersAlphaScore = false — dry-run readiness does not imply alphaScore eligibility"
+  ],
+
+  "hardConstraints": {
+    "entersAlphaScore": false,
+    "entersAlphaScoreReason": "MonthlyRevenue is not in ALPHA_SCORE_PERMITTED_SOURCES (p29i). Must remain STRUCTURAL_PLACEHOLDER_ONLY or at most source-present dry-run.",
+    "financialReportStatus": "HIGH_RISK_SOURCE_ABSENT — must not enter this activation path",
+    "newsEventStatus": "HIGH_RISK_SOURCE_ABSENT — must not enter this activation path"
+  },
+
+  "disclaimer": "Structural audit-only. Does not constitute investment advice. No financial claims, win-rate, edge, or outperformance claims. Results must not be used as buy/sell/hold signals."
+}
