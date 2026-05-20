@@ -1,0 +1,50 @@
+{
+  "phase": "P29G",
+  "description": "P29G forbidden performance claims scan",
+  "capturedAt": "2026-05-15T00:00:00.000Z",
+  "scanScope": [
+    "src/lib/onlineValidation/p29g/PaperSimulationDryRunInput.ts",
+    "src/lib/onlineValidation/p29g/PaperSimulationDryRunRunner.ts",
+    "src/lib/onlineValidation/p29g/PaperSimulationDryRunReport.ts",
+    "src/lib/onlineValidation/__tests__/p29g_paper_simulation_dry_run_runner.test.ts"
+  ],
+  "forbiddenOutputFields": [
+    "roi", "returnPct", "winRate", "alpha", "edge", "profit", "outperformance",
+    "realizedReturn", "outcomePrice", "buySignal", "sellSignal", "recommendation",
+    "forecastedReturn", "expectedAlpha", "strategyEdge"
+  ],
+  "forbiddenActionFields": [
+    "buy", "sell", "hold", "action", "stake", "position",
+    "allocation", "order", "trade", "recommendation", "investmentAdvice"
+  ],
+  "findings": {
+    "actualViolations": 0,
+    "commentReferences": 5,
+    "commentReferenceNote": "All matches are in JSDoc prohibition comments or test assertions — NOT value assignments. This is expected and correct.",
+    "details": [
+      {
+        "file": "PaperSimulationDryRunReport.ts",
+        "line": 18,
+        "content": "* - ROI, win-rate, alpha, edge, profit",
+        "type": "comment_prohibition",
+        "violation": false
+      },
+      {
+        "file": "PaperSimulationDryRunRunner.ts",
+        "line": 18,
+        "content": "* - Produce any ROI / win-rate / alpha / edge / profit claim",
+        "type": "comment_prohibition",
+        "violation": false
+      },
+      {
+        "file": "PaperSimulationDryRunRunner.ts",
+        "lines": "57-59",
+        "content": "interface JSDoc listing roi, returnPct, winRate, etc. as structurally FORBIDDEN fields",
+        "type": "comment_prohibition",
+        "violation": false
+      }
+    ]
+  },
+  "result": "CLEAN",
+  "verdict": "No forbidden performance claim assignments found in any P29G source file."
+}

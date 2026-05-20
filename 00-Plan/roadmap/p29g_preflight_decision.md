@@ -9,9 +9,10 @@
 ## Gate Decision
 
 ```
-P29E_SCAFFOLD_MAINLINE_REPAIRED_P29G_READY
+P29G_DRY_RUN_RUNNER_READY
 ```
 
+> **Updated 2026-05-15 by P29G:** Dry-run runner fully implemented, tested, and verified. 76 P29G tests pass. Total baseline 3315/3315. All forbidden file checksums match. Classification: `P29G_DRY_RUN_RUNNER_READY`.  
 > **Updated 2026-05-20 by P29H:** Blocker resolved. P29E scaffold re-implemented on main HEAD (Option B). All verification gates passed. P29G is UNBLOCKED.
 
 ---
@@ -86,7 +87,7 @@ P29G is designed to expand the paper simulation runner built by P29E. Since P29E
 | Task | Status |
 |------|--------|
 | P29G-0A: CTO/CEO Integration Decision | ✅ **RESOLVED** (P29H Option B executed) |
-| P29G runner implementation | ✅ **UNBLOCKED** |
+| P29G runner implementation | ✅ **COMPLETE** (`P29G_DRY_RUN_RUNNER_READY`) |
 | Next hard gate (before AVAILABLE_PIT_SAFE) | Quote/Regime/Chip PIT Validation Audit (Axis A) |
 
 ---

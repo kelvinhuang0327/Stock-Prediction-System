@@ -159,3 +159,30 @@ Constraints carried forward:
 - `FinancialReport` / `NewsEvent` remain `HIGH_RISK_SOURCE_ABSENT`; `entersAlphaScore=false`
 
 See: `outputs/online_validation/p29h_final_report.md`
+
+---
+
+## 10. P29G — Paper Simulation Dry-run Runner (2026-05-15)
+
+**Gate Status: P29G_DRY_RUN_RUNNER_READY**
+
+P29G implements the executable, governance-enforced paper simulation dry-run runner on top of the P29E scaffold repaired in P29H.
+
+| Action | Result |
+|--------|--------|
+| `src/lib/onlineValidation/p29g/PaperSimulationDryRunInput.ts` created | ✅ |
+| `src/lib/onlineValidation/p29g/PaperSimulationDryRunRunner.ts` created | ✅ |
+| `src/lib/onlineValidation/p29g/PaperSimulationDryRunReport.ts` created | ✅ |
+| P29G test suite (76 tests) | PASS |
+| Full onlineValidation suite (108 suites / 3315 tests) | PASS — 0 regressions |
+| Invariance check (8 checksums) | ALL MATCH |
+| Forbidden claims scan | 0 violations |
+| Leakage gate passes on all fixture outputs | ✅ |
+
+Governance enforced:
+- `paperOnly=true` and `dryRun=true` enforced at input contract (TypeScript literal type + runtime validation)
+- `notInvestmentRecommendation=true` enforced at input + leakage gate
+- `FinancialReport` / `NewsEvent` remain- `FinancialReport` / `NewsEvent` remain- `Finfalse`
+- `Quote`- `Quote`- `Quote`- `Quote`- `Quoas `PIT_SAF- `Quote`- `Quote`- `Quote`- `Quote`- `Quoas `PIT_SAF- `Quote`- `Quote`- `Quote`- `Quote`- `Quoas `PIT_SAF- `Quote`- `Quote`- `Qxt hard gate: Quote/Reg- `Quote`- ` Validation Audit (Axis A)**
+
+See: `outputs/online_validation/p29g_final_report.md`
