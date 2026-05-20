@@ -186,3 +186,57 @@ Governance enforced:
 - `Quote`- `Quote`- `Quote`- `Quote`- `Quoas `PIT_SAF- `Quote`- `Quote`- `Quote`- `Quote`- `Quoas `PIT_SAF- `Quote`- `Quote`- `Quote`- `Quote`- `Quoas `PIT_SAF- `Quote`- `Quote`- `Qxt hard gate: Quote/Reg- `Quote`- ` Validation Audit (Axis A)**
 
 See: `outputs/online_validation/p29g_final_report.md`
+
+---
+
+## Section 11 — P29X: Mainline Consolidation and Merged Branch Archival
+
+**Date:** 2026-05-20  
+**Commit:** TBD (P29X commit)  
+**Classification:** `P29X_MAINLINE_CONSOLIDATED_BRANCHES_ARCHIVED`
+
+### Objective
+
+Consolidate git topology so `main` is the only active development branch. Archive all `claude/*` agent worktree branches to `merged/YYYYMMDD/` namespace. Establish a formal branch policy to prevent future agent handoff failures.
+
+### Trigger
+
+User directive: agents hand off tasks between sessions, and fragmented branch topology breaks continuity. All prior `claude/*` branches to be renamed to `merged/20260520/` archival namespace.
+
+### Operations Performed
+
+| Operation | Result |
+|-----------|--------|
+| Removed 7 git worktrees (`git worktree remove --force`) | ✅ All 7 |
+| Renamed 7 `claude/*` branches to `merged/20260520/*` | ✅ All 7 |
+| Full onlineValidation suite post-archival | 3315/3315 PASS |
+| P29G targeted regression test | 76/76 PASS |
+| Branch sanity check (only `main` active) | ✅ |
+| Created `00-Plan/roadmap/branch_policy.md` | ✅ |
+
+### Final Branch State
+
+```
+* main                                        ← 676266d (P29G, sole active branch)
+  merged/20260520/claude-frosty-borg-e85827
+  merged/20260520/claude-frosty-visvesvaraya-ff0e3f
+  merged/20260520/claude-loving-mirzakhani-b7a453
+  merged/20260520/claude-objective-kalam-b00477
+  merged/20260520/claude-optimistic-spence-419897
+  merged/20260520/claude-quirky-black-eb3d86
+  merged/20260520/claude-stupefied-cray-62e312
+```
+
+### Artifacts
+
+- `outputs/online_validation/p29x_branch_preflight_snapshot.json` / `.md`
+- `outputs/online_validation/p29x_branch_inventory.json` / `.md`
+- `outputs/online_validation/p29x_mainline_merge_decision.json` / `.md`
+- `outputs/online_validation/p29x_mainline_validation.json` / `.md`
+- `outputs/online_validation/p29x_branch_archive_plan.json` / `.md`
+- `outputs/online_validation/p29x_branch_archive_result.json` / `.md`
+- `00-Plan/roadmap/branch_policy.md` ← **READ THIS FIRST** on every new agent session
+
+### Next Hard Gate
+
+Branch policy established. Next task should verify `main` HEAD and proceed from `branch_policy.md` onboarding checklist.

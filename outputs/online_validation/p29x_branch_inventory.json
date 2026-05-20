@@ -1,0 +1,112 @@
+{
+  "phase": "P29X",
+  "capturedAt": "2026-05-20T00:00:00.000Z",
+  "branches": [
+    {
+      "name": "main",
+      "tip": "676266d4d57254863fdcbdb21d4beed50c7b32ba",
+      "classification": "ACTIVE_CURRENT",
+      "description": "Current active mainline. HEAD of all development.",
+      "worktree": null,
+      "isAncestorOfMain": "IS_MAIN",
+      "commitsAheadOfMain": 0,
+      "action": "KEEP_AS_ACTIVE"
+    },
+    {
+      "name": "claude/frosty-borg-e85827",
+      "tip": "51d15df4ab3991a146b230593c1e966e69abeaa6",
+      "classification": "SUPERSEDED_BY_MAIN",
+      "description": "P29E paper simulation scaffold (original). NOT ancestor of main. P29H re-implemented P29E on main (Option B). P29G extends it further. Unique commit 51d15df has P29E artifacts not in main but functionality is fully superseded.",
+      "worktree": ".claude/worktrees/frosty-borg-e85827",
+      "isAncestorOfMain": false,
+      "commitsAheadOfMain": 1,
+      "action": "ARCHIVED",
+      "newName": "merged/20260520/claude-frosty-borg-e85827",
+      "reason": "Functionality superseded by P29H (53cbdd2) + P29G (676266d) on main. User policy: no claude/* branch continuation."
+    },
+    {
+      "name": "claude/frosty-visvesvaraya-ff0e3f",
+      "tip": "330b8ea925de7691fb79bc259fe1f8822dcc1598",
+      "classification": "MERGED_IN_MAIN",
+      "description": "P25 post-migration observability. IS ancestor of main. 0 commits ahead.",
+      "worktree": ".claude/worktrees/frosty-visvesvaraya-ff0e3f",
+      "isAncestorOfMain": true,
+      "commitsAheadOfMain": 0,
+      "action": "ARCHIVED",
+      "newName": "merged/20260520/claude-frosty-visvesvaraya-ff0e3f",
+      "reason": "IS ancestor of main. Safe to archive."
+    },
+    {
+      "name": "claude/loving-mirzakhani-b7a453",
+      "tip": "675771a9aa4ca474b172e1f8dcb882d051b58b0a",
+      "classification": "MERGED_IN_MAIN",
+      "description": "P9 corpus work. IS ancestor of main. 0 commits ahead.",
+      "worktree": ".claude/worktrees/loving-mirzakhani-b7a453",
+      "isAncestorOfMain": true,
+      "commitsAheadOfMain": 0,
+      "action": "ARCHIVED",
+      "newName": "merged/20260520/claude-loving-mirzakhani-b7a453",
+      "reason": "IS ancestor of main. Safe to archive."
+    },
+    {
+      "name": "claude/objective-kalam-b00477",
+      "tip": "ecd5c860a633ee37a24af7dbacb3c3effc5136f1",
+      "classification": "SUPERSEDED_BY_MAIN",
+      "description": "P29D FinancialReport/NewsEvent manual drop-zone scaffold. NOT ancestor of main. 1 commit ahead. Dropzone template files (data/manual/) already present as untracked in main. P29G-PREFLIGHT identified this as resolved blocker.",
+      "worktree": ".claude/worktrees/objective-kalam-b00477",
+      "isAncestorOfMain": false,
+      "commitsAheadOfMain": 1,
+      "action": "ARCHIVED",
+      "newName": "merged/20260520/claude-objective-kalam-b00477",
+      "reason": "User policy explicitly states: do not cherry-pick P29D/P29E. Dropzone content already present as untracked files in main. Scaffold functionality superseded."
+    },
+    {
+      "name": "claude/optimistic-spence-419897",
+      "tip": "5260be313aa26b51f64ec0afd8593fe30e27fe5a",
+      "classification": "MERGED_IN_MAIN",
+      "description": "P27 overnight governance audit. IS ancestor of main. 0 commits ahead.",
+      "worktree": ".claude/worktrees/optimistic-spence-419897",
+      "isAncestorOfMain": true,
+      "commitsAheadOfMain": 0,
+      "action": "ARCHIVED",
+      "newName": "merged/20260520/claude-optimistic-spence-419897",
+      "reason": "IS ancestor of main. Safe to archive."
+    },
+    {
+      "name": "claude/quirky-black-eb3d86",
+      "tip": "2da1203c7c7f69653f41fc3f8697c58c69c2b109",
+      "classification": "MERGED_IN_MAIN",
+      "description": "P29C backtest/simulation contract paper design. IS ancestor of main. 0 commits ahead.",
+      "worktree": ".claude/worktrees/quirky-black-eb3d86",
+      "isAncestorOfMain": true,
+      "commitsAheadOfMain": 0,
+      "action": "ARCHIVED",
+      "newName": "merged/20260520/claude-quirky-black-eb3d86",
+      "reason": "IS ancestor of main. Safe to archive."
+    },
+    {
+      "name": "claude/stupefied-cray-62e312",
+      "tip": "4c7cab71839731f01caaf9c429d2b2ef8749044b",
+      "classification": "MERGED_IN_MAIN",
+      "description": "P5-HARDRESET walkthrough. IS ancestor of main. 0 commits ahead.",
+      "worktree": ".claude/worktrees/stupefied-cray-62e312",
+      "isAncestorOfMain": true,
+      "commitsAheadOfMain": 0,
+      "action": "ARCHIVED",
+      "newName": "merged/20260520/claude-stupefied-cray-62e312",
+      "reason": "IS ancestor of main. Safe to archive."
+    }
+  ],
+  "remoteBranches": [
+    { "name": "origin/main", "classification": "DO_NOT_TOUCH", "note": "Remote tracking. Do not rename or delete." },
+    { "name": "origin/dependabot/*", "classification": "DO_NOT_TOUCH", "note": "Automated dependabot branches. Do not touch." }
+  ],
+  "summary": {
+    "total_local": 8,
+    "active_current": 1,
+    "merged_in_main": 5,
+    "superseded_by_main": 2,
+    "needs_review": 0,
+    "do_not_touch": 0
+  }
+}

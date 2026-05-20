@@ -1,0 +1,72 @@
+{
+  "phase": "P29X",
+  "capturedAt": "2026-05-20T00:00:00.000Z",
+  "results": [
+    {
+      "oldName": "claude/frosty-borg-e85827",
+      "newName": "merged/20260520/claude-frosty-borg-e85827",
+      "worktreeRemoved": true,
+      "renameSuccess": true,
+      "error": null
+    },
+    {
+      "oldName": "claude/frosty-visvesvaraya-ff0e3f",
+      "newName": "merged/20260520/claude-frosty-visvesvaraya-ff0e3f",
+      "worktreeRemoved": true,
+      "renameSuccess": true,
+      "error": null
+    },
+    {
+      "oldName": "claude/loving-mirzakhani-b7a453",
+      "newName": "merged/20260520/claude-loving-mirzakhani-b7a453",
+      "worktreeRemoved": true,
+      "renameSuccess": true,
+      "error": null
+    },
+    {
+      "oldName": "claude/objective-kalam-b00477",
+      "newName": "merged/20260520/claude-objective-kalam-b00477",
+      "worktreeRemoved": true,
+      "renameSuccess": true,
+      "error": null
+    },
+    {
+      "oldName": "claude/optimistic-spence-419897",
+      "newName": "merged/20260520/claude-optimistic-spence-419897",
+      "worktreeRemoved": true,
+      "renameSuccess": true,
+      "error": null
+    },
+    {
+      "oldName": "claude/quirky-black-eb3d86",
+      "newName": "merged/20260520/claude-quirky-black-eb3d86",
+      "worktreeRemoved": true,
+      "renameSuccess": true,
+      "error": null
+    },
+    {
+      "oldName": "claude/stupefied-cray-62e312",
+      "newName": "merged/20260520/claude-stupefied-cray-62e312",
+      "worktreeRemoved": true,
+      "renameSuccess": true,
+      "error": null
+    }
+  ],
+  "summary": {
+    "total": 7,
+    "success": 7,
+    "failed": 0,
+    "skipped": 0
+  },
+  "finalBranchList": [
+    "main",
+    "merged/20260520/claude-frosty-borg-e85827",
+    "merged/20260520/claude-frosty-visvesvaraya-ff0e3f",
+    "merged/20260520/claude-loving-mirzakhani-b7a453",
+    "merged/20260520/claude-objective-kalam-b00477",
+    "merged/20260520/claude-optimistic-spence-419897",
+    "merged/20260520/claude-quirky-black-eb3d86",
+    "merged/20260520/claude-stupefied-cray-62e312"
+  ],
+  "result": "ALL_ARCHIVED"
+}
