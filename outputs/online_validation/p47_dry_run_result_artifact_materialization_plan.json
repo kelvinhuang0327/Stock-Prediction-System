@@ -1,0 +1,30 @@
+{
+  "phase": "P47",
+  "classification": "P47_PAPER_SIMULATION_DRY_RUN_RESULT_ARTIFACT_MATERIALIZATION_READY",
+  "title": "Paper Simulation Dry-run Result Artifact Materialization",
+  "version": "p47-paper-simulation-dry-run-lifecycle-runner-result-artifact-materialization-v1",
+  "reportVersion": "p47-paper-simulation-dry-run-lifecycle-runner-result-artifact-materialization-report-v1",
+  "executionStatus": "EXECUTION_LIFECYCLE_RUNNER_RESULT_ARTIFACT_MATERIALIZATION_READY",
+  "authorization": "YES design paper simulation dry-run result artifact materialization for P47",
+  "governanceInvariants": {
+    "dryRunOnly": true,
+    "paperOnly": true,
+    "noActualMetrics": true,
+    "entersAlphaScore": false,
+    "noRealExecution": true,
+    "executedAt": null,
+    "stubResult": "DRY_RUN_STUB_ONLY"
+  },
+  "materializationStepsTotal": 2,
+  "materializationSteps": [
+    { "step": 1, "name": "runDryRunFullPipelineRehearsal", "sourcePhase": "P46" },
+    { "step": 2, "name": "buildFullPipelineRehearsalReport", "sourcePhase": "P46" }
+  ],
+  "sourceFiles": [
+    "src/lib/onlineValidation/p47/PaperSimulationDryRunResultArtifact.ts",
+    "src/lib/onlineValidation/p47/PaperSimulationDryRunResultArtifactReport.ts"
+  ],
+  "testFile": "src/lib/onlineValidation/__tests__/p47_paper_simulation_dry_run_result_artifact_materialization.test.ts",
+  "pipelineChain": ["P39", "P40", "P41", "P42", "P43", "P44", "P45", "P46", "P47"],
+  "generatedAt": "2024-01-18T10:00:00.000Z"
+}
