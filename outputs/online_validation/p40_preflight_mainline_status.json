@@ -1,0 +1,49 @@
+{
+  "phase": "P40",
+  "task": "Paper Simulation Framework Design Gate",
+  "preflightAt": "2026-05-21T00:00:00.000Z",
+  "repo": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System",
+  "branch": "main",
+  "headCommit": "a20385389b6ca28e772c54942a9939ff464d4fcf",
+  "headCommitMessage": "P39: Add paper simulation input contract for eligible sources",
+  "detachedHead": false,
+  "governance": {
+    "repoMatch": true,
+    "branchMatch": true,
+    "noDetachedHead": true,
+    "noStagedFiles": true
+  },
+  "dirtyFiles": {
+    "classified": [
+      { "file": "logs/launchd/*", "classification": "RUNTIME_LOG_NOISE" },
+      { "file": "prisma/dev.db", "classification": "RUNTIME_DB_DRIFT" },
+      { "file": "prisma/dev.db-shm", "classification": "RUNTIME_DB_DRIFT" },
+      { "file": "prisma/dev.db-wal", "classification": "RUNTIME_DB_DRIFT" },
+      { "file": "runtime/agent_orchestrator/llm_usage.jsonl", "classification": "RUNTIME_LOG_NOISE" },
+      { "file": "runtime/agent_orchestrator/pids/backend.pid", "classification": "RUNTIME_PID_NOISE" },
+      { "file": "runtime/training_reports/tw_weekly_deep_research.json", "classification": "RUNTIME_LOG_NOISE" },
+      { "file": "outputs/online_validation/p26f3_5_dropzone_scan_result.json", "classification": "PRE_EXISTING_MODIFIED_OUTPUT" },
+      { "file": "outputs/online_validation/p26f3_5_dropzone_scan_result.md", "classification": "PRE_EXISTING_MODIFIED_OUTPUT" },
+      { "file": "outputs/online_validation/p28c_renderer_only_repair_9case_before_after.json", "classification": "PRE_EXISTING_MODIFIED_OUTPUT" },
+      { "file": "outputs/online_validation/p28d_9case_integrated_review_validation.json", "classification": "PRE_EXISTING_MODIFIED_OUTPUT" },
+      { "file": "outputs/online_validation/p28d_p3_p19_renderer_regression_sweep.json", "classification": "PRE_EXISTING_MODIFIED_OUTPUT" },
+      { "file": "00-StockPlan/roadmap/stock_roadmapPlan_20260504.md", "classification": "OTHER_WORKSTREAM" }
+    ],
+    "unrelated": true,
+    "allClassifiedSafe": true
+  },
+  "verdict": "CLEAN",
+  "canProceed": true,
+  "pendingPhases": [
+    "Phase 1: Read P39/P38 artifacts",
+    "Phase 2: Create PaperSimulationFrameworkTypes.ts",
+    "Phase 3: Create PaperSimulationFrameworkBoundary.ts",
+    "Phase 4: Tests (20+ test cases)",
+    "Phase 5: Framework plan artifact",
+    "Phase 6: Validation + forbidden claims scan",
+    "Phase 7: Final report + roadmap update + commit"
+  ],
+  "entersAlphaScore": false,
+  "noSimulationExecution": true,
+  "classification": "P40_PREFLIGHT_CLEAN"
+}

@@ -376,6 +376,26 @@ P39 built the paper simulation input contract layer on top of the P38 classifica
 
 ---
 
+## P40 — Paper Simulation Framework Design Gate
+
+**Date:** 2026-05-21  
+**Status:** COMPLETE  
+
+P40 delivered 2 new src/ files: `PaperSimulationFrameworkTypes.ts` + `PaperSimulationFrameworkBoundary.ts`.
+4 boundary functions: `createPaperSimulationFrameworkPlan`, `validateFrameworkBoundary`, `assertNoSimulationExecution`, `summarizeFrameworkReadiness`.
+Framework accepts only P39 `PaperSimulationInputBundle`. Eligible: MonthlyRevenue/Quote/Regime. Blocked: NewsEvent/FinancialReport/Chip.
+`executionStatus = EXECUTION_BLOCKED_PENDING_AUTH` — no simulation executed, no metrics produced.
+All governance invariants enforced: `entersAlphaScore=false`, `paperOnly=true`, `dryRunOnly=true`, `noExecution=true`.
+No Prisma, no DB, no scoring formula, no corpus touched. 118/118 tests PASS.
+Forbidden diff: runtime only. Forbidden claims scan: CLEAN.
+Pre-flight PASS, branch=main, HEAD=a203853 → P40 commit (see commit above).
+
+**Next:** P41 simulation execution dry-run requires explicit authorization: `YES design paper simulation execution dry-run for P41`.
+
+**Classification:** `P40_PAPER_SIMULATION_FRAMEWORK_DESIGN_READY`
+
+---
+
 ## P38 — Simulation Input Readiness Mapping for Controlled Sources
 
 **Date:** 2026-05-15  

@@ -952,6 +952,65 @@ P37: Add MonthlyRevenue controlled consumer integration surface
 
 ---
 
+## P40 — Paper Simulation Framework Design Gate (2026-05-21)
+
+**Status:** COMPLETE  
+**Classification:** `P40_PAPER_SIMULATION_FRAMEWORK_DESIGN_READY`
+
+### Objective
+Establish the paper simulation framework boundary / design gate / skeleton contract.
+Not simulation execution. Not optimizer. Not real backtest. Not scoring.
+
+### New src/ Files
+- `src/lib/onlineValidation/p40/PaperSimulationFrameworkTypes.ts`
+- `src/lib/onlineValidation/p40/PaperSimulationFrameworkBoundary.ts`
+
+### Framework Boundary Functions
+- `createPaperSimulationFrameworkPlan(inputBundle)` — pure, no side effects
+- `validateFrameworkBoundary(plan)` — 16 governance rules
+- `assertNoSimulationExecution(payload)` — throws on forbidden execution fields
+- `summarizeFrameworkReadiness(plan)` — deterministic summary
+
+### Framework Lifecycle
+| Status | Phase |
+|--------|-------|
+| `INPUT_CONTRACT_READY` | P39 ✅ |
+| `FRAMEWORK_READY` | P40 ✅ |
+| `EXECUTION_BLOCKED_PENDING_AUTH` | P40 current gate |
+| `EXECUTION_NOT_IMPLEMENTED` | P41 (requires auth) |
+
+### Governance
+- `entersAlphaScore=false`, `paperOnly=true`, `dryRunOnly=true`, `noExecution=true`
+- `noInvestmentAdvice=true`, `noBuySellActionSemantics=true`
+- `notSimulationExecution=true`, `notOptimizer=true`, `notRealBacktest=true`
+- No Prisma, no DB, no scoring formula, no corpus touched
+- Forbidden diff: CLEAN. Forbidden claims scan: CLEAN.
+
+### Test Results
+- 118/118 PASS (15 groups)
+- Regressions: P39 77/77, P38 55/55
+- Full suite: 4057/4061 (4 pre-existing DB hash drift, unrelated to P40)
+
+### Eligibility Matrix (from P39, carried forward)
+| Source | Status |
+|--------|--------|
+| MonthlyRevenue | ✅ ELIGIBLE |
+| Quote | ✅ ELIGIBLE |
+| Regime | ✅ ELIGIBLE |
+| NewsEvent | 🔴 BLOCKED_QUALITY_EVIDENCE |
+| FinancialReport | 🔴 BLOCKED_PIT_METADATA |
+| Chip | 🔴 BLOCKED_AUTHORIZATION |
+
+### Next
+P41 = simulation execution dry-run design (requires explicit authorization: `YES design paper simulation execution dry-run for P41`)
+
+### Commit
+```
+P40: Add paper simulation framework design gate
+```
+
+---
+
 ## P39 — Paper Simulation Input Contract for Eligible Sources (2026-05-21)
 
 **Status:** COMPLETE  
