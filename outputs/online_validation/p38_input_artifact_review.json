@@ -1,0 +1,82 @@
+{
+  "phase": "P38",
+  "capturedAt": "2026-05-15T00:00:00.000Z",
+  "mode": "input-artifact-review",
+  "paperOnly": true,
+  "dryRunOnly": true,
+  "entersAlphaScore": false,
+  "notInvestmentRecommendation": true,
+
+  "artifactsReviewed": [
+    {
+      "artifact": "outputs/online_validation/p37_final_report.md",
+      "phase": "P37",
+      "relevance": "MonthlyRevenue consumer integration complete. 60/60 tests. Integration surface confirmed. entersAlphaScore=false hardcoded.",
+      "keyFact": "P37 COMPLETE — MonthlyRevenue SIMULATION_INPUT_ELIGIBLE candidate"
+    },
+    {
+      "artifact": "outputs/online_validation/p35_realign_decision_matrix.md",
+      "phase": "P35",
+      "relevance": "Decision matrix for MonthlyRevenue(PROMOTE), NewsEvent(PROMOTE-pending), FinancialReport(BLOCK), Chip(DEFER).",
+      "keyFacts": {
+        "MonthlyRevenue": "PROMOTE — releaseDate coverage complete, PIT confidence LOW (INFERRED_NEXT_MONTH_10TH). P36+P37 consumer integration complete.",
+        "NewsEvent": "PROMOTE-pending — 1018/1018 rows, publishedAt RECORDED_FROM_SOURCE (strongest PIT). Source diversity 84% Yahoo RSS concern.",
+        "FinancialReport": "BLOCK — missing releaseDate, releaseDateSource, releaseDateConfidence. 957 rows all Q4 2025.",
+        "Chip": "DEFER — availableAt field absent. Migration requires authorization."
+      }
+    },
+    {
+      "artifact": "outputs/online_validation/p34_final_report.md",
+      "phase": "P34",
+      "relevance": "NewsEvent source-present dry-run. 1018/1018 READY. publishedAt PIT gate. PIT anomalies=0. FULL_CONFORMANCE.",
+      "keyFact": "NewsEvent PIT gate = RECORDED_FROM_SOURCE (strongest confidence). Source diversity concern noted but not blocking dry-run."
+    },
+    {
+      "artifact": "outputs/online_validation/p33_source_present_gate_summary.json",
+      "phase": "P33",
+      "relevance": "FinancialReport: 957 rows, 0 ready, MISSING_PIT_METADATA_FIELDS. NewsEvent: 1018 rows, 1018 ready.",
+      "keyFact": "FinancialReport blockReason = MISSING_PIT_METADATA_FIELDS. Schema has no releaseDate field at all."
+    },
+    {
+      "artifact": "outputs/online_validation/p35_realign_next_implementation_p0.md",
+      "phase": "P35-REALIGN",
+      "relevance": "CEO mandate: next round MUST touch src/. Designated P0 = MonthlyRevenue Feature Consumer (which became P36+P37).",
+      "keyFact": "P38 follows from P37 completion. P38 builds readiness classification — no simulation execution."
+    }
+  ],
+
+  "sourceClassificationDraft": {
+    "MonthlyRevenue": {
+      "decision": "SIMULATION_INPUT_ELIGIBLE",
+      "rationale": "P36+P37 consumer integration complete. releaseDate PIT gate present (INFERRED_NEXT_MONTH_10TH, LOW confidence). 2143 rows FULL_CONFORMANCE. entersAlphaScore=false enforced.",
+      "conditions": "paperOnly=true enforced. No simulation execution until P39+ authorization."
+    },
+    "NewsEvent": {
+      "decision": "BLOCKED_QUALITY_EVIDENCE",
+      "rationale": "1018/1018 source-present rows READY. publishedAt PIT gate RECORDED_FROM_SOURCE (HIGH confidence). BUT: NLP quality not validated, symbol linkage not validated, source diversity 84% Yahoo RSS.",
+      "conditions": "Cannot be simulation input until NLP quality audit and source diversity analysis complete."
+    },
+    "FinancialReport": {
+      "decision": "BLOCKED_PIT_METADATA",
+      "rationale": "957 rows, 0 ready. Schema has no releaseDate, releaseDateSource, releaseDateConfidence. createdAt is ingestion timestamp only. Authorization required for migration.",
+      "conditions": "Explicit authorization: YES apply FinancialReport releaseDate migration to dev DB."
+    },
+    "Chip": {
+      "decision": "BLOCKED_AUTHORIZATION or BLOCKED_LAG_EVIDENCE",
+      "rationale": "availableAt field absent from schema. Migration requires authorization. Lag evidence (distribution lag from production) not validated.",
+      "conditions": "Explicit authorization required before any schema change."
+    },
+    "Quote": {
+      "decision": "SIMULATION_INPUT_ELIGIBLE if pitSafeConfirmed else SOURCE_PRESENT_AUDIT_ONLY",
+      "rationale": "Quote OHLCV data — generally PIT-safe if date alignment confirmed. Not explicitly assessed in P33-P37 phases.",
+      "conditions": "pitSafeConfirmed flag required."
+    },
+    "Regime": {
+      "decision": "SIMULATION_INPUT_ELIGIBLE if pitSafeConfirmed else SOURCE_PRESENT_AUDIT_ONLY",
+      "rationale": "MarketRegime classification — depends on whether regime determination is PIT-safe.",
+      "conditions": "pitSafeConfirmed flag required."
+    }
+  },
+
+  "classification": "P38_INPUT_ARTIFACT_REVIEW_COMPLETE"
+}

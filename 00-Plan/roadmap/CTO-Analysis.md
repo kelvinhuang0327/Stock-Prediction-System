@@ -346,3 +346,25 @@ CTO_ROADMAP_UPDATED_WITH_RISKS
 - Forbidden claims scan CLEAN; 3807/3811 full suite (4 pre-existing DB hash drift failures unrelated)
 
 **Classification:** `P37_MONTHLY_REVENUE_CONTROLLED_CONSUMER_INTEGRATION_READY`
+
+---
+
+## P38 — Simulation Input Readiness Mapping for Controlled Sources
+
+**Date:** 2026-05-15  
+**Status:** COMPLETE  
+
+P38 built 2 new src/ files: `SimulationInputReadinessTypes.ts` + `SimulationInputReadinessMapper.ts`.
+6 sources classified: MonthlyRevenue=ELIGIBLE(paperOnly), NewsEvent=BLOCKED_QUALITY_EVIDENCE,
+FinancialReport=BLOCKED_PIT_METADATA, Chip=BLOCKED_AUTHORIZATION, Quote/Regime=ELIGIBLE if PIT_SAFE_CONFIRMED.
+This is NOT simulation execution — only readiness classification mapping.
+All governance invariants enforced: `entersAlphaScore=false`, `paperOnly=true`, `noInvestmentAdvice=true`.
+No Prisma, no DB, no scoring formula touched. 55/55 tests PASS.
+Readiness matrix artifact produced as JSON+MD.
+Pre-flight PASS, branch=main, HEAD=8002cfe.
+
+**Next:** MonthlyRevenue, Quote, Regime are ELIGIBLE — simulation framework design authorization required (P39+).
+FinancialReport requires `YES apply FinancialReport releaseDate migration` authorization.
+NewsEvent requires NLP quality audit before advancing.
+
+**Classification:** `P38_SIMULATION_INPUT_READINESS_MAPPING_READY`

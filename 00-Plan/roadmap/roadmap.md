@@ -949,3 +949,45 @@ Build a read-only integration surface that lets downstream pipelines safely cons
 ```
 P37: Add MonthlyRevenue controlled consumer integration surface
 ```
+
+---
+
+## P38 — Simulation Input Readiness Mapping for Controlled Sources
+
+**Status:** COMPLETE  
+**Date:** 2026-05-15  
+**Classification:** `P38_SIMULATION_INPUT_READINESS_MAPPING_READY`
+
+### Objective
+Build a source-to-simulation-input readiness mapping classifying MonthlyRevenue, NewsEvent, FinancialReport, Chip, Quote, and Regime.
+Determine which sources are eligible as paper-only simulation inputs.
+No simulation execution, no optimizer, no real backtest, no scoring formula changes, no investment advice.
+
+### New src/ Files
+- `src/lib/onlineValidation/p38/SimulationInputReadinessTypes.ts`
+- `src/lib/onlineValidation/p38/SimulationInputReadinessMapper.ts`
+
+### Classification Results
+
+| Source | Status |
+|--------|--------|
+| MonthlyRevenue | ✅ SIMULATION_INPUT_ELIGIBLE (paperOnly=true) |
+| NewsEvent | 🔴 BLOCKED_QUALITY_EVIDENCE |
+| FinancialReport | 🔴 BLOCKED_PIT_METADATA |
+| Chip | 🔴 BLOCKED_AUTHORIZATION |
+| Quote | ✅ SIMULATION_INPUT_ELIGIBLE (pitSafeConfirmed) |
+| Regime | ✅ SIMULATION_INPUT_ELIGIBLE (pitSafeConfirmed) |
+
+### Test Results
+- 55/55 PASS
+- Regressions: P37 60/60, P36 114/114, P31 174/174
+
+### Governance
+- `entersAlphaScore=false`, `paperOnly=true`, `dryRunOnly=true`
+- No DB, no Prisma, no scoring formula touched
+- Forbidden diff: CLEAN, Forbidden claims scan: CLEAN
+
+### Commit
+```
+P38: Add simulation input readiness mapping for controlled sources
+```
