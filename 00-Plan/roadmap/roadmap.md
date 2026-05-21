@@ -1,17 +1,309 @@
 # Stock Prediction System Roadmap
 
-Version 2.0 CTO Alignment Update - 2026-05-20  
-Owner: Kelvin Huang  
-Prepared by: CTO Agent  
+Version 2.2 CTO Realignment Update - 2026-05-21
+Owner: Kelvin Huang
+Prepared by: CTO Agent
 Classification: CTO_ROADMAP_UPDATED_WITH_RISKS
 
 > This roadmap is an engineering execution plan for Taiwan stock research, PIT-safe prediction analysis, and paper-only simulation readiness. It is not investment advice, does not authorize automated trading, and does not make performance claims.
+
+## 0. CTO Realignment Review - 2026-05-21 P32-P34 Artifact-to-Product Value
+
+### 0.1 Inputs Reviewed
+
+This 2026-05-21 CTO realignment is based on two handoff states and the current repo:
+
+- [Confirmed] Current repo: `/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System`.
+- [Confirmed] Current branch: `main`.
+- [Confirmed] Current committed HEAD: `a6fb753 P31: Add MonthlyRevenue source-present dry-run gate`.
+- [Confirmed] P32PREP / P32 / P33 / P34 artifacts exist in the working tree.
+- [Confirmed] P32PREP / P32 / P33 / P34 artifacts are currently untracked relative to `main`; they are working-tree evidence, not committed mainline history.
+- [Confirmed] `outputs/online_validation/p32prep_final_report.md` classifies P32PREP as `P32PREP_REPORT_SPEC_V0_DESIGN_READY`.
+- [Confirmed] `outputs/online_validation/p32_final_report.md` classifies P32 as `P32_MONTHLY_REVENUE_SOURCE_PRESENT_DRY_RUN_READY`.
+- [Confirmed] `outputs/online_validation/p33_final_report.md` classifies P33 as `P33_NEWS_ONLY_SOURCE_PRESENT_GATE_READY`.
+- [Confirmed] `outputs/online_validation/p34_final_report.md` classifies P34 as `P34_NEWS_EVENT_SOURCE_PRESENT_DRY_RUN_READY`.
+- [Confirmed] User feedback: current outputs are not clear enough to push the two core goals forward.
+
+### 0.2 Current Phase State
+
+| Area | Status | CTO Read |
+| --- | --- | --- |
+| P31 committed baseline | [Confirmed] Complete at `a6fb753` | MonthlyRevenue source-present gate ready; 2143/2143 rows ready; `entersAlphaScore=false`. |
+| P32PREP | [Confirmed] Working-tree artifact exists; [Confirmed] untracked | Useful report-spec design, but not yet a committed/enforced validator. |
+| P32 MonthlyRevenue dry-run | [Confirmed] Working-tree artifact exists; [Confirmed] untracked | Proves dry-run/readiness continuity, not predictive value or feature consumer readiness. |
+| P33 FR/NE gate | [Confirmed] Working-tree artifact exists; [Confirmed] untracked | FinancialReport blocked; NewsEvent eligible by `publishedAt` coverage. |
+| P34 NewsEvent dry-run | [Confirmed] Working-tree artifact exists; [Confirmed] untracked | NewsEvent PIT/readiness looks strong, but NLP quality, symbol linkage, and feature consumer readiness are not proven. |
+| FinancialReport | [Confirmed] Blocked | Missing PIT metadata fields; migration apply requires explicit authorization. |
+| Chip availableAt | [Confirmed] Blocked | Migration apply and production logs still missing. |
+| Optimizer / real backtest / GUI | [Confirmed] Deferred | Still outside the current authorized boundary. |
+
+### 0.3 Roadmap Alignment Audit
+
+| Marker | Item | Assessment |
+| --- | --- | --- |
+| [Aligned] | P32PREP report spec design | It addressed report drift before P32 execution and supports future regression discipline. |
+| [Aligned] | P32 and P34 dry-run boundaries | Both preserved `paperOnly=true`, `dryRun=true`, and `entersAlphaScore=false`. |
+| [Aligned] | FinancialReport blocked status | P33 correctly blocked FinancialReport rather than inventing a PIT gate. |
+| [Drift] | P31A as P0 | Superseded by the CEO overlay and later P32PREP/P32/P33/P34 working-tree outputs; external benchmark is non-blocking. |
+| [Drift] | P34 recommending fixture materialization | A fixture task now risks extending artifact work before product value is clarified. |
+| [Missing] | Artifact-to-product mapping | Roadmap lacked a gate that asks what P32-P34 actually enable for stock prediction or strategy simulation. |
+| [Missing] | Feature consumer readiness boundary | MonthlyRevenue and NewsEvent are dry-run ready, but no controlled consumer route is defined. |
+| [Outdated] | Repeating source-present scans | MonthlyRevenue and NewsEvent source-present gates are already demonstrated; repeating scans is not P0. |
+| [Blocked] | FinancialReport feature path | Missing releaseDate-style PIT metadata and requires authorization before migration apply. |
+| [Blocked] | Chip lag confirmation | Requires migration/write/backfill plus production logs. |
+
+### 0.4 Reordered P0-P10 Execution Plan
+
+| Priority | Item | Status | Gate / Definition of Done |
+| --- | --- | --- | --- |
+| P0 | P35-REALIGN Artifact-to-Product Value Audit | Ready, decision-only | Convert P32PREP/P32/P33/P34 into source-by-source PROMOTE / HOLD / BLOCK / DEFER decisions and choose exactly one implementation P0 for the two core axes. |
+| P1 | Controlled Feature Consumer Readiness Plan for MonthlyRevenue / NewsEvent | Candidate after P35 | Define how ready sources could enter a non-scoring, no-advice, auditable feature consumer without changing alphaScore. |
+| P2 | FinancialReport PIT Metadata Migration Readiness Design | Candidate after P35 | Design releaseDate/releaseDateSource/releaseDateConfidence migration path without applying DB/schema changes. |
+| P3 | P30B Chip availableAt Migration Apply | Blocked by authorization | Requires exact authorization and production-log plan; do not run as part of CTO analysis. |
+| P4 | Full Suite Known-failure Triage | Important quality gate | Classify or repair 4 pre-existing failures so future regressions are not hidden. |
+| P5 | Source Quality Audit for NewsEvent | Depends on P35 | Assess source diversity, symbol linkage quality, event taxonomy, and NLP readiness before consumer use. |
+| P6 | MonthlyRevenue Feature Consumer Boundary | Depends on P35/P1 | Define a read-only consumer contract; keep `entersAlphaScore=false`. |
+| P7 | Simulation Input Readiness Mapping | Depends on P35 | Decide which dry-run outputs are eligible as paper simulation inputs and which remain audit-only. |
+| P8 | External Benchmark P31A | Deferred | Keep read-only and non-blocking; use only if it informs report/consumer design. |
+| P9 | Optimizer / Real Backtest Readiness | Blocked | Requires validated consumer boundaries, simulation inputs, corpus governance, and anti-overfit gates. |
+| P10 | Artifact Housekeeping / Fixture Materialization | Deferred | Only materialize fixtures after P35 proves they support regression or product value. |
+
+### 0.5 Items Upgraded, Downgraded, Paused, or Retired
+
+| Change | Item | Decision |
+| --- | --- | --- |
+| Upgraded to P0 | P35-REALIGN | Needed because the user explicitly said the current outputs are not clear enough to advance the desired goals. |
+| Upgraded to P1 candidate | Controlled feature consumer readiness | This is the most direct bridge from dry-run artifacts to the stock-prediction axis without scoring changes. |
+| Upgraded to P2 candidate | FinancialReport PIT metadata readiness design | FinancialReport is a core fundamental-data blocker, but DB apply remains unauthorized. |
+| Downgraded | P31A external benchmark | Non-blocking reference work; not a core-axis blocker. |
+| Paused | NewsEvent fixture materialization | Do not create fixtures until P35 proves they support regression/product value. |
+| Retired | Repeating P32/P34 readiness scans | Already demonstrated; repeating them does not advance the product. |
+| Blocked | P30B / FinancialReport migration apply | Requires explicit DB authorization phrases. |
+| Deferred | Optimizer, real backtest, GUI | Still premature. |
+
+### 0.6 Source-to-Product CTO Snapshot
+
+| Source | What is proven | What is not proven | CTO stance |
+| --- | --- | --- | --- |
+| MonthlyRevenue | [Confirmed] 2143/2143 dry-run ready; releaseDate metadata complete; `entersAlphaScore=false` | [Confirmed] No controlled feature consumer; [Unknown] product predictive usefulness | HOLD -> evaluate controlled consumer readiness. |
+| NewsEvent | [Confirmed] 1018/1018 publishedAt-ready; PIT confidence recorded; `entersAlphaScore=false` | [Unknown] NLP quality, symbol linkage quality, event taxonomy value, source diversity sufficiency | HOLD -> evaluate source quality and controlled consumer readiness. |
+| FinancialReport | [Confirmed] 957 rows queryable but blocked by missing PIT metadata fields | [Confirmed] No PIT-safe releaseDate gate; migration not authorized | BLOCK -> migration readiness design only. |
+| Chip | [Confirmed] PIT gate exists; lag warning documented | [Confirmed] availableAt not applied; production logs absent | HOLD/BLOCK -> authorization and logs required. |
+
+### 0.7 Today Focus
+
+Today should focus on:
+
+```text
+P35-REALIGN Artifact-to-Product Value Audit
+```
+
+Strict boundary:
+
+```text
+Decision audit only. Do not create fixtures, do not apply migrations, do not modify DB/schema/scoring/corpus, do not implement consumer code, and do not produce investment advice.
+```
+
+Reason:
+
+The project has enough source-present and dry-run artifacts to pause and ask the product question: which artifacts actually move the two core axes forward, and what is the single next implementation P0? Without this gate, the roadmap risks producing more outputs without increasing prediction-analysis or simulation-readiness maturity.
+
+### 0.8 Final CTO Recommendation
+
+Run P35-REALIGN next. It should map P32PREP/P32/P33/P34 into concrete product value, assign each source a PROMOTE / HOLD / BLOCK / DEFER decision, and choose one next implementation P0. The likely contenders are controlled feature consumer readiness for MonthlyRevenue/NewsEvent versus FinancialReport PIT metadata readiness design. NewsEvent fixture materialization should not be P0 until it is proven to support regression or a consumer boundary.
+
+Final classification:
+
+```text
+CTO_ROADMAP_UPDATED_WITH_RISKS
+```
+
+### 0.9 Supersession Note
+
+Section `0. CTO Realignment Review - 2026-05-21 P32-P34 Artifact-to-Product Value` is the controlling current roadmap overlay. Older P31A / P32 / P33 / P34 overlays below are preserved as historical context unless explicitly restated in Section 0 above.
+
+## 0.P34. P34 Completion Overlay — 2026-05-21
+
+**Date:** 2026-05-21
+**Phase:** P34 — NewsEvent Source-present Dry-run Sample
+**Classification:** `P34_NEWS_EVENT_SOURCE_PRESENT_DRY_RUN_READY`
+**Status:** COMPLETE
+
+**Summary:** All 1018 NewsEvent rows pass source-present dry-run gate. readyRows=1018, blockedRows=0, skippedRows=0. PIT gate field=publishedAt, policy=RECORDED_FROM_SOURCE (confidence=RECORDED — stronger than MonthlyRevenue INFERRED/LOW). 0 publishedAt nulls. 0 impossible timing anomalies (publishedAt > ingestedAt). Historical import gap for oldest events is expected and documented. Dry-run sample: 5 rows, stratified by trustLevel (official×2, mainstream×1, secondary×2). Spec conformance: FULL_CONFORMANCE. Forbidden claims scan: CLEAN. D7 verification: PASS (exit 0).
+
+**Remaining blockers:** FinancialReport still blocked (missing releaseDate migration). Chip availableAt migration pending.
+**Next P0:** P35 — NewsEvent controlled fixture candidate materialization (paperOnly=true, entersAlphaScore=false) OR FinancialReport releaseDate migration readiness design.
+See: `outputs/online_validation/p34_final_report.md`
+
+---
+
+## 0.P33. P33 Completion Overlay — 2026-05-21
+
+**Date:** 2026-05-21
+**Phase:** P33 — FinancialReport & NewsEvent Source-present Gate
+**Classification:** `P33_NEWS_ONLY_SOURCE_PRESENT_GATE_READY`
+**Status:** COMPLETE
+
+**Summary:** FinancialReport BLOCKED (missing releaseDate/releaseDateSource/releaseDateConfidence fields — 957 rows, year=2025 Q4 single-period bulk data). NewsEvent ELIGIBLE: 1018/1018 rows, publishedAt 100% coverage, RECORDED_FROM_SOURCE policy (stronger than MonthlyRevenue INFERRED). All governance constraints preserved: entersAlphaScore=false, paperOnly=true, dryRun=true. Forbidden claims scan: CLEAN. Spec conformance: GOVERNANCE_ALIGNED.
+
+**FinancialReport unblock:** Requires `YES apply FinancialReport releaseDate migration to dev DB`
+**Next P0:** P34 — NewsEvent source-present dry-run sample. publishedAt as PIT gate. paperOnly=true, dryRun=true, entersAlphaScore=false.
+See: `outputs/online_validation/p33_final_report.md`
+
+---
+
+## 0.P32. P32 Completion Overlay — 2026-05-21
+
+**Date:** 2026-05-21
+**Phase:** P32 — MonthlyRevenue Source-present Dry-run
+**Classification:** `P32_MONTHLY_REVENUE_SOURCE_PRESENT_DRY_RUN_READY`
+**Status:** COMPLETE
+
+**Summary:** All 2143 MonthlyRevenue rows pass source-present dry-run gate. rowCount=2143, blockedRows=0, dryRunStatus=READY. entersAlphaScore=false. All governance constraints preserved. Spec conformance: FULL_CONFORMANCE (10/10 required fields, 7/7 governance constraints PASS). Forbidden claims scan: CLEAN.
+
+**Next P0:** FinancialReport / NewsEvent Source-present Dry-run Gate
+See: `outputs/online_validation/p32_final_report.md`
+
+---
+
+## 0.CEO. CEO Decision Overlay — 2026-05-21 (P32PREP Complete)
+
+**Date:** 2026-05-21
+**Authority:** CEO Decision
+**Status:** P32PREP COMPLETE — P32PREP_REPORT_SPEC_V0_DESIGN_READY
+
+| Decision | Item | New Priority |
+|----------|------|-------------|
+| Demoted | P31A External Open-source Architecture Benchmark | P2 (read-only, non-blocking) |
+| Elevated to P0 | P32PREP Internal Report Spec v0 + Golden Fixture Candidate Design | P0 — **COMPLETE 2026-05-21** |
+| Next P0 | P32 MonthlyRevenue Source-present Dry-run Execution | P0 — cleared to proceed |
+
+P32PREP has been completed. All three v0 report specs (source-gate, dry-run-sample, pit-audit) are designed. Five golden fixture candidates identified. P32 is now the next P0.
+See: `outputs/online_validation/p32prep_final_report.md` for the full P32PREP deliverable record.
+
+---
+
+## 0. CTO Daily Review - 2026-05-21 P31 Complete / P31A External Benchmark
+
+### 0.1 Inputs Reviewed
+
+This 2026-05-21 CTO update is based on:
+
+- [Confirmed] Current `main` HEAD: `a6fb753 P31: Add MonthlyRevenue source-present dry-run gate`.
+- [Confirmed] Existing roadmap and CTO analysis in `00-Plan/roadmap/`.
+- [Confirmed] P29H/P29G/P29X/P29I/P29J/P29K/P29L/P30/P31 committed reports and artifacts.
+- [Confirmed] P31 final report: `P31_MONTHLY_REVENUE_SOURCE_PRESENT_DRY_RUN_READY`.
+- [Confirmed] User handoff summary requesting a pause after P31 and an external architecture benchmark of `dsxcai/stock_trading`.
+- [Confirmed] GitHub read-only check of `https://github.com/dsxcai/stock_trading` showing `core/`, `desktop/`, `gui/`, `tests/`, `backtest.py`, `backtest_config.json`, `generate_report.py`, and `report_spec.json`.
+
+### 0.2 Current Phase State
+
+| Phase / Area | Status | CTO Read |
+| --- | --- | --- |
+| P29H | [Confirmed] Complete | P29E scaffold was reimplemented on `main`; P29G unblocked. |
+| P29G | [Confirmed] Complete | Paper simulation dry-run runner delivered; paper-only / dry-run constraints enforced. |
+| P29X | [Confirmed] Complete | Branches consolidated; `main` is canonical handoff baseline. |
+| P29I | [Confirmed] Complete | Quote / Regime / Chip PIT-safe foundation confirmed; Chip lag remains documented warning. |
+| P29J | [Confirmed] Complete | Chip lag warning and MonthlyRevenue releaseDate repair need identified. |
+| P29K | [Confirmed] Complete | MonthlyRevenue sync now writes releaseDate metadata. |
+| P29L | [Confirmed] Complete | Chip availableAt migration plan and MonthlyRevenue backfill readiness created. |
+| P30 | [Confirmed] Complete | Chip schema readiness and migration SQL exist; DB migration not applied. |
+| P31 | [Confirmed] Complete | MonthlyRevenue source-present dry-run gate READY; 2143/2143 rows ready; `entersAlphaScore=false`. |
+| Full onlineValidation | [Confirmed] P31 recorded 3697/3701 PASS | 4 failures are documented as pre-existing; not introduced by P31. |
+| Chip availableAt migration apply | [Blocked] Waiting for explicit authorization | Requires `YES apply Chip availableAt migration to dev DB`. |
+| Chip production logs | [Blocked] Not available | Required before upgrading to `CHIP_LAG_CONFIRMED`. |
+| Optimizer / real backtest | [Blocked] Not authorized | Remains deferred; no performance or investment claims allowed. |
+
+### 0.3 Roadmap Alignment Audit
+
+| Marker | Item | Assessment |
+| --- | --- | --- |
+| [Aligned] | P29G through P31 progression | The project advanced from scaffold repair to dry-run runner, PIT audit, MonthlyRevenue readiness, and source-present dry-run gate without enabling production scoring. |
+| [Aligned] | Main-only governance | P29X corrected the branch/worktree drift that previously blocked handoff continuity. |
+| [Aligned] | MonthlyRevenue handling | P31 correctly marks source-present dry-run READY while preserving `entersAlphaScore=false`. |
+| [Aligned] | Chip migration restraint | P30 prepared schema/migration artifacts but did not apply DB migration without explicit authorization. |
+| [Drift] | Earlier roadmap P0 still references P29G | P29G is complete and must be retired from active P0. |
+| [Drift] | P31 report suggests P32 next | User has now asked to pause and benchmark external architecture first; roadmap should reflect that strategic pause. |
+| [Missing] | Report spec / golden fixture gate | Repeated P29-P31 artifacts show increasing report-format drift risk; roadmap needs a schema-driven report direction before more execution artifacts. |
+| [Outdated] | P29D/P29E mainline ambiguity | Resolved by P29H and P29X; no longer a current blocker. |
+| [Blocked] | P30B Chip apply | Requires explicit DB migration authorization and production evidence before confirmation. |
+| [Blocked] | Optimizer / real backtest | Still blocked by governance, source trust, report spec, and simulation maturity gates. |
+
+### 0.4 Reordered P0-P10 Execution Plan
+
+| Priority | Item | Status | Gate / Definition of Done |
+| --- | --- | --- | --- |
+| P0 | P31A External Open-source Architecture Benchmark | Ready, read-only | Benchmark `dsxcai/stock_trading` without clone/copy; produce adoption matrix for report spec, mode separation, golden fixtures, and dashboard deferral. |
+| P1 | Report Spec + Golden Fixture Candidate Design | Ready after P31A | Define source-gate, monthly-revenue dry-run, PIT audit, and simulation snapshot report spec candidates; design only unless separately approved. |
+| P2 | P32 MonthlyRevenue Source-present Dry-run Execution | Ready but deferred | Use P31 contract for actual dry-run execution after report-format direction is settled; `entersAlphaScore=false` remains hard invariant. |
+| P3 | P30B Chip availableAt Migration Apply | Blocked by explicit authorization | Requires exact user authorization phrase before DB migration; then update sync/backfill and retain `InstitutionalChip.entersAlphaScore=false`. |
+| P4 | Full Suite Known-failure Repair Triage | Important | Investigate 4 pre-existing failures without mixing with source/DB/scoring changes. |
+| P5 | Chip Production Lag Evidence Collection | Waiting on logs | Collect T86 availability evidence before upgrading `CHIP_LAG_CONFIRMED`. |
+| P6 | FinancialReport / NewsEvent Source-present Dry-run Gate | Waiting on source | Validate real official source files only; no direct import and no alphaScore activation. |
+| P7 | Simulation Output Governance v2 | Depends on P31A/P32 | Convert dry-run outputs toward schema-driven reports and regression fixtures. |
+| P8 | Dashboard / GUI Research | Deferred | Use external GUI as future reference only; no Electron/dashboard implementation now. |
+| P9 | Optimizer Readiness Gate v1 | Blocked | Requires validated dry-run outputs, report spec, source trust, corpus maturity, and anti-overfit gates. |
+| P10 | Roadmap / Artifact Housekeeping | Deferred | Keep bounded; run only when artifact drift blocks auditability. |
+
+### 0.5 Items Upgraded, Downgraded, Merged, or Paused
+
+| Change | Item | Decision |
+| --- | --- | --- |
+| Upgraded to P0 | P31A External Open-source Architecture Benchmark | P31 is a natural pause point; external benchmark can reduce report/spec drift before P32. |
+| Upgraded to P1 | Report spec / golden fixture candidate design | Needed to make future P32/P33 artifacts regression-testable rather than free-form. |
+| Downgraded | P32 MonthlyRevenue dry-run execution | Ready, but not urgent before report format direction is settled. |
+| Blocked | P30B Chip migration apply | Requires explicit DB authorization; do not run under CTO analysis. |
+| Retired from active P0 | P29G runner implementation | Complete at `676266d`; keep as historical foundation. |
+| Paused | GUI / dashboard | External project GUI is useful reference but not current product priority. |
+| Paused | Optimizer / real backtest | Still not authorized and not mature enough. |
+
+### 0.6 Critical Blockers
+
+| Blocker | Impact | Priority | Acceptance |
+| --- | --- | --- | --- |
+| Report-format drift before more dry-run execution | Verification workflow, CTO review cost, future dashboard readiness | P0/P1 | P31A adoption matrix and report spec candidate design identify canonical schema/fixture path. |
+| Chip availableAt migration not applied | Chip lag evidence and same-day availability confidence | P3 blocked | Explicit authorization, migration apply, sync write path, backfill, and logs before upgrade. |
+| Chip production logs absent | Data quality / PIT confidence | P5 | Production T86 availability logs collected and audited. |
+| Full suite has 4 known failures | Quality gate clarity | P4 | Failures triaged and either repaired or classified without hiding new regressions. |
+| FinancialReport / NewsEvent source absent | Axis A breadth | P6 event-driven | Official source files + manifest + dry-run validation; no alphaScore activation. |
+
+### 0.7 Today Focus
+
+Today should focus on:
+
+```text
+P31A External Open-source Architecture Benchmark
+```
+
+Strict boundary:
+
+```text
+Read-only benchmark only. Do not clone, do not copy code, do not create a new repo, do not modify production code, and do not introduce buy/sell/hold/action semantics.
+```
+
+Reason:
+
+P31 completed the MonthlyRevenue source-present dry-run gate and created a clean pause point. Before pushing P32/P33 execution, the project should adopt a clearer report-spec and golden-fixture strategy so future dry-run artifacts are comparable, regression-testable, and dashboard-ready.
+
+### 0.8 Final CTO Recommendation
+
+Pause P32/P30B execution for one round and run P31A as a read-only external architecture benchmark. Treat `dsxcai/stock_trading` as architecture inspiration only: report spec, mode separation, golden fixtures, and GUI workflow are candidate ideas; buy/sell/action strategy semantics are not adoptable.
+
+Final classification:
+
+```text
+CTO_ROADMAP_UPDATED_WITH_RISKS
+```
+
+### 0.9 Supersession Note
+
+Section `0. CTO Daily Review - 2026-05-21 P31 Complete / P31A External Benchmark` is the controlling current roadmap overlay. The older 2026-05-20 overlay and later phase appendices below are preserved as historical context unless explicitly restated in Section 0 above.
 
 ## 0. Consolidation Note
 
 The requested target file `00-Plan/roadmap/roadmap.md` did not exist before this update. The historical long-form roadmap remains in `00-StockPlan/roadmap/stock_roadmapPlan_20260504.md` and is treated as the source history rather than overwritten here.
 
-This file is the current CTO execution overlay. It records the latest confirmed state and the P0-P10 order after P29F-Repair.
+This historical section recorded the 2026-05-20 CTO execution overlay after P29F-Repair. It is superseded by the 2026-05-21 Section 0 overlay above.
 
 ## 1. Latest Confirmed State
 
@@ -191,8 +483,8 @@ See: `outputs/online_validation/p29g_final_report.md`
 
 ## Section 11 — P29X: Mainline Consolidation and Merged Branch Archival
 
-**Date:** 2026-05-20  
-**Commit:** TBD (P29X commit)  
+**Date:** 2026-05-20
+**Commit:** `98b5dfb`
 **Classification:** `P29X_MAINLINE_CONSOLIDATED_BRANCHES_ARCHIVED`
 
 ### Objective
@@ -245,8 +537,8 @@ Branch policy established. Next task should verify `main` HEAD and proceed from 
 
 ## Section 12 — P29I: Quote / Regime / Chip PIT Validation Audit (2026-05-20)
 
-**Classification:** `P29I_QUOTE_REGIME_CHIP_PIT_SAFE_CONFIRMED`  
-**Git Base:** `98b5dfb` (P29X)  
+**Classification:** `P29I_QUOTE_REGIME_CHIP_PIT_SAFE_CONFIRMED`
+**Git Base:** `98b5dfb` (P29X)
 **Disclaimer:** Structural audit only — no investment advice, no performance claims.
 
 ### Objective
@@ -359,8 +651,8 @@ Validate the Chip C-F05 T+0 availability assumption and audit MonthlyRevenue sou
 
 ## Section 14 — P29K: MonthlyRevenue releaseDate Sync Repair + Chip availableAt Schema Readiness
 
-**Commit:** (P29K)  
-**Status:** ✅ COMPLETE  
+**Commit:** `ecfa744`
+**Status:** ✅ COMPLETE
 **Date:** 2026-05-20
 
 ### Goals
@@ -425,7 +717,7 @@ Validate the Chip C-F05 T+0 availability assumption and audit MonthlyRevenue sou
 
 ## Section 15 — P29L: Chip availableAt Migration Readiness + MonthlyRevenue Historical Backfill (2026-05-20)
 
-**Commit:** Pending
+**Commit:** `6e5ffef`
 **Classification:** `P29L_CHIP_PLAN_ONLY_MONTHLY_REVENUE_BACKFILL_SCRIPT_READY`
 
 ### Goal 1: Chip availableAt Migration (Option A — dev-safe)
@@ -466,7 +758,7 @@ Validate the Chip C-F05 T+0 availability assumption and audit MonthlyRevenue sou
 
 ## Section 16 — P30: Chip Schema Migration + Backfill Dry-Run (2026-05-20)
 
-**Commit:** Pending
+**Commit:** `dfebb7b`
 **Classification:** `P30_CHIP_SCHEMA_READY_BACKFILL_WAITING_FOR_AUTH`
 
 ### Goal 1: Chip availableAt Schema Migration
@@ -535,7 +827,7 @@ Validate the Chip C-F05 T+0 availability assumption and audit MonthlyRevenue sou
 
 ## Section 17 — P31: MonthlyRevenue Source-Present Dry-Run Gate (2026-05-21)
 
-**Commit:** Pending
+**Commit:** `a6fb753`
 **Classification:** `P31_MONTHLY_REVENUE_SOURCE_PRESENT_DRY_RUN_READY`
 
 ### Goal: MonthlyRevenue Source-Present Dry-Run Gate
@@ -581,3 +873,51 @@ Validate the Chip C-F05 T+0 availability assumption and audit MonthlyRevenue sou
 4. Execute MonthlyRevenue actual dry-run (gate is READY, P31 contract in place)
 5. Collect production T86 logs → upgrade lag to `CHIP_LAG_CONFIRMED`
 5. Hard constraint: `InstitutionalChip.entersAlphaScore = false` always
+
+---
+
+## P35-REALIGN Completion Overlay — 2026-05-21
+
+**Classification:** `P35_REALIGN_DECISION_READY_NEXT_P0_DESIGNATED`
+
+**Decision matrix (source-by-source):**
+- PROMOTE: MonthlyRevenue (P32 all gates, FULL_CONFORMANCE, 2143 rows, releaseDate PIT LOW)
+- PROMOTE: NewsEvent (P34 all gates, FULL_CONFORMANCE, 1018 rows, publishedAt RECORDED — strongest PIT in system)
+- BLOCK: FinancialReport (releaseDate/releaseDateSource/releaseDateConfidence missing; unblock = YES apply FinancialReport releaseDate migration)
+- DEFER: Chip (availableAt absent, no PIT audit; unblock = YES apply Chip availableAt migration)
+
+**Untracked artifact disposition:** 42 entries — 41 COMMIT_WITH_RETENTION, 1 RELOCATE (verify_p34.py → scripts/). 6 proposed commits. Plan only; no git ops executed.
+
+**Designated next P0:** Candidate A — MonthlyRevenue Controlled Feature Consumer Readiness DESIGN in `src/lib/onlineValidation/` only. `entersAlphaScore=false` enforced at code level.
+
+**Anti-paper-round rule (ACTIVE):** Next round MUST touch `src/`. No further design-only round until at least one code-touching round lands.
+
+**Forbidden claims scan:** CLEAN (0 hits across all P35 artifacts).
+
+**DB checksum:** unchanged (`6a3297b7dd516e43596dd115e1fe57b2fbdc100f4a36fcf5f84fabb5e4895913`).
+
+---
+
+## P36 Overlay — MonthlyRevenue Controlled Feature Consumer Readiness (2026-05-15)
+
+**Classification:** `P36_MONTHLY_REVENUE_CONTROLLED_CONSUMER_READINESS_READY`
+
+**Anti-paper-round rule: RESOLVED.** This round touched `src/` — created two production source files and a 50-test suite.
+
+### Deliverables
+- `src/lib/onlineValidation/p36/MonthlyRevenueControlledConsumerContract.ts` ✅
+- `src/lib/onlineValidation/p36/MonthlyRevenueControlledConsumerReadiness.ts` ✅
+- `src/lib/onlineValidation/__tests__/p36_monthly_revenue_controlled_consumer_readiness.test.ts` ✅ 50/50 tests pass
+- All output artifacts: preflight, input review, sample, test baseline, forbidden claims scan, final report ✅
+
+### Governance
+- `entersAlphaScore = false` enforced at code level ✅
+- `dryRunOnly = true`, `paperOnly = true` ✅
+- DB hash unchanged ✅
+- Forbidden claims scan: CLEAN ✅
+- 0 regressions in P29K/P29L/P30/P31 suites ✅
+
+### Commit
+```
+P36: Add MonthlyRevenue controlled feature consumer readiness boundary
+```

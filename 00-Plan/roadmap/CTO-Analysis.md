@@ -2,262 +2,281 @@
 
 ## 1. CTO Review Date
 
-2026-05-20 Asia/Taipei
+2026-05-21 Asia/Taipei
 
 ## 2. Input Sources
 
 | Source | Status | CTO Read |
 | --- | --- | --- |
-| `git log --oneline -n 20` | [Confirmed] | Current `main` HEAD is `1c5a270 P29F-Repair: Fix Quote Chip PIT date normalization`. |
-| `00-StockPlan/roadmap/stock_roadmapPlan_20260504.md` | [Confirmed] | Historical canonical roadmap exists and latest visible section is 2026-05-19 v1.9. |
-| Requested `00-Plan/roadmap/roadmap.md` | [Confirmed] | File did not exist before this update; created as current CTO overlay. |
-| `outputs/online_validation/p29f_repair_quote_chip_pit_date_final_report.md` | [Confirmed] | P29F-Repair complete; Quote / Regime / Chip all `PIT_SAFE_VERIFIED`; trust-root blocker cleared. |
-| `outputs/online_validation/p29_next_prompt_after_p29f_repair.md` | [Confirmed] | Recommends P29G after trust-root clearance. |
-| `outputs/online_validation/p29f_pit_classification.md` | [Confirmed] | Pre-repair artifact still shows Quote/Chip as `PIT_UNVERIFIED_NEEDS_REPAIR`; now superseded by P29F-Repair. |
-| `outputs/online_validation/p29a_pit_feature_availability_registry_v1.md` | [Confirmed] | P29A registry still has Quote / Regime / Chip as `AVAILABLE_NEEDS_VALIDATION`; now stale after P29F/P29F-Repair. |
-| `outputs/online_validation/p29b_real_source_plan_final_report.md` | [Confirmed] | FinancialReport and NewsEvent remain source-absent and outside alphaScore. |
-| `outputs/online_validation/p29c_backtest_simulation_contract_final_report.md` | [Confirmed] | Paper simulation contract exists; no real backtest and no optimizer. |
-| Commits `ecd5c86` and `51d15df` | [Confirmed] | P29D/P29E commits exist in local refs, but both are not ancestors of current `main`. |
-| Full current repo test rerun | [Unknown] | This CTO review did not rerun the full Jest suite; it relies on recorded P29F-Repair evidence. |
+| `git rev-parse --show-toplevel` | [Confirmed] | Repo is `/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System`. |
+| `git branch --show-current` | [Confirmed] | Current branch is `main`. |
+| `git rev-parse HEAD` | [Confirmed] | Current committed HEAD is `a6fb7531c1a0bc52f94fae687ac5ea303314a89f`. |
+| `git status --short` | [Confirmed] | P32PREP/P32/P33/P34 artifacts are present but untracked; many unrelated runtime/dirty files also exist. |
+| `00-Plan/roadmap/roadmap.md` | [Confirmed] | Roadmap contained P34/P33/P32/CEO overlays plus older P31A CTO overlay; it needed current realignment. |
+| `outputs/online_validation/p32prep_final_report.md` | [Confirmed] | Working-tree report classifies P32PREP as `P32PREP_REPORT_SPEC_V0_DESIGN_READY`; design-only, no source/schema/scoring changes. |
+| `outputs/online_validation/p32_final_report.md` | [Confirmed] | Working-tree report classifies P32 as `P32_MONTHLY_REVENUE_SOURCE_PRESENT_DRY_RUN_READY`. |
+| `outputs/online_validation/p32_monthly_revenue_source_present_dry_run.json` | [Confirmed] | MonthlyRevenue has 2143 ready rows, 0 blocked rows, `entersAlphaScore=false`, `paperOnly=true`, `dryRun=true`. |
+| `outputs/online_validation/p33_final_report.md` | [Confirmed] | Working-tree report classifies P33 as `P33_NEWS_ONLY_SOURCE_PRESENT_GATE_READY`. |
+| `outputs/online_validation/p33_source_present_gate_summary.json` | [Confirmed] | FinancialReport is blocked; NewsEvent is dry-run eligible with 1018/1018 rows. |
+| `outputs/online_validation/p34_final_report.md` | [Confirmed] | Working-tree report classifies P34 as `P34_NEWS_EVENT_SOURCE_PRESENT_DRY_RUN_READY`. |
+| `outputs/online_validation/p34_news_event_source_present_dry_run.json` | [Confirmed] | NewsEvent has 1018 ready rows, `publishedAt` coverage 100%, 0 blocked rows, `entersAlphaScore=false`. |
+| Full regression rerun | [Unknown] | P32/P33/P34 reports do not show a new full suite rerun; targeted/D7 checks are recorded. |
+| External repo benchmark | [Confirmed] | Prior handoff included a read-only benchmark; latest CEO overlay and user feedback make it non-blocking. |
 
 ## 3. Roadmap Alignment Assessment
 
 ### [Aligned]
 
-- P29F and P29F-Repair followed the CEO-corrected direction by resolving Quote / Regime / Chip PIT trust-root before simulation expansion.
-- Optimizer readiness remains blocked; this is aligned with paper-only governance.
-- FinancialReport / NewsEvent remain out of alphaScore while source files and PIT dry-run gates are absent.
-- MonthlyRevenue remains operator-source gated.
+- P32PREP aligned with the need to reduce report drift before more dry-run execution.
+- P32 aligned with source-present dry-run governance for MonthlyRevenue while preserving `entersAlphaScore=false`.
+- P33 aligned by blocking FinancialReport instead of inventing a PIT gate and by routing NewsEvent separately.
+- P34 aligned by verifying NewsEvent `publishedAt` PIT readiness under paper-only / dry-run constraints.
+- The current user feedback correctly forces a CTO pause before creating more artifacts.
 
 ### [Drift]
 
-- The historical roadmap still describes Quote / Regime / Chip as `AVAILABLE_NEEDS_VALIDATION`, which is no longer current after P29F-Repair.
-- P29D/P29E are evidenced by local commits but are not integrated into current `main`; P29G must not silently assume those files exist in the active branch.
-- Older roadmap sequencing put P27 / scanner / registry cleanup too close to the execution front; those items should remain deferred unless they directly block current work.
+- The roadmap had multiple top overlays with competing next-P0 directions: P31A benchmark, P32 execution, P34 fixture materialization.
+- P32-P34 outputs demonstrate readiness, but not product value, feature consumer readiness, model usefulness, or simulation input usefulness.
+- NewsEvent fixture materialization was suggested before proving the fixture would materially support regression or product capability.
+- Governance artifacts are now driving the roadmap more than the two core axes.
 
 ### [Missing]
 
-- Roadmap needed a P29F-Repair completion marker.
-- Roadmap needed explicit `trustRootBlockerRemains=false`.
-- Roadmap needed P29G promoted to the current P0.
-- Roadmap needed an integration-risk note for P29D/P29E branch/mainline ambiguity.
+- A source-by-source Artifact-to-Product Value Audit was missing.
+- A controlled feature consumer readiness boundary was missing for MonthlyRevenue and NewsEvent.
+- A clear distinction between `dry-run ready`, `feature consumer ready`, `alphaScore ready`, and `simulation input ready` was missing.
+- An artifact budget / ownership rule was missing for `outputs/online_validation`.
 
 ### [Outdated]
 
-- Any roadmap or artifact line that lists Quote / Chip as `PIT_UNVERIFIED_NEEDS_REPAIR` is superseded by P29F-Repair.
-- Any roadmap item that keeps Quote / Regime / Chip PIT audit as future P30 work is outdated for the current trust-root scope.
-- Any item that treats P29G as blocked by Quote/Chip PIT repair is outdated after commit `1c5a270`.
+- P31A external benchmark as P0 is outdated after the CEO overlay and P32PREP/P32/P33/P34 working-tree outputs.
+- Repeating MonthlyRevenue or NewsEvent source-present scans is outdated; both are already demonstrated in artifacts.
+- Treating P34 completion as automatic permission for fixture materialization is premature.
 
 ### [Blocked]
 
-- FinancialReport / NewsEvent are blocked by source absence.
-- MonthlyRevenue remains blocked by operator source arrival.
-- Corpus expansion remains blocked by source import and coverage evidence.
-- Optimizer readiness remains blocked until P29G dry-run output, leakage/PIT gates, and corpus maturity are validated.
+- FinancialReport remains blocked by missing PIT metadata fields.
+- FinancialReport migration apply requires explicit authorization: `YES apply FinancialReport releaseDate migration to dev DB`.
+- Chip availableAt migration apply requires explicit authorization: `YES apply Chip availableAt migration to dev DB`.
+- Chip lag confirmation remains blocked by missing production logs.
+- Full-suite clarity remains limited because P32-P34 reports do not show a new full regression run.
 
 ## 4. Completed Work Assessment
 
 | Item | Assessment |
 | --- | --- |
-| P29F-Repair | [Confirmed] Fixed ISO vs YYYYMMDD date mismatch in Quote / Chip PIT gates. |
-| Quote status | [Confirmed] Reclassified to `PIT_SAFE_VERIFIED` in repair evidence. |
-| Regime status | [Confirmed] Remains `PIT_SAFE_VERIFIED`. |
-| Chip status | [Confirmed] Reclassified to `PIT_SAFE_VERIFIED` in repair evidence. |
-| Trust root | [Confirmed] `trustRootBlockerRemains=false`. |
-| P29F-Repair tests | [Confirmed] Recorded as 17/17 repair tests, 73/73 P29F tests, and 3181/3181 onlineValidation tests PASS. |
-| Invariance | [Confirmed] P29F-Repair report says `SignalFusionEngine.ts` and `ActiveScoringSnapshotBuilder.ts` were unchanged. |
-| P29D | [Confirmed] Commit and files exist in local refs/worktree evidence; [Confirmed] not merged into current main ancestry. |
-| P29E | [Confirmed] Commit exists in local refs; [Confirmed] P29E files are absent from current main worktree. |
+| P31 committed baseline | [Confirmed] Complete at `a6fb753`; MonthlyRevenue source-present gate ready. |
+| P32PREP report spec design | [Confirmed] Working-tree artifacts exist; [Confirmed] untracked; design-only. |
+| P32 MonthlyRevenue dry-run | [Confirmed] Working-tree artifacts exist; 2143/2143 ready, 0 blocked, `entersAlphaScore=false`. |
+| P33 source-present gate | [Confirmed] Working-tree artifacts exist; FinancialReport blocked, NewsEvent eligible. |
+| P34 NewsEvent dry-run | [Confirmed] Working-tree artifacts exist; 1018/1018 ready, `publishedAt` coverage 100%, 0 blocked. |
+| Roadmap/CTO overlays | [Confirmed] Existing files were previously updated with P32-P34 overlays. |
+
+Important caveat:
+
+- [Confirmed] P32PREP/P32/P33/P34 are not in committed `main` history at current HEAD. They are local working-tree evidence and should not be described as committed mainline completion until staged/committed separately.
 
 ## 5. Unfinished Work Assessment
 
 | Item | Assessment |
 | --- | --- |
-| P29G dry-run expansion | [Confirmed] Not completed in current evidence. |
-| P29E active-branch availability | [Confirmed] Ambiguous: commit exists locally but is not in current main. |
-| FinancialReport source import | [Confirmed] Not allowed; source absent and `filingDate` path remains gated. |
-| NewsEvent source import | [Confirmed] Not allowed; source absent and `publishedAt` audit remains gated. |
-| MonthlyRevenue source arrival | [Confirmed] Still operator-gated unless official source and manifest arrive. |
-| Optimizer readiness | [Inferred] Should remain blocked until P29G produces validated dry-run outputs. |
-| Full current suite validation | [Unknown] Not rerun during this CTO doc update. |
+| Product value mapping | [Inferred] Missing and now P0; current artifacts do not answer how to advance the two core axes. |
+| Controlled feature consumer readiness | [Confirmed] Not implemented or designed as a boundary; needed for MonthlyRevenue / NewsEvent to move beyond reports. |
+| FinancialReport PIT metadata | [Confirmed] Missing; blocks fundamental-data progress. |
+| NewsEvent feature quality | [Unknown] Source-present readiness is proven, but NLP quality, event taxonomy, source diversity, and symbol linkage quality are not proven. |
+| MonthlyRevenue predictive/product usefulness | [Unknown] Dry-run readiness is proven, but consumer usefulness is not proven. |
+| P30B Chip migration apply | [Confirmed] Not applied; requires explicit authorization. |
+| Full regression suite after P32-P34 | [Unknown] Not shown in the working-tree reports. |
+| Artifact ownership / budget | [Inferred] Needed to avoid continued artifact-driven drift. |
 
 ## 6. P0 / P1 / P2 / P3-P10 Reprioritization
 
 | Priority | Item | Status | Rationale |
 | --- | --- | --- | --- |
-| P0 | P29G Paper Simulation Runner Dry-run Expansion | Ready with preflight | Trust-root blocker is cleared; must first confirm P29E scaffold exists in the active branch/worktree. |
-| P1 | FinancialReport / NewsEvent Source-present Dry-run Gate | Waiting | Source absent, but intake/dry-run route is the next axis A value when source arrives. |
-| P2 | P26F4 MonthlyRevenue Source-Arrival Fast Lane | Waiting | MonthlyRevenue remains key fundamental source coverage path. |
-| P3 | Post-import Coverage + Corpus Expansion Gate | Blocked | Requires controlled source import/dry-run evidence. |
-| P4 | P29G Simulation Output Validation / Leakage Gate Strengthening | Depends | Should follow initial P29G dry-run runner. |
-| P5 | NewsEvent Integrity Audit + FinancialReport Schema Migration Plan | Waiting | Valuable after source arrival; plan-only before approval. |
-| P6 | Optimizer Readiness Gate v1 | Blocked | Cannot precede verified simulation dry-run output and corpus maturity. |
-| P7 | P30-A TSC Triage | Deferred | Infra signal work, not a main-axis blocker unless CI blocks execution. |
-| P8 | P27 Housekeeping | Deferred | Must remain bounded and lower priority. |
-| P9 | Scanner Consolidation | Deferred | Governance hardening, not current P0/P1. |
-| P10 | Phase Registry Cleanup | Deferred | Lowest priority unless registry drift blocks audit. |
+| P0 | P35-REALIGN Artifact-to-Product Value Audit | Ready, decision-only | Directly answers the user's concern: which artifacts actually advance stock prediction or simulation optimization? |
+| P1 | Controlled Feature Consumer Readiness Plan for MonthlyRevenue / NewsEvent | Candidate after P35 | Most direct bridge from dry-run readiness to axis A without changing scoring or advice boundaries. |
+| P2 | FinancialReport PIT Metadata Migration Readiness Design | Candidate after P35 | FinancialReport is a core fundamental blocker, but DB apply remains unauthorized. |
+| P3 | P30B Chip availableAt Migration Apply | Blocked by authorization | Required for Chip lag evidence, but cannot proceed without explicit DB authorization and log plan. |
+| P4 | Full Suite Known-failure / Regression Clarity Triage | Important | Needed to make future quality gates credible. |
+| P5 | NewsEvent Source Quality / Symbol-Linkage Audit | Depends on P35 | Source-present does not prove feature usefulness; Yahoo dominance and linkage quality need review. |
+| P6 | MonthlyRevenue Consumer Boundary Design | Depends on P35/P1 | Define read-only consumer contract while keeping `entersAlphaScore=false`. |
+| P7 | Simulation Input Readiness Mapping | Depends on P35 | Determine what dry-run outputs can safely become paper simulation inputs. |
+| P8 | External Benchmark P31A | Deferred | Useful reference, not a blocker. |
+| P9 | Optimizer / Real Backtest Readiness | Blocked | Still premature. |
+| P10 | Fixture Materialization / Artifact Housekeeping | Deferred | Only after P35 proves the fixture has regression/product value. |
 
-Upgrades and downgrades:
+Specific changes:
 
-- [Confirmed] P29G should be upgraded to P0 after P29F-Repair.
-- [Confirmed] Quote / Regime / Chip PIT audit should be retired from future-roadmap status for this trust-root scope.
-- [Inferred] P27 / scanner / phase registry cleanup should remain downgraded unless they block auditability.
-- [Confirmed] Optimizer readiness remains paused.
+- [Confirmed] P31A is downgraded to P8 / non-blocking reference.
+- [Confirmed] P32/P34 repeated scans are retired; they are already evidenced.
+- [Inferred] P35 fixture materialization is downgraded until product/regression value is proven.
+- [Inferred] Controlled feature consumer readiness is elevated as the likely product bridge, pending P35 decision.
+- [Confirmed] FinancialReport and Chip DB applies remain blocked by explicit authorization.
 
 ## 7. Critical Blockers
 
-### Blocker 1 - Simulation capability is not validated beyond scaffold
+### Blocker 1 - Artifact-to-product ambiguity
 
-- Impact: Axis B paper simulation and future optimization readiness.
-- Why blocker: P29C/P29E establish design/scaffold evidence, but P29G dry-run expansion has not produced validated runner outputs.
-- Risk if ignored: The system remains at contract/scaffold maturity and may overstate simulation readiness.
+- Impact: Axis A prediction analysis and axis B simulation readiness.
+- Why blocker: P32-P34 prove readiness states, but they do not prove consumer readiness, feature usefulness, or simulation input value.
+- Risk if ignored: The project continues producing artifacts while the user still cannot see substantive progress.
 - Priority: P0.
 - Acceptance:
-  - P29G dry-run runner executes deterministically.
-  - Default mode is paper-only / dry-run.
-  - No DB, corpus, scoring, optimizer, or real backtest mutation.
-  - Leakage/PIT status is explicit.
-  - Output artifacts and tests pass.
+  - Each source gets PROMOTE / HOLD / BLOCK / DEFER.
+  - The audit states what was proven and what was not proven.
+  - Exactly one next implementation P0 is selected.
+  - No fixture, DB, schema, scoring, corpus, optimizer, or GUI work is performed.
 
-### Blocker 2 - P29D/P29E branch/mainline ambiguity
+### Blocker 2 - No controlled feature consumer boundary
 
-- Impact: Execution continuity and roadmap truthfulness.
-- Why blocker: P29D/P29E commits exist in local refs, but they are not ancestors of current `main`; P29E files are absent from current main worktree.
-- Risk if ignored: P29G may assume scaffold files exist and create duplicated or inconsistent artifacts.
-- Priority: P0 preflight condition.
+- Impact: Axis A.
+- Why blocker: MonthlyRevenue and NewsEvent are dry-run ready but have no safe downstream consumer path.
+- Risk if ignored: They remain report-only and do not advance stock prediction analysis.
+- Priority: P1 candidate.
 - Acceptance:
-  - P29G preflight verifies scaffold presence before expansion.
-  - If scaffold is absent, run classification must be blocked rather than silently proceeding.
-  - No unrelated branch merge or repo creation occurs without an explicit execution task.
+  - Consumer boundary defined as non-scoring / no-advice.
+  - Inputs, outputs, PIT requirements, rollback, and tests specified.
+  - `entersAlphaScore=false` remains hard invariant.
 
-### Blocker 3 - FinancialReport / NewsEvent source absence
+### Blocker 3 - FinancialReport PIT metadata missing
 
-- Impact: Axis A fundamental and event/news breadth.
-- Why blocker: Both sources remain outside alphaScore and lack validated source files.
-- Risk if ignored: AlphaScore remains technical/chip/regime-heavy, and source-absent data could contaminate research if forced.
-- Priority: P1 when source arrives.
+- Impact: Axis A fundamental breadth.
+- Why blocker: FinancialReport is a core fundamental source but cannot pass a PIT gate without release metadata.
+- Risk if ignored: Fundamental coverage remains shallow and roadmap over-rotates on MonthlyRevenue / NewsEvent.
+- Priority: P2 candidate / blocked by authorization for apply.
 - Acceptance:
-  - Source-present dry-run gate passes.
-  - No direct import before validation.
-  - FinancialReport uses `filingDate`; NewsEvent uses `publishedAt`.
-  - `entersAlphaScore=false` remains until controlled approval.
+  - Migration readiness design exists.
+  - Release metadata fields and source policy are defined.
+  - Apply authorization phrase is explicit.
+  - No migration apply without authorization.
 
-### Blocker 4 - MonthlyRevenue operator-source gating
+### Blocker 4 - Artifact bloat / governance drift
 
-- Impact: Axis A fundamental source coverage.
-- Why blocker: Historical source files and manifest remain required before controlled dry-run/import route.
-- Risk if ignored: Fundamental coverage stays shallow or becomes fabricated/synthetic.
-- Priority: P2 / event-driven insertion.
+- Impact: Agent workflow, CTO review cost, auditability.
+- Why blocker: P32PREP/P32/P33/P34 added many output artifacts, many untracked, without a clear product-value ledger.
+- Risk if ignored: Future agents spend context on artifact inventory rather than core system maturity.
+- Priority: P0/P4.
 - Acceptance:
-  - Official source arrival confirmed.
-  - Manifest complete.
-  - Controlled dry-run passes.
-  - No uncontrolled production write.
+  - Artifact owner/source-of-truth rules defined.
+  - Fixture creation requires product/regression justification.
+  - Roadmap identifies canonical artifacts per phase.
 
-### Blocker 5 - Optimizer readiness is premature
+### Blocker 5 - DB-apply gates for Chip / FinancialReport
 
-- Impact: Axis B strategy optimization governance.
-- Why blocker: Simulation dry-run output is not yet validated and corpus/source gates are not mature.
-- Risk if ignored: Optimizer work may build on unverified simulation output.
-- Priority: Blocked.
+- Impact: Data quality / PIT trust.
+- Why blocker: Both require schema-level work but no explicit authorization is present.
+- Risk if ignored: Unauthorized DB/schema changes or permanent source blockage.
+- Priority: P3 / blocked.
 - Acceptance:
-  - P29G complete.
-  - Simulation output schema stable.
-  - Leakage gates pass.
-  - Source PIT status embedded.
-  - Corpus maturity gate passes.
+  - Exact authorization received before apply.
+  - Apply path includes migration, backfill, tests, rollback, and post-apply audit.
 
 ## 8. Recommended System Optimization Directions
 
-### Direction 1 - Simulation Dry-run Spine
+### Direction 1 - Artifact-to-Product Value Gate
 
-- Roadmap phase: P29G.
-- Why important: Moves axis B from paper scaffold toward executable, auditable dry-run behavior.
-- Maturity gain: Contract maturity to execution maturity.
-- Expected benefit: Establishes a reliable base for future simulation comparison and optimizer readiness gates.
-- Risk: If P29E scaffold is absent in current main, implementation could duplicate or diverge.
+- Roadmap phase: P35-REALIGN.
+- Why important: It converts the last two handoffs into a decision that actually serves the two core axes.
+- Maturity gain: Moves governance from artifact production to product-value control.
+- Expected benefit: Clear next implementation P0, reduced drift, better user confidence.
+- Risk: If it becomes another long report, it repeats the problem.
 - Acceptance:
-  - Active-branch scaffold preflight passes.
-  - Dry-run only.
-  - Deterministic outputs.
-  - No mutation to DB/corpus/scoring.
-  - Leakage/PIT status explicit.
+  - One concise source-by-source matrix.
+  - One next P0 only.
+  - Explicit non-goals and retired tasks.
+  - No new fixture/code/schema/DB changes.
 - Priority: P0.
 
-### Direction 2 - Source Arrival Controlled Gate
+### Direction 2 - Controlled Feature Consumer Readiness
 
-- Roadmap phase: P29-F / P26F4.
-- Why important: FinancialReport, NewsEvent, and MonthlyRevenue need a consistent arrival-to-dry-run route.
-- Maturity gain: Reduces operator file placement/import risk.
-- Expected benefit: Source files can be validated quickly without contaminating production data.
-- Risk: Too-early import would break PIT/corpus trust.
+- Roadmap phase: P35 outcome / P36 candidate.
+- Why important: MonthlyRevenue and NewsEvent need a safe way to become useful without entering alphaScore.
+- Maturity gain: Moves axis A from source readiness to auditable feature consumption.
+- Expected benefit: Concrete bridge toward Taiwan stock prediction analysis.
+- Risk: Consumer work could be mistaken as scoring activation.
 - Acceptance:
-  - Source-present dry-run gate exists.
-  - No direct import.
-  - PIT field verified.
-  - Manifest and QA checklist enforced.
-- Priority: P1/P2.
+  - Consumer is read-only and non-scoring.
+  - No alphaScore or recommendation outputs.
+  - PIT inputs and missing-source behavior defined.
+  - Tests and rollback plan specified.
+- Priority: P1.
 
-### Direction 3 - Simulation Output Governance
+### Direction 3 - Fundamental Source Unblock Path
 
-- Roadmap phase: P29G+.
-- Why important: Prevents dry-run output from being misread as performance, advice, or optimizer evidence.
-- Maturity gain: Strengthens output contract, claim guard, and leakage labeling.
-- Expected benefit: Lower governance risk for future strategy simulation.
-- Risk: Over-heavy governance could slow runner validation.
+- Roadmap phase: FinancialReport PIT metadata readiness.
+- Why important: FinancialReport is more central to the fundamental-analysis axis than additional NewsEvent fixtures.
+- Maturity gain: Unblocks a core fundamental data source.
+- Expected benefit: Better basis for future multi-source prediction snapshots.
+- Risk: Requires DB/schema authorization; premature apply would violate governance.
 - Acceptance:
-  - Output schema has paper-only markers.
-  - Forbidden claim scan has zero violations.
-  - Source PIT status and leakage status are embedded.
-  - Optimizer and real backtest flags remain false.
-- Priority: P1 after P29G.
-
-### Direction 4 - Roadmap Governance Minimalism
-
-- Roadmap phase: Continuous.
-- Why important: Keeps roadmap capacity on the two main axes rather than open-ended housekeeping.
-- Maturity gain: Clearer P0/P1 signal and less governance churn.
-- Expected benefit: Avoids P27/scanner/registry tasks crowding out source trust and simulation maturity.
-- Risk: Some technical debt can accumulate if deferred too long.
-- Acceptance:
-  - P0/P1 only contain blockers or main-axis value.
-  - Housekeeping remains deferred unless blocking.
-  - Roadmap includes current evidence state and superseded artifacts.
+  - Design-only readiness first.
+  - Explicit fields, inference/source policy, migration/backfill/rollback.
+  - Authorization phrase required before apply.
 - Priority: P2.
+
+### Direction 4 - Simulation Input Readiness Mapping
+
+- Roadmap phase: post-P35 / axis B bridge.
+- Why important: Dry-run outputs should be classified before any paper simulation input expansion.
+- Maturity gain: Prevents audit-only artifacts from being misused as simulation evidence.
+- Expected benefit: Clearer bridge from axis A source trust to axis B paper simulation.
+- Risk: Premature mapping could invite optimizer/backtest work.
+- Acceptance:
+  - Each source labeled simulation-input eligible / audit-only / blocked.
+  - Leakage/PIT fields required.
+  - No real backtest or optimizer.
+- Priority: P3.
+
+### Direction 5 - Artifact Governance Budget
+
+- Roadmap phase: continuous.
+- Why important: Keeps agent workflow from drowning in generated reports.
+- Maturity gain: Clear source-of-truth hierarchy.
+- Expected benefit: Lower review cost and fewer ambiguous next tasks.
+- Risk: Over-governance can slow useful execution.
+- Acceptance:
+  - Canonical artifacts per phase identified.
+  - Fixture/materialization requires explicit justification.
+  - Roadmap overlays do not conflict.
+- Priority: P4.
 
 ## 9. Roadmap Changes Applied
 
-- Created `00-Plan/roadmap/roadmap.md` because the requested file did not exist.
-- Marked P29F-Repair as complete.
-- Marked Quote / Regime / Chip as `PIT_SAFE_VERIFIED`.
-- Marked `trustRootBlockerRemains=false`.
-- Promoted P29G Paper Simulation Runner Dry-run Expansion to P0.
-- Added P29D/P29E mainline ambiguity as a P0 preflight risk.
-- Kept FinancialReport / NewsEvent source-present dry-run gate as P1 when source arrives.
-- Kept P26F4 MonthlyRevenue source-arrival route as P2 / event-driven insertion.
-- Kept optimizer readiness blocked.
-- Kept P27 housekeeping / scanner consolidation / phase registry cleanup deferred.
+- Updated roadmap version to 2.2.
+- Added `0. CTO Realignment Review - 2026-05-21 P32-P34 Artifact-to-Product Value`.
+- Marked P32PREP/P32/P33/P34 as working-tree evidence, not committed mainline history.
+- Replaced the active P0 with P35-REALIGN.
+- Downgraded P31A external benchmark to deferred/non-blocking.
+- Paused NewsEvent fixture materialization until product/regression value is proven.
+- Elevated controlled feature consumer readiness and FinancialReport PIT metadata readiness as post-P35 candidates.
+- Rewrote `00-Plan/roadmap/CTO-Analysis.md` to reflect the two handoffs and current artifact-driven drift risk.
+- Did not create `active_task.md` and did not produce a worker prompt artifact due to the explicit no-worker-prompt restriction.
 
 ## 10. Risks / Unknowns
 
 | Type | Item |
 | --- | --- |
-| [Confirmed] | Requested `00-Plan/roadmap/roadmap.md` did not exist; historical roadmap was found under `00-StockPlan/roadmap/stock_roadmapPlan_20260504.md`. |
-| [Confirmed] | P29D/P29E commits exist locally but are not ancestors of current `main`. |
-| [Unknown] | Whether the project owner intends to merge P29D/P29E branch artifacts before P29G. |
-| [Unknown] | Whether a newer CEO final decision exists outside the files inspected here. |
-| [Unknown] | Full repo test status after this doc-only update; no tests were rerun. |
-| [Inferred] | P29G is eligible because P29F-Repair cleared the Quote / Regime / Chip trust-root blocker. |
-| [Confirmed] | P29G eligibility does not authorize real backtest, optimizer, production write, or investment/performance claims. |
-| [Confirmed] | FinancialReport / NewsEvent remain source-absent. |
-| [Confirmed] | MonthlyRevenue remains operator-source gated. |
-| [Confirmed] | Current user instructions conflict on whether to output a worker task prompt; the stricter instruction forbidding new worker task prompts is followed. |
+| [Confirmed] | P32PREP/P32/P33/P34 artifacts exist but are untracked. |
+| [Confirmed] | Current committed HEAD remains P31 (`a6fb753`). |
+| [Confirmed] | P34 created `verify_p34.py` in repo root; this is an artifact hygiene concern and should not be expanded. |
+| [Unknown] | Full regression suite status after P32-P34; not shown in reports. |
+| [Unknown] | Whether P32-P34 artifacts should be committed as-is or compressed into a smaller canonical set. |
+| [Unknown] | Whether CEO has issued a newer external decision outside supplied handoffs and local files. |
+| [Inferred] | User dissatisfaction is caused by artifact-driven drift and lack of product-value mapping. |
+| [Confirmed] | MonthlyRevenue / NewsEvent readiness does not mean alphaScore readiness or investment advice. |
+| [Confirmed] | FinancialReport / Chip migration apply require explicit authorization. |
+| [Confirmed] | Worker task prompt output is requested elsewhere in the prompt but prohibited in strict rules; no new worker prompt is produced. |
 
 ## 11. CTO Final Recommendation
 
-Proceed with P29G Paper Simulation Runner Dry-run Expansion as the next P0, but begin with active-branch scaffold preflight. If P29E scaffold is absent from current main/worktree, classify P29G as blocked by missing scaffold integration instead of recreating or assuming it.
+Do not continue automatically into P35 fixture materialization, P36, GUI, optimizer, or another source-present scan.
 
-Do not start optimizer readiness. Do not import FinancialReport / NewsEvent. Do not expand corpus until source gates and P29G dry-run gates pass.
+Run P35-REALIGN as the next P0 decision gate. Its purpose is to translate P32PREP/P32/P33/P34 from readiness artifacts into product value for the two real axes:
+
+- Axis A: controlled, PIT-safe feature consumer readiness for Taiwan stock prediction analysis.
+- Axis B: simulation input readiness mapping for paper-only strategy simulation.
+
+The likely substantive next implementation after P35 should be either controlled feature consumer readiness for MonthlyRevenue / NewsEvent or FinancialReport PIT metadata readiness design. P35 must choose exactly one.
 
 Final classification:
 
@@ -267,509 +286,42 @@ CTO_ROADMAP_UPDATED_WITH_RISKS
 
 ## 12. 10 行內 CTO 摘要
 
-1. [Confirmed] P29F-Repair 已完成，current HEAD 為 `1c5a270`。
-2. [Confirmed] Quote / Regime / Chip 目前可視為 `PIT_SAFE_VERIFIED`。
-3. [Confirmed] `trustRootBlockerRemains=false`。
-4. [Confirmed] P29F-Repair 報告記錄 onlineValidation 106 suites / 3181 tests PASS。
-5. [Confirmed] P29D/P29E commits 存在於本地 refs，但不在 current `main` ancestry。
-6. [Inferred] P29G 可升為 P0，但必須先做 P29E scaffold preflight。
-7. [Confirmed] FinancialReport / NewsEvent 仍 source-absent，不得進 alphaScore。
-8. [Confirmed] MonthlyRevenue 仍依 operator source arrival 插隊。
-9. [Confirmed] Optimizer readiness 仍應阻塞到 P29G dry-run 完成。
-10. 今日聚焦：P29G Paper Simulation Runner Dry-run Expansion with scaffold preflight。
+1. [Confirmed] Current committed HEAD is still P31 `a6fb753`.
+2. [Confirmed] P32PREP/P32/P33/P34 artifacts exist but are untracked working-tree evidence.
+3. [Confirmed] MonthlyRevenue and NewsEvent are dry-run/source-present ready, but not feature-consumer ready.
+4. [Confirmed] FinancialReport is blocked by missing PIT metadata.
+5. [Confirmed] Chip availableAt and FinancialReport migration apply both require explicit authorization.
+6. [Inferred] Current risk is artifact-driven drift: many outputs, unclear product movement.
+7. P0 is now P35-REALIGN: map artifacts to product value and choose one next implementation P0.
+8. P1 candidate is controlled feature consumer readiness for MonthlyRevenue / NewsEvent.
+9. P2 candidate is FinancialReport PIT metadata migration readiness design.
+10. Final: `CTO_ROADMAP_UPDATED_WITH_RISKS`.
 
 ---
 
-## 13. P29G-PREFLIGHT 結論追記（2026-05-20）
+## P35-REALIGN CTO Note — 2026-05-21
 
-**Preflight 裁決：P29G_PREFLIGHT_BLOCKED_SCAFFOLD_MISSING**
+**Context:** CEO Decision (2026-05-21 late review) — six consecutive paper rounds without Axis A/B movement. P35 designated as a bounded decision gate, not a seventh paper round.
 
-| 檢查項目 | 結果 |
-|---------|------|
-| `git merge-base --is-ancestor ecd5c86 HEAD` | exit 1 — P29D 不在 main |
-| `git merge-base --is-ancestor 51d15df HEAD` | exit 1 — P29E 不在 main |
-| P29D 所在 ref | `claude/objective-kalam-b00477`（本地分支） |
-| P29E 所在 ref | `claude/frosty-borg-e85827`（本地分支） |
-| P29E test files in working tree | 0（全部缺失） |
-| onlineValidation 重跑（HEAD） | 3181/3181 PASS ✓ |
-| Invariance baseline | 已建立（5 corpus + 3 scoring + dev.db） |
-| Forbidden claims | 0 violations ✓ |
+**Outcome:**
+- Decision matrix complete: 2 PROMOTE (MonthlyRevenue, NewsEvent), 1 BLOCK (FinancialReport — migration required), 1 DEFER (Chip — migration required)
+- 42 untracked artifacts audited: 41 COMMIT_WITH_RETENTION, 1 RELOCATE (verify_p34.py → scripts/)
+- Designated next P0: MonthlyRevenue Controlled Feature Consumer Readiness DESIGN in `src/lib/onlineValidation/` — first `src/`-touching round in the sequence
+- Anti-paper-round rule ACTIVE: next round MUST touch `src/`; `entersAlphaScore=false` enforced at code level; no migrations, no corpus, no scoring modifications
 
-**CTO 必須決議：** 在 P29G runner 實作開始前，需由 CTO/CEO 選擇 scaffold integration 路徑：
-
-- **Option A**：將 `claude/frosty-borg-e85827`（P29E）PR merge 入 main（需先解決 P29D 依賴）
-- **Option B**：在當前 main HEAD 直接重新實作 P29E scaffold（新 commit）
-- **Option C**：重新定義 P29G 範圍，只基於 P29C/P29F 現有 artifacts
-
-此追記不包含任何 ROI / win-rate / alpha / edge / profit / outperform / buy / sell 宣稱。
+**Classification:** `P35_REALIGN_DECISION_READY_NEXT_P0_DESIGNATED`
 
 ---
 
-## 14. P29H 結論追記（2026-05-20）
+## P36 CTO Note — MonthlyRevenue Controlled Feature Consumer Readiness (2026-05-15)
 
-**P29H 裁決：P29E_SCAFFOLD_MAINLINE_REPAIRED_P29G_READY**
+**Anti-paper-round rule: RESOLVED.** P36 touched `src/` — created `MonthlyRevenueControlledConsumerContract.ts`, `MonthlyRevenueControlledConsumerReadiness.ts`, and 50 tests (50/50 pass).
 
-P29H 執行 Option B — 直接在 main HEAD 重新實作 P29E scaffold，無需 cherry-pick / merge / rebase 側分支。
+**Key architectural decision:** The Consumer Contract defines what downstream may ACCESS (inputs) and what it must NEVER produce (outputs). It is not a scoring contract. This creates an explicit, tested, machine-enforceable boundary between MonthlyRevenue data and any scoring/prediction/investment semantics.
 
-### P29H 各 Phase 結果
+**Governance outcome:**
+- `entersAlphaScore = false` enforced at code level in all P36 artifacts
+- LOW confidence tier (INFERRED_NEXT_MONTH_10TH) maps to `CONSUMER_READY_WITH_LOW_CONFIDENCE_WARNING` — accepted per P31/P32/P35 precedent
+- 0 regressions; DB hash unchanged; forbidden claims scan CLEAN
 
-| Phase | 項目 | 結果 |
-|-------|------|------|
-| Phase 0 | Git topology 審計 | ✅ DONE |
-| Phase 1 | P29E source 安全審計 | ✅ DONE — SAFE_TO_REIMPLEMENT |
-| Phase 2 | 4 個檔案建立於 main HEAD | ✅ DONE |
-| Phase 3 | 測試 / 不變量 / 禁令檢查 | ✅ ALL PASS |
-| Phase 4 | P29G readiness 裁決 | ✅ UNBLOCKED |
-
-### Phase 3 驗證數字
-
-| 指標 | 結果 |
-|------|------|
-| P29E targeted test (58 tests) | 58/58 PASS |
-| Full onlineValidation suite | 3239/3239 PASS（107 suites）|
-| Delta from P29G-PREFLIGHT baseline | +1 suite, +58 tests — zero regressions |
-| Invariance (9 checksums) | ALL MATCH |
-| Forbidden diff | prisma/dev.db + llm_usage.jsonl — pre-existing runtime writes，非 P29H 所造成 |
-| Forbidden claims | 0 violations |
-
-### CTO 指示：P29G 現在可以開始
-
-1. **唯一授權模式：** `dryRun = true`
-2. **下一個 hard gate：** Quote/Regime/Chip PIT Validation Audit（Axis A）
-3. **FinancialReport / NewsEvent 維持：** `HIGH_RISK_SOURCE_ABSENT`，`entersAlphaScore=false`
-4. P29G runner outputs 必須通過 `runLeakageGatePlaceholder()` 結構檢查
-5. 不得在 P29G runner 中進行 corpus / DB / scoring 寫入
-
-此追記不包含任何 ROI / win-rate / alpha / edge / profit / outperform / buy / sell 宣稱。
-
----
-
-## 15. P29G 完成：Dry-run Runner 交付（2026-05-15）
-
-### Phase 完成狀態
-
-**分類：** `P29G_DRY_RUN_RUNNER_READY`
-
-P29G 在 P29H scaffold 基礎上，完整實作可執行的 governance-enforced paper simulation dry-run runner。
-
-### 交付內容
-
-| 檔案 | 狀態 |
-|------|------|
-| `PaperSimulationDryRunInput.ts` | ✅ 完成 |
-| `PaperSimulationDryRunRunner.ts` | ✅ 完成 |
-| `PaperSimulationDryRunReport.ts` | ✅ 完成 |
-| `p29g_paper_simulation_dry_run_runner.test.ts` | ✅ 完成 (76 tests) |
-| sample output / report artifacts | ✅ 完成 |
-
-### Phase 3 驗證數字
-
-| 指標 | 結果 |
-|------|------|
-| P29G targeted test (76 tests) | 76/76 PASS |
-| Full onlineValidation suite | 3315/3315 PASS（108 suites）|
-| Delta from P29H baseline | +1 suite, +76 tests — zero regressions |
-| Invariance (8 checksums) | ALL MATCH |
-| Forbidden claims scan | 0 violations |
-| Leakage| Leakage| Leakage| Leakage| Leakage| Leakage| Leakage| Leakage| Leakage| Leakage| Leakage| Leakage| Leakage、| otI| Leakage| Leakage| Leakage| Leakage| Leakage| Leaal type + runtime 雙重執行
-- `FinancialReport` / `NewsEvent` 維持 `HIGH_RISK_SOURCE_ABSENT`，`entersAlphaScore=false`
-- `Quote` / `Regime` / `Chip` 以 `PIT_SAFE_VERIFIED` scaffold 表示（非生產 PIT - `Quote` / `Regim / corpus / scorin- `Q�入
-- 無 ROI / win-rate / alpha / edge / pr- 無 ROI / win-rate / alpha / edge / pr- 無 ROe
-
-**Quote/Regime/Chip PIT Validation Audit（Axis A）**
-
-P29G 僅授權 dry-run scaffold 模式。升級至任何其他模式需要 P29C 合約規定的 CTO 核准 token。
-
-此追記不包含任何 ROI / win-rate / alpha / edge / profit / outperform / buy / sell 宣稱。
-
----
-
-## 第 16 節 — P29X：主線整合與合併分支歸檔
-
-**日期：** 2026-05-20  
-**分類：** `P29X_MAINLINE_CONSOLIDATED_BRANCHES_ARCHIVED`
-
-### 背景與目的
-
-Agent 在任務交接時需要穩定的基準分支，避免開發斷鏈。本次 P29X 目標：
-
-1. 確認 `main` 為唯一活躍分支
-2. 將所有 `claude/*` agent worktree 分支重命名歸檔至 `merged/20260520/` 命名空間
-3. 建立正式分支管理政策文件（`branch_policy.md`）
-
-### 問題診斷
-
-執行前掃描發現 7 個 `claude/*` 分支均已關聯至 `.claude/worktrees/` 下的 git worktree。這導致 `git branch -m` 重命名操作被 git 阻擋，需先強制移除 worktree 再執行重命名。
-
-### 執行結果
-
-| 操作 | 結果 |
-|------|------|
-| 強制移除 7 個 git worktree | ✅ 全部成功 |
-| 重命名 7 個 `claude/*` 分支至 `merged/20260520/*` | ✅ 全部成功 |
-| 主線驗證（全套測試 3315 筆） | PASS，零回歸 |
-| P29G 目標測試（76 筆） | PASS |
-| 確認唯一活躍分支為 `main` | ✅ |
-
-### 分支政策摘要（詳見 `branch_policy.md`）
-
-1. **`main` 是唯一交接基準** — 所有新任務從 `main` 開始
-2. **任務完成後合併回 `main`** — 交接前必須確認 HEAD 在 `main`
-3. **歸檔政策** — 已合併或被取代的分支一律重命名至 `merged/YYYYMMDD/`，絕不刪除
-4. **禁止操作** — `git branch -D`、`git push --force`、`git push origin --delete` 均禁止
-5. **Agent 上線清單** — 每次新會話開始必須先讀取 `branch_policy.md`
-
-### 對後續 Agent 的指示
-
-- 下一位 Agent 接手時，請先執行 `git branch --show-current`，確認輸出為 `main`
-- 請閱讀 `00-Plan/roadmap/branch_policy.md` 了解完整政策
-- 歸檔分支（`merged/20260520/*`）為唯讀歷史記錄，不得作為新任務起點
-- 運行時髒檔案（`prisma/dev.db`、`runtime/agent_orchestrator/llm_usage.jsonl` 等）不得 stage 或 commit
-
-本節不包含任何 ROI / win-rate / alpha / edge / profit / outperform / buy / sell 宣稱。
-
----
-
-## 第 17 節 — P29I：Quote / Regime / Chip PIT 驗證審計（2026-05-20）
-
-**分類：** `P29I_QUOTE_REGIME_CHIP_PIT_SAFE_CONFIRMED`  
-**Git 基準：** `98b5dfb`（P29X 主線整合）  
-**免責聲明：** 本節為純結構性審計，不包含任何投資建議或預測效能宣稱。
-
-### 任務目標
-
-在主線整合（P29X）完成後，確認目前構成 `alphaScore` 的三個資料來源（Quote、Regime、Chip）是否具備 PIT-safe 信任基礎。若證據不足，誠實標記 `NEEDS_MORE_EVIDENCE`，不強行升級。
-
-### 規則定義
-
-共建立 **15 條 PIT 安全規則（PSR-01 至 PSR-15）**，涵蓋以下類別：
-
-| 類別 | 規則 |
-|------|------|
-| DATE_INTEGRITY | PSR-01（必須有日期欄位）、PSR-02（格式一致性） |
-| FUTURE_FIELD_REJECTION | PSR-03/04/05（禁止未來價格/量/標籤欄位） |
-| LABEL_CONTAMINATION | PSR-06/07（禁止 outcome label、realized return 作為特徵） |
-| GATE_EFFECTIVENESS | PSR-08/09（僅適用 pipeline 來源：gate 必須存在且 asOf 正確傳播） |
-| ALPHA_SCORE_GOVERNANCE | PSR-10~13（alphaScore 授權管控） |
-| PUBLICATION_LAG | PSR-14（非強制：發佈延遲假設必須文件化） |
-| SIMULATION_BOUNDARY | PSR-15（paperOnly=true, dryRun=true 強制執行） |
-
-### 掃描結果
-
-| 來源 | 結果 | 說明 |
-|------|------|------|
-| **Quote** | `PASS_PIT_SAFE` | P29F 已驗證；gate 存在；normalizePitDateToIso 修復完成 |
-| **Regime** | `PASS_PIT_SAFE` | P29F 已驗證；ISO-to-ISO gate；asOf 正確傳播 |
-| **Chip** | `WARN_ASSUMPTION_REQUIRED` | P29F 已驗證；gate 存在；C-F05 發佈延遲假設已文件化 |
-| MonthlyRevenue | `PASS_PIT_SAFE` | 正確排除（STRUCTURAL_PLACEHOLDER_ONLY） |
-| FinancialReport | `PASS_PIT_SAFE` | 正確封鎖（HIGH_RISK_SOURCE_ABSENT） |
-| NewsEvent | `PASS_PIT_SAFE` | 正確封鎖（HIGH_RISK_SOURCE_ABSENT） |
-
-**總體結果：** `ALL_PIT_SAFE`
-
-### 關鍵發現
-
-1. **Quote**：P29F-Repair 修復了 YYYYMMDD vs ISO 日期格式不一致問題。`normalizePitDateToIso()` 現已套用於 `RuleBasedStockAnalyzer.ts`。
-2. **Regime**：全程 ISO-to-ISO 比較，無格式問題。`MarketRegimeEngine.detectRegime(asOf)` 正確傳播 asOf。
-3. **Chip**：C-F05 假設（T+0 機構籌碼資料約 T 日下午 6 時發佈）已文件化。`WARN_ASSUMPTION_REQUIRED` 不是違規，是已知且被接受的假設。
-4. **FinancialReport / NewsEvent**：`HIGH_RISK_SOURCE_ABSENT` 狀態確認。gate 不存在是預期行為（不在 pipeline），非洩漏風險。
-5. **MonthlyRevenue**：僅為結構性佔位符，資料未填充。PSR-13 確認其被正確排除在 alphaScore 之外。
-
-### 設計要點：absent source 不適用 gate 規則
-
-PSR-08/09（gate 存在 / asOf 傳播）**僅適用於 `permittedInAlphaScore: true` 的來源**。對於不在 pipeline 中的來源，gate 不存在是正確設計，掃描器以 "Not applicable" 標記，不報告違規。
-
-### 測試基線
-
-| 套件 | 測試數 | 結果 |
-|------|--------|------|
-| P29I（新增） | 33/33 | ✅ ALL_PASS |
-| P29F 回歸 | 90/90 | ✅ ALL_PASS |
-| P29E + P29G 回歸 | 134/134 | ✅ ALL_PASS |
-| 全套（109 個套件） | 3348/3348 | ✅ ALL_PASS |
-
-### 治理約束確認
-
-- 所有來源在 P29G scaffold 中均為 `entersAlphaScore: false`（alphaScore 啟用是獨立的未來步驟）
-- `FORBIDDEN_ACTION_FIELDS` 強制阻擋：buy/sell/hold/action/stake/position/allocation/order/trade/recommendation/investmentAdvice
-- 模擬邊界：`paperOnly: true`、`dryRun: true`（PSR-15 通過）
-- 無任何效能/財務宣稱語言出現於任何 P29I 輸出
-
-### 新建檔案
-
-- `src/lib/onlineValidation/p29i/PitSafetyRules.ts`（15 條規則）
-- `src/lib/onlineValidation/p29i/QuoteRegimeChipPitAuditScanner.ts`（掃描器 + 規範化輸入）
-- `src/lib/onlineValidation/__tests__/p29i_quote_regime_chip_pit_audit.test.ts`（33 個測試）
-
-### 後續約束
-
-- 任何來源要啟用 `entersAlphaScore: true`，必須完成獨立的資料啟用審計
-- MonthlyRevenue、FinancialReport、NewsEvent 各需獨立 PIT-safety 審計後才能啟用
-- C-F05（Chip 發佈延遲）需在生產環境中正式驗證後，才能依賴 T+0 籌碼資料進行當日評分
-
-此追記不包含任何 ROI / win-rate / alpha / edge / profit / outperform / buy / sell 宣稱。
-
----
-
-## 第 18 節 — P29J：Chip C-F05 延遲證據 + MonthlyRevenue 啟用準備度審計（2026-05-15）
-
-### 審計目標
-
-1. **Chip C-F05 延遲驗證**：核實目前 Chip source 的 T+0 / T+1 可用性假設，判斷是否可信任同日籌碼評分。
-2. **MonthlyRevenue 啟用準備度**：盤點 MonthlyRevenue 是否具備足夠的 metadata / asOfDate / releaseDate，判斷是否可從 `STRUCTURAL_PLACEHOLDER_ONLY` 進入 source-present dry-run gate。
-
----
-
-### Chip 延遲審計結果
-
-**分類：`CHIP_LAG_WARN_ASSUMPTION_REQUIRED`**
-
-| 證據項目 | 發現 |
-|---|---|
-| Schema 可用性時間戳 | 不存在（`availableAt` / `releaseDate` / `generatedAt` 均缺失） |
-| Cron 排程 | `0 7 * * 1-5` = 15:00 TWN (UTC+8) |
-| TWSE T86 發佈時間 | ~17:30 TWN |
-| Cron 早於 T86 幾分鐘 | **早 2.5 小時** → cron 執行時 T86 資料尚未發佈 |
-| Cron 時的有效籌碼 | **T-1（前一交易日）** |
-| PIT gate 是否存在 | ✅ 存在（`date lte normalizePitDateToIso(asOf)`） |
-| C-F05 假設一致性 | ✅ 一致 — 假設已正確說明「prior day data」分支 |
-
-**CTO 判斷：**  
-籌碼來源透過排程 cron 的有效資料為 T-1，並非 T+0。C-F05 假設覆蓋了 T-1 情況，故假設無誤。PIT gate 正確套用。**無法將分類升級至 `CHIP_LAG_CONFIRMED`**，除非：
-- 在 schema 加入 `availableAt DateTime` 欄位
-- 有生產環境 log 佐證 T+0 籌碼資料實際可取得
-
-Chip 維持在 `ALPHA_SCORE_PERMITTED_SOURCES`（P29I 確認），此分類為 **WARN（警告）**，非阻塞。
-
----
-
-### MonthlyRevenue 啟用準備度結果
-
-**分類：`MONTHLY_REVENUE_NEEDS_SCHEMA_REPAIR`**
-
-| 證據項目 | 發現 |
-|---|---|
-| Schema model | 存在（`MonthlyRevenue`） |
-| `releaseDate` 欄位 | 存在於 schema（DateTime? nullable） |
-| 生產 DB 中的 `releaseDate` | **NULL — sync 從未寫入** |
-| `syncRealRevenue()` upsert 欄位 | `revenue, yoyGrowth, momGrowth` — 不含 `releaseDate` |
-| `announcementDate` | 不存在 |
-| PIT gate | ✅ 存在（`filterMonthlyRevenueAvailableAsOf()`，有推斷機制） |
-| 推斷規則 | `INFERRED_NEXT_MONTH_10TH` — 可信度 LOW_TO_MEDIUM |
-| `entersAlphaScore` | **false（永遠為 false，硬性約束）** |
-
-**CTO 判斷：**  
-MonthlyRevenue schema 結構已具備 PIT-safe 的 releaseDate 追蹤能力，PIT gate 亦存在。**但 `syncRealRevenue()` 從未填入 `releaseDate`**，導致所有記錄為 NULL。無法晉級至 `MONTHLY_REVENUE_READY_FOR_SOURCE_PRESENT_DRY_RUN`，必須先完成 sync 修復。
-
----
-
-### 測試基線
-
-| 套件 | 測試數 | 結果 |
-|---|---|---|
-| P29J（新增） | 76/76 | ✅ ALL_PASS |
-| P29I 回歸 | 95/95 | ✅ ALL_PASS |
-| P29G 回歸 | 45/45 | ✅ ALL_PASS |
-| P29E 回歸 | 27/27 | ✅ ALL_PASS |
-| 全套（110 個套件） | 3424/3424 | ✅ ALL_PASS |
-
----
-
-### 治理約束確認（P29J 後）
-
-| 來源 | 分類 | entersAlphaScore |
-|---|---|---|
-| MonthlyRevenue | `MONTHLY_REVENUE_NEEDS_SCHEMA_REPAIR` | `false` 永遠 |
-| FinancialReport | `HIGH_RISK_SOURCE_ABSENT` | `false` 永遠 |
-| NewsEvent | `HIGH_RISK_SOURCE_ABSENT` | `false` 永遠 |
-| Chip | `CHIP_LAG_WARN_ASSUMPTION_REQUIRED` | 在 `ALPHA_SCORE_PERMITTED_SOURCES`（P29I） |
-
----
-
-### 後續啟用路徑
-
-**Chip：**
-1. 在 `prisma.InstitutionalChip` 新增 `availableAt DateTime`
-2. 在 `syncInstitutionalChip()` upsert 時填入 `availableAt`
-3. 將 cron 調整至 T86 發佈後（~18:00 TWN = 10:00 UTC）
-4. 透過生產 log 確認 T+0 資料可取得
-5. 重新審計 → 升級至 `CHIP_LAG_CONFIRMED`
-
-**MonthlyRevenue：**
-1. 修復 `syncRealRevenue()`：在每次 upsert 時填入 `releaseDate`
-2. 回填歷史記錄（使用 `INFERRED_NEXT_MONTH_10TH` 規則）
-3. 重新審計 → 升級至 `MONTHLY_REVENUE_READY_FOR_SOURCE_PRESENT_DRY_RUN`
-4. **硬性約束：`entersAlphaScore = false` 永遠成立** — 進入 dry-run 不代表 alpha 資格
-
-此追記不包含任何 ROI / win-rate / alpha / edge / profit / outperform / buy / sell 宣稱。
-
----
-
-## 第 19 節 — P29K: MonthlyRevenue releaseDate 修復 + Chip availableAt 方案
-
-**日期：** 2026-05-20  
-**狀態：** ✅ COMPLETE
-
-### 核心決策
-
-**P29J 識別的 source-readiness blocker 在 P29K 完成解除（部分）：**
-
-1. `syncRealRevenue()` 修復完成 — upsert 現在寫入 `releaseDate`、`releaseDateSource`、`releaseDateConfidence`
-2. Chip `availableAt` 方案產出，migration 延至 P29L
-
-### 技術分析
-
-**為何使用 INFERRED_NEXT_MONTH_10TH？**
-
-TWSE API `/opendata/t187ap05_L` 只回傳 `code, name, month, revenue, yoyGrowth, momGrowth`，完全沒有 `releaseDate` 或 `announcementDate`。無法從上游取得明確日期。
-
-台灣法規：上市公司必須在次月 10 日前公告月營收。此規則是 deterministic、PIT-safe、conservative 的。
-
-**為何 `entersAlphaScore = false`？**
-
-月營收是基本面參考資訊，不是 alpha 訊號。P17/P26F mapping contract 中已明文規定，P29K 不改變此約束。
-
-**Chip availableAt 為何延至 P29L？**
-
-Schema migration 需要 `prisma migrate dev`、backfill script、`ChipLagEvidenceAudit` 更新。這是一個獨立的工作包，與 P29K 的 MonthlyRevenue 修復無耦合。延至 P29L 保持 P29K 聚焦。
-
-### 測試結果
-
-| 測試範圍 | 通過 / 總計 |
-|---|---|
-| P29K targeted (68 tests, T01–T15) | 68/68 ✅ |
-| P29J regression | 76/76 ✅ |
-| P29I regression | 33/33 ✅ |
-| Full onlineValidation suite (111 suites) | 3492/3492 ✅ |
-
-### P29L 門檻
-
-1. Chip `availableAt` migration 執行（5-step plan 已產出）
-2. MonthlyRevenue 歷史 NULL 回填
-3. 重新審計 → `CHIP_LAG_CONFIRMED` + `MONTHLY_REVENUE_READY_FOR_SOURCE_PRESENT_DRY_RUN`
-4. 硬性約束：`entersAlphaScore = false` 永遠成立
-
-此追記不包含任何 guaranteed profit / guaranteed return / risk-free / outperform / buy / sell 宣稱。
-
-
----
-
-## 第20節—P29L：Chip availableAt 遞移準備越結 + MonthlyRevenue 歷史回填方案（2026-05-20）
-
-**分類：** `P29L_CHIP_PLAN_ONLY_MONTHLY_REVENUE_BACKFILL_SCRIPT_READY`
-
-### 計劃目標 1：Chip availableAt 運算（選項 A—開發安全）
-
-- 建立 `ChipAvailableAtMigrationReadiness.ts`（純 TypeScript，無 DB 引入）
-- 實作兩種政策：
-  - 主要：`INFERRED_SAME_DAY_T86_0930_UTC`（同日 09:30 UTC = 17:30 TWN）
-  - 保守：`INFERRED_NEXT_DAY_0930_UTC_CONSERVATIVE`（次日 09:30 UTC）
-- Schema 未修改（prisma migrate dev 推遲至 P30）
-- 溲差保持 `CHIP_LAG_WARN_ASSUMPTION_REQUIRED`（尚需生產日誌以升級）
-
-### 計劃目標 2：MonthlyRevenue 歷史 NULL 回填方案
-
-- 建立 `MonthlyRevenueBackfillReadiness.ts`（純 TypeScript，無 DB 引入）
-- 建立回填腳本 `scripts/p29l_monthly_revenue_release_date_backfill.ts`
-- 預設 `dryRun=true`—P29L 机歡未執行實際寫入
-- 政策：`INFERRED_NEXT_MONTH_10TH`（與 P29K sync repair 相同）
-- `entersAlphaScore = false` 永遠成立
-
-### 測試結果
-
-- P29L 目標測試：96/96 PASS（T01–T15）
-- P29K/P29J/P29I 回歸分析：177/177 PASS
-- 禁止 diff：BENIGN
-- 禁止索賞掃描：CLEAN
-
-### P30 待辦項目
-
-1. `prisma/schema.prisma` — 新增 `availableAt DateTime?` 至 `InstitutionalChip`
-2. 執行 `prisma migrate dev`
-3. 更新 `syncInstitutionalChip()` 寫入 `availableAt`
-4. 執行 MonthlyRevenue 回填（需 CTO 授權）
-5. 收集生產日誌—將溲差分類升級為 `CHIP_LAG_CONFIRMED`
-
-此追記不包含任何 guaranteed profit / guaranteed return / risk-free / outperform / buy / sell 宣稱。
-
-
----
-
-## 第21節—P30：Chip Schema Migration + Backfill Dry-Run（2026-05-20）
-
-**分類：** `P30_CHIP_SCHEMA_READY_BACKFILL_WAITING_FOR_AUTH`
-
-### 技術決策
-
-| 決策 | 選擇 | 理由 |
-|---|---|---|
-| Schema 修改 | 在 P30 執行 | P29L Option A 設計決定 — dev-safe |
-| Migration 是否套用 | 未套用 | 約束：不可執行 `prisma migrate dev` |
-| Backfill 是否套用 | 未套用 | 0 null rows，且無授權語句 |
-| Write policy 設計 | 純 TypeScript 模組 | 無 DB 存取，確定性，可測試 |
-
-### 關鍵發現
-
-1. **Chip Schema**: `availableAt DateTime?` 已加入 `InstitutionalChip`，migration SQL 已建立但未套用
-2. **MonthlyRevenue**: 2143 筆資料，0 筆 NULL releaseDate — 回填為 no-op
-3. **Chip Lag**: 維持 `CHIP_LAG_WARN_ASSUMPTION_REQUIRED` — 需要生產日誌才能升級
-
-### CTO 評估
-
-- [Aligned] Schema 修改為 additive nullable field — 無 breaking change
-- [Aligned] `entersAlphaScore = false` 不變量維持
-- [Aligned] 測試回歸通過 (322/322 核心測試)
-- [Resolved] MonthlyRevenue 回填已為 no-op — P29K sync repair 已完整填充所有資料
-- [Blocked] Chip schema migration 需要 CTO 授權執行 `prisma migrate dev`
-- [Pending] `syncInstitutionalChip()` 更新等待 schema migration 套用後進行
-
-### P31 必要工作
-
-1. `prisma migrate dev` 授權執行（Chip availableAt 欄位）
-2. `syncInstitutionalChip()` 更新寫入 `availableAt`
-3. 歷史 Chip 資料回填（`computeChipAvailableAtConservative`）
-4. 生產日誌收集 → 升級 `CHIP_LAG_CONFIRMED`
-
-此追記不包含任何 guaranteed profit / guaranteed return / risk-free / outperform / buy / sell 宣稱。
-
-
----
-
-## 第22節—P31：MonthlyRevenue Source-Present Dry-Run Gate（2026-05-21）
-
-**分類：** `P31_MONTHLY_REVENUE_SOURCE_PRESENT_DRY_RUN_READY`
-
-### 技術決策
-
-| 決策 | 選擇 | 理由 |
-|---|---|---|
-| Gate 設計 | 純 TypeScript 合約物件 | 無 DB 存取，確定性，可測試 |
-| 合約不變量 | entersAlphaScore: false hardcoded | 防止意外洩漏 alphaScore |
-| Leakage 檢查 | 16 個禁止欄位 | 涵蓋所有預測/推薦/報酬類欄位 |
-| Batch scan | 支援列層級與計數層級 | 兼容 DB 查詢結果與記憶體列表 |
-
-### 關鍵發現
-
-1. **Gate 結果**: 2143/2143 rows READY，0 blocked，100% coverage
-2. **Policy**: `INFERRED_NEXT_MONTH_10TH`，releaseDateConfidence: `LOW`（保守估計，非 TWSE 官方確認）
-3. **entersAlphaScore**: false ALWAYS — 無需進一步確認
-4. **P29K→P29L→P30→P31 鏈路**: 完整且一致，所有中間步驟已驗證
-
-### CTO 評估
-
-- [Aligned] `MonthlyRevenueDryRunContract` 完整定義所有不變量
-- [Aligned] `entersAlphaScore = false` 不變量在合約、gate、測試三層強制執行
-- [Aligned] 64/64 新測試通過，P30/P29L/P29K 回歸全通過
-- [Aligned] 0 blocked rows — gate READY，可進入實際 dry-run 階段
-- [Pending] Chip schema migration 仍需 CTO 授權（由 P30 遺留）
-- [Pending] 實際 MonthlyRevenue dry-run 執行（gate READY，待 P32 啟動）
-
-### P32 必要工作
-
-1. `prisma migrate dev` 授權執行（Chip availableAt 欄位）
-2. `syncInstitutionalChip()` 更新寫入 `availableAt`
-3. 歷史 Chip 資料回填（`computeChipAvailableAtConservative`）
-4. 生產日誌收集 → 升級 `CHIP_LAG_CONFIRMED`
-5. 啟動 MonthlyRevenue 實際 dry-run（使用 P31 MONTHLY_REVENUE_DRY_RUN_CONTRACT）
-
-此追記不包含任何 guaranteed profit / guaranteed return / risk-free / outperform / buy / sell 宣稱。
+**Classification:** `P36_MONTHLY_REVENUE_CONTROLLED_CONSUMER_READINESS_READY`

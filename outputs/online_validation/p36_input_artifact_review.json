@@ -1,0 +1,60 @@
+{
+  "phase": "P36",
+  "inputArtifactReview": {
+    "p31FinalReport": {
+      "path": "outputs/online_validation/p31_final_report.md",
+      "status": "READ",
+      "keyFindings": {
+        "rowCount": 2143,
+        "rowsReady": 2143,
+        "releaseDateConfidence": "LOW",
+        "releaseDateSource": "INFERRED_NEXT_MONTH_10TH",
+        "entersAlphaScore": false,
+        "classification": "MONTHLY_REVENUE_DRY_RUN_READY",
+        "pitPolicy": "INFERRED_NEXT_MONTH_10TH — all revenue months infer releaseDate as 10th of following month"
+      }
+    },
+    "p31Contract": {
+      "path": "src/lib/onlineValidation/p31/MonthlyRevenueDryRunContract.ts",
+      "status": "READ",
+      "keyExports": [
+        "MONTHLY_REVENUE_DRY_RUN_CONTRACT",
+        "validateContract()",
+        "checkRowAgainstContract()"
+      ]
+    },
+    "p31Gate": {
+      "path": "src/lib/onlineValidation/p31/MonthlyRevenueSourcePresentDryRunGate.ts",
+      "status": "READ",
+      "keyExports": [
+        "checkRowDryRunGate()",
+        "buildDryRunBatchScanResult()"
+      ]
+    },
+    "p35DecisionMatrix": {
+      "path": "outputs/online_validation/p35_realign_decision_matrix.md",
+      "status": "READ",
+      "keyFindings": {
+        "MonthlyRevenue": "PROMOTE — all P32 gates pass; 2143/2143 rows; FULL_CONFORMANCE; releaseDate PIT LOW (INFERRED_NEXT_MONTH_10TH)",
+        "NewsEvent": "PROMOTE — all P34 gates pass; 1018/1018 rows; RECORDED_FROM_SOURCE (strongest PIT in system)",
+        "FinancialReport": "BLOCK — missing releaseDate/releaseDateSource/releaseDateConfidence",
+        "Chip": "DEFER — availableAt absent; no PIT audit"
+      }
+    },
+    "p35FinalReport": {
+      "path": "outputs/online_validation/p35_realign_final_report.md",
+      "status": "READ",
+      "keyFindings": {
+        "classification": "P35_REALIGN_DECISION_READY_NEXT_P0_DESIGNATED",
+        "nextP0": "P36 — MonthlyRevenue Controlled Feature Consumer Readiness"
+      }
+    }
+  },
+  "p36DesignDecisions": [
+    "Consumer Contract defines allowed INPUT fields and forbidden OUTPUT fields — NOT a scoring contract",
+    "LOW confidence tier maps to CONSUMER_READY_WITH_LOW_CONFIDENCE_WARNING (audit-only by default)",
+    "PIT boundary: asOfDate >= releaseDate enforced at row level; absent asOfDate = audit note, not block",
+    "entersAlphaScore=false enforced at code level in all P36 artifacts",
+    "INFERRED_NEXT_MONTH_10TH → LOW confidence tier; expect majority of 2143 rows in warning tier"
+  ]
+}
