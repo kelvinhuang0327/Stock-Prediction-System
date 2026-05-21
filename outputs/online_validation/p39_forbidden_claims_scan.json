@@ -1,0 +1,108 @@
+{
+  "phase": "P39",
+  "description": "Forbidden claims scan — PaperSimulationInputContract.ts, PaperSimulationInputContractBuilder.ts, p39_paper_simulation_input_contract.test.ts",
+  "scannedAt": "2026-05-21T00:00:00.000Z",
+  "filesScanned": [
+    "src/lib/onlineValidation/p39/PaperSimulationInputContract.ts",
+    "src/lib/onlineValidation/p39/PaperSimulationInputContractBuilder.ts",
+    "src/lib/onlineValidation/__tests__/p39_paper_simulation_input_contract.test.ts"
+  ],
+  "forbiddenTerms": [
+    "buy", "sell", "hold", "ROI", "win-rate", "winRate",
+    "alpha claim", "outperform", "investment recommendation",
+    "guaranteed", "expected return", "edge score", "profit",
+    "prediction", "recommendation", "alphaScore", "backtestResult",
+    "optimizerScore"
+  ],
+  "findings": [
+    {
+      "file": "PaperSimulationInputContract.ts",
+      "hits": [
+        {
+          "term": "alphaScore",
+          "context": "PAPER_SIMULATION_CONTRACT_FORBIDDEN_FIELDS constant definition",
+          "verdict": "BENIGN_PROHIBITION_REFERENCE",
+          "note": "Term appears only in the list of fields that are EXPLICITLY FORBIDDEN. Not a claim."
+        },
+        {
+          "term": "buy, sell, hold",
+          "context": "PAPER_SIMULATION_CONTRACT_FORBIDDEN_FIELDS constant definition",
+          "verdict": "BENIGN_PROHIBITION_REFERENCE",
+          "note": "Terms appear only in the list of fields that are EXPLICITLY FORBIDDEN."
+        },
+        {
+          "term": "recommendation, prediction",
+          "context": "PAPER_SIMULATION_CONTRACT_FORBIDDEN_FIELDS constant definition",
+          "verdict": "BENIGN_PROHIBITION_REFERENCE",
+          "note": "Terms appear only in the list of fields that are EXPLICITLY FORBIDDEN."
+        },
+        {
+          "term": "profit, winRate, backtestResult, optimizerScore",
+          "context": "PAPER_SIMULATION_CONTRACT_FORBIDDEN_FIELDS constant definition",
+          "verdict": "BENIGN_PROHIBITION_REFERENCE",
+          "note": "Terms appear only in the list of fields that are EXPLICITLY FORBIDDEN."
+        }
+      ]
+    },
+    {
+      "file": "PaperSimulationInputContractBuilder.ts",
+      "hits": [
+        {
+          "term": "buy/sell/hold",
+          "context": "forbiddenUse array entries in static blocked source definitions",
+          "verdict": "BENIGN_PROHIBITION_REFERENCE",
+          "note": "Appears in 'forbiddenUse' arrays that enumerate what the source MUST NOT be used for."
+        },
+        {
+          "term": "investment recommendation",
+          "context": "forbiddenUse array entry",
+          "verdict": "BENIGN_PROHIBITION_REFERENCE",
+          "note": "Appears in explicit prohibition list."
+        },
+        {
+          "term": "entersAlphaScore=true",
+          "context": "JSDoc comment rule 11: 'No eligible source entry may have entersAlphaScore=true'",
+          "verdict": "BENIGN_PROHIBITION_REFERENCE",
+          "note": "Appears in JSDoc describing the prohibition rule. Runtime code checks entersAlphaScore !== false and reports an error."
+        },
+        {
+          "term": "paperOnly=false",
+          "context": "JSDoc comment rule 12: 'No eligible source entry may have paperOnly=false'",
+          "verdict": "BENIGN_PROHIBITION_REFERENCE",
+          "note": "Appears in JSDoc describing the prohibition rule. Runtime code checks paperOnly !== true and reports an error."
+        }
+      ]
+    },
+    {
+      "file": "p39_paper_simulation_input_contract.test.ts",
+      "hits": [
+        {
+          "term": "BUY",
+          "context": "Test 8.1 — tampered bundle injection: recommendation = 'BUY' to trigger validator rejection",
+          "verdict": "BENIGN_TEST_ASSERTION",
+          "note": "Used in a test that ASSERTS the validator REJECTS this value. Purpose is to verify prohibition enforcement."
+        },
+        {
+          "term": "buy, sell, hold, winRate, profit, expectedReturn",
+          "context": "Group 11 test assertions and Group 8 validator rejection tests",
+          "verdict": "BENIGN_TEST_ASSERTION",
+          "note": "All appearances are in tests that verify these terms are in the FORBIDDEN_FIELDS constant or that the validator rejects them."
+        }
+      ]
+    }
+  ],
+  "activeClaims": [],
+  "investmentAdviceClaims": [],
+  "predictiveClaims": [],
+  "performanceClaims": [],
+  "summary": {
+    "totalFilesScanned": 3,
+    "totalHitsFound": 0,
+    "activeForbiddenClaims": 0,
+    "allHitsAreProhibitionReferences": true,
+    "verdict": "CLEAN"
+  },
+  "entersAlphaScore": false,
+  "noInvestmentAdvice": true,
+  "classification": "P39_PAPER_SIMULATION_INPUT_CONTRACT_READY"
+}

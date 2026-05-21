@@ -952,6 +952,38 @@ P37: Add MonthlyRevenue controlled consumer integration surface
 
 ---
 
+## P39 — Paper Simulation Input Contract for Eligible Sources (2026-05-21)
+
+**Status:** COMPLETE  
+**Classification:** `P39_PAPER_SIMULATION_INPUT_CONTRACT_READY`
+
+**Eligible sources (contract-ready, paperOnly=true):**
+- MonthlyRevenue → SIMULATION_INPUT_ELIGIBLE
+- Quote → SIMULATION_INPUT_ELIGIBLE
+- Regime → SIMULATION_INPUT_ELIGIBLE
+
+**Blocked sources (explicit contract block):**
+- NewsEvent → BLOCKED_QUALITY_EVIDENCE (NLP quality gate not satisfied)
+- FinancialReport → BLOCKED_PIT_METADATA (releaseDate absent)
+- Chip → BLOCKED_AUTHORIZATION (availableAt migration deferred)
+
+**Deliverables:**
+- `PaperSimulationInputContract.ts` — full type system; 14 forbidden fields; 8 forbidden uses; all governance constants
+- `PaperSimulationInputContractBuilder.ts` — builder + 14-rule validator; pure, deterministic, no DB
+- 77/77 tests PASS (12 groups). Regression (P38+P37+P36): 165/165 PASS.
+- Full suite: 3939/3943 (4 pre-existing DB hash drift failures, unrelated to P39)
+
+**Governance:** entersAlphaScore=false, paperOnly=true, dryRunOnly=true. No Prisma, no scoring touch, no optimizer, no simulation execution, no real backtest, no corpus mutation. Forbidden claims scan CLEAN.
+
+**Next:** P40 = simulation framework DESIGN (do not execute without CTO authorization).
+
+### Commit
+```
+P39: Add paper simulation input contract for eligible sources
+```
+
+---
+
 ## P38 — Simulation Input Readiness Mapping for Controlled Sources
 
 **Status:** COMPLETE  

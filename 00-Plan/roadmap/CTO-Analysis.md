@@ -349,6 +349,33 @@ CTO_ROADMAP_UPDATED_WITH_RISKS
 
 ---
 
+## P39 Note (2026-05-21)
+
+P39 built the paper simulation input contract layer on top of the P38 classification results.
+
+**Two new `src/` files:**
+- `PaperSimulationInputContract.ts` — type system: `PaperSimulationEligibleSourceInput`, `PaperSimulationBlockedSource`, `PaperSimulationInputBundle`, `PaperSimulationInputValidationResult`; 14 forbidden fields, 8 forbidden uses, all governance constants.
+- `PaperSimulationInputContractBuilder.ts` — pure builder/validator: `buildPaperSimulationInputBundle`, `buildDefaultPaperSimulationInputBundle`, `validatePaperSimulationInputBundle` (14 rules).
+
+**Contract mode:** `"paper-simulation-input-contract"`.
+
+**Eligible (3):** MonthlyRevenue, Quote, Regime — all `paperOnly=true`, `entersAlphaScore=false`.
+
+**Explicitly blocked (3):**
+- NewsEvent → BLOCKED_QUALITY_EVIDENCE (NLP quality gate)
+- FinancialReport → BLOCKED_PIT_METADATA (releaseDate absent)
+- Chip → BLOCKED_AUTHORIZATION (availableAt migration deferred)
+
+**Tests:** 77/77 PASS (12 groups). Regression P38+P37+P36: 165/165 PASS. Full suite: 3939/3943 (4 pre-existing DB hash drift failures, unchanged).
+
+**Governance:** No DB, no Prisma, no scoring, no optimizer, no corpus touched. Forbidden claims scan CLEAN. `entersAlphaScore=false` enforced at code level in all P39 artifacts.
+
+**Architectural note:** P39 is the contract gate — it formalizes WHO can consume simulation inputs and WHY others are blocked with documented evidence requirements. P40 (simulation framework design) requires explicit CTO authorization and must not execute simulation logic.
+
+**Classification:** `P39_PAPER_SIMULATION_INPUT_CONTRACT_READY`
+
+---
+
 ## P38 — Simulation Input Readiness Mapping for Controlled Sources
 
 **Date:** 2026-05-15  
