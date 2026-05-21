@@ -1,0 +1,40 @@
+{
+  "phase": "P37 Phase 6 — Forbidden Claims Scan",
+  "timestamp": "2026-05-21T00:00:00.000Z",
+  "scope": ["src/lib/onlineValidation/p37/", "src/lib/onlineValidation/__tests__/p37_monthly_revenue_consumer_integration_surface.test.ts", "outputs/online_validation/p37_*"],
+  "terms": ["buy", "sell", "hold", "ROI", "win-rate", "alpha claim", "outperform", "investment recommendation", "guaranteed", "expected return", "edge score", "profit"],
+  "findings": [
+    {
+      "file": "MonthlyRevenueControlledConsumerAdapter.ts",
+      "line": 21,
+      "match": "No profit, return, win-rate, edge, or investment performance claims are made.",
+      "classification": "BENIGN_PROHIBITION_REFERENCE"
+    },
+    {
+      "file": "MonthlyRevenueConsumerIntegrationSurface.ts",
+      "line": 14,
+      "match": "Produce buy/sell/hold signals or investment advice",
+      "classification": "BENIGN_PROHIBITION_REFERENCE"
+    },
+    {
+      "file": "MonthlyRevenueConsumerIntegrationSurface.ts",
+      "line": 18,
+      "match": "No profit, return, win-rate, edge, or investment performance claims are made.",
+      "classification": "BENIGN_PROHIBITION_REFERENCE"
+    },
+    {
+      "file": "MonthlyRevenueConsumerIntegrationSurface.ts",
+      "line": 41,
+      "match": "No profit, return, win-rate, edge, or investment performance claims are made.",
+      "classification": "BENIGN_PROHIBITION_REFERENCE"
+    },
+    {
+      "file": "p37_monthly_revenue_consumer_integration_surface.test.ts",
+      "lines": [161, 175, 183, 191, 477, 487],
+      "match": "buy/sell/hold/winRate/profit/expectedReturn in test assertions",
+      "classification": "BENIGN_TEST_ASSERTION — verifying prohibition enforcement"
+    }
+  ],
+  "activeClaimsFound": 0,
+  "result": "CLEAN — no active investment performance claims. All hits are prohibition clauses or test assertions verifying prohibitions."
+}

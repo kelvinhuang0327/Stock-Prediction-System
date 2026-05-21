@@ -1,0 +1,33 @@
+{
+  "phase": "P37 Phase 0 — Governance Pre-flight",
+  "timestamp": "2026-05-21T00:00:00.000Z",
+  "canonicalRepo": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System",
+  "branch": "main",
+  "head": "4205b51918168023f7f094034ab68f01b226d100",
+  "headMessage": "P36: Add MonthlyRevenue controlled feature consumer readiness boundary",
+  "repoCheck": "PASS",
+  "branchCheck": "PASS",
+  "detachedHeadCheck": "PASS",
+  "dirtyFiles": {
+    "runtime": [
+      "logs/launchd/*.log",
+      "prisma/dev.db",
+      "prisma/dev.db-shm",
+      "prisma/dev.db-wal",
+      "runtime/agent_orchestrator/llm_usage.jsonl",
+      "runtime/agent_orchestrator/pids/backend.pid",
+      "runtime/training_reports/tw_weekly_deep_research.json",
+      "outputs/online_validation/p26f3_5_dropzone_scan_result.json",
+      "outputs/online_validation/p26f3_5_dropzone_scan_result.md",
+      "outputs/online_validation/p28c_renderer_only_repair_9case_before_after.json",
+      "outputs/online_validation/p28d_9case_integrated_review_validation.json",
+      "outputs/online_validation/p28d_p3_p19_renderer_regression_sweep.json",
+      "00-StockPlan/roadmap/stock_roadmapPlan_20260504.md"
+    ],
+    "classification": "ALL_RUNTIME_OR_PRIOR_ROUND — no P37 source modified"
+  },
+  "stagedFiles": [],
+  "stopConditions": "NONE",
+  "p36BaselineCommit": "4205b51",
+  "overallVerdict": "PREFLIGHT_PASS — proceed to P37 implementation"
+}

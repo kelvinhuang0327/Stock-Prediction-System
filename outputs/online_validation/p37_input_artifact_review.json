@@ -1,0 +1,52 @@
+{
+  "phase": "P37 Phase 1 — Input Artifact Review",
+  "timestamp": "2026-05-21T00:00:00.000Z",
+  "p36Artifacts": {
+    "MonthlyRevenueControlledConsumerContract.ts": {
+      "status": "READ",
+      "keyExports": [
+        "CONTROLLED_CONSUMER_CONTRACT_VERSION = 'p36-monthly-revenue-controlled-consumer-contract-v1'",
+        "CONTROLLED_CONSUMER_CONTRACT_DISCLAIMER",
+        "ConfidenceTier: 'HIGH' | 'MEDIUM' | 'LOW'",
+        "CONFIDENCE_TIER_BEHAVIORS",
+        "ALLOWED_CONSUMER_INPUT_FIELDS (8 fields)",
+        "FORBIDDEN_CONSUMER_OUTPUT_FIELDS (21 fields)",
+        "MonthlyRevenueControlledConsumerContract interface",
+        "MONTHLY_REVENUE_CONTROLLED_CONSUMER_CONTRACT singleton",
+        "validateControlledConsumerContract(c)",
+        "checkConsumerOutputRow(row)",
+        "mapConfidenceTier(releaseDateConfidence)"
+      ]
+    },
+    "MonthlyRevenueControlledConsumerReadiness.ts": {
+      "status": "READ",
+      "keyExports": [
+        "ConsumerReadinessClassification: CONSUMER_READY | CONSUMER_READY_WITH_LOW_CONFIDENCE_WARNING | CONSUMER_BLOCKED_MISSING_METADATA | CONSUMER_BLOCKED_PIT_VIOLATION | CONSUMER_BLOCKED_FORBIDDEN_FIELD",
+        "MonthlyRevenueConsumerInputRow interface",
+        "ConsumerRowReadinessResult interface",
+        "ConsumerBatchReadinessResult interface",
+        "evaluateRowConsumerReadiness(row, options?) — 8-step check",
+        "evaluateBatchConsumerReadiness(rows, options?) — batch aggregation"
+      ]
+    },
+    "p36_final_report.md": {
+      "status": "READ",
+      "classification": "P36_MONTHLY_REVENUE_CONTROLLED_CONSUMER_READINESS_READY"
+    },
+    "p36_monthly_revenue_consumer_readiness_sample.json": {
+      "status": "READ",
+      "note": "Sample readiness report with 3 rows: HIGH/MEDIUM/LOW confidence"
+    },
+    "p36_test_baseline.json": {
+      "status": "READ",
+      "tests": 50,
+      "pass": 50
+    }
+  },
+  "p37Design": {
+    "integrationSurface": "src/lib/onlineValidation/p37/MonthlyRevenueConsumerIntegrationSurface.ts",
+    "adapter": "src/lib/onlineValidation/p37/MonthlyRevenueControlledConsumerAdapter.ts",
+    "tests": "src/lib/onlineValidation/__tests__/p37_monthly_revenue_consumer_integration_surface.test.ts",
+    "keyDecision": "Adapter wraps P36 evaluator — no DB, no scoring, pure TypeScript pipeline bridge"
+  }
+}

@@ -325,3 +325,24 @@ CTO_ROADMAP_UPDATED_WITH_RISKS
 - 0 regressions; DB hash unchanged; forbidden claims scan CLEAN
 
 **Classification:** `P36_MONTHLY_REVENUE_CONTROLLED_CONSUMER_READINESS_READY`
+
+---
+
+## P37 — MonthlyRevenue Controlled Consumer Integration Surface
+
+**P37 built the downstream pipeline bridge on top of P36.** Two new production files: integration surface contract + controlled consumer adapter. 60 tests (60/60 pass).
+
+**Adapter architecture:** `adaptMonthlyRevenueConsumerBatch` wraps P36's `evaluateRowConsumerReadiness` / `evaluateBatchConsumerReadiness`, maps results to typed `MonthlyRevenueConsumerPayload`, validates against P36's 21 forbidden output fields, and returns a fully structured payload ready for downstream consumers.
+
+**Key design decisions:**
+- Integration surface imports `FORBIDDEN_CONSUMER_OUTPUT_FIELDS` from P36 contract — no duplication, single source of truth
+- `validateMonthlyRevenueConsumerPayload` rejects any payload where `entersAlphaScore !== false` or any forbidden field is present at root or row level
+- `includeRows=false` (default) prevents payload bloat — counts always present regardless
+- `fixedGeneratedAt` in AdapterOptions enables deterministic test fixtures
+
+**Governance outcome:**
+- `entersAlphaScore = false` enforced at code level in all P37 artifacts
+- No Prisma, no DB access, no scoring formula mutation
+- Forbidden claims scan CLEAN; 3807/3811 full suite (4 pre-existing DB hash drift failures unrelated)
+
+**Classification:** `P37_MONTHLY_REVENUE_CONTROLLED_CONSUMER_INTEGRATION_READY`

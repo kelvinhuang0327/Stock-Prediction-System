@@ -921,3 +921,31 @@ Validate the Chip C-F05 T+0 availability assumption and audit MonthlyRevenue sou
 ```
 P36: Add MonthlyRevenue controlled feature consumer readiness boundary
 ```
+
+---
+
+## P37 — MonthlyRevenue Controlled Consumer Integration Surface
+
+**Status:** ✅ COMPLETE  
+**Classification:** `P37_MONTHLY_REVENUE_CONTROLLED_CONSUMER_INTEGRATION_READY`  
+**Date:** 2026-05-21
+
+### Objective
+Build a read-only integration surface that lets downstream pipelines safely consume P36 MonthlyRevenue controlled consumer readiness results without entering scoring, recommendation, or investment advisory territory.
+
+### Deliverables
+- `src/lib/onlineValidation/p37/MonthlyRevenueConsumerIntegrationSurface.ts` — integration surface contract
+- `src/lib/onlineValidation/p37/MonthlyRevenueControlledConsumerAdapter.ts` — pipeline bridge adapter
+- `src/lib/onlineValidation/__tests__/p37_monthly_revenue_consumer_integration_surface.test.ts` — 60/60 tests
+
+### Governance
+- `entersAlphaScore = false` enforced at code level ✅
+- `dryRunOnly = true`, `paperOnly = true` ✅
+- No Prisma, no DB access, no scoring formula touched ✅
+- Forbidden claims scan: CLEAN ✅
+- 60/60 P37 tests pass; 3807/3811 full suite (4 pre-existing DB hash drift failures unrelated to P37) ✅
+
+### Commit
+```
+P37: Add MonthlyRevenue controlled consumer integration surface
+```
