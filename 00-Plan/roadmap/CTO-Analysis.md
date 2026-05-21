@@ -376,6 +376,24 @@ P39 built the paper simulation input contract layer on top of the P38 classifica
 
 ---
 
+## P41 — Paper Simulation Execution Dry-Run Design
+
+**Date:** 2026-05-21  
+**Status:** COMPLETE  
+
+Authorization received: `YES design paper simulation execution dry-run for P41`.
+P41 delivered 2 new src/ files: `PaperSimulationDryRunContract.ts` + `PaperSimulationDryRunRunner.ts`.
+3 functions: `runPaperSimulationDryRun`, `validateDryRunInput`, `assertNoDryRunExecution`.
+Accepts P40 `PaperSimulationFrameworkPlan`; upgrades executionStatus to `EXECUTION_DRY_RUN_AUTHORIZED`.
+`executedAt=null`, `stubResult=DRY_RUN_STUB_ONLY` — no real simulation executed, no metrics produced.
+All governance flags: `noActualMetrics=true`, `paperOnly=true`, `dryRunOnly=true`, `entersAlphaScore=false`.
+Test results: P41 97/97, P40 118/118, P39 77/77, P38 55/55.
+No Prisma, no DB, no scoring formula, no corpus touched. Forbidden claims scan CLEAN.
+
+**Classification:** `P41_PAPER_SIMULATION_DRY_RUN_DESIGN_READY`
+
+---
+
 ## P40 — Paper Simulation Framework Design Gate
 
 **Date:** 2026-05-21  

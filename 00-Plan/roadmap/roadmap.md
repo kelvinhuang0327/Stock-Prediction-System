@@ -952,6 +952,52 @@ P37: Add MonthlyRevenue controlled consumer integration surface
 
 ---
 
+## P41 — Paper Simulation Execution Dry-Run Design (2026-05-21)
+
+**Status:** COMPLETE  
+**Classification:** `P41_PAPER_SIMULATION_DRY_RUN_DESIGN_READY`
+
+### Authorization
+`YES design paper simulation execution dry-run for P41` — received and verified.
+
+### Objective
+Design paper simulation execution dry-run stub interface.
+NOT real simulation execution. Stub-only — no real metrics, no PnL, no ROI.
+
+### New src/ Files
+- `src/lib/onlineValidation/p41/PaperSimulationDryRunContract.ts` — types, constants, governance
+- `src/lib/onlineValidation/p41/PaperSimulationDryRunRunner.ts` — stub runner functions
+
+### Dry-Run Functions
+- `runPaperSimulationDryRun(input)` — pure stub, no real execution
+- `validateDryRunInput(input)` — validates P40 plan + mode + requestedAt
+- `assertNoDryRunExecution(result)` — throws on forbidden execution fields
+
+### Framework Lifecycle
+| Status | Phase |
+|--------|-------|
+| `INPUT_CONTRACT_READY` | P39 ✅ |
+| `FRAMEWORK_READY` | P40 ✅ |
+| `EXECUTION_DRY_RUN_AUTHORIZED` | P41 ✅ (upgraded from EXECUTION_BLOCKED_PENDING_AUTH) |
+
+### Governance
+- `noActualMetrics=true`, `paperOnly=true`, `dryRunOnly=true`, `entersAlphaScore=false`
+- `executedAt=null` (no real execution timestamp)
+- `stubResult=DRY_RUN_STUB_ONLY`
+- No Prisma, no DB, no scoring formula, no corpus touched
+- Forbidden diff: CLEAN. Forbidden claims scan: CLEAN.
+
+### Test Results
+- 97/97 PASS (11 groups)
+- Regressions: P40 118/118, P39 77/77, P38 55/55
+
+### Commit
+```
+P41: Add paper simulation execution dry-run design
+```
+
+---
+
 ## P40 — Paper Simulation Framework Design Gate (2026-05-21)
 
 **Status:** COMPLETE  

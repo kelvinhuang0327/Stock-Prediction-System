@@ -1,0 +1,57 @@
+{
+  "phase": "P41",
+  "step": "Phase 5 — Dry-Run Design Plan",
+  "timestamp": "2026-05-21T00:00:00+08:00",
+  "version": "p41-paper-simulation-dry-run-design-v1",
+  "authorizationGranted": true,
+  "authorizationPhrase": "YES design paper simulation execution dry-run for P41",
+  "frameworkStatus": "EXECUTION_DRY_RUN_AUTHORIZED",
+  "dryRunMode": "stub-only",
+  "executedAt": null,
+  "stubResult": "DRY_RUN_STUB_ONLY",
+  "noActualMetrics": true,
+  "dryRunOnly": true,
+  "paperOnly": true,
+  "entersAlphaScore": false,
+  "noAlphaScore": true,
+  "noRecommendation": true,
+  "noPnL": true,
+  "noROI": true,
+  "noWinRate": true,
+  "noReturnPct": true,
+  "noOptimizer": true,
+  "noRealBacktest": true,
+  "noInvestmentAdvice": true,
+  "noBuySellActionSemantics": true,
+  "eligibleSources": ["MonthlyRevenue", "Quote", "Regime"],
+  "blockedSources": ["NewsEvent", "FinancialReport", "Chip"],
+  "forbiddenFields": [
+    "pnl", "roi", "ROI", "winRate", "returnPct", "profit", "alphaScore",
+    "recommendation", "prediction", "buy", "sell", "hold", "signal",
+    "optimizerScore", "backtestResult", "expectedReturn", "edgeScore",
+    "outcomePrice", "targetPrice", "executionResult", "simulationResult"
+  ],
+  "governanceFlags": {
+    "paperOnly": true,
+    "dryRunOnly": true,
+    "entersAlphaScore": false,
+    "noActualMetrics": true,
+    "noInvestmentAdvice": true,
+    "noBuySellActionSemantics": true,
+    "notRealSimulationExecution": true,
+    "notOptimizer": true,
+    "notRealBacktest": true
+  },
+  "newSrcFiles": [
+    "src/lib/onlineValidation/p41/PaperSimulationDryRunContract.ts",
+    "src/lib/onlineValidation/p41/PaperSimulationDryRunRunner.ts"
+  ],
+  "functions": [
+    "runPaperSimulationDryRun(input) — pure stub, no real execution",
+    "validateDryRunInput(input) — validates P40 plan + mode + requestedAt",
+    "assertNoDryRunExecution(result) — throws on forbidden execution fields"
+  ],
+  "allowedNextStep": "P42 requires further authorization (to be defined after P41 complete)",
+  "validationSummary": "P41 dry-run design gate complete. executionStatus upgraded to EXECUTION_DRY_RUN_AUTHORIZED. stubResult=DRY_RUN_STUB_ONLY. No real simulation executed. No metrics produced.",
+  "disclaimer": "DISCLAIMER: This paper simulation dry-run design does not constitute investment advice, a recommendation, or a signal to buy, sell, or hold any security. entersAlphaScore = false. paperOnly = true. dryRunOnly = true. noActualMetrics = true. No profit, return, win-rate, edge, PnL, ROI, or investment performance claims are made. This dry-run runner is a stub only — no real simulation is executed. executedAt = null (no real execution timestamp). stubResult = DRY_RUN_STUB_ONLY."
+}

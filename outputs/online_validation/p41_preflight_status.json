@@ -1,0 +1,30 @@
+{
+  "phase": "P41",
+  "step": "Phase 0 — Governance Pre-flight",
+  "timestamp": "2026-05-21T00:00:00+08:00",
+  "canonicalRepo": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System",
+  "canonicalBranch": "main",
+  "actualRepo": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System",
+  "actualBranch": "main",
+  "headCommit": "68dd283804a4b0253d152bfab85f3e4a114af0db",
+  "headMessage": "P40: Add paper simulation framework design gate",
+  "detachedHead": false,
+  "stagedFiles": 0,
+  "authorizationGranted": true,
+  "authorizationPhrase": "YES design paper simulation execution dry-run for P41",
+  "preflightResult": "PASS",
+  "stopConditions": {
+    "wrongRepo": false,
+    "wrongBranch": false,
+    "detachedHead": false,
+    "unrelatedDirtyFiles": false,
+    "stagedFiles": false
+  },
+  "p40BaselineVerified": {
+    "commit": "68dd283",
+    "classification": "P40_PAPER_SIMULATION_FRAMEWORK_DESIGN_READY",
+    "frameworkStatus": "FRAMEWORK_READY",
+    "executionStatus": "EXECUTION_BLOCKED_PENDING_AUTH",
+    "tests": "118/118 PASS"
+  }
+}
