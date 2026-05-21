@@ -952,6 +952,64 @@ P37: Add MonthlyRevenue controlled consumer integration surface
 
 ---
 
+## P42 — Paper Simulation Dry-run Lifecycle Design (2026-05-21)
+
+**Status:** COMPLETE  
+**Classification:** `P42_PAPER_SIMULATION_DRY_RUN_LIFECYCLE_READY`
+
+### Authorization
+`YES design paper simulation dry-run lifecycle for P42` — received and verified.
+
+### Objective
+Design paper simulation dry-run lifecycle state machine and immutable log.
+NOT real execution. All states are stub-only.
+
+### New src/ Files
+- `src/lib/onlineValidation/p42/PaperSimulationDryRunLifecycle.ts` — state machine + transitions
+- `src/lib/onlineValidation/p42/PaperSimulationDryRunLog.ts` — immutable stub log entries
+
+### Lifecycle State Machine
+| From | To | Note |
+|------|----|------|
+| `PENDING` | `RUNNING` | valid |
+| `PENDING` | `CANCELLED` | valid |
+| `RUNNING` | `COMPLETE` | valid |
+| `RUNNING` | `CANCELLED` | valid |
+| `COMPLETE` | any | BLOCKED — terminal |
+| `CANCELLED` | any | BLOCKED — terminal |
+
+### Functions
+- `createDryRunLifecycle(input)` — PENDING lifecycle from P41 DryRunResult
+- `transitionLifecycle(current, to, at)` — pure, immutable, throws on invalid
+- `cancelLifecycle(current, at)` — cancel from PENDING or RUNNING
+- `isValidTransition(from, to)` — guard predicate
+- `isTerminalState(state)` — terminal predicate
+- `createDryRunLogEntry(params)` — immutable stub log entry
+- `appendLogEntry(log, entry)` — pure append, returns new log
+
+### Framework Lifecycle
+| Status | Phase |
+|--------|-------|
+| `INPUT_CONTRACT_READY` | P39 ✅ |
+| `FRAMEWORK_READY` | P40 ✅ |
+| `EXECUTION_DRY_RUN_AUTHORIZED` | P41 ✅ |
+| `EXECUTION_LIFECYCLE_READY` | P42 ✅ |
+
+### Governance
+`paperOnly=true`, `dryRunOnly=true`, `entersAlphaScore=false`, `noActualMetrics=true`  
+`executedAt=null`, `stubResult=DRY_RUN_STUB_ONLY`, `noRealExecution=true`
+
+### Test Results
+- 98/98 PASS (11 groups)
+- Regressions: P41 97/97, P40 118/118, P39 77/77, P38 55/55
+
+### Commit
+```
+P42: Add paper simulation dry-run lifecycle design
+```
+
+---
+
 ## P41 — Paper Simulation Execution Dry-Run Design (2026-05-21)
 
 **Status:** COMPLETE  

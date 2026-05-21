@@ -376,6 +376,24 @@ P39 built the paper simulation input contract layer on top of the P38 classifica
 
 ---
 
+## P42 — Paper Simulation Dry-run Lifecycle Design
+
+**Date:** 2026-05-21  
+**Status:** COMPLETE  
+
+Authorization received: `YES design paper simulation dry-run lifecycle for P42`.
+P42 delivered 2 new src/ files: `PaperSimulationDryRunLifecycle.ts` + `PaperSimulationDryRunLog.ts`.
+Lifecycle state machine: PENDING→RUNNING→COMPLETE/CANCELLED. Terminal states block further transitions.
+8 functions: `createDryRunLifecycle`, `transitionLifecycle`, `cancelLifecycle`, `isValidTransition`, `isTerminalState`, `createDryRunLogEntry`, `appendLogEntry`, `createEmptyLog`.
+Immutable throughout: transitionLifecycle returns new state; appendLogEntry returns new log.
+All states stub-only: `executedAt=null`, `stubResult=DRY_RUN_STUB_ONLY`, `noRealExecution=true`.
+executionStatus upgraded to `EXECUTION_LIFECYCLE_READY` (from P41's `EXECUTION_DRY_RUN_AUTHORIZED`).
+Test results: P42 98/98, P41 97/97, P40 118/118, P39 77/77, P38 55/55. No Prisma, no DB.
+
+**Classification:** `P42_PAPER_SIMULATION_DRY_RUN_LIFECYCLE_READY`
+
+---
+
 ## P41 — Paper Simulation Execution Dry-Run Design
 
 **Date:** 2026-05-21  
