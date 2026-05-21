@@ -376,6 +376,28 @@ P39 built the paper simulation input contract layer on top of the P38 classifica
 
 ---
 
+## P46 — Paper Simulation Dry-run Full Pipeline Rehearsal
+
+**Date:** 2026-05-21  
+**Status:** COMPLETE  
+**Classification:** `P46_PAPER_SIMULATION_DRY_RUN_FULL_PIPELINE_REHEARSAL_READY`
+
+### What shipped
+Top-level full pipeline rehearsal surface (`PaperSimulationDryRunFullPipelineRehearsal.ts` + `PaperSimulationDryRunFullPipelineRehearsalReport.ts`) that orchestrates the complete P45 rehearsal in 2 full-pipeline rehearsal steps: `runDryRunIntegrationRehearsal` (P45) then `buildRehearsalReport` (P45). Produces a frozen `PaperSimulationDryRunFullPipelineRehearsalResult` embedding the rehearsal result and rehearsal report, plus a full-pipeline-level `PaperSimulationDryRunFullPipelineRehearsalReport`.
+
+### Key decisions
+- `fullPipelineRehearsalId = p46-full-pipeline-rehearsal-${runId}-${fullPipelineRehearsalStartedAt}` — deterministic, traceable to upstream run
+- `fullPipelineRehearsalReportId = p46-full-pipeline-rehearsal-report-${fullPipelineRehearsalId}-${fullPipelineRehearsalReportGeneratedAt}` — full audit chain
+- `fullPipelineRehearsalStepsTotal = 2`, `rehearsalStepsCompleted = 2`, `pipelineStepsCompleted = 5` — distinct step accounting at all three layers
+- `executedAt = null` enforced at every boundary through all layers — no real execution at any layer
+- All P39–P45 governance flags (`dryRunOnly`, `paperOnly`, `noActualMetrics`, `entersAlphaScore: false`, `noRealExecution`, etc.) propagate without modification
+- Post-rehearsal boundary checks verify `rehearsalResult.executedAt === null`, `entersAlphaScore === false`, `noRealExecution === true`, and `rehearsalReport.executedAt === null`
+
+### Test coverage
+98/98 — 11 groups: governance invariants, valid result shape, invalid input rejection, embedded rehearsal structure, full pipeline rehearsal report basics, report field correctness, forbidden fields, boundary protection + error messages, constants, forbidden exports, end-to-end pipeline verification. Total with regressions: 837/837.
+
+---
+
 ## P45 — Paper Simulation Dry-run Integration Rehearsal
 
 **Date:** 2026-05-21  

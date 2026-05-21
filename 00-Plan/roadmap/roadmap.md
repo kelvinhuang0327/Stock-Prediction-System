@@ -952,6 +952,41 @@ P37: Add MonthlyRevenue controlled consumer integration surface
 
 ---
 
+## P46 — Paper Simulation Dry-run Full Pipeline Rehearsal (2026-05-21)
+
+**Status:** COMPLETE  
+**Classification:** `P46_PAPER_SIMULATION_DRY_RUN_FULL_PIPELINE_REHEARSAL_READY`
+
+### Authorization
+```
+YES design paper simulation dry-run full pipeline rehearsal for P46
+```
+
+### Scope
+Meta-layer over P45: rehearses the full pipeline by running `runDryRunIntegrationRehearsal` (P45) and `buildRehearsalReport` (P45) as 2 discrete full-pipeline rehearsal steps. Produces a frozen `PaperSimulationDryRunFullPipelineRehearsalResult` and a `PaperSimulationDryRunFullPipelineRehearsalReport`. All governance flags from P39–P45 are inherited. No real execution at any layer.
+
+### Full Pipeline Rehearsal Steps (2 steps over 2 rehearsal steps / 5 pipeline steps)
+1. `runDryRunIntegrationRehearsal` (P45) — full P39→P44 rehearsal pipeline (2 rehearsal steps / 5 pipeline steps)
+2. `buildRehearsalReport` (P45) — rehearsal-level report
+
+### Key Exports
+- `P46_EXECUTION_STATUS = "EXECUTION_LIFECYCLE_RUNNER_FULL_PIPELINE_REHEARSAL_READY"`
+- `PAPER_SIMULATION_DRY_RUN_FULL_PIPELINE_REHEARSAL_VERSION`
+- `PAPER_SIMULATION_DRY_RUN_FULL_PIPELINE_REHEARSAL_REPORT_VERSION`
+- `P46_FULL_PIPELINE_REHEARSAL_STEPS_TOTAL = 2`
+- `runDryRunFullPipelineRehearsal(input)` → `PaperSimulationDryRunFullPipelineRehearsalResult`
+- `buildFullPipelineRehearsalReport(result, ts)` → `PaperSimulationDryRunFullPipelineRehearsalReport`
+
+### Governance
+- `dryRunOnly: true`, `paperOnly: true`, `noActualMetrics: true`
+- `entersAlphaScore: false`, `noRealExecution: true`, `executedAt: null`
+- `stubResult: "DRY_RUN_STUB_ONLY"`, `fullPipelineRehearsalStepsTotal: 2`, `rehearsalStepsCompleted: 2`, `pipelineStepsCompleted: 5`
+
+### Tests
+98/98 passing — 11 groups covering governance invariants, valid result, invalid input rejection, embedded rehearsal, full pipeline rehearsal report, field correctness, forbidden fields, boundary protection, constants, forbidden exports, and end-to-end pipeline verification.
+
+---
+
 ## P45 — Paper Simulation Dry-run Integration Rehearsal (2026-05-21)
 
 **Status:** COMPLETE  
