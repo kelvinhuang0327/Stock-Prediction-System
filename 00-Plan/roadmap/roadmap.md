@@ -952,6 +952,50 @@ P37: Add MonthlyRevenue controlled consumer integration surface
 
 ---
 
+## P44 — Paper Simulation Dry-run Lifecycle Runner Integration (2026-05-21)
+
+**Status:** COMPLETE  
+**Classification:** `P44_PAPER_SIMULATION_DRY_RUN_LIFECYCLE_RUNNER_INTEGRATION_READY`
+
+### Authorization
+```
+YES design paper simulation dry-run lifecycle runner integration for P44
+```
+
+### Scope
+End-to-end integration surface that orchestrates the full P39→P43 pipeline in a single function call. Produces a frozen `PaperSimulationDryRunIntegrationResult` with the upstream runner report embedded, and a `PaperSimulationDryRunIntegrationReport` summarizing the full integration lifecycle.
+
+### Pipeline (5 steps)
+1. `createPaperSimulationFrameworkPlan` (P40)
+2. `runPaperSimulationDryRun` (P41)
+3. `createDryRunLifecycle` (P42)
+4. `runDryRunLifecycle` (P43)
+5. `buildRunnerReport` (P43)
+
+### Key Exports
+- `runDryRunIntegration(input)` → `PaperSimulationDryRunIntegrationResult`
+- `buildIntegrationReport(result, ts)` → `PaperSimulationDryRunIntegrationReport`
+- `P44_EXECUTION_STATUS = "EXECUTION_LIFECYCLE_RUNNER_INTEGRATION_READY"`
+- `PAPER_SIMULATION_DRY_RUN_INTEGRATION_VERSION`
+- `PAPER_SIMULATION_DRY_RUN_INTEGRATION_REPORT_VERSION`
+- `P44_PIPELINE_STEPS_TOTAL = 5`
+
+### Governance
+- `dryRunOnly = true`, `paperOnly = true`, `noActualMetrics = true`
+- `entersAlphaScore = false`, `noRealExecution = true`, `executedAt = null`
+- All P39–P43 governance flags inherited and enforced
+
+### Test Coverage
+- 98 tests / 11 groups — all passing
+- Regressions: P38(55) P39(77) P40(118) P41(97) P42(98) P43(98) — all green
+
+### Source Files
+- `src/lib/onlineValidation/p44/PaperSimulationDryRunIntegration.ts`
+- `src/lib/onlineValidation/p44/PaperSimulationDryRunIntegrationReport.ts`
+- `src/lib/onlineValidation/__tests__/p44_paper_simulation_dry_run_lifecycle_runner_integration.test.ts`
+
+---
+
 ## P43 — Paper Simulation Dry-run Lifecycle Runner (2026-05-21)
 
 **Status:** COMPLETE  

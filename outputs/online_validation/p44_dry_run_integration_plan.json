@@ -1,0 +1,43 @@
+{
+  "phase": "P44",
+  "frameworkStatus": "EXECUTION_LIFECYCLE_RUNNER_INTEGRATION_READY",
+  "version": "p44-paper-simulation-dry-run-lifecycle-runner-integration-v1",
+  "integrationFlow": [
+    "InputBundle (P39: buildDefaultPaperSimulationInputBundle)",
+    "FrameworkPlan (P40: createPaperSimulationFrameworkPlan)",
+    "DryRunResult (P41: runPaperSimulationDryRun)",
+    "Lifecycle (P42: createDryRunLifecycle)",
+    "RunnerResult (P43: runDryRunLifecycle)",
+    "RunnerReport (P43: buildRunnerReport)",
+    "IntegrationResult (P44: runDryRunIntegration)"
+  ],
+  "pipelineStepsTotal": 5,
+  "integrationEntryPoint": "runDryRunIntegration(PaperSimulationDryRunIntegrationInput)",
+  "integrationReportEntryPoint": "buildIntegrationReport(PaperSimulationDryRunIntegrationResult, integrationReportGeneratedAt)",
+  "governance": {
+    "dryRunOnly": true,
+    "paperOnly": true,
+    "noActualMetrics": true,
+    "entersAlphaScore": false,
+    "noRealExecution": true,
+    "executedAt": null,
+    "stubResult": "DRY_RUN_STUB_ONLY",
+    "noAlphaScore": true,
+    "noRecommendation": true,
+    "noPnL": true,
+    "noROI": true,
+    "noWinRate": true,
+    "noReturnPct": true,
+    "noOptimizer": true,
+    "noRealBacktest": true,
+    "noInvestmentAdvice": true,
+    "noBuySellActionSemantics": true
+  },
+  "authorizationPhrase": "YES design paper simulation dry-run lifecycle runner integration for P44",
+  "sourceFiles": [
+    "src/lib/onlineValidation/p44/PaperSimulationDryRunIntegration.ts",
+    "src/lib/onlineValidation/p44/PaperSimulationDryRunIntegrationReport.ts"
+  ],
+  "testFile": "src/lib/onlineValidation/__tests__/p44_paper_simulation_dry_run_lifecycle_runner_integration.test.ts",
+  "generatedAt": "2024-01-15T10:00:00.000Z"
+}

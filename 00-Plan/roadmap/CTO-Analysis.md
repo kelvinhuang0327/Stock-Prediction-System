@@ -376,6 +376,28 @@ P39 built the paper simulation input contract layer on top of the P38 classifica
 
 ---
 
+## P44 — Paper Simulation Dry-run Lifecycle Runner Integration
+
+**Date:** 2026-05-21  
+**Status:** COMPLETE  
+**Classification:** `P44_PAPER_SIMULATION_DRY_RUN_LIFECYCLE_RUNNER_INTEGRATION_READY`
+
+### What shipped
+Full end-to-end integration surface (`PaperSimulationDryRunIntegration.ts` + `PaperSimulationDryRunIntegrationReport.ts`) that orchestrates the complete P39→P43 pipeline in a single `runDryRunIntegration()` call. The integration carries the embedded P43 runner report, exposes all governance flags, and produces a frozen, JSON-serializable result. `buildIntegrationReport()` builds a P44-level summary from the integration result.
+
+### Key decisions
+- `integrationId = p44-integration-${runId}-${integrationStartedAt}` — deterministic, traceable to upstream run
+- `integrationReportId = p44-integration-report-${integrationId}-${integrationReportGeneratedAt}` — full audit chain
+- `runnerResult` exposed on integration result to enable log-level assertions in tests
+- `P44_PIPELINE_STEPS_TOTAL = 5` — constant for pipeline completeness tracking
+- `executedAt = null` enforced at every boundary — no real execution at any layer
+- All P39–P43 governance flags propagate without modification
+
+### Test coverage
+98 tests / 11 groups — all passing. Regressions: P38(55) + P39(77) + P40(118) + P41(97) + P42(98) + P43(98) = 641 total green.
+
+---
+
 ## P43 — Paper Simulation Dry-run Lifecycle Runner
 
 **Date:** 2026-05-21  
