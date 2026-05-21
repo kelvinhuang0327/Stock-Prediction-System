@@ -1,0 +1,36 @@
+{
+  "phase": "P31",
+  "capturedAt": "2026-05-21T00:00:00.000Z",
+  "filesScanned": [
+    "src/lib/onlineValidation/p31/MonthlyRevenueDryRunContract.ts",
+    "src/lib/onlineValidation/p31/MonthlyRevenueSourcePresentDryRunGate.ts",
+    "src/lib/onlineValidation/__tests__/p31_monthly_revenue_source_present_dry_run.test.ts",
+    "outputs/online_validation/p31_preflight_mainline_status.json",
+    "outputs/online_validation/p31_monthly_revenue_artifact_review.json",
+    "outputs/online_validation/p31_monthly_revenue_dry_run_gate_scan.json",
+    "outputs/online_validation/p31_monthly_revenue_dry_run_sample.json"
+  ],
+  "forbiddenTermsScanned": ["buy", "sell", "hold", "ROI", "profit", "win-rate", "edge", "outperform", "guaranteed-return", "investment-recommendation"],
+  "findings": [
+    {
+      "file": "src/lib/onlineValidation/p31/MonthlyRevenueDryRunContract.ts",
+      "term": "buy, sell, hold, ROI, win-rate, edge, profit, outperform, guaranteed-return, expected-return",
+      "context": "Listed in forbiddenClaims array and DISCLAIMER text — prohibition/warning context only",
+      "classification": "BENIGN"
+    },
+    {
+      "file": "src/lib/onlineValidation/p31/MonthlyRevenueSourcePresentDryRunGate.ts",
+      "term": "None found outside prohibition context",
+      "context": "DISCLAIMER contains only prohibitive language",
+      "classification": "BENIGN"
+    },
+    {
+      "file": "src/lib/onlineValidation/__tests__/p31_monthly_revenue_source_present_dry_run.test.ts",
+      "term": "buy, sell, hold, ROI, profit (in test assertions for forbiddenClaims array)",
+      "context": "Tests assert that forbiddenClaims contains these terms — testing prohibition compliance, not making claims",
+      "classification": "BENIGN"
+    }
+  ],
+  "overallResult": "CLEAN",
+  "conclusion": "All occurrences of investment claim terms appear exclusively in prohibition/disclaimer/test-assertion contexts. No positive investment claims detected."
+}

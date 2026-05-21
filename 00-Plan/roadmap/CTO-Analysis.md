@@ -731,3 +731,45 @@ Schema migration 需要 `prisma migrate dev`、backfill script、`ChipLagEvidenc
 4. 生產日誌收集 → 升級 `CHIP_LAG_CONFIRMED`
 
 此追記不包含任何 guaranteed profit / guaranteed return / risk-free / outperform / buy / sell 宣稱。
+
+
+---
+
+## 第22節—P31：MonthlyRevenue Source-Present Dry-Run Gate（2026-05-21）
+
+**分類：** `P31_MONTHLY_REVENUE_SOURCE_PRESENT_DRY_RUN_READY`
+
+### 技術決策
+
+| 決策 | 選擇 | 理由 |
+|---|---|---|
+| Gate 設計 | 純 TypeScript 合約物件 | 無 DB 存取，確定性，可測試 |
+| 合約不變量 | entersAlphaScore: false hardcoded | 防止意外洩漏 alphaScore |
+| Leakage 檢查 | 16 個禁止欄位 | 涵蓋所有預測/推薦/報酬類欄位 |
+| Batch scan | 支援列層級與計數層級 | 兼容 DB 查詢結果與記憶體列表 |
+
+### 關鍵發現
+
+1. **Gate 結果**: 2143/2143 rows READY，0 blocked，100% coverage
+2. **Policy**: `INFERRED_NEXT_MONTH_10TH`，releaseDateConfidence: `LOW`（保守估計，非 TWSE 官方確認）
+3. **entersAlphaScore**: false ALWAYS — 無需進一步確認
+4. **P29K→P29L→P30→P31 鏈路**: 完整且一致，所有中間步驟已驗證
+
+### CTO 評估
+
+- [Aligned] `MonthlyRevenueDryRunContract` 完整定義所有不變量
+- [Aligned] `entersAlphaScore = false` 不變量在合約、gate、測試三層強制執行
+- [Aligned] 64/64 新測試通過，P30/P29L/P29K 回歸全通過
+- [Aligned] 0 blocked rows — gate READY，可進入實際 dry-run 階段
+- [Pending] Chip schema migration 仍需 CTO 授權（由 P30 遺留）
+- [Pending] 實際 MonthlyRevenue dry-run 執行（gate READY，待 P32 啟動）
+
+### P32 必要工作
+
+1. `prisma migrate dev` 授權執行（Chip availableAt 欄位）
+2. `syncInstitutionalChip()` 更新寫入 `availableAt`
+3. 歷史 Chip 資料回填（`computeChipAvailableAtConservative`）
+4. 生產日誌收集 → 升級 `CHIP_LAG_CONFIRMED`
+5. 啟動 MonthlyRevenue 實際 dry-run（使用 P31 MONTHLY_REVENUE_DRY_RUN_CONTRACT）
+
+此追記不包含任何 guaranteed profit / guaranteed return / risk-free / outperform / buy / sell 宣稱。

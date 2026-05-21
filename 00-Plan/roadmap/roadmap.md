@@ -530,4 +530,54 @@ Validate the Chip C-F05 T+0 availability assumption and audit MonthlyRevenue sou
 2. Update `syncInstitutionalChip()` to write `availableAt = computeChipAvailableAt(isoDate).availableAt`
 3. Backfill existing chip rows with `computeChipAvailableAtConservative(date)` for null `availableAt`
 4. Collect production T86 publication logs → upgrade lag to `CHIP_LAG_CONFIRMED`
+
+---
+
+## Section 17 — P31: MonthlyRevenue Source-Present Dry-Run Gate (2026-05-21)
+
+**Commit:** Pending
+**Classification:** `P31_MONTHLY_REVENUE_SOURCE_PRESENT_DRY_RUN_READY`
+
+### Goal: MonthlyRevenue Source-Present Dry-Run Gate
+
+- `MonthlyRevenueDryRunContract.ts` created — formal contract object with `validateContract()` and `checkRowAgainstContract()`
+- `MonthlyRevenueSourcePresentDryRunGate.ts` created — `checkRowDryRunGate()`, `buildDryRunBatchScanResult()`, `buildDryRunGateScanFromCounts()`
+- DB scan via sqlite3: **2143/2143 rows READY**, **0 blocked rows**, **100% coverage**
+- Gate checks: releaseDate non-null, releaseDateSource non-null, asOfDate PIT boundary, revenueMonth end date validation, leakage field detection
+- `entersAlphaScore = false` ALWAYS — invariant hardcoded and runtime-enforced
+- Policy: `INFERRED_NEXT_MONTH_10TH`, releaseDateConfidence: `LOW`
+
+### Test Results
+
+- P31 targeted: 64/64 PASS (T01-T10, 10 describe blocks)
+- P30 regression: 49/49 PASS
+- P29L regression: 96/96 PASS
+- P29K regression: 68/68 PASS
+- Full onlineValidation: 3697/3701 PASS (4 pre-existing failures, 0 P31 regressions)
+- Forbidden diff: BENIGN (prisma/dev.db and llm_usage.jsonl are pre-existing working tree changes)
+- Forbidden claims scan: CLEAN
+
+### New Files
+
+- `src/lib/onlineValidation/p31/MonthlyRevenueDryRunContract.ts`
+- `src/lib/onlineValidation/p31/MonthlyRevenueSourcePresentDryRunGate.ts`
+- `src/lib/onlineValidation/__tests__/p31_monthly_revenue_source_present_dry_run.test.ts` (64 tests)
+
+### Artifacts
+
+- `outputs/online_validation/p31_preflight_mainline_status.json/.md`
+- `outputs/online_validation/p31_monthly_revenue_artifact_review.json/.md`
+- `outputs/online_validation/p31_monthly_revenue_dry_run_gate_scan.json/.md`
+- `outputs/online_validation/p31_monthly_revenue_dry_run_sample.json/.md`
+- `outputs/online_validation/p31_test_baseline.json/.md`
+- `outputs/online_validation/p31_forbidden_claims_scan.json/.md`
+- `outputs/online_validation/p31_final_report.md`
+
+### Next Hard Gates (P32)
+
+1. Apply Chip schema migration (requires CTO authorization) — `prisma migrate dev`
+2. Update `syncInstitutionalChip()` to write `availableAt`
+3. Backfill historical Chip rows with `computeChipAvailableAtConservative(date)`
+4. Execute MonthlyRevenue actual dry-run (gate is READY, P31 contract in place)
+5. Collect production T86 logs → upgrade lag to `CHIP_LAG_CONFIRMED`
 5. Hard constraint: `InstitutionalChip.entersAlphaScore = false` always
