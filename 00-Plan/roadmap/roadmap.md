@@ -952,6 +952,40 @@ P37: Add MonthlyRevenue controlled consumer integration surface
 
 ---
 
+## P45 — Paper Simulation Dry-run Integration Rehearsal (2026-05-21)
+
+**Status:** COMPLETE  
+**Classification:** `P45_PAPER_SIMULATION_DRY_RUN_INTEGRATION_REHEARSAL_READY`
+
+### Authorization
+```
+YES design paper simulation dry-run integration rehearsal for P45
+```
+
+### Scope
+Meta-layer over P44: rehearses the full integration pipeline by running `runDryRunIntegration` (P44) and `buildIntegrationReport` (P44) as 2 discrete rehearsal steps. Produces a frozen `PaperSimulationDryRunIntegrationRehearsalResult` and a `PaperSimulationDryRunIntegrationRehearsalReport`. All governance flags from P39–P44 are inherited. No real execution at any layer.
+
+### Rehearsal Steps (2 steps over 5 pipeline steps)
+1. `runDryRunIntegration` (P44) — full P39→P43 pipeline (5 steps)
+2. `buildIntegrationReport` (P44) — integration-level report
+
+### Key Exports
+- `P45_EXECUTION_STATUS = "EXECUTION_LIFECYCLE_RUNNER_INTEGRATION_REHEARSAL_READY"`
+- `PAPER_SIMULATION_DRY_RUN_INTEGRATION_REHEARSAL_VERSION`
+- `P45_REHEARSAL_STEPS_TOTAL = 2`
+- `runDryRunIntegrationRehearsal(input)` → `PaperSimulationDryRunIntegrationRehearsalResult`
+- `buildRehearsalReport(result, ts)` → `PaperSimulationDryRunIntegrationRehearsalReport`
+
+### Governance
+- `dryRunOnly: true`, `paperOnly: true`, `noActualMetrics: true`
+- `entersAlphaScore: false`, `noRealExecution: true`, `executedAt: null`
+- `stubResult: "DRY_RUN_STUB_ONLY"`, `rehearsalStepsTotal: 2`, `pipelineStepsCompleted: 5`
+
+### Tests
+98/98 passing — 11 groups covering governance invariants, valid result, invalid input rejection, embedded integration, rehearsal report, field correctness, forbidden fields, boundary protection, constants, forbidden exports, and end-to-end pipeline verification.
+
+---
+
 ## P44 — Paper Simulation Dry-run Lifecycle Runner Integration (2026-05-21)
 
 **Status:** COMPLETE  

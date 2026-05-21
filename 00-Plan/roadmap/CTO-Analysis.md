@@ -376,6 +376,28 @@ P39 built the paper simulation input contract layer on top of the P38 classifica
 
 ---
 
+## P45 — Paper Simulation Dry-run Integration Rehearsal
+
+**Date:** 2026-05-21  
+**Status:** COMPLETE  
+**Classification:** `P45_PAPER_SIMULATION_DRY_RUN_INTEGRATION_REHEARSAL_READY`
+
+### What shipped
+Meta-layer rehearsal surface (`PaperSimulationDryRunIntegrationRehearsal.ts` + `PaperSimulationDryRunIntegrationRehearsalReport.ts`) that orchestrates the P44 integration in 2 rehearsal steps: `runDryRunIntegration` then `buildIntegrationReport`. Produces a frozen `PaperSimulationDryRunIntegrationRehearsalResult` that embeds both the integration result and integration report, plus a rehearsal-level `PaperSimulationDryRunIntegrationRehearsalReport`.
+
+### Key decisions
+- `rehearsalId = p45-rehearsal-${integrationResult.runId}-${rehearsalStartedAt}` — deterministic, traceable to upstream run
+- `rehearsalReportId = p45-rehearsal-report-${rehearsalId}-${rehearsalReportGeneratedAt}` — full audit chain
+- `rehearsalStepsTotal = 2`, `pipelineStepsCompleted = 5` — distinct step accounting at rehearsal vs pipeline level
+- `executedAt = null` enforced at every boundary through all layers — no real execution at any layer
+- All P39–P44 governance flags (`dryRunOnly`, `paperOnly`, `noActualMetrics`, `entersAlphaScore: false`, `noRealExecution`, etc.) propagate without modification
+- Post-rehearsal boundary checks verify `integrationResult.executedAt === null` and `entersAlphaScore === false` after pipeline runs
+
+### Test coverage
+98/98 — 11 groups: governance invariants, valid result shape, invalid input rejection, embedded integration structure, rehearsal report basics, report field correctness, forbidden fields, boundary protection + error messages, constants, forbidden exports, end-to-end pipeline verification.
+
+---
+
 ## P44 — Paper Simulation Dry-run Lifecycle Runner Integration
 
 **Date:** 2026-05-21  
