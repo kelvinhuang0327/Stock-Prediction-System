@@ -1824,3 +1824,31 @@ entersAlphaScore=false, paperOnly=true, dryRunOnly=true, noRealExecution=true, D
 
 ### Awaiting
 `YES commit CI gate workflow` to stage and commit workflow + plan + report
+
+
+## P15b — History Rewrite + Force Push + First CI Run
+**Date**: 2026-05-23
+**Classification**: P15B_HISTORY_REWRITE_LOGS_REMOVED_PUSHED
+**HEAD (post-rewrite)**: e2e71cce9288ee0f21767874fdf0a2c468b60d54
+
+### Actions Taken
+- `git filter-repo --path logs/ --invert-paths --force` — 215 commits rewritten
+- `logs/launchd/backend.stdout.log` removed from ALL history (0 commits remain)
+- DB SHA verified UNCHANGED: a5cf2771...
+- Local tests: 5121/5121 PASS
+- `git push origin main --force` → SUCCEEDED (bd2fad7 → e2e71cc)
+
+### First CI Run — Test Gate 26333318275
+| Job | Result |
+|---|---|
+| Dirty-File Guard | ✅ PASS |
+| research + simulation | ✅ PASS |
+| onlineValidation | ❌ FAIL |
+
+### CI Failure Root Cause
+`p29d_dropzone_scaffold.test.ts` — T01–T11 fail because
+`data/manual/*/p29b-dropzone/` scaffold files (10 files) are not committed.
+These are governance templates (schema contracts, READMEs, DO_NOT_IMPORT CSVs).
+
+### Next Authorization
+`YES commit p29b-dropzone scaffold` → P16 (commit scaffold, push, observe green CI)
