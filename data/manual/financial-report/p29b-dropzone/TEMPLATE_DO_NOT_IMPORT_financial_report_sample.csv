@@ -1,0 +1,4 @@
+DO_NOT_IMPORT,THIS_IS_A_TEMPLATE_FILE_ONLY
+symbol,reportPeriod,reportType,filingDate,fiscalYear,fiscalQuarter,revenue,grossProfit,operatingIncome,netIncome,eps,sourceName,sourceUrl,sourceChecksum,notes
+2330,2024-Q4,Q4,2025-03-15,2024,4,760000000,380000000,290000000,250000000,19.23,TWSE MOPS,https://mops.twse.com.tw/,SHA256PLACEHOLDER,TEMPLATE ROW — DO NOT IMPORT
+2317,2024-Q4,Q4,2025-03-20,2024,4,420000000,85000000,60000000,52000000,3.55,TWSE MOPS,https://mops.twse.com.tw/,SHA256PLACEHOLDER,TEMPLATE ROW — DO NOT IMPORT
