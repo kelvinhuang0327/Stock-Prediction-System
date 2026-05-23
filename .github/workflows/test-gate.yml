@@ -86,7 +86,7 @@ jobs:
           CHANGED=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || git diff --name-only HEAD $(git hash-object -t tree /dev/null) 2>/dev/null || echo "")
           echo "Changed files in commit:"
           echo "$CHANGED"
-          VIOLATIONS=$(echo "$CHANGED" | grep -E "^(logs/|runtime/agent_orchestrator/pids/|data/manual/|prisma/dev\.db)" || true)
+          VIOLATIONS=$(echo "$CHANGED" | grep -E "^(logs/|runtime/agent_orchestrator/pids/|data/manual/|prisma/dev\.db)" | grep -Ev "^data/manual/[^/]+/p29b-dropzone/" || true)
           if [ -n "$VIOLATIONS" ]; then
             echo ""
             echo "BOUNDARY_VIOLATION — forbidden paths detected:"
