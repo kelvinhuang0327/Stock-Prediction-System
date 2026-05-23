@@ -1,0 +1,153 @@
+{
+  "specName": "source-gate",
+  "specVersion": "v0",
+  "specDesignDate": "2026-05-21",
+  "specId": "p32prep_report_spec_v0_source_gate",
+  "designOnly": true,
+  "notEnforced": true,
+  "disclaimer": "DESIGN-ONLY spec. Not enforced. Does not constitute investment advice. No profit, return, or investment performance claims are made. Specs must not include buy/sell/hold/action fields.",
+
+  "purpose": "Capture the gate result and classification for a named data source, documenting PIT-safety status, approval level, publication-lag assumptions, and schema migration state. A source-gate artifact represents the authoritative record of whether a data source has been approved to participate in the pipeline.",
+
+  "governance": {
+    "entersAlphaScore": false,
+    "paperOnly": true,
+    "notInvestmentRecommendation": true,
+    "designOnly": true,
+    "notEnforced": true
+  },
+
+  "requiredFields": {
+    "phase": {
+      "type": "string",
+      "description": "Producing phase identifier, e.g. P29I, P30, P32"
+    },
+    "capturedAt": {
+      "type": "string (ISO-8601 datetime)",
+      "description": "Timestamp when this gate result was captured"
+    },
+    "sourceName": {
+      "type": "string",
+      "description": "Canonical source name: Quote | Regime | Chip | MonthlyRevenue | FinancialReport | NewsEvent"
+    },
+    "gateResult": {
+      "type": "enum",
+      "values": [
+        "PASS_PIT_SAFE",
+        "PASS_PIT_SAFE_WITH_ASSUMPTION",
+        "WARN_ASSUMPTION_REQUIRED",
+        "STRUCTURAL_PLACEHOLDER_ONLY",
+        "BLOCKED",
+        "HIGH_RISK_SOURCE_ABSENT"
+      ],
+      "description": "Overall gate classification for this source"
+    },
+    "entersAlphaScore": {
+      "type": "boolean",
+      "description": "Whether this source is permitted to contribute to alphaScore. Must be false for all current sources under paper-only governance."
+    },
+    "disclaimer": {
+      "type": "string",
+      "description": "Governance disclaimer text asserting this is not investment advice"
+    }
+  },
+
+  "optionalFields": {
+    "dbTable": {
+      "type": "string",
+      "description": "Prisma model name for this source's primary table"
+    },
+    "dateField": {
+      "type": "string",
+      "description": "Primary temporal gate field used for PIT comparison"
+    },
+    "dateFormat": {
+      "type": "string",
+      "description": "Expected date format description (e.g. ISO YYYY-MM-DD)"
+    },
+    "asOfDateHandling": {
+      "type": "string",
+      "description": "Description of how asOf is normalised and propagated before the DB gate"
+    },
+    "futureDataRisk": {
+      "type": "string",
+      "description": "Risk narrative for latent or confirmed future-data contamination"
+    },
+    "publicationLagDocumented": {
+      "type": "boolean",
+      "description": "Whether T+N publication lag assumption has been documented"
+    },
+    "migrationArtifactCreated": {
+      "type": "boolean",
+      "description": "Whether a DB migration artifact for this source exists"
+    },
+    "migrationApplied": {
+      "type": "boolean",
+      "description": "Whether the migration has been applied to dev/prod DB"
+    },
+    "classification": {
+      "type": "string",
+      "description": "Detailed classification string, e.g. CHIP_SCHEMA_READY_MIGRATION_ARTIFACT_CREATED_NOT_APPLIED"
+    },
+    "citedArtifacts": {
+      "type": "string[]",
+      "description": "Prior phase artifact filenames that informed this gate result"
+    }
+  },
+
+  "fieldTypeExpectations": {
+    "capturedAt": "ISO-8601 datetime string (Z suffix preferred)",
+    "entersAlphaScore": "boolean — must be false for all sources at current paper-only stage",
+    "gateResult": "One of the listed enum values. No buy/sell/hold semantics.",
+    "phase": "String matching phase identifier pattern (P + digits + optional letter suffix)"
+  },
+
+  "forbiddenFields": [
+    "buySignal",
+    "sellSignal",
+    "holdSignal",
+    "roi",
+    "winRate",
+    "win_rate",
+    "edge",
+    "profit",
+    "predictedReturn",
+    "outperform",
+    "investmentRecommendation",
+    "alpha (except alphaScore governance term)"
+  ],
+
+  "mappedArtifacts": [
+    {
+      "filename": "outputs/online_validation/p29i_source_path_inventory.json",
+      "phase": "P29I",
+      "mapping": "requiredFields.sourceName, requiredFields.gateResult, optionalFields.dbTable, optionalFields.dateField, optionalFields.asOfDateHandling, optionalFields.futureDataRisk"
+    },
+    {
+      "filename": "outputs/online_validation/p30_chip_schema_migration_readiness.json",
+      "phase": "P30",
+      "mapping": "requiredFields.sourceName (schemaModel), requiredFields.gateResult (classification), optionalFields.migrationArtifactCreated, optionalFields.migrationApplied, requiredFields.entersAlphaScore"
+    },
+    {
+      "filename": "outputs/online_validation/p30_reaudit_result.json",
+      "phase": "P30",
+      "mapping": "requiredFields.gateResult (finalClassification), requiredFields.entersAlphaScore, optionalFields.migrationApplied (chipAvailableAt.migrationApplied)"
+    }
+  ],
+
+  "exampleSnippet": {
+    "_note": "SYNTHESIZED EXAMPLE — not real data. Does not constitute investment advice.",
+    "phase": "P29I",
+    "capturedAt": "2026-05-20T09:00:00Z",
+    "sourceName": "Quote",
+    "gateResult": "PASS_PIT_SAFE",
+    "dbTable": "StockQuote",
+    "dateField": "date",
+    "dateFormat": "ISO YYYY-MM-DD",
+    "asOfDateHandling": "normalizePitDateToIso(asOf) applied before DB gate",
+    "futureDataRisk": "Latent only if future-dated records enter DB; current sync ingests past dates only",
+    "publicationLagDocumented": true,
+    "entersAlphaScore": false,
+    "disclaimer": "SYNTHESIZED EXAMPLE. Does not constitute investment advice. No profit, return, or investment performance claims."
+  }
+}

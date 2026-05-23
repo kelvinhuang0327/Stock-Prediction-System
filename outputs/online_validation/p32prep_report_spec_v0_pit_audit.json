@@ -1,0 +1,146 @@
+{
+  "specName": "pit-audit",
+  "specVersion": "v0",
+  "specDesignDate": "2026-05-21",
+  "specId": "p32prep_report_spec_v0_pit_audit",
+  "designOnly": true,
+  "notEnforced": true,
+  "disclaimer": "DESIGN-ONLY spec. Not enforced. Does not constitute investment advice. No profit, return, or investment performance claims are made. This spec must not include buy/sell/hold/action fields.",
+
+  "purpose": "Capture the result of a Point-in-Time (PIT) safety audit across one or more data sources. A pit-audit artifact documents rule-by-rule checks (PSR-01..PSR-15 or equivalent), forbidden-field scans, and the overall PIT-safety classification of each audited source. It does not claim predictive performance — it is a structural data-integrity gate.",
+
+  "governance": {
+    "entersAlphaScore": false,
+    "paperOnly": true,
+    "notInvestmentRecommendation": true,
+    "designOnly": true,
+    "notEnforced": true
+  },
+
+  "requiredFields": {
+    "phase": {
+      "type": "string",
+      "description": "Producing phase identifier, e.g. P29I, P29F, P30"
+    },
+    "capturedAt": {
+      "type": "string (ISO-8601 datetime)",
+      "description": "Timestamp when this audit scan was captured"
+    },
+    "overallResult": {
+      "type": "enum",
+      "values": [
+        "ALL_PIT_SAFE",
+        "PARTIAL_PASS",
+        "WARN",
+        "BLOCKED"
+      ],
+      "description": "Overall audit outcome across all audited sources"
+    },
+    "sourceOutputs": {
+      "type": "array",
+      "description": "Per-source audit results; must be non-empty",
+      "itemRequiredFields": {
+        "sourceName": "string — canonical source name (Quote | Regime | Chip | MonthlyRevenue | ...)",
+        "result": "enum: PASS_PIT_SAFE | PASS_PIT_SAFE_WITH_ASSUMPTION | WARN_ASSUMPTION_REQUIRED | BLOCKED | STRUCTURAL_PLACEHOLDER_ONLY",
+        "forbiddenFieldsFound": "string[] — must be empty to achieve PASS_PIT_SAFE",
+        "ruleChecks": "array of {ruleId: string, passed: boolean, detail: string}"
+      },
+      "itemOptionalFields": {
+        "assumptionNotes": "string[]",
+        "reportLine": "string — one-line human-readable summary"
+      }
+    },
+    "disclaimer": {
+      "type": "string",
+      "description": "Governance disclaimer asserting this is not investment advice"
+    }
+  },
+
+  "optionalFields": {
+    "scannerVersion": {
+      "type": "string",
+      "description": "Scanner implementation version, e.g. p29i-audit-scanner-v1"
+    },
+    "allowedAlphaScoreSources": {
+      "type": "string[]",
+      "description": "Sources confirmed PIT_SAFE_VERIFIED for alphaScore pathway; must not list any source without prior audit"
+    },
+    "blockedSources": {
+      "type": "string[]",
+      "description": "Sources explicitly blocked from any alphaScore pathway"
+    },
+    "ruleRegistry": {
+      "type": "string",
+      "description": "Reference to the rule definition file, e.g. PSR-01..15 from p29i_pit_safety_rules.md"
+    },
+    "forbiddenFieldPatternGroups": {
+      "type": "object",
+      "description": "Named groups of forbidden field patterns used by the scanner"
+    }
+  },
+
+  "fieldTypeExpectations": {
+    "overallResult": "one of the listed enum values; no buy/sell/hold semantics",
+    "sourceOutputs": "non-empty array; one entry per audited source",
+    "forbiddenFieldsFound": "must be an empty array [] to achieve PASS_PIT_SAFE; any populated value blocks that source",
+    "entersAlphaScore_per_source": "must remain false for all sources unless explicitly upgraded by a governance gate",
+    "capturedAt": "ISO-8601 datetime string (Z suffix preferred)"
+  },
+
+  "forbiddenFields": [
+    "buySignal",
+    "sellSignal",
+    "holdSignal",
+    "roi",
+    "winRate",
+    "win_rate",
+    "edge",
+    "profit",
+    "predictedReturn",
+    "outperform",
+    "investmentRecommendation",
+    "alpha (except alphaScore governance term)"
+  ],
+
+  "mappedArtifacts": [
+    {
+      "filename": "outputs/online_validation/p29i_pit_audit_scan.json",
+      "phase": "P29I",
+      "mapping": "requiredFields.overallResult, requiredFields.sourceOutputs (Quote/Regime/Chip with PSR-01..15 ruleChecks), requiredFields.disclaimer, optionalFields.scannerVersion, optionalFields.allowedAlphaScoreSources, optionalFields.blockedSources"
+    },
+    {
+      "filename": "outputs/online_validation/p29i_test_baseline.json",
+      "phase": "P29I",
+      "mapping": "Companion test-execution record; documents that audit rules are test-covered (totalTests, testGroups, regressionSuites)"
+    },
+    {
+      "filename": "outputs/online_validation/p30_reaudit_result.json",
+      "phase": "P30",
+      "mapping": "requiredFields.overallResult (finalClassification), sourceOutputs (chipAvailableAt, monthlyRevenueBackfill), requiredFields.disclaimer, requiredFields.entersAlphaScore"
+    }
+  ],
+
+  "exampleSnippet": {
+    "_note": "SYNTHESIZED EXAMPLE — not real data. Does not constitute investment advice.",
+    "phase": "P29I",
+    "capturedAt": "2026-05-20T09:00:00Z",
+    "scannerVersion": "p29i-audit-scanner-v1",
+    "overallResult": "ALL_PIT_SAFE",
+    "allowedAlphaScoreSources": ["Quote", "Regime", "Chip"],
+    "blockedSources": ["FinancialReport", "NewsEvent"],
+    "sourceOutputs": [
+      {
+        "sourceName": "Quote",
+        "result": "PASS_PIT_SAFE",
+        "forbiddenFieldsFound": [],
+        "ruleChecks": [
+          { "ruleId": "PSR-01", "passed": true, "detail": "Date field 'date' present" },
+          { "ruleId": "PSR-08", "passed": true, "detail": "PIT gate present in DB query path" },
+          { "ruleId": "PSR-15", "passed": true, "detail": "Simulation boundary enforced" }
+        ],
+        "reportLine": "Quote: PASS_PIT_SAFE — ISO-to-ISO gate, asOf propagated"
+      }
+    ],
+    "disclaimer": "SYNTHESIZED EXAMPLE. Does not constitute investment advice. No profit, return, or investment performance claims."
+  }
+}

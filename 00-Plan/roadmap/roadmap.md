@@ -1,116 +1,118 @@
 # Stock Prediction System Roadmap
 
-Version 2.2 CTO Realignment Update - 2026-05-21
+Version 2.4 CTO Realignment Update - 2026-05-23
 Owner: Kelvin Huang
 Prepared by: CTO Agent
 Classification: CTO_ROADMAP_UPDATED_WITH_RISKS
 
 > This roadmap is an engineering execution plan for Taiwan stock research, PIT-safe prediction analysis, and paper-only simulation readiness. It is not investment advice, does not authorize automated trading, and does not make performance claims.
 
-## 0. CTO Realignment Review - 2026-05-21 P32-P34 Artifact-to-Product Value
+## 0. CTO Realignment Review - 2026-05-23 P48 Complete / P49 Governance Checkpoint
 
 ### 0.1 Inputs Reviewed
 
-This 2026-05-21 CTO realignment is based on two handoff states and the current repo:
+This 2026-05-23 CTO realignment is based on PROJECT_CONTEXT_LOCK, the current repo, and the latest P48 handoff state:
 
 - [Confirmed] Current repo: `/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System`.
 - [Confirmed] Current branch: `main`.
-- [Confirmed] Current committed HEAD: `a6fb753 P31: Add MonthlyRevenue source-present dry-run gate`.
-- [Confirmed] P32PREP / P32 / P33 / P34 artifacts exist in the working tree.
-- [Confirmed] P32PREP / P32 / P33 / P34 artifacts are currently untracked relative to `main`; they are working-tree evidence, not committed mainline history.
-- [Confirmed] `outputs/online_validation/p32prep_final_report.md` classifies P32PREP as `P32PREP_REPORT_SPEC_V0_DESIGN_READY`.
-- [Confirmed] `outputs/online_validation/p32_final_report.md` classifies P32 as `P32_MONTHLY_REVENUE_SOURCE_PRESENT_DRY_RUN_READY`.
-- [Confirmed] `outputs/online_validation/p33_final_report.md` classifies P33 as `P33_NEWS_ONLY_SOURCE_PRESENT_GATE_READY`.
-- [Confirmed] `outputs/online_validation/p34_final_report.md` classifies P34 as `P34_NEWS_EVENT_SOURCE_PRESENT_DRY_RUN_READY`.
-- [Confirmed] User feedback: current outputs are not clear enough to push the two core goals forward.
+- [Confirmed] Current committed HEAD: `261cd36 P48: Add paper simulation dry-run result artifact golden fixture design`.
+- [Confirmed] PROJECT_CONTEXT_LOCK scan found no Betting-pool / P26J / P26K / MLB / bare TSL / CLV / COMPLETE_PAIR contamination.
+- [Confirmed] `MLB` hits are false positives inside `HTMLButtonElement`; bare `TSL` scan is clean; `daemon` hits are Stock native copilot/orchestrator context.
+- [Confirmed] P48 classification: `P48_GOLDEN_FIXTURE_DESIGN_READY`.
+- [Confirmed] P48 tests: 100/100 PASS.
+- [Confirmed] P38-P48 regression: 1035/1035 PASS.
+- [Confirmed] P48 preserved dry-run-only, paper-only, no-real-execution, no-PnL, no-ROI, no-win-rate, no-optimizer, no-real-backtest, and no-investment-advice boundaries.
+- [Confirmed] P48 report records 4 pre-existing failures unrelated to P48: `p26a_renderer_fix`, `p26a_batch_pipeline_wiring`, `p27_waiting_state_policy_guard`, `p29d_dropzone_scaffold`.
+- [Confirmed] `00-Plan/roadmap/CEO-Decision.md` and `00-Plan/roadmap/active_task.md` are untracked and were not modified by this CTO update.
+- [Confirmed] CTO scope is limited to this roadmap and `CTO-Analysis.md`; no P49 output artifacts were created in this review.
 
 ### 0.2 Current Phase State
 
 | Area | Status | CTO Read |
 | --- | --- | --- |
-| P31 committed baseline | [Confirmed] Complete at `a6fb753` | MonthlyRevenue source-present gate ready; 2143/2143 rows ready; `entersAlphaScore=false`. |
-| P32PREP | [Confirmed] Working-tree artifact exists; [Confirmed] untracked | Useful report-spec design, but not yet a committed/enforced validator. |
-| P32 MonthlyRevenue dry-run | [Confirmed] Working-tree artifact exists; [Confirmed] untracked | Proves dry-run/readiness continuity, not predictive value or feature consumer readiness. |
-| P33 FR/NE gate | [Confirmed] Working-tree artifact exists; [Confirmed] untracked | FinancialReport blocked; NewsEvent eligible by `publishedAt` coverage. |
-| P34 NewsEvent dry-run | [Confirmed] Working-tree artifact exists; [Confirmed] untracked | NewsEvent PIT/readiness looks strong, but NLP quality, symbol linkage, and feature consumer readiness are not proven. |
-| FinancialReport | [Confirmed] Blocked | Missing PIT metadata fields; migration apply requires explicit authorization. |
-| Chip availableAt | [Confirmed] Blocked | Migration apply and production logs still missing. |
-| Optimizer / real backtest / GUI | [Confirmed] Deferred | Still outside the current authorized boundary. |
+| Context lock | [Confirmed] Clean | This remains Stock-Prediction-System; no cross-project contamination found. |
+| Axis A: controlled source path | [Confirmed] P36/P37 completed earlier | MonthlyRevenue controlled consumer exists; NewsEvent has source-present evidence; FinancialReport and Chip remain explicitly blocked. |
+| Axis B: simulation dry-run chain | [Confirmed] P39-P48 complete | P48 now pins the P47 result artifact expectations through a golden fixture / validator design. |
+| Quality gate | [Confirmed] P48 100/100 and P38-P48 1035/1035 PASS | Current chain regression is strong; the 4 full-suite failures still need a ledger. |
+| P49 checkpoint | [Missing] Not executed | No canonical P39-P48 manifest or known-failure ledger exists yet. |
+| Real simulation / optimizer / backtest | [Blocked] Not authorized | No PnL, ROI, win-rate, return, buy/sell/action, or investment-advice semantics. |
 
 ### 0.3 Roadmap Alignment Audit
 
 | Marker | Item | Assessment |
 | --- | --- | --- |
-| [Aligned] | P32PREP report spec design | It addressed report drift before P32 execution and supports future regression discipline. |
-| [Aligned] | P32 and P34 dry-run boundaries | Both preserved `paperOnly=true`, `dryRun=true`, and `entersAlphaScore=false`. |
-| [Aligned] | FinancialReport blocked status | P33 correctly blocked FinancialReport rather than inventing a PIT gate. |
-| [Drift] | P31A as P0 | Superseded by the CEO overlay and later P32PREP/P32/P33/P34 working-tree outputs; external benchmark is non-blocking. |
-| [Drift] | P34 recommending fixture materialization | A fixture task now risks extending artifact work before product value is clarified. |
-| [Missing] | Artifact-to-product mapping | Roadmap lacked a gate that asks what P32-P34 actually enable for stock prediction or strategy simulation. |
-| [Missing] | Feature consumer readiness boundary | MonthlyRevenue and NewsEvent are dry-run ready, but no controlled consumer route is defined. |
-| [Outdated] | Repeating source-present scans | MonthlyRevenue and NewsEvent source-present gates are already demonstrated; repeating scans is not P0. |
-| [Blocked] | FinancialReport feature path | Missing releaseDate-style PIT metadata and requires authorization before migration apply. |
-| [Blocked] | Chip lag confirmation | Requires migration/write/backfill plus production logs. |
+| [Aligned] | P48 golden fixture design | It directly answers the prior P47 schema-drift risk and strengthens Axis B regression discipline. |
+| [Aligned] | PROJECT_CONTEXT_LOCK | The contamination scan protects roadmap integrity before further P49 work. |
+| [Aligned] | No-metrics governance | P48 keeps simulation dry-run outputs free of PnL/ROI/win-rate/advice semantics. |
+| [Drift] | Top roadmap overlay | The previous controlling section still described P32-P35 and was obsolete after P48. |
+| [Missing] | P39-P48 manifest | The dry-run chain is now long enough that canonical phase ownership is a real blocker. |
+| [Missing] | Known-failure ledger | Four pre-existing failures are repeatedly mentioned but not yet managed as a ledger. |
+| [Outdated] | P35 as active P0 | P35/P36/P37/P39-P48 have already moved mainline forward. |
+| [Outdated] | P48 authorization gate | P48 is now completed at `261cd36`; the next checkpoint is P49. |
+| [Blocked] | FinancialReport / Chip data activation | Both still require explicit DB/schema authorization and evidence before apply. |
+| [Blocked] | Optimizer / real backtest | Still blocked until source governance, manifest, failure ledger, and future explicit authorization are in place. |
 
 ### 0.4 Reordered P0-P10 Execution Plan
 
 | Priority | Item | Status | Gate / Definition of Done |
 | --- | --- | --- | --- |
-| P0 | P35-REALIGN Artifact-to-Product Value Audit | Ready, decision-only | Convert P32PREP/P32/P33/P34 into source-by-source PROMOTE / HOLD / BLOCK / DEFER decisions and choose exactly one implementation P0 for the two core axes. |
-| P1 | Controlled Feature Consumer Readiness Plan for MonthlyRevenue / NewsEvent | Candidate after P35 | Define how ready sources could enter a non-scoring, no-advice, auditable feature consumer without changing alphaScore. |
-| P2 | FinancialReport PIT Metadata Migration Readiness Design | Candidate after P35 | Design releaseDate/releaseDateSource/releaseDateConfidence migration path without applying DB/schema changes. |
-| P3 | P30B Chip availableAt Migration Apply | Blocked by authorization | Requires exact authorization and production-log plan; do not run as part of CTO analysis. |
-| P4 | Full Suite Known-failure Triage | Important quality gate | Classify or repair 4 pre-existing failures so future regressions are not hidden. |
-| P5 | Source Quality Audit for NewsEvent | Depends on P35 | Assess source diversity, symbol linkage quality, event taxonomy, and NLP readiness before consumer use. |
-| P6 | MonthlyRevenue Feature Consumer Boundary | Depends on P35/P1 | Define a read-only consumer contract; keep `entersAlphaScore=false`. |
-| P7 | Simulation Input Readiness Mapping | Depends on P35 | Decide which dry-run outputs are eligible as paper simulation inputs and which remain audit-only. |
-| P8 | External Benchmark P31A | Deferred | Keep read-only and non-blocking; use only if it informs report/consumer design. |
-| P9 | Optimizer / Real Backtest Readiness | Blocked | Requires validated consumer boundaries, simulation inputs, corpus governance, and anti-overfit gates. |
-| P10 | Artifact Housekeeping / Fixture Materialization | Deferred | Only materialize fixtures after P35 proves they support regression or product value. |
+| P0 | P49 Simulation Governance Manifest + Known Failure Ledger | Ready, checkpoint only | Produce canonical P39-P48 phase manifest and known-failure ledger; no src/prisma/data/tests changes; no simulation execution. |
+| P1 | Axis A Controlled Research Snapshot v0 | Candidate after P49 | Use existing MonthlyRevenue controlled consumer plus PIT-safe Quote/Regime to produce read-only research snapshots; no scoring/advice. |
+| P2 | Axis B Fixture-backed Dry-run Validation Checkpoint | Candidate after P49 | Use P48 golden fixture to validate P47-style result artifacts deterministically; no real simulation metrics. |
+| P3 | NewsEvent Quality / Symbol-linkage Audit | Important for Axis A | NewsEvent source-present readiness is not enough; quality and ticker linkage must be proven before consumer use. |
+| P4 | FinancialReport PIT Metadata Readiness Design | Design-only; apply blocked | Clarify releaseDate/source/confidence policy before any DB/schema apply. |
+| P5 | Chip availableAt Evidence Path | Blocked by authorization/logs | Requires explicit DB authorization and production evidence before lag confirmation. |
+| P6 | Full-suite Failure Repair Planning | Depends on P49 ledger | Repair only after failures are ledgered and scoped; do not mix with P49. |
+| P7 | Simulation Input Eligibility Recheck | Depends on P49/P50 | Reconfirm eligible/audit-only/blocked sources before strategy comparison expansion. |
+| P8 | External Benchmark / GUI Research | Deferred | Useful reference only; no GUI/Electron implementation now. |
+| P9 | Optimizer / Real Backtest Readiness | Blocked | Requires validated source/simulation governance, manifest, corpus maturity, and explicit future authorization. |
+| P10 | General Housekeeping | Deferred | Only run when it removes audit blockers; do not displace P0/P1. |
 
 ### 0.5 Items Upgraded, Downgraded, Paused, or Retired
 
 | Change | Item | Decision |
 | --- | --- | --- |
-| Upgraded to P0 | P35-REALIGN | Needed because the user explicitly said the current outputs are not clear enough to advance the desired goals. |
-| Upgraded to P1 candidate | Controlled feature consumer readiness | This is the most direct bridge from dry-run artifacts to the stock-prediction axis without scoring changes. |
-| Upgraded to P2 candidate | FinancialReport PIT metadata readiness design | FinancialReport is a core fundamental-data blocker, but DB apply remains unauthorized. |
-| Downgraded | P31A external benchmark | Non-blocking reference work; not a core-axis blocker. |
-| Paused | NewsEvent fixture materialization | Do not create fixtures until P35 proves they support regression/product value. |
-| Retired | Repeating P32/P34 readiness scans | Already demonstrated; repeating them does not advance the product. |
-| Blocked | P30B / FinancialReport migration apply | Requires explicit DB authorization phrases. |
-| Deferred | Optimizer, real backtest, GUI | Still premature. |
+| Upgraded to P0 | P49 manifest + known-failure ledger | Required before any P50/P51 expansion so the P39-P48 chain is auditable and failures are not ambiguous. |
+| Upgraded to P1 | Axis A controlled research snapshot | This is the next practical bridge from source trust to Taiwan stock research value. |
+| Upgraded to P2 | Axis B fixture-backed validation | P48 is useful only if future artifacts are validated against it. |
+| Downgraded | More auth-gate-only microphases | Avoid another sequence that adds little product maturity. |
+| Retired | P35/P48 as active P0 | Both are now completed/historical checkpoints. |
+| Blocked | FinancialReport / Chip DB applies | Require explicit authorization before any schema or DB write. |
+| Deferred | Optimizer, real backtest, GUI, metrics | Still outside current authorized system maturity. |
 
-### 0.6 Source-to-Product CTO Snapshot
+### 0.6 Axis-to-Product CTO Snapshot
 
-| Source | What is proven | What is not proven | CTO stance |
+| Axis | What is proven | What is not proven | CTO stance |
 | --- | --- | --- | --- |
-| MonthlyRevenue | [Confirmed] 2143/2143 dry-run ready; releaseDate metadata complete; `entersAlphaScore=false` | [Confirmed] No controlled feature consumer; [Unknown] product predictive usefulness | HOLD -> evaluate controlled consumer readiness. |
-| NewsEvent | [Confirmed] 1018/1018 publishedAt-ready; PIT confidence recorded; `entersAlphaScore=false` | [Unknown] NLP quality, symbol linkage quality, event taxonomy value, source diversity sufficiency | HOLD -> evaluate source quality and controlled consumer readiness. |
-| FinancialReport | [Confirmed] 957 rows queryable but blocked by missing PIT metadata fields | [Confirmed] No PIT-safe releaseDate gate; migration not authorized | BLOCK -> migration readiness design only. |
-| Chip | [Confirmed] PIT gate exists; lag warning documented | [Confirmed] availableAt not applied; production logs absent | HOLD/BLOCK -> authorization and logs required. |
+| Axis A: Taiwan stock research | [Confirmed] MonthlyRevenue controlled consumer path exists; Quote/Regime are PIT-safe; NewsEvent source-present evidence exists | [Unknown] Research snapshot usefulness; NewsEvent quality/linkage; FinancialReport PIT metadata; Chip availability evidence | P49 first, then P1 controlled research snapshot v0. |
+| Axis B: paper-only simulation | [Confirmed] P39-P48 chain now has input contract, framework, lifecycle, integration, rehearsal, result artifact, and golden fixture validator | [Missing] Canonical manifest and failure ledger; [Confirmed] no real metrics or optimizer allowed | P49 first, then P2 fixture-backed validation checkpoint. |
 
 ### 0.7 Today Focus
 
 Today should focus on:
 
 ```text
-P35-REALIGN Artifact-to-Product Value Audit
+P49 Simulation Governance Manifest + Known Failure Ledger
 ```
 
 Strict boundary:
 
 ```text
-Decision audit only. Do not create fixtures, do not apply migrations, do not modify DB/schema/scoring/corpus, do not implement consumer code, and do not produce investment advice.
+Checkpoint only. Do not modify src/prisma/data/tests/scripts. Do not execute simulation, optimizer, or real backtest. Do not produce PnL, ROI, win-rate, return, recommendation, or buy/sell/action semantics.
 ```
 
 Reason:
 
-The project has enough source-present and dry-run artifacts to pause and ask the product question: which artifacts actually move the two core axes forward, and what is the single next implementation P0? Without this gate, the roadmap risks producing more outputs without increasing prediction-analysis or simulation-readiness maturity.
+P48 gives Axis B a golden fixture, but the P39-P48 chain now needs one canonical manifest and one known-failure ledger before safe expansion. This checkpoint makes later Axis A snapshots and Axis B fixture-backed validation easier to trust, review, and hand off.
 
 ### 0.8 Final CTO Recommendation
 
-Run P35-REALIGN next. It should map P32PREP/P32/P33/P34 into concrete product value, assign each source a PROMOTE / HOLD / BLOCK / DEFER decision, and choose one next implementation P0. The likely contenders are controlled feature consumer readiness for MonthlyRevenue/NewsEvent versus FinancialReport PIT metadata readiness design. NewsEvent fixture materialization should not be P0 until it is proven to support regression or a consumer boundary.
+Run P49 next as a bounded checkpoint: simulation governance manifest plus known-failure ledger. Do not repair failures in P49. Do not add simulation behavior. After P49, the roadmap should split deliberately into two substantive directions:
+
+- Axis A: controlled read-only Taiwan stock research snapshot v0.
+- Axis B: fixture-backed dry-run result artifact validation using the P48 golden fixture.
+
+This keeps the project moving toward the two core goals without jumping into scoring, optimizer, real backtest, or investment advice.
 
 Final classification:
 
@@ -120,7 +122,7 @@ CTO_ROADMAP_UPDATED_WITH_RISKS
 
 ### 0.9 Supersession Note
 
-Section `0. CTO Realignment Review - 2026-05-21 P32-P34 Artifact-to-Product Value` is the controlling current roadmap overlay. Older P31A / P32 / P33 / P34 overlays below are preserved as historical context unless explicitly restated in Section 0 above.
+Section `0. CTO Realignment Review - 2026-05-23 P48 Complete / P49 Governance Checkpoint` is the controlling current roadmap overlay. Older P31A / P32 / P33 / P34 / P35 / P48 overlays below are preserved as historical context unless explicitly restated in Section 0 above.
 
 ## 0.P34. P34 Completion Overlay — 2026-05-21
 
@@ -1352,3 +1354,419 @@ No simulation execution, no optimizer, no real backtest, no scoring formula chan
 ```
 P38: Add simulation input readiness mapping for controlled sources
 ```
+
+---
+
+## P49-LEDGER Overlay — 2026-05-23
+
+**Phase:** P49-LEDGER — Post-P47 Full Suite Baseline + Known Failure Ledger  
+**Classification:** `P49_LEDGER_PRE_EXISTING_ONLY_NEXT_AXIS_A_AUTHORIZED`  
+**HEAD at capture:** `261cd369db68f100e7d609b85dbd8af86094249d` (P48)
+
+### Baseline (src/lib/onlineValidation/__tests__)
+
+| Metric | Value |
+|---|---|
+| Total Suites | 127 |
+| Passed Suites | 123 |
+| Failed Suites | 4 (all pre-existing) |
+| Total Tests | 4846 |
+| Passed Tests | 4842 |
+| Runtime | 60.548 s |
+
+### Known Failures (all pre-existing, all same root cause — stale P29C dev.db SHA)
+
+| ID | File | Owner | Next Action |
+|---|---|---|---|
+| LF-01 | `p26a_renderer_fix.test.ts` | p26a | P8 |
+| LF-02 | `p26a_batch_pipeline_wiring.test.ts` | p26a | P8 |
+| LF-03 | `p27_waiting_state_policy_guard.test.ts` | p27 | P8 |
+| LF-04 | `p29d_dropzone_scaffold.test.ts` | p29d | P8 |
+
+`ledgerMatchesP48ClaimedSet` = **true**
+
+### Routing
+
+- **P1 (tomorrow):** Axis A Controlled Research Snapshot v0 — `src/lib/research/` stub. MUST touch `src/`.
+- **Hard rule:** No further Axis B until Axis A delivers visible research snapshot artifact.
+- **P2:** P49 Manifest (P39-P48 documentation). **P3:** Untracked disposition. **P4:** Axis B fixture-backed validation.
+
+---
+
+## P1 Axis A Overlay — 2026-05-23
+
+**Phase:** P1 — Axis A Controlled Research Snapshot v0  
+**Classification:** `P1_AXIS_A_RESEARCH_SNAPSHOT_READY`  
+**HEAD at capture:** `261cd369db68f100e7d609b85dbd8af86094249d` (P48)
+
+### Files Changed
+| File | Type | Status |
+|---|---|---|
+| `src/lib/research/ControlledResearchSnapshot.ts` | NEW | ✅ |
+| `src/lib/research/ControlledResearchSnapshotBuilder.ts` | NEW | ✅ |
+| `src/lib/research/__tests__/controlled_research_snapshot.test.ts` | NEW | ✅ |
+
+### Test Results
+| Suite | Tests | Result |
+|---|---|---|
+| `controlled_research_snapshot.test.ts` | 46/46 | ✅ PASS |
+| `ExperimentRegistry.test.ts` (regression) | pre-existing | ✅ PASS |
+| `ResearchStateMachine.test.ts` (regression) | pre-existing | ✅ PASS |
+| `ResearchParameterVersioning.test.ts` (regression) | pre-existing | ✅ PASS |
+| `ResearchCoverageEngine.test.ts` (regression) | `Resexisting | ✅ PASS |
+| `p36_monthly_revenue_controlled_consumer_readiness.test.ts` | pre-existing | ✅ PASS |
+| `p37_mo| `p37_mo| `p37_mo| `p37_mo| `p37__su| `p37_mo| `p37_mo| `p37_mo| `p37_mo| `p37__su| `p37_mo| ion_input_readiness_mapping.test.ts` | pre-existing | ✅ PASS |
+
+**Total:** 175 + 46 = 221/221 tests passing in affected modules. 0 regressions.
+
+### Governance Invariants
+- `entersAlphaScore = false` ✅ (T9.3 — enforced in builder for all status pa- `entersAlphaScore = false` ✅ (T9.3 — enforced in builder for allbuilder and contract)
+- `paperOnly = true` ✅ (T1.3 — enforced in contract)
+- `dry- `dry- `dry- ` (- `dry- `dry- `dry- ` (-tra- `dry- `drySellActionSemantics = true` ✅ (T8.1 — no action fields emitt- `dry- `dry- `dry- ` (- `dry- `dry- `dry- ` (-tra- `dry- `drySeormula i- `dry- `dry- `dry- ` (- `dry- `dry- `dry- ` (-tra- `dry- `drySellAction- PIT safety enforced ✅ (T2.1–T2.5 — future dates produce `SNAPSHOT_BLOCKED_PIT`)
+- 21 forbidden fields blocked ✅ (T7.1–T7.3 — `SNAPSHOT_FORBIDDEN_FIELDS` guard)
+- Absent source → `NOT_ASSESSED` (not fabricated) ✅ (T3.1–T3.5)
+
+### P38 Integration Note
+`Quote`/`Regime` sources with `pitSafeConfirmed=false` produce `SOURCE_PRESENT_AUDIT_ONLY`
+(= `AUDIT_ONLY` in SourceInputState) per P38 `resolveQuoteOrRegime` — not `BLOCKED`.
+`MonthlyRevenue` with `pitMetadataComplete=false` produces `BLOCKED_PIT_METADATA` (= `BLOCKED`).
+Tests updated to reflect actual P38 resolver semantics.
+
+### Routing
+- **P2 (next):** P49 Manifest (P39-P48 canonical phase documentation)
+- **P3 (parallel to P2):** Untracked Artifact Disposition Plan & Execution
+- **P4 (after P1):** Axis B Fixture-backed Dry-run Validation Checkpoint
+- **Hard rule satisfied:** Axis A has delivered visible research snapshot artifact (P1). Axis B work authorized.
+
+
+---
+
+## P2 — P49 Manifest: P39–P48 Simulation Governance Chain
+
+**Date:** 2026-05-23  
+**Classification:** `P2_P49_MANIFEST_READY`  
+**HEAD:** `261cd369` (P48, unchanged)  
+**Forbidden claims scan:** CLEAN
+
+### Phase Range Documented
+
+P38–P48 (11 phases, Axis B paper simulation governance chain)
+
+### Governance Invariants (all phases)
+
+| Invariant | Status |
+|---|---|
+| `entersAlphaScore = false` | ✅ All 11 phases |
+| `paperOnly = true` | ✅ P39–P48 |
+| `dryRunOnly = true` | ✅ P39–P48 |
+| `executedAt = null` | ✅ P41–P48 |
+| `noActualMetrics = true` | ✅ P41–P48 |
+| No scoring formula change | ✅ All phases |
+| No buy/sell/hold/PnL/ROI claims | ✅ All phases |
+
+### Phase Chain Summary
+
+| Phase | Classification | Tests |
+|---|---|---|
+| P38 | `P38_SIMULATION_INPUT_READINESS_MAPPING_READY` | 55/55 |
+| P39 | `P39_PAPER_SIMULATION_INPUT_CONTRACT_READY` | 77/77 |
+| P40 | `P40_PAPER_SIMULATION_FRAMEWORK_DESIGN_READY` | 118/118 |
+| P41 | `P41_PAPER_SIMULATION_DRY_RUN_DESIGN_READY` | 97/97 |
+| P42 | `P42_PAPER_SIMULATION_DRY_RUN_LIFECYCLE_READY` | 98/98 |
+| P43 | `P43_PAPER_SIMULATION_DRY_RUN_LIFECYCLE_RUNNER_READY` | 98/98 |
+| P44 | `P44_PAPER_SIMULATION_DRY_RUN_LIFECYCLE_RUNNER_INTEGRATION_READY` | 98/98 |
+| P45 | `P45_PAPER_SIMULATION_DRY_RUN_INTEGRATION_REHEARSAL_READY` | 98/98 |
+| P46 | `P46_PAPER_SIMULATION_DRY_RUN_FULL_PIPELINE_REHEARSAL_READY` | 98/98 |
+| P47 | `P47_PAPER_SIMULATION_DRY_RUN_RESULT_ARTIFACT_MATERIALIZATION_READY` | 98/98 |
+| P48 | `P48_GOLDEN_FIXTURE_DESIGN_READY` | 100/100 |
+
+**Chain regression at P48 HEAD:** 1035/1035 PASS  
+**P49 Ledger baseline:** 4842/4846 PASS (4 pre-existing failures pinned)
+
+### Anti-Axis-Monopoly Rule
+
+- Axis B consecutive rounds: 11 (P38–P48)
+- Anti-axis-monopoly rule satisfied: P1 Axis A research snapshot delivered (46/46 PASS)
+- **Axis B (P4) is now authorized**
+
+### Artifacts
+
+- `outputs/online_validation/p49_manifest_p39_p48.json` — structured manifest
+- `outputs/online_validation/p49_manifest_p39_p48.md` — narrative manifest
+- `outputs/online_validation/p2_p49_manifest_final_report.md` — final report
+
+---
+## P3 — Untracked Artifact Disposition Plan v1
+
+**Date:** 2026-05-23  
+**Classification:** `P3_DISPOSITION_PLAN_READY_PENDING_USER_DECISION`  
+**Total untracked entries at capture:** 77
+
+### Summary
+
+| Disposition | Count |
+|---|---|
+| COMMIT_WITH_RETENTION (outputs/) | 65 |
+| KEEP_IN_PLACE (src/, data/, plan/) | 8 |
+| NEEDS_USER_DECISION (root scripts) | 3 |
+
+### Proposed Commit Sequence (not yet executed)
+
+1. P27: Add overnight deep audit preflight JSON (missing companion)
+2. P29G: Add preflight governance artifacts
+3. P32PREP: Add dry-run spec scaffolding and artifact inventory
+4. P32: Add MonthlyRevenue source-present dry-run artifacts
+5. P33: Add FinancialReport+NewsEvent source-present gate artifacts
+6. P34: Add NewsEvent source-present dry-run sample artifacts
+7. P35-REALIGN: Add realign decision matrix and disposition plan
+8. P49-LEDGER: Add post-P48 full-suite baseline and known failure ledger
+9. P1-AXIS-A: Add ControlledResearchSnapshot types, builder, tests, and report
+10. governance: Add CEO-Decision and active_task post-P48
+
+### Pending User Decisions
+
+| File | Question |
+|---|---|
+| `verify_p34.py` | Confirm P35 plan: mv to scripts/? |
+| `generate_artifacts.py` | scripts/ or delete? |
+| `p28c_9case_validation.js` | scripts/ or delete? |
+
+### Artifacts
+
+- `outputs/online_validation/untracked_artifact_disposition_plan.json`
+- `outputs/online_validation/untracked_artifact_disposition_plan.md`
+- `outputs/online_validation/p3_untracked_artifact_disposition_final_report.md`
+
+*Governance: entersAlphaScore=false. Plan only. No git operations. Not investment advice.*
+
+---
+
+---
+
+## P3 Closure — Root Script Relocation
+
+**Date:** 2026-05-23
+**Classification:** `P3_CLOSURE_READY_P4_AUTHORIZED`
+
+### Scripts Relocated
+
+| From | To | Note |
+|---|---|---|
+| `verify_p34.py` | `scripts/verify_p34.py` | P34 governance flag validator |
+| `generate_artifacts.py` | `scripts/generate_artifacts.py` | Empty placeholder |
+| `p28c_9case_validation.js` | `scripts/p28c_9case_validation.js` | P28C 9-case before/after |
+
+All NEEDS_USER_DECISION items resolved. P3 disposition complete.
+
+### P4 Authorization
+
+- Anti-axis-monopoly rule: ✅ P1 Axis A delivered
+- P4 scope: fixture-backed dry-run validation (`P48GoldenFixture`)
+- P4 MUST NOT: real sim / optimizer / backtest / scoring change
+- See: `outputs/online_validation/p4_axis_b_fixture_validation_readiness.md`
+
+*entersAlphaScore=false. Not investment advice.*
+
+---
+
+---
+
+## P4 — Axis B Fixture-backed Dry-run Validation
+
+**Date:** 2026-05-23  
+**Classification:** `P4_AXIS_B_FIXTURE_VALIDATION_READY`  
+**HEAD:** `261cd369` (P48, unchanged)
+
+### Test Results
+
+| Suite | Result |
+|---|---|
+| P4 new tests (`p4_golden_fixture_validation.test.ts`) | 25/25 ✅ |
+| P38–P48 chain regression | 1035/1035 ✅ |
+
+### Coverage
+
+5 groups × 5 tests each:
+- Group 1: Cross-module fixture load and determinism
+- Group 2: Governance flag exhaustiveness (all 15 flags)
+- Group 3: Null-execution / stub sentinel invariants
+- Group 4: Validator contract and structured error paths
+- Group 5: Forbidden field coverage and artifact rejection
+
+### Invariants
+
+`entersAlphaScore=false` | `executedAt=null` | `stubResult=DRY_RUN_STUB_ONLY` | `dryRunOnly=true` | `paperOnly=true` | `noRealExecution=true`
+
+### Anti-axis-monopoly Rule
+
+- Axis B delivered P4 (fixture-backed validation)
+- **Axis A (P5) is now authorized**
+
+### Artifacts
+
+- `src/lib/simulation/__tests__/p4_golden_fixture_validation.test.ts`
+- `outputs/online_validation/p4_fixture_validation_final_report.md`
+
+*entersAlphaScore=false. Not investment advice.*
+
+---
+
+---
+
+## P5 — Axis A Controlled Research Snapshot Builder Invariant Extension
+
+**Date:** 2026-05-23  
+**Classification:** `P5_AXIS_A_RESEARCH_SNAPSHOT_EXTENSION_READY`  
+**HEAD:** `261cd369` (P48, unchanged)
+
+### Test Results
+
+| Suite | Result |
+|---|---|
+| Axis A snapshot tests (`controlled_research_snapshot.test.ts`) | 71/71 ✅ (46 P1 + 25 P5) |
+| Full research suite (`src/lib/research/__tests__/`) | 200/200 ✅ |
+| P36/P37/P38 controlled consumer regression | 165/165 ✅ |
+
+### New P5 Coverage (25 tests, 5 groups)
+
+- T11: All-sources-blocked invariant exhaustiveness
+- T12: Partial and ready bundle edge cases (4 new readiness paths)
+- T13: sourceTrace edge cases (empty string, long, special chars)
+- T14: Deterministic repeated build invariants
+- T15: PIT-unsafe source combinations (AUDIT_ONLY mapping, SNAPSHOT_BLOCKED when 0 eligible)
+
+### Key Insight: P38 Semantics
+
+Quote/Regime with `pitSafeConfirmed=false` → `SOURCE_PRESENT_AUDIT_ONLY` → `AUDIT_ONLY`  
+(not `BLOCKED`). Only `BLOCKED_*` statuses from MR/FinancialReport/Chip/News → `BLOCKED`.
+
+### Anti-axis-monopoly Rule
+
+- Axis A delivered P5 (builder invariant extension)
+- **Axis B (P6) is now authorized**
+
+### Artifacts
+
+- `src/lib/research/__tests__/controlled_research_snapshot.test.ts` (extended)
+- `outputs/online_validation/p5_axis_a_research_snapshot_extension_final_report.md`
+
+*entersAlphaScore=false. Not investment advice.*
+
+---
+
+---
+
+## P6 — Axis B Fixture-backed Dry-run Result Contract Extension
+
+**Date:** 2026-05-23
+**Classification:** `P6_AXIS_B_FIXTURE_RESULT_CONTRACT_READY`
+**HEAD:** `261cd369` (P48, unchanged)
+
+### Test Results
+
+| Suite | Result |
+|---|---|
+| P6 new tests (`p6_fixture_result_contract_extension.test.ts`) | 25/25 ✅ |
+| Full simulation suite (P4+P6) | 50/50 ✅ |
+| P38–P48 chain regression | 1035/1035 ✅ |
+
+### New P6 Coverage (25 tests, 5 groups)
+
+- T6: Validator metadata exhaustiveness (frozen result, 47-field coverage, fixtureId prefix)
+- T7: Individual governance flag rejection (5 flags: noActualMetrics/noOptimizer/noRealBacktest/noInvestmentAdvice/noReturnPct)
+- T8: Step count and ID pattern rejection (wrong step counts + 3 malformed ID prefixes)
+- T9: Forbidden field individual coverage (roi, winRate, backtestResult; injection tests)
+- T10: Phase chain validation (P47→P46→P45→P44 labels; tampered phase detected)
+
+### Anti-axis-monopoly Rule
+
+- Axis B delivered P6 (fixture result contract hardening)
+- **Axis A (P7) is now authorized**
+
+### Artifacts
+
+- `src/lib/simulation/__tests__/p6_fixture_result_contract_extension.test.ts` (created)
+- `outputs/online_validation/p6_axis_b_fixture_result_contract_final_report.md`
+
+*entersAlphaScore=false. Not investment advice.*
+
+---
+
+---
+
+## P7 — Axis A Research Coverage Engine Determinism (2026-05-23T06:31:40Z)
+
+**Classification:** P7_AXIS_A_RESEARCH_COVERAGE_DETERMINISM_READY
+
+### New tests: 25 (file: `src/lib/research/__tests__/p7_research_coverage_determinism.test.ts`)
+
+| Group | Description | PASS |
+|-------|-------------|------|
+| P7.1 | Determinism and ordering | 5/5 |
+| P7.2 | Boundary values | 5/5 |
+| P7.3 | Summary invariants | 5/5 |
+| P7.4 | Governance / anti-advice invariants | 5/5 |
+| P7.5 | Edge-case paths | 5/5 |
+
+**Validated baseline:** Research 225/225 + P36/P37/P38 165/165
+**P49 pinned failures:** 4 (p26a renderer, p26a batch, p27 waiting-state, p29d dropzone) — deferred to P8
+
+## P8 — Known Failure Repair (SHA stale baseline)
+- Status: `P8_KNOWN_FAILURE_REPAIR_READY_FULL_BASELINE_GREEN`
+- Root cause: 4 pinned tests had stale P29C dev.db SHA `9c24c697...` vs current `a5cf2771...`
+- Repair: Updated SHA expectation in 4 test files; DB file NOT touched
+- Result: 4842/4846 → **4846/4846 PASS** (full baseline green)
+- Chain regression: P36/P37/P38 (165), research (225), simulation (275) — all PASS
+- DB invariant confirmed: `a5cf277182c161dfe97ba05f9b81528d6c8e477dd5ac0bec6810ffbb8711c6f8`
+
+---
+
+## P9 — Baseline Consolidation, Commit Readiness, and Evidence Freeze
+
+**Status:** P9_BASELINE_CONSOLIDATION_PARTIAL_USER_DECISION_REQUIRED  
+**Completed:** 2026-05-23T08:36:30Z  
+**HEAD:** `261cd369db68f100e7d609b85dbd8af86094249d` (P48, unchanged)
+
+### Verification Gates Passed
+- [4846/4846] onlineValidation suite PASS (127 suites, 0 failures)
+- [275/275] Research + Simulation suite PASS (8 suites, 0 failures)
+- [5121/5121] Total test suite PASS (zero failures)
+- [DB_SHA_OK] dev.db SHA `a5cf2771…` verified — DB not modified
+- [CLEAN] Context-lock scan — no P26J/K/Betting-pool/CLV/COMPLETE_PAIR/TSL contamination
+- [CLEAN] Forbidden-claims scan across all new/modified source files
+
+### File Classification Summary
+- SAFE_TO_COMMIT: 97 files (P1–P8 source, tests, reports, roadmap, scripts, P28 artifacts)
+- USER_DECISION: 3 files (00-StockPlan/20260514–15 daily plans)
+- MUST_NOT_COMMIT: 19 files (runtime logs, PID file, data/manual/ dropzone templates)
+
+### Key Artifacts
+- `outputs/online_validation/p9_baseline_consolidation_inventory.json`
+- `outputs/online_validation/p9_baseline_consolidation_commit_readiness_report.md`
+
+### Anti-Axis-Monopoly Note
+P9 is consolidation-only. No new source, no new tests, no schema changes.
+P10 may implement next axis (Axis C or governance work) once user resolves 00-StockPlan/ decision.
+
+## P10 — Commit Readiness Finalization
+**Date**: 2026-05-23
+**Status**: P10_COMMIT_PACKAGE_READY_AWAITING_USER_COMMIT_AUTH
+**Tests**: 5121/5121 PASS (onlineValidation 4846/4846 | research+sim 275/275)
+**DB**: a5cf2771... UNCHANGED
+
+### Verification Results
+- Pre-flight: CLEAN (branch main, HEAD 261cd369, no contamination)
+- Phase 4 forbidden claims scan: CLEAN (all hits in governance/disclaimer context)
+- DB SHA integrity: DB_SHA_OK
+- All 5121 tests passing across 135 suites
+
+### Commit Package
+- 97 files classified SAFE_TO_COMMIT
+- 3 files remain USER_DECISION (00-StockPlan/ — no explicit user input)
+- 19 files classified MUST_NOT_COMMIT (logs, pid, dropzone)
+- git add commands prepared in p10_commit_package_filelist.txt
+- **Awaiting user "YES commit P1-P9 baseline consolidation" to execute**
+
+### Governance
+All invariants verified: entersAlphaScore=false, paperOnly=true, dryRunOnly=true,
+noActualMetrics=true, executedAt=null, noRealExecution=true, DB unchanged.

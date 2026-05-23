@@ -1,0 +1,33 @@
+{
+  "audit_id": "P29G-PREFLIGHT-test-baseline",
+  "audit_date": "2026-05-20",
+  "timezone": "Asia/Taipei",
+  "auditor": "P29G-PREFLIGHT Senior Mainline Integration Audit Agent",
+  "head_sha": "1c5a270b0be185a9f06d870305ed93f07950c69b",
+
+  "test_command": "npx jest src/lib/onlineValidation/__tests__ --no-coverage",
+  "test_directory": "src/lib/onlineValidation/__tests__",
+  "coverage_flag": false,
+
+  "results": {
+    "test_suites_passed": 106,
+    "test_suites_failed": 0,
+    "test_suites_total": 106,
+    "tests_passed": 3181,
+    "tests_failed": 0,
+    "tests_total": 3181,
+    "snapshots": 0,
+    "duration_seconds": 65.292,
+    "outcome": "PASS"
+  },
+
+  "comparison_with_p29f_repair_report": {
+    "p29f_repair_baseline": "3181/3181 PASS (commit 1c5a270)",
+    "current_head_baseline": "3181/3181 PASS (commit 1c5a270)",
+    "match": true,
+    "note": "HEAD is still 1c5a270; baseline is confirmed identical to P29F-Repair report"
+  },
+
+  "test_baseline_status": "PASS",
+  "verdict_detail": "All 3181 onlineValidation tests pass at current HEAD (1c5a270). No regressions detected. Baseline is stable and reproducible."
+}

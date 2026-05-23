@@ -1,0 +1,50 @@
+{
+  "phase": "P32",
+  "capturedAt": "2026-05-21T00:00:00.000Z",
+  "mode": "source-present-dry-run",
+  "paperOnly": true,
+  "dryRun": true,
+  "entersAlphaScore": false,
+  "notInvestmentRecommendation": true,
+
+  "source": "MonthlyRevenue",
+  "dbQueryMethod": "sqlite3 prisma/dev.db",
+  "dbQuery": "SELECT COUNT(*) as total, COUNT(releaseDate) as with_rd, COUNT(releaseDateSource) as with_src, COUNT(releaseDateConfidence) as with_conf FROM MonthlyRevenue;",
+
+  "rowCount": 2143,
+  "blockedRows": 0,
+
+  "releaseDateCoverage": {
+    "count": 2143,
+    "pct": 100
+  },
+  "releaseDateSourceCoverage": {
+    "count": 2143,
+    "pct": 100,
+    "policy": "INFERRED_NEXT_MONTH_10TH"
+  },
+  "releaseDateConfidenceCoverage": {
+    "count": 2143,
+    "pct": 100,
+    "confidence": "LOW"
+  },
+
+  "dryRunStatus": "READY",
+  "overallClassification": "MONTHLY_REVENUE_SOURCE_PRESENT_DRY_RUN_READY",
+
+  "auditConclusion": "All 2143 MonthlyRevenue rows pass source-present dry-run gate at P32 execution. Row counts are stable versus P31 baseline. No leakage risk detected. No rows enter alphaScore.",
+
+  "specConformance": {
+    "conformsTo": "p32prep_report_spec_v0_dry_run_sample",
+    "specVersion": "v0",
+    "conformanceArtifact": "outputs/online_validation/p32_monthly_revenue_spec_conformance.json"
+  },
+
+  "inputLineage": {
+    "p31DryRunSample": "outputs/online_validation/p31_monthly_revenue_dry_run_sample.json",
+    "p31GateScan": "outputs/online_validation/p31_monthly_revenue_dry_run_gate_scan.json",
+    "p32prepSpec": "outputs/online_validation/p32prep_report_spec_v0_dry_run_sample.json"
+  },
+
+  "disclaimer": "Structural audit contract only. Does not constitute investment advice. No profit, return, or investment performance claims are made. MonthlyRevenue entersAlphaScore = false. ALWAYS. Results must not be used as buy/sell/hold signals or investment recommendations."
+}

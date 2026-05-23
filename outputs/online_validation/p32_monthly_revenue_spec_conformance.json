@@ -1,0 +1,93 @@
+{
+  "conformanceReportId": "p32_monthly_revenue_spec_conformance",
+  "capturedAt": "2026-05-21T00:00:00.000Z",
+  "p32Artifact": "outputs/online_validation/p32_monthly_revenue_dry_run_sample.json",
+  "specArtifact": "outputs/online_validation/p32prep_report_spec_v0_dry_run_sample.json",
+  "specName": "dry-run-sample",
+  "specVersion": "v0",
+
+  "requiredFields": {
+    "phase":                    { "present": true,  "value": "P32",                                          "conformant": true },
+    "capturedAt":               { "present": true,  "value": "2026-05-21T00:00:00.000Z",                    "conformant": true },
+    "mode":                     { "present": true,  "value": "source-present-dry-run",                      "conformant": true },
+    "paperOnly":                { "present": true,  "value": true,                                           "conformant": true, "hardConstraint": "must be true — PASS" },
+    "dryRun":                   { "present": true,  "value": true,                                           "conformant": true, "hardConstraint": "must be true — PASS" },
+    "entersAlphaScore":         { "present": true,  "value": false,                                          "conformant": true, "hardConstraint": "must be false — PASS" },
+    "notInvestmentRecommendation": { "present": true, "value": true,                                         "conformant": true, "hardConstraint": "must be true — PASS" },
+    "dryRunStatus":             { "present": true,  "value": "READY",                                        "conformant": true, "enumCheck": "value is in [READY, BLOCKED, PARTIAL, WAITING_FOR_AUTHORIZATION] — PASS" },
+    "overallClassification":    { "present": true,  "value": "MONTHLY_REVENUE_SOURCE_PRESENT_DRY_RUN_READY", "conformant": true },
+    "disclaimer":               { "present": true,  "conformant": true }
+  },
+
+  "requiredFieldsSummary": {
+    "total": 10,
+    "present": 10,
+    "missing": 0,
+    "hardConstraintViolations": 0
+  },
+
+  "optionalFields": {
+    "rowCount":                      { "present": true, "value": 2143 },
+    "blockedRows":                   { "present": true, "value": 0 },
+    "releaseDateCoverage":           { "present": true, "value": { "count": 2143, "pct": 100 } },
+    "releaseDateSourceCoverage":     { "present": true, "value": { "count": 2143, "pct": 100, "policy": "INFERRED_NEXT_MONTH_10TH" } },
+    "releaseDateConfidenceCoverage": { "present": true, "value": { "count": 2143, "pct": 100, "confidence": "LOW" } },
+    "auditConclusion":               { "present": true },
+    "source":                        { "present": true, "value": "MonthlyRevenue" },
+    "dbQueryMethod":                 { "present": true, "value": "sqlite3 prisma/dev.db" },
+    "dbQuery":                       { "present": true },
+    "authorizationReceived":         { "present": false, "note": "Not applicable — P32 dry-run does not require explicit authorization phrase" },
+    "gate":                          { "present": false, "note": "Not applicable — dryRunStatus=READY; no pending gate" },
+    "runId":                         { "present": false, "note": "Not included — no ephemeral run ID generated for DB-query-based dry-run" },
+    "executionNote":                 { "present": false, "note": "Execution detail captured in p32_monthly_revenue_source_present_dry_run.json instead" },
+    "policy":                        { "present": false, "note": "Policy captured inside releaseDateSourceCoverage.policy" }
+  },
+
+  "optionalFieldsSummary": {
+    "specDefined": 15,
+    "populated": 9,
+    "notPopulated": 6,
+    "notPopulatedReason": "Not applicable for this execution mode or captured in companion artifact"
+  },
+
+  "governanceConstraints": {
+    "entersAlphaScore_false":         { "status": "PASS", "detail": "entersAlphaScore=false present and boolean false" },
+    "paperOnly_true":                 { "status": "PASS", "detail": "paperOnly=true present and boolean true" },
+    "dryRun_true":                    { "status": "PASS", "detail": "dryRun=true present and boolean true" },
+    "notInvestmentRecommendation_true": { "status": "PASS", "detail": "notInvestmentRecommendation=true present and boolean true" },
+    "noForbiddenFields":              { "status": "PASS", "detail": "No buySignal/sellSignal/roi/winRate/edge/profit/alpha fields present" },
+    "dryRunStatusEnum":               { "status": "PASS", "detail": "READY is a valid enum value" },
+    "disclaimerPresent":              { "status": "PASS", "detail": "Disclaimer string present and non-empty" }
+  },
+
+  "governanceConstraintsSummary": {
+    "total": 7,
+    "pass": 7,
+    "fail": 0
+  },
+
+  "intentionalExclusions": [
+    { "field": "roi",                    "reason": "Forbidden — investment performance claim" },
+    { "field": "winRate",                "reason": "Forbidden — investment performance claim" },
+    { "field": "edge",                   "reason": "Forbidden — investment performance claim" },
+    { "field": "profit",                 "reason": "Forbidden — investment performance claim" },
+    { "field": "buySignal",              "reason": "Forbidden — buy/sell/hold/action semantics" },
+    { "field": "sellSignal",             "reason": "Forbidden — buy/sell/hold/action semantics" },
+    { "field": "holdSignal",             "reason": "Forbidden — buy/sell/hold/action semantics" },
+    { "field": "outperform",             "reason": "Forbidden — prediction quality claim" },
+    { "field": "predictedReturn",        "reason": "Forbidden — investment performance claim" },
+    { "field": "investmentRecommendation", "reason": "Forbidden — investment advice" }
+  ],
+
+  "backwardCompatibilityNotes": [
+    "P32 artifact is fully compatible with P32PREP v0 spec — all 10 required fields populated",
+    "P32 artifact adds no new required fields (backward compatible with any P33+ reader of v0 spec)",
+    "Optional fields omitted are documented with reasons and are not needed for gate pass determination",
+    "P31 dry-run sample (predecessor) also conforms to this spec — P32 adds inputLineage and specConformance fields for traceability"
+  ],
+
+  "overallConformance": "FULL_CONFORMANCE",
+  "conformanceClassification": "P32_SPEC_CONFORMANCE_PASS",
+
+  "disclaimer": "Conformance report only. Does not constitute investment advice. No profit, return, or investment performance claims."
+}

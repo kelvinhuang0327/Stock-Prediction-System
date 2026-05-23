@@ -1,0 +1,95 @@
+{
+  "scanId": "p32_forbidden_claims_scan",
+  "capturedAt": "2026-05-21T00:00:00.000Z",
+  "phase": "P32",
+  "scanTarget": "outputs/online_validation/p32_*",
+
+  "scanTerms": [
+    "ROI", "win-rate", "win rate", "winRate",
+    "alpha[^S]", "edge", "profit", "outperform",
+    "beat", "guaranteed", "investment recommendation",
+    "買進", "賣出", "買入",
+    "buy signal", "sell signal", "hold signal",
+    "buySignal", "sellSignal", "holdSignal"
+  ],
+
+  "matches": [
+    {
+      "file": "outputs/online_validation/p32_monthly_revenue_dry_run_sample.json",
+      "line": 49,
+      "matchedTerm": "profit",
+      "context": "disclaimer field — '...No profit, return, or investment performance claims are made...'",
+      "classification": "BENIGN_PROHIBITION_REFERENCE",
+      "explanation": "Term appears in standard disclaimer text explicitly prohibiting investment advice. Not a claim; a prohibition statement."
+    },
+    {
+      "file": "outputs/online_validation/p32_monthly_revenue_dry_run_sample.md",
+      "line": 7,
+      "matchedTerm": "profit",
+      "context": "Disclaimer section — '...No profit, return, or investment performance claims...'",
+      "classification": "BENIGN_PROHIBITION_REFERENCE",
+      "explanation": "Standard governance disclaimer. Not a claim."
+    },
+    {
+      "file": "outputs/online_validation/p32_monthly_revenue_dry_run_sample.md",
+      "lines": [80, 81, 82, 83],
+      "matchedTerms": ["winRate", "edge", "profit", "buySignal", "sellSignal", "holdSignal", "outperform", "beat", "guaranteed", "alpha"],
+      "context": "Exclusions section — '...investment performance claims forbidden...'",
+      "classification": "BENIGN_EXCLUSION_DOCUMENTATION",
+      "explanation": "These terms appear in the intentional exclusion list documenting WHAT is forbidden. This is governance compliance documentation, not claim assertion."
+    },
+    {
+      "file": "outputs/online_validation/p32_monthly_revenue_source_present_dry_run.json",
+      "line": 68,
+      "matchedTerm": "profit",
+      "context": "disclaimer field — standard prohibition text",
+      "classification": "BENIGN_PROHIBITION_REFERENCE",
+      "explanation": "Standard governance disclaimer. Not a claim."
+    },
+    {
+      "file": "outputs/online_validation/p32_monthly_revenue_source_present_dry_run.md",
+      "line": 8,
+      "matchedTerm": "profit",
+      "context": "Disclaimer section — standard prohibition text",
+      "classification": "BENIGN_PROHIBITION_REFERENCE",
+      "explanation": "Standard governance disclaimer. Not a claim."
+    },
+    {
+      "file": "outputs/online_validation/p32_monthly_revenue_spec_conformance.json",
+      "lines": [58, 71, 72, 73, 74, 75, 76, 77, 92],
+      "matchedTerms": ["buySignal", "sellSignal", "winRate", "edge", "profit", "outperform", "profit"],
+      "context": "Intentional exclusions array and conformance governance — documenting excluded fields and disclaimer",
+      "classification": "BENIGN_GOVERNANCE_REFERENCE",
+      "explanation": "All occurrences are in the intentionalExclusions[] array (documenting excluded fields with reasons) or disclaimer text. Not actual field assertions."
+    },
+    {
+      "file": "outputs/online_validation/p32_monthly_revenue_spec_conformance.md",
+      "lines": [73, 74, 75],
+      "matchedTerms": ["winRate", "edge", "profit", "buySignal", "sellSignal", "holdSignal", "outperform", "beat", "guaranteed"],
+      "context": "Intentional Exclusions table — forbidden field documentation",
+      "classification": "BENIGN_EXCLUSION_DOCUMENTATION",
+      "explanation": "Exclusion table documenting governance. Not claim assertions."
+    }
+  ],
+
+  "totalMatches": 7,
+  "benignMatches": 7,
+  "violatingMatches": 0,
+
+  "summary": "All 7 match groups are BENIGN. Every occurrence of a forbidden term in P32 artifacts appears either in (a) standard disclaimer/prohibition text, (b) an intentional exclusion list documenting governance compliance, or (c) a conformance report enumerating excluded fields. No forbidden terms are used as actual data field names or claim assertions.",
+
+  "forbiddenPathModificationScan": {
+    "checkedPaths": [
+      "prisma/**",
+      "src/lib/scoring/**",
+      "src/lib/**",
+      "package.json",
+      "tests/**"
+    ],
+    "note": "See git diff --stat output captured in p32_final_report.md",
+    "result": "NO_FORBIDDEN_PATH_MODIFICATIONS"
+  },
+
+  "scanResult": "CLEAN",
+  "disclaimer": "Scan result only. Does not constitute investment advice. No profit, return, or investment performance claims."
+}

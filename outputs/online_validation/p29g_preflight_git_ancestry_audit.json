@@ -1,0 +1,65 @@
+{
+  "audit_id": "P29G-PREFLIGHT-git-ancestry",
+  "audit_date": "2026-05-20",
+  "timezone": "Asia/Taipei",
+  "auditor": "P29G-PREFLIGHT Senior Mainline Integration Audit Agent",
+
+  "head": {
+    "sha": "1c5a270b0be185a9f06d870305ed93f07950c69b",
+    "short": "1c5a270",
+    "branch": "main",
+    "message": "P29F-Repair: Fix Quote Chip PIT date normalization"
+  },
+
+  "ancestry_checks": {
+    "P29D": {
+      "commit_short": "ecd5c86",
+      "commit_full": "ecd5c86",
+      "message": "P29D: Add FinancialReport and NewsEvent manual drop-zone scaffold",
+      "exists_in_repo": true,
+      "is_ancestor_of_HEAD": false,
+      "merge_base_exit_code": 1,
+      "location": "tip of local branch claude/objective-kalam-b00477",
+      "status": "LOCAL_ONLY"
+    },
+    "P29E": {
+      "commit_short": "51d15df",
+      "commit_full": "51d15df",
+      "message": "P29E: Add paper simulation scaffold",
+      "exists_in_repo": true,
+      "is_ancestor_of_HEAD": false,
+      "merge_base_exit_code": 1,
+      "location": "tip of local branch claude/frosty-borg-e85827",
+      "status": "LOCAL_ONLY"
+    }
+  },
+
+  "topology_summary": {
+    "shared_ancestor": "2da1203 (P29C: Add backtest and simulation contract paper design)",
+    "main_path_from_P29C": [
+      "0165d79 - P29F: Audit Quote Regime Chip PIT validation",
+      "1c5a270 - P29F-Repair: Fix Quote Chip PIT date normalization (HEAD)"
+    ],
+    "orphaned_side_path": [
+      "ecd5c86 - P29D (claude/objective-kalam-b00477)",
+      "51d15df - P29E (claude/frosty-borg-e85827)"
+    ],
+    "divergence_point": "After 2da1203 (P29C), main went to P29F directly; P29D→P29E were committed on separate claude/* branches and never merged into main"
+  },
+
+  "git_log_recent_30": [
+    "1c5a270 (HEAD -> main) P29F-Repair: Fix Quote Chip PIT date normalization",
+    "0165d79 P29F: Audit Quote Regime Chip PIT validation",
+    "2da1203 (claude/quirky-black-eb3d86) P29C: Add backtest and simulation contract paper design",
+    "cb53516 P29B: Add NewsEvent and FinancialReport source acquisition plan",
+    "3e02b9d P29A: Add PIT-safe feature availability registry v1",
+    "455c86a P28E: Close reason underoutput renderer repair track + pre-commit P29-A axis-A continuation",
+    "6801e0e P28D: Validate renderer repair across integrated review path",
+    "73ce251 P28C: Implement renderer-only reason template repair",
+    "0ca055b P28B: Add reason template coverage repair plan",
+    "1cf0252 P28A-HARDRESET: Scoring Underoutput 9-Case Read-Only Audit + Template Branch Coverage Map"
+  ],
+
+  "verdict": "SCAFFOLD_LOCAL_ONLY",
+  "verdict_detail": "Both P29D (ecd5c86) and P29E (51d15df) exist as commit objects in the repository but are NOT ancestors of current HEAD (main). They reside on separate local claude/* branches and have never been merged into main."
+}

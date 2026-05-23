@@ -1,0 +1,84 @@
+{
+  "phase": "P33",
+  "capturedAt": "2026-05-21T00:00:00.000Z",
+  "source": "FinancialReport",
+  "mode": "source-present-readiness-scan",
+  "paperOnly": true,
+  "dryRun": true,
+  "entersAlphaScore": false,
+  "notInvestmentRecommendation": true,
+  "noBuySellActionSemantics": true,
+
+  "dbQueryMethod": "sqlite3 prisma/dev.db",
+  "dbQueries": [
+    "SELECT COUNT(*) as total, COUNT(eps) as with_eps, COUNT(netIncome) as with_netIncome, COUNT(grossMargin) as with_grossMargin, COUNT(operatingMargin) as with_operatingMargin FROM FinancialReport;",
+    "SELECT year, quarter, COUNT(*) as cnt FROM FinancialReport GROUP BY year, quarter ORDER BY year DESC, quarter DESC LIMIT 12;",
+    "PRAGMA table_info(FinancialReport);"
+  ],
+
+  "schemaFields": [
+    { "column": "id",              "type": "INTEGER", "nullable": false },
+    { "column": "stockId",         "type": "TEXT",    "nullable": false },
+    { "column": "year",            "type": "INTEGER", "nullable": false },
+    { "column": "quarter",         "type": "INTEGER", "nullable": false },
+    { "column": "eps",             "type": "REAL",    "nullable": false },
+    { "column": "netIncome",       "type": "REAL",    "nullable": false },
+    { "column": "grossMargin",     "type": "REAL",    "nullable": true  },
+    { "column": "operatingMargin", "type": "REAL",    "nullable": true  },
+    { "column": "createdAt",       "type": "DATETIME","nullable": false }
+  ],
+
+  "pitSafetyFieldsPresent": {
+    "releaseDate": false,
+    "releaseDateSource": false,
+    "releaseDateConfidence": false
+  },
+
+  "rowCounts": {
+    "total": 957,
+    "withEps": 957,
+    "withNetIncome": 957,
+    "withGrossMargin": 0,
+    "withOperatingMargin": 0
+  },
+
+  "periodDistribution": {
+    "note": "All 957 rows are year=2025, quarter=4. Single-period bulk data.",
+    "uniquePeriods": 1,
+    "periods": [
+      { "year": 2025, "quarter": 4, "count": 957 }
+    ]
+  },
+
+  "sourcePresentReadiness": {
+    "pitGateField": null,
+    "pitGateFieldNote": "No releaseDate, releaseDateSource, or releaseDateConfidence field exists in schema. createdAt is ingestion timestamp only — not a PIT-safe release date. year/quarter fields identify the reporting period but do not establish when the report became publicly available.",
+    "inferred PitPolicy": null,
+    "status": "BLOCKED",
+    "blockReason": "MISSING_PIT_METADATA_FIELDS",
+    "blockDetail": "FinancialReport schema has no releaseDate field. Without a PIT-safe release date, it is not possible to determine whether a data row was available at a given evaluation timestamp. createdAt reflects ingestion time, not publication time. This creates look-ahead leakage risk if used without a dedicated releaseDate field.",
+    "dryRunEligible": false
+  },
+
+  "requiredForUnblock": [
+    "Add releaseDate (DateTime) column to FinancialReport schema via a new Prisma migration",
+    "Populate releaseDate using official TWSE/MOPS quarterly report publication dates or a deterministic inference policy (e.g., Q4 reports released by end of March following year)",
+    "Add releaseDateSource and releaseDateConfidence companion fields",
+    "This requires explicit DB migration authorization: YES apply FinancialReport releaseDate migration to dev DB"
+  ],
+
+  "governanceFlags": {
+    "entersAlphaScore": false,
+    "paperOnly": true,
+    "dryRun": true,
+    "notInvestmentRecommendation": true,
+    "noBuySellActionSemantics": true
+  },
+
+  "readyScanResult": "BLOCKED",
+  "overallClassification": "FINANCIAL_REPORT_SOURCE_PRESENT_BLOCKED",
+
+  "auditConclusion": "FinancialReport table exists with 957 rows (all year=2025 quarter=4). Core financial metrics (eps, netIncome) are 100% populated. However, no PIT-safe release date metadata exists (no releaseDate, releaseDateSource, or releaseDateConfidence fields). Source-present dry-run gate is BLOCKED until a releaseDate field is added via authorized schema migration.",
+
+  "disclaimer": "Structural audit contract only. Does not constitute investment advice. No profit, return, or investment performance claims are made. FinancialReport entersAlphaScore = false. ALWAYS. Results must not be used as buy/sell/hold signals or investment recommendations."
+}

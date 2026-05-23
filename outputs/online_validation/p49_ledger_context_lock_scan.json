@@ -1,0 +1,55 @@
+{
+  "phase": "P49-LEDGER",
+  "artifact": "p49_ledger_context_lock_scan",
+  "purpose": "PROJECT_CONTEXT_LOCK contamination scan — verify no Betting-pool content in Stock-Prediction-System",
+  "capturedAt": "2026-05-23T10:45:00+08:00",
+  "repo": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System",
+  "branch": "main",
+  "headCommit": "261cd369db68f100e7d609b85dbd8af86094249d",
+  "headSubject": "P48: Add paper simulation dry-run result artifact golden fixture design",
+  "scanScope": ["00-StockPlan", "outputs", "src", "00-Plan"],
+  "scanPatterns": ["P26J", "P26K", "Betting-pool", "MLB", "\\bTSL\\b (bare)", "CLV", "closing window", "COMPLETE_PAIR"],
+  "booleanResults": {
+    "P26J": false,
+    "P26K": false,
+    "Betting-pool": false,
+    "MLB": false,
+    "bareTSL": false,
+    "CLV": false,
+    "closingWindow": false,
+    "COMPLETE_PAIR": false
+  },
+  "falsePositivesNoted": [
+    {
+      "pattern": "daemon",
+      "matchedText": "copilot-daemon",
+      "locations": ["src/app/api/orchestrator/providers/route.ts", "src/components/orchestrator/LlmUsageDetailCard.tsx", "outputs/roadmap_convergence_report_20260504.md", "and others"],
+      "verdict": "false_positive_stock_native — copilot-daemon is the Stock orchestrator worker provider, a legitimate Stock project component"
+    },
+    {
+      "pattern": "TSL (substring of TSLA)",
+      "matchedText": "TSLA",
+      "locations": [
+        "src/lib/autonomous/__tests__/GateRecoveryEngine.test.ts:169",
+        "src/lib/autonomous/__tests__/InsightIntegrationLayer.test.ts:156"
+      ],
+      "verdict": "false_positive_tsla_ticker — TSLA is the Tesla stock ticker, a legitimate stock symbol used in test fixtures. Bare \\bTSL\\b scan returned NO_BARE_TSL_FOUND."
+    }
+  ],
+  "genuineContaminationFound": false,
+  "verdict": "PROJECT_CONTEXT_LOCK_CLEAN",
+  "commands": [
+    "grep -RniE \"P26J|P26K|Betting-pool|MLB|TSL|CLV|closing window|daemon|COMPLETE_PAIR\" 00-StockPlan outputs src 00-Plan 2>/dev/null",
+    "grep -RniE \"\\bTSL\\b\" 00-StockPlan outputs src 00-Plan 2>/dev/null | grep -v \"TSLA\""
+  ],
+  "bareTslResult": "NO_BARE_TSL_FOUND",
+  "preflightState": {
+    "repoRoot": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System",
+    "branch": "main",
+    "head": "261cd369db68f100e7d609b85dbd8af86094249d",
+    "dirtyTracked": ["logs/launchd/* (runtime logs — expected)", "runtime/agent_orchestrator/pids/backend.pid", "00-Plan/roadmap/CTO-Analysis.md (pre-existing dirty, not modified by P49-LEDGER)", "00-Plan/roadmap/roadmap.md (pre-existing dirty, allowed append target)"],
+    "stagedFiles": "none",
+    "untrackedArtifacts": "30+ pre-existing untracked outputs (not P49-LEDGER concern)"
+  },
+  "disclaimer": "Scan only. No code changes made. Not investment advice. No scoring/DB/corpus change."
+}

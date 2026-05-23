@@ -1,0 +1,196 @@
+{
+  "specName": "dry-run-sample",
+  "specVersion": "v0",
+  "specDesignDate": "2026-05-21",
+  "specId": "p32prep_report_spec_v0_dry_run_sample",
+  "designOnly": true,
+  "notEnforced": true,
+  "disclaimer": "DESIGN-ONLY spec. Not enforced. Does not constitute investment advice. No profit, return, or investment performance claims are made. This spec must not include buy/sell/hold/action fields.",
+
+  "purpose": "Capture the output of a paper-only dry-run execution: what rows were evaluated, how many passed or were blocked, and which coverage metadata fields were populated. A dry-run-sample artifact documents a simulation boundary — no real DB writes, no corpus mutations, no scoring activations occurred.",
+
+  "governance": {
+    "entersAlphaScore": false,
+    "paperOnly": true,
+    "dryRun": true,
+    "notInvestmentRecommendation": true,
+    "designOnly": true,
+    "notEnforced": true
+  },
+
+  "requiredFields": {
+    "phase": {
+      "type": "string",
+      "description": "Producing phase identifier, e.g. P31, P32"
+    },
+    "capturedAt": {
+      "type": "string (ISO-8601 datetime)",
+      "description": "Timestamp of the dry-run execution"
+    },
+    "mode": {
+      "type": "string",
+      "description": "Execution mode descriptor. Expected value for MonthlyRevenue path: 'source-present-dry-run'"
+    },
+    "paperOnly": {
+      "type": "boolean",
+      "description": "Must be true. Asserts no live orders or real execution occurred."
+    },
+    "dryRun": {
+      "type": "boolean",
+      "description": "Must be true. Asserts no DB writes, corpus mutations, or scoring mutations."
+    },
+    "entersAlphaScore": {
+      "type": "boolean",
+      "description": "Must be false. MonthlyRevenue and all current dry-run sources are excluded from alphaScore."
+    },
+    "notInvestmentRecommendation": {
+      "type": "boolean",
+      "description": "Must be true. Asserts this artifact cannot be used as investment advice."
+    },
+    "dryRunStatus": {
+      "type": "enum",
+      "values": [
+        "READY",
+        "BLOCKED",
+        "PARTIAL",
+        "WAITING_FOR_AUTHORIZATION"
+      ],
+      "description": "Execution-readiness status of the dry-run"
+    },
+    "overallClassification": {
+      "type": "string",
+      "description": "Machine-readable outcome label, e.g. MONTHLY_REVENUE_DRY_RUN_READY"
+    },
+    "disclaimer": {
+      "type": "string",
+      "description": "Governance disclaimer asserting this is not investment advice"
+    }
+  },
+
+  "optionalFields": {
+    "rowCount": {
+      "type": "integer",
+      "description": "Total rows evaluated in the dry-run"
+    },
+    "blockedRows": {
+      "type": "integer",
+      "description": "Rows that did not pass the gate condition"
+    },
+    "releaseDateCoverage": {
+      "type": "object",
+      "description": "Coverage stats for the releaseDate field: {count: integer, pct: number}"
+    },
+    "releaseDateSourceCoverage": {
+      "type": "object",
+      "description": "Coverage stats for releaseDateSource: {count: integer, pct: number, policy: string}"
+    },
+    "releaseDateConfidenceCoverage": {
+      "type": "object",
+      "description": "Coverage stats for releaseDateConfidence: {count: integer, pct: number, confidence: string}"
+    },
+    "auditConclusion": {
+      "type": "string",
+      "description": "Human-readable one-sentence conclusion for the dry-run"
+    },
+    "authorizationReceived": {
+      "type": "boolean",
+      "description": "For authorization-gated dry-runs: whether the required user phrase was received"
+    },
+    "gate": {
+      "type": "string",
+      "description": "Gate status string if dry-run is waiting for authorization"
+    },
+    "dbQueryMethod": {
+      "type": "string",
+      "description": "Method used to query the database, e.g. 'sqlite3 prisma/dev.db'"
+    },
+    "dbQuery": {
+      "type": "string",
+      "description": "SQL query executed for the gate scan"
+    },
+    "policy": {
+      "type": "string",
+      "description": "Release date inference policy in effect, e.g. INFERRED_NEXT_MONTH_10TH"
+    },
+    "runId": {
+      "type": "string",
+      "description": "Unique run identifier for fixture pinning and cross-artifact tracing"
+    },
+    "source": {
+      "type": "string",
+      "description": "Source model name if the dry-run targets a single source (e.g. MonthlyRevenue)"
+    },
+    "executionNote": {
+      "type": "string",
+      "description": "Narrative note about how the dry-run was executed"
+    }
+  },
+
+  "fieldTypeExpectations": {
+    "paperOnly": "boolean — must be true; hard constraint",
+    "dryRun": "boolean — must be true; hard constraint",
+    "entersAlphaScore": "boolean — must be false; hard constraint",
+    "notInvestmentRecommendation": "boolean — must be true; hard constraint",
+    "rowCount": "non-negative integer",
+    "blockedRows": "non-negative integer",
+    "capturedAt": "ISO-8601 datetime string (Z suffix preferred)"
+  },
+
+  "forbiddenFields": [
+    "buySignal",
+    "sellSignal",
+    "holdSignal",
+    "roi",
+    "winRate",
+    "win_rate",
+    "edge",
+    "profit",
+    "predictedReturn",
+    "outperform",
+    "investmentRecommendation",
+    "alpha (except alphaScore governance term)"
+  ],
+
+  "mappedArtifacts": [
+    {
+      "filename": "outputs/online_validation/p31_monthly_revenue_dry_run_sample.json",
+      "phase": "P31",
+      "mapping": "requiredFields.mode, requiredFields.paperOnly, requiredFields.dryRun, requiredFields.entersAlphaScore, requiredFields.notInvestmentRecommendation, requiredFields.dryRunStatus, requiredFields.overallClassification, optionalFields.rowCount, optionalFields.blockedRows, optionalFields.releaseDateCoverage, optionalFields.auditConclusion"
+    },
+    {
+      "filename": "outputs/online_validation/p31_monthly_revenue_dry_run_gate_scan.json",
+      "phase": "P31",
+      "mapping": "optionalFields.source, optionalFields.dbQueryMethod, optionalFields.dbQuery, optionalFields.rowCount (totalRows), optionalFields.blockedRows, optionalFields.policy, requiredFields.overallClassification, requiredFields.entersAlphaScore, requiredFields.paperOnly, requiredFields.dryRun"
+    },
+    {
+      "filename": "outputs/online_validation/p30_monthly_revenue_backfill_dry_run.json",
+      "phase": "P30",
+      "mapping": "requiredFields.dryRun, requiredFields.dryRunStatus (gate), optionalFields.authorizationReceived, optionalFields.dbQueryMethod, optionalFields.executionNote, requiredFields.entersAlphaScore"
+    },
+    {
+      "filename": "outputs/online_validation/p29g_dry_run_sample_output.json",
+      "phase": "P29G",
+      "mapping": "optionalFields.runId, requiredFields.mode (simulationMode), requiredFields.paperOnly (scaffoldNotes), requiredFields.dryRun (dryRun enforced), requiredFields.entersAlphaScore, requiredFields.notInvestmentRecommendation"
+    }
+  ],
+
+  "exampleSnippet": {
+    "_note": "SYNTHESIZED EXAMPLE — not real data. Does not constitute investment advice.",
+    "phase": "P32",
+    "capturedAt": "2026-05-22T00:00:00Z",
+    "mode": "source-present-dry-run",
+    "paperOnly": true,
+    "dryRun": true,
+    "entersAlphaScore": false,
+    "notInvestmentRecommendation": true,
+    "rowCount": 2143,
+    "blockedRows": 0,
+    "releaseDateCoverage": { "count": 2143, "pct": 100 },
+    "releaseDateSourceCoverage": { "count": 2143, "pct": 100, "policy": "INFERRED_NEXT_MONTH_10TH" },
+    "releaseDateConfidenceCoverage": { "count": 2143, "pct": 100, "confidence": "LOW" },
+    "dryRunStatus": "READY",
+    "overallClassification": "MONTHLY_REVENUE_DRY_RUN_READY",
+    "auditConclusion": "All 2143 MonthlyRevenue rows pass source-present dry-run gate. No leakage risk detected.",
+    "disclaimer": "SYNTHESIZED EXAMPLE. Does not constitute investment advice. No profit, return, or investment performance claims."
+  }
+}

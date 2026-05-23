@@ -1,0 +1,59 @@
+# P10 COMMIT PACKAGE — git add commands (do NOT run git commit without explicit user YES)
+# Generated: 2026-05-23T08:45:03Z
+# Verdict  : P10_COMMIT_PACKAGE_READY_AWAITING_USER_COMMIT_AUTH
+# Tests    : 5121/5121 PASS (onlineValidation 4846/4846 + research+sim 275/275)
+# DB SHA   : a5cf277182c161dfe97ba05f9b81528d6c8e477dd5ac0bec6810ffbb8711c6f8 (unchanged)
+
+# ── Group A: P8 SHA repairs (modified src) ──────────────────────────────────
+git add \
+  src/lib/onlineValidation/__tests__/p26a_batch_pipeline_wiring.test.ts \
+  src/lib/onlineValidation/__tests__/p26a_renderer_fix.test.ts \
+  src/lib/onlineValidation/__tests__/p27_waiting_state_policy_guard.test.ts \
+
+# ── Group B: P1/P4/P6/P7/P8 new source + test files ─────────────────────────
+git add \
+  src/lib/onlineValidation/__tests__/p29d_dropzone_scaffold.test.ts \
+  src/lib/research/ControlledResearchSnapshot.ts \
+  src/lib/research/ControlledResearchSnapshotBuilder.ts \
+  src/lib/research/__tests__/controlled_research_snapshot.test.ts \
+  src/lib/research/__tests__/p7_research_coverage_determinism.test.ts \
+  src/lib/simulation/__tests__/p4_golden_fixture_validation.test.ts \
+  src/lib/simulation/__tests__/p6_fixture_result_contract_extension.test.ts \
+
+# ── Group C: validation scripts ─────────────────────────────────────────────
+git add \
+  scripts/generate_artifacts.py \
+  scripts/p28c_9case_validation.js \
+  scripts/verify_p34.py \
+
+# ── Group D: roadmap + planning docs ────────────────────────────────────────
+git add \
+  00-Plan/roadmap/roadmap.md \
+  00-Plan/roadmap/CTO-Analysis.md \
+  00-Plan/roadmap/active_task.md \
+  00-Plan/roadmap/CEO-Decision.md \
+
+# ── Group E: output artifacts (80 files via directory) ──────────────────────
+git add outputs/online_validation/
+
+# ── NEVER stage ─────────────────────────────────────────────────────────────
+# logs/launchd/           (10 runtime log files)
+# runtime/agent_orchestrator/pids/  (backend.pid)
+# data/manual/            (dropzone uploads)
+# 00-StockPlan/           (3 files — USER_DECISION pending)
+
+# ── Recommended commit message ───────────────────────────────────────────────
+# git commit -m "chore: P1-P9 baseline consolidation — 5121/5121 PASS, zero failures
+#
+# - P8: repair 4 stale SHA expectations (P29C-era dev.db hash -> canonical a5cf2771)
+# - P1/Axis-A: ControlledResearchSnapshot type + builder + 46-case test suite
+# - P4/Axis-B: 25-case golden fixture validation test suite
+# - P5/Axis-A: research snapshot extension (71 cases total)
+# - P6/Axis-B: 25-case fixture result contract test suite
+# - P7/Axis-A: 25-case ResearchCoverageEngine determinism test suite
+# - P9: commit readiness inventory + report (97 SAFE, 3 USER_DECISION, 19 MUST_NOT)
+# - Outputs: full phase P27-P49 validation artifact set
+# - Governance: DB unchanged (DB_SHA_OK), no scoring formula changes,
+#   no investment advice, no real execution
+#
+# Baseline: 5121/5121 PASS | HEAD: 261cd369 | Branch: main"

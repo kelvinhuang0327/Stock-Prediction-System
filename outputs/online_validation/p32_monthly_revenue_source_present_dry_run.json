@@ -1,0 +1,69 @@
+{
+  "phase": "P32",
+  "capturedAt": "2026-05-21T00:00:00.000Z",
+  "source": "MonthlyRevenue",
+  "mode": "source-present-dry-run",
+  "paperOnly": true,
+  "dryRun": true,
+  "entersAlphaScore": false,
+  "notInvestmentRecommendation": true,
+  "noBuySellActionSemantics": true,
+
+  "inputLineage": {
+    "p31DryRunSample": "outputs/online_validation/p31_monthly_revenue_dry_run_sample.json",
+    "p31GateScan": "outputs/online_validation/p31_monthly_revenue_dry_run_gate_scan.json",
+    "p32prepSpec": "outputs/online_validation/p32prep_report_spec_v0_dry_run_sample.json",
+    "p32prepArtifactInventory": "outputs/online_validation/p32prep_artifact_inventory.json",
+    "p31Classification": "P31_MONTHLY_REVENUE_SOURCE_PRESENT_DRY_RUN_READY",
+    "p32prepClassification": "P32PREP_REPORT_SPEC_V0_DESIGN_READY"
+  },
+
+  "dbQueryMethod": "sqlite3 prisma/dev.db",
+  "dbQuery": "SELECT COUNT(*) as total, COUNT(releaseDate) as with_rd, COUNT(releaseDateSource) as with_src, COUNT(releaseDateConfidence) as with_conf FROM MonthlyRevenue;",
+  "dbQueryResult": "2143|2143|2143|2143",
+
+  "totalRows": 2143,
+  "readyRows": 2143,
+  "blockedRows": 0,
+  "skippedRows": 0,
+
+  "releaseDateCoverage": {
+    "count": 2143,
+    "pct": 100
+  },
+  "releaseDateSourceCoverage": {
+    "count": 2143,
+    "pct": 100,
+    "policy": "INFERRED_NEXT_MONTH_10TH"
+  },
+  "releaseDateConfidenceCoverage": {
+    "count": 2143,
+    "pct": 100,
+    "confidence": "LOW"
+  },
+
+  "sampleRowCount": 5,
+  "sampleNote": "Row count only — no actual row data sampled. Sample count recorded for dry-run boundary documentation only.",
+
+  "dryRunStatus": "READY",
+  "overallClassification": "MONTHLY_REVENUE_SOURCE_PRESENT_DRY_RUN_READY",
+
+  "pitSafetyStatus": "INHERITED_FROM_P31_VERIFIED",
+  "pitSafetyNote": "P29I confirmed MonthlyRevenue uses releaseDate as the PIT gate field. Policy: INFERRED_NEXT_MONTH_10TH. Confidence: LOW. entersAlphaScore=false enforced at source level.",
+
+  "regressionVsP31": {
+    "totalRows": "STABLE (2143 → 2143)",
+    "blockedRows": "STABLE (0 → 0)",
+    "releaseDateCoveragePct": "STABLE (100 → 100)",
+    "releaseDateSourceCoveragePct": "STABLE (100 → 100)",
+    "releaseDateConfidencePct": "STABLE (100 → 100)",
+    "policy": "UNCHANGED (INFERRED_NEXT_MONTH_10TH)",
+    "entersAlphaScore": "UNCHANGED (false)"
+  },
+
+  "executionNote": "P32 source-present dry-run executed via read-only DB query. No DB writes. No corpus mutations. No scoring mutations. No optimizer executed. No real backtest executed. paperOnly=true enforced throughout.",
+
+  "auditConclusion": "All 2143 MonthlyRevenue rows pass source-present dry-run gate at P32 execution. Row counts are stable versus P31 baseline. No leakage risk detected. releaseDate metadata 100% populated. No rows enter alphaScore. Dry-run boundary preserved.",
+
+  "disclaimer": "Structural audit contract only. Does not constitute investment advice. No profit, return, or investment performance claims are made. MonthlyRevenue entersAlphaScore = false. ALWAYS. Results must not be used as buy/sell/hold signals or investment recommendations."
+}

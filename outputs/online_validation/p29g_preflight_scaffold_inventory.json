@@ -1,0 +1,61 @@
+{
+  "audit_id": "P29G-PREFLIGHT-scaffold-inventory",
+  "audit_date": "2026-05-20",
+  "timezone": "Asia/Taipei",
+  "auditor": "P29G-PREFLIGHT Senior Mainline Integration Audit Agent",
+  "head_sha": "1c5a270b0be185a9f06d870305ed93f07950c69b",
+
+  "search_targets": {
+    "test_pattern": "src/lib/onlineValidation/__tests__/p29e_*.test.ts",
+    "output_pattern": "outputs/online_validation/p29e_*.{json,md}",
+    "runner_skeleton": "any P29E-introduced runner skeleton paths"
+  },
+
+  "findings": {
+    "test_files": {
+      "path": "src/lib/onlineValidation/__tests__/",
+      "pattern": "p29e_*",
+      "count": 0,
+      "files": [],
+      "status": "MISSING"
+    },
+    "output_files": {
+      "path": "outputs/online_validation/",
+      "pattern": "p29e_*",
+      "count": 0,
+      "files": [],
+      "status": "MISSING"
+    },
+    "runner_skeleton": {
+      "description": "Any P29E paper simulation runner skeleton files",
+      "count": 0,
+      "files": [],
+      "status": "MISSING",
+      "note": "P29E commit (51d15df) exists only on claude/frosty-borg-e85827 branch; its working-tree files are not present in main checkout"
+    }
+  },
+
+  "existing_p29_artifacts_in_main": {
+    "p29a": {
+      "test": "src/lib/onlineValidation/__tests__/p29a_pit_feature_availability_registry.test.ts",
+      "status": "NOT_CHECKED — outside P29E scope"
+    },
+    "p29b": {
+      "test": "src/lib/onlineValidation/__tests__/p29b_real_source_acquisition_plan.test.ts",
+      "status": "EXISTS (confirmed from test suite PASS)"
+    },
+    "p29c": {
+      "test": "src/lib/onlineValidation/__tests__/p29c_backtest_simulation_contract.test.ts",
+      "status": "EXISTS (confirmed from test suite PASS)"
+    },
+    "p29d": {
+      "status": "NOT_IN_MAIN — LOCAL_ONLY on claude/objective-kalam-b00477"
+    },
+    "p29e": {
+      "status": "NOT_IN_MAIN — LOCAL_ONLY on claude/frosty-borg-e85827"
+    }
+  },
+
+  "scaffold_mainline_status": "LOCAL_ONLY",
+  "verdict_detail": "P29E paper simulation scaffold (commit 51d15df) was never merged into main. Its test files, output artifacts, and runner skeleton are absent from the current working tree. P29C artifacts (backtest/simulation contract) are present and tested. The highest integrated P29 phase on main is P29F-Repair (1c5a270)."
+}

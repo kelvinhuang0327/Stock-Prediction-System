@@ -1,0 +1,104 @@
+{
+  "conformanceReportId": "p33_spec_conformance",
+  "capturedAt": "2026-05-21T00:00:00.000Z",
+  "phase": "P33",
+  "specReference": {
+    "sourceGateSpec": "outputs/online_validation/p32prep_report_spec_v0_source_gate.json",
+    "dryRunSampleSpec": "outputs/online_validation/p32prep_report_spec_v0_dry_run_sample.json",
+    "pitAuditSpec": "outputs/online_validation/p32prep_report_spec_v0_pit_audit.json"
+  },
+
+  "p33ArtifactsEvaluated": [
+    "outputs/online_validation/p33_financial_report_source_present_scan.json",
+    "outputs/online_validation/p33_news_event_source_present_scan.json",
+    "outputs/online_validation/p33_source_present_gate_summary.json"
+  ],
+
+  "governanceHardFlags": {
+    "entersAlphaScore_false": {
+      "status": "PASS",
+      "presentIn": "all three P33 scan/summary JSON artifacts",
+      "value": false
+    },
+    "paperOnly_true": {
+      "status": "PASS",
+      "presentIn": "all three P33 scan/summary JSON artifacts",
+      "value": true
+    },
+    "dryRun_true": {
+      "status": "PASS",
+      "presentIn": "all three P33 scan/summary JSON artifacts",
+      "value": true
+    },
+    "notInvestmentRecommendation_true": {
+      "status": "PASS",
+      "presentIn": "all three P33 scan/summary JSON artifacts",
+      "value": true
+    },
+    "noBuySellActionSemantics_true": {
+      "status": "PASS",
+      "presentIn": "all three P33 scan/summary JSON artifacts",
+      "value": true
+    }
+  },
+
+  "sourceGateSpecAlignment": {
+    "specName": "source-gate",
+    "applicableTo": "p33_financial_report_source_present_scan.json",
+    "keyFieldsCheck": {
+      "sourceName": { "present": true, "value": "FinancialReport" },
+      "gateResult": { "present": true, "via": "readyScanResult", "value": "BLOCKED" },
+      "entersAlphaScore": { "present": true, "value": false },
+      "pitGateField": { "present": true, "value": null, "note": "null indicates missing — this is the block cause" },
+      "blockReason": { "present": true, "value": "MISSING_PIT_METADATA_FIELDS" }
+    },
+    "conformance": "STRUCTURALLY_ALIGNED",
+    "note": "P33 FinancialReport scan follows source-gate spec pattern: documents gateResult (BLOCKED), sourceName, entersAlphaScore, blockReason. No live dry-run sample is produced (blocked source)."
+  },
+
+  "dryRunSampleSpecAlignment": {
+    "specName": "dry-run-sample",
+    "applicableTo": "p33_news_event_source_present_scan.json + p33_source_present_gate_summary.json",
+    "requiredFieldsCheck": {
+      "phase": { "present": true, "value": "P33" },
+      "capturedAt": { "present": true, "value": "2026-05-21T00:00:00.000Z" },
+      "mode": { "present": true, "value": "source-present-readiness-scan", "note": "P33 is a readiness scan, not yet a full dry-run sample execution. Full dry-run sample (P34) will use mode=source-present-dry-run." },
+      "paperOnly": { "present": true, "value": true },
+      "dryRun": { "present": true, "value": true },
+      "entersAlphaScore": { "present": true, "value": false },
+      "notInvestmentRecommendation": { "present": true, "value": true },
+      "dryRunStatus": { "present": true, "via": "readyScanResult", "value": "ELIGIBLE", "note": "readyScanResult=ELIGIBLE maps to dryRunStatus=READY for the full dry-run sample. Full dryRunStatus will be set in P34." },
+      "overallClassification": { "present": true, "value": "NEWS_EVENT_SOURCE_PRESENT_DRY_RUN_ELIGIBLE" },
+      "disclaimer": { "present": true }
+    },
+    "hardConstraintsViolations": 0,
+    "conformance": "READINESS_SCAN_ALIGNED",
+    "note": "P33 is a readiness/gate scan, not a full dry-run sample execution. P32PREP dry-run-sample spec is the target for P34. P33 demonstrates all required governance flags and classification fields are in place for the transition to P34."
+  },
+
+  "intentionalExclusions": [
+    { "field": "roi",                "reason": "Forbidden — investment performance claim" },
+    { "field": "winRate",            "reason": "Forbidden — investment performance claim" },
+    { "field": "edge",               "reason": "Forbidden — investment performance claim" },
+    { "field": "profit",             "reason": "Forbidden — investment performance claim" },
+    { "field": "buySignal",          "reason": "Forbidden — buy/sell/hold/action semantics" },
+    { "field": "sellSignal",         "reason": "Forbidden — buy/sell/hold/action semantics" },
+    { "field": "holdSignal",         "reason": "Forbidden — buy/sell/hold/action semantics" },
+    { "field": "outperform",         "reason": "Forbidden — prediction quality claim" },
+    { "field": "guaranteed",         "reason": "Forbidden — investment guarantee claim" },
+    { "field": "predictedReturn",    "reason": "Forbidden — investment performance claim" }
+  ],
+
+  "backwardCompatibilityNotes": [
+    "P33 readiness scan artifacts are consistent with P32 dry-run sample pattern",
+    "P33 introduces 'readiness scan' as a pre-stage before full dry-run sample execution (P34)",
+    "P33 FinancialReport BLOCKED status is a new classification path not seen in P32 (which was fully READY)",
+    "P33 NewsEvent ELIGIBLE status maps cleanly to P32's READY dryRunStatus for P34 full execution",
+    "All 5 governance hard flags (entersAlphaScore, paperOnly, dryRun, notInvestmentRecommendation, noBuySellActionSemantics) are preserved throughout"
+  ],
+
+  "overallConformanceResult": "GOVERNANCE_ALIGNED",
+  "conformanceClassification": "P33_SPEC_CONFORMANCE_PASS",
+
+  "disclaimer": "Conformance report only. Does not constitute investment advice. No profit, return, or investment performance claims."
+}

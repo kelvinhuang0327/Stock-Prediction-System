@@ -1,0 +1,117 @@
+{
+  "phase": "P33",
+  "capturedAt": "2026-05-21T00:00:00.000Z",
+  "source": "NewsEvent",
+  "mode": "source-present-readiness-scan",
+  "paperOnly": true,
+  "dryRun": true,
+  "entersAlphaScore": false,
+  "notInvestmentRecommendation": true,
+  "noBuySellActionSemantics": true,
+
+  "dbQueryMethod": "sqlite3 prisma/dev.db",
+  "dbQueries": [
+    "SELECT COUNT(*) as total, COUNT(publishedAt) as with_publishedAt, COUNT(source) as with_source, COUNT(trustLevel) as with_trustLevel FROM NewsEvent;",
+    "SELECT trustLevel, COUNT(*) as cnt FROM NewsEvent GROUP BY trustLevel ORDER BY cnt DESC;",
+    "SELECT source, COUNT(*) as cnt FROM NewsEvent GROUP BY source ORDER BY cnt DESC LIMIT 10;",
+    "SELECT MIN(publishedAt), MAX(publishedAt), MIN(ingestedAt), MAX(ingestedAt) FROM NewsEvent;"
+  ],
+
+  "schemaFields": [
+    { "column": "id",             "type": "TEXT",    "nullable": false },
+    { "column": "title",          "type": "TEXT",    "nullable": false },
+    { "column": "summary",        "type": "TEXT",    "nullable": true  },
+    { "column": "source",         "type": "TEXT",    "nullable": false },
+    { "column": "trustLevel",     "type": "TEXT",    "nullable": false, "values": "official|mainstream|secondary|unknown" },
+    { "column": "publishedAt",    "type": "DATETIME","nullable": false },
+    { "column": "relatedSymbols", "type": "TEXT",    "nullable": false, "format": "JSON string: string[]" },
+    { "column": "relatedThemes",  "type": "TEXT",    "nullable": false, "format": "JSON string: string[]" },
+    { "column": "rawUrl",         "type": "TEXT",    "nullable": true  },
+    { "column": "titleHash",      "type": "TEXT",    "nullable": false },
+    { "column": "ingestedAt",     "type": "DATETIME","nullable": false }
+  ],
+
+  "pitSafetyFieldsPresent": {
+    "publishedAt": true,
+    "publishedAtNote": "publishedAt is the actual event publication datetime from the source. For news events, this IS the source-present timestamp — it records when the event entered public availability. This is semantically equivalent to releaseDate for the news domain.",
+    "releaseDateSource": false,
+    "releaseDateSourceNote": "No explicit releaseDateSource companion field. Source is captured in the source column (1018/1018 populated).",
+    "releaseDateConfidence": false,
+    "releaseDateConfidenceNote": "No explicit releaseDateConfidence companion field. Unlike MonthlyRevenue (INFERRED_NEXT_MONTH_10TH policy), NewsEvent publishedAt is the actual recorded publication time from the originating RSS/web source — confidence is inherently RECORDED rather than INFERRED."
+  },
+
+  "rowCounts": {
+    "total": 1018,
+    "withPublishedAt": 1018,
+    "withSource": 1018,
+    "withTrustLevel": 1018
+  },
+
+  "coveragePct": {
+    "publishedAt": 100,
+    "source": 100,
+    "trustLevel": 100
+  },
+
+  "trustLevelDistribution": {
+    "mainstream": 952,
+    "secondary": 63,
+    "official": 3
+  },
+
+  "topSources": [
+    { "source": "Yahoo 台股新聞 RSS", "count": 857 },
+    { "source": "Yahoo股市",          "count": 83 },
+    { "source": "sinotrade.com.tw",   "count": 30 },
+    { "source": "自由財經",            "count": 15 },
+    { "source": "FTNN 新聞網",         "count": 4 },
+    { "source": "Yahoo新聞",           "count": 4 },
+    { "source": "工商時報",            "count": 4 },
+    { "source": "news.cnyes.com",     "count": 2 },
+    { "source": "中時新聞網",          "count": 2 },
+    { "source": "經濟日報",            "count": 2 }
+  ],
+
+  "dateRange": {
+    "publishedAtMin": "~2025-12-29 UTC (raw: 1766995200000)",
+    "publishedAtMax": "~2026-05-02 UTC (raw: 1777976893000)",
+    "ingestedAtMin": "~2026-03-15 UTC (raw: 1773856621019)",
+    "ingestedAtMax": "~2026-05-02 UTC (raw: 1777977006548)"
+  },
+
+  "sourcePresentReadiness": {
+    "pitGateField": "publishedAt",
+    "pitGateFieldNote": "publishedAt field records the actual publication timestamp from the originating news source. Coverage: 100% (1018/1018). This is the natural source-present PIT gate for news events — unlike MonthlyRevenue which required an INFERRED policy, NewsEvent publishedAt is RECORDED directly from the source.",
+    "pitPolicy": "RECORDED_FROM_SOURCE",
+    "pitConfidence": "RECORDED",
+    "pitConfidenceNote": "publishedAt is a recorded timestamp from the originating source, not inferred. This is a stronger source-present guarantee than MonthlyRevenue's INFERRED_NEXT_MONTH_10TH policy.",
+    "status": "ELIGIBLE",
+    "eligibilityNote": "1018 rows, 100% publishedAt coverage. publishedAt serves as the PIT gate field. All rows are eligible for source-present dry-run.",
+    "dryRunEligible": true,
+    "readyRows": 1018,
+    "blockedRows": 0
+  },
+
+  "pitSafetyStatus": "READY_VIA_PUBLISHED_AT",
+
+  "companionFieldGap": {
+    "hasGap": true,
+    "gapDetail": "NewsEvent lacks explicit releaseDateSource and releaseDateConfidence companion fields present in MonthlyRevenue. However: (1) source field fills the releaseDateSource role, (2) trustLevel field partially fills the confidence role, (3) publishedAt is RECORDED not INFERRED so confidence is inherently higher than MonthlyRevenue's LOW/INFERRED_NEXT_MONTH_10TH.",
+    "recommendation": "For full MonthlyRevenue-pattern parity, a future phase could add releaseDateSource and releaseDateConfidence fields to NewsEvent. This is NOT required to block the current dry-run gate."
+  },
+
+  "governanceFlags": {
+    "entersAlphaScore": false,
+    "paperOnly": true,
+    "dryRun": true,
+    "notInvestmentRecommendation": true,
+    "noBuySellActionSemantics": true
+  },
+
+  "readyScanResult": "ELIGIBLE",
+  "overallClassification": "NEWS_EVENT_SOURCE_PRESENT_DRY_RUN_ELIGIBLE",
+
+  "auditConclusion": "NewsEvent table exists with 1018 rows. publishedAt coverage: 100% (1018/1018). source coverage: 100% (1018/1018). trustLevel coverage: 100% (1018/1018). publishedAt serves as the PIT gate field — it is a RECORDED timestamp from the originating news source, providing stronger source-present confidence than MonthlyRevenue's inferred policy. All 1018 rows are eligible for source-present dry-run. entersAlphaScore=false preserved.",
+
+  "disclaimer": "Structural audit contract only. Does not constitute investment advice. No profit, return, or investment performance claims are made. NewsEvent entersAlphaScore = false. ALWAYS. Results must not be used as buy/sell/hold signals or investment recommendations."
+}
