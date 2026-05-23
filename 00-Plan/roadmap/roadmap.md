@@ -1795,3 +1795,32 @@ noActualMetrics=true, executedAt=null, noRealExecution=true, DB unchanged.
 
 ### Governance Invariants (all verified)
 entersAlphaScore=false, paperOnly=true, dryRunOnly=true, noRealExecution=true, DB unchanged
+
+## P13 — CI Gate Workflow Created
+**Date**: 2026-05-23
+**Status**: P13_CI_GATE_WORKFLOW_READY_UNCOMMITTED
+**HEAD**: 90b931d (main)
+
+### Workflow File
+- `.github/workflows/test-gate.yml` — CREATED, uncommitted
+- Trigger: push + PR to `main`
+- Concurrency: cancel-in-progress
+
+### Jobs
+| Job | Baseline | Timeout |
+|---|---|---|
+| `online-validation` | 4846/4846 | 10 min |
+| `research-simulation` | 275/275 | 5 min |
+| `dirty-file-guard` | BOUNDARY_CLEAN | — |
+- DB SHA guard: conditional (local-only if prisma/dev.db absent in CI)
+
+### Local Verification
+- onlineValidation: 4846/4846 PASS (127 suites, 85 s) ✅
+- research + simulation: 275/275 PASS (8 suites, 3 s) ✅
+- DB SHA: DB_SHA_OK ✅
+
+### Governance Invariants
+entersAlphaScore=false, paperOnly=true, dryRunOnly=true, noRealExecution=true, DB unchanged
+
+### Awaiting
+`YES commit CI gate workflow` to stage and commit workflow + plan + report

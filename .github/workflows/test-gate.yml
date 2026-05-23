@@ -1,0 +1,96 @@
+name: Test Gate — 5121/5121 Baseline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: test-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+
+  online-validation:
+    name: onlineValidation (4846/4846)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Assert DB SHA unchanged (local-only guard)
+        run: |
+          EXPECTED="a5cf277182c161dfe97ba05f9b81528d6c8e477dd5ac0bec6810ffbb8711c6f8"
+          if [ -f prisma/dev.db ]; then
+            ACTUAL=$(sha256sum prisma/dev.db | awk '{print $1}')
+            if [ "$ACTUAL" != "$EXPECTED" ]; then
+              echo "DB_SHA_MISMATCH: $ACTUAL != $EXPECTED"
+              exit 1
+            fi
+            echo "DB_SHA_OK"
+          else
+            echo "DB_SHA_SKIP: prisma/dev.db not present in CI environment (local-only guard)"
+          fi
+
+      - name: Run onlineValidation suite
+        run: npx jest src/lib/onlineValidation/__tests__ --no-coverage --forceExit
+        env:
+          CI: true
+
+  research-simulation:
+    name: research + simulation (275/275)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run research suite
+        run: npx jest src/lib/research/__tests__ --no-coverage --forceExit
+        env:
+          CI: true
+
+      - name: Run simulation suite
+        run: npx jest src/lib/simulation/__tests__ --no-coverage --forceExit
+        env:
+          CI: true
+
+  dirty-file-guard:
+    name: Dirty-File Bleed-Through Guard
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Verify MUST_NOT_COMMIT patterns absent from commit
+        run: |
+          CHANGED=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || git diff --name-only HEAD $(git hash-object -t tree /dev/null) 2>/dev/null || echo "")
+          echo "Changed files in commit:"
+          echo "$CHANGED"
+          VIOLATIONS=$(echo "$CHANGED" | grep -E "^(logs/|runtime/agent_orchestrator/pids/|data/manual/|prisma/dev\.db)" || true)
+          if [ -n "$VIOLATIONS" ]; then
+            echo ""
+            echo "BOUNDARY_VIOLATION — forbidden paths detected:"
+            echo "$VIOLATIONS"
+            exit 1
+          fi
+          echo "BOUNDARY_CLEAN — no forbidden paths in commit"
