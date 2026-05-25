@@ -76,3 +76,11 @@ export {
 } from "./SnapshotExportFilter";
 
 export type { SnapshotExportFilterCriteria } from "./SnapshotExportFilter";
+
+// ─── Export Serializer (P51) ──────────────────────────────────────────────────
+export {
+  SNAPSHOT_EXPORT_SERIALIZER_VERSION,
+  serializeSnapshotLogExport,
+} from "./SnapshotExportSerializer";
+
+export type { SnapshotExportSerializedEnvelope } from "./SnapshotExportSerializer";
