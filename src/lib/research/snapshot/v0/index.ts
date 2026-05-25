@@ -58,3 +58,13 @@ export type {
   SnapshotBatchRunInput,
   SnapshotBatchRunResult,
 } from "./SnapshotBatchRunner";
+
+// ─── Log Exporter (P49) ──────────────────────────────────────────────────────
+export {
+  SNAPSHOT_LOG_EXPORTER_VERSION,
+  exportSnapshotLogRecord,
+  exportSnapshotLogRecords,
+  exportSnapshotLogCollector,
+} from "./SnapshotLogExporter";
+
+export type { SnapshotLogExport } from "./SnapshotLogExporter";
