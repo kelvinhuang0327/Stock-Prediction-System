@@ -118,19 +118,36 @@ Result: **ALL GREEN** ✅
 
 ## 9. Commit Hash
 
-> To be populated after commit
+`24842992b236f030cc96cb39ff2a5ab24a0ab3ee`
+
+Commit message: `feat: add Axis A research snapshot v0 formatter`
 
 ---
 
 ## 10. Push Result
 
-> To be populated after push
+```
+To https://github.com/kelvinhuang0327/Stock-Prediction-System.git
+   0820d3d..2484299  main -> main
+```
+
+✅ Pushed to `origin/main`
 
 ---
 
 ## 11. CI Run ID and Conclusion
 
-> To be populated after CI completes
+| Workflow | Run ID | Conclusion |
+|----------|--------|------------|
+| Test Gate — 5121/5121 Baseline | `26387034383` | ✅ `success` |
+| CI (non-required failures pre-existing) | `26387034371` | `failure` (known non-blocking) |
+
+**Test Gate conclusion: `success`** — the governing gate.
+
+Known non-required CI failures (pre-existing, not P43-related):
+`llmAuditSmoke.integration.test.ts`, `candidates/page.test.tsx`,
+`stocks/[symbol]/page.tab-sync.test.tsx`, `NotificationDeliveryEngine.test.ts`,
+`AutonomousDashboardService.test.ts` + DB/Prisma-dependent job service tests.
 
 ---
 
