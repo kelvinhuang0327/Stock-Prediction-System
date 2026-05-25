@@ -31,3 +31,11 @@ export {
 } from "./SnapshotEmitter";
 
 export type { EmitResult } from "./SnapshotEmitter";
+
+// ─── Log Writer (P45) ────────────────────────────────────────────────────────
+export {
+  SNAPSHOT_LOG_WRITER_VERSION,
+  serializeEmitResult,
+} from "./SnapshotLogWriter";
+
+export type { SnapshotLogRecord } from "./SnapshotLogWriter";
