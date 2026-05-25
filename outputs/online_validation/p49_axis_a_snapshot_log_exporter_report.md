@@ -147,7 +147,7 @@ Time:        89.636 s
 
 | Field | Value |
 |---|---|
-| Commit hash | `[PENDING]` |
+| Commit hash | `cfc6319` |
 | Message | `feat: add Axis A research snapshot v0 log exporter` |
 | Files staged | 4 (SnapshotLogExporter.ts, index.ts, test file, this report) |
 
@@ -158,7 +158,7 @@ Time:        89.636 s
 | Field | Value |
 |---|---|
 | Remote | `origin main` |
-| Push result | `[PENDING]` |
+| Push result | `5704dbd..cfc6319 — success` |
 
 ---
 
@@ -166,8 +166,8 @@ Time:        89.636 s
 
 | Gate | Run ID | Status |
 |---|---|---|
-| Test Gate | `[PENDING]` | `[PENDING]` |
-| CI | `[PENDING]` | `[PENDING]` |
+| Test Gate | `26392823867` | completed success |
+| CI | `26392823770` | (non-governing) |
 
 ---
 
