@@ -68,3 +68,11 @@ export {
 } from "./SnapshotLogExporter";
 
 export type { SnapshotLogExport } from "./SnapshotLogExporter";
+
+// ─── Export Filter (P50) ─────────────────────────────────────────────────────
+export {
+  SNAPSHOT_EXPORT_FILTER_VERSION,
+  filterSnapshotLogExport,
+} from "./SnapshotExportFilter";
+
+export type { SnapshotExportFilterCriteria } from "./SnapshotExportFilter";
