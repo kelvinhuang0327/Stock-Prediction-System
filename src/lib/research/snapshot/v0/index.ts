@@ -23,3 +23,11 @@ export {
   SNAPSHOT_FORMATTER_VERSION,
   formatSnapshotReadout,
 } from "./SnapshotFormatter";
+
+// ─── Emitter (P44) ───────────────────────────────────────────────────────────
+export {
+  SNAPSHOT_EMITTER_VERSION,
+  emitSnapshot,
+} from "./SnapshotEmitter";
+
+export type { EmitResult } from "./SnapshotEmitter";
