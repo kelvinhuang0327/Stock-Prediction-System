@@ -47,3 +47,14 @@ export {
 } from "./SnapshotLogCollector";
 
 export type { SnapshotLogCollector } from "./SnapshotLogCollector";
+
+// ─── Batch Runner (P48) ──────────────────────────────────────────────────────
+export {
+  SNAPSHOT_BATCH_RUNNER_VERSION,
+  runSnapshotBatch,
+} from "./SnapshotBatchRunner";
+
+export type {
+  SnapshotBatchRunInput,
+  SnapshotBatchRunResult,
+} from "./SnapshotBatchRunner";
