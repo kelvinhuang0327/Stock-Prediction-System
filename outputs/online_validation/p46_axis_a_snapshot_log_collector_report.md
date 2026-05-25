@@ -2,7 +2,7 @@
 ## Online Validation Report
 
 **Classification:** `P46_AXIS_A_SNAPSHOT_LOG_COLLECTOR_V0_DEFINED`  
-**Status:** LOCAL_VERIFIED → pending CI  
+**Status:** VERIFIED — CI Test Gate SUCCESS  
 **Date:** 2026-05-25  
 **Branch:** main  
 **Preceding commit (HEAD before P46):** `fb172d9` — docs: finalize P45 report with CI run results
@@ -171,8 +171,8 @@ git add src/lib/research/snapshot/v0/SnapshotLogCollector.ts \
 git commit -m "feat: add Axis A research snapshot v0 log collector"
 ```
 
-**Commit hash:** `[PENDING]`  
-**Push result:** `[PENDING]`
+**Commit hash:** `f7b0786`  
+**Push result:** `fb172d9..f7b0786  main -> main` — SUCCESS
 
 ---
 
@@ -180,9 +180,10 @@ git commit -m "feat: add Axis A research snapshot v0 log collector"
 
 | CI Item | Value |
 |---|---|
-| CI run ID | `[PENDING]` |
-| Test Gate | `[PENDING]` |
-| CI workflow overall | `[PENDING]` |
+| CI run ID (Test Gate) | `26390663489` |
+| CI run ID (CI workflow) | `26390663516` |
+| Test Gate | `completed success` |
+| CI workflow overall | `completed` — no new failures beyond known non-required set |
 
 ---
 
