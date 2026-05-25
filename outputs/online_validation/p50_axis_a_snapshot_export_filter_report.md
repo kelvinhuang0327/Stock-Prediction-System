@@ -157,7 +157,7 @@ Time:        125.728 s
 
 | Field | Value |
 |---|---|
-| Commit hash | `[PENDING]` |
+| Commit hash | `76b3471` |
 | Message | `feat: add Axis A research snapshot v0 export filter` |
 | Files staged | 4 (SnapshotExportFilter.ts, index.ts, test file, this report) |
 
@@ -168,7 +168,7 @@ Time:        125.728 s
 | Field | Value |
 |---|---|
 | Remote | `origin main` |
-| Push result | `[PENDING]` |
+| Push result | `77b81a6..76b3471 — success` |
 
 ---
 
@@ -176,8 +176,8 @@ Time:        125.728 s
 
 | Gate | Run ID | Status |
 |---|---|---|
-| Test Gate | `[PENDING]` | `[PENDING]` |
-| CI | `[PENDING]` | (non-governing) |
+| Test Gate | `26394196998` | completed success |
+| CI | `26394196954` | (non-governing) |
 
 ---
 
