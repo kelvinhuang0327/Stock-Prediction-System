@@ -184,7 +184,7 @@ git diff --cached --name-only:
 
 | Item | Value |
 |------|-------|
-| Commit hash | `PLACEHOLDER` |
+| Commit hash | `45c447e` |
 | Commit message | `feat: add Axis A research snapshot v0 batch runner` |
 | Push | `origin main` |
 
@@ -194,8 +194,8 @@ git diff --cached --name-only:
 
 | Gate | Run ID | Status |
 |------|--------|--------|
-| Test Gate | `PLACEHOLDER` | pending |
-| CI | `PLACEHOLDER` | pending |
+| Test Gate | `26392417407` | completed success |
+| CI | `26392417408` | completed |
 
 ---
 
