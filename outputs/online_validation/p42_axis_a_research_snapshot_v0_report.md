@@ -213,7 +213,7 @@ All of the following hold in both `SnapshotReader.ts` and every `SnapshotReadout
 |---|---|
 | Commit message | `feat: add Axis A research snapshot v0 reader stub` |
 | Files staged | 4 (exact) |
-| Commit hash | _see CI run below_ |
+| Commit hash | `0261a6df8b9b0ff21050ba3430fba5a726288b3f` |
 
 ---
 
@@ -221,11 +221,14 @@ All of the following hold in both `SnapshotReader.ts` and every `SnapshotReadout
 
 | Item | Value |
 |---|---|
-| CI Run ID | _see push output_ |
-| Conclusion | _pending_ |
-| research | expected GREEN |
-| simulation | expected GREEN |
-| onlineValidation | expected GREEN |
+| CI Run ID (Test Gate) | `26386494219` |
+| CI Run ID (CI workflow) | `26386494194` |
+| Test Gate conclusion | `success` ✅ |
+| CI workflow conclusion | `failure` (known non-required tests only) |
+| research | ✅ GREEN |
+| simulation | ✅ GREEN |
+| onlineValidation | ✅ GREEN |
+| Known non-required failures | `llmAuditSmoke`, `candidates/page`, `stocks/[symbol]/page.tab-sync`, `NotificationDeliveryEngine`, `AutonomousDashboardService` — all pre-existing, not blocking |
 
 ---
 
