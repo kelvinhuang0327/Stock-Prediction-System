@@ -1,12 +1,12 @@
-# P39 — Axis C C6: Authorization Gate and Promotion Decision Matrix
+# P39 — Axis C C6: Authorization Gate Decision
 
 Date: 2026-05-25
 Project: Stock-Prediction-System
-Phase: P39 — Axis C C6 Authorization Gate and Promotion Decision Matrix
+Phase: P39 — Axis C C6 Authorization Gate Decision
 Branch: main
-HEAD at report time: 448e670 (docs: add Axis C blocked source promotion audit)
+HEAD at report time: 26d3f3e (docs: close Axis C C6 gate pending authorization)
 Authorization: P38_BLOCKED_SOURCE_PROMOTION_AUDIT_COMPLETE (448e670)
-Classification: P39_C6_AUTHORIZATION_GATE_DEFINED
+Classification: **P39_AUTHORIZATION_GATE_NO_PROMOTION**
 
 > **DISCLAIMER:** This document is a design governance report only.
 > It does not constitute investment advice, a buy/sell/hold recommendation, or any
@@ -18,29 +18,54 @@ Classification: P39_C6_AUTHORIZATION_GATE_DEFINED
 
 ## 1. Pre-flight Result
 
-| Check | Expected | Result |
-|---|---|---|
-| Repo root | `/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System` | PASS |
-| Branch | `main` | PASS |
-| HEAD | `448e670` | PASS |
-| Dirty files | USER_DECISION only (`active_task.md`, `00-StockPlan/20260514/`, `00-StockPlan/20260515/`) | PASS |
-| STOP conditions | none triggered | PASS |
+| Check | Expected | Actual | Result |
+|---|---|---|---|
+| Repo root | `/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System` | `/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System` | PASS |
+| Branch | `main` | `main` | PASS |
+| HEAD | `448e670` or fast-forward successor | `26d3f3e` (ancestor check: `git merge-base --is-ancestor 448e670 HEAD` → PASS) | PASS |
+| Dirty files | USER_DECISION only | `M active_task.md`, `?? 00-StockPlan/20260514/`, `?? 00-StockPlan/20260515/` | PASS |
+| STOP conditions | None triggered | None triggered | PASS |
 
 ---
 
-## 2. Current HEAD and P38 CI Closure Evidence
+## 2. P38 CI Closure Evidence and Current HEAD CI Status
+
+### P38 Commit (448e670) — Required Checks
 
 | Item | Value |
 |---|---|
 | HEAD | `448e670` (docs: add Axis C blocked source promotion audit) |
-| P38 CI run | `26384531204` |
+| Test Gate run | `26384531204` |
 | Workflow | Test Gate — 5121/5121 Baseline |
 | Conclusion | `success` |
 | `research + simulation (275/275)` | SUCCESS |
 | `Dirty-File Bleed-Through Guard` | SUCCESS |
 | `onlineValidation (4846/4846)` | SUCCESS |
 
-P38_CI_GREEN confirmed. Phase 0 complete.
+**P38_CI_GREEN confirmed.** Phase 0 complete.
+
+### Current HEAD (26d3f3e) — Required Checks
+
+| Item | Value |
+|---|---|
+| HEAD | `26d3f3e` (docs: close Axis C C6 gate pending authorization) |
+| Test Gate run | `26384978358` |
+| Workflow | Test Gate — 5121/5121 Baseline |
+| Conclusion | `success` |
+| `onlineValidation (4846/4846)` | SUCCESS |
+| `research + simulation (275/275)` | SUCCESS |
+| `Dirty-File Bleed-Through Guard` | SUCCESS |
+
+### Non-Required CI Failures (pre-existing)
+
+| Suite | Status |
+|---|---|
+| `llmAuditSmoke.integration.test.ts` | FAIL — known non-required |
+| `candidates/page.test.tsx` | FAIL — known non-required |
+| `stocks/[symbol]/page.tab-sync.test.tsx` | FAIL — known non-required |
+| `NotificationDeliveryEngine.test.ts` | FAIL — known non-required |
+| `AutonomousDashboardService.test.ts` | FAIL — pre-existing, not introduced by P39 |
+| `AutonomousAlertService.test.ts` | FAIL — pre-existing, not introduced by P39 |
 
 ---
 
@@ -349,19 +374,19 @@ simultaneously increases rollback complexity and makes test attribution ambiguou
 
 ---
 
-## 7. Explicit C6 Authorization Phrases
+## 7. Required Authorization Phrases
 
-The following exact phrases must appear in the operator instruction for C6 to proceed.
-No paraphrase, abbreviation, or implication is sufficient.
+The following **exact** phrases must appear verbatim in the operator instruction for C6 to proceed.
+No paraphrase, abbreviation, or implication is sufficient. One phrase per session; multiple phrases = STOP.
 
 ### NewsEvent
 
 ```
-YES implement NewsEvent Axis C promotion gate
+YES authorize NewsEvent promotion
 ```
 
 Scope unlocked by this phrase:
-- `resolveNewsEvent` ELIGIBLE path addition
+- `resolveNewsEvent` ELIGIBLE path addition in `SimulationInputReadinessMapper.ts`
 - `src/lib/onlineValidation/newsEvent/` consumer code
 - Test file: `p40_axis_c_newsevent_eligible.test.ts`
 - Promotion report: `p40_axis_c_newsevent_promotion_report.md`
@@ -369,42 +394,13 @@ Scope unlocked by this phrase:
 Prerequisite: All Section 5.1 evidence requirements must be met and documented
 before C6 implementation begins.
 
-### Chip
-
-```
-YES implement Chip availableAt lag evidence gate
-```
-
-Also requires (before schema touch):
-
-```
-YES apply Chip availableAt migration to dev DB
-```
-
-Scope unlocked by these phrases:
-- `prisma/schema.prisma` Chip `availableAt` field addition
-- Prisma migration files
-- `resolveChip` ELIGIBLE path addition
-- `src/lib/onlineValidation/chip/` consumer code
-- Test file: `p40_axis_c_chip_eligible.test.ts`
-- Promotion report: `p40_axis_c_chip_promotion_report.md`
-
-Prerequisite: All Section 5.2 evidence requirements, lag thresholds defined,
-prod logs analyzed.
-
 ### FinancialReport
 
 ```
-YES implement FinancialReport PIT metadata migration gate
+YES authorize FinancialReport promotion
 ```
 
-Also requires (before schema touch):
-
-```
-YES apply FinancialReport releaseDate migration to dev DB
-```
-
-Scope unlocked by these phrases:
+Scope unlocked by this phrase (schema migration authorization required separately):
 - `prisma/schema.prisma` FinancialReport 3-field addition
 - Prisma migration files
 - `resolveFinancialReport` signature change + ELIGIBLE path addition
@@ -415,6 +411,23 @@ Scope unlocked by these phrases:
 
 Prerequisite: All Section 5.3 evidence requirements, `releaseDateSource` taxonomy
 defined, `releaseDateConfidence` scoring method defined, PIT leakage scan complete.
+
+### Chip
+
+```
+YES authorize Chip promotion
+```
+
+Scope unlocked by this phrase (schema migration authorization required separately):
+- `prisma/schema.prisma` Chip `availableAt` field addition
+- Prisma migration files
+- `resolveChip` ELIGIBLE path addition in `SimulationInputReadinessMapper.ts`
+- `src/lib/onlineValidation/chip/` consumer code
+- Test file: `p40_axis_c_chip_eligible.test.ts`
+- Promotion report: `p40_axis_c_chip_promotion_report.md`
+
+Prerequisite: All Section 5.2 evidence requirements, lag thresholds defined,
+prod logs analyzed.
 
 ---
 
@@ -492,18 +505,23 @@ from Section 5.
 ## 11. Final Classification
 
 ```
-P39_C6_AUTHORIZATION_GATE_DEFINED
+P39_AUTHORIZATION_GATE_NO_PROMOTION
 ```
 
-The authorization gate is formally defined. All three blocked sources have documented:
+No authorization phrase was found in the operator message. All three blocked sources
+(NewsEvent, FinancialReport, Chip) remain in their P38 final state — DO_NOT_PROMOTE.
+No C6 implementation may begin. C6 has NOT STARTED.
+
+All three blocked sources have documented:
 - current blocker (Section 5)
 - required evidence (Section 5)
-- required authorization phrases (Section 7)
+- required authorization phrases (Section 7): `YES authorize NewsEvent promotion`, `YES authorize FinancialReport promotion`, `YES authorize Chip promotion`
 - implementation risk and PIT leakage risk (Section 5)
 - expected file touch set (Section 5)
 - required tests (Section 5)
 - STOP conditions (Section 8)
 
-No promotion is authorized. No C6 implementation may begin.
-Axis C remains in audit-only / paper-simulation-input-contract mode
-(P39_ELIGIBLE_SOURCES: MonthlyRevenue, Quote, Regime).
+Eligible sources (MonthlyRevenue, Quote, Regime) are unchanged.
+Axis C remains in audit-only / paper-simulation-input-contract mode.
+The authorization gate is formally documented. Future C6 requires exactly one
+authorization phrase (Section 7) and complete evidence (Section 5).
