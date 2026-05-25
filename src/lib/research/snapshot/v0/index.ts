@@ -39,3 +39,11 @@ export {
 } from "./SnapshotLogWriter";
 
 export type { SnapshotLogRecord } from "./SnapshotLogWriter";
+
+// ─── Log Collector (P46) ─────────────────────────────────────────────────────
+export {
+  SNAPSHOT_LOG_COLLECTOR_VERSION,
+  createSnapshotLogCollector,
+} from "./SnapshotLogCollector";
+
+export type { SnapshotLogCollector } from "./SnapshotLogCollector";
