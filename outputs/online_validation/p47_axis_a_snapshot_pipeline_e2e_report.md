@@ -134,9 +134,9 @@ git diff --cached --name-only:
 
 | Item | Value |
 |------|-------|
-| Commit hash | `PLACEHOLDER` |
+| Commit hash | `4feeab1` |
 | Commit message | `feat: add Axis A research snapshot v0 pipeline E2E integration test` |
-| Push | `origin main` |
+| Push | `origin main` — success |
 
 ---
 
@@ -144,8 +144,8 @@ git diff --cached --name-only:
 
 | Gate | Run ID | Status |
 |------|--------|--------|
-| Test Gate | `PLACEHOLDER` | pending |
-| CI | `PLACEHOLDER` | pending |
+| Test Gate | `26391887043` | `completed success` |
+| CI | `26391887079` | see note |
 
 ---
 
