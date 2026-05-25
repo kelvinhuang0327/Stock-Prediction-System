@@ -86,7 +86,7 @@ export function serializeSnapshotLogExport(
 
 | Field | Value |
 |---|---|
-| Commit hash | [PENDING] |
+| Commit hash | `bdb1db7` |
 | Message | `feat: add Axis A research snapshot v0 export serializer` |
 | Files staged | 4 (SnapshotExportSerializer.ts, index.ts, test file, this report) |
 
@@ -95,14 +95,14 @@ export function serializeSnapshotLogExport(
 | Field | Value |
 |---|---|
 | Remote | `origin main` |
-| Push result | [PENDING] |
+| Push result | `1f6b921..bdb1db7 — success` |
 
 ## CI
 
 | Run | ID | Conclusion |
 |---|---|---|
-| Test Gate | [PENDING] | [PENDING] |
-| CI | [PENDING] | (non-governing) |
+| Test Gate | `26394804827` | completed success |
+| CI | `26394804798` | (non-governing) |
 
 ## Finalize
 
