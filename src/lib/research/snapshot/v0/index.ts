@@ -1,13 +1,14 @@
 /**
- * P42 — Axis A Controlled Research Snapshot v0 Reader — Public API
+ * P42/P43 — Axis A Controlled Research Snapshot v0 — Public API
  *
- * Re-exports the reader surface for external consumers.
+ * Re-exports the reader and formatter surfaces for external consumers.
  *
- * DISCLAIMER: Research snapshot reader only. Does not constitute investment advice.
- * entersAlphaScore = false. ALWAYS. paperOnly = true. dryRun = true.
+ * DISCLAIMER: Research snapshot surface only. Does not constitute investment
+ * advice. entersAlphaScore = false. ALWAYS. paperOnly = true. dryRun = true.
  * No profit, return, win-rate, edge, or investment performance claims are made.
  */
 
+// ─── Reader (P42) ─────────────────────────────────────────────────────────────
 export {
   SNAPSHOT_READER_VERSION,
   SNAPSHOT_READER_DISCLAIMER,
@@ -16,3 +17,9 @@ export {
 } from "./SnapshotReader";
 
 export type { SnapshotReadout } from "./SnapshotReader";
+
+// ─── Formatter (P43) ─────────────────────────────────────────────────────────
+export {
+  SNAPSHOT_FORMATTER_VERSION,
+  formatSnapshotReadout,
+} from "./SnapshotFormatter";
