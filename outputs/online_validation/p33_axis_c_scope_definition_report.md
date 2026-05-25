@@ -388,7 +388,8 @@ npx jest src/lib/simulation/__tests__/ src/lib/research/__tests__/ --no-coverage
 
 ## 10. Commit Hash
 
-PENDING — will be recorded after commit.
+`67985a6` — `docs: define P33 Axis C implementation scope`
+CI run: triggered — 3 required checks expected (onlineValidation, research+simulation, dirty-file guard).
 
 Proposed commit message:
 ```
