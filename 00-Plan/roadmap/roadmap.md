@@ -1,82 +1,88 @@
 # Stock Prediction System Roadmap
 
-Version 2.4 CTO Realignment Update - 2026-05-23
+Version 2.5 CTO Realignment Update - 2026-05-25
 Owner: Kelvin Huang
 Prepared by: CTO Agent
 Classification: CTO_ROADMAP_UPDATED_WITH_RISKS
 
 > This roadmap is an engineering execution plan for Taiwan stock research, PIT-safe prediction analysis, and paper-only simulation readiness. It is not investment advice, does not authorize automated trading, and does not make performance claims.
 
-## 0. CTO Realignment Review - 2026-05-23 P48 Complete / P49 Governance Checkpoint
+## 0. CTO Realignment Review - 2026-05-25 P30 Axis B v5 / Protected CI Green
 
 ### 0.1 Inputs Reviewed
 
-This 2026-05-23 CTO realignment is based on PROJECT_CONTEXT_LOCK, the current repo, and the latest P48 handoff state:
+This 2026-05-25 CTO realignment is based on PROJECT_CONTEXT_LOCK, the current repo, protected CI state, and the latest P20-P30 handoff:
 
 - [Confirmed] Current repo: `/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System`.
 - [Confirmed] Current branch: `main`.
-- [Confirmed] Current committed HEAD: `261cd36 P48: Add paper simulation dry-run result artifact golden fixture design`.
-- [Confirmed] PROJECT_CONTEXT_LOCK scan found no Betting-pool / P26J / P26K / MLB / bare TSL / CLV / COMPLETE_PAIR contamination.
-- [Confirmed] `MLB` hits are false positives inside `HTMLButtonElement`; bare `TSL` scan is clean; `daemon` hits are Stock native copilot/orchestrator context.
-- [Confirmed] P48 classification: `P48_GOLDEN_FIXTURE_DESIGN_READY`.
-- [Confirmed] P48 tests: 100/100 PASS.
-- [Confirmed] P38-P48 regression: 1035/1035 PASS.
-- [Confirmed] P48 preserved dry-run-only, paper-only, no-real-execution, no-PnL, no-ROI, no-win-rate, no-optimizer, no-real-backtest, and no-investment-advice boundaries.
-- [Confirmed] P48 report records 4 pre-existing failures unrelated to P48: `p26a_renderer_fix`, `p26a_batch_pipeline_wiring`, `p27_waiting_state_policy_guard`, `p29d_dropzone_scaffold`.
-- [Confirmed] `00-Plan/roadmap/CEO-Decision.md` and `00-Plan/roadmap/active_task.md` are untracked and were not modified by this CTO update.
-- [Confirmed] CTO scope is limited to this roadmap and `CTO-Analysis.md`; no P49 output artifacts were created in this review.
+- [Confirmed] Current committed HEAD: `a7d2b39 P29: add Axis B v5 P39 advanced edge cases`.
+- [Confirmed] Latest protected CI run reviewed: `26363584496`, conclusion `success`, all required checks green.
+- [Confirmed] Branch protection on `main` is active with required checks: `onlineValidation (4846/4846)`, `research + simulation (275/275)`, and `Dirty-File Bleed-Through Guard`.
+- [Confirmed] PROJECT_CONTEXT_LOCK scan found no active Betting-pool / P26J / P26K / bare TSL / CLV / Novel / character-memory contamination in the Stock working context; historical lock references remain documentation only.
+- [Confirmed] Governance hardening is complete through P20: history rewrite, CI workflow, Node 24 Actions upgrade, branch protection, runtime file cleanup, and dirty-file guard fixes.
+- [Confirmed] Axis A P21 is committed at `46847c1`; sourceTrace / PIT metadata coverage is now protected by tests.
+- [Confirmed] Axis B v2-v5 is committed through `a7d2b39`; the current Axis B set has 150 tests across 6 simulation test files.
+- [Confirmed] P29 pre-commit verification recorded 5253/5253 PASS: P29 isolated 25/25, simulation 150/150, research + onlineValidation 5103/5103.
+- [Confirmed] P30 report records DB SHA unchanged, forbidden claims CLEAN, and boundary scan CLEAN.
+- [Confirmed] Current working tree still has untracked final report docs for P20/P22/P24/P26/P28/P30 and user-decision drift in P28 JSON outputs / `00-StockPlan/`.
+- [Confirmed] CTO scope is limited to this roadmap and `CTO-Analysis.md`; no worker prompt or `active_task.md` update is allowed in this review.
 
 ### 0.2 Current Phase State
 
 | Area | Status | CTO Read |
 | --- | --- | --- |
-| Context lock | [Confirmed] Clean | This remains Stock-Prediction-System; no cross-project contamination found. |
-| Axis A: controlled source path | [Confirmed] P36/P37 completed earlier | MonthlyRevenue controlled consumer exists; NewsEvent has source-present evidence; FinancialReport and Chip remain explicitly blocked. |
-| Axis B: simulation dry-run chain | [Confirmed] P39-P48 complete | P48 now pins the P47 result artifact expectations through a golden fixture / validator design. |
-| Quality gate | [Confirmed] P48 100/100 and P38-P48 1035/1035 PASS | Current chain regression is strong; the 4 full-suite failures still need a ledger. |
-| P49 checkpoint | [Missing] Not executed | No canonical P39-P48 manifest or known-failure ledger exists yet. |
+| Context lock | [Confirmed] Clean | Stock-Prediction-System context is clean; unrelated Novel / Betting-pool material must remain excluded. |
+| Governance / CI | [Confirmed] Complete | Protected CI and branch protection are now real gates, not aspirational governance. |
+| Axis A: Taiwan stock research data trust | [Confirmed] P21 complete | sourceTrace / PIT metadata coverage is locked, but this is still not a research snapshot or scoring path. |
+| Axis B: paper-only simulation validation | [Confirmed] P23/P25/P27/P29 complete | P39 validator / dry-run boundary is protected by fixture-backed tests; this is strong validation hardening, not new simulation metrics. |
+| Documentation evidence | [Blocked] Authorization needed | P20/P22/P24/P26/P28/P30 final reports are untracked and should be committed only with explicit `YES commit pending docs`. |
+| Working-tree drift | [Blocked] User decision | P28 drift JSONs and `00-StockPlan/` remain explicit USER_DECISION items; do not stage automatically. |
 | Real simulation / optimizer / backtest | [Blocked] Not authorized | No PnL, ROI, win-rate, return, buy/sell/action, or investment-advice semantics. |
 
 ### 0.3 Roadmap Alignment Audit
 
 | Marker | Item | Assessment |
 | --- | --- | --- |
-| [Aligned] | P48 golden fixture design | It directly answers the prior P47 schema-drift risk and strengthens Axis B regression discipline. |
-| [Aligned] | PROJECT_CONTEXT_LOCK | The contamination scan protects roadmap integrity before further P49 work. |
-| [Aligned] | No-metrics governance | P48 keeps simulation dry-run outputs free of PnL/ROI/win-rate/advice semantics. |
-| [Drift] | Top roadmap overlay | The previous controlling section still described P32-P35 and was obsolete after P48. |
-| [Missing] | P39-P48 manifest | The dry-run chain is now long enough that canonical phase ownership is a real blocker. |
-| [Missing] | Known-failure ledger | Four pre-existing failures are repeatedly mentioned but not yet managed as a ledger. |
-| [Outdated] | P35 as active P0 | P35/P36/P37/P39-P48 have already moved mainline forward. |
-| [Outdated] | P48 authorization gate | P48 is now completed at `261cd36`; the next checkpoint is P49. |
-| [Blocked] | FinancialReport / Chip data activation | Both still require explicit DB/schema authorization and evidence before apply. |
-| [Blocked] | Optimizer / real backtest | Still blocked until source governance, manifest, failure ledger, and future explicit authorization are in place. |
+| [Aligned] | Governance hardening P11-P20 | CI, branch protection, dirty-file guard, Node 24 Actions, and runtime cleanup align with auditability needs. |
+| [Aligned] | Axis A P21 | sourceTrace and PIT metadata coverage directly support trusted Taiwan stock research inputs. |
+| [Aligned] | Axis B P23/P25/P27/P29 | fixture-backed dry-run / P39 validator expansion directly protects paper-only simulation boundaries. |
+| [Aligned] | Protected CI green | The newest committed Axis B v5 state is backed by both local verification and protected CI. |
+| [Drift] | Roadmap controlling overlay | The previous overlay still described P48/P49, while current `main` is at P30 / Axis B v5. |
+| [Drift] | Axis B micro-extension momentum | More P39 edge-case tests may have diminishing return unless tied to a concrete Axis C capability. |
+| [Missing] | Pending docs commit closure | P20/P22/P24/P26/P28/P30 final reports are present but untracked; evidence trail is incomplete. |
+| [Missing] | Axis C definition | The project needs a next architecture step that converts Axis A/B test hardening into product-facing research / simulation readiness. |
+| [Outdated] | P49 as current P0 | The current handoff supersedes the older P48/P49 checkpoint plan with P30 protected-CI baseline. |
+| [Blocked] | Pending docs commit | Requires explicit `YES commit pending docs`; CTO must not stage/commit in this review. |
+| [Blocked] | P28 drift / `00-StockPlan` | Remain USER_DECISION and must not be auto-staged. |
+| [Blocked] | Optimizer / real backtest / scoring activation | Still unauthorized and unsupported by current roadmap gates. |
 
 ### 0.4 Reordered P0-P10 Execution Plan
 
 | Priority | Item | Status | Gate / Definition of Done |
 | --- | --- | --- | --- |
-| P0 | P49 Simulation Governance Manifest + Known Failure Ledger | Ready, checkpoint only | Produce canonical P39-P48 phase manifest and known-failure ledger; no src/prisma/data/tests changes; no simulation execution. |
-| P1 | Axis A Controlled Research Snapshot v0 | Candidate after P49 | Use existing MonthlyRevenue controlled consumer plus PIT-safe Quote/Regime to produce read-only research snapshots; no scoring/advice. |
-| P2 | Axis B Fixture-backed Dry-run Validation Checkpoint | Candidate after P49 | Use P48 golden fixture to validate P47-style result artifacts deterministically; no real simulation metrics. |
-| P3 | NewsEvent Quality / Symbol-linkage Audit | Important for Axis A | NewsEvent source-present readiness is not enough; quality and ticker linkage must be proven before consumer use. |
-| P4 | FinancialReport PIT Metadata Readiness Design | Design-only; apply blocked | Clarify releaseDate/source/confidence policy before any DB/schema apply. |
-| P5 | Chip availableAt Evidence Path | Blocked by authorization/logs | Requires explicit DB authorization and production evidence before lag confirmation. |
-| P6 | Full-suite Failure Repair Planning | Depends on P49 ledger | Repair only after failures are ledgered and scoped; do not mix with P49. |
-| P7 | Simulation Input Eligibility Recheck | Depends on P49/P50 | Reconfirm eligible/audit-only/blocked sources before strategy comparison expansion. |
-| P8 | External Benchmark / GUI Research | Deferred | Useful reference only; no GUI/Electron implementation now. |
-| P9 | Optimizer / Real Backtest Readiness | Blocked | Requires validated source/simulation governance, manifest, corpus maturity, and explicit future authorization. |
+| P0 | P31-DOC Pending Documentation Commit Gate | Waiting for explicit authorization | Commit only P20/P22/P24/P26/P28/P30 final report docs after `YES commit pending docs`; do not stage P28 drift JSONs, `00-StockPlan`, logs, data/manual, DB, scoring, optimizer, or backtest files. |
+| P1 | Axis C Scope Definition: Readiness-to-Eligibility State Machine | Ready after P0 or in parallel as design-only | Define how Axis A trusted sources become Axis B eligible simulation inputs without scoring/advice; no DB/schema/scoring writes. |
+| P2 | Axis A Controlled Research Snapshot v0 | Candidate after Axis C scope | Convert existing PIT/sourceTrace guarantees into read-only, replayable Taiwan stock research snapshots; no alphaScore or investment semantics. |
+| P3 | Axis B v6 Targeted Validator Expansion | Candidate, not automatic | Add only high-value P39/dry-run edge cases that Axis C identifies; avoid test bloat. |
+| P4 | P28 Drift / `00-StockPlan` Disposition | User decision | Classify keep/discard/commit scope explicitly before touching. |
+| P5 | FinancialReport PIT Metadata Readiness Design | Design-only; apply blocked | Clarify releaseDate/source/confidence policy before any DB/schema apply. |
+| P6 | NewsEvent Quality / Symbol-linkage Audit | Important for Axis A | Source-present readiness is not enough; event quality and ticker linkage must be proven. |
+| P7 | Chip availableAt Evidence Path | Blocked by authorization/logs | Requires explicit DB authorization and production evidence before lag confirmation. |
+| P8 | CI / Actions Maintenance Cadence | Ongoing | Periodically re-check GitHub Actions versions and protected checks; no urgent work while green. |
+| P9 | Optimizer / Real Backtest Readiness | Blocked | Requires controlled research snapshots, source eligibility, simulation governance, and explicit future authorization. |
 | P10 | General Housekeeping | Deferred | Only run when it removes audit blockers; do not displace P0/P1. |
 
 ### 0.5 Items Upgraded, Downgraded, Paused, or Retired
 
 | Change | Item | Decision |
 | --- | --- | --- |
-| Upgraded to P0 | P49 manifest + known-failure ledger | Required before any P50/P51 expansion so the P39-P48 chain is auditable and failures are not ambiguous. |
-| Upgraded to P1 | Axis A controlled research snapshot | This is the next practical bridge from source trust to Taiwan stock research value. |
-| Upgraded to P2 | Axis B fixture-backed validation | P48 is useful only if future artifacts are validated against it. |
-| Downgraded | More auth-gate-only microphases | Avoid another sequence that adds little product maturity. |
-| Retired | P35/P48 as active P0 | Both are now completed/historical checkpoints. |
+| Upgraded to P0 | Pending docs commit gate | The code/CI baseline is clean, but evidence files are untracked; close this before expanding work. |
+| Upgraded to P1 | Axis C scope definition | The next substantive move should connect Axis A data trust to Axis B eligibility, not just add more isolated tests. |
+| Upgraded to P2 | Axis A controlled research snapshot | This is the next visible research-platform capability after sourceTrace/PIT hardening. |
+| Downgraded | Automatic Axis B v6 | Current Axis B already has 150 tests; v6 should be targeted by Axis C, not reflexive. |
+| Downgraded | External benchmark / GUI work | Non-blocking; useful later but not today's main-axis value. |
+| Paused | P28 drift / `00-StockPlan` | User-decision items; do not touch without explicit instruction. |
+| Retired | P48/P49 as active P0 | Superseded by the current P30 protected-CI baseline. |
 | Blocked | FinancialReport / Chip DB applies | Require explicit authorization before any schema or DB write. |
 | Deferred | Optimizer, real backtest, GUI, metrics | Still outside current authorized system maturity. |
 
@@ -84,35 +90,39 @@ This 2026-05-23 CTO realignment is based on PROJECT_CONTEXT_LOCK, the current re
 
 | Axis | What is proven | What is not proven | CTO stance |
 | --- | --- | --- | --- |
-| Axis A: Taiwan stock research | [Confirmed] MonthlyRevenue controlled consumer path exists; Quote/Regime are PIT-safe; NewsEvent source-present evidence exists | [Unknown] Research snapshot usefulness; NewsEvent quality/linkage; FinancialReport PIT metadata; Chip availability evidence | P49 first, then P1 controlled research snapshot v0. |
-| Axis B: paper-only simulation | [Confirmed] P39-P48 chain now has input contract, framework, lifecycle, integration, rehearsal, result artifact, and golden fixture validator | [Missing] Canonical manifest and failure ledger; [Confirmed] no real metrics or optimizer allowed | P49 first, then P2 fixture-backed validation checkpoint. |
+| Axis A: Taiwan stock research | [Confirmed] P21 locks sourceTrace / PIT metadata behavior; earlier controlled consumer work exists; CI protects research tests. | [Unknown] Whether there is a read-only research snapshot that a user can review; [Unknown] NewsEvent linkage quality; [Confirmed] FinancialReport / Chip remain blocked. | After evidence closure, define Axis C then produce a controlled research snapshot v0. |
+| Axis B: paper-only simulation | [Confirmed] P23/P25/P27/P29 protect P39 dry-run bundle boundaries and advanced validator edge cases; CI green. | [Confirmed] This is still not real simulation, performance, optimizer, or backtest; [Inferred] further tests need a capability map. | Use Axis C to decide whether v6 is needed or whether to move to controlled simulation snapshot readiness. |
 
 ### 0.7 Today Focus
 
 Today should focus on:
 
 ```text
-P49 Simulation Governance Manifest + Known Failure Ledger
+P31-DOC Pending Documentation Commit Gate, then Axis C Scope Definition
 ```
 
 Strict boundary:
 
 ```text
-Checkpoint only. Do not modify src/prisma/data/tests/scripts. Do not execute simulation, optimizer, or real backtest. Do not produce PnL, ROI, win-rate, return, recommendation, or buy/sell/action semantics.
+Do not create worker prompts in this CTO review. Do not stage or commit unless the user explicitly grants `YES commit pending docs`. Do not touch DB, schema, scoring, optimizer, real backtest, logs, runtime, data/manual actual data, P28 drift JSONs, or `00-StockPlan`.
 ```
 
 Reason:
 
-P48 gives Axis B a golden fixture, but the P39-P48 chain now needs one canonical manifest and one known-failure ledger before safe expansion. This checkpoint makes later Axis A snapshots and Axis B fixture-backed validation easier to trust, review, and hand off.
+The protected code baseline is already green. The immediate blocker is evidence hygiene: final reports are untracked while user-decision drift is present nearby. Once that is closed, the most valuable substantive move is Axis C: define the state machine that turns PIT-safe Axis A evidence into Axis B simulation-input eligibility without scoring, optimizer, real backtest, or advice semantics.
 
-### 0.8 Final CTO Recommendation
+### 0.8 Strict No-Worker-Prompt Note
 
-Run P49 next as a bounded checkpoint: simulation governance manifest plus known-failure ledger. Do not repair failures in P49. Do not add simulation behavior. After P49, the roadmap should split deliberately into two substantive directions:
+The user request includes a request for "today's first executable task prompt", but the same CTO instruction set also says "嚴禁產出新的 worker task prompt." The stricter constraint controls this review. Therefore this roadmap update records the recommended next work but does not create or write a new worker prompt or `active_task.md`.
 
-- Axis A: controlled read-only Taiwan stock research snapshot v0.
-- Axis B: fixture-backed dry-run result artifact validation using the P48 golden fixture.
+### 0.9 Final CTO Recommendation
 
-This keeps the project moving toward the two core goals without jumping into scoring, optimizer, real backtest, or investment advice.
+First close the pending documentation evidence gap with an explicitly authorized docs-only commit. This is a short P0 because it protects the audit trail without changing runtime behavior. After that, do not automatically keep extending Axis B edge cases. Move to Axis C scope definition so the project can decide, in one architecture layer, how:
+
+- Axis A trusted data (`sourceTrace`, PIT metadata, controlled consumers) becomes a replayable research snapshot.
+- Axis B dry-run bundle validation consumes only eligible sources and remains paper-only.
+
+Then choose either Axis A snapshot v0 or a targeted Axis B v6 based on that Axis C decision. This keeps the project moving toward the two core goals without turning governance into the product itself.
 
 Final classification:
 
@@ -120,9 +130,9 @@ Final classification:
 CTO_ROADMAP_UPDATED_WITH_RISKS
 ```
 
-### 0.9 Supersession Note
+### 0.10 Supersession Note
 
-Section `0. CTO Realignment Review - 2026-05-23 P48 Complete / P49 Governance Checkpoint` is the controlling current roadmap overlay. Older P31A / P32 / P33 / P34 / P35 / P48 overlays below are preserved as historical context unless explicitly restated in Section 0 above.
+Section `0. CTO Realignment Review - 2026-05-25 P30 Axis B v5 / Protected CI Green` is the controlling current roadmap overlay. Older P31A / P32 / P33 / P34 / P35 / P48/P49 overlays below are preserved as historical context unless explicitly restated in Section 0 above.
 
 ## 0.P34. P34 Completion Overlay — 2026-05-21
 
