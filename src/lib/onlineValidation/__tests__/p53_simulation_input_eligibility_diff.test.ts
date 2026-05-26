@@ -16,7 +16,6 @@ import {
   SIMULATION_INPUT_ELIGIBILITY_DIFF_FORBIDDEN_FIELDS,
   diffSimulationInputEligibility,
   type SimulationInputEligibilityDiffReport,
-  type EligibilityChangedEntry,
 } from "../p53/SimulationInputEligibilityDiff";
 
 import {
@@ -267,10 +266,10 @@ describe("Group 4: Added eligible sources (before empty, after has eligible)", (
   test("4.6 added entry has governance flags from the after bundle", () => {
     const entry = report.addedEligibleSources[0];
     expect(entry).toBeDefined();
-    expect(entry!.paperOnly).toBe(true);
-    expect(entry!.entersAlphaScore).toBe(false);
-    expect(entry!.dryRunOnly).toBe(true);
-    expect(entry!.readinessStatus).toBe("SIMULATION_INPUT_ELIGIBLE");
+    expect(entry.paperOnly).toBe(true);
+    expect(entry.entersAlphaScore).toBe(false);
+    expect(entry.dryRunOnly).toBe(true);
+    expect(entry.readinessStatus).toBe("SIMULATION_INPUT_ELIGIBLE");
   });
 });
 
@@ -378,27 +377,27 @@ describe("Group 7: Changed eligibility sources (blocked→blocked with different
   });
 
   test("7.3 changed entry has correct sourceName", () => {
-    const entry = report.changedEligibilitySources[0] as EligibilityChangedEntry;
+    const entry = report.changedEligibilitySources[0];
     expect(entry).toBeDefined();
-    expect(entry!.sourceName).toBe("NewsEvent");
+    expect(entry?.sourceName).toBe("NewsEvent");
   });
 
   test("7.4 changed entry records correct before/after blocked statuses", () => {
-    const entry = report.changedEligibilitySources[0] as EligibilityChangedEntry;
-    expect(entry!.blockedStatusBefore).toBe("BLOCKED_QUALITY_EVIDENCE");
-    expect(entry!.blockedStatusAfter).toBe("BLOCKED_PIT_METADATA");
+    const entry = report.changedEligibilitySources[0];
+    expect(entry?.blockedStatusBefore).toBe("BLOCKED_QUALITY_EVIDENCE");
+    expect(entry?.blockedStatusAfter).toBe("BLOCKED_PIT_METADATA");
   });
 
   test("7.5 changed entry records correct before/after blocking reasons", () => {
-    const entry = report.changedEligibilitySources[0] as EligibilityChangedEntry;
-    expect(entry!.blockingReasonsBefore).toContain("reason-A");
-    expect(entry!.blockingReasonsAfter).toContain("reason-B");
+    const entry = report.changedEligibilitySources[0];
+    expect(entry?.blockingReasonsBefore).toContain("reason-A");
+    expect(entry?.blockingReasonsAfter).toContain("reason-B");
   });
 
   test("7.6 changed entry has governance flags", () => {
-    const entry = report.changedEligibilitySources[0] as EligibilityChangedEntry;
-    expect(entry!.entersAlphaScore).toBe(false);
-    expect(entry!.paperOnly).toBe(true);
+    const entry = report.changedEligibilitySources[0];
+    expect(entry?.entersAlphaScore).toBe(false);
+    expect(entry?.paperOnly).toBe(true);
   });
 });
 
@@ -454,8 +453,8 @@ describe("Group 9: blockedSourcesBefore and blockedSourcesAfter are verbatim cop
     const before = defaultBundle(AS_OF_BEFORE);
     const after = defaultBundle(AS_OF_AFTER);
     const report = diffSimulationInputEligibility(before, after, FIXED_DIFFED_AT);
-    const beforeNames = report.blockedSourcesBefore.map((s) => s.sourceName).sort();
-    const expectedNames = before.blockedSources.map((s) => s.sourceName).sort();
+    const beforeNames = report.blockedSourcesBefore.map((s) => s.sourceName).sort((a, b) => a.localeCompare(b));
+    const expectedNames = before.blockedSources.map((s) => s.sourceName).sort((a, b) => a.localeCompare(b));
     expect(beforeNames).toEqual(expectedNames);
   });
 
@@ -463,8 +462,8 @@ describe("Group 9: blockedSourcesBefore and blockedSourcesAfter are verbatim cop
     const before = defaultBundle(AS_OF_BEFORE);
     const after = defaultBundle(AS_OF_AFTER);
     const report = diffSimulationInputEligibility(before, after, FIXED_DIFFED_AT);
-    const afterNames = report.blockedSourcesAfter.map((s) => s.sourceName).sort();
-    const expectedNames = after.blockedSources.map((s) => s.sourceName).sort();
+    const afterNames = report.blockedSourcesAfter.map((s) => s.sourceName).sort((a, b) => a.localeCompare(b));
+    const expectedNames = after.blockedSources.map((s) => s.sourceName).sort((a, b) => a.localeCompare(b));
     expect(afterNames).toEqual(expectedNames);
   });
 
@@ -690,6 +689,11 @@ describe("Group 13: Count accuracy", () => {
 
 // ─── Group 14: JSON serializability ──────────────────────────────────────────
 
+/** Parse a pre-serialized JSON string back to a typed value. */
+function fromJsonString<T>(s: string): T {
+  return JSON.parse(s) as T;
+}
+
 describe("Group 14: JSON serializability", () => {
   test("14.1 report is JSON-serializable without loss", () => {
     const report = diffSimulationInputEligibility(
@@ -706,7 +710,7 @@ describe("Group 14: JSON serializability", () => {
       defaultBundle(AS_OF_AFTER),
       FIXED_DIFFED_AT,
     );
-    const parsed = JSON.parse(JSON.stringify(report)) as SimulationInputEligibilityDiffReport;
+    const parsed = fromJsonString<SimulationInputEligibilityDiffReport>(JSON.stringify(report));
     expect(parsed.diffVersion).toBe(SIMULATION_INPUT_ELIGIBILITY_DIFF_VERSION);
   });
 
@@ -716,7 +720,7 @@ describe("Group 14: JSON serializability", () => {
       defaultBundle(AS_OF_AFTER),
       FIXED_DIFFED_AT,
     );
-    const parsed = JSON.parse(JSON.stringify(report)) as SimulationInputEligibilityDiffReport;
+    const parsed = fromJsonString<SimulationInputEligibilityDiffReport>(JSON.stringify(report));
     expect(parsed.paperOnly).toBe(true);
     expect(parsed.entersAlphaScore).toBe(false);
     expect(parsed.dryRunOnly).toBe(true);
@@ -729,7 +733,7 @@ describe("Group 14: JSON serializability", () => {
       defaultBundle(AS_OF_AFTER),
       FIXED_DIFFED_AT,
     );
-    const parsed = JSON.parse(JSON.stringify(report)) as SimulationInputEligibilityDiffReport;
+    const parsed = fromJsonString<SimulationInputEligibilityDiffReport>(JSON.stringify(report));
     expect(parsed.unchangedEligibleCount).toBe(report.unchangedEligibleCount);
     expect(parsed.blockedBeforeCount).toBe(report.blockedBeforeCount);
   });
@@ -764,7 +768,7 @@ describe("Group 15: Forbidden field scan", () => {
     for (const field of SIMULATION_INPUT_ELIGIBILITY_DIFF_FORBIDDEN_FIELDS) {
       // Check that the field does not appear as a JSON key
       // (We match `"<field>":` to avoid false positives in string values)
-      expect(json).not.toMatch(new RegExp(`"${field}"\\s*:`));
+      expect(json).not.toMatch(new RegExp(String.raw`"${field}"\s*:`));
     }
   });
 
@@ -781,7 +785,7 @@ describe("Group 15: Forbidden field scan", () => {
     for (const entry of report.changedEligibilitySources) {
       const json = JSON.stringify(entry);
       for (const field of SIMULATION_INPUT_ELIGIBILITY_DIFF_FORBIDDEN_FIELDS) {
-        expect(json).not.toMatch(new RegExp(`"${field}"\\s*:`));
+        expect(json).not.toMatch(new RegExp(String.raw`"${field}"\s*:`));
       }
     }
   });
@@ -850,8 +854,8 @@ describe("Group 16: Mixed scenario — partial eligibility change", () => {
       (e) => e.sourceName === "Regime",
     );
     expect(entry).toBeDefined();
-    expect(entry!.blockingReasonsBefore).toContain("auth missing");
-    expect(entry!.blockingReasonsAfter).toContain("auth missing — updated");
+    expect(entry?.blockingReasonsBefore).toContain("auth missing");
+    expect(entry?.blockingReasonsAfter).toContain("auth missing — updated");
   });
 
   test("16.9 blockedBeforeCount is 2", () => {
