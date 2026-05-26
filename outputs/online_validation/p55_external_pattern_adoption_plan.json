@@ -1,0 +1,210 @@
+{
+  "phase": "P55",
+  "classification": "P55_EXTERNAL_PATTERN_ADOPTION_PLAN_READY",
+  "date": "2026-05-26",
+  "authorization": "CEO Decision 2026-05-25 P3 (design-only, no code)",
+  "externalSourceReviewed": "dsxcai/stock_trading (read-only GitHub web, main branch, commit 23470ca)",
+  "designOnly": true,
+  "noCodeCopied": true,
+  "noRepoCloned": true,
+  "noTradingSemanticsAdopted": true,
+  "governanceInvariants": {
+    "paperOnly": true,
+    "dryRunOnly": true,
+    "entersAlphaScore": false,
+    "noActualMetrics": true,
+    "noRealExecution": true,
+    "notInvestmentAdvice": true
+  },
+  "allowedPatterns": [
+    {
+      "pattern": "report_schema",
+      "externalEvidence": "dsxcai/stock_trading report_spec.json — spec_version 1.3.0; JSON-driven schema with datasets (row_source JSONPath, sort), tables (id, title, columns, row_computed, footer_rows), formatters (typed: integer, currency, percent, date, datetime, custom), grouping with keep_groups policy, full vs simple column_sets for grouped rendering",
+      "decision": "ADOPT",
+      "reason": "Schema-driven rendering cleanly separates data-production from display-rendering. The pattern has zero trading semantics. It directly matches our need: P52/P53/P54 produce structured JSON artifacts that should be renderable into human-readable audit reports without coupling the rendering logic to the data-production logic.",
+      "localApplication": "Define an audit_artifact_render_spec.json (or TypeScript equivalent) for Axis A and Axis B audit artifacts. Spec drives: which fields to display, how to format counts vs timestamps vs version strings, which sections to group, and what null_display policy to use. No schema fields may reference alphaScore, recommendation, buy, sell, or any forbidden field.",
+      "guardrails": [
+        "Schema may only reference fields present in EligibilityDiffAuditArtifact or SnapshotExportDiffReport — no new fields may be invented",
+        "No formatter for PnL, ROI, win-rate, or benchmark quantities",
+        "Schema version string must contain 'p55-audit' to distinguish from dsxcai schema",
+        "No copy of dsxcai report_spec.json — design independently from scratch",
+        "Schema is documentation/configuration, not executable trading logic"
+      ]
+    },
+    {
+      "pattern": "mode_separation",
+      "externalEvidence": "dsxcai README §7 — states.json no longer stores selector (meta.mode, meta.active_mode, meta.last_run); mode context is derived at runtime from --mode flag + ET session + trading calendar; report/<DATE>_<mode>.json retains fully assembled mode-specific snapshot; config.json retains runtime config grouped under state_engine.* keys; three modes: Premarket, Intraday, AfterClose each produce their own snapshot JSON",
+      "decision": "ADOPT",
+      "reason": "Mode separation enforces that state persistence and derived display context are orthogonal. For our Axis A/B system: the research snapshot (what data is present at PIT) is orthogonal to which audit mode (Axis A diff, Axis B eligibility diff, combined audit) is being rendered. Keeping these separate prevents stale-mode contamination and makes replay deterministic.",
+      "localApplication": "Formalize naming conventions: Axis A audit artifacts keyed as snapshot_diff_<fixedDiffedAt>.json; Axis B audit artifacts keyed as eligibility_diff_<fixedDiffedAt>.json; wrapper artifacts keyed as eligibility_audit_<fixedGeneratedAt>.json. Do NOT persist which mode last ran inside the artifact itself — mode is always derived at the call-site.",
+      "guardrails": [
+        "Mode names must not be trading mode names (Premarket/Intraday/AfterClose) — use domain-appropriate names (e.g. AXIS_A_DIFF, AXIS_B_ELIGIBILITY_DIFF, AXIS_B_AUDIT_ARTIFACT)",
+        "No mode may imply execution, ordering, or position entry/exit",
+        "State persistence is already handled by P38-P54 TypeScript types — do not alter existing type contracts",
+        "Naming convention is a documentation decision only; no src/ changes in P55"
+      ]
+    },
+    {
+      "pattern": "golden_fixture_pattern",
+      "externalEvidence": "dsxcai README §16.2–16.3 — tests/fixtures/test_config.json freezes test inputs from live config; refresh_test_fixtures.sh regenerates golden_premarket_states.json + golden_premarket_report.md from known inputs via STOCK_TRADING_SKIP_AUTOCSV=1 env var; refresh is idempotent; optional time anchor parameter for determinism",
+      "decision": "ADOPT",
+      "reason": "Already in use in P39/P52/P53/P54 via fixedGeneratedAt/fixedDiffedAt optional parameters. External evidence confirms this is the canonical pattern for deterministic test fixtures. Formalizing it as a named convention (golden fixture pattern) makes the design intent explicit and aids future contributors.",
+      "localApplication": "All P52+ test files already use fixedDiffedAt / fixedGeneratedAt for determinism. Formalize: (1) every diff/audit function MUST accept an optional fixed timestamp parameter; (2) test fixtures MUST use fixed timestamps, never Date.now(); (3) a future refresh script (analogous to refresh_test_fixtures.sh) may regenerate golden fixtures from canonical inputs. No code changes needed in P55 — existing P52/P53/P54 already comply.",
+      "guardrails": [
+        "Fixed timestamp parameter must be optional, never mandatory, to preserve production call-site flexibility",
+        "Golden fixtures must not contain forbidden fields (alphaScore, buy, sell, etc.)",
+        "Fixture refresh script (if created in future P) must not execute real simulation, optimizer, or network calls",
+        "Fixture files must remain in tests/ — not in data/, runtime/, or prisma/"
+      ]
+    },
+    {
+      "pattern": "assumption_documentation_pattern",
+      "externalEvidence": "dsxcai README §8.6 — t+1 execution assumption (price = (Open(t+1)+Close(t+1))/2) is explicitly documented; backtest_config.json groups cost assumptions under backtest.costs.*; README §16.2 documents when fixtures must be refreshed; all key behavioral assumptions documented alongside code",
+      "decision": "ADOPT",
+      "reason": "Our existing governance flags (paperOnly, dryRunOnly, entersAlphaScore, noActualMetrics, noRealExecution, notInvestmentAdvice) are the direct analogue of explicit assumption documentation. External evidence reinforces that assumptions must be machine-readable (in the artifact) AND human-readable (in the report). Currently our flags are machine-readable; P55 formalizes that they must always appear in the final report section too.",
+      "localApplication": "Every audit artifact produced by P52+ MUST include: (1) governance flags as literal constants in the TypeScript source; (2) a static disclaimer string in the output artifact; (3) a governance section in the accompanying .md report. This is already done in P54 (disclaimer field in EligibilityDiffAuditArtifact, governance section in p54 report). Formalize as a project-wide convention for all future Axis A and Axis B audit artifacts.",
+      "guardrails": [
+        "Assumption documentation is DESCRIPTIVE (what this artifact is) not PRESCRIPTIVE (what to do with it)",
+        "No assumption may claim accuracy of predictions, signals, or returns",
+        "Disclaimer must always contain: not investment advice, paper-only, dry-run-only",
+        "Governance flags must always be literal TypeScript constants, never derived from input data"
+      ]
+    }
+  ],
+  "deferredPatterns": [
+    {
+      "pattern": "status_config_workflow",
+      "externalEvidence": "dsxcai GUI Status tab — shows latest command, exit code, report path, log path, captured log output; Config tab — structured runtime config forms for ledger paths, fee rates, bucket defaults, FX pairs, calendar entries, numeric precision; explicit success/failure reporting for every operation",
+      "decision": "DEFER",
+      "reason": "The pattern of explicit status reporting and structured config editing is architecturally sound and aligns with our orchestrator direction. However, our current system has no UI layer and no real execution paths that need status surfaces. Premature to define a status/config convention until real execution gates (FinancialReport PIT, Chip DB authorization) are lifted.",
+      "futureGate": "Revisit when Axis A v1 real-data integration (CEO P4) is designed. At that point, a status/config pattern for the research pipeline runner would be relevant.",
+      "forbiddenAdoptions": [
+        "Do NOT adopt GUI/Electron components",
+        "Do NOT adopt fee rates, cash buckets, or trading calendar from config schema",
+        "Do NOT adopt command-line argument conventions that imply execution semantics"
+      ]
+    },
+    {
+      "pattern": "data_management_zip_export",
+      "externalEvidence": "dsxcai Config tab Data Management — Export Data Zip saves runtime data files + report_spec.json into a zip via native save dialog; Import Data Zip restores from previously exported zip; Initialize Clean Environment creates minimal valid defaults for missing files",
+      "decision": "DEFER",
+      "reason": "Our current system manages data through Prisma/DB (blocked) and TypeScript in-memory functions (unblocked). A zip export/import pattern for audit artifacts could be useful for long-term archival, but is premature before real data flows through the pipeline.",
+      "futureGate": "Revisit after Axis A v1 real-data integration produces actual research snapshots worth archiving."
+    }
+  ],
+  "rejectedPatterns": [
+    {
+      "pattern": "buy_sell_action_semantics",
+      "externalEvidence": "dsxcai README §4 — BUY, BUY_MORE, SELL_ALL, HOLD, NO_ACTION; report_spec.json t_plus_1_action column; signals tables show buy_signal computed from Close(t) > MA(t) && Close(t) > Close(t-5)",
+      "decision": "REJECT",
+      "reason": "Fundamentally incompatible with project governance. Our system is paper-only, dry-run-only, and explicitly forbids buy/sell/hold/action semantics in all output fields. noBuySellActionSemantics=true is an explicit P39 invariant carried through P52/P53/P54.",
+      "guardrails": [
+        "No field named buy, sell, hold, action, t_plus_1_action, buy_signal, sell_signal in any new artifact",
+        "No test may assert on buy/sell/hold/action field values",
+        "FORBIDDEN_FIELDS list in P54 already covers: buy, sell, hold, action"
+      ]
+    },
+    {
+      "pattern": "portfolio_accounting",
+      "externalEvidence": "dsxcai README §2, §5, §6, §10 — states.json tracks portfolio.positions, portfolio.cash.deployable_usd, portfolio.cash.reserve_usd, FIFO cost basis, trade ledger, unrealized PnL, NAV; report shows market value, cost, FIFO lots",
+      "decision": "REJECT",
+      "reason": "Portfolio accounting (positions, cost basis, FIFO, NAV, cash buckets) is a different domain from our Axis A/B audit functions. Our system does not manage a live portfolio and must not import these concepts.",
+      "guardrails": [
+        "No field for positions, holdings, cost_usd, market_value_usd, nav_usd, fifo, lot in any new artifact",
+        "No reference to deployable_usd, reserve_usd, or cash bucket semantics"
+      ]
+    },
+    {
+      "pattern": "pnl_roi_winrate_benchmark",
+      "externalEvidence": "dsxcai report_spec.json — profit_usd, profit_rate, unrealized_pnl_usd, unrealized_pnl_twd, realized_pnl; README §8.6 — backtest compares strategy vs buy-and-hold benchmark; mean-reversion shows aggregate results",
+      "decision": "REJECT",
+      "reason": "PnL, ROI, win-rate, and benchmark are explicitly listed in our FORBIDDEN_FIELDS (P54: returnPct, winRate, profit, expectedReturn, roi, pnl, benchmark). These are real-performance metrics incompatible with paper-only, dry-run-only governance.",
+      "guardrails": [
+        "P54 DIFF_REPORT_BUILDER_FORBIDDEN_FIELDS already covers: roi, pnl, benchmark, winRate, returnPct",
+        "No future artifact may add these fields even as null placeholders"
+      ]
+    },
+    {
+      "pattern": "optimizer_real_backtest",
+      "externalEvidence": "dsxcai README §8.6 — backtest.py executes real historical simulation; t+1 execution at (Open+Close)/2; equity_curve.csv, gross_trades.json, net_trades.json output; mean-reversion strategy with entry/take-profit/stop-loss triggers",
+      "decision": "REJECT",
+      "reason": "Real backtest execution is multi-gate blocked in our system. CEO Decision explicitly lists optimizer/real backtest as P10 (far horizon, multi-gate blocked). Adopting any backtest execution convention would be a governance violation.",
+      "guardrails": [
+        "No backtest execution path may be created in src/",
+        "No backtest result fields (equity_curve, gross_trades, stop_loss, take_profit) in any artifact",
+        "Paper-only simulation (P39 bundle) is the only simulation-related construct permitted"
+      ]
+    },
+    {
+      "pattern": "gui_electron_ipc_implementation",
+      "externalEvidence": "dsxcai README §1 — Electron desktop app (React+TypeScript+Electron); gui_ipc.py JSON/stdin bridge; gui_app.py launches desktop shell; desktop/electron/main.ts; desktop/src/ React renderer; gui/desktop_backend.py; gui/services.py",
+      "decision": "REJECT",
+      "reason": "Our system is a TypeScript/Next.js web application, not an Electron desktop app. IPC-backed Python execution would introduce real execution paths (blocked). The GUI pattern itself is not relevant to our audit library design.",
+      "guardrails": [
+        "No gui_app.py, no gui_ipc.py, no Electron main process, no desktop/ directory",
+        "No IPC bridge to Python execution in any new file",
+        "TypeScript library functions remain pure (no process.spawn, no child_process, no IPC)"
+      ]
+    },
+    {
+      "pattern": "real_data_download_csv_refresh",
+      "externalEvidence": "dsxcai README §18.1 — download_1y.py fetches OHLCV from Yahoo Finance; auto-refreshes on --mode runs; downloads equity CSVs and FX pairs; writes to data/*.csv",
+      "decision": "REJECT",
+      "reason": "Real data download involves network calls, which are explicitly forbidden in our pure TypeScript audit functions. All our P38-P54 functions are network-free. Adopting a download convention would introduce real execution and non-determinism.",
+      "guardrails": [
+        "No network call in any onlineValidation/ function",
+        "No yfinance / Yahoo Finance dependency",
+        "Data is always provided as input parameter, never fetched internally"
+      ]
+    }
+  ],
+  "forbiddenSemantics": [
+    "buy",
+    "sell",
+    "hold",
+    "action",
+    "portfolio",
+    "PnL",
+    "ROI",
+    "winRate",
+    "benchmark",
+    "targetPrice",
+    "optimizer",
+    "realBacktest",
+    "automatedTrading",
+    "costBasis",
+    "FIFO",
+    "NAV",
+    "alphaScore",
+    "recommendation",
+    "prediction",
+    "signal",
+    "outcomePrice",
+    "returnPct",
+    "profit",
+    "expectedReturn",
+    "optimizerScore",
+    "edgeScore"
+  ],
+  "adoptionSummary": {
+    "ADOPT": 4,
+    "DEFER": 2,
+    "REJECT": 6,
+    "NEEDS_FURTHER_EVIDENCE": 0
+  },
+  "localApplicationSummary": {
+    "immediateActions": [
+      "Formalize naming convention: all Axis A/B audit artifacts use <type>_<fixedTimestamp>.json key pattern (documentation only, no src/ change in P55)",
+      "Confirm that all existing P52/P53/P54 artifacts comply with golden_fixture_pattern (fixedGeneratedAt/fixedDiffedAt) — CONFIRMED: compliant",
+      "Confirm that all existing P52/P53/P54 artifacts comply with assumption_documentation_pattern (governance flags + disclaimer) — CONFIRMED: compliant"
+    ],
+    "futureActions": [
+      "Design audit_artifact_render_spec schema (analogous to report_spec.json) when Axis A audit artifacts need human-readable rendering — no trading fields allowed",
+      "Adopt mode-keyed artifact naming when Axis A v1 real-data integration (CEO P4) introduces date-bound snapshots",
+      "Revisit status/config workflow pattern when orchestrator execution layer matures (post-P4 gate)"
+    ],
+    "noChangesRequired": "P55 is design-only. All ADOPT decisions either confirm existing practices or define future documentation conventions. No src/ files modified."
+  },
+  "nextRecommendedPhase": "P56_AXIS_A_V1_REAL_DATA_INTEGRATION_DESIGN",
+  "nextRecommendedPhaseRationale": "CEO Decision P4 = Axis A v1 real-data integration design. After P52 (Axis A v0 diff closure) + P53/P54 (Axis B catch-up) + P55 (design-only pattern adoption plan), the roadmap priority is connecting the v0 chain to actual Taiwan stock source data (Quote/MonthlyRevenue/Regime) in a PIT-safe, no-scoring, design-first manner."
+}
