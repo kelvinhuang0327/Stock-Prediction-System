@@ -84,3 +84,11 @@ export {
 } from "./SnapshotExportSerializer";
 
 export type { SnapshotExportSerializedEnvelope } from "./SnapshotExportSerializer";
+
+// ─── Export Diff (P52) ───────────────────────────────────────────────────────
+export {
+  SNAPSHOT_EXPORT_DIFF_VERSION,
+  diffSnapshotLogExports,
+} from "./SnapshotExportDiff";
+
+export type { SnapshotExportDiffReport } from "./SnapshotExportDiff";
