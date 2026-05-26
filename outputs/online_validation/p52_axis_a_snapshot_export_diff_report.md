@@ -177,13 +177,28 @@ From P53 onward, no further Axis A v0-chain stage is permitted until Axis B has 
 
 | Commit | Description |
 |--------|-------------|
-| *(pending)* | `feat: add Axis A research snapshot export diff` |
+| `e94251f` | `feat: add Axis A research snapshot export diff` |
 | *(pending)* | `docs: finalize P52 report with CI run results` |
-
-*(To be updated after CI green.)*
 
 ---
 
 ## CI Results
 
-*(To be appended after push and CI completion.)*
+**Run**: `26427950516`  
+**Conclusion**: ✅ **success** (1m54s)  
+**Triggered by**: push `e94251f` → `main`  
+**Run timestamp**: 2026-05-26T01:58:29Z
+
+| Check | Tests | Conclusion |
+|-------|-------|-----------|
+| Dirty-File Bleed-Through Guard | — | ✅ success |
+| onlineValidation | 4846/4846 | ✅ success |
+| research + simulation | 275/275 | ✅ success |
+
+All 3 required checks green.
+
+---
+
+## Final Classification
+
+**`P52_AXIS_A_SNAPSHOT_EXPORT_DIFF_V0_COMMITTED`**
