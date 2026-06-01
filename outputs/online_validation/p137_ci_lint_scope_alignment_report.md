@@ -4,7 +4,7 @@
 - Repo: /Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System
 - Branch: main
 - Start HEAD: a66e424
-- End HEAD: 331c283
+- End HEAD: 0a23f7f
 
 ## 2) Phase 0 Actual-State Verification
 - `pwd` and `git rev-parse --show-toplevel` point to canonical repo.
@@ -74,14 +74,15 @@
 
 ## 11) Staged / Commit / Push Status
 - Staged: whitelist-only files
-- Commit: `331c283` (`ci: align lint scope to active source/tests and record p137 attribution`)
+- Commit 1: `331c283` (`ci: align lint scope to active source/tests and record p137 attribution`)
+- Commit 2: `0a23f7f` (`docs: finalize p137 post-push CI attribution`)
 - Push: completed to `origin/main`
 
 ## 12) Latest CI Result After Push
-- Latest CI run after push: `26732278171`
-- Status: `completed`
-- Conclusion: `failure`
-- Failing steps:
+- Latest CI run after final push: `26732339157`
+- Status: `in_progress`
+- Latest completed comparable run: `26732278171` (`failure`)
+- Failing steps in latest completed run:
   - `lint` -> `Run ESLint`
   - `test-node` -> `Run Jest tests`
 
@@ -99,6 +100,6 @@
 3. 仍卡住的唯一問題: CI 仍同時被 active source/test lint debt 與 test-node 失敗阻塞
 4. 修改檔案清單: see section 10
 5. staged / commit / push 狀態: done / done / done
-6. CI 結果: run `26732278171` failed（lint + test-node）
+6. CI 結果: latest run `26732339157` in progress; latest completed run `26732278171` failed（lint + test-node）
 7. 是否允許進入下一輪 P2 browser review: 否
 8. Final Classification: `P137_CI_LINT_SCOPE_ALIGNED_CI_STILL_RED_MIXED_ATTRIBUTION`

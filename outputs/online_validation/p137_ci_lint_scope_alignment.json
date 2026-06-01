@@ -5,7 +5,7 @@
   "repo": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System",
   "branch": "main",
   "startHead": "a66e424",
-  "endHead": "331c283",
+  "endHead": "0a23f7f",
   "phase0": {
     "repoVerified": true,
     "branchVerified": true,
@@ -83,10 +83,10 @@
   },
   "filesChangedWhitelistOnly": true,
   "postPushCi": {
-    "runId": 26732278171,
-    "url": "https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26732278171",
-    "status": "completed",
-    "conclusion": "failure",
+    "runId": 26732339157,
+    "url": "https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26732339157",
+    "status": "in_progress",
+    "conclusion": "",
     "failingSteps": [
       {
         "job": "lint",
@@ -101,7 +101,23 @@
       "src/lib/jobs/__tests__/JobAlertService.test.ts:8 prisma.jobAlert.deleteMany undefined",
       "src/lib/jobs/__tests__/RecommendationLifecycleService.test.ts:24 prisma.recommendationHistory.deleteMany undefined",
       "src/lib/jobs/__tests__/autonomousJobRegistry.twQ1FinancialIngestCheck.test.ts:17 registry entry undefined"
-    ]
+    ],
+    "latestCompletedComparableRun": {
+      "runId": 26732278171,
+      "url": "https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26732278171",
+      "status": "completed",
+      "conclusion": "failure",
+      "failingSteps": [
+        {
+          "job": "lint",
+          "step": "Run ESLint"
+        },
+        {
+          "job": "test-node",
+          "step": "Run Jest tests"
+        }
+      ]
+    }
   },
   "p2BrowserReviewAllowed": false,
   "finalClassification": "P137_CI_LINT_SCOPE_ALIGNED_CI_STILL_RED_MIXED_ATTRIBUTION"
