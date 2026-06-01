@@ -14,11 +14,18 @@
     "p139ArtifactsVerified": true
   },
   "latestCi": {
-    "latestRunId": 26732985353,
-    "latestRunHeadSha": "2346b1e63e939b5fde5a3cff6900a094523ed1f9",
+    "latestRunId": 26732997013,
+    "latestRunHeadSha": "bd2aa016d2270e1cfb163a4c35de7d2842c11932",
     "latestRunStatus": "queued",
     "latestRunConclusion": "",
-    "latestRunUrl": "https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26732985353",
+    "latestRunUrl": "https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26732997013",
+    "previousPostPushRun": {
+      "runId": 26732985353,
+      "headSha": "2346b1e63e939b5fde5a3cff6900a094523ed1f9",
+      "status": "in_progress",
+      "conclusion": "",
+      "url": "https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26732985353"
+    },
     "latestCompletedComparableRun": {
       "runId": 26732793845,
       "headSha": "7fc086c90ef63f03b9884610d1732f6d8fdd4777",
