@@ -4,7 +4,7 @@
   "repo": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System",
   "branch": "main",
   "startHead": "87562d8",
-  "endHeadPreCommit": "87562d8",
+  "endHeadAfterCommit": "ee05af3",
   "phase0": {
     "canonicalRepoVerified": true,
     "canonicalBranchVerified": true,
@@ -166,12 +166,34 @@
     "prisma/dev.db-wal"
   ],
   "gitOps": {
-    "staged": "pending",
-    "committed": "pending",
-    "pushed": "pending"
+    "staged": "completed_whitelist_only",
+    "committed": {
+      "status": "completed",
+      "sha": "ee05af3edaa92d1ef746e8cf920ae98b28b632b0",
+      "message": "P144: restore JobAlert and RecommendationHistory Prisma delegates"
+    },
+    "pushed": {
+      "status": "completed",
+      "remote": "origin/main"
+    }
   },
   "postPushCi": {
-    "status": "not_applicable_yet"
+    "latestRun": {
+      "runId": 26734484843,
+      "headSha": "ee05af3edaa92d1ef746e8cf920ae98b28b632b0",
+      "status": "queued",
+      "conclusion": null,
+      "url": "https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26734484843"
+    },
+    "latestCompletedComparableRun": {
+      "runId": 26733948909,
+      "status": "completed",
+      "conclusion": "failure",
+      "failingSteps": [
+        "lint/Run ESLint",
+        "test-node/Run Jest tests"
+      ]
+    }
   },
   "p2BrowserReviewAllowed": false,
   "remainingCiClusters": [
@@ -200,8 +222,8 @@
       "eslintSrcTests": "FAIL"
     },
     "singleBlockingIssue": "ci_still_red_due_to_non_delegate_clusters_after_delegate_repair",
-    "stagedCommitPush": "pending",
-    "ciResult": "latest completed comparable run 26733948909 failure",
+    "stagedCommitPush": "completed",
+    "ciResult": "latest post-push run 26734484843 queued; latest completed comparable run 26733948909 failure",
     "p2Allowed": false,
     "finalClassification": "P144_SCHEMA_DB_DELEGATES_REPAIRED_CI_STILL_RED_ACTIVE_LINT_OR_OTHER_CLUSTERS"
   }

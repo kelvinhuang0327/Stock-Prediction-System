@@ -4,7 +4,7 @@
 - Repo: /Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System
 - Branch: main
 - Start HEAD: 87562d8
-- End HEAD (pre-commit): 87562d8
+- End HEAD (after P144 commit): ee05af3
 
 ## 2) Phase 0 actual-state verification
 - `pwd` and `git rev-parse --show-toplevel` matched canonical repo.
@@ -110,13 +110,21 @@ Not staged despite local mutation:
 - `prisma/dev.db-wal`
 
 ## 11) staged / commit / push status
-- Staged: pending at report generation time
-- Commit: pending at report generation time
-- Push: pending at report generation time
+- Staged: completed (whitelist only)
+- Commit: completed
+  - SHA: `ee05af3edaa92d1ef746e8cf920ae98b28b632b0`
+  - Message: `P144: restore JobAlert and RecommendationHistory Prisma delegates`
+- Push: completed to `origin/main`
 
 ## 12) Latest CI result after push
-- Not applicable yet (no P144 push at report generation time).
-- Latest completed comparable run remains `26733948909` (failure).
+- Post-push latest CI run:
+  - Run ID: `26734484843`
+  - Head: `ee05af3edaa92d1ef746e8cf920ae98b28b632b0`
+  - Status: `queued` (not completed at capture time)
+  - URL: https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26734484843
+- Latest completed comparable run remains `26733948909` (failure) with failing steps:
+  - `lint` -> `Run ESLint`
+  - `test-node` -> `Run Jest tests`
 
 ## 13) Remaining CI clusters
 - `lint` / `Run ESLint` still red.
@@ -163,9 +171,11 @@ Not staged despite local mutation:
 - `outputs/online_validation/p144_schema_db_job_alert_recommendation_history.json`
 
 5. staged / commit / push 狀態
-- pending
+- staged/commit/push 完成
+- commit: `ee05af3edaa92d1ef746e8cf920ae98b28b632b0`
 
 6. CI 結果
+- latest post-push run `26734484843`: queued (尚未完成)
 - latest completed comparable run `26733948909`: failure
 
 7. 是否允許進入下一輪 P2 browser review
