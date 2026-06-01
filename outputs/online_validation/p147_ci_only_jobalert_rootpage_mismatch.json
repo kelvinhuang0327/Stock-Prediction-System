@@ -4,7 +4,7 @@
   "repo": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System",
   "branch": "main",
   "startHead": "2fc6588",
-  "endHeadBeforeCommit": "2fc6588",
+  "endHeadAfterCommit": "6e1d833",
   "previousClassification": "P146_BLOCKED_BY_SCHEMA_DEVDB_AMBIGUITY",
   "scope": {
     "mode": "ci_only_evidence",
@@ -171,6 +171,32 @@
     "prisma/schema.prisma",
     "prisma/migrations/20260601040000_p144_add_job_alert_and_recommendation_history/migration.sql"
   ],
+  "gitOps": {
+    "staged": "completed_whitelist_only",
+    "committed": {
+      "status": "completed",
+      "sha": "6e1d833e0e157828a403566e570e9fd617d802cf",
+      "message": "P147: CI-only JobAlert rootpage mismatch evidence and isolation"
+    },
+    "pushed": {
+      "status": "completed",
+      "remote": "origin/main"
+    }
+  },
+  "postPushCi": {
+    "latestRun": {
+      "runId": 26739314775,
+      "headSha": "6e1d833e0e157828a403566e570e9fd617d802cf",
+      "status": "in_progress",
+      "conclusion": null,
+      "url": "https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26739314775"
+    },
+    "latestCompletedAttributionRun": {
+      "runId": 26739064464,
+      "status": "completed",
+      "conclusion": "failure"
+    }
+  },
   "p2BrowserReviewAllowed": false,
   "finalClassification": "P147_RECOMMEND_CI_DB_PREPARATION_ALIGNMENT_LANE",
   "next24hPromptP148": "CI DB Preparation Alignment lane only: add deterministic DB artifact source/path checks and pre-test sqlite integrity/rootpage instrumentation in CI jobs, then compare before/after rootpage signature without touching product behavior lanes.",
@@ -187,8 +213,8 @@
       "outputs/online_validation/p147_ci_only_jobalert_rootpage_mismatch_report.md",
       "outputs/online_validation/p147_ci_only_jobalert_rootpage_mismatch.json"
     ],
-    "stagedCommitPushStatus": "pending",
-    "ciResult": "latest completed attribution run 26739064464 failure",
+    "stagedCommitPushStatus": "completed",
+    "ciResult": "latest completed attribution run 26739064464 failure; latest post-push run 26739314775 in_progress",
     "p2Allowed": false,
     "finalClassification": "P147_RECOMMEND_CI_DB_PREPARATION_ALIGNMENT_LANE"
   }

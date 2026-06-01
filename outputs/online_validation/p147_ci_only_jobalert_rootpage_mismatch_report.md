@@ -4,7 +4,7 @@
 - Repo: /Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System
 - Branch: main
 - Start HEAD: 2fc6588
-- End HEAD (before P147 commit): 2fc6588
+- End HEAD (after P147 commit): 6e1d833
 
 ## 2) Lane objective / strict scope
 Objective:
@@ -235,10 +235,14 @@ Exit condition:
 - `outputs/online_validation/p147_ci_only_jobalert_rootpage_mismatch.json`
 
 5. staged / commit / push 狀態
-- Pending (to be performed after artifact creation validation)
+- completed
+- commit: `6e1d833e0e157828a403566e570e9fd617d802cf`
+- message: `P147: CI-only JobAlert rootpage mismatch evidence and isolation`
+- push: `origin/main`
 
 6. CI 結果
 - Latest completed attribution run: `26739064464` => failure
+- Latest post-push run: `26739314775` => in_progress
 
 7. 是否允許進入下一輪 P2 browser review
 - 否
