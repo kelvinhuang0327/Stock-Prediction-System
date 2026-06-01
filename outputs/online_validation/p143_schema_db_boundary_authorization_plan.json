@@ -1,0 +1,238 @@
+{
+  "taskId": "P143",
+  "title": "Schema/DB Boundary Authorization Plan for Prisma deleteMany Family",
+  "repo": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System",
+  "branch": "main",
+  "startHead": "e706c08",
+  "endHead": "e706c08",
+  "phase0": {
+    "canonicalRepoVerified": true,
+    "canonicalBranchVerified": true,
+    "headExpectation": "e706c08 or fast-forward descendant",
+    "headActual": "e706c08",
+    "headVerified": true,
+    "unrelatedDirtyStatePresent": true,
+    "unrelatedDirtyHandling": "classified_and_not_staged"
+  },
+  "p142ArtifactCheck": {
+    "reportExists": true,
+    "jsonExists": true,
+    "contentConsistency": "consistent_with_prompt_expectations"
+  },
+  "latestCi": {
+    "runId": 26733662341,
+    "headSha": "e706c080410c15c34b7a6db16ba4a50159dcd921",
+    "status": "completed",
+    "conclusion": "failure",
+    "url": "https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26733662341",
+    "failingSteps": [
+      { "job": "lint", "step": "Run ESLint" },
+      { "job": "test-node", "step": "Run Jest tests" }
+    ]
+  },
+  "p142AssumptionsVsObservation": {
+    "assumption": "schema_db lane is next priority and twQ1 lane removed",
+    "observation": "latest completed CI confirms deleteMany family persists and twQ1 suites remain pass"
+  },
+  "prismaDeleteManyFamilyMatrix": [
+    {
+      "failingFile": "src/lib/jobs/__tests__/AutonomousAlertService.test.ts",
+      "failingTest": "returns empty alerts when all jobs are healthy",
+      "prismaDelegate": "jobAlert",
+      "prismaModel": "JobAlert",
+      "schemaModelExists": false,
+      "productionUsageExists": true,
+      "testOnlyMockSetupCandidate": false,
+      "boundaryClass": "NEEDS_SCHEMA_DB_AUTHORIZATION",
+      "recommendedNextAction": "authorize schema/db lane for JobAlert model + db alignment"
+    },
+    {
+      "failingFile": "src/lib/jobs/__tests__/JobAlertHistoryService.test.ts",
+      "failingTest": "summarizes active, resolved, reoccur and noisy alerts",
+      "prismaDelegate": "jobAlert",
+      "prismaModel": "JobAlert",
+      "schemaModelExists": false,
+      "productionUsageExists": true,
+      "testOnlyMockSetupCandidate": false,
+      "boundaryClass": "NEEDS_SCHEMA_DB_AUTHORIZATION",
+      "recommendedNextAction": "same schema/db lane for shared delegate"
+    },
+    {
+      "failingFile": "src/lib/jobs/__tests__/JobAlertService.test.ts",
+      "failingTest": "persists a new active alert and keeps occurrence count stable on same observation",
+      "prismaDelegate": "jobAlert",
+      "prismaModel": "JobAlert",
+      "schemaModelExists": false,
+      "productionUsageExists": true,
+      "testOnlyMockSetupCandidate": false,
+      "boundaryClass": "NEEDS_SCHEMA_DB_AUTHORIZATION",
+      "recommendedNextAction": "same schema/db lane for shared delegate"
+    },
+    {
+      "failingFile": "src/lib/jobs/__tests__/RecommendationTrendService.test.ts",
+      "failingTest": "suite-level cleanup phase using recommendationHistory.deleteMany",
+      "prismaDelegate": "recommendationHistory",
+      "prismaModel": "RecommendationHistory",
+      "schemaModelExists": false,
+      "productionUsageExists": true,
+      "testOnlyMockSetupCandidate": false,
+      "boundaryClass": "NEEDS_SCHEMA_DB_AUTHORIZATION",
+      "recommendedNextAction": "authorize schema/db lane for RecommendationHistory model + db alignment"
+    },
+    {
+      "failingFile": "src/lib/jobs/__tests__/RecommendationHistoryService.test.ts",
+      "failingTest": "persists recommendations and increments occurrence count on a new day",
+      "prismaDelegate": "recommendationHistory",
+      "prismaModel": "RecommendationHistory",
+      "schemaModelExists": false,
+      "productionUsageExists": true,
+      "testOnlyMockSetupCandidate": false,
+      "boundaryClass": "NEEDS_SCHEMA_DB_AUTHORIZATION",
+      "recommendedNextAction": "same schema/db lane for shared delegate"
+    },
+    {
+      "failingFile": "src/lib/jobs/__tests__/RecommendationLifecycleService.test.ts",
+      "failingTest": "tracks resolved and reoccur lifecycle counts for a recommendation",
+      "prismaDelegate": "recommendationHistory",
+      "prismaModel": "RecommendationHistory",
+      "schemaModelExists": false,
+      "productionUsageExists": true,
+      "testOnlyMockSetupCandidate": false,
+      "boundaryClass": "NEEDS_SCHEMA_DB_AUTHORIZATION",
+      "recommendedNextAction": "same schema/db lane for shared delegate"
+    },
+    {
+      "failingFile": "src/lib/jobs/__tests__/autonomousJobRegistry.twQ1FinancialIngestCheck.test.ts",
+      "failingTest": "n/a in latest CI (suite passes)",
+      "prismaDelegate": "n/a",
+      "prismaModel": "n/a",
+      "schemaModelExists": null,
+      "productionUsageExists": null,
+      "testOnlyMockSetupCandidate": null,
+      "boundaryClass": "OBSOLETE_AFTER_LATEST_CI",
+      "recommendedNextAction": "no action in schema/db lane"
+    },
+    {
+      "failingFile": "src/lib/jobs/__tests__/autonomousJobRunners.twQ1FinancialIngestCheck.test.ts",
+      "failingTest": "n/a in latest CI (suite passes)",
+      "prismaDelegate": "n/a",
+      "prismaModel": "n/a",
+      "schemaModelExists": null,
+      "productionUsageExists": null,
+      "testOnlyMockSetupCandidate": null,
+      "boundaryClass": "OBSOLETE_AFTER_LATEST_CI",
+      "recommendedNextAction": "no action in schema/db lane"
+    }
+  ],
+  "schemaEvidence": {
+    "presentModels": ["FinancialReport", "NotificationDeliveryLog", "JobRunLog"],
+    "missingModels": ["JobAlert", "RecommendationHistory", "SystemSetting"],
+    "source": "prisma/schema.prisma"
+  },
+  "dbTableEvidence": {
+    "sqliteTablesFound": ["FinancialReport", "JobRunLog"],
+    "sqliteTablesMissing": ["JobAlert", "RecommendationHistory", "SystemSetting"],
+    "source": "sqlite3 prisma/dev.db .tables"
+  },
+  "productionUsageEvidence": {
+    "jobAlertUsageFiles": [
+      "src/lib/jobs/JobAlertService.ts",
+      "src/lib/jobs/PolicyAuditTrailService.ts",
+      "src/lib/jobs/PolicyAuditChartService.ts"
+    ],
+    "recommendationHistoryUsageFiles": [
+      "src/lib/jobs/RecommendationHistoryService.ts",
+      "src/lib/jobs/PolicyAuditTrailService.ts",
+      "src/lib/jobs/PolicyAuditChartService.ts"
+    ],
+    "systemSettingUsageFiles": [
+      "src/lib/jobs/AutonomousAlertPolicyStore.ts"
+    ],
+    "notes": "systemSetting usage is optional-chained and currently not part of deleteMany failure family"
+  },
+  "localTargetedReproduction": [
+    {
+      "command": "DATABASE_URL=file:./dev.db npx jest src/lib/jobs/__tests__/JobAlertService.test.ts --no-coverage",
+      "result": "fail",
+      "signature": "TypeError: Cannot read properties of undefined (reading 'deleteMany') at prisma.jobAlert.deleteMany"
+    },
+    {
+      "command": "DATABASE_URL=file:./dev.db npx jest src/lib/jobs/__tests__/RecommendationHistoryService.test.ts --no-coverage",
+      "result": "fail",
+      "signature": "TypeError: Cannot read properties of undefined (reading 'deleteMany') at prisma.recommendationHistory.deleteMany"
+    },
+    {
+      "command": "DATABASE_URL=file:./dev.db npx jest src/lib/jobs/__tests__/RecommendationLifecycleService.test.ts --no-coverage",
+      "result": "fail",
+      "signature": "TypeError: Cannot read properties of undefined (reading 'deleteMany') at prisma.recommendationHistory.deleteMany"
+    }
+  ],
+  "lintStatus": {
+    "source": "carry_forward_from_p142",
+    "totals": { "total": 696, "errors": 368, "warnings": 328 }
+  },
+  "singleNextLaneRecommendation": {
+    "lane": "schema_db_authorization_implementation",
+    "reason": [
+      "latest completed CI still shows repeated deleteMany undefined signatures",
+      "failing delegates correspond to missing schema models",
+      "delegates are used by production services, not only tests"
+    ]
+  },
+  "rejectedLanes": [
+    {
+      "lane": "test_only_prisma_mock_setup",
+      "reason": "would mask production delegate absence and not resolve runtime-path risk"
+    },
+    {
+      "lane": "product_behavior",
+      "reason": "current blocker is schema/delegate availability, not behavior decision"
+    },
+    {
+      "lane": "active_lint_tranche",
+      "reason": "parallel blocker but does not unblock deleteMany family"
+    },
+    {
+      "lane": "p2_browser_review",
+      "reason": "latest CI not green and no waiver"
+    }
+  ],
+  "requiredAuthorizationPhrase": "I AUTHORIZE P144 SCHEMA_DB LANE TO ADD PRISMA MODELS AND REQUIRED DB CHANGES FOR JobAlert AND RecommendationHistory (AND DEPENDENT INDEX/CONSTRAINT WORK), WITH STRICT BOUNDARY: NO PRODUCT-BEHAVIOR CHANGES, NO LINT-TRANCHE WORK, NO BROWSER REVIEW.",
+  "codeModified": false,
+  "filesChanged": [
+    "outputs/online_validation/p143_schema_db_boundary_authorization_plan_report.md",
+    "outputs/online_validation/p143_schema_db_boundary_authorization_plan.json"
+  ],
+  "gitOps": {
+    "staged": "pending",
+    "committed": "pending",
+    "pushed": "pending"
+  },
+  "postPushCi": {
+    "status": "not_applicable_yet"
+  },
+  "p2BrowserReviewAllowed": false,
+  "finalClassification": "P143_SCHEMA_DB_AUTHORIZATION_REQUIRED",
+  "next24hPromptP144": "[P144 Single-Lane Prompt] — Schema/DB Authorization Implementation for JobAlert + RecommendationHistory\\n\\nContext:\\n- Repo: /Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System\\n- Branch: main\\n- Baseline: latest main after P143 artifact commit\\n- Previous classification: P143_SCHEMA_DB_AUTHORIZATION_REQUIRED\\n\\nGoal:\\n- Execute authorized schema/db lane to restore Prisma delegates required by failing suites: JobAlert and RecommendationHistory.\\n- Keep strict boundary: do not fix lint tranche, UI/product behavior, notification behavior, or llm audit behavior in this lane.\\n\\nRequired:\\n1. Confirm latest completed CI failing suites still include deleteMany signatures for prisma.jobAlert / prisma.recommendationHistory.\\n2. Add/align Prisma schema models for JobAlert and RecommendationHistory and required DB changes.\\n3. Regenerate/apply required Prisma client/schema artifacts per repo conventions.\\n4. Run targeted suites: AutonomousAlertService, JobAlertService, JobAlertHistoryService, RecommendationHistoryService, RecommendationLifecycleService, RecommendationTrendService.\\n5. Produce artifacts: outputs/online_validation/p144_schema_db_lane_execution_report.md and outputs/online_validation/p144_schema_db_lane_execution.json.\\n6. Keep P2 browser review blocked unless CI becomes green or explicit waiver is provided.",
+  "requiredCompletionCheck": {
+    "completed": true,
+    "tests": {
+      "JobAlertService": "FAIL",
+      "RecommendationHistoryService": "FAIL",
+      "RecommendationLifecycleService": "FAIL"
+    },
+    "singleBlockingIssue": "missing Prisma delegates/models for JobAlert and RecommendationHistory in schema/db path",
+    "modifiedFiles": [
+      "outputs/online_validation/p143_schema_db_boundary_authorization_plan_report.md",
+      "outputs/online_validation/p143_schema_db_boundary_authorization_plan.json"
+    ],
+    "gitStatus": {
+      "staged": "pending",
+      "commit": "pending",
+      "push": "pending"
+    },
+    "ciResult": "latest completed run 26733662341 failure (lint + test-node)",
+    "p2Allowed": false,
+    "finalClassification": "P143_SCHEMA_DB_AUTHORIZATION_REQUIRED"
+  }
+}
