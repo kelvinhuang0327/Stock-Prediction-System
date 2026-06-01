@@ -487,6 +487,51 @@ model JobRunLog {
   @@index([jobName, startedAt])
 }
 
+model JobAlert {
+  id                Int      @id @default(autoincrement())
+  jobName           String
+  severity          String
+  message           String
+  alertKey          String   @unique
+  status            String
+  firstDetectedAt   DateTime
+  lastDetectedAt    DateTime
+  resolvedAt        DateTime?
+  occurrenceCount   Int      @default(1)
+  latestJobRunLogId Int?
+  metadata          String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@index([jobName, status])
+  @@index([status, lastDetectedAt])
+  @@index([latestJobRunLogId])
+}
+
+model RecommendationHistory {
+  id                 Int      @id @default(autoincrement())
+  recommendationKey  String   @unique
+  recommendationType String
+  targetJob          String
+  targetFamily       String?
+  severity           String
+  rationale          String
+  suggestedAction    String
+  confidence         Float
+  status             String
+  firstDetectedAt    DateTime
+  lastDetectedAt     DateTime
+  resolvedAt         DateTime?
+  occurrenceCount    Int      @default(1)
+  metadata           String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  @@index([targetJob, status])
+  @@index([recommendationType, status])
+  @@index([status, lastDetectedAt])
+}
+
 model AutonomousResearchSnapshot {
   id              Int      @id @default(autoincrement())
   snapshotDate    String   @unique
