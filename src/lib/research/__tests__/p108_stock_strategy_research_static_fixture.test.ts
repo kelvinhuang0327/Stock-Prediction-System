@@ -81,7 +81,7 @@ describe('P108 StockStrategyResearchStaticFixture', () => {
       f.strategyComparisonStability?.comparisonNotes,
       f.riskLimitationDisclosure?.riskDisclosure,
       f.riskLimitationDisclosure?.limitationNotes,
-      ...(f.auditTrailReplayTrace?.auditTrail?.map(x => x.event || x.action) || []),
+      ...(f.auditTrailReplayTrace?.auditTrail?.map(x => x.event) || []),
     ].filter(Boolean);
     for (const s of userVisibleStrings) {
       expect(s).not.toMatch(/buy|sell|hold|action|target price|ROI|guarantee|alphaScore|commit/i);

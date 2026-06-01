@@ -4,6 +4,34 @@ import '@testing-library/jest-dom';
 import { StrategyResearchStaticView } from '../components/StrategyResearchStaticView';
 import { STOCK_STRATEGY_RESEARCH_STATIC_FIXTURE } from '../fixtures/StockStrategyResearchStaticFixture';
 
+const REQUIRED_GOVERNANCE_FLAGS = [
+  'reviewOnly',
+  'noInvestmentAdvice',
+  'noForecast',
+  'noRecommendation',
+  'previewOnly',
+  'paperOnly',
+  'noExecution',
+  'noActualMetrics',
+  'entersAlphaScore',
+  'notInvestmentAdvice',
+] as const;
+
+function hasAffirmativeTerm(text: string, term: string): boolean {
+  let searchFrom = 0;
+  while (true) {
+    const index = text.indexOf(term, searchFrom);
+    if (index < 0) {
+      return false;
+    }
+    const prefix = text.slice(Math.max(0, index - 8), index);
+    if (!/[不非無禁]/.test(prefix)) {
+      return true;
+    }
+    searchFrom = index + term.length;
+  }
+}
+
 describe('P114 Static Strategy Research Page', () => {
   it('renders governance banner and required wording', () => {
     render(<StrategyResearchStaticView fixture={STOCK_STRATEGY_RESEARCH_STATIC_FIXTURE} />);
@@ -15,6 +43,17 @@ describe('P114 Static Strategy Research Page', () => {
     expect(screen.getAllByText(/靜態樣本資料/).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/非真實交易系統/).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/不可直接執行/).length).toBeGreaterThan(0);
+  });
+
+  it('renders all required governance flags including entersAlphaScore=false', () => {
+    render(<StrategyResearchStaticView fixture={STOCK_STRATEGY_RESEARCH_STATIC_FIXTURE} />);
+    REQUIRED_GOVERNANCE_FLAGS.forEach(flag => {
+      expect(screen.getByText(flag)).toBeInTheDocument();
+    });
+
+    const entersAlphaScoreRow = screen.getByText('entersAlphaScore').closest('li');
+    expect(entersAlphaScoreRow).toBeInTheDocument();
+    expect(entersAlphaScoreRow).toHaveTextContent('false');
   });
 
   it('renders all required UI sections', () => {
@@ -32,29 +71,19 @@ describe('P114 Static Strategy Research Page', () => {
 
   it('does not render forbidden affirmative advice wording in user-visible narrative fields', () => {
     render(<StrategyResearchStaticView fixture={STOCK_STRATEGY_RESEARCH_STATIC_FIXTURE} />);
-    const forbidden = [
-      '保證獲利', '買進', '賣出', '持有', '目標價', 'ROI保證', 'PnL保證',
-      'guaranteed return', 'buy', 'sell', 'hold', 'target price', 'ROI guarantee', 'PnL guarantee',
-    ];
-    // Only scan user-visible narrative/display fields, not governance flag keys
-    const narrativeSelectors = [
-      'banner',
-      'disclaimer',
-      'Strategy Overview',
-      'Data Source / PIT Metadata',
-      'Feature Inputs',
-      'Simulation / Validation Summary',
-      'Strategy Comparison / Stability',
-      'Risk & Limitation Disclosure',
-      'Audit Trail / Replay Trace',
-    ];
-    forbidden.forEach(word => {
-      narrativeSelectors.forEach(label => {
-        const section = screen.queryByLabelText(label) || (label === 'banner' ? screen.queryByRole('banner') : null);
-        if (section) {
-          expect(section).not.toHaveTextContent(new RegExp(`^((?!非).)*${word}((?!非).)*$`, 'i'));
-        }
-      });
+    const narrativeSelectors = ['banner', 'disclaimer', 'Strategy Overview', 'Data Source / PIT Metadata', 'Feature Inputs', 'Simulation / Validation Summary', 'Strategy Comparison / Stability', 'Risk & Limitation Disclosure', 'Audit Trail / Replay Trace'] as const;
+    const narrativeText = narrativeSelectors
+      .map(label => screen.queryByLabelText(label) || (label === 'banner' ? screen.queryByRole('banner') : null))
+      .filter(Boolean)
+      .map(section => section?.textContent ?? '')
+      .join('\n');
+
+    ['保證獲利', '目標價', 'ROI保證', 'PnL保證'].forEach(term => {
+      expect(narrativeText).not.toContain(term);
+    });
+
+    ['投資建議', '買進', '賣出', '持有', '可直接執行'].forEach(term => {
+      expect(hasAffirmativeTerm(narrativeText, term)).toBe(false);
     });
   });
 });

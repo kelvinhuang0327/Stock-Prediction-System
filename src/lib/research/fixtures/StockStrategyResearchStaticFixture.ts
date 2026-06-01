@@ -84,3 +84,7 @@ export const STOCK_STRATEGY_RESEARCH_STATIC_FIXTURE = {
       simulationBackedBeforeDisplay: true
     }
 } as const;
+
+export type StockStrategyResearchStaticFixture = typeof STOCK_STRATEGY_RESEARCH_STATIC_FIXTURE;
+export type StockStrategyResearchAuditTrailEntry =
+  StockStrategyResearchStaticFixture['auditTrailReplayTrace']['auditTrail'][number];

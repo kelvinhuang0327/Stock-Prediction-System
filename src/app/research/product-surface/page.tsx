@@ -33,57 +33,8 @@
  * reviewOnly = true. noForecast = true. entersAlphaScore = false. ALWAYS.
  */
 
-// ─── Inline response type (mirrors P81 shape — no runtime import from P81) ───
-
-type ProductSurfaceGovernanceFlags = {
-  reviewOnly: boolean;
-  noInvestmentAdvice: boolean;
-  noForecast: boolean;
-  noRecommendation: boolean;
-  previewOnly: boolean;
-  paperOnly: boolean;
-  noExecution: boolean;
-  noActualMetrics: boolean;
-  entersAlphaScore: boolean;
-  notInvestmentAdvice: boolean;
-};
-
-type ProductSurfaceMetadata = {
-  artifactTitle: string;
-  artifactVersion: string;
-  researchCardCount: number;
-  simulationAuditCardCount: number;
-};
-
-type ProductSurfaceResponse = {
-  status: string;
-  version: string;
-  generatedAt: string;
-  fileName: string;
-  mimeType: string;
-  contentBody: string;
-  metadata: ProductSurfaceMetadata;
-  governanceFlags: ProductSurfaceGovernanceFlags;
-};
-
-// ─── Governance flag display order ────────────────────────────────────────────
-
-const GOVERNANCE_FLAG_KEYS: ReadonlyArray<keyof ProductSurfaceGovernanceFlags> = [
-  "reviewOnly",
-  "noInvestmentAdvice",
-  "noForecast",
-  "noRecommendation",
-  "previewOnly",
-  "paperOnly",
-  "noExecution",
-  "noActualMetrics",
-  "entersAlphaScore",
-  "notInvestmentAdvice",
-] as const;
-
-// ─── Page ─────────────────────────────────────────────────────────────────────
-
 import { StrategyResearchStaticView } from "../../../lib/research/components/StrategyResearchStaticView";
+import { STOCK_STRATEGY_RESEARCH_STATIC_FIXTURE } from "../../../lib/research/fixtures/StockStrategyResearchStaticFixture";
 
 export default function ProductSurfacePage() {
   return <StrategyResearchStaticView fixture={STOCK_STRATEGY_RESEARCH_STATIC_FIXTURE} />;
