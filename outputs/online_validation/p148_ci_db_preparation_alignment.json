@@ -1,0 +1,157 @@
+{
+  "taskId": "P148",
+  "title": "CI DB Preparation Alignment for JobAlert Rootpage Mismatch",
+  "repo": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System",
+  "branch": "main",
+  "expectedBaselineCommit": "987244b",
+  "startHead": "987244b",
+  "endHeadBeforeCommit": "987244b",
+  "previousClassification": "P147_RECOMMEND_CI_DB_PREPARATION_ALIGNMENT_LANE",
+  "scope": {
+    "lane": "ci_db_preparation_alignment_only",
+    "allowedFiles": [
+      ".github/workflows/ci.yml",
+      "outputs/online_validation/p148_ci_db_preparation_alignment_report.md",
+      "outputs/online_validation/p148_ci_db_preparation_alignment.json"
+    ],
+    "forbiddenChanges": [
+      "source code",
+      "tests",
+      "schema",
+      "migrations",
+      "dev.db",
+      "package.json",
+      "lint debt repair",
+      "browser review"
+    ]
+  },
+  "phase0": {
+    "repoMatched": true,
+    "branchMatched": true,
+    "headMatched": true,
+    "head": "987244b",
+    "unrelatedDirtyPresent": true,
+    "unrelatedDirtyExcludedFromStaging": true,
+    "p147ArtifactsExist": true,
+    "p147ArtifactsTracked": true
+  },
+  "latestCiObservation": {
+    "latestCompletedRun": {
+      "runId": 26739339070,
+      "headSha": "987244bb2628b25e821dd5afd9fce4c6516468eb",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26739339070"
+    },
+    "failingJobs": [
+      {
+        "name": "test-node",
+        "jobId": 78799368905,
+        "failedStep": "Run Jest tests"
+      },
+      {
+        "name": "test-python",
+        "jobId": 78799368897,
+        "failedStep": "Run Python tests"
+      },
+      {
+        "name": "lint",
+        "jobId": 78799368903,
+        "failedStep": "Run ESLint"
+      }
+    ],
+    "errorSignals": [
+      "malformed database schema (JobAlert) - invalid rootpage",
+      "Invalid prisma.jobAlert.deleteMany() invocation",
+      "Invalid prisma.recommendationHistory.deleteMany() invocation",
+      "sqlite3.DatabaseError: malformed database schema (JobAlert) - invalid rootpage",
+      "696 problems (368 errors, 328 warnings)"
+    ]
+  },
+  "workflowBeforeAfter": {
+    "file": ".github/workflows/ci.yml",
+    "before": {
+      "testNodeHasDbPrep": false,
+      "testPythonHasDbPrep": false,
+      "testNodeHasPrismaGenerate": false,
+      "testNodeHasIntegrityProbe": false,
+      "testPythonHasIntegrityProbe": false,
+      "testNodeRemovesWalShm": false,
+      "testPythonRemovesWalShm": false
+    },
+    "after": {
+      "testNodeHasDbPrep": true,
+      "testPythonHasDbPrep": true,
+      "testNodeHasPrismaGenerate": true,
+      "testNodeHasDelegateProbe": true,
+      "testNodeHasIntegrityProbe": true,
+      "testPythonHasIntegrityProbe": true,
+      "testNodeRemovesWalShm": true,
+      "testPythonRemovesWalShm": true,
+      "testPythonSetsDatabaseUrl": true
+    },
+    "newSteps": {
+      "testNode": [
+        "Prepare deterministic SQLite DB state",
+        "Generate Prisma client and verify delegates"
+      ],
+      "testPython": [
+        "Prepare deterministic SQLite DB state"
+      ]
+    }
+  },
+  "localNonDestructiveEvidence": {
+    "sqliteIntegrityCheck": "ok",
+    "rootpages": {
+      "JobAlert": 13756,
+      "RecommendationHistory": 13761
+    },
+    "prismaDelegates": {
+      "jobAlert": true,
+      "recommendationHistory": true
+    }
+  },
+  "filesChanged": [
+    ".github/workflows/ci.yml",
+    "outputs/online_validation/p148_ci_db_preparation_alignment_report.md",
+    "outputs/online_validation/p148_ci_db_preparation_alignment.json"
+  ],
+  "boundaryValidation": {
+    "schemaChanged": false,
+    "migrationChanged": false,
+    "sourceChanged": false,
+    "testsChanged": false,
+    "devDbChanged": false,
+    "packageOrConfigChangedOutsideWhitelist": false
+  },
+  "gitOps": {
+    "staged": "pending",
+    "committed": "pending",
+    "pushed": "pending"
+  },
+  "postPushCi": {
+    "latestRun": "pending"
+  },
+  "p2BrowserReviewAllowed": false,
+  "finalClassification": "P148_CI_DB_PREPARATION_ALIGNED_CI_STILL_RED_ACTIVE_LINT_OR_OTHER_CLUSTERS",
+  "next24hPromptP149": "Verify post-P148 CI logs for pre-test DB integrity/rootpage evidence in test-node/test-python, confirm whether rootpage signature is removed; if not removed, isolate earliest step showing corruption and hand off to artifact-source lane without touching product behavior or lint repair.",
+  "requiredCompletionCheck": {
+    "completed": true,
+    "tests": {
+      "latestCompletedCi26739339070": "FAIL",
+      "localSqliteIntegrity": "PASS",
+      "localRootpageProbe": "PASS",
+      "localPrismaDelegateProbe": "PASS"
+    },
+    "singleBlockingIssue": "awaiting_post_push_confirmation_of_rootpage_elimination_with_active_non_db_failure_clusters",
+    "modifiedFiles": [
+      ".github/workflows/ci.yml",
+      "outputs/online_validation/p148_ci_db_preparation_alignment_report.md",
+      "outputs/online_validation/p148_ci_db_preparation_alignment.json"
+    ],
+    "stagedCommitPushStatus": "pending",
+    "ciResult": "baseline attribution run 26739339070 failure",
+    "p2Allowed": false,
+    "finalClassification": "P148_CI_DB_PREPARATION_ALIGNED_CI_STILL_RED_ACTIVE_LINT_OR_OTHER_CLUSTERS"
+  }
+}

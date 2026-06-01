@@ -37,6 +37,22 @@ jobs:
       
       - name: Install dependencies
         run: npm ci
+
+      - name: Prepare deterministic SQLite DB state
+        run: |
+          test -f prisma/dev.db
+          echo "DB_SHA256=$(shasum -a 256 prisma/dev.db | awk '{print $1}')"
+          ls -lh prisma/dev.db prisma/dev.db-wal prisma/dev.db-shm || true
+          rm -f prisma/dev.db-wal prisma/dev.db-shm
+          sqlite3 prisma/dev.db "PRAGMA integrity_check;"
+          sqlite3 prisma/dev.db "SELECT name, rootpage FROM sqlite_master WHERE type='table' AND name IN ('JobAlert','RecommendationHistory') ORDER BY name;"
+
+      - name: Generate Prisma client and verify delegates
+        run: |
+          npx prisma generate
+          node -e "const {PrismaClient}=require('@prisma/client'); const p=new PrismaClient(); console.log('delegates', Boolean(p.jobAlert), Boolean(p.recommendationHistory)); p.$disconnect();"
+        env:
+          DATABASE_URL: file:./dev.db
       
       - name: Run Jest tests
         run: npm run test:coverage
@@ -62,10 +78,21 @@ jobs:
       - name: Install Python dependencies
         run: |
           pip install pytest numpy pandas
+
+      - name: Prepare deterministic SQLite DB state
+        run: |
+          test -f prisma/dev.db
+          echo "DB_SHA256=$(shasum -a 256 prisma/dev.db | awk '{print $1}')"
+          ls -lh prisma/dev.db prisma/dev.db-wal prisma/dev.db-shm || true
+          rm -f prisma/dev.db-wal prisma/dev.db-shm
+          sqlite3 prisma/dev.db "PRAGMA integrity_check;"
+          sqlite3 prisma/dev.db "SELECT name, rootpage FROM sqlite_master WHERE type='table' AND name IN ('JobAlert','RecommendationHistory') ORDER BY name;"
       
       - name: Run Python tests
         run: |
           pytest tests/ -v --tb=short
+        env:
+          DATABASE_URL: file:./dev.db
 
   build:
     runs-on: macos-latest
