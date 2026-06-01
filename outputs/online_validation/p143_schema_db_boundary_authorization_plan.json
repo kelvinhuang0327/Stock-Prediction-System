@@ -4,7 +4,7 @@
   "repo": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System",
   "branch": "main",
   "startHead": "e706c08",
-  "endHead": "668afcf",
+  "endHead": "9b4c5ad",
   "phase0": {
     "canonicalRepoVerified": true,
     "canonicalBranchVerified": true,
@@ -205,16 +205,16 @@
   ],
   "gitOps": {
     "staged": "completed",
-    "committed": "668afcf",
+    "committed": "668afcf,9b4c5ad",
     "pushed": "completed"
   },
   "postPushCi": {
     "latestRun": {
-      "runId": 26733906449,
-      "headSha": "668afcf32417018ef7211fd5c26217d296d59c01",
-      "status": "queued",
+      "runId": 26733938337,
+      "headSha": "9b4c5ad6dd1c3a8d3e9d906f7d37e73ff8da58c3",
+      "status": "in_progress",
       "conclusion": "pending",
-      "url": "https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26733906449"
+      "url": "https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26733938337"
     },
     "latestCompletedComparable": {
       "runId": 26733662341,
@@ -240,10 +240,10 @@
     ],
     "gitStatus": {
       "staged": "completed",
-      "commit": "668afcf",
+      "commit": "668afcf,9b4c5ad",
       "push": "completed"
     },
-    "ciResult": "latest run 26733906449 queued; latest completed comparable run 26733662341 failure",
+    "ciResult": "latest run 26733938337 in_progress; latest completed comparable run 26733662341 failure",
     "p2Allowed": false,
     "finalClassification": "P143_SCHEMA_DB_AUTHORIZATION_REQUIRED"
   }
