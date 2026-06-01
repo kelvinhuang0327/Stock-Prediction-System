@@ -22,7 +22,7 @@ jobs:
         run: npm ci
       
       - name: Run ESLint
-        run: npm run lint
+        run: npx eslint src tests --ext .js,.jsx,.ts,.tsx
 
   test-node:
     runs-on: macos-latest

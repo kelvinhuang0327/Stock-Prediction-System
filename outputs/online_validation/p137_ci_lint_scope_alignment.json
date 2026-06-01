@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "taskId": "P137",
+  "generatedAtUtc": "2026-06-01T03:00:00Z",
+  "repo": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System",
+  "branch": "main",
+  "startHead": "a66e424",
+  "endHead": "a66e424",
+  "phase0": {
+    "repoVerified": true,
+    "branchVerified": true,
+    "headVerified": true,
+    "unrelatedDirtyStatePresent": true
+  },
+  "carryoverArtifacts": {
+    "p135Json": "untracked",
+    "p135Report": "untracked",
+    "p136Json": "untracked",
+    "p136Report": "untracked"
+  },
+  "p136ConsistencyCheck": {
+    "classification": "P136_SCOPED_LINT_BASELINE_CREATED_NO_CODE_CHANGE",
+    "matchesPrompt": true,
+    "scopedSummary": {
+      "fullRepo": 5686,
+      "excludeWorktrees": 1421,
+      "excludeAdditionalNonTarget": 1412,
+      "activeSourceTestsOnly": 1409,
+      "removedByExcludeWorktrees": 4265,
+      "removedToActiveSourceTestsOnly": 4277
+    }
+  },
+  "preChangeCi": {
+    "runId": 26731410459,
+    "url": "https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26731410459",
+    "workflow": "CI",
+    "status": "completed",
+    "conclusion": "failure",
+    "failingSteps": [
+      {
+        "job": "lint",
+        "step": "Run ESLint"
+      },
+      {
+        "job": "test-node",
+        "step": "Run Jest tests"
+      }
+    ],
+    "testNodeAttribution": [
+      "src/lib/jobs/__tests__/JobAlertService.test.ts:8 prisma.jobAlert.deleteMany undefined",
+      "src/lib/jobs/__tests__/RecommendationLifecycleService.test.ts:24 prisma.recommendationHistory.deleteMany undefined",
+      "src/lib/jobs/__tests__/autonomousJobRegistry.twQ1FinancialIngestCheck.test.ts:17 registry entry undefined"
+    ]
+  },
+  "ciLintScopeAlignment": {
+    "file": ".github/workflows/ci.yml",
+    "beforeCommand": "npm run lint",
+    "afterCommand": "npx eslint src tests --ext .js,.jsx,.ts,.tsx",
+    "ruleChanges": false,
+    "packageChanges": false,
+    "eslintConfigChanges": false
+  },
+  "localScopedLintAfterAlignment": {
+    "command": "npx eslint src tests --ext .js,.jsx,.ts,.tsx",
+    "outputFile": "/tmp/p137_scoped_lint.txt",
+    "totalProblems": 697,
+    "errors": 368,
+    "warnings": 329,
+    "fixable": {
+      "errors": 6,
+      "warnings": 6
+    },
+    "result": "FAIL",
+    "interpretation": "Scope alignment succeeded; active source/test lint debt remains."
+  },
+  "regressions": {
+    "tscProductSurfaceGrep": "PASS (no output)",
+    "p108": "PASS",
+    "p114": "PASS",
+    "researchSubset": "PASS",
+    "autonomousAlertPolicyStore": "PASS",
+    "autonomousDataLayerWithDatabaseUrl": "PASS"
+  },
+  "filesChangedWhitelistOnly": true,
+  "postPushCi": {
+    "runId": null,
+    "url": null,
+    "status": null,
+    "conclusion": null,
+    "failingSteps": [],
+    "testNodeAttribution": []
+  },
+  "p2BrowserReviewAllowed": false,
+  "finalClassification": "P137_CI_LINT_SCOPE_ALIGNED_CI_STILL_RED_ACTIVE_LINT_DEBT"
+}
