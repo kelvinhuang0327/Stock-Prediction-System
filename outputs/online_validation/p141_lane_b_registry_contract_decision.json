@@ -1,0 +1,133 @@
+{
+  "taskId": "P141",
+  "title": "Lane B Registry Contract Decision for twQ1FinancialIngestCheck",
+  "branch": "main",
+  "scope": {
+    "lane": "B",
+    "intent": "Repair twQ1 registry contract and align runner-test expectations to implemented boundary",
+    "inScope": [
+      "src/lib/jobs/autonomousJobRegistry.ts",
+      "src/lib/jobs/__tests__/autonomousJobRunners.twQ1FinancialIngestCheck.test.ts",
+      "outputs/online_validation/p141_lane_b_registry_contract_decision_report.md",
+      "outputs/online_validation/p141_lane_b_registry_contract_decision.json"
+    ],
+    "outOfScope": [
+      "src/lib/jobs/autonomousJobRunners.ts production implementation expansion"
+    ]
+  },
+  "beforeRepair": {
+    "targetedFailures": [
+      {
+        "command": "DATABASE_URL=file:./dev.db npx jest src/lib/jobs/__tests__/autonomousJobRegistry.twQ1FinancialIngestCheck.test.ts --no-coverage",
+        "result": "fail",
+        "rootCause": "registry key training:tw-q1-financial-ingest-check missing"
+      },
+      {
+        "command": "DATABASE_URL=file:./dev.db npx jest src/lib/jobs/__tests__/autonomousJobRunners.twQ1FinancialIngestCheck.test.ts --no-coverage",
+        "result": "fail",
+        "rootCause": "dedicated runner export not present"
+      }
+    ]
+  },
+  "repairSummary": {
+    "changes": [
+      {
+        "file": "src/lib/jobs/autonomousJobRegistry.ts",
+        "summary": "added training:tw-q1-financial-ingest-check registry entry with daily cadence and 01:00 UTC schedule"
+      },
+      {
+        "file": "src/lib/jobs/__tests__/autonomousJobRunners.twQ1FinancialIngestCheck.test.ts",
+        "summary": "aligned test to current contract: registry exists and no dedicated runner export"
+      }
+    ]
+  },
+  "afterRepair": {
+    "targetedVerification": [
+      {
+        "command": "DATABASE_URL=file:./dev.db npx jest src/lib/jobs/__tests__/autonomousJobRegistry.twQ1FinancialIngestCheck.test.ts --no-coverage",
+        "result": "pass",
+        "details": {
+          "suites": 1,
+          "tests": 9
+        }
+      },
+      {
+        "command": "DATABASE_URL=file:./dev.db npx jest src/lib/jobs/__tests__/autonomousJobRunners.twQ1FinancialIngestCheck.test.ts --no-coverage",
+        "result": "pass",
+        "details": {
+          "suites": 1,
+          "tests": 2
+        }
+      }
+    ],
+    "regressionBundle": [
+      {
+        "command": "npx tsc --noEmit 2>&1 | grep -i \"product-surface\\|StrategyResearchStaticView\" || true",
+        "result": "pass",
+        "details": "no matching output"
+      },
+      {
+        "command": "npx jest src/lib/research/__tests__/p108_stock_strategy_research_static_fixture.test.ts --no-coverage",
+        "result": "pass",
+        "details": {
+          "suites": 1,
+          "tests": 8
+        }
+      },
+      {
+        "command": "npx jest src/lib/research/__tests__/p114_strategy_research_page_static_render.test.tsx --no-coverage",
+        "result": "pass",
+        "details": {
+          "suites": 1,
+          "tests": 4
+        }
+      },
+      {
+        "command": "npx jest src/lib/research/__tests__ --no-coverage",
+        "result": "pass",
+        "details": {
+          "suites": 39,
+          "tests": 2392
+        }
+      },
+      {
+        "command": "npx jest src/lib/jobs/__tests__/AutonomousAlertPolicyStore.test.ts --no-coverage",
+        "result": "pass",
+        "details": {
+          "suites": 1,
+          "tests": 3
+        }
+      },
+      {
+        "command": "DATABASE_URL=file:./dev.db npx jest src/lib/autonomous/__tests__/AutonomousDataLayer.test.ts --no-coverage",
+        "result": "pass",
+        "details": {
+          "suites": 1,
+          "tests": 1
+        }
+      }
+    ]
+  },
+  "lintStatus": {
+    "scope": "src tests",
+    "totals": {
+      "total": 696,
+      "errors": 368,
+      "warnings": 328
+    },
+    "classification": "active-lint-debt-outside-lane"
+  },
+  "p2BrowserReview": {
+    "status": "blocked",
+    "reason": "non-UI lane; no browser-delta required for acceptance"
+  },
+  "latestCiAfterPush": {
+    "status": "pending"
+  },
+  "finalClassification": [
+    "LANE_B_REGISTRY_CONTRACT_REPAIR_COMPLETED",
+    "TARGETED_TWQ1_CLUSTER_UNBLOCKED_LOCALLY",
+    "REGRESSION_BUNDLE_PASS",
+    "GLOBAL_CI_STILL_EXPECTED_RED_DUE_TO_EXISTING_LINT_DEBT"
+  ]
+}

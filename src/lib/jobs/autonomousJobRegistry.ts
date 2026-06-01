@@ -185,6 +185,13 @@ export const AUTONOMOUS_JOB_REGISTRY: Record<AutonomousJobName, JobWindowDefinit
     getScheduledFor: (now) => latestDailyWindowAtUtc(now, 15, 10),
     getExpectedWindows: (now) => dailyWindowsAtUtc(now, 15, 10),
   },
+  'training:tw-q1-financial-ingest-check': {
+    jobName: 'training:tw-q1-financial-ingest-check',
+    label: 'Taiwan Q1 Financial Ingest Check (09:00 Asia/Taipei)',
+    cadence: 'daily',
+    getScheduledFor: (now) => latestDailyWindowAtUtc(now, 1, 0),
+    getExpectedWindows: (now) => dailyWindowsAtUtc(now, 1, 0),
+  },
   'training:tw-weekly-deep-research': {
     jobName: 'training:tw-weekly-deep-research',
     label: 'Taiwan Weekly Deep Research (Sunday 18:00 Asia/Taipei)',
