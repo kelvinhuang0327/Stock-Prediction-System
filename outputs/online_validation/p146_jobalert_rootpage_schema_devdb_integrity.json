@@ -5,7 +5,7 @@
   "branch": "main",
   "expectedBaseline": "9c48136",
   "startHead": "9c48136",
-  "endHeadPreCommit": "9c48136",
+  "endHeadAfterCommit": "4ab43ff",
   "previousClassification": "P145_P144_DELEGATES_STILL_FAILING_NEEDS_REPAIR_FOLLOWUP",
   "phase0": {
     "repoMatched": true,
@@ -126,12 +126,30 @@
     "prisma/migrations/20260601040000_p144_add_job_alert_and_recommendation_history/migration.sql"
   ],
   "gitOps": {
-    "staged": "pending",
-    "committed": "pending",
-    "pushed": "pending"
+    "staged": "completed_whitelist_only",
+    "committed": {
+      "status": "completed",
+      "sha": "4ab43fff0af1d640aea7048e054f2fd8c08d2311",
+      "message": "P146: diagnose JobAlert rootpage CI defect and record ambiguity"
+    },
+    "pushed": {
+      "status": "completed",
+      "remote": "origin/main"
+    }
   },
   "postPushCi": {
-    "status": "not_applicable_at_generation_time"
+    "latestRun": {
+      "runId": 26739045205,
+      "headSha": "4ab43fff0af1d640aea7048e054f2fd8c08d2311",
+      "status": "in_progress",
+      "conclusion": null,
+      "url": "https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26739045205"
+    },
+    "latestCompletedAttributionRun": {
+      "runId": 26735462208,
+      "status": "completed",
+      "conclusion": "failure"
+    }
   },
   "remainingCiClusters": [
     "jobAlert_rootpage_invalid",
@@ -166,8 +184,8 @@
       "outputs/online_validation/p146_jobalert_rootpage_schema_devdb_integrity_report.md",
       "outputs/online_validation/p146_jobalert_rootpage_schema_devdb_integrity.json"
     ],
-    "stagedCommitPushStatus": "pending",
-    "ciResult": "latest completed run 26735462208 failure",
+    "stagedCommitPushStatus": "completed",
+    "ciResult": "latest post-push run 26739045205 in_progress; latest completed attribution run 26735462208 failure",
     "p2Allowed": false,
     "finalClassification": "P146_BLOCKED_BY_SCHEMA_DEVDB_AMBIGUITY"
   }

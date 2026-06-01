@@ -4,7 +4,7 @@
 - Repo: /Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System
 - Branch: main
 - Start HEAD: 9c48136
-- End HEAD (pre-commit): 9c48136
+- End HEAD (after P146 commit): 4ab43ff
 
 ## 2) Phase 0 actual-state verification
 Commands executed:
@@ -155,13 +155,20 @@ Not changed:
 - `prisma/migrations/20260601040000_p144_add_job_alert_and_recommendation_history/migration.sql`
 
 ## 12) staged / commit / push status
-- Staged: pending at report generation time
-- Commit: pending at report generation time
-- Push: pending at report generation time
+- Staged: completed (P146 whitelist only)
+- Commit: completed
+  - SHA: `4ab43fff0af1d640aea7048e054f2fd8c08d2311`
+  - Message: `P146: diagnose JobAlert rootpage CI defect and record ambiguity`
+- Push: completed to `origin/main`
 
 ## 13) Latest CI result after push
-- Not applicable at report generation time (P146 changes not pushed yet).
-- Latest completed comparable run: `26735462208` failure.
+- Latest run after P146 push:
+  - Run ID: `26739045205`
+  - Head: `4ab43fff0af1d640aea7048e054f2fd8c08d2311`
+  - Status: `in_progress` (capture time)
+  - URL: https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26739045205
+- Latest completed comparable run for attribution remains:
+  - `26735462208` (failure)
 
 ## 14) Remaining CI clusters, if any
 - JobAlert-rootpage CI cluster remains on runner (`invalid rootpage`).
@@ -223,10 +230,12 @@ Exit condition:
 - `outputs/online_validation/p146_jobalert_rootpage_schema_devdb_integrity.json`
 
 5. staged / commit / push 狀態
-- pending
+- staged/commit/push 已完成
+- commit: `4ab43fff0af1d640aea7048e054f2fd8c08d2311`
 
 6. CI 結果
-- latest completed run `26735462208`: failure
+- latest post-push run `26739045205`: in_progress
+- latest completed attribution run `26735462208`: failure
 
 7. 是否允許進入下一輪 P2 browser review
 - 否
