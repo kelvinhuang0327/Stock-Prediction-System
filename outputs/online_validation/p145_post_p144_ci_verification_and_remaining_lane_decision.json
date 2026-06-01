@@ -1,0 +1,216 @@
+{
+  "taskId": "P145",
+  "title": "Post-P144 CI Verification & Remaining Failure Lane Decision",
+  "repo": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System",
+  "branch": "main",
+  "expectedBaselineCommit": "34da89c",
+  "previousClassification": "P144_SCHEMA_DB_DELEGATES_REPAIRED_CI_STILL_RED_ACTIVE_LINT_OR_OTHER_CLUSTERS",
+  "phase0": {
+    "pwd": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System",
+    "repoTopLevel": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System",
+    "branch": "main",
+    "headShort": "34da89c",
+    "headCheck": "matched",
+    "unrelatedDirtyPresent": true,
+    "unrelatedDirtyHandling": "classified_and_excluded_from_staging",
+    "logWindow": 12
+  },
+  "p144Artifacts": {
+    "reportExists": true,
+    "jsonExists": true,
+    "tracked": true,
+    "consistencyCheck": "passed_key_fields"
+  },
+  "ci": {
+    "latestRuns": [
+      {
+        "runId": 26734497725,
+        "headSha": "34da89cd6bfa576a3ada7d1b2f9637c8d6e8e9b5",
+        "status": "completed",
+        "conclusion": "failure",
+        "url": "https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26734497725"
+      },
+      {
+        "runId": 26734484843,
+        "headSha": "ee05af3edaa92d1ef746e8cf920ae98b28b632b0",
+        "status": "completed",
+        "conclusion": "failure",
+        "url": "https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26734484843"
+      }
+    ],
+    "latestCompletedComparableRun": 26734497725,
+    "failingSteps": [
+      {
+        "job": "test-python",
+        "step": "Run Python tests"
+      },
+      {
+        "job": "test-node",
+        "step": "Run Jest tests"
+      },
+      {
+        "job": "lint",
+        "step": "Run ESLint"
+      }
+    ],
+    "representativeErrors": [
+      "sqlite3.DatabaseError: malformed database schema (JobAlert) - invalid rootpage",
+      "Invalid `prisma.jobAlert.deleteMany()` invocation ... malformed database schema (JobAlert) - invalid rootpage",
+      "Invalid `prisma.recommendationHistory.deleteMany()` invocation ... malformed database schema (JobAlert) - invalid rootpage",
+      "✖ 696 problems (368 errors, 328 warnings)"
+    ]
+  },
+  "delegateRepairVerification": {
+    "oldSignatureUndefinedDelegatePresent": false,
+    "newObservedFailureSignature": "prisma_query_connector_error_malformed_schema_jobalert_invalid_rootpage",
+    "ciStatus": "delegate_family_still_failing_due_to_db_integrity"
+  },
+  "localTargetedVerification": {
+    "commands": [
+      "DATABASE_URL=file:./dev.db npx jest src/lib/jobs/__tests__/JobAlertService.test.ts --no-coverage",
+      "DATABASE_URL=file:./dev.db npx jest src/lib/jobs/__tests__/JobAlertHistoryService.test.ts --no-coverage",
+      "DATABASE_URL=file:./dev.db npx jest src/lib/jobs/__tests__/AutonomousAlertService.test.ts --no-coverage",
+      "DATABASE_URL=file:./dev.db npx jest src/lib/jobs/__tests__/RecommendationHistoryService.test.ts --no-coverage",
+      "DATABASE_URL=file:./dev.db npx jest src/lib/jobs/__tests__/RecommendationLifecycleService.test.ts --no-coverage",
+      "DATABASE_URL=file:./dev.db npx jest src/lib/jobs/__tests__/RecommendationTrendService.test.ts --no-coverage"
+    ],
+    "results": {
+      "JobAlertService": "FAIL",
+      "JobAlertHistoryService": "FAIL",
+      "AutonomousAlertService": "FAIL",
+      "RecommendationHistoryService": "PASS",
+      "RecommendationLifecycleService": "PASS",
+      "RecommendationTrendService": "PASS"
+    }
+  },
+  "remainingFailureMatrix": [
+    {
+      "cluster": "schema_db_integrity_jobalert_rootpage",
+      "failingFiles": [
+        "src/lib/jobs/__tests__/JobAlertService.test.ts",
+        "src/lib/jobs/__tests__/JobAlertHistoryService.test.ts",
+        "src/lib/jobs/__tests__/RecommendationHistoryService.test.ts",
+        "src/lib/jobs/__tests__/RecommendationLifecycleService.test.ts",
+        "src/lib/autonomous/__tests__/AutonomousDataLayer.test.ts"
+      ],
+      "representativeError": "malformed database schema (JobAlert) - invalid rootpage",
+      "boundaryClass": "schema_db_integrity",
+      "recommendedNow": true
+    },
+    {
+      "cluster": "active_lint_debt",
+      "failingFiles": [
+        "lint job / Run ESLint"
+      ],
+      "representativeError": "✖ 696 problems (368 errors, 328 warnings)",
+      "boundaryClass": "lint",
+      "recommendedNow": false
+    },
+    {
+      "cluster": "ui_expectation_drift",
+      "failingFiles": [
+        "src/app/candidates/__tests__/page.test.tsx",
+        "src/app/stocks/[symbol]/__tests__/page.tab-sync.test.tsx",
+        "src/lib/onlineValidation/__tests__/p26a_renderer_fix.test.ts",
+        "src/lib/onlineValidation/__tests__/p29d_dropzone_scaffold.test.ts"
+      ],
+      "representativeError": "jest assertion mismatches in UI/onlineValidation suites",
+      "boundaryClass": "product_behavior_ui",
+      "recommendedNow": false
+    },
+    {
+      "cluster": "llm_audit_smoke_mismatch",
+      "failingFiles": [
+        "src/lib/agent-orchestrator/__tests__/llmAuditSmoke.integration.test.ts"
+      ],
+      "representativeError": "expected LLM_CALL_ATTEMPT/LLM_CALL_BLOCKED log events not matched",
+      "boundaryClass": "product_behavior_audit_contract",
+      "recommendedNow": false
+    },
+    {
+      "cluster": "notification_behavior_mismatch",
+      "failingFiles": [
+        "src/lib/__tests__/NotificationDeliveryEngine.test.ts"
+      ],
+      "representativeError": "notification behavior assertions failing in test-node",
+      "boundaryClass": "product_behavior_notification",
+      "recommendedNow": false
+    },
+    {
+      "cluster": "systemsetting_delegate_family",
+      "failingFiles": [],
+      "representativeError": "no evidence in latest CI logs",
+      "boundaryClass": "schema_db",
+      "recommendedNow": false
+    }
+  ],
+  "scopedLint": {
+    "command": "npx eslint src tests --ext .js,.jsx,.ts,.tsx",
+    "status": "FAIL",
+    "summary": {
+      "totalProblems": 696,
+      "errors": 368,
+      "warnings": 328
+    }
+  },
+  "recommendedSingleLane": {
+    "lane": "P146_schema_db_integrity_followup_jobalert_rootpage",
+    "reason": "latest completed post-P144 CI still fails delegate-family tests due to malformed JobAlert schema rootpage in query execution"
+  },
+  "rejectedLanes": [
+    {
+      "lane": "systemsetting_schema_db_authorization",
+      "reason": "no SystemSetting-family failure evidence in latest completed CI"
+    },
+    {
+      "lane": "product_behavior_decision",
+      "reason": "upstream schema/db integrity blocker still active"
+    },
+    {
+      "lane": "active_lint_tranche",
+      "reason": "lint remains valid debt but not the current upstream blocker for delegate-family CI failures"
+    },
+    {
+      "lane": "p2_browser_review",
+      "reason": "CI not green and no waiver"
+    }
+  ],
+  "codeModified": false,
+  "changedFiles": [
+    "outputs/online_validation/p145_post_p144_ci_verification_and_remaining_lane_decision_report.md",
+    "outputs/online_validation/p145_post_p144_ci_verification_and_remaining_lane_decision.json"
+  ],
+  "gitOps": {
+    "staged": "pending",
+    "committed": "pending",
+    "pushed": "pending"
+  },
+  "postPushCi": {
+    "status": "not_applicable_at_generation_time"
+  },
+  "p2BrowserReviewAllowed": false,
+  "finalClassification": "P145_P144_DELEGATES_STILL_FAILING_NEEDS_REPAIR_FOLLOWUP",
+  "next24hPromptP146": "[Stock P146 Single-Lane Prompt] Fix only CI schema/db integrity blocker 'malformed database schema (JobAlert) - invalid rootpage' for JobAlert/RecommendationHistory paths; do not execute behavior/UI/lint/browser lanes; prove latest completed CI no longer emits invalid rootpage on delegate-family tests; then regenerate remaining matrix and choose one next lane.",
+  "requiredCompletionCheck": {
+    "completed": true,
+    "tests": {
+      "latestCompletedCI26734497725": "FAIL",
+      "JobAlertService": "FAIL",
+      "JobAlertHistoryService": "FAIL",
+      "AutonomousAlertService": "FAIL",
+      "RecommendationHistoryService": "PASS",
+      "RecommendationLifecycleService": "PASS",
+      "RecommendationTrendService": "PASS",
+      "ScopedLint": "FAIL"
+    },
+    "singleBlockingIssue": "malformed_database_schema_jobalert_invalid_rootpage_in_latest_completed_post_p144_ci",
+    "modifiedFiles": [
+      "outputs/online_validation/p145_post_p144_ci_verification_and_remaining_lane_decision_report.md",
+      "outputs/online_validation/p145_post_p144_ci_verification_and_remaining_lane_decision.json"
+    ],
+    "stagedCommitPushStatus": "pending",
+    "ciResult": "latest completed run 26734497725 failure",
+    "p2Allowed": false,
+    "finalClassification": "P145_P144_DELEGATES_STILL_FAILING_NEEDS_REPAIR_FOLLOWUP"
+  }
+}
