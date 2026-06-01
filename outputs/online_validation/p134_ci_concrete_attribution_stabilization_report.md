@@ -4,7 +4,7 @@
 - Repo: /Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System
 - Branch: main
 - Start HEAD (Phase 0): 368be09
-- End HEAD: 16b8584
+- End HEAD: b97f019
 
 ## 2) Phase 0 actual-state verification
 Executed and verified:
@@ -35,6 +35,10 @@ Result:
 ### Latest post-fix runs (head 16b8584)
 - Test Gate run: 26731376263 -> in_progress (at report cutoff)
 - CI run: 26731376272 -> in_progress (at report cutoff)
+
+### Latest runs after report commit (head b97f019)
+- Test Gate run: 26731402826 -> pending
+- CI run: 26731402848 -> queued
 
 Latest completed baseline for prior head:
 - Test Gate 26730867900 -> success
@@ -96,7 +100,9 @@ Boundary preserved:
 ## 10) staged / commit / push status
 - Commit: 16b8584
 - Message: fix: stabilize CI prisma test env and alert policy store test
-- Push: success (origin/main updated 368be09 -> 16b8584)
+- Commit: b97f019
+- Message: docs: add P134 CI attribution stabilization report
+- Push: success (origin/main updated 16b8584 -> b97f019)
 - Staged leftovers: none for this patch set
 - Unrelated dirty/untracked files remain in workspace (unchanged)
 
