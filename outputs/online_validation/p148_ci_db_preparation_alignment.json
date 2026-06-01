@@ -5,7 +5,7 @@
   "branch": "main",
   "expectedBaselineCommit": "987244b",
   "startHead": "987244b",
-  "endHeadBeforeCommit": "987244b",
+  "endHeadAfterCommit": "3aece5a",
   "previousClassification": "P147_RECOMMEND_CI_DB_PREPARATION_ALIGNMENT_LANE",
   "scope": {
     "lane": "ci_db_preparation_alignment_only",
@@ -125,12 +125,30 @@
     "packageOrConfigChangedOutsideWhitelist": false
   },
   "gitOps": {
-    "staged": "pending",
-    "committed": "pending",
-    "pushed": "pending"
+    "staged": "completed_whitelist_only",
+    "committed": {
+      "status": "completed",
+      "sha": "3aece5a4354a030dc635864affa199031910e2a2",
+      "message": "P148: align CI DB preparation and integrity checks"
+    },
+    "pushed": {
+      "status": "completed",
+      "remote": "origin/main"
+    }
   },
   "postPushCi": {
-    "latestRun": "pending"
+    "latestRun": {
+      "runId": 26741236818,
+      "headSha": "3aece5a4354a030dc635864affa199031910e2a2",
+      "status": "in_progress",
+      "conclusion": null,
+      "url": "https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26741236818"
+    },
+    "latestCompletedComparableRun": {
+      "runId": 26739339070,
+      "status": "completed",
+      "conclusion": "failure"
+    }
   },
   "p2BrowserReviewAllowed": false,
   "finalClassification": "P148_CI_DB_PREPARATION_ALIGNED_CI_STILL_RED_ACTIVE_LINT_OR_OTHER_CLUSTERS",
@@ -149,8 +167,8 @@
       "outputs/online_validation/p148_ci_db_preparation_alignment_report.md",
       "outputs/online_validation/p148_ci_db_preparation_alignment.json"
     ],
-    "stagedCommitPushStatus": "pending",
-    "ciResult": "baseline attribution run 26739339070 failure",
+    "stagedCommitPushStatus": "completed",
+    "ciResult": "baseline attribution run 26739339070 failure; latest post-push run 26741236818 in_progress",
     "p2Allowed": false,
     "finalClassification": "P148_CI_DB_PREPARATION_ALIGNED_CI_STILL_RED_ACTIVE_LINT_OR_OTHER_CLUSTERS"
   }
