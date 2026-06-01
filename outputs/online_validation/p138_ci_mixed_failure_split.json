@@ -1,0 +1,153 @@
+{
+  "taskId": "P138",
+  "title": "CI Mixed Failure Split: Test-Node Attribution First + Active Lint Debt Triage",
+  "baselineCommit": "7e312dfa423a67b778af6cbd858833c9158654c5",
+  "latestCompletedCiRun": {
+    "id": 26732356222,
+    "status": "completed",
+    "conclusion": "failure",
+    "url": "https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26732356222",
+    "failedJobs": [
+      "lint",
+      "test-node"
+    ],
+    "passedJobs": [
+      "test-python"
+    ],
+    "skippedJobs": [
+      "build",
+      "e2e"
+    ]
+  },
+  "p137ArtifactStatus": {
+    "tracked": true,
+    "cleanWorkingTreeForArtifacts": true,
+    "files": [
+      "outputs/online_validation/p137_ci_lint_scope_alignment.json",
+      "outputs/online_validation/p137_ci_lint_scope_alignment_report.md"
+    ]
+  },
+  "testNodeAttribution": {
+    "failingSuitesUnique": [
+      "src/lib/agent-orchestrator/__tests__/llmAuditSmoke.integration.test.ts",
+      "src/app/candidates/__tests__/page.test.tsx",
+      "src/app/stocks/[symbol]/__tests__/page.tab-sync.test.tsx",
+      "src/lib/__tests__/NotificationDeliveryEngine.test.ts",
+      "src/lib/jobs/__tests__/AutonomousDashboardService.test.ts",
+      "src/lib/jobs/__tests__/AutonomousAlertService.test.ts",
+      "src/lib/jobs/__tests__/autonomousJobRunners.twQ1FinancialIngestCheck.test.ts",
+      "src/lib/jobs/__tests__/JobHealthService.test.ts",
+      "src/lib/jobs/__tests__/JobAlertHistoryService.test.ts",
+      "src/lib/jobs/__tests__/RecommendationTrendService.test.ts",
+      "src/components/watchlist/__tests__/WatchlistTable.fundamental.test.tsx",
+      "src/lib/jobs/__tests__/RecommendationHistoryService.test.ts",
+      "src/lib/jobs/__tests__/JobAlertService.test.ts",
+      "src/lib/jobs/__tests__/RecommendationLifecycleService.test.ts",
+      "src/lib/jobs/__tests__/autonomousJobRegistry.twQ1FinancialIngestCheck.test.ts",
+      "src/lib/autonomous/__tests__/AutonomousDataLayer.test.ts"
+    ],
+    "failureClassSummary": [
+      {
+        "class": "P134_PRISMA_MODEL_UNDEFINED",
+        "signature": "TypeError: Cannot read properties of undefined (reading 'deleteMany')",
+        "representativeSuites": [
+          "src/lib/jobs/__tests__/AutonomousAlertService.test.ts",
+          "src/lib/jobs/__tests__/JobAlertHistoryService.test.ts",
+          "src/lib/jobs/__tests__/RecommendationHistoryService.test.ts",
+          "src/lib/jobs/__tests__/JobAlertService.test.ts",
+          "src/lib/jobs/__tests__/RecommendationLifecycleService.test.ts",
+          "src/lib/jobs/__tests__/RecommendationTrendService.test.ts"
+        ]
+      },
+      {
+        "class": "AUTONOMOUS_REGISTRY_ENTRY_MISSING",
+        "signature": "expect(AUTONOMOUS_JOB_REGISTRY[JOB_NAME]).toBeDefined() received undefined",
+        "representativeSuites": [
+          "src/lib/jobs/__tests__/autonomousJobRegistry.twQ1FinancialIngestCheck.test.ts"
+        ]
+      },
+      {
+        "class": "UI_EXPECTATION_DRIFT",
+        "signature": "TestingLibraryElementError: Unable to find an element with the text",
+        "representativeSuites": [
+          "src/app/candidates/__tests__/page.test.tsx",
+          "src/app/stocks/[symbol]/__tests__/page.tab-sync.test.tsx",
+          "src/components/watchlist/__tests__/WatchlistTable.fundamental.test.tsx"
+        ]
+      },
+      {
+        "class": "ORCHESTRATOR_AUDIT_LINE_MISSING",
+        "signature": "SMOKE asserts expected audit/usage lines but observed length 0 or blocked undefined",
+        "representativeSuites": [
+          "src/lib/agent-orchestrator/__tests__/llmAuditSmoke.integration.test.ts"
+        ]
+      },
+      {
+        "class": "NOTIFICATION_EXPECTATION_MISMATCH",
+        "signature": "Expected channel result length 1 but received 0 for autonomous-alert-only case",
+        "representativeSuites": [
+          "src/lib/__tests__/NotificationDeliveryEngine.test.ts"
+        ]
+      }
+    ],
+    "localReproduction": {
+      "databaseUrl": "file:./dev.db",
+      "reproduced": true,
+      "notes": [
+        "Prisma undefined deleteMany failures reproduced across multiple jobs suites.",
+        "Registry undefined failure reproduced for twQ1FinancialIngestCheck registry suite.",
+        "UI text expectation drift reproduced in candidates and stocks page suites.",
+        "llmAuditSmoke integration failures reproduced with missing newly written lines.",
+        "AutonomousDataLayer passed in focused local run while CI marks it failed, suggesting suite-order/global-state coupling in full run."
+      ]
+    }
+  },
+  "lintTriage": {
+    "command": "npx eslint src tests --ext .js,.jsx,.ts,.tsx",
+    "total": 697,
+    "errors": 368,
+    "warnings": 329,
+    "topRules": [
+      {
+        "rule": "@typescript-eslint/no-unused-vars",
+        "count": 311
+      },
+      {
+        "rule": "@typescript-eslint/no-explicit-any",
+        "count": 271
+      },
+      {
+        "rule": "@typescript-eslint/no-require-imports",
+        "count": 67
+      }
+    ],
+    "topFiles": [
+      {
+        "file": "src/components/plan/AssetDoublingPlan.tsx",
+        "count": 18
+      },
+      {
+        "file": "src/lib/stockService.ts",
+        "count": 17
+      },
+      {
+        "file": "src/lib/onlineValidation/__tests__/p18monthly_revenue_fixture_db_utils.test.ts",
+        "count": 16
+      },
+      {
+        "file": "src/lib/onlineValidation/__tests__/p26f_monthly_revenue_source_mapper_utils.test.ts",
+        "count": 15
+      },
+      {
+        "file": "src/lib/onlineValidation/__tests__/p13monthly_revenue_pit_utils.test.ts",
+        "count": 14
+      }
+    ]
+  },
+  "repairDecision": {
+    "path": "NO_CODE_CHANGE_ATTRIBUTION_ONLY",
+    "safeTestOnlyRepairApplied": false,
+    "reason": "Current failures are multi-cluster across Prisma setup/schema assumptions, registry availability, UI assertion drift, and orchestrator audit side effects. A minimal test-only patch would either suppress behavior checks or require non-test production changes outside the P138 safe boundary."
+  },
+  "finalClassification": "P138_TEST_NODE_ATTRIBUTED_FIRST_ACTIVE_LINT_DEBT_TRIAGED_NO_SAFE_TEST_ONLY_REPAIR"
+}
