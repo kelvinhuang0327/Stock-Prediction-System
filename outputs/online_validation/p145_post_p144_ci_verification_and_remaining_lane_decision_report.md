@@ -4,7 +4,7 @@
 - Repo: /Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System
 - Branch: main
 - Start HEAD: 34da89c
-- End HEAD (pre-commit): 34da89c
+- End HEAD (after P145 artifact commit): de63377
 
 ## 2) Phase 0 actual-state verification
 Commands executed:
@@ -111,13 +111,20 @@ Why this lane first:
 - `outputs/online_validation/p145_post_p144_ci_verification_and_remaining_lane_decision.json`
 
 ## 12) staged / commit / push status
-- Staged: pending at report generation time
-- Commit: pending at report generation time
-- Push: pending at report generation time
+- Staged: completed (P145 artifact whitelist only)
+- Commit: completed
+  - SHA: `de63377c36875ac165f5ab8873020a0d529a4dab`
+  - Message: `P145: post-P144 CI verification and single-lane decision`
+- Push: completed to `origin/main`
 
 ## 13) Latest CI result after push, if push happened
-- Not applicable at report generation time (P145 artifact commit not pushed yet).
-- Latest completed CI used for attribution: `26734497725` (failure).
+- Latest run after P145 push:
+  - Run ID: `26735446048`
+  - Head: `de63377c36875ac165f5ab8873020a0d529a4dab`
+  - Status: `in_progress` (capture time)
+  - URL: https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26735446048
+- Latest completed comparable post-P144 run for attribution remains:
+  - `26734497725` (failure)
 
 ## 14) Whether P2 browser review is allowed
 - Not allowed.
@@ -179,10 +186,12 @@ Exit condition:
 - `outputs/online_validation/p145_post_p144_ci_verification_and_remaining_lane_decision.json`
 
 5. staged / commit / push 狀態
-- pending
+- staged/commit/push 已完成
+- commit: `de63377c36875ac165f5ab8873020a0d529a4dab`
 
 6. CI 結果
-- latest completed run `26734497725`: failure
+- latest post-push run `26735446048`: in_progress
+- latest completed attribution run `26734497725`: failure
 
 7. 是否允許進入下一輪 P2 browser review
 - 否

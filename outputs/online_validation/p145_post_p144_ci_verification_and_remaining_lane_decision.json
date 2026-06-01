@@ -4,6 +4,7 @@
   "repo": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System",
   "branch": "main",
   "expectedBaselineCommit": "34da89c",
+  "endHeadAfterP145Commit": "de63377",
   "previousClassification": "P144_SCHEMA_DB_DELEGATES_REPAIRED_CI_STILL_RED_ACTIVE_LINT_OR_OTHER_CLUSTERS",
   "phase0": {
     "pwd": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System",
@@ -181,12 +182,30 @@
     "outputs/online_validation/p145_post_p144_ci_verification_and_remaining_lane_decision.json"
   ],
   "gitOps": {
-    "staged": "pending",
-    "committed": "pending",
-    "pushed": "pending"
+    "staged": "completed_whitelist_only",
+    "committed": {
+      "status": "completed",
+      "sha": "de63377c36875ac165f5ab8873020a0d529a4dab",
+      "message": "P145: post-P144 CI verification and single-lane decision"
+    },
+    "pushed": {
+      "status": "completed",
+      "remote": "origin/main"
+    }
   },
   "postPushCi": {
-    "status": "not_applicable_at_generation_time"
+    "latestRun": {
+      "runId": 26735446048,
+      "headSha": "de63377c36875ac165f5ab8873020a0d529a4dab",
+      "status": "in_progress",
+      "conclusion": null,
+      "url": "https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26735446048"
+    },
+    "latestCompletedAttributionRun": {
+      "runId": 26734497725,
+      "status": "completed",
+      "conclusion": "failure"
+    }
   },
   "p2BrowserReviewAllowed": false,
   "finalClassification": "P145_P144_DELEGATES_STILL_FAILING_NEEDS_REPAIR_FOLLOWUP",
@@ -208,8 +227,8 @@
       "outputs/online_validation/p145_post_p144_ci_verification_and_remaining_lane_decision_report.md",
       "outputs/online_validation/p145_post_p144_ci_verification_and_remaining_lane_decision.json"
     ],
-    "stagedCommitPushStatus": "pending",
-    "ciResult": "latest completed run 26734497725 failure",
+    "stagedCommitPushStatus": "completed",
+    "ciResult": "latest post-push run 26735446048 in_progress; latest completed attribution run 26734497725 failure",
     "p2Allowed": false,
     "finalClassification": "P145_P144_DELEGATES_STILL_FAILING_NEEDS_REPAIR_FOLLOWUP"
   }
