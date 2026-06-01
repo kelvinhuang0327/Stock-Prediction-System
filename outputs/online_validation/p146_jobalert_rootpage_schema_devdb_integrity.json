@@ -1,0 +1,174 @@
+{
+  "taskId": "P146",
+  "title": "JobAlert Rootpage Schema/Dev-DB Integrity Follow-up Lane",
+  "repo": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System",
+  "branch": "main",
+  "expectedBaseline": "9c48136",
+  "startHead": "9c48136",
+  "endHeadPreCommit": "9c48136",
+  "previousClassification": "P145_P144_DELEGATES_STILL_FAILING_NEEDS_REPAIR_FOLLOWUP",
+  "phase0": {
+    "repoMatched": true,
+    "branchMatched": true,
+    "headMatched": true,
+    "unrelatedDirtyPresent": true,
+    "unrelatedDirtyHandling": "classified_excluded_from_staging",
+    "p145Artifacts": {
+      "exists": true,
+      "tracked": true,
+      "consistency": "passed"
+    }
+  },
+  "latestCi": {
+    "attributionRunId": 26735462208,
+    "headSha": "9c48136f5c41c297505e7c87db7a3d25e823e271",
+    "status": "completed",
+    "conclusion": "failure",
+    "url": "https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26735462208",
+    "failingSteps": [
+      "test-python/Run Python tests",
+      "test-node/Run Jest tests",
+      "lint/Run ESLint"
+    ],
+    "representativeErrors": [
+      "sqlite3.DatabaseError: malformed database schema (JobAlert) - invalid rootpage",
+      "Invalid `prisma.jobAlert.deleteMany()` invocation ... malformed database schema (JobAlert) - invalid rootpage",
+      "Invalid `prisma.recommendationHistory.deleteMany()` invocation ... malformed database schema (JobAlert) - invalid rootpage",
+      "✖ 696 problems (368 errors, 328 warnings)"
+    ]
+  },
+  "diagnosisBeforeRepair": {
+    "sqliteIntegrityDevDb": "ok",
+    "sqliteMasterRootpage": {
+      "JobAlert": 13756,
+      "RecommendationHistory": 13761
+    },
+    "jobAlertSchemaPresent": true,
+    "jobAlertTableInfoCollected": true,
+    "migrationSqlReviewed": true,
+    "schemaPrismaReviewed": true,
+    "standaloneCopyIntegrity": "ok",
+    "standalonePrismaProbe": {
+      "jobAlertDeleteMany": "no_rootpage_error",
+      "recommendationHistoryDeleteMany": "no_rootpage_error",
+      "monthlyRevenueFindFirst": "inconsistent_column_data_existing_non_rootpage_error"
+    },
+    "diagnosisConclusion": "ci_rootpage_defect_confirmed_but_local_repro_not_achieved"
+  },
+  "repairAttempt": {
+    "performed": true,
+    "type": "logical_dump_rebuild_devdb",
+    "commandsSummary": [
+      "sqlite3 prisma/dev.db .dump > /tmp/p146_devdb_dump.sql",
+      "sqlite3 /tmp/p146_devdb_rebuilt.db < /tmp/p146_devdb_dump.sql",
+      "cp /tmp/p146_devdb_rebuilt.db prisma/dev.db"
+    ],
+    "intermediateResult": {
+      "rebuiltIntegrity": "ok",
+      "rebuiltRootpage": {
+        "JobAlert": 7974,
+        "RecommendationHistory": 7975
+      }
+    },
+    "postApplyIntegrity": "failed_stock_index_and_row_integrity",
+    "rollbackPerformed": true,
+    "rollbackDetails": [
+      "restored prisma/dev.db from /tmp/p146_devdb_before_rebuild.db",
+      "removed mismatched sidecars prisma/dev.db-wal and prisma/dev.db-shm",
+      "revalidated PRAGMA integrity_check => ok"
+    ]
+  },
+  "localTargetedBefore": {
+    "JobAlertService": "FAIL_summary_total_0",
+    "JobAlertHistoryService": "FAIL_summary_total_0",
+    "AutonomousAlertService": "FAIL_expected_empty_alerts"
+  },
+  "localTargetedAfterAttemptRollback": {
+    "JobAlertService": "FAIL_summary_total_0",
+    "JobAlertHistoryService": "FAIL_summary_total_0",
+    "AutonomousAlertService": "FAIL_expected_empty_alerts"
+  },
+  "recommendationObservation": {
+    "RecommendationHistoryService": "PASS",
+    "RecommendationLifecycleService": "PASS",
+    "RecommendationTrendService": "PASS"
+  },
+  "regression": {
+    "tscProductSurfaceGrep": "no_output",
+    "p108": "PASS",
+    "p114": "PASS",
+    "researchFolder": {
+      "status": "PASS",
+      "suites": 39,
+      "tests": 2392
+    },
+    "autonomousAlertPolicyStore": "PASS",
+    "autonomousDataLayer": "FAIL",
+    "twQ1Registry": "PASS",
+    "twQ1Runners": "PASS",
+    "recommendationHistory": "PASS",
+    "recommendationLifecycle": "PASS",
+    "recommendationTrend": "PASS",
+    "scopedEslint": {
+      "status": "FAIL",
+      "total": 696,
+      "errors": 368,
+      "warnings": 328
+    }
+  },
+  "filesChanged": [
+    "prisma/dev.db",
+    "outputs/online_validation/p146_jobalert_rootpage_schema_devdb_integrity_report.md",
+    "outputs/online_validation/p146_jobalert_rootpage_schema_devdb_integrity.json"
+  ],
+  "filesUnchanged": [
+    "prisma/schema.prisma",
+    "prisma/migrations/20260601040000_p144_add_job_alert_and_recommendation_history/migration.sql"
+  ],
+  "gitOps": {
+    "staged": "pending",
+    "committed": "pending",
+    "pushed": "pending"
+  },
+  "postPushCi": {
+    "status": "not_applicable_at_generation_time"
+  },
+  "remainingCiClusters": [
+    "jobAlert_rootpage_invalid",
+    "delegate_family_invalid_invocation_fallout",
+    "llm_audit_smoke_mismatch",
+    "notification_behavior_mismatch",
+    "autonomous_data_layer_failure",
+    "active_lint_debt"
+  ],
+  "p2BrowserReviewAllowed": false,
+  "finalClassification": "P146_BLOCKED_BY_SCHEMA_DEVDB_AMBIGUITY",
+  "next24hPromptP147": "Build a CI-parity repro harness for JobAlert invalid-rootpage defect to resolve local-vs-CI ambiguity; do not expand into SystemSetting/UI/LLM/Notification/lint/browser lanes.",
+  "requiredCompletionCheck": {
+    "completed": true,
+    "tests": {
+      "latestCompletedCi26735462208": "FAIL",
+      "JobAlertService_before": "FAIL",
+      "JobAlertHistoryService_before": "FAIL",
+      "AutonomousAlertService_before": "FAIL",
+      "JobAlertService_afterAttemptRollback": "FAIL",
+      "JobAlertHistoryService_afterAttemptRollback": "FAIL",
+      "AutonomousAlertService_afterAttemptRollback": "FAIL",
+      "RecommendationHistory": "PASS",
+      "RecommendationLifecycle": "PASS",
+      "RecommendationTrend": "PASS",
+      "AutonomousDataLayer": "FAIL",
+      "ScopedLint": "FAIL"
+    },
+    "singleBlockingIssue": "ci_job_alert_invalid_rootpage_not_locally_reproducible_within_authorized_scope",
+    "modifiedFiles": [
+      "prisma/dev.db",
+      "outputs/online_validation/p146_jobalert_rootpage_schema_devdb_integrity_report.md",
+      "outputs/online_validation/p146_jobalert_rootpage_schema_devdb_integrity.json"
+    ],
+    "stagedCommitPushStatus": "pending",
+    "ciResult": "latest completed run 26735462208 failure",
+    "p2Allowed": false,
+    "finalClassification": "P146_BLOCKED_BY_SCHEMA_DEVDB_AMBIGUITY"
+  }
+}
