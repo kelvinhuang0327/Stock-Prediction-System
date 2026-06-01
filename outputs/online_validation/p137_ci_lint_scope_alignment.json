@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "taskId": "P137",
-  "generatedAtUtc": "2026-06-01T03:00:00Z",
+  "generatedAtUtc": "2026-06-01T02:43:30Z",
   "repo": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System",
   "branch": "main",
   "startHead": "a66e424",
-  "endHead": "a66e424",
+  "endHead": "331c283",
   "phase0": {
     "repoVerified": true,
     "branchVerified": true,
@@ -83,13 +83,26 @@
   },
   "filesChangedWhitelistOnly": true,
   "postPushCi": {
-    "runId": null,
-    "url": null,
-    "status": null,
-    "conclusion": null,
-    "failingSteps": [],
-    "testNodeAttribution": []
+    "runId": 26732278171,
+    "url": "https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26732278171",
+    "status": "completed",
+    "conclusion": "failure",
+    "failingSteps": [
+      {
+        "job": "lint",
+        "step": "Run ESLint"
+      },
+      {
+        "job": "test-node",
+        "step": "Run Jest tests"
+      }
+    ],
+    "testNodeAttribution": [
+      "src/lib/jobs/__tests__/JobAlertService.test.ts:8 prisma.jobAlert.deleteMany undefined",
+      "src/lib/jobs/__tests__/RecommendationLifecycleService.test.ts:24 prisma.recommendationHistory.deleteMany undefined",
+      "src/lib/jobs/__tests__/autonomousJobRegistry.twQ1FinancialIngestCheck.test.ts:17 registry entry undefined"
+    ]
   },
   "p2BrowserReviewAllowed": false,
-  "finalClassification": "P137_CI_LINT_SCOPE_ALIGNED_CI_STILL_RED_ACTIVE_LINT_DEBT"
+  "finalClassification": "P137_CI_LINT_SCOPE_ALIGNED_CI_STILL_RED_MIXED_ATTRIBUTION"
 }

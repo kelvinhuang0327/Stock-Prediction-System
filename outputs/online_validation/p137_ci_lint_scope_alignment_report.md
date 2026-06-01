@@ -4,7 +4,7 @@
 - Repo: /Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System
 - Branch: main
 - Start HEAD: a66e424
-- End HEAD: a66e424 (before commit/push in this execution stage)
+- End HEAD: 331c283
 
 ## 2) Phase 0 Actual-State Verification
 - `pwd` and `git rev-parse --show-toplevel` point to canonical repo.
@@ -61,8 +61,11 @@
   - PASS
 
 ## 9) Whether Test-Node Still Fails and Current Concrete Attribution
-- Pre-change latest CI still had concrete test-node failures (above).
-- Post-push attribution will be updated after new CI run is available.
+- Yes. Post-push CI run still fails in `test-node`.
+- Latest concrete attribution after push (run `26732278171`):
+  - `src/lib/jobs/__tests__/JobAlertService.test.ts:8` (`prisma.jobAlert.deleteMany` undefined)
+  - `src/lib/jobs/__tests__/RecommendationLifecycleService.test.ts:24` (`prisma.recommendationHistory.deleteMany` undefined)
+  - `src/lib/jobs/__tests__/autonomousJobRegistry.twQ1FinancialIngestCheck.test.ts:17` (registry entry undefined)
 
 ## 10) Files Changed List
 - `.github/workflows/ci.yml`
@@ -70,25 +73,32 @@
 - `outputs/online_validation/p137_ci_lint_scope_alignment_report.md`
 
 ## 11) Staged / Commit / Push Status
-- Pending in this stage; will be updated after commit/push.
+- Staged: whitelist-only files
+- Commit: `331c283` (`ci: align lint scope to active source/tests and record p137 attribution`)
+- Push: completed to `origin/main`
 
 ## 12) Latest CI Result After Push
-- Pending in this stage; will be updated after push-triggered CI run is available.
+- Latest CI run after push: `26732278171`
+- Status: `completed`
+- Conclusion: `failure`
+- Failing steps:
+  - `lint` -> `Run ESLint`
+  - `test-node` -> `Run Jest tests`
 
 ## 13) Whether P2 Browser Review Is Allowed
 - Not allowed unless latest CI is green or explicit CEO/CTO waiver exists.
 
 ## 14) Final Classification
-- Provisional (before post-push CI confirmation): `P137_CI_LINT_SCOPE_ALIGNED_CI_STILL_RED_ACTIVE_LINT_DEBT`
+- `P137_CI_LINT_SCOPE_ALIGNED_CI_STILL_RED_MIXED_ATTRIBUTION`
 
 ---
 
 ## Required Completion Check
-1. 是否真的完成: pending final CI-after-push observation
-2. 測試結果 PASS / FAIL / NOT RUN: currently PASS for required local regression commands
-3. 仍卡住的唯一問題: active source/test lint debt and unresolved CI test-node failures on latest pre-change run
+1. 是否真的完成: 是
+2. 測試結果 PASS / FAIL / NOT RUN: PASS（required local regression suite）
+3. 仍卡住的唯一問題: CI 仍同時被 active source/test lint debt 與 test-node 失敗阻塞
 4. 修改檔案清單: see section 10
-5. staged / commit / push 狀態: pending
-6. CI 結果: pending post-push run
+5. staged / commit / push 狀態: done / done / done
+6. CI 結果: run `26732278171` failed（lint + test-node）
 7. 是否允許進入下一輪 P2 browser review: 否
-8. Final Classification: pending final CI-after-push confirmation
+8. Final Classification: `P137_CI_LINT_SCOPE_ALIGNED_CI_STILL_RED_MIXED_ATTRIBUTION`
