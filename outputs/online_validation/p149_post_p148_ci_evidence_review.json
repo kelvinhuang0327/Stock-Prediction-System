@@ -5,7 +5,7 @@
   "branch": "main",
   "expectedBaselineCommit": "a438e75",
   "startHead": "a438e75",
-  "endHeadBeforeCommit": "a438e75",
+  "endHeadAfterCommit": "66728f7",
   "previousClassification": "P148_CI_DB_PREPARATION_ALIGNED_CI_STILL_RED_ACTIVE_LINT_OR_OTHER_CLUSTERS",
   "phase0": {
     "repoMatched": true,
@@ -163,15 +163,33 @@
   ],
   "gitBoundaryCheck": {
     "diffNameOnlyExpected": "p149_artifacts_only",
-    "status": "pending"
+    "status": "passed"
   },
   "gitOps": {
-    "staged": "pending",
-    "committed": "pending",
-    "pushed": "pending"
+    "staged": "completed_whitelist_only",
+    "committed": {
+      "status": "completed",
+      "sha": "66728f73ac93d4feeeed18fcfd450ad9e5572137",
+      "message": "P149: post-P148 CI evidence review and lane decision"
+    },
+    "pushed": {
+      "status": "completed",
+      "remote": "origin/main"
+    }
   },
   "latestCiAfterPush": {
-    "status": "pending"
+    "latestRun": {
+      "runId": 26741978780,
+      "headSha": "66728f73ac93d4feeeed18fcfd450ad9e5572137",
+      "status": "queued",
+      "conclusion": null,
+      "url": "https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26741978780"
+    },
+    "latestCompletedComparableRun": {
+      "runId": 26741256141,
+      "status": "completed",
+      "conclusion": "failure"
+    }
   },
   "p2BrowserReviewAllowed": false,
   "finalClassification": "P149_RECOMMEND_CI_DB_PREPARATION_FOLLOWUP_LANE",
@@ -195,8 +213,8 @@
       "outputs/online_validation/p149_post_p148_ci_evidence_review_report.md",
       "outputs/online_validation/p149_post_p148_ci_evidence_review.json"
     ],
-    "stagedCommitPushStatus": "pending",
-    "ciResult": "latest completed post-P148 run 26741256141 failure",
+    "stagedCommitPushStatus": "completed",
+    "ciResult": "latest completed post-P148 run 26741256141 failure; latest post-push run 26741978780 queued",
     "p2Allowed": false,
     "finalClassification": "P149_RECOMMEND_CI_DB_PREPARATION_FOLLOWUP_LANE"
   }
