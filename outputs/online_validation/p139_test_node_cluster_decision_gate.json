@@ -9,6 +9,7 @@
     "repoVerified": true,
     "branchVerified": true,
     "headAtStart": "3884295",
+    "headAtEnd": "dabea3d",
     "headIsBaselineOrDescendant": true,
     "unrelatedDirtyStateDetected": true,
     "dirtyPolicy": "Do not stage unrelated files; only P139 artifacts are eligible.",
@@ -16,11 +17,18 @@
     "p138AssumptionCheck": "Consistent with P138 mixed-failure attribution and no-code-change outcome."
   },
   "latestCi": {
-    "latestRunId": 26732535087,
-    "latestRunHeadSha": "3884295e7d7c54d79c82691fa6162b64d7d76ffb",
-    "latestRunStatus": "completed",
-    "latestRunConclusion": "failure",
-    "latestRunUrl": "https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26732535087",
+    "latestRunId": 26732772856,
+    "latestRunHeadSha": "dabea3dac12cd851359d94ff926349fe9d8c150c",
+    "latestRunStatus": "in_progress",
+    "latestRunConclusion": "",
+    "latestRunUrl": "https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26732772856",
+    "latestCompletedComparableRun": {
+      "runId": 26732535087,
+      "headSha": "3884295e7d7c54d79c82691fa6162b64d7d76ffb",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26732535087"
+    },
     "failedJobs": [
       {
         "name": "lint",
@@ -31,7 +39,7 @@
         "failedStep": "Run Jest tests"
       }
     ],
-    "queuedOrInProgressDetected": false,
+    "queuedOrInProgressDetected": true,
     "completedComparableRunUsed": 26732535087
   },
   "testNodeClusters": [
