@@ -4,7 +4,7 @@
   "repo": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System",
   "branch": "main",
   "startHead": "e706c08",
-  "endHead": "e706c08",
+  "endHead": "668afcf",
   "phase0": {
     "canonicalRepoVerified": true,
     "canonicalBranchVerified": true,
@@ -204,12 +204,24 @@
     "outputs/online_validation/p143_schema_db_boundary_authorization_plan.json"
   ],
   "gitOps": {
-    "staged": "pending",
-    "committed": "pending",
-    "pushed": "pending"
+    "staged": "completed",
+    "committed": "668afcf",
+    "pushed": "completed"
   },
   "postPushCi": {
-    "status": "not_applicable_yet"
+    "latestRun": {
+      "runId": 26733906449,
+      "headSha": "668afcf32417018ef7211fd5c26217d296d59c01",
+      "status": "queued",
+      "conclusion": "pending",
+      "url": "https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26733906449"
+    },
+    "latestCompletedComparable": {
+      "runId": 26733662341,
+      "status": "completed",
+      "conclusion": "failure",
+      "summary": "lint + test-node failing"
+    }
   },
   "p2BrowserReviewAllowed": false,
   "finalClassification": "P143_SCHEMA_DB_AUTHORIZATION_REQUIRED",
@@ -227,11 +239,11 @@
       "outputs/online_validation/p143_schema_db_boundary_authorization_plan.json"
     ],
     "gitStatus": {
-      "staged": "pending",
-      "commit": "pending",
-      "push": "pending"
+      "staged": "completed",
+      "commit": "668afcf",
+      "push": "completed"
     },
-    "ciResult": "latest completed run 26733662341 failure (lint + test-node)",
+    "ciResult": "latest run 26733906449 queued; latest completed comparable run 26733662341 failure",
     "p2Allowed": false,
     "finalClassification": "P143_SCHEMA_DB_AUTHORIZATION_REQUIRED"
   }
