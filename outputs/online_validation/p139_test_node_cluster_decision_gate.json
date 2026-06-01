@@ -1,0 +1,116 @@
+{
+  "taskId": "P139",
+  "title": "Test-Node Failure Cluster Decision Gate & First Safe Repair Scope",
+  "canonicalRepo": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System",
+  "canonicalBranch": "main",
+  "expectedBaselineCommit": "3884295",
+  "expectedPreviousClassification": "P138_TEST_NODE_ATTRIBUTED_NO_CODE_CHANGE",
+  "phase0": {
+    "repoVerified": true,
+    "branchVerified": true,
+    "headAtStart": "3884295",
+    "headIsBaselineOrDescendant": true,
+    "unrelatedDirtyStateDetected": true,
+    "dirtyPolicy": "Do not stage unrelated files; only P139 artifacts are eligible.",
+    "p138ArtifactsVerified": true,
+    "p138AssumptionCheck": "Consistent with P138 mixed-failure attribution and no-code-change outcome."
+  },
+  "latestCi": {
+    "latestRunId": 26732535087,
+    "latestRunHeadSha": "3884295e7d7c54d79c82691fa6162b64d7d76ffb",
+    "latestRunStatus": "completed",
+    "latestRunConclusion": "failure",
+    "latestRunUrl": "https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26732535087",
+    "failedJobs": [
+      {
+        "name": "lint",
+        "failedStep": "Run ESLint"
+      },
+      {
+        "name": "test-node",
+        "failedStep": "Run Jest tests"
+      }
+    ],
+    "queuedOrInProgressDetected": false,
+    "completedComparableRunUsed": 26732535087
+  },
+  "testNodeClusters": [
+    {
+      "cluster": "PRISMA_MODEL_UNDEFINED_DELETE_MANY",
+      "representativeFile": "src/lib/jobs/__tests__/JobAlertService.test.ts",
+      "suite": "JobAlertService",
+      "errorSummary": "TypeError: Cannot read properties of undefined (reading 'deleteMany')",
+      "boundaryDecision": "NEEDS_SCHEMA_DB_AUTHORIZATION",
+      "localReproductionCommand": "DATABASE_URL=file:./dev.db npx jest src/lib/jobs/__tests__/JobAlertService.test.ts --no-coverage",
+      "localResult": "FAIL (reproduced)",
+      "safeTestOnlyRepair": false,
+      "decisionReason": "Failure points to Prisma model availability/schema-contract assumptions, outside test-only safe boundary."
+    },
+    {
+      "cluster": "AUTONOMOUS_REGISTRY_ENTRY_MISSING",
+      "representativeFile": "src/lib/jobs/__tests__/autonomousJobRegistry.twQ1FinancialIngestCheck.test.ts",
+      "suite": "Taiwan Q1 Financial Ingest Check — registry",
+      "errorSummary": "expect(AUTONOMOUS_JOB_REGISTRY[JOB_NAME]).toBeDefined() received undefined",
+      "boundaryDecision": "NEEDS_REGISTRY_CONTRACT_DECISION",
+      "localReproductionCommand": "DATABASE_URL=file:./dev.db npx jest src/lib/jobs/__tests__/autonomousJobRegistry.twQ1FinancialIngestCheck.test.ts --no-coverage",
+      "localResult": "FAIL (reproduced)",
+      "safeTestOnlyRepair": false,
+      "decisionReason": "Requires product/runtime registry contract decision; test-only assertion edits would mask behavior contract mismatch."
+    },
+    {
+      "cluster": "UI_EXPECTATION_DRIFT",
+      "representativeFile": "src/app/candidates/__tests__/page.test.tsx",
+      "suite": "/candidates page",
+      "errorSummary": "TestingLibraryElementError: Unable to find an element with expected copy text",
+      "boundaryDecision": "NEEDS_PRODUCT_BEHAVIOR_DECISION",
+      "localReproductionCommand": "DATABASE_URL=file:./dev.db npx jest src/app/candidates/__tests__/page.test.tsx --no-coverage",
+      "localResult": "FAIL (reproduced)",
+      "safeTestOnlyRepair": false,
+      "decisionReason": "Text expectations are user-visible product contract; changing tests alone needs behavior ownership decision."
+    },
+    {
+      "cluster": "ORCHESTRATOR_AUDIT_WRITE_COUNT_MISMATCH",
+      "representativeFile": "src/lib/agent-orchestrator/__tests__/llmAuditSmoke.integration.test.ts",
+      "suite": "llmAudit smoke",
+      "errorSummary": "Expected audit/usage appended lines >= 2 but observed 0; blocked event missing",
+      "boundaryDecision": "NEEDS_PRODUCT_BEHAVIOR_DECISION",
+      "localReproductionCommand": "DATABASE_URL=file:./dev.db npx jest src/lib/agent-orchestrator/__tests__/llmAuditSmoke.integration.test.ts --no-coverage",
+      "localResult": "FAIL (reproduced)",
+      "safeTestOnlyRepair": false,
+      "decisionReason": "Touches audit semantics and governance boundary; test-only weakening is prohibited."
+    },
+    {
+      "cluster": "NOTIFICATION_AUTONOMOUS_ONLY_EXPECTATION_MISMATCH",
+      "representativeFile": "src/lib/__tests__/NotificationDeliveryEngine.test.ts",
+      "suite": "NotificationDeliveryEngine deliverAlerts",
+      "errorSummary": "Expected channels length 1 for autonomous-only alerts, received 0",
+      "boundaryDecision": "NEEDS_PRODUCT_BEHAVIOR_DECISION",
+      "localReproductionCommand": "DATABASE_URL=file:./dev.db npx jest src/lib/__tests__/NotificationDeliveryEngine.test.ts --no-coverage",
+      "localResult": "FAIL (reproduced)",
+      "safeTestOnlyRepair": false,
+      "decisionReason": "Represents delivery behavior expectation, not a pure fixture/mock typo."
+    }
+  ],
+  "firstSafeRepairCandidate": {
+    "exists": false,
+    "candidate": null,
+    "reason": "No cluster meets all SAFE_TEST_ONLY_REPAIR constraints without crossing behavior/schema/registry/audit boundaries."
+  },
+  "activeLintDebt": {
+    "command": "npx eslint src tests --ext .js,.jsx,.ts,.tsx",
+    "total": 697,
+    "errors": 368,
+    "warnings": 329,
+    "action": "No broad lint repair in P139"
+  },
+  "codeChanges": {
+    "testOrProdFilesModified": false,
+    "artifactOnly": true,
+    "filesChanged": [
+      "outputs/online_validation/p139_test_node_cluster_decision_gate_report.md",
+      "outputs/online_validation/p139_test_node_cluster_decision_gate.json"
+    ]
+  },
+  "p2BrowserReviewAllowed": false,
+  "finalClassification": "P139_TEST_NODE_CLUSTER_DECISION_ONLY_NO_CODE_CHANGE"
+}
