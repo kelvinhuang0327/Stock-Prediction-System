@@ -1,0 +1,121 @@
+{
+  "taskId": "P140",
+  "title": "Test-Node Boundary Authorization Plan & Single-Lane Unblock Decision",
+  "repo": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System",
+  "branch": "main",
+  "startHead": "7fc086c",
+  "endHead": "7fc086c",
+  "phase0": {
+    "repoVerified": true,
+    "branchVerified": true,
+    "headMatchesExpectedBaselineOrDescendant": true,
+    "unrelatedDirtyStateDetected": true,
+    "dirtyStatePolicy": "Unrelated dirty/untracked files were not staged; only P140 whitelist artifacts are modified.",
+    "p139ArtifactsVerified": true
+  },
+  "latestCi": {
+    "latestRunId": 26732793845,
+    "latestRunHeadSha": "7fc086c90ef63f03b9884610d1732f6d8fdd4777",
+    "latestRunStatus": "completed",
+    "latestRunConclusion": "failure",
+    "latestRunUrl": "https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26732793845",
+    "latestCompletedComparableRunUsed": 26732793845,
+    "failedJobs": [
+      {
+        "name": "lint",
+        "failedStep": "Run ESLint"
+      },
+      {
+        "name": "test-node",
+        "failedStep": "Run Jest tests"
+      }
+    ]
+  },
+  "clusterConsistencyWithP139": {
+    "consistent": true,
+    "notes": [
+      "Prisma deleteMany undefined signature persists in jobs test cleanup paths.",
+      "Registry missing entry signature persists in twQ1 registry suite.",
+      "UI text expectation mismatch signatures persist in candidates/stocks/watchlist tests.",
+      "LLM audit smoke write-count/blocked-event mismatch persists.",
+      "Notification autonomous-only channels length mismatch persists."
+    ]
+  },
+  "boundaryLaneComparison": [
+    {
+      "candidateLane": "Lane A - Schema/DB authorization lane",
+      "failingSuitesAffected": [
+        "src/lib/jobs/__tests__/AutonomousAlertService.test.ts",
+        "src/lib/jobs/__tests__/JobAlertHistoryService.test.ts",
+        "src/lib/jobs/__tests__/RecommendationTrendService.test.ts",
+        "src/lib/jobs/__tests__/RecommendationHistoryService.test.ts",
+        "src/lib/jobs/__tests__/JobAlertService.test.ts",
+        "src/lib/jobs/__tests__/RecommendationLifecycleService.test.ts"
+      ],
+      "expectedUnblockValue": "High",
+      "requiredAuthorization": "Schema/DB authorization",
+      "forbiddenZones": [
+        "prisma schema/migrations in P140",
+        "production DB/data mutation in P140"
+      ],
+      "risk": "High",
+      "recommended": false,
+      "reason": "Potentially high impact but crosses highest-risk governance boundary and likely requires non-trivial data model decisions."
+    },
+    {
+      "candidateLane": "Lane B - Registry contract decision lane",
+      "failingSuitesAffected": [
+        "src/lib/jobs/__tests__/autonomousJobRegistry.twQ1FinancialIngestCheck.test.ts",
+        "src/lib/jobs/__tests__/autonomousJobRunners.twQ1FinancialIngestCheck.test.ts",
+        "src/lib/jobs/__tests__/JobHealthService.test.ts",
+        "src/lib/jobs/__tests__/AutonomousDashboardService.test.ts"
+      ],
+      "expectedUnblockValue": "Medium-High",
+      "requiredAuthorization": "Registry contract decision",
+      "forbiddenZones": [
+        "schema/DB changes",
+        "provider/simulation semantics"
+      ],
+      "risk": "Low-Medium",
+      "recommended": true,
+      "reason": "Narrowest cross-cutting lane with clear contract target and no required schema/data authorization."
+    },
+    {
+      "candidateLane": "Lane C - Product behavior decision lane",
+      "failingSuitesAffected": [
+        "src/app/candidates/__tests__/page.test.tsx",
+        "src/app/stocks/[symbol]/__tests__/page.tab-sync.test.tsx",
+        "src/components/watchlist/__tests__/WatchlistTable.fundamental.test.tsx",
+        "src/lib/agent-orchestrator/__tests__/llmAuditSmoke.integration.test.ts",
+        "src/lib/__tests__/NotificationDeliveryEngine.test.ts"
+      ],
+      "expectedUnblockValue": "Medium",
+      "requiredAuthorization": "Product behavior decision",
+      "forbiddenZones": [
+        "weakening governance/audit semantics",
+        "changing user-visible behavior without product owner signoff"
+      ],
+      "risk": "Medium-High",
+      "recommended": false,
+      "reason": "Touches multiple user-visible and governance semantics; scope too broad for single low-risk unblock lane."
+    }
+  ],
+  "recommendedSingleLane": {
+    "lane": "Lane B - Registry contract decision lane",
+    "whyThisLane": "Best risk/value ratio and smallest authorization surface among unresolved boundaries.",
+    "whyNotOthers": {
+      "laneA": "Requires schema/DB authorization and carries highest migration/contract risk.",
+      "laneC": "Requires broad product behavior decisions across UI, audit, and delivery semantics."
+    },
+    "requiredAuthorizationPhrase": "Authorize Lane B registry contract decision for twQ1FinancialIngestCheck: permit updating autonomous job registry contract and aligned job-runner expectations in code/tests, while explicitly prohibiting schema/DB/provider/simulation changes.",
+    "workerExecutableAfterAuthorization": true
+  },
+  "codeModified": false,
+  "filesChanged": [
+    "outputs/online_validation/p140_test_node_boundary_authorization_plan_report.md",
+    "outputs/online_validation/p140_test_node_boundary_authorization_plan.json"
+  ],
+  "p2BrowserReviewAllowed": false,
+  "next24hPromptP141": "P141 Single-Lane Execution: Registry Contract Decision Lane (twQ1FinancialIngestCheck)\\n\\nContext: Execute only Lane B from P140. Latest CI remains red due to mixed lint + test-node, with registry-contract-related failures included.\\n\\nScope: Update autonomous registry contract and directly dependent tests for twQ1FinancialIngestCheck only.\\n\\nAllowed edits:\\n- src/lib/jobs/autonomousJobRegistry.ts\\n- src/lib/jobs/__tests__/autonomousJobRegistry.twQ1FinancialIngestCheck.test.ts\\n- src/lib/jobs/__tests__/autonomousJobRunners.twQ1FinancialIngestCheck.test.ts\\n- directly dependent test files only if required by compile/type consistency\\n\\nForbidden edits:\\n- prisma schema/migrations/DB/data/runtime logs\\n- provider/source adapter/simulation/optimizer/backtest\\n- package/jest/tsconfig/eslint configs\\n- unrelated product behavior assertions (UI copy/audit semantics/notification semantics)\\n\\nValidation minimum:\\n1) targeted pre-fail reproduction\\n2) targeted post-fix pass for registry lane suites\\n3) no new failures in P133/P134/P137 governance regressions\\n4) run scoped lint for status only (do not broad-fix lint debt)\\n5) produce P141 report+json with exact diff + CI attribution\\n\\nExit: If registry lane cannot be completed without schema/DB or product behavior authorization expansion, stop and classify as blocked with explicit blocker evidence.",
+  "finalClassification": "P140_REGISTRY_CONTRACT_LANE_RECOMMENDED"
+}
