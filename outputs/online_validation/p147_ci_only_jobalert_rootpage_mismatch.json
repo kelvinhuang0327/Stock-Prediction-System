@@ -1,0 +1,195 @@
+{
+  "taskId": "P147",
+  "title": "CI-only JobAlert Rootpage Evidence & Dev-DB Mismatch Isolation",
+  "repo": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System",
+  "branch": "main",
+  "startHead": "2fc6588",
+  "endHeadBeforeCommit": "2fc6588",
+  "previousClassification": "P146_BLOCKED_BY_SCHEMA_DEVDB_AMBIGUITY",
+  "scope": {
+    "mode": "ci_only_evidence",
+    "codeChangesAllowed": false,
+    "schemaChangesAllowed": false,
+    "migrationChangesAllowed": false,
+    "dbRepairAllowed": false,
+    "excludedLanes": [
+      "SystemSetting",
+      "UI expectation",
+      "LLM audit",
+      "Notification behavior"
+    ]
+  },
+  "phase0": {
+    "repoMatched": true,
+    "branchMatched": true,
+    "headMatched": true,
+    "head": "2fc6588",
+    "unrelatedDirtyPresent": true,
+    "notes": "Unrelated dirty/untracked files preserved and excluded."
+  },
+  "p146Precondition": {
+    "reportExists": true,
+    "jsonExists": true,
+    "tracked": true
+  },
+  "latestCompletedCi": {
+    "runId": 26739064464,
+    "workflow": "CI",
+    "headSha": "2fc65889b9ecf2706befd94028f739454f006288",
+    "status": "completed",
+    "conclusion": "failure",
+    "url": "https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26739064464",
+    "jobs": [
+      {
+        "name": "test-node",
+        "jobId": 78798496151,
+        "step": "Run Jest tests",
+        "conclusion": "failure"
+      },
+      {
+        "name": "test-python",
+        "jobId": 78798496167,
+        "step": "Run Python tests",
+        "conclusion": "failure"
+      },
+      {
+        "name": "lint",
+        "jobId": 78798496173,
+        "step": "Run ESLint",
+        "conclusion": "failure"
+      }
+    ],
+    "skippedJobs": [
+      "build",
+      "e2e"
+    ]
+  },
+  "ciEvidence": {
+    "testNode": {
+      "jobId": 78798496151,
+      "failedLogPath": "/tmp/p147_run_26739064464_test-node_failed.log",
+      "signals": [
+        "malformed database schema (JobAlert) - invalid rootpage",
+        "Invalid prisma.jobAlert.deleteMany() invocation",
+        "Invalid prisma.recommendationHistory.deleteMany() invocation",
+        "FAIL src/lib/jobs/__tests__/AutonomousAlertService.test.ts",
+        "FAIL src/lib/jobs/__tests__/JobAlertHistoryService.test.ts",
+        "FAIL src/lib/jobs/__tests__/RecommendationTrendService.test.ts"
+      ]
+    },
+    "testPython": {
+      "jobId": 78798496167,
+      "failedLogPath": "/tmp/p147_run_26739064464_test-python_failed.log",
+      "signals": [
+        "sqlite3.DatabaseError: malformed database schema (JobAlert) - invalid rootpage",
+        "FAILED tests/test_stock_signal_coverage_audit.py::TestAuditScriptExecutable::test_run_audit_callable_dry_run",
+        "FAILED tests/test_survivorship_filter.py::test_basic_filtering",
+        "FAILED tests/test_survivorship_filter.py::test_period_validation",
+        "FAILED tests/test_survivorship_filter.py::test_date_format_handling"
+      ]
+    },
+    "lint": {
+      "jobId": 78798496173,
+      "failedLogPath": "/tmp/p147_run_26739064464_lint_failed.log",
+      "summary": "696 problems (368 errors, 328 warnings)"
+    }
+  },
+  "workflowAnalysis": {
+    "workflowFile": ".github/workflows/ci.yml",
+    "testNodeDatabaseUrl": "file:./dev.db",
+    "testPythonHasExplicitDbPrep": false,
+    "explicitPrismaGenerate": false,
+    "explicitPrismaMigrateDeploy": false,
+    "explicitPrismaDbPush": false,
+    "explicitSqliteIntegrityPrecheck": false,
+    "testNodeAndPythonIndependent": true,
+    "interpretation": "CI consumes repository DB artifacts without explicit preparation/alignment checks."
+  },
+  "localEvidenceReadOnly": {
+    "gitLsFiles": {
+      "prisma/dev.db": "100644 e0c06f4c60d11ec8b2f3cbc9cdeb9ae8cec76161 0",
+      "prisma/dev.db-shm": "100644 c355e7cd8fc3e2e17926eb43f98e7c65590e58f8 0",
+      "prisma/dev.db-wal": "100644 50c932f86c6bc682cae5d28b4bccea8abba025e0 0",
+      "prisma/schema.prisma": "100644 6fd92a4accea9fee7c6feede6c7cc297f060bdfe 0"
+    },
+    "gitStatusPrisma": [
+      "M prisma/dev.db-shm",
+      "M prisma/dev.db-wal"
+    ],
+    "devDbSha256": "2b021894fa22cd3b6a8911dcfd544c36f836848cf51e6baee17349f9420153f7",
+    "sizes": {
+      "prisma/dev.db": "54M",
+      "prisma/dev.db-shm": "32K",
+      "prisma/dev.db-wal": "459K"
+    },
+    "sqlite": {
+      "integrityCheck": "ok",
+      "rootpages": {
+        "JobAlert": 13756,
+        "RecommendationHistory": 13761,
+        "Stock": 2
+      },
+      "jobAlertTableInfoCollected": true,
+      "foreignKeyCheck": "no_rows"
+    },
+    "prismaDelegates": {
+      "jobAlert": true,
+      "recommendationHistory": true
+    }
+  },
+  "representativeLocalTests": {
+    "JobAlertService": {
+      "command": "DATABASE_URL=file:./dev.db npx jest src/lib/jobs/__tests__/JobAlertService.test.ts --no-coverage",
+      "status": "FAIL",
+      "signature": "semantic_assertion_summary_total_0"
+    },
+    "JobAlertHistoryService": {
+      "command": "DATABASE_URL=file:./dev.db npx jest src/lib/jobs/__tests__/JobAlertHistoryService.test.ts --no-coverage",
+      "status": "FAIL",
+      "signature": "semantic_assertion_summary_total_0"
+    },
+    "AutonomousAlertService": {
+      "command": "DATABASE_URL=file:./dev.db npx jest src/lib/jobs/__tests__/AutonomousAlertService.test.ts --no-coverage",
+      "status": "FAIL",
+      "signature": "semantic_assertion_expected_empty_alerts"
+    },
+    "rootpageSeenLocallyInTheseTests": false
+  },
+  "mismatchIsolation": {
+    "ciRootpageSignal": true,
+    "localReadOnlyIntegrityHealthy": true,
+    "localDelegatesPresent": true,
+    "localRepresentativeTestsRootpage": false,
+    "conclusion": "CI-vs-local mismatch remains; strongest lane is CI DB preparation alignment."
+  },
+  "filesChanged": [
+    "outputs/online_validation/p147_ci_only_jobalert_rootpage_mismatch_report.md",
+    "outputs/online_validation/p147_ci_only_jobalert_rootpage_mismatch.json"
+  ],
+  "filesNotChanged": [
+    "prisma/dev.db",
+    "prisma/schema.prisma",
+    "prisma/migrations/20260601040000_p144_add_job_alert_and_recommendation_history/migration.sql"
+  ],
+  "p2BrowserReviewAllowed": false,
+  "finalClassification": "P147_RECOMMEND_CI_DB_PREPARATION_ALIGNMENT_LANE",
+  "next24hPromptP148": "CI DB Preparation Alignment lane only: add deterministic DB artifact source/path checks and pre-test sqlite integrity/rootpage instrumentation in CI jobs, then compare before/after rootpage signature without touching product behavior lanes.",
+  "requiredCompletionCheck": {
+    "completed": true,
+    "tests": {
+      "ciRun26739064464": "FAIL",
+      "localJobAlertService": "FAIL_semantic",
+      "localJobAlertHistoryService": "FAIL_semantic",
+      "localAutonomousAlertService": "FAIL_semantic"
+    },
+    "singleBlockingIssue": "ci_only_jobalert_invalid_rootpage_mismatch_with_local_readonly_healthy_snapshot",
+    "modifiedFiles": [
+      "outputs/online_validation/p147_ci_only_jobalert_rootpage_mismatch_report.md",
+      "outputs/online_validation/p147_ci_only_jobalert_rootpage_mismatch.json"
+    ],
+    "stagedCommitPushStatus": "pending",
+    "ciResult": "latest completed attribution run 26739064464 failure",
+    "p2Allowed": false,
+    "finalClassification": "P147_RECOMMEND_CI_DB_PREPARATION_ALIGNMENT_LANE"
+  }
+}
