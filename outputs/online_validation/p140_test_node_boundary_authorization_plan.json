@@ -4,7 +4,7 @@
   "repo": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System",
   "branch": "main",
   "startHead": "7fc086c",
-  "endHead": "7fc086c",
+  "endHead": "2346b1e",
   "phase0": {
     "repoVerified": true,
     "branchVerified": true,
@@ -14,11 +14,18 @@
     "p139ArtifactsVerified": true
   },
   "latestCi": {
-    "latestRunId": 26732793845,
-    "latestRunHeadSha": "7fc086c90ef63f03b9884610d1732f6d8fdd4777",
-    "latestRunStatus": "completed",
-    "latestRunConclusion": "failure",
-    "latestRunUrl": "https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26732793845",
+    "latestRunId": 26732985353,
+    "latestRunHeadSha": "2346b1e63e939b5fde5a3cff6900a094523ed1f9",
+    "latestRunStatus": "queued",
+    "latestRunConclusion": "",
+    "latestRunUrl": "https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26732985353",
+    "latestCompletedComparableRun": {
+      "runId": 26732793845,
+      "headSha": "7fc086c90ef63f03b9884610d1732f6d8fdd4777",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26732793845"
+    },
     "latestCompletedComparableRunUsed": 26732793845,
     "failedJobs": [
       {

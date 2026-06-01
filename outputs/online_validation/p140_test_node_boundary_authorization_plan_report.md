@@ -4,7 +4,7 @@
 - Repo: /Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System
 - Branch: main
 - Start HEAD: 7fc086c
-- End HEAD: 7fc086c (before artifact commit)
+- End HEAD: 2346b1e
 
 ## 2) Phase 0 actual-state verification
 - Canonical repo verified via `pwd` and `git rev-parse --show-toplevel`.
@@ -69,10 +69,17 @@
 - `outputs/online_validation/p140_test_node_boundary_authorization_plan.json`
 
 ## 11) staged / commit / push status
-- Pending at report generation time; expected artifact-only commit.
+- Staged files: artifact-only
+  - `outputs/online_validation/p140_test_node_boundary_authorization_plan_report.md`
+  - `outputs/online_validation/p140_test_node_boundary_authorization_plan.json`
+- Commit: `2346b1e`
+- Commit message: `P140: boundary authorization plan and single-lane decision`
+- Push: completed to `origin/main`
 
 ## 12) Latest CI result after push, if push happened
-- Pending at report generation time.
+- Latest run after push: `26732985353` (status: `queued`, head: `2346b1e`)
+- URL: https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26732985353
+- Latest completed comparable run: `26732793845` (failure: `lint` + `test-node`)
 
 ## 13) Whether P2 browser review is allowed
 - **No**. Latest CI is not green and no explicit waiver is provided.
@@ -118,7 +125,7 @@ Exit:
 4. 修改檔案清單:
    - `outputs/online_validation/p140_test_node_boundary_authorization_plan_report.md`
    - `outputs/online_validation/p140_test_node_boundary_authorization_plan.json`
-5. staged / commit / push 狀態: pending
-6. CI 結果: latest completed run `26732793845` is failure (`lint` + `test-node`)
+5. staged / commit / push 狀態: done（commit `2346b1e`, pushed to `origin/main`）
+6. CI 結果: latest run `26732985353` is queued; latest completed comparable run `26732793845` is failure (`lint` + `test-node`)
 7. 是否允許進入下一輪 P2 browser review: 否
 8. Final Classification: `P140_REGISTRY_CONTRACT_LANE_RECOMMENDED`
