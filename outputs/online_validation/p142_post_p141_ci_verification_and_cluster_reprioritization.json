@@ -4,7 +4,7 @@
   "repo": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System",
   "branch": "main",
   "startHead": "9fe785d",
-  "endHead": "9fe785d",
+  "endHead": "f70e8ac",
   "phase0": {
     "canonicalRepoVerified": true,
     "canonicalBranchVerified": true,
@@ -160,12 +160,24 @@
     "outputs/online_validation/p142_post_p141_ci_verification_and_cluster_reprioritization.json"
   ],
   "gitOps": {
-    "staged": "pending",
-    "committed": "pending",
-    "pushed": "pending"
+    "staged": "completed",
+    "committed": "f70e8ac",
+    "pushed": "completed"
   },
   "postPushCi": {
-    "status": "not_applicable_yet"
+    "latestRun": {
+      "runId": 26733648319,
+      "headSha": "f70e8ac78e0f7906aa87a4b71d1ada815f523080",
+      "status": "queued",
+      "conclusion": "pending",
+      "url": "https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26733648319"
+    },
+    "latestCompletedComparable": {
+      "runId": 26733348228,
+      "status": "completed",
+      "conclusion": "failure",
+      "summary": "lint + test-node failing"
+    }
   },
   "p2BrowserReviewAllowed": false,
   "finalClassification": "P142_LANE_B_VERIFIED_REMOVED_RECOMMEND_SCHEMA_DB_LANE",
@@ -183,11 +195,11 @@
       "outputs/online_validation/p142_post_p141_ci_verification_and_cluster_reprioritization.json"
     ],
     "gitStatus": {
-      "staged": "pending",
-      "commit": "pending",
-      "push": "pending"
+      "staged": "completed",
+      "commit": "f70e8ac",
+      "push": "completed"
     },
-    "ciResult": "run 26733348228 failure",
+    "ciResult": "latest run 26733648319 queued; latest completed comparable run 26733348228 failure",
     "p2Allowed": false,
     "finalClassification": "P142_LANE_B_VERIFIED_REMOVED_RECOMMEND_SCHEMA_DB_LANE"
   }
