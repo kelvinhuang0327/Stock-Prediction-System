@@ -21,7 +21,7 @@ interface IndicatorData {
 export default function IndicatorsPage() {
     const [symbol, setSymbol] = useState('2330');
     const [data, setData] = useState<StockDataWithIndicators[]>([]);
-    const [institutionalData, setInstitutionalData] = useState<any>(null);
+    const [institutionalData, setInstitutionalData] = useState<{ foreignInvestors: number; investmentTrusts: number; dealers: number; total: number } | null>(null);
     const [loading, setLoading] = useState(true);
     const [selectedCategory, setSelectedCategory] = useState<Category>('all');
 
@@ -37,7 +37,7 @@ export default function IndicatorsPage() {
                 }
 
                 const json = await res.json();
-                const historyData = (Array.isArray(json) ? json : []).map((item: any) => ({
+                const historyData = (Array.isArray(json) ? json : []).map((item: { date: string; open: number; high: number; low: number; close: number; volume: number }) => ({
                     date: item.date,
                     open: item.open,
                     high: item.high,
@@ -68,7 +68,7 @@ export default function IndicatorsPage() {
                             setInstitutionalData(instJson.data);
                         }
                     }
-                } catch (err) {
+                } catch {
                     console.log('Institutional data not available');
                 }
             } catch (err) {

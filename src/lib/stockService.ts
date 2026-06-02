@@ -2,9 +2,7 @@
 import { prisma } from './prisma';
 import {
     Stock,
-    Sector,
-    EconomicEvent,
-    StockDataPoint
+    EconomicEvent
 } from '@/types/stock';
 import {
     POPULAR_STOCKS,
@@ -14,7 +12,7 @@ import {
 } from './mockData';
 
 // Helper to convert Prisma stock to Domain Stock
-const convertPrismaToStock = (pStock: any): Stock => {
+const convertPrismaToStock = (pStock: { id: string; name: string; industry?: string | null; quotes?: Array<{ close: number; change: number; volume: number; open?: number; high?: number; low?: number }>; metrics?: Array<{ pe?: number | null; dividendYield?: number | null }> }): Stock => {
     const latestQuote = pStock.quotes?.[0];
     const metrics = pStock.metrics?.[0];
 
@@ -65,7 +63,7 @@ class StockService {
                 const res = await fetch(`/api/stocks?search=${encodeURIComponent(query)}&limit=10`);
                 if (res.ok) {
                     const json = await res.json();
-                    return json.data.map((s: any) => {
+                    return json.data.map((s: { code: string; name: string; price?: number; change?: number; volume?: number; industry?: string; pe?: number; yield?: number }) => {
                         const price = s.price || 0;
                         const change = s.change || 0;
                         const changePercent = (price > 0 && price !== change)
@@ -146,7 +144,7 @@ class StockService {
     }
 
     // Get all sectors - Hybrid
-    async getSectors(): Promise<any[]> {
+    async getSectors(): Promise<unknown[]> {
         // Client: Use API
         if (typeof window !== 'undefined') {
             try {
@@ -180,7 +178,7 @@ class StockService {
                     }
                 });
                 if (stocks.length > 0) return stocks.map(convertPrismaToStock);
-            } catch (e) { }
+            } catch { }
         }
 
         return POPULAR_STOCKS.filter(s => s.sector === sectorId);
@@ -191,7 +189,7 @@ class StockService {
     async filterStocks(filter: StockFilter): Promise<Stock[]> {
         try {
             // 1. Build Base Query (Sector/Industry)
-            const where: any = {};
+            const where: Record<string, unknown> = {};
             if (filter.sector) {
                 // Try to match sector ID to industry name if possible due to mismatch in naming conventions
                 // Or just assume input is industry name if ID match fails
@@ -263,7 +261,7 @@ class StockService {
                 }
             });
             if (stocks.length > 0) return stocks.map(convertPrismaToStock);
-        } catch (e) { }
+        } catch { }
 
         return POPULAR_STOCKS;
     }
@@ -281,7 +279,7 @@ class StockService {
             });
             const converted = stocks.map(convertPrismaToStock);
             return converted.sort((a, b) => b.changePercent - a.changePercent).slice(0, limit);
-        } catch (e) { }
+        } catch { }
 
         return [...POPULAR_STOCKS]
             .sort((a, b) => b.changePercent - a.changePercent)
@@ -299,7 +297,7 @@ class StockService {
             });
             const converted = stocks.map(convertPrismaToStock);
             return converted.sort((a, b) => a.changePercent - b.changePercent).slice(0, limit);
-        } catch (e) { }
+        } catch { }
 
         return [...POPULAR_STOCKS]
             .sort((a, b) => a.changePercent - b.changePercent)
@@ -318,7 +316,7 @@ class StockService {
             });
             const converted = stocks.map(convertPrismaToStock);
             return converted.sort((a, b) => b.volume - a.volume).slice(0, limit);
-        } catch (e) { }
+        } catch { }
 
         return [...POPULAR_STOCKS]
             .sort((a, b) => b.volume - a.volume)
@@ -326,7 +324,7 @@ class StockService {
     }
 
     // Get price history
-    async getPriceHistory(symbol: string, days: number = 60): Promise<any[]> {
+    async getPriceHistory(symbol: string, days: number = 60): Promise<unknown[]> {
         try {
             const quotes = await prisma.stockQuote.findMany({
                 where: { stockId: symbol },
@@ -344,7 +342,7 @@ class StockService {
                     volume: q.volume
                 }));
             }
-        } catch (e) { }
+        } catch { }
 
         const stock = await this.getStock(symbol);
         return generatePriceHistory(days, stock?.price || 100);
@@ -369,7 +367,7 @@ class StockService {
                     description: n.summary || undefined
                 }));
             }
-        } catch (e) { }
+        } catch { }
 
         return generateEconomicEvents();
     }
@@ -402,7 +400,7 @@ class StockService {
     // Get sentiment data (Bridged to MarketStatusService)
     async getSentimentData() {
         try {
-            let status: any = { status: 'Bullish' };
+            let status: { status: string } = { status: 'Bullish' };
             if (typeof window === 'undefined') {
                 const { marketStatusService } = await import('./services/MarketStatusService');
                 status = await marketStatusService.getStatus();
@@ -437,7 +435,7 @@ class StockService {
                 socialMediaBuzz: 60 + (Math.random() * 20),
                 volatilityIndex: status.status === 'Bearish' ? 25 : 15,
             };
-        } catch (e) {
+        } catch {
             // Fallback
             return {
                 fearGreedIndex: 50,
@@ -451,7 +449,7 @@ class StockService {
     }
 
     // Get dividend history
-    async getDividendHistory(symbol: string) {
+    async getDividendHistory(_symbol: string) {
         // TODO: Add Dividend model to DB
         const years = [2023, 2022, 2021, 2020, 2019];
         return years.map(year => ({
