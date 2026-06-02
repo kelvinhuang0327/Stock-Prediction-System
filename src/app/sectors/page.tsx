@@ -7,8 +7,8 @@ import { stockService } from '@/lib/stockService';
 import { Sector } from '@/lib/mockData';
 import { ResponsiveContainer, Treemap, Tooltip } from 'recharts';
 
-const CustomContent = (props: any) => {
-    const { root, depth, x, y, width, height, index, payload, colors, rank, name } = props;
+const CustomContent = (props: { depth: number; x: number; y: number; width: number; height: number; payload?: { changePercent?: number }; name: string }) => {
+    const { depth, x, y, width, height, payload, name } = props;
 
     if (!payload) return null;
 

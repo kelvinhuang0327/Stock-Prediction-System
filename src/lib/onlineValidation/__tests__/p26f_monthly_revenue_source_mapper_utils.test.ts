@@ -153,38 +153,38 @@ describe('P26F MonthlyRevenue Source Mapper Utils', () => {
 
     it('preserves alphaScore in activeScoringSnapshot', () => {
       const rows: MonthlyRevenueSourceRow[] = [];
-      const mapped = mapMonthlyRevenueToReplayRow(baseCorpusRow, rows, 'TEST') as any;
+      const mapped = mapMonthlyRevenueToReplayRow(baseCorpusRow, rows, 'TEST') as { activeScoringSnapshot: { alphaScore: number } };
       expect(mapped.activeScoringSnapshot.alphaScore).toBe(75);
     });
 
     it('result has p26fMonthlyRevenueContext.readOnly === true', () => {
       const rows: MonthlyRevenueSourceRow[] = [];
-      const mapped = mapMonthlyRevenueToReplayRow(baseCorpusRow, rows, 'TEST') as any;
+      const mapped = mapMonthlyRevenueToReplayRow(baseCorpusRow, rows, 'TEST') as { p26fMonthlyRevenueContext: { readOnly: boolean } };
       expect(mapped.p26fMonthlyRevenueContext.readOnly).toBe(true);
     });
 
     it('result has p26fMonthlyRevenueContext.entersAlphaScore === false', () => {
       const rows: MonthlyRevenueSourceRow[] = [];
-      const mapped = mapMonthlyRevenueToReplayRow(baseCorpusRow, rows, 'TEST') as any;
+      const mapped = mapMonthlyRevenueToReplayRow(baseCorpusRow, rows, 'TEST') as { p26fMonthlyRevenueContext: { entersAlphaScore: boolean } };
       expect(mapped.p26fMonthlyRevenueContext.entersAlphaScore).toBe(false);
     });
 
     it('adds p26fMonthlyRevenueContext to output row', () => {
       const rows: MonthlyRevenueSourceRow[] = [];
-      const mapped = mapMonthlyRevenueToReplayRow(baseCorpusRow, rows, 'TEST') as any;
+      const mapped = mapMonthlyRevenueToReplayRow(baseCorpusRow, rows, 'TEST') as { p26fMonthlyRevenueContext: unknown };
       expect(mapped.p26fMonthlyRevenueContext).toBeDefined();
     });
 
     it('preserves researchBucket field', () => {
       const rows: MonthlyRevenueSourceRow[] = [];
-      const mapped = mapMonthlyRevenueToReplayRow(baseCorpusRow, rows, 'TEST') as any;
+      const mapped = mapMonthlyRevenueToReplayRow(baseCorpusRow, rows, 'TEST') as { researchBucket: string };
       expect(mapped.researchBucket).toBe('HighPriority');
     });
   });
 
   describe('buildMonthlyRevenueContextForReplayRow', () => {
     it('returns NO_MATCH context when selectedSource is null', () => {
-      const ctx = buildMonthlyRevenueContextForReplayRow({}, null, 'TEST_MODE') as any;
+      const ctx = buildMonthlyRevenueContextForReplayRow({}, null, 'TEST_MODE') as { sourceMatched: boolean; sourceHash: string; pitGateStatus: string; revenue: number | null };
       expect(ctx.sourceMatched).toBe(false);
       expect(ctx.sourceHash).toBe('NO_MATCH');
       expect(ctx.pitGateStatus).toBe('NO_VISIBLE_SOURCE_ROW');
@@ -193,21 +193,21 @@ describe('P26F MonthlyRevenue Source Mapper Utils', () => {
 
     it('returns matched context when selectedSource is provided', () => {
       const src = makeRow({ stockId: '2330', year: 2026, month: 2, revenue: 200, releaseDate: '2026-02-10T00:00:00Z' });
-      const ctx = buildMonthlyRevenueContextForReplayRow({}, src, 'REAL') as any;
+      const ctx = buildMonthlyRevenueContextForReplayRow({}, src, 'REAL') as { sourceMatched: boolean; pitGateStatus: string; revenue: number };
       expect(ctx.sourceMatched).toBe(true);
       expect(ctx.pitGateStatus).toBe('VISIBLE_RELEASE_DATE_GATE_PASS');
       expect(ctx.revenue).toBe(200);
     });
 
     it('context visibilityGate is always releaseDate <= asOfDate', () => {
-      const ctx = buildMonthlyRevenueContextForReplayRow({}, null, 'TEST') as any;
+      const ctx = buildMonthlyRevenueContextForReplayRow({}, null, 'TEST') as { visibilityGate: string };
       expect(ctx.visibilityGate).toBe('releaseDate <= asOfDate');
     });
   });
 
   describe('validateMonthlyRevenueMappingNoOutcomeFields', () => {
     it('passes when no forbidden fields in context', () => {
-      const row: any = {
+      const row: { symbol: string; p26fMonthlyRevenueContext: { readOnly: boolean; entersAlphaScore: boolean; revenue: number } } = {
         symbol: '2330',
         p26fMonthlyRevenueContext: { readOnly: true, entersAlphaScore: false, revenue: 100 },
       };
@@ -217,7 +217,7 @@ describe('P26F MonthlyRevenue Source Mapper Utils', () => {
     });
 
     it('fails when outcomePrice is in context', () => {
-      const row: any = {
+      const row: { symbol: string; p26fMonthlyRevenueContext: { readOnly: boolean; entersAlphaScore: boolean; outcomePrice: number } } = {
         symbol: '2330',
         p26fMonthlyRevenueContext: { readOnly: true, entersAlphaScore: false, outcomePrice: 99.9 },
       };
@@ -227,7 +227,7 @@ describe('P26F MonthlyRevenue Source Mapper Utils', () => {
     });
 
     it('fails when returnPct is in context', () => {
-      const row: any = {
+      const row: { symbol: string; p26fMonthlyRevenueContext: { readOnly: boolean; entersAlphaScore: boolean; returnPct: number } } = {
         symbol: '2330',
         p26fMonthlyRevenueContext: { readOnly: true, entersAlphaScore: false, returnPct: 0.05 },
       };
@@ -238,13 +238,13 @@ describe('P26F MonthlyRevenue Source Mapper Utils', () => {
 
   describe('validateMonthlyRevenueMappingReadOnly', () => {
     it('passes when readOnly is true', () => {
-      const row: any = { p26fMonthlyRevenueContext: { readOnly: true } };
+      const row: { p26fMonthlyRevenueContext: { readOnly: boolean } } = { p26fMonthlyRevenueContext: { readOnly: true } };
       const result = validateMonthlyRevenueMappingReadOnly(row);
       expect(result.valid).toBe(true);
     });
 
     it('fails when readOnly is false', () => {
-      const row: any = { p26fMonthlyRevenueContext: { readOnly: false } };
+      const row: { p26fMonthlyRevenueContext: { readOnly: boolean } } = { p26fMonthlyRevenueContext: { readOnly: false } };
       const result = validateMonthlyRevenueMappingReadOnly(row);
       expect(result.valid).toBe(false);
     });
@@ -252,13 +252,13 @@ describe('P26F MonthlyRevenue Source Mapper Utils', () => {
 
   describe('validateMonthlyRevenueDoesNotEnterScoring', () => {
     it('passes when entersAlphaScore is false', () => {
-      const row: any = { p26fMonthlyRevenueContext: { entersAlphaScore: false } };
+      const row: { p26fMonthlyRevenueContext: { entersAlphaScore: boolean } } = { p26fMonthlyRevenueContext: { entersAlphaScore: false } };
       const result = validateMonthlyRevenueDoesNotEnterScoring(row);
       expect(result.valid).toBe(true);
     });
 
     it('fails when entersAlphaScore is true', () => {
-      const row: any = { p26fMonthlyRevenueContext: { entersAlphaScore: true } };
+      const row: { p26fMonthlyRevenueContext: { entersAlphaScore: boolean } } = { p26fMonthlyRevenueContext: { entersAlphaScore: true } };
       const result = validateMonthlyRevenueDoesNotEnterScoring(row);
       expect(result.valid).toBe(false);
     });
