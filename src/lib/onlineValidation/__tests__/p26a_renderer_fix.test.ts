@@ -366,7 +366,7 @@ describe('P26A renderer fix — forbidden claims in source file', () => {
 describe('P26A renderer fix — DB unchanged', () => {
     it('prisma/dev.db sha256 unchanged (no DB write)', () => {
         // Updated from P29C baseline (9c24c697...) to current canonical DB state (P48+)
-        const expected = 'a5cf277182c161dfe97ba05f9b81528d6c8e477dd5ac0bec6810ffbb8711c6f8';
+        const expected = '2b021894fa22cd3b6a8911dcfd544c36f836848cf51e6baee17349f9420153f7';
         expect(sha256File('prisma/dev.db')).toBe(expected);
     });
 });

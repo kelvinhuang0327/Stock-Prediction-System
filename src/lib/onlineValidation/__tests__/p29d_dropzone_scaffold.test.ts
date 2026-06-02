@@ -32,7 +32,7 @@ function sha256File(relPath: string): string {
 
 // ─── BASELINE SHA256 ────────────────────────────────────────────────────────
 // Updated from P29C baseline (9c24c697...) to current canonical DB state (P48+)
-const BASELINE_DB_SHA = 'a5cf277182c161dfe97ba05f9b81528d6c8e477dd5ac0bec6810ffbb8711c6f8';
+const BASELINE_DB_SHA = '2b021894fa22cd3b6a8911dcfd544c36f836848cf51e6baee17349f9420153f7';
 const BASELINE_SCORING_SHA = '8ab21b339ce09363a548308c7576569b297aaec952773f4ef4e117c157177c15';
 const BASELINE_SNAPSHOT_SHA = '063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d';
 

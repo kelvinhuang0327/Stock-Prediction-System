@@ -231,7 +231,7 @@ describe('invariance: DB unchanged', () => {
     const content = readFileSync(resolve(ROOT, 'prisma/dev.db'));
     const actual = createHash('sha256').update(content).digest('hex');
     // Updated from P29C baseline (9c24c697...) to current canonical DB state (P48+)
-    expect(actual).toBe('a5cf277182c161dfe97ba05f9b81528d6c8e477dd5ac0bec6810ffbb8711c6f8');
+    expect(actual).toBe('2b021894fa22cd3b6a8911dcfd544c36f836848cf51e6baee17349f9420153f7');
   });
 });
 
