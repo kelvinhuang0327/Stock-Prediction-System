@@ -48,7 +48,7 @@ describe('P13MonthlyRevenuePitUtils', () => {
     });
 
     it('Missing year/month → MISSING, null releaseDate', () => {
-      const r = inferMonthlyRevenueReleaseDate({ stockId: 'X', revenue: 500 } as any);
+      const r = inferMonthlyRevenueReleaseDate({ stockId: 'X', revenue: 500 } as Parameters<typeof inferMonthlyRevenueReleaseDate>[0]);
       expect(r.releaseDateSource).toBe('MISSING');
       expect(r.releaseDate).toBeNull();
       expect(r.repairNeeded).toBe(true);
@@ -65,7 +65,7 @@ describe('P13MonthlyRevenuePitUtils', () => {
       const r = inferMonthlyRevenueReleaseDate({
         stockId: 'X', year: 2024, month: 8, revenue: 1100,
         outcomePrice: 150, returnPct: 12.5, realizedReturnClass: 'STRONG_BUY',
-      } as any);
+      } as Parameters<typeof inferMonthlyRevenueReleaseDate>[0]);
       expect(r.releaseDate).toBe('2024-09-10');
       expect(r.releaseDateSource).toBe('INFERRED_NEXT_MONTH_10TH');
     });
@@ -104,7 +104,7 @@ describe('P13MonthlyRevenuePitUtils', () => {
     });
 
     it('Missing year/month → unavailable', () => {
-      const r = isMonthlyRevenueAvailableAsOf({ stockId: 'X', revenue: 100 } as any, '2024-02-15');
+      const r = isMonthlyRevenueAvailableAsOf({ stockId: 'X', revenue: 100 } as Parameters<typeof isMonthlyRevenueAvailableAsOf>[0], '2024-02-15');
       expect(r.available).toBe(false);
     });
 
@@ -130,7 +130,7 @@ describe('P13MonthlyRevenuePitUtils', () => {
     });
 
     it('Missing year/month → valid=false with error', () => {
-      const v = validateMonthlyRevenueReleaseDate({ revenue: 500 } as any);
+      const v = validateMonthlyRevenueReleaseDate({ revenue: 500 } as Parameters<typeof validateMonthlyRevenueReleaseDate>[0]);
       expect(v.valid).toBe(false);
       expect(v.errors.length).toBeGreaterThan(0);
     });
@@ -177,7 +177,7 @@ describe('P13MonthlyRevenuePitUtils', () => {
 
     it('Contains P13-MR-001 through P13-MR-005 requirement IDs', () => {
       const contract = buildMonthlyRevenuePitContract();
-      const ids = contract.pitSafetyRequirements.map((r: any) => r.id);
+      const ids = contract.pitSafetyRequirements.map((r: { id: string }) => r.id);
       expect(ids).toContain('P13-MR-001');
       expect(ids).toContain('P13-MR-005');
     });
@@ -208,7 +208,7 @@ describe('P13MonthlyRevenuePitUtils', () => {
 
     it('Contract missing pitSafetyRequirements fails', () => {
       const bad = { contractVersion: 'test', nonGoals: [] };
-      const v = validateMonthlyRevenuePitContract(bad as any);
+      const v = validateMonthlyRevenuePitContract(bad as Parameters<typeof validateMonthlyRevenuePitContract>[0]);
       expect(v.valid).toBe(false);
     });
   });
@@ -218,33 +218,33 @@ describe('P13MonthlyRevenuePitUtils', () => {
   describe('scanForbiddenClaims', () => {
     it('Catches ROI claim', () => {
       const hits = scanForbiddenClaims('Expected ROI is 20%');
-      expect(hits.some((h: any) => h.label === 'ROI')).toBe(true);
+      expect(hits.some((h: { label: string }) => h.label === 'ROI')).toBe(true);
     });
 
     it('Catches alpha claim', () => {
       // alphaScore is OK, but standalone 'alpha' should be caught
       const hits2 = scanForbiddenClaims('pure alpha play');
-      expect(hits2.some((h: any) => h.label === 'alpha')).toBe(true);
+      expect(hits2.some((h: { label: string }) => h.label === 'alpha')).toBe(true);
     });
 
     it('Catches win-rate claim', () => {
       const hits = scanForbiddenClaims('Win-rate is 75%');
-      expect(hits.some((h: any) => h.label === 'win-rate')).toBe(true);
+      expect(hits.some((h: { label: string }) => h.label === 'win-rate')).toBe(true);
     });
 
     it('Catches profit claim', () => {
       const hits = scanForbiddenClaims('Expected profit of 30%');
-      expect(hits.some((h: any) => h.label === 'profit')).toBe(true);
+      expect(hits.some((h: { label: string }) => h.label === 'profit')).toBe(true);
     });
 
     it('Catches guaranteed claim', () => {
       const hits = scanForbiddenClaims('This is guaranteed to outperform');
-      expect(hits.some((h: any) => h.label === 'guaranteed' || h.label === 'outperform')).toBe(true);
+      expect(hits.some((h: { label: string }) => h.label === 'guaranteed' || h.label === 'outperform')).toBe(true);
     });
 
     it('Catches buy/sell recommendation', () => {
       const hits = scanForbiddenClaims('You should buy this stock');
-      expect(hits.some((h: any) => /buy[\/]sell/.test(h.label))).toBe(true);
+      expect(hits.some((h: { label: string }) => /buy[\/]sell/.test(h.label))).toBe(true);
     });
 
     it('Does not flag alphaScore context', () => {
@@ -276,7 +276,7 @@ describe('P13MonthlyRevenuePitUtils', () => {
           { id: 'I3', priority: 'P2', status: 'DONE', description: 'item3', blocking: false },
         ],
       };
-      const s = summarizeMonthlyRevenuePitRepairPlan(plan as any);
+      const s = summarizeMonthlyRevenuePitRepairPlan(plan as Parameters<typeof summarizeMonthlyRevenuePitRepairPlan>[0]);
       expect(s.planId).toBe('test-plan');
       expect(s.totalItems).toBe(3);
       expect(s.blockers).toBe(1); // I1: blocking=true, status=OPEN
@@ -303,7 +303,7 @@ describe('P13MonthlyRevenuePitUtils', () => {
       const contaminated = inferMonthlyRevenueReleaseDate({
         stockId: 'X', year: 2024, month: 7, revenue: 800,
         returnPct: 25.0, realizedReturnClass: 'STRONG_BUY',
-      } as any);
+      } as Parameters<typeof inferMonthlyRevenueReleaseDate>[0]);
       expect(contaminated.releaseDate).toBe(clean.releaseDate);
       expect(contaminated.releaseDateSource).toBe(clean.releaseDateSource);
     });

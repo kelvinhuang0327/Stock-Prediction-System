@@ -5,7 +5,11 @@ import React, { useEffect, useState } from 'react';
 import { Server, Activity, Database, Bell, RefreshCw, CheckCircle2, AlertCircle, HardDrive } from 'lucide-react';
 
 export default function SettingsPage() {
-    const [status, setStatus] = useState<any>(null);
+    const [status, setStatus] = useState<{
+        counts?: { stocks?: number; quotes?: number };
+        dbSize?: string;
+        lastSyncLogs?: Array<{ id: string; timestamp: string; endpoint: string; status: string; duration: number }>;
+    } | null>(null);
     const [loading, setLoading] = useState(true);
     const [syncing, setSyncing] = useState(false);
     const [notifying, setNotifying] = useState(false);
@@ -39,7 +43,7 @@ export default function SettingsPage() {
             } else {
                 setMessage({ type: 'error', text: data.error || 'Sync Failed' });
             }
-        } catch (e) {
+        } catch {
             setMessage({ type: 'error', text: 'Sync Error' });
         } finally {
             setSyncing(false);
@@ -57,7 +61,7 @@ export default function SettingsPage() {
             } else {
                 setMessage({ type: 'error', text: data.message || 'Notification Failed' });
             }
-        } catch (e) {
+        } catch {
             setMessage({ type: 'error', text: 'Network Error' });
         } finally {
             setNotifying(false);
@@ -181,7 +185,7 @@ export default function SettingsPage() {
                                             } else {
                                                 setMessage({ type: 'error', text: 'Monitor Failed' });
                                             }
-                                        } catch (e) {
+                                        } catch {
                                             setMessage({ type: 'error', text: 'Monitor Error' });
                                         }
                                     }}
@@ -249,7 +253,7 @@ export default function SettingsPage() {
                                             } else {
                                                 setMessage({ type: 'error', text: 'Restore Failed' });
                                             }
-                                        } catch (err) {
+                                        } catch {
                                             setMessage({ type: 'error', text: 'Invalid File' });
                                         }
                                     };
@@ -276,7 +280,7 @@ export default function SettingsPage() {
                             </tr>
                         </thead>
                         <tbody className="divide-y">
-                            {status?.lastSyncLogs?.map((log: any) => (
+                            {status?.lastSyncLogs?.map((log: { id: string; timestamp: string; endpoint: string; status: string; duration: number }) => (
                                 <tr key={log.id}>
                                     <td className="p-3 font-mono text-slate-600">{new Date(log.timestamp).toLocaleString()}</td>
                                     <td className="p-3 font-bold text-slate-800">{log.endpoint}</td>

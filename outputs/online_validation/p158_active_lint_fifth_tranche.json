@@ -1,0 +1,43 @@
+{
+  "phase0": {
+    "repo": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System",
+    "branch": "main",
+    "head_start": "ed2d5eb",
+    "ci_latest_comparable": "26807957005"
+  },
+  "lint_baseline_before": {
+    "problems": 626,
+    "errors": 332,
+    "warnings": 294
+  },
+  "selected_tranche": {
+    "files": [
+      "src/lib/onlineValidation/__tests__/p13monthly_revenue_pit_utils.test.ts",
+      "src/app/settings/page.tsx"
+    ],
+    "error_count": 20,
+    "selected_rules": [
+      "@typescript-eslint/no-explicit-any",
+      "@typescript-eslint/no-unused-vars"
+    ],
+    "rationale": "Selected 2 files with exactly 20 combined rule violations (16 errors, 4 warnings). Fixed them together as they formed the next highest density tranche."
+  },
+  "lint_after": {
+    "problems": 606,
+    "errors": 316,
+    "warnings": 290,
+    "tranche_resolved": true
+  },
+  "db_invariance_regression": {
+    "p26a_renderer_fix": "PASS",
+    "p26a_batch_pipeline_wiring": "PASS",
+    "p29d_dropzone_scaffold": "PASS"
+  },
+  "remaining_failure_matrix": {
+    "db_invariance": "RESOLVED",
+    "active_lint": "ACTIVE_REMAINING (606 problems remaining)",
+    "product_behavior_jest": "ACTIVE"
+  },
+  "classification": "P158_ACTIVE_LINT_TRANCHE_REPAIRED_CI_STILL_RED_PRODUCT_BEHAVIOR_OR_REMAINING_LINT",
+  "p2_browser_review_unlocked": false
+}
