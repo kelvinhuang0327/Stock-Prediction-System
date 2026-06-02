@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { ArrowUp, ArrowDown, Activity, ShieldCheck, AlertTriangle, TrendingUp } from 'lucide-react';
+import { ArrowUp, ArrowDown, ShieldCheck, AlertTriangle, TrendingUp } from 'lucide-react';
 
 export function MarketOverview() {
-    const [status, setStatus] = useState<any>(null);
+    const [status, setStatus] = useState<{ status: string; scalingFactor?: number } | null>(null);
     const [indices, setIndices] = useState([
         {
             code: 't00',
@@ -48,7 +48,7 @@ export function MarketOverview() {
                     if (!res.ok) return null;
                     const json = await res.json();
                     return json.data;
-                } catch (e) {
+                } catch {
                     return null;
                 }
             }));
@@ -115,7 +115,7 @@ export function MarketOverview() {
             </div>
 
             {/* Indices */}
-            {indices.map((index, i) => {
+            {indices.map((index) => {
                 const isPositive = index.change >= 0;
                 const Icon = isPositive ? ArrowUp : ArrowDown;
                 // Taiwan: Red Up, Green Down

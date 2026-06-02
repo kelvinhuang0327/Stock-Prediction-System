@@ -30,7 +30,6 @@ import {
   scanForbiddenClaims,
   type FixtureDb,
   type FixtureRow,
-  type BackfillResult,
 } from '../P18MonthlyRevenueFixtureDbUtils';
 
 // ─── Mock FixtureDb ────────────────────────────────────────────────────────────
@@ -52,7 +51,7 @@ function makeMockDb(initialRows: Record<string, unknown>[] = []): FixtureDb & {
       }
       return this._rows as T[];
     },
-    getColumns(_tableName: string): string[] { return this._columns; },
+    getColumns(): string[] { return this._columns; },
   };
   return state;
 }
@@ -300,9 +299,9 @@ describe('inferReleaseDateForRow', () => {
 describe('runMonthlyRevenueReleaseDateBackfill', () => {
   function makeBackfillDb(rows: Record<string, unknown>[]): FixtureDb {
     return {
-      exec(_sql: string) {},
-      query<T>(_sql: string): T[] { return rows as T[]; },
-      getColumns(_t: string) { return ['id','stockId','year','month','revenue','yoyGrowth','momGrowth','releaseDate','releaseDateSource','releaseDateConfidence','createdAt']; },
+      exec() {},
+      query<T>(): T[] { return rows as T[]; },
+      getColumns() { return ['id','stockId','year','month','revenue','yoyGrowth','momGrowth','releaseDate','releaseDateSource','releaseDateConfidence','createdAt']; },
     };
   }
 
@@ -366,10 +365,10 @@ describe('runMonthlyRevenueReleaseDateBackfill', () => {
     const sqls: string[] = [];
     const db: FixtureDb = {
       exec(sql) { sqls.push(sql); },
-      query<T>(_sql: string): T[] {
+      query<T>(): T[] {
         return [{ id: 'r1', stockId: '2330', year: 2024, month: 1, revenue: 10000, releaseDate: null }] as T[];
       },
-      getColumns(_t: string) { return ['id','stockId','year','month','revenue','releaseDate','releaseDateSource','releaseDateConfidence']; },
+      getColumns() { return ['id','stockId','year','month','revenue','releaseDate','releaseDateSource','releaseDateConfidence']; },
     };
     runMonthlyRevenueReleaseDateBackfill(db);
     const allSql = sqls.join('\n');
@@ -416,13 +415,13 @@ describe('checkReleaseDateAvailability', () => {
 describe('validateFixtureMonthlyRevenueRows', () => {
   it('returns valid for rows with valid release dates', () => {
     const db = {
-      exec(_sql: string) {},
-      query<T>(_sql: string): T[] {
+      exec() {},
+      query<T>(): T[] {
         return [
           { id: 's1', stockId: '2330', year: 2024, month: 1, revenue: 10000, releaseDate: '2024-02-10', releaseDateSource: 'INFERRED_NEXT_MONTH_10TH', releaseDateConfidence: 'LOW_TO_MEDIUM' },
         ] as T[];
       },
-      getColumns(_t: string) { return ['id','stockId','year','month','revenue','releaseDate','releaseDateSource','releaseDateConfidence']; },
+      getColumns() { return ['id','stockId','year','month','revenue','releaseDate','releaseDateSource','releaseDateConfidence']; },
     };
     const result = validateFixtureMonthlyRevenueRows(db);
     expect(result.valid).toBe(true);
@@ -432,13 +431,13 @@ describe('validateFixtureMonthlyRevenueRows', () => {
 
   it('returns errors for rows missing releaseDate', () => {
     const db = {
-      exec(_sql: string) {},
-      query<T>(_sql: string): T[] {
+      exec() {},
+      query<T>(): T[] {
         return [
           { id: 'r1', stockId: '2330', year: 2024, month: 1, revenue: 10000, releaseDate: null },
         ] as T[];
       },
-      getColumns(_t: string) { return ['id','stockId','year','month','revenue','releaseDate']; },
+      getColumns() { return ['id','stockId','year','month','revenue','releaseDate']; },
     };
     const result = validateFixtureMonthlyRevenueRows(db);
     // null releaseDate is allowed post-backfill if it was invalid row — but at minimum rowCount should be 1
@@ -463,9 +462,9 @@ describe('runMonthlyRevenueRollback', () => {
 
   it('post-rollback columns exclude releaseDate fields', () => {
     const db: FixtureDb = {
-      exec(_sql: string) {},
-      query<T>(_sql: string): T[] { return [] as T[]; },
-      getColumns(_t: string) { return ['id','stockId','year','month','revenue','yoyGrowth','momGrowth','createdAt']; },
+      exec() {},
+      query<T>(): T[] { return [] as T[]; },
+      getColumns() { return ['id','stockId','year','month','revenue','yoyGrowth','momGrowth','createdAt']; },
     };
     const result = runMonthlyRevenueRollback(db, '-- rollback', { validatePostConditions: true });
     expect(result.postColumns).not.toContain('releaseDate');
