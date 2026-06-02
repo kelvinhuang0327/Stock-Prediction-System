@@ -93,7 +93,7 @@ export async function POST(request: NextRequest) {
     const isRegimeAware = regimeMode !== 'ignore';
 
     const cacheKey = `backtest:${symbol}:${strategy}:${months}:${regimeMode}:${allowedRegimes.sort().join(',')}:${asOfDate}`;
-    const cached = apiCache.get<any>(cacheKey);
+    const cached = apiCache.get<unknown>(cacheKey);
     if (cached) return NextResponse.json(cached);
 
     try {
@@ -255,7 +255,7 @@ export async function GET(request: NextRequest) {
     if (!symbol) {
         // Return list of backtestable stocks
         const cacheKey = 'backtest:eligible';
-        const cached = apiCache.get<any>(cacheKey);
+        const cached = apiCache.get<unknown>(cacheKey);
         if (cached) return NextResponse.json(cached);
 
         try {

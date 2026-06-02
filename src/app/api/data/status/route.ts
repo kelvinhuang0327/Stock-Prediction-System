@@ -55,8 +55,9 @@ export async function GET() {
     });
 
     // InstitutionalChip
-    const chipCount = await (prisma as any).institutionalChip.count();
-    const chipStocks = chipCount > 0 ? await (prisma as any).institutionalChip.groupBy({
+    const prismaDynamic = prisma as unknown as Record<string, { count: () => Promise<number>, groupBy: (args: unknown) => Promise<unknown[]> }>;
+    const chipCount = await prismaDynamic.institutionalChip.count();
+    const chipStocks = chipCount > 0 ? await prismaDynamic.institutionalChip.groupBy({
       by: ['stockId'],
     }) : [];
     results.push({
@@ -123,7 +124,8 @@ export async function GET() {
       ['strategy_signal', 'StrategySignal'],
     ]) {
       try {
-        const count = await (prisma as any)[table.charAt(0).toLowerCase() + table.slice(1)].count();
+        const prismaDynamic = prisma as unknown as Record<string, { count: () => Promise<number> }>;
+        const count = await prismaDynamic[table.charAt(0).toLowerCase() + table.slice(1)].count();
         results.push({
           id, table, rowCount: count, stockCount: 0, dateRange: null,
           grade: count > 0 ? 'C' : 'D', usable: count > 0,

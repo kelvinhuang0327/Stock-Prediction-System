@@ -4,7 +4,7 @@ import { apiCache } from '@/lib/cache';
 
 export async function GET() {
     const cacheKey = 'market:regime';
-    const cached = apiCache.get<any>(cacheKey);
+    const cached = apiCache.get<unknown>(cacheKey);
     if (cached) return NextResponse.json(cached);
 
     try {

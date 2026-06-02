@@ -124,7 +124,7 @@ describe('P0-02A: /api/strategy/screen as-of gate', () => {
     it('T5: response includes asOfDate and asOfGateStatus', async () => {
       mockResolveAsOfDate.mockReturnValue('2026-05-07');
       const req = makeGetRequest();
-      const res = await GET(req) as any;
+      const res = await GET(req) as { json: () => Promise<unknown> };
       const body = await res.json();
       expect(body.asOfDate).toBe('2026-05-07');
       expect(body.asOfGateStatus).toBe('ACTIVE');
@@ -132,7 +132,7 @@ describe('P0-02A: /api/strategy/screen as-of gate', () => {
 
     it('T6: response includes asOfGateNote', async () => {
       const req = makeGetRequest();
-      const res = await GET(req) as any;
+      const res = await GET(req) as { json: () => Promise<unknown> };
       const body = await res.json();
       expect(body.asOfGateNote).toBeDefined();
       expect(typeof body.asOfGateNote).toBe('string');
@@ -140,7 +140,7 @@ describe('P0-02A: /api/strategy/screen as-of gate', () => {
 
     it('T7: response does not include forbidden fields', async () => {
       const req = makeGetRequest();
-      const res = await GET(req) as any;
+      const res = await GET(req) as { json: () => Promise<unknown> };
       const body = await res.json();
       const bodyStr = JSON.stringify(body);
       const forbidden = ['buy', 'sell', 'roi', 'win_rate', 'edge', 'profit', 'guaranteed', 'auto trading'];
@@ -177,7 +177,7 @@ describe('P0-02A: /api/strategy/screen as-of gate', () => {
     it('T11: POST response includes asOfDate and asOfGateStatus', async () => {
       mockResolveAsOfDate.mockReturnValue('2026-05-07');
       const req = makePostRequest({ maxResults: 10 });
-      const res = await POST(req) as any;
+      const res = await POST(req) as { json: () => Promise<unknown> };
       const body = await res.json();
       expect(body.asOfDate).toBe('2026-05-07');
       expect(body.asOfGateStatus).toBe('ACTIVE');

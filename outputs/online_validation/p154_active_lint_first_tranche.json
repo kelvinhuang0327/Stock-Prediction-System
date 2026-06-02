@@ -1,0 +1,42 @@
+{
+  "phase0": {
+    "repo": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System",
+    "branch": "main",
+    "head_start": "cf149fe",
+    "ci_latest_comparable": "26806317932"
+  },
+  "lint_baseline_before": {
+    "problems": 696,
+    "errors": 368,
+    "warnings": 328
+  },
+  "selected_tranche": {
+    "files": [
+      "src/app/api/analysis/key-levels/route.ts",
+      "src/app/api/data/status/route.ts",
+      "src/app/api/market/regime/route.ts",
+      "src/app/api/stocks/backtest/route.ts",
+      "src/app/api/strategy/screen/__tests__/p002a_strategy_screen_as_of_gate.test.ts"
+    ],
+    "error_count": 11,
+    "rationale": "Selected exactly 5 files with 11 total @typescript-eslint/no-explicit-any blocking errors from the first batch of CI failures."
+  },
+  "lint_after": {
+    "problems": 685,
+    "errors": 357,
+    "warnings": 328,
+    "tranche_resolved": true
+  },
+  "db_invariance_regression": {
+    "p26a_renderer_fix": "PASS",
+    "p26a_batch_pipeline_wiring": "PASS",
+    "p29d_dropzone_scaffold": "PASS"
+  },
+  "remaining_failure_matrix": {
+    "db_invariance": "RESOLVED",
+    "active_lint": "ACTIVE_REMAINING (685 problems remaining)",
+    "product_behavior_jest": "ACTIVE"
+  },
+  "classification": "P154_ACTIVE_LINT_TRANCHE_REPAIRED_CI_STILL_RED_PRODUCT_BEHAVIOR_OR_REMAINING_LINT",
+  "p2_browser_review_unlocked": false
+}

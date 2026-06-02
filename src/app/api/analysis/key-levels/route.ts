@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
     }
 
     const codes = codesParam.split(',').map(c => c.trim()).filter(c => c);
-    const results: Record<string, any> = {};
+    const results: Record<string, unknown> = {};
 
     try {
         // Fetch last 60 days of data for each stock
