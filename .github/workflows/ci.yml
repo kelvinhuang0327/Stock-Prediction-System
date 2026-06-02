@@ -50,7 +50,12 @@ jobs:
       - name: Generate Prisma client and verify delegates
         run: |
           npx prisma generate
-          node -e "const {PrismaClient}=require('@prisma/client'); const p=new PrismaClient(); console.log('delegates', Boolean(p.jobAlert), Boolean(p.recommendationHistory)); p.$disconnect();"
+          node <<'NODE'
+          const { PrismaClient } = require('@prisma/client');
+          const p = new PrismaClient();
+          console.log(Boolean(p.jobAlert), Boolean(p.recommendationHistory));
+          p.$disconnect();
+          NODE
         env:
           DATABASE_URL: file:./dev.db
       
