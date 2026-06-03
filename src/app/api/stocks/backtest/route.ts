@@ -154,7 +154,6 @@ export async function POST(request: NextRequest) {
         let regimeAwareResult: BacktestResult | null = null;
         let regimeStats: RegimeStats[] | null = null;
         let performanceComparison: RegimeAwareComparison | null = null;
-        let regimeTimeline: Map<string, RegimeTimelineEntry> | null = null;
         const regimeLimitations: string[] = [];
 
         if (isRegimeAware && periodDates.length === 2) {
@@ -162,7 +161,6 @@ export async function POST(request: NextRequest) {
                 const { timeline, limitations: tlLimitations } = await buildRegimeTimeline(
                     periodDates[0], periodDates[1],
                 );
-                regimeTimeline = timeline;
                 regimeLimitations.push(...tlLimitations);
 
                 // Run regime-aware backtest

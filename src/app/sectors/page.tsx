@@ -58,15 +58,14 @@ export default function SectorsPage() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        const loadSectors = async () => {
+            setLoading(true);
+            const data = await stockService.getSectors();
+            setSectors(data.sort((a, b) => b.changePercent - a.changePercent));
+            setLoading(false);
+        };
         loadSectors();
     }, []);
-
-    const loadSectors = async () => {
-        setLoading(true);
-        const data = await stockService.getSectors();
-        setSectors(data.sort((a, b) => b.changePercent - a.changePercent));
-        setLoading(false);
-    };
 
     if (loading) {
         return (

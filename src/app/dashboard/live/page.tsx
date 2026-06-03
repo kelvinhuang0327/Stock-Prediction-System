@@ -11,7 +11,8 @@ const WATCHLIST = ['2330', '2317', '2454', '2603', '2881', '6531', '2408', '2344
 
 export default function LiveDashboardPage() {
     const [quotes, setQuotes] = useState<Record<string, RealTimeQuote>>({});
-    const [keyLevels, setKeyLevels] = useState<Record<string, any>>({});
+    interface KeyLevelData { pivot: number; r1: number; s1: number; ma5: number | null; ma20: number | null; ma60: number | null; }
+    const [keyLevels, setKeyLevels] = useState<Record<string, KeyLevelData>>({});
     const [tags, setTags] = useState<Record<string, string[]>>({}); // Store tags keyed by stock code
     const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
     const [isPolling, setIsPolling] = useState(true);

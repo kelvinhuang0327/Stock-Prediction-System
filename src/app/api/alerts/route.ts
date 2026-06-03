@@ -9,7 +9,7 @@ export async function GET() {
             orderBy: { createdAt: 'desc' }
         });
         return NextResponse.json(alerts);
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: 'Failed to fetch alerts' }, { status: 500 });
     }
 }
@@ -55,7 +55,7 @@ export async function DELETE(request: NextRequest) {
         });
 
         return NextResponse.json({ success: true });
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: 'Failed to delete alert' }, { status: 500 });
     }
 }
