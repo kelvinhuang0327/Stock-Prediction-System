@@ -6,7 +6,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { runAllSyncs, executeSyncJob, getLatestSyncStatus, type SyncJob } from '@/lib/data/SyncScheduler';
+import { runAllSyncs, getLatestSyncStatus, type SyncJob } from '@/lib/data/SyncScheduler';
 import { syncService } from '@/lib/services/syncService';
 
 function buildSyncJobs(targets?: string[]): SyncJob[] {

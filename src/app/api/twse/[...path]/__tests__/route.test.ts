@@ -46,7 +46,7 @@ describe('TWSE API Route', () => {
         const request = new NextRequest('http://localhost:3000/api/twse/stock/day/2330')
         const params = Promise.resolve({ path: ['stock', 'day', '2330'] })
 
-        const response = await GET(request, { params })
+        await GET(request, { params })
 
         expect(global.fetch).toHaveBeenCalledWith(
             'https://openapi.twse.com.tw/v1/stock/day/2330',

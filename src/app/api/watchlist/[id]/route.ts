@@ -16,7 +16,7 @@ export async function DELETE(
 
         apiCache.invalidate('watchlist:');
         return NextResponse.json({ success: true });
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: 'Failed to remove from watchlist' }, { status: 500 });
     }
 }

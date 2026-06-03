@@ -98,9 +98,7 @@ export async function GET(request: NextRequest) {
       prevCandidateMap = new Map(prevRows.map(r => [r.symbol, r]));
     }
 
-    // Enrich candidates with comparison tags
     const allCandidates = screenResult.candidates;
-    const currentSymbols = new Set(allCandidates.map(c => c.symbol));
 
     const enriched: EnrichedCandidate[] = allCandidates.map(c => {
       const prev = prevCandidateMap.get(c.symbol);
