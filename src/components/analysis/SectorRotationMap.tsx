@@ -14,8 +14,19 @@ import {
     ZAxis
 } from 'recharts';
 
+interface SectorRotationData {
+    id: string;
+    name: string;
+    changePercent: number;
+    relativeStrength: number;
+    momentum: number;
+    volume?: number;
+    size?: number;
+    topStockId?: string;
+}
+
 export function SectorRotationMap() {
-    const [sectors, setSectors] = useState<any[]>([]);
+    const [sectors, setSectors] = useState<SectorRotationData[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {

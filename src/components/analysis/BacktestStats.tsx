@@ -1,10 +1,18 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { ShieldCheck, Target, BarChart3, AlertCircle } from 'lucide-react';
+import { ShieldCheck, AlertCircle } from 'lucide-react';
+
+interface BacktestStatsData {
+    totalTrials: number;
+    accuracy: number;
+    buyAccuracy: number;
+    sellAccuracy: number;
+    lastRun: string;
+}
 
 export function BacktestStats() {
-    const [stats, setStats] = useState<any>(null);
+    const [stats, setStats] = useState<BacktestStatsData | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -22,7 +30,7 @@ export function BacktestStats() {
         return () => clearTimeout(timer);
     }, []);
 
-    if (loading) return <div className="h-24 bg-muted/20 animate-pulse rounded-xl shimmer"></div>;
+    if (loading || !stats) return <div className="h-24 bg-muted/20 animate-pulse rounded-xl shimmer"></div>;
 
     return (
         <div className="glass-card p-6 hover-lift">

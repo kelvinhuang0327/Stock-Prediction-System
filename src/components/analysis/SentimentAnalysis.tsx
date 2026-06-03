@@ -4,20 +4,33 @@ import React, { useEffect, useState } from 'react';
 import { TrendingUp, TrendingDown, AlertCircle, Smile, Frown, Meh } from 'lucide-react';
 import { stockService } from '@/lib/stockService';
 
+interface SentimentData {
+    fearGreedIndex: number;
+    sentiment: 'bullish' | 'bearish' | 'neutral';
+    newsPositive: number;
+    newsNegative: number;
+    socialMediaBuzz: number;
+    volatilityIndex: number;
+}
+
 export function SentimentAnalysis() {
-    const [sentiment, setSentiment] = useState<any>(null);
+    const [sentiment, setSentiment] = useState<SentimentData | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        loadData();
+        let active = true;
+        const load = async () => {
+            const data = await stockService.getSentimentData() as SentimentData;
+            if (active) {
+                setSentiment(data);
+                setLoading(false);
+            }
+        };
+        load();
+        return () => {
+            active = false;
+        };
     }, []);
-
-    const loadData = async () => {
-        setLoading(true);
-        const data = await stockService.getSentimentData();
-        setSentiment(data);
-        setLoading(false);
-    };
 
     if (loading || !sentiment) {
         return (

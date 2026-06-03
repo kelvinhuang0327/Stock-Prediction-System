@@ -1,38 +1,57 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { Brain, TrendingUp, TrendingDown, AlertTriangle, Info, Zap } from 'lucide-react';
+import { Brain, TrendingUp, AlertTriangle, Info, Zap } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 interface HybridPredictionProps {
     symbol: string;
 }
 
+interface MajorPlayerData {
+    dominantPlayer: string;
+    averageCost: number;
+    targetPrice: number;
+    description: string;
+}
+
+interface HybridPredictionData {
+    signal: string;
+    technicalScore: number;
+    newsScore: number;
+    totalScore: number;
+    factors: {
+        techFactors: string;
+        newsAnalysis: string;
+    };
+    majorPlayer?: MajorPlayerData;
+}
+
 export function HybridPrediction({ symbol }: HybridPredictionProps) {
-    const [prediction, setPrediction] = useState<any>(null);
+    const [prediction, setPrediction] = useState<HybridPredictionData | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
+        const fetchPrediction = async () => {
+            setLoading(true);
+            setError(null);
+            try {
+                const res = await fetch(`/api/predictions/${symbol}`);
+                if (!res.ok) throw new Error('Failed to fetch prediction');
+                const data = await res.json() as HybridPredictionData;
+                setPrediction(data);
+            } catch (err) {
+                setError(err instanceof Error ? err.message : 'Failed to fetch prediction');
+            } finally {
+                setLoading(false);
+            }
+        };
+
         if (symbol) {
             fetchPrediction();
         }
     }, [symbol]);
-
-    const fetchPrediction = async () => {
-        setLoading(true);
-        setError(null);
-        try {
-            const res = await fetch(`/api/predictions/${symbol}`);
-            if (!res.ok) throw new Error('Failed to fetch prediction');
-            const data = await res.json();
-            setPrediction(data);
-        } catch (err: any) {
-            setError(err.message);
-        } finally {
-            setLoading(false);
-        }
-    };
 
     if (loading) {
         return (
