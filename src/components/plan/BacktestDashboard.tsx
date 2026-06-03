@@ -10,22 +10,48 @@ import {
     Calendar,
     ArrowRight,
     Loader2,
-    Trophy,
-    Star
+    Trophy
 } from 'lucide-react';
+
+interface BacktestCandidate {
+    stockId: string;
+    name: string;
+}
 
 interface BacktestResult {
     startDate: string;
     endDate: string;
-    candidates: any[];
+    candidates: BacktestCandidate[];
     averageReturn: number;
     successRate: number;
 }
 
+interface SandboxDiscovery {
+    variant_id: string;
+    metrics: { win_rate: number; total_return: number; total_trades: number };
+    params: { stop_loss: number; take_profit: number; time_stop: number; ma_short: number; ma_long: number };
+}
+
+interface SandboxResults {
+    top_discoveries?: SandboxDiscovery[];
+}
+
+interface CaseResult {
+    stockId: string;
+    stockName: string;
+    doublingStartDate: string;
+    doublingEndDate: string;
+    doublingDays: number;
+    maxGain: number;
+    preRevenueYoY: number;
+    preChipConcentration: number;
+    preForeignHolding: number;
+}
+
 export function BacktestDashboard() {
     const [results, setResults] = useState<BacktestResult[]>([]);
-    const [sandboxResults, setSandboxResults] = useState<any>(null);
-    const [casesResults, setCasesResults] = useState<any[]>([]);
+    const [sandboxResults, setSandboxResults] = useState<SandboxResults | null>(null);
+    const [casesResults, setCasesResults] = useState<CaseResult[]>([]);
     const [activeTab, setActiveTab] = useState<'standard' | 'sandbox' | 'cases'>('standard');
     const [isLoading, setIsLoading] = useState(false);
     const [hasRun, setHasRun] = useState(false);
@@ -240,7 +266,7 @@ export function BacktestDashboard() {
                                 </div>
 
                                 <div className="grid grid-cols-1 gap-3">
-                                    {casesResults.map((c: any, idx: number) => (
+                                    {casesResults.map((c: CaseResult, idx: number) => (
                                         <div key={idx} className="border rounded-xl p-3 hover:shadow-md transition-all">
                                             <div className="flex justify-between items-start mb-2">
                                                 <div>
@@ -302,7 +328,7 @@ export function BacktestDashboard() {
                                 </div>
 
                                 <div className="space-y-3">
-                                    {sandboxResults.top_discoveries.map((discovery: any, idx: number) => (
+                                    {sandboxResults.top_discoveries.map((discovery: SandboxDiscovery, idx: number) => (
                                         <div key={idx} className="border rounded-xl p-4 bg-card shadow-sm hover:shadow-md transition-all relative overflow-hidden">
                                             <div className="absolute top-0 right-0 bg-blue-600 text-white text-[10px] font-bold px-2 py-1 rounded-bl-lg">
                                                 Rank #{idx + 1}

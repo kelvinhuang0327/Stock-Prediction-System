@@ -1,0 +1,45 @@
+{
+  "phase0": {
+    "repo": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System",
+    "branch": "main",
+    "head_start": "ff4e9ed",
+    "ci_latest_comparable": "26859967313"
+  },
+  "lint_baseline_before": {
+    "problems": 586,
+    "errors": 305,
+    "warnings": 281
+  },
+  "selected_tranche": {
+    "files": [
+      "src/components/plan/BacktestDashboard.tsx",
+      "src/lib/strategies/AssetDoublingStrategy.ts",
+      "src/lib/strategies/types.ts"
+    ],
+    "error_count": 20,
+    "selected_rules": [
+      "@typescript-eslint/no-explicit-any",
+      "@typescript-eslint/no-unused-vars",
+      "@typescript-eslint/no-empty-object-type"
+    ],
+    "rationale": "Selected 3 strategy-related files to clean up 'any' references, unused variables, and empty interfaces."
+  },
+  "lint_after": {
+    "problems": 566,
+    "errors": 285,
+    "warnings": 281,
+    "tranche_resolved": true
+  },
+  "db_invariance_regression": {
+    "p26a_renderer_fix": "PASS",
+    "p26a_batch_pipeline_wiring": "PASS",
+    "p29d_dropzone_scaffold": "PASS"
+  },
+  "remaining_failure_matrix": {
+    "db_invariance": "RESOLVED",
+    "active_lint": "ACTIVE_REMAINING (566 problems remaining)",
+    "product_behavior_jest": "ACTIVE"
+  },
+  "classification": "P162_CLOSURE_COMMITTED_CI_STILL_RED_PRODUCT_BEHAVIOR_OR_REMAINING_LINT",
+  "p2_browser_review_unlocked": false
+}

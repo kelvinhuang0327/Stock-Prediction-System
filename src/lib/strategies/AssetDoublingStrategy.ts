@@ -1,5 +1,5 @@
 
-import { Strategy, StockData, StrategyResult, StockQuote } from './types';
+import { Strategy, StockData, StrategyResult, StockQuote, MarketDataPoint, InstitutionalChipData } from './types';
 import { calculateAllIndicators } from '../technicalIndicators';
 import { kellyCalculator } from '../portfolio/KellyCalculator';
 import { chipAnomalyScanner } from '../scanners/ChipAnomalyScanner';
@@ -31,7 +31,7 @@ export class AssetDoublingStrategy implements Strategy {
         this.name = `Asset Doubling (YoY>${this.config.minRevenueYoY}%, MA${this.config.maShort}/${this.config.maLong})`;
     }
 
-    async screen(data: StockData[], marketData?: any[], options?: { scalingFactor?: number; regime?: 'BULL' | 'NEUTRAL' | 'CORRECTION' | 'BEAR'; skipFilters?: boolean }): Promise<StrategyResult[]> {
+    async screen(data: StockData[], marketData?: MarketDataPoint[], options?: { scalingFactor?: number; regime?: 'BULL' | 'NEUTRAL' | 'CORRECTION' | 'BEAR'; skipFilters?: boolean }): Promise<StrategyResult[]> {
         const scalingFactor = options?.scalingFactor ?? 1.0;
         const regime = options?.regime ?? 'NEUTRAL';
         const skipFilters = options?.skipFilters ?? false;
@@ -76,7 +76,7 @@ export class AssetDoublingStrategy implements Strategy {
             if (latestQuotes.length >= 20) {
                 const indicators = calculateAllIndicators(latestQuotes);
                 const lastIdx = indicators.length - 1;
-                const last: any = indicators[lastIdx];
+                const last = indicators[lastIdx] as Record<string, number>;
                 currentClose = last.close;
 
                 // Simple technical score: Price above MA Short and MA Short > MA Long
@@ -91,7 +91,7 @@ export class AssetDoublingStrategy implements Strategy {
             if (!this.config.skipFilters && !skipFilters && technicalScore < this.config.minTechnicalScore) continue;
 
             // 3. Chip Strength
-            const chipAccumulation = (stock.institutionalChips || []).reduce((acc: number, curr: any) => acc + curr.totalBuy, 0);
+            const chipAccumulation = (stock.institutionalChips || []).reduce((acc: number, curr: InstitutionalChipData) => acc + curr.totalBuy, 0);
             const chipStrength = Math.min(100, Math.max(0, (chipAccumulation / 5000) * 100 + 50));
 
             // 4. Volatility Filter (New)
@@ -115,7 +115,7 @@ export class AssetDoublingStrategy implements Strategy {
                 const currentVolume = latestQuotes[latestQuotes.length - 1].volume;
                 const isVolumeSpike = currentVolume > (avgVolume * 2.5); // 2.5x Volume Spike
 
-                const prices = latestQuotes.slice(-60).map((q: any) => q.close);
+                const prices = latestQuotes.slice(-60).map((q: StockQuote) => q.close);
                 const min = Math.min(...prices);
                 const current = currentClose;
                 climbPercent = ((current - min) / min) * 100;
@@ -186,8 +186,8 @@ export class AssetDoublingStrategy implements Strategy {
                         description: topSignal.reasoning
                     };
                 }
-            } catch (e) {
-                // console.warn('Anomaly detection failed', e);
+            } catch {
+                // Anomaly detection failed silently
             }
 
             // 9. Kelly Position Sizing (New Phase 21)
@@ -250,7 +250,7 @@ export class AssetDoublingStrategy implements Strategy {
         return results.sort((a, b) => (b.revenueYoY + b.chipStrength) - (a.revenueYoY + a.chipStrength));
     }
 
-    private calculateStopAndRisk(quotes: any[], currentClose: number) {
+    private calculateStopAndRisk(quotes: StockQuote[], currentClose: number) {
         if (quotes.length < 20) return { stopPrice: 0, reason: '', riskPerShare: 0 };
 
         const indicators = calculateAllIndicators(quotes);
@@ -308,7 +308,7 @@ export class AssetDoublingStrategy implements Strategy {
         return result;
     }
 
-    getEvidence(quotesAsc: any[], revenues: any[]): { date: string; maxGain: number; duration: number; } | undefined {
+    getEvidence(quotesAsc: StockQuote[], revenues: { year: number; month: number; yoyGrowth?: number }[]): { date: string; maxGain: number; duration: number; } | undefined {
         // ... (keep usage of this method same as before, implementation details inside are fine)
         // I will copy the helper implementation to ensure it works.
         if (quotesAsc.length < 100) return undefined;

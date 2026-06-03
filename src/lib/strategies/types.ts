@@ -54,19 +54,43 @@ export interface StockQuote {
     volume: number;
 }
 
+export interface MonthlyRevenueData {
+    year: number;
+    month: number;
+    revenue?: number;
+    yoyGrowth?: number;
+}
+
+export interface FinancialReportData {
+    year: number;
+    quarter: number;
+    eps?: number;
+    roe?: number;
+}
+
+export interface InstitutionalChipData {
+    date: string;
+    foreignBuy: number;
+    trustBuy: number;
+    totalBuy: number;
+}
+
+export interface MarketDataPoint {
+    date: string;
+    value: number;
+}
+
 export interface StockData {
     stockId: string;
     name: string;
-    quotes: any[]; // Ideally defined as Quote[]
-    monthlyRevenues: any[]; // Ideally defined as Revenue[]
-    financialReports: any[]; // Ideally defined as FinancialReport[]
-    institutionalChips: any[]; // Ideally defined as Chip[]
+    quotes: StockQuote[];
+    monthlyRevenues: MonthlyRevenueData[];
+    financialReports: FinancialReportData[];
+    institutionalChips: InstitutionalChipData[];
     capital?: number;
 }
 
-export interface StrategyResult extends ScreeningResult {
-    // Additional strategy-specific metrics can go here
-}
+export type StrategyResult = ScreeningResult;
 
 export interface Strategy {
     name: string;
@@ -76,7 +100,7 @@ export interface Strategy {
      * Rapidly screen a list of stocks to find potential candidates.
      * Should hold minimal state.
      */
-    screen(data: StockData[], marketData?: any[], options?: {
+    screen(data: StockData[], marketData?: MarketDataPoint[], options?: {
         scalingFactor?: number;
         regime?: 'BULL' | 'NEUTRAL' | 'CORRECTION' | 'BEAR';
         skipFilters?: boolean;
