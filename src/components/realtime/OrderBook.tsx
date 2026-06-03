@@ -65,7 +65,7 @@ export function OrderBook({ quote }: OrderBookProps) {
 
             {/* Asks */}
             <div className="flex flex-col justify-end">
-                {asks.map((item, i) => renderRow(item.p, item.v, 'ask'))}
+                {asks.map((item) => renderRow(item.p, item.v, 'ask'))}
             </div>
 
             {/* Spread / Current Price Indicator */}
@@ -80,7 +80,7 @@ export function OrderBook({ quote }: OrderBookProps) {
 
             {/* Bids */}
             <div className="flex flex-col">
-                {bids.map((item, i) => renderRow(item.p, item.v, 'bid'))}
+                {bids.map((item) => renderRow(item.p, item.v, 'bid'))}
             </div>
 
             {/* Imbalance Indicator */}

@@ -6,9 +6,8 @@ import Link from 'next/link';
 import { useApiData } from '@/hooks/useApiData';
 import { DataTable, ColumnDef } from '@/components/ui/data-table';
 import { Disclaimer } from '@/components/ui/disclaimer';
-import { DataStatusBar, DataAvailabilityGuard } from '@/components/ui/data-availability-guard';
+import { DataStatusBar } from '@/components/ui/data-availability-guard';
 import { GlassCard } from '@/components/ui/glass-card';
-import { Badge } from '@/components/ui/badge';
 import { LoadingSpinner } from '@/components/ui/loading';
 import { BucketBadge } from '@/components/ui/badges';
 import {

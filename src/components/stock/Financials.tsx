@@ -48,7 +48,7 @@ const epsData = [
     { quarter: '23Q4', eps: 9.5, yoy: 25.8 },
 ];
 
-export function Financials({ symbol }: { symbol: string }) {
+export function Financials({ symbol: _symbol }: { symbol: string }) {
     return (
         <div className="space-y-8">
             {/* Profitability Section (Three Rates) */}

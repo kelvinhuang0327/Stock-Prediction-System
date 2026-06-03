@@ -1,0 +1,15 @@
+{
+  "tranche": 12,
+  "files_modified": 5,
+  "issues_resolved": 6,
+  "before_count": 531,
+  "after_count": 525,
+  "status": "PASS",
+  "files": [
+    "src/app/layout.tsx",
+    "src/app/rankings/page.tsx",
+    "src/components/layout/Header.tsx",
+    "src/components/realtime/OrderBook.tsx",
+    "src/components/stock/Financials.tsx"
+  ]
+}
