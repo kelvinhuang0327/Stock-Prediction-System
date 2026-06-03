@@ -3,26 +3,60 @@
 import React, { useEffect, useState } from 'react';
 import { TrendingUp, TrendingDown, DollarSign, Activity } from 'lucide-react';
 
+// Real-time Sector Mapping
+const sectorMap = [
+    { code: 't01', name: '水泥' },
+    { code: 't02', name: '食品' },
+    { code: 't13', name: '電子' },
+    { code: 't17', name: '金融' },
+    { code: 't15', name: '航運' },
+    { code: 't28', name: '半導體' },
+    { code: 't26', name: '光電' },
+    { code: 't03', name: '塑膠' },
+    { code: 't11', name: '紡織' },
+    { code: 't10', name: '鋼鐵' },
+];
+
 export function SectorPerformance() {
     const [sectors, setSectors] = useState<Array<{ id: string; name: string; price: number; changePercent: number; stocks: number; revenueYoy: number; revenueMom: number }>>([]);
     const [loading, setLoading] = useState(true);
     const [viewMode, setViewMode] = useState<'price' | 'revenue'>('price'); // 'revenue' will remain mock or be hidden
 
-    // Real-time Sector Mapping
-    const sectorMap = [
-        { code: 't01', name: '水泥' },
-        { code: 't02', name: '食品' },
-        { code: 't13', name: '電子' },
-        { code: 't17', name: '金融' },
-        { code: 't15', name: '航運' },
-        { code: 't28', name: '半導體' },
-        { code: 't26', name: '光電' },
-        { code: 't03', name: '塑膠' },
-        { code: 't11', name: '紡織' },
-        { code: 't10', name: '鋼鐵' },
-    ];
-
     useEffect(() => {
+        const updateSectors = async () => {
+            const updates = await Promise.all(sectorMap.map(async (s) => {
+                try {
+                    const res = await fetch(`/api/stocks/${s.code}/realtime`);
+                    if (!res.ok) return null;
+                    const json = await res.json();
+                    const rt = json.data;
+                    if (!rt) return null;
+
+                    const price = rt.close > 0 ? rt.close : (rt.open > 0 ? rt.open : 0);
+                    const prev = rt.prevClose || price;
+                    const change = price - prev;
+                    const changePercent = prev > 0 ? (change / prev) * 100 : 0;
+
+                    return {
+                        id: s.code,
+                        name: s.name,
+                        price: price,
+                        changePercent: changePercent,
+                        stocks: 0, // Mock or fetch count?
+                        revenueYoy: (Math.random() - 0.2) * 20, // Keep mock for revenue view
+                        revenueMom: 0
+                    };
+                } catch {
+                    return null;
+                }
+            }));
+
+            const validSectors = updates.filter(s => s !== null);
+            if (validSectors.length > 0) {
+                setSectors(validSectors);
+            }
+        };
+
         const fetchSectors = async () => {
             setLoading(true);
 
@@ -35,40 +69,6 @@ export function SectorPerformance() {
         const timer = setInterval(updateSectors, 5000);
         return () => clearInterval(timer);
     }, []);
-
-    const updateSectors = async () => {
-        const updates = await Promise.all(sectorMap.map(async (s) => {
-            try {
-                const res = await fetch(`/api/stocks/${s.code}/realtime`);
-                if (!res.ok) return null;
-                const json = await res.json();
-                const rt = json.data;
-                if (!rt) return null;
-
-                const price = rt.close > 0 ? rt.close : (rt.open > 0 ? rt.open : 0);
-                const prev = rt.prevClose || price;
-                const change = price - prev;
-                const changePercent = prev > 0 ? (change / prev) * 100 : 0;
-
-                return {
-                    id: s.code,
-                    name: s.name,
-                    price: price,
-                    changePercent: changePercent,
-                    stocks: 0, // Mock or fetch count?
-                    revenueYoy: (Math.random() - 0.2) * 20, // Keep mock for revenue view
-                    revenueMom: 0
-                };
-            } catch {
-                return null;
-            }
-        }));
-
-        const validSectors = updates.filter(s => s !== null);
-        if (validSectors.length > 0) {
-            setSectors(validSectors);
-        }
-    };
 
     if (loading && sectors.length === 0) {
         return (

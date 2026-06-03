@@ -4,28 +4,51 @@ import React, { useEffect, useState } from 'react';
 import { ArrowUp, ArrowDown, Activity, TrendingUp } from 'lucide-react';
 import { stockService } from '@/lib/stockService';
 
+interface BreadthData {
+    advancing: number;
+    declining: number;
+    unchanged: number;
+    newHighs: number;
+    newLows: number;
+}
+
+interface ForeignData {
+    trend: 'buying' | 'selling';
+    netBuy: number;
+    buyAmount: number;
+    sellAmount: number;
+}
+
+interface VolumeLeader {
+    symbol: string;
+    name: string;
+    price: number;
+    change: number;
+    changePercent: number;
+    volume: number;
+}
+
 export function MarketBreadth() {
-    const [breadth, setBreadth] = useState<any>(null);
-    const [foreignData, setForeignData] = useState<any>(null);
-    const [volumeLeaders, setVolumeLeaders] = useState<any[]>([]);
+    const [breadth, setBreadth] = useState<BreadthData | null>(null);
+    const [foreignData, setForeignData] = useState<ForeignData | null>(null);
+    const [volumeLeaders, setVolumeLeaders] = useState<VolumeLeader[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        const loadData = async () => {
+            setLoading(true);
+            const [breadthData, foreign, leaders] = await Promise.all([
+                stockService.getMarketBreadth(),
+                stockService.getForeignInvestorData(),
+                stockService.getVolumeLeaders(5),
+            ]);
+            setBreadth(breadthData);
+            setForeignData(foreign);
+            setVolumeLeaders(leaders);
+            setLoading(false);
+        };
         loadData();
     }, []);
-
-    const loadData = async () => {
-        setLoading(true);
-        const [breadthData, foreign, leaders] = await Promise.all([
-            stockService.getMarketBreadth(),
-            stockService.getForeignInvestorData(),
-            stockService.getVolumeLeaders(5),
-        ]);
-        setBreadth(breadthData);
-        setForeignData(foreign);
-        setVolumeLeaders(leaders);
-        setLoading(false);
-    };
 
     if (loading || !breadth) {
         return (

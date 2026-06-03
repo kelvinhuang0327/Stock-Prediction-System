@@ -29,16 +29,15 @@ export default function ScreenerPage() {
     });
 
     useEffect(() => {
+        const loadStocks = async () => {
+            setLoading(true);
+            const data = await stockService.filterStocks({});
+            setStocks(data);
+            setFilteredStocks(data);
+            setLoading(false);
+        };
         loadStocks();
     }, []);
-
-    const loadStocks = async () => {
-        setLoading(true);
-        const data = await stockService.filterStocks({});
-        setStocks(data);
-        setFilteredStocks(data);
-        setLoading(false);
-    };
 
     const applyFilters = async () => {
         setLoading(true);
@@ -258,7 +257,7 @@ export default function ScreenerPage() {
                         <select
                             className="w-full p-2 border rounded-md bg-background mb-2"
                             value={filters.macdSignal || ''}
-                            onChange={(e) => setFilters({ ...filters, macdSignal: e.target.value as any || undefined })}
+                            onChange={(e) => setFilters({ ...filters, macdSignal: e.target.value ? (e.target.value as 'bullish' | 'bearish') : undefined })}
                         >
                             <option value="">MACD 訊號</option>
                             <option value="bullish">MACD 多頭 (MACD &gt; 0)</option>
@@ -267,7 +266,7 @@ export default function ScreenerPage() {
                         <select
                             className="w-full p-2 border rounded-md bg-background"
                             value={filters.maSignal || ''}
-                            onChange={(e) => setFilters({ ...filters, maSignal: e.target.value as any || undefined })}
+                            onChange={(e) => setFilters({ ...filters, maSignal: e.target.value ? (e.target.value as 'priceAboveMA20' | 'priceAboveMA60' | 'bullishCross') : undefined })}
                         >
                             <option value="">均線訊號</option>
                             <option value="priceAboveMA20">股價 &gt; 月線 (MA20)</option>

@@ -10,7 +10,15 @@ const strategies = [
     { id: 'dividend', name: '定存好股', icon: Award, desc: '穩定配息、填息機率高', color: 'bg-green-100 text-green-700' },
 ];
 
-const mockResults: Record<string, any[]> = {
+interface MockResult {
+    symbol: string;
+    name: string;
+    price: number;
+    change: number;
+    reason: string;
+}
+
+const mockResults: Record<string, MockResult[]> = {
     value: [
         { symbol: '2330', name: '台積電', price: 580, change: 1.5, reason: '本益比 < 20' },
         { symbol: '2317', name: '鴻海', price: 105, change: 0.5, reason: '殖利率 > 5%' },

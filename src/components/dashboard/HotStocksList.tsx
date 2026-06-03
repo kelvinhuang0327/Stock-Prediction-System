@@ -27,7 +27,7 @@ export function HotStocksList() {
                 const listRes = await fetch('/api/stocks?limit=50');
                 if (listRes.ok) {
                     const listJson = await listRes.json();
-                    const dbStocks = listJson.data.map((s: any) => ({
+                    const dbStocks = listJson.data.map((s: Stock) => ({
                         symbol: s.symbol,
                         name: s.name,
                         price: s.price,
@@ -52,8 +52,8 @@ export function HotStocksList() {
 
     return (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <StockTable key="gainers" title="強勢股排行" stocks={gainers} type="gainer" icon={<TrendingUp className="w-5 h-5 text-red-500" />} />
-            <StockTable key="losers" title="弱勢股排行" stocks={losers} type="loser" icon={<TrendingDown className="w-5 h-5 text-green-500" />} />
+            <StockTable key="gainers" title="強勢股排行" stocks={gainers} icon={<TrendingUp className="w-5 h-5 text-red-500" />} />
+            <StockTable key="losers" title="弱勢股排行" stocks={losers} icon={<TrendingDown className="w-5 h-5 text-green-500" />} />
         </div>
     );
 }
@@ -69,7 +69,7 @@ function PredictionBadge({ symbol }: { symbol: string }) {
                     const data = await res.json();
                     setSignal(data.signal);
                 }
-            } catch (e) {
+            } catch {
                 // Silently fail
             }
         };
@@ -92,7 +92,7 @@ function PredictionBadge({ symbol }: { symbol: string }) {
     );
 }
 
-function StockTable({ title, stocks, type, icon }: { title: string; stocks: Stock[]; type: 'gainer' | 'loser'; icon: React.ReactNode }) {
+function StockTable({ title, stocks, icon }: { title: string; stocks: Stock[]; icon: React.ReactNode }) {
     return (
         <div className="bg-card rounded-xl shadow-sm border overflow-hidden">
             <div className="p-4 border-b bg-muted/30 flex items-center gap-2">
