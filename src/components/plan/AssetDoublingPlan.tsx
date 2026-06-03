@@ -14,7 +14,6 @@ import {
     TrendingDown,
     Plus,
     Check,
-    Loader2,
     Trophy
 } from 'lucide-react';
 import type { ScreeningResult } from '@/lib/services/StrategyScreeningService';
@@ -72,8 +71,7 @@ export function AssetDoublingPlan() {
     const [candidates, setCandidates] = useState<ScreeningResult[]>([]);
     const [loading, setLoading] = useState(true); // Changed from isLoading to loading
     const [error, setError] = useState<string | null>(null);
-    const [selectedFilter, setSelectedFilter] = useState<'all' | 'gems' | 'momentum'>('all'); // Added
-    const [selectedStrategy, setSelectedStrategy] = useState<'AssetDoubling' | 'MomentumSwing' | 'DayTradePrep'>('AssetDoubling'); // Added
+    const [selectedStrategy] = useState<'AssetDoubling' | 'MomentumSwing' | 'DayTradePrep'>('AssetDoubling'); // Added
     const [isProMode, setIsProMode] = useState(false);
 
     // New states for custom analysis
@@ -81,12 +79,12 @@ export function AssetDoublingPlan() {
     const [isAnalyzing, setIsAnalyzing] = useState(false);
     const [analysisResult, setAnalysisResult] = useState<ScreeningResult | null>(null);
     const [analysisError, setAnalysisError] = useState<string | null>(null);
-    const [historyData, setHistoryData] = useState<any[]>([]);
-    const [sentimentResult, setSentimentResult] = useState<any | null>(null);
+    const [historyData, setHistoryData] = useState<{ date: string; value?: number }[]>([]);
+    const [sentimentResult, setSentimentResult] = useState<{ score: number; label: string; headline: string; factors: string[] } | null>(null);
     const [isAdded, setIsAdded] = useState(false);
     const [filterType, setFilterType] = useState<'all' | 'gems' | 'momentum'>('all');
 
-    const [watchlist, setWatchlist] = useState<any[]>([]);
+    const [watchlist, setWatchlist] = useState<Array<{ stockId: string; name: string; changePercent: number; entryPrice?: number; currentPrice?: number }>>([]);
     const [marketStatus, setMarketStatus] = useState<{ status: string; scalingFactor: number; indexClose: number; regime?: 'BULL' | 'NEUTRAL' | 'CORRECTION' | 'BEAR'; ma20?: number } | null>(null);
 
     // Fetch Watchlist & Market Status on Mount
@@ -98,7 +96,7 @@ export function AssetDoublingPlan() {
                 const data = await res.json();
                 setWatchlist(data);
                 if (analysisResult) {
-                    setIsAdded(data.some((item: any) => item.stockId === analysisResult.stockId));
+                    setIsAdded(data.some((item: { stockId: string }) => item.stockId === analysisResult.stockId));
                 }
             }
 
@@ -120,7 +118,7 @@ export function AssetDoublingPlan() {
     // Sync isAdded state when analysisResult changes
     useEffect(() => {
         if (analysisResult) {
-            setIsAdded(watchlist.some((s: any) => s.stockId === analysisResult.stockId));
+            setIsAdded(watchlist.some((s: { stockId: string }) => s.stockId === analysisResult.stockId));
         }
     }, [analysisResult, watchlist]);
 
@@ -137,8 +135,8 @@ export function AssetDoublingPlan() {
                 const data = await response.json();
                 // Support both new ScreenResult format and legacy array
                 setCandidates(Array.isArray(data) ? data : data.candidates || []);
-            } catch (err: any) {
-                setError(err.message);
+            } catch (err) {
+                setError(err instanceof Error ? err.message : String(err));
             } finally {
                 setLoading(false);
             }
@@ -178,7 +176,7 @@ export function AssetDoublingPlan() {
             const historyResponse = await fetch(`/api/stocks/${symbol.trim()}/history?months=6`);
             if (historyResponse.ok) {
                 const history = await historyResponse.json();
-                setHistoryData(history.map((h: any) => ({
+                setHistoryData(history.map((h: { date: string }) => ({
                     date: h.date,
                 })));
             }
@@ -189,8 +187,8 @@ export function AssetDoublingPlan() {
                 const sentiment = await sentimentResponse.json();
                 setSentimentResult(sentiment);
             }
-        } catch (err: any) {
-            setAnalysisError(err.message);
+        } catch (err) {
+            setAnalysisError(err instanceof Error ? err.message : String(err));
             setAnalysisResult(null);
             setHistoryData([]);
         } finally {
@@ -377,7 +375,7 @@ export function AssetDoublingPlan() {
                                         onClick={() => {
                                             setSearchQuery(item.stockId);
                                             // Trigger analyze manually? Or just set query
-                                            handleAnalyze({ preventDefault: () => { } } as any, item.stockId);
+                                            handleAnalyze({ preventDefault: () => { } } as React.FormEvent, item.stockId);
                                         }}
                                     >
                                         <div className="flex justify-between items-start mb-2">

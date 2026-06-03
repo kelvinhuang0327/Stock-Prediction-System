@@ -2,11 +2,9 @@
 
 import React, { useEffect, useState } from 'react';
 import { TrendingUp, TrendingDown, DollarSign, Activity } from 'lucide-react';
-import { stockService } from '@/lib/stockService';
-import { Sector } from '@/lib/mockData';
 
 export function SectorPerformance() {
-    const [sectors, setSectors] = useState<any[]>([]);
+    const [sectors, setSectors] = useState<Array<{ id: string; name: string; price: number; changePercent: number; stocks: number; revenueYoy: number; revenueMom: number }>>([]);
     const [loading, setLoading] = useState(true);
     const [viewMode, setViewMode] = useState<'price' | 'revenue'>('price'); // 'revenue' will remain mock or be hidden
 
@@ -61,7 +59,7 @@ export function SectorPerformance() {
                     revenueYoy: (Math.random() - 0.2) * 20, // Keep mock for revenue view
                     revenueMom: 0
                 };
-            } catch (e) {
+            } catch {
                 return null;
             }
         }));
@@ -120,7 +118,7 @@ export function SectorPerformance() {
             <div className="p-4">
                 {/* Heat Map Grid */}
                 <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
-                    {sectors.map((sector: any) => {
+                    {sectors.map((sector: { id: string; name: string; changePercent: number; revenueYoy: number; price: number; revenueMom: number }) => {
                         const value = viewMode === 'price' ? sector.changePercent : sector.revenueYoy;
                         const isPositive = value >= 0;
                         const intensity = Math.min(Math.abs(value) / (viewMode === 'price' ? 3 : 20), 1); // Adjust scale
@@ -162,7 +160,7 @@ export function SectorPerformance() {
                             {viewMode === 'price' ? '強勢類股' : '營收高成長'}
                         </h4>
                         <div className="space-y-2">
-                            {topPerformers.map((sector: any, idx) => (
+                            {topPerformers.map((sector: { id: string; name: string; changePercent: number; revenueYoy: number }, idx) => (
                                 <div key={sector.id} className="flex items-center justify-between">
                                     <div className="flex items-center gap-2">
                                         <span className="text-xs font-bold text-muted-foreground w-4">
@@ -185,7 +183,7 @@ export function SectorPerformance() {
                             {viewMode === 'price' ? '弱勢類股' : '營收衰退'}
                         </h4>
                         <div className="space-y-2">
-                            {worstPerformers.map((sector: any, idx) => (
+                            {worstPerformers.map((sector: { id: string; name: string; changePercent: number; revenueYoy: number }, idx) => (
                                 <div key={sector.id} className="flex items-center justify-between">
                                     <div className="flex items-center gap-2">
                                         <span className="text-xs font-bold text-muted-foreground w-4">
