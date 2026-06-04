@@ -25,6 +25,7 @@ import {
   PAPER_SIMULATION_FRAMEWORK_DISCLAIMER,
   P40_EXECUTION_STATUS,
 } from "../p40/PaperSimulationFrameworkBoundary";
+import * as boundaryModule from "../p40/PaperSimulationFrameworkBoundary";
 import {
   buildDefaultPaperSimulationInputBundle,
 } from "../p39/PaperSimulationInputContractBuilder";
@@ -710,43 +711,34 @@ describe("Group 14 — P39 contract regression", () => {
 
 describe("Group 15 — No simulation execution function is implemented", () => {
   test("15.1 there is no executeSimulation export in boundary module", () => {
-    // Dynamic import check — if executeSimulation existed, this cast would find it
-    const mod = require("../p40/PaperSimulationFrameworkBoundary");
-    expect(mod.executeSimulation).toBeUndefined();
+    expect((boundaryModule as Record<string, unknown>).executeSimulation).toBeUndefined();
   });
 
   test("15.2 there is no runSimulation export", () => {
-    const mod = require("../p40/PaperSimulationFrameworkBoundary");
-    expect(mod.runSimulation).toBeUndefined();
+    expect((boundaryModule as Record<string, unknown>).runSimulation).toBeUndefined();
   });
 
   test("15.3 there is no runBacktest export", () => {
-    const mod = require("../p40/PaperSimulationFrameworkBoundary");
-    expect(mod.runBacktest).toBeUndefined();
+    expect((boundaryModule as Record<string, unknown>).runBacktest).toBeUndefined();
   });
 
   test("15.4 there is no runOptimizer export", () => {
-    const mod = require("../p40/PaperSimulationFrameworkBoundary");
-    expect(mod.runOptimizer).toBeUndefined();
+    expect((boundaryModule as Record<string, unknown>).runOptimizer).toBeUndefined();
   });
 
   test("15.5 there is no computePnL export", () => {
-    const mod = require("../p40/PaperSimulationFrameworkBoundary");
-    expect(mod.computePnL).toBeUndefined();
+    expect((boundaryModule as Record<string, unknown>).computePnL).toBeUndefined();
   });
 
   test("15.6 there is no computeROI export", () => {
-    const mod = require("../p40/PaperSimulationFrameworkBoundary");
-    expect(mod.computeROI).toBeUndefined();
+    expect((boundaryModule as Record<string, unknown>).computeROI).toBeUndefined();
   });
 
   test("15.7 there is no generateRecommendation export", () => {
-    const mod = require("../p40/PaperSimulationFrameworkBoundary");
-    expect(mod.generateRecommendation).toBeUndefined();
+    expect((boundaryModule as Record<string, unknown>).generateRecommendation).toBeUndefined();
   });
 
   test("15.8 there is no computeWinRate export", () => {
-    const mod = require("../p40/PaperSimulationFrameworkBoundary");
-    expect(mod.computeWinRate).toBeUndefined();
+    expect((boundaryModule as Record<string, unknown>).computeWinRate).toBeUndefined();
   });
 });

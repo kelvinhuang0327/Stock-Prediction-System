@@ -14,9 +14,10 @@ import {
   validateNoOutcomeFieldsInEventNewsContext,
   validateNoIngestedAtVisibilityLeak,
   classifyEventNewsPitStatus,
-  NormalizedNewsEvent,
   RawNewsEvent,
 } from '../P26BEventNewsPitAdapterUtils';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 
 // ---------------------------------------------------------------------------
 // Test fixtures
@@ -39,10 +40,6 @@ function makeRaw(overrides: Partial<RawNewsEvent> = {}): RawNewsEvent {
     relevanceScore: 0.7,
     ...overrides,
   };
-}
-
-function makeNormalized(overrides: Partial<NormalizedNewsEvent> = {}): NormalizedNewsEvent {
-  return normalizeNewsEvent(makeRaw(overrides as Partial<RawNewsEvent>));
 }
 
 // ---------------------------------------------------------------------------
@@ -296,7 +293,7 @@ describe('validateEventNewsContextIsReadOnly', () => {
 
   it('fails when readOnly is not true', () => {
     const snap = buildEventNewsContextSnapshot([], ASSET_DATE, SYMBOL);
-    // @ts-expect-error
+    // @ts-expect-error - readOnly is a readonly property
     snap.readOnly = false;
     const { valid, errors } = validateEventNewsContextIsReadOnly(snap);
     expect(valid).toBe(false);
@@ -372,23 +369,23 @@ describe('classifyEventNewsPitStatus', () => {
 
 describe('source code integrity', () => {
   it('has no Math.random', () => {
-    const src = require('fs').readFileSync(
-      require('path').join(__dirname, '../P26BEventNewsPitAdapterUtils.ts'), 'utf8'
+    const src = fs.readFileSync(
+      path.join(__dirname, '../P26BEventNewsPitAdapterUtils.ts'), 'utf8'
     );
     // Check for actual Math.random() calls, not comments
     expect(src).not.toMatch(/Math\.random\(\)/);
   });
 
   it('has no external API calls', () => {
-    const src = require('fs').readFileSync(
-      require('path').join(__dirname, '../P26BEventNewsPitAdapterUtils.ts'), 'utf8'
+    const src = fs.readFileSync(
+      path.join(__dirname, '../P26BEventNewsPitAdapterUtils.ts'), 'utf8'
     );
     expect(src).not.toMatch(/fetch\(|axios\.|https?\.(get|post)\(/);
   });
 
   it('does not import external modules', () => {
-    const src = require('fs').readFileSync(
-      require('path').join(__dirname, '../P26BEventNewsPitAdapterUtils.ts'), 'utf8'
+    const src = fs.readFileSync(
+      path.join(__dirname, '../P26BEventNewsPitAdapterUtils.ts'), 'utf8'
     );
     expect(src).not.toMatch(/^import.*from ['"][^.]/m);
   });

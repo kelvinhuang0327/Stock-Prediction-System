@@ -112,18 +112,31 @@ const cases: Array<{
   },
 ];
 
+interface CaseResult {
+  caseIndex: number;
+  symbol: string;
+  repairFamily: string;
+  before_reasonSnapshot: string | null;
+  after_outcome: string;
+  after_rendererVersion: string;
+  after_renderedText: string;
+  alphaScoreUnchanged: boolean;
+  bucketUnchanged: boolean;
+  repairApplied: boolean;
+}
+
 describe('P28C PART E — 9-case before/after generation', () => {
-  const results: object[] = [];
+  const results: CaseResult[] = [];
 
   afterAll(() => {
     const summary = {
       generatedAt: new Date().toISOString(),
       patchPhase: 'P28C',
       totalCases: 9,
-      enrichedCount: (results as any[]).filter((r: any) => r.repairApplied).length,
-      allAlphaScoreUnchanged: (results as any[]).every((r: any) => r.alphaScoreUnchanged),
-      allBucketUnchanged: (results as any[]).every((r: any) => r.bucketUnchanged),
-      classification: (results as any[]).every((r: any) => r.repairApplied)
+      enrichedCount: results.filter((r) => r.repairApplied).length,
+      allAlphaScoreUnchanged: results.every((r) => r.alphaScoreUnchanged),
+      allBucketUnchanged: results.every((r) => r.bucketUnchanged),
+      classification: results.every((r) => r.repairApplied)
         ? 'P28C_RENDERER_ONLY_REPAIR_COMPLETE'
         : 'P28C_RENDERER_ONLY_REPAIR_PARTIAL',
       cases: results,

@@ -125,7 +125,7 @@ describe('validateProductionTargetConfig', () => {
   });
 
   it('rejects non-sqlite dbProvider', () => {
-    const result = validateProductionTargetConfig({ ...VALID_CONFIG, dbProvider: 'postgresql' as any });
+    const result = validateProductionTargetConfig({ ...VALID_CONFIG, dbProvider: 'postgresql' as unknown as 'sqlite' });
     expect(result.valid).toBe(false);
     expect(result.errors.some(e => e.includes('sqlite'))).toBe(true);
   });
@@ -221,7 +221,7 @@ describe('validateBackupArtifact', () => {
   });
 
   it('rejects backupStatus FAIL', () => {
-    const result = validateBackupArtifact({ ...VALID_ARTIFACT, backupStatus: 'FAIL' as any });
+    const result = validateBackupArtifact({ ...VALID_ARTIFACT, backupStatus: 'FAIL' as unknown as 'PASS' });
     expect(result.valid).toBe(false);
     expect(result.backupStatus).toBe('FAIL');
   });
@@ -315,7 +315,7 @@ describe('validateMigrationExecutionResult', () => {
   });
 
   it('rejects missing executed field', () => {
-    const result = validateMigrationExecutionResult({ ...VALID_RESULT, executed: undefined as any });
+    const result = validateMigrationExecutionResult({ ...VALID_RESULT, executed: undefined as unknown as boolean });
     expect(result.valid).toBe(false);
   });
 
@@ -325,18 +325,18 @@ describe('validateMigrationExecutionResult', () => {
   });
 
   it('rejects invalid migrationStatus', () => {
-    const result = validateMigrationExecutionResult({ ...VALID_RESULT, migrationStatus: 'UNKNOWN' as any });
+    const result = validateMigrationExecutionResult({ ...VALID_RESULT, migrationStatus: 'UNKNOWN' as unknown as 'PASS' });
     expect(result.valid).toBe(false);
   });
 
   it('rejects missing productionMigrationApplied', () => {
-    const result = validateMigrationExecutionResult({ ...VALID_RESULT, productionMigrationApplied: undefined as any });
+    const result = validateMigrationExecutionResult({ ...VALID_RESULT, productionMigrationApplied: undefined as unknown as boolean });
     expect(result.valid).toBe(false);
   });
 
   it('accepts migrationStatus NOT_EXECUTED as valid enum', () => {
     const result = validateMigrationExecutionResult({
-      ...VALID_RESULT, migrationStatus: 'NOT_EXECUTED' as any, executed: false, productionMigrationApplied: false,
+      ...VALID_RESULT, migrationStatus: 'NOT_EXECUTED' as unknown as 'PASS', executed: false, productionMigrationApplied: false,
     });
     expect(result.valid).toBe(true);
   });
@@ -425,22 +425,22 @@ describe('validateBackfillExecutionResult', () => {
   });
 
   it('rejects missing rowsScanned', () => {
-    const result = validateBackfillExecutionResult({ ...VALID_RESULT, rowsScanned: 'not-number' as any });
+    const result = validateBackfillExecutionResult({ ...VALID_RESULT, rowsScanned: 'not-number' as unknown as number });
     expect(result.valid).toBe(false);
   });
 
   it('rejects missing sampleBackfilledRows', () => {
-    const result = validateBackfillExecutionResult({ ...VALID_RESULT, sampleBackfilledRows: null as any });
+    const result = validateBackfillExecutionResult({ ...VALID_RESULT, sampleBackfilledRows: null as unknown as typeof VALID_RESULT.sampleBackfilledRows });
     expect(result.valid).toBe(false);
   });
 
   it('rejects missing releaseDateSourceDistribution', () => {
-    const result = validateBackfillExecutionResult({ ...VALID_RESULT, releaseDateSourceDistribution: null as any });
+    const result = validateBackfillExecutionResult({ ...VALID_RESULT, releaseDateSourceDistribution: null as unknown as typeof VALID_RESULT.releaseDateSourceDistribution });
     expect(result.valid).toBe(false);
   });
 
   it('rejects invalid backfillStatus', () => {
-    const result = validateBackfillExecutionResult({ ...VALID_RESULT, backfillStatus: 'UNKNOWN' as any });
+    const result = validateBackfillExecutionResult({ ...VALID_RESULT, backfillStatus: 'UNKNOWN' as unknown as 'PASS' });
     expect(result.valid).toBe(false);
   });
 });
@@ -755,7 +755,7 @@ describe('Hard rules enforcement', () => {
       migrationSqlPath: 'prisma/migrations/test/migration.sql',
       backupStatus: 'PASS',
     });
-    expect((plan as any).approvalGranted).toBeUndefined();
+    expect((plan as unknown as { approvalGranted?: unknown }).approvalGranted).toBeUndefined();
   });
 
   it('summarizeProductionMigrationExecution does not set approvalGranted', () => {
@@ -768,7 +768,7 @@ describe('Hard rules enforcement', () => {
       rollbackReadinessStatus: 'PASS',
       productionMigrationApplied: true,
     });
-    expect((summary as any).approvalGranted).toBeUndefined();
+    expect((summary as unknown as { approvalGranted?: unknown }).approvalGranted).toBeUndefined();
   });
 
   it('utilities are pure — no I/O side effects', () => {
