@@ -132,8 +132,9 @@ describe('getLatestMarketRegimeContext', () => {
     await getLatestMarketRegimeContext('2026-05-06');
     // Verify only findFirst was called, no mutations
     expect(mockFindFirst).toHaveBeenCalledTimes(1);
-    expect((prisma.marketRegimeResult as any).create).toBeUndefined();
-    expect((prisma.marketRegimeResult as any).update).toBeUndefined();
-    expect((prisma.marketRegimeResult as any).delete).toBeUndefined();
+    const dbClient = prisma.marketRegimeResult as unknown as Record<string, unknown>;
+    expect(dbClient.create).toBeUndefined();
+    expect(dbClient.update).toBeUndefined();
+    expect(dbClient.delete).toBeUndefined();
   });
 });
