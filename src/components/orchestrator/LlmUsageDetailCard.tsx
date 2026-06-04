@@ -297,15 +297,7 @@ function RoleBlock({ role, label, icon, today, recentAll }: RoleBlockProps): Rea
     .filter(Boolean)
     .slice(-1)[0] ?? null;
 
-  // All records for this role that are external executions
-  const externalExecCount = summary
-    ? Object.entries(today.byProvider)
-        .filter(([p]) => EXTERNAL_PROVIDERS.has(p))
-        .reduce((sum, [, s]) => {
-          // only count providers that appeared under this role
-          return sum;
-        }, summary.executionCount)
-    : 0;
+
 
   // Token parse status for worker
   const workerRecentParsed = recentAll

@@ -5,7 +5,6 @@ import {
     TrendingUp,
     ShieldAlert,
     Activity,
-    Calendar,
     ArrowUpRight,
     ArrowDownRight,
     Loader2
@@ -13,7 +12,7 @@ import {
 import { InteractiveLineChart } from '@/components/charts/InteractiveLineChart';
 
 interface SimulationResult {
-    history: any[];
+    history: { date: string, equity: number }[];
     logs: string[];
     finalEquity: number;
     returnPercent: number;
@@ -127,7 +126,7 @@ export function ProTraderSimulation({ capital, maxDrawdown, style }: { capital: 
                 </h4>
                 <div className="h-[300px] w-full">
                     <InteractiveLineChart
-                        data={result.history.map((h: any) => ({
+                        data={result.history.map((h: { date: string, equity: number }) => ({
                             date: h.date.split('T')[0],
                             value: h.equity
                         }))}
