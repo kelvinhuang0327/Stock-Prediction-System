@@ -1,4 +1,4 @@
-import { StockDataPoint, StockDataWithIndicators, TechnicalIndicatorValues } from '../types/stock';
+import { StockDataPoint, StockDataWithIndicators } from '../types/stock';
 
 /**
  * Calculate Simple Moving Average (SMA)
@@ -115,7 +115,7 @@ export const calculateMACD = (data: StockDataWithIndicators[]): StockDataWithInd
     const withSignal = calculateEMA(withDif, 9, 'dif' as keyof StockDataPoint);
 
     return withSignal.map(d => {
-        const ema9Value = (d as any).ema9; // Dynamic property access
+        const ema9Value = (d as Record<string, unknown>).ema9 as number | undefined; // Dynamic property access
         return {
             ...d,
             dem: ema9Value,
@@ -538,7 +538,7 @@ export const calculateStochRSI = (
     rsiPeriod: number = 14,
     stochPeriod: number = 14,
     kSmooth: number = 3,
-    dSmooth: number = 3
+    _dSmooth: number = 3
 ): StockDataWithIndicators[] => {
     // First, ensure RSI is calculated
     const withRSI = data[0].rsi !== undefined ? data : calculateRSI(data, rsiPeriod);

@@ -5,7 +5,7 @@ interface CacheItem<T> {
 }
 
 export class SimpleCacheService {
-    private cache: Map<string, CacheItem<any>> = new Map();
+    private cache: Map<string, CacheItem<unknown>> = new Map();
 
     /**
      * Get value from cache if it exists and hasn't expired

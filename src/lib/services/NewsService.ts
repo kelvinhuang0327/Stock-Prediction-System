@@ -7,6 +7,14 @@ export interface NewsItem {
     url: string;
 }
 
+interface CnyesNewsItem {
+    newsId: number;
+    title: string;
+    summary?: string;
+    content?: string;
+    publishAt: number;
+}
+
 export class NewsService {
     private baseUrl = 'https://api.cnyes.com/media/api/v1/newslist/category/tw_stock';
 
@@ -32,7 +40,7 @@ export class NewsService {
                 return [];
             }
 
-            return json.items.data.map((item: any) => ({
+            return (json.items.data as CnyesNewsItem[]).map((item: CnyesNewsItem) => ({
                 id: item.newsId,
                 title: item.title,
                 summary: item.summary || item.content?.substring(0, 200) || '',

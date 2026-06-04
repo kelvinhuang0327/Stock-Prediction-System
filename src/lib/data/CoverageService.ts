@@ -131,11 +131,19 @@ async function loadCoverageMap(): Promise<Map<string, StockCoverage>> {
   const quoteDaysMap = new Map(quoteGroups.map(g => [g.stockId, g._count._all]));
 
   // Chip coverage (distinct stockIds + latest date + date count)
-  const chipGroups = await (prisma as any).institutionalChip.groupBy({
+  const chipGroups = await (prisma as unknown as {
+    institutionalChip: {
+      groupBy: (args: {
+        by: string[];
+        _count: { _all: boolean };
+        _max: { date: boolean };
+      }) => Promise<{ stockId: string; _count: { _all: number }; _max: { date: string | null } }[]>;
+    };
+  }).institutionalChip.groupBy({
     by: ['stockId'],
     _count: { _all: true },
     _max: { date: true },
-  }) as { stockId: string; _count: { _all: number }; _max: { date: string | null } }[];
+  });
 
   const chipMap = new Map(chipGroups.map(g => ({
     stockId: g.stockId,
@@ -149,7 +157,6 @@ async function loadCoverageMap(): Promise<Map<string, StockCoverage>> {
     ...chipMap.keys(),
   ]);
 
-  const today = new Date().toISOString().slice(0, 10);
   const fiveDaysAgo = new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
 
   const map = new Map<string, StockCoverage>();

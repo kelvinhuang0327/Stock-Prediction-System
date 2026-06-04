@@ -152,8 +152,17 @@ export function generateStockList(count: number = 100): Stock[] {
     return stocks;
 }
 
+export interface PriceHistoryItem {
+    date: string;
+    open: number;
+    high: number;
+    low: number;
+    close: number;
+    volume: number;
+}
+
 // Generate time series data for charts
-export function generatePriceHistory(days: number = 60, basePrice: number = 100): any[] {
+export function generatePriceHistory(days: number = 60, basePrice: number = 100): PriceHistoryItem[] {
     const data = [];
     let price = basePrice;
 
@@ -278,7 +287,7 @@ export function getSentimentData() {
 }
 
 // Dividend History
-export function getDividendHistory(symbol: string) {
+export function getDividendHistory(_symbol: string) {
     const years = [2023, 2022, 2021, 2020, 2019];
     return years.map(year => ({
         year,
