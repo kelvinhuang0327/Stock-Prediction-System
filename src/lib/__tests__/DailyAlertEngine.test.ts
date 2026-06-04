@@ -58,15 +58,26 @@ jest.mock('../market/MarketRegimeEngine', () => ({
 }));
 
 import { runScreen } from '../screen/StrategyScreenEngine';
-import { detectRegime } from '../market/MarketRegimeEngine';
 
-const mockMarketFindFirst = prisma.dailyMarketSnapshot.findFirst as jest.Mock;
-const mockCandidateFindFirst = prisma.dailyCandidateSnapshot.findFirst as jest.Mock;
-const mockCandidateFindMany = (prisma.dailyCandidateSnapshot as any).findMany as jest.Mock;
-const mockWatchlistFindMany = (prisma.watchlist as any).findMany as jest.Mock;
-const mockWatchlistSnapFindMany = (prisma.dailyWatchlistSnapshot as any).findMany as jest.Mock;
+type MockPrismaType = {
+  dailyMarketSnapshot: { findFirst: jest.Mock };
+  dailyCandidateSnapshot: { findFirst: jest.Mock; findMany: jest.Mock };
+  dailyWatchlistSnapshot: { findMany: jest.Mock };
+  watchlist: { findMany: jest.Mock };
+  stockQuote: { count: jest.Mock };
+  institutionalChip: { count: jest.Mock };
+  marketIndex: { count: jest.Mock };
+};
+
+const mockPrisma = prisma as unknown as MockPrismaType;
+
+const mockMarketFindFirst = mockPrisma.dailyMarketSnapshot.findFirst;
+const mockCandidateFindFirst = mockPrisma.dailyCandidateSnapshot.findFirst;
+const mockCandidateFindMany = mockPrisma.dailyCandidateSnapshot.findMany;
+const mockWatchlistFindMany = mockPrisma.watchlist.findMany;
+const mockWatchlistSnapFindMany = mockPrisma.dailyWatchlistSnapshot.findMany;
 const mockRunScreen = runScreen as jest.MockedFunction<typeof runScreen>;
-const mockDetectRegime = detectRegime as jest.MockedFunction<typeof detectRegime>;
+
 
 // ─── Fixtures ────────────────────────────────────────────────────
 
@@ -132,9 +143,9 @@ describe('DailyAlertEngine — generateDailyAlerts()', () => {
     mockWatchlistFindMany.mockResolvedValue([]);
     mockWatchlistSnapFindMany?.mockResolvedValue?.([]);
     // Data warning counts
-    (prisma.stockQuote as any).count.mockResolvedValue(100);
-    (prisma.institutionalChip as any).count.mockResolvedValue(50);
-    (prisma.marketIndex as any).count.mockResolvedValue(200);
+    mockPrisma.stockQuote.count.mockResolvedValue(100);
+    mockPrisma.institutionalChip.count.mockResolvedValue(50);
+    mockPrisma.marketIndex.count.mockResolvedValue(200);
   });
 
   describe('no prior snapshot available', () => {
@@ -180,11 +191,11 @@ describe('DailyAlertEngine — generateDailyAlerts()', () => {
         candidates: [{
           symbol: '2330', name: '台積電', screenBucket: 'Strong Candidate',
           alphaScore: 80, confidence: 65, priceChangePercent: 2.1, closePrice: 580,
-          riskLevel: 'medium', whyIncluded: '技術指標強勢', topFactors: [],
-          limitations: [], dataCoverage: 'full',
-        }] as any,
+          riskLevel: 'medium' as const, whyIncluded: '技術指標強勢', topFactors: [],
+          limitations: [], dataCoverage: 'full' as const,
+        }],
         excluded: [], excludedCount: 0, totalScanned: 200,
-        regime: { regime: 'Bull', confidence: 75, dataPoints: 250, limitations: [] } as any,
+        regime: { regime: 'Bull' as const, confidence: 75, factors: [], dataCoverage: 'full' as const, samplePeriod: '2024-01-01 ~ 2025-01-01', dataPoints: 250, last_updated: '2025-01-01', limitations: [] },
         regimeConfidence: 75,
         dataCoverageSummary: { full: 1, limited: 0, insufficient: 0 },
         screenParams: { minAlphaScore: 40, minConfidence: 15, respectMarketRegime: true, appliedRegimeAdjustment: '無調整' },

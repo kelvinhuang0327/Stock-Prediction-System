@@ -1,17 +1,19 @@
+import { enforceProviderForRole } from '../providerFactory';
+import { executeWorkerProviderCommand } from '../aiService';
+
 jest.mock('../providerFactory', () => ({ enforceProviderForRole: jest.fn() }));
 
-const { enforceProviderForRole } = require('../providerFactory');
-import { executeWorkerProviderCommand } from '../aiService';
+const mockEnforceProviderForRole = enforceProviderForRole as jest.Mock;
 
 describe('aiService.executeWorkerProviderCommand allowlist gate', () => {
   beforeEach(() => { jest.resetAllMocks(); });
 
   it('returns policy-blocked output when provider not allowed', async () => {
-    enforceProviderForRole.mockReturnValue({ allowed: false, blockReason: 'PROVIDER_NOT_IN_ALLOWLIST' });
+    mockEnforceProviderForRole.mockReturnValue({ allowed: false, blockReason: 'PROVIDER_NOT_IN_ALLOWLIST' });
 
-    const input = { workerProvider: 'openai', taskId: 't2' } as any;
+    const input = { workerProvider: 'openai', taskId: 't2', model: 'gpt-4' };
     const out = await executeWorkerProviderCommand({
-      input,
+      input: input as unknown as Parameters<typeof executeWorkerProviderCommand>[0]['input'],
       externalCommand: 'echo hi',
       interpolateCommand: (t: string) => t,
       parseChangedFiles: () => [],

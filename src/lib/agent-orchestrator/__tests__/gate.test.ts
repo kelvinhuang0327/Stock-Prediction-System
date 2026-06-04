@@ -36,9 +36,9 @@ describe('gate utilities', () => {
       resultPath: '/tmp/result.json',
       changedFiles: ['safe/file.txt'],
       acceptanceResults: [{ name: 'a', passed: true }],
-    } as any;
+    };
 
-    const res = await evaluateGate(input);
+    const res = await evaluateGate(input as unknown as Parameters<typeof evaluateGate>[0]);
     expect(res).toHaveProperty('status');
     expect(res.gate_verdict).toBe('PASS');
   });
@@ -54,9 +54,9 @@ describe('gate utilities', () => {
       resultPath: '/tmp/missing.json',
       changedFiles: [],
       acceptanceResults: [{ name: 'a', passed: true }],
-    } as any;
+    };
 
-    const res = await evaluateGate(input);
+    const res = await evaluateGate(input as unknown as Parameters<typeof evaluateGate>[0]);
     expect(res.gate_verdict).toBe('INVALID_DELIVERY');
     expect(res.missing_required_outputs.length).toBeGreaterThan(0);
   });
@@ -64,7 +64,7 @@ describe('gate utilities', () => {
   it('marks price-analysis tasks non-ingestable when the native report is missing', async () => {
     fileExists.mockImplementation(async (target: string) => !target.includes('docs/reports/price_data_quality.json'));
 
-    const res = await evaluateGate({
+    const input = {
       taskId: 44,
       durationSeconds: 3,
       contract: {
@@ -78,12 +78,14 @@ describe('gate utilities', () => {
           requiredScopeField: 'affectedSymbols',
           noThresholdChanges: true,
         },
-      } as any,
+      },
       completedPath: '/tmp/completed.md',
       resultPath: '/tmp/result.json',
       changedFiles: ['docs/reports/notes.md'],
       acceptanceResults: [{ name: 'worker finished', passed: true, evidence: 'ok' }],
-    });
+    };
+
+    const res = await evaluateGate(input as unknown as Parameters<typeof evaluateGate>[0]);
 
     expect(res.gate_verdict).toBe('INVALID_DELIVERY');
     expect(res.ingestability).toEqual(expect.objectContaining({
@@ -105,7 +107,7 @@ describe('gate utilities', () => {
       affectedSymbols: ['2330'],
     }));
 
-    const res = await evaluateGate({
+    const input = {
       taskId: 45,
       durationSeconds: 4,
       contract: {
@@ -119,12 +121,14 @@ describe('gate utilities', () => {
           requiredScopeField: 'affectedSymbols',
           noThresholdChanges: true,
         },
-      } as any,
+      },
       completedPath: '/tmp/completed.md',
       resultPath: '/tmp/result.json',
       changedFiles: ['docs/reports/price_data_quality.json'],
       acceptanceResults: [{ name: 'worker finished', passed: true, evidence: 'ok' }],
-    });
+    };
+
+    const res = await evaluateGate(input as unknown as Parameters<typeof evaluateGate>[0]);
 
     expect(res.gate_verdict).toBe('PASS');
     expect(res.ingestability).toEqual(expect.objectContaining({
@@ -136,15 +140,17 @@ describe('gate utilities', () => {
   it('does not require ingestability for non-price-analysis tasks', async () => {
     fileExists.mockResolvedValue(true);
 
-    const res = await evaluateGate({
+    const input = {
       taskId: 46,
       durationSeconds: 2,
-      contract: { forbidden_changes: [] } as any,
+      contract: { forbidden_changes: [] },
       completedPath: '/tmp/completed.md',
       resultPath: '/tmp/result.json',
       changedFiles: ['docs/reports/system_health.json'],
       acceptanceResults: [{ name: 'worker finished', passed: true, evidence: 'ok' }],
-    });
+    };
+
+    const res = await evaluateGate(input as unknown as Parameters<typeof evaluateGate>[0]);
 
     expect(res.gate_verdict).toBe('PASS');
     expect(res.ingestability).toEqual(expect.objectContaining({
