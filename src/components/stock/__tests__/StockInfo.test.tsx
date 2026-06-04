@@ -6,12 +6,12 @@ global.fetch = jest.fn()
 
 // Mock child components
 jest.mock('@/components/watchlist/PriceAlertDialog', () => ({
-    PriceAlertDialog: ({ isOpen, stock }: any) =>
+    PriceAlertDialog: ({ isOpen, stock }: { isOpen: boolean; stock: { name: string } }) =>
         isOpen ? <div data-testid="price-alert-dialog">Alert Dialog for {stock.name}</div> : null
 }))
 
 jest.mock('@/components/watchlist/AddStockDialog', () => ({
-    AddStockDialog: ({ isOpen }: any) =>
+    AddStockDialog: ({ isOpen }: { isOpen: boolean }) =>
         isOpen ? <div data-testid="add-stock-dialog">Add Stock Dialog</div> : null
 }))
 

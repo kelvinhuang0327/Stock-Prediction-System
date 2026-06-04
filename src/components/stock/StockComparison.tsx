@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Search, Plus, X, ArrowRight } from 'lucide-react';
+import { Search, Plus, X } from 'lucide-react';
 import { stockService } from '@/lib/stockService';
 import { Stock } from '@/lib/mockData';
 
@@ -9,7 +9,6 @@ export function StockComparison({ baseSymbol }: { baseSymbol: string }) {
     const [stocks, setStocks] = useState<Stock[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [searchResults, setSearchResults] = useState<Stock[]>([]);
-    const [loading, setLoading] = useState(false);
 
     // Load base stock initially
     React.useEffect(() => {
@@ -29,11 +28,9 @@ export function StockComparison({ baseSymbol }: { baseSymbol: string }) {
             return;
         }
 
-        setLoading(true);
         const results = await stockService.searchStocks(query);
         // Filter out stocks already in comparison
         setSearchResults(results.filter(r => !stocks.find(s => s.symbol === r.symbol)));
-        setLoading(false);
     };
 
     const addStock = (stock: Stock) => {

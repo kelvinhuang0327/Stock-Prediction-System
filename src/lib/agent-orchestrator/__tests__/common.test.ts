@@ -1,4 +1,4 @@
-import { safeSlug, toDayKey, toTimestampCompact, scheduleNextRunAt, nowIso } from '../common';
+import { safeSlug, toDayKey, toTimestampCompact, scheduleNextRunAt } from '../common';
 
 describe('common utilities', () => {
   it('safeSlug normalizes strings', () => {

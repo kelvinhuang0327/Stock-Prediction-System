@@ -15,7 +15,7 @@ import {
     ReferenceLine
 } from 'recharts';
 import { calculateAllIndicators, calculateVolumeProfile } from '@/lib/technicalIndicators';
-import { StockDataPoint } from '@/types/stock';
+import { StockDataPoint, StockDataWithIndicators } from '@/types/stock';
 
 // --- Mock Data Generation ---
 
@@ -47,7 +47,7 @@ const generateData = (): StockDataPoint[] => {
     return rawData;
 };
 
-export function StockChart({ symbol }: { symbol: string }) {
+export function StockChart() {
     const [showBollinger, setShowBollinger] = useState(false);
     const [showVolumeProfile, setShowVolumeProfile] = useState(false);
     const [showRSI, setShowRSI] = useState(true);
@@ -228,8 +228,8 @@ export function StockChart({ symbol }: { symbol: string }) {
                             <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--popover))', borderColor: 'hsl(var(--border))' }} />
                             <Legend verticalAlign="top" iconSize={10} height={20} wrapperStyle={{ fontSize: '12px' }} />
                             <Bar dataKey="osc" name="OSC" fill="#ef4444" barSize={20}>
-                                {chartData.map((entry: any, index: number) => (
-                                    <Cell key={`cell-${index}`} fill={entry.osc >= 0 ? '#ef4444' : '#22c55e'} />
+                                {chartData.map((entry: StockDataWithIndicators, index: number) => (
+                                    <Cell key={`cell-${index}`} fill={(entry.osc ?? 0) >= 0 ? '#ef4444' : '#22c55e'} />
                                 ))}
                             </Bar>
                             <Line type="monotone" dataKey="dif" name="DIF" stroke="#3b82f6" strokeWidth={1.5} dot={false} />

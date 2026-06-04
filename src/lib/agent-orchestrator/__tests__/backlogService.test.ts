@@ -1,4 +1,5 @@
 import { insertBacklogItem, batchInsertBacklogItems } from '../backlogService';
+import type { BacklogItemInput } from '../ctoTypes';
 
 jest.mock('@/lib/prisma', () => ({
   prisma: {
@@ -11,9 +12,9 @@ jest.mock('@/lib/prisma', () => ({
   },
 }));
 
-const sampleInput = {
+const sampleInput: BacklogItemInput = {
   findingId: 'find-1',
-  source: 'test',
+  source: 'review',
   severity: 'MEDIUM',
   impactScore: 50,
   urgency: 'ROUTINE',
@@ -22,14 +23,14 @@ const sampleInput = {
 
 describe('Backlog Service', () => {
   it('insertBacklogItem returns a record with priority fields', async () => {
-    const row = await insertBacklogItem(sampleInput as any);
+    const row = await insertBacklogItem(sampleInput);
     expect(row).toHaveProperty('priorityScore');
     expect(row).toHaveProperty('priorityLevel');
     expect(row.findingId).toBe(sampleInput.findingId);
   });
 
   it('batchInsertBacklogItems creates multiple items and returns count', async () => {
-    const count = await batchInsertBacklogItems([sampleInput as any, { ...sampleInput, findingId: 'find-2' }]);
+    const count = await batchInsertBacklogItems([sampleInput, { ...sampleInput, findingId: 'find-2' }]);
     expect(count).toBe(2);
   });
 });
