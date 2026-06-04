@@ -2,9 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { Badge } from '@/components/ui/badge';
-import { ArrowUp, ArrowDown, TrendingUp, TrendingDown, DollarSign, PieChart, Activity, Bell, Plus, Check, RefreshCw } from 'lucide-react';
+import { ArrowUp, ArrowDown, DollarSign, PieChart, Activity, Bell, Plus, Check, RefreshCw } from 'lucide-react';
 import { PriceAlertDialog, PriceAlert } from '@/components/watchlist/PriceAlertDialog';
-import { AddStockDialog } from '@/components/watchlist/AddStockDialog';
 
 export interface StockInfoProps {
     symbol: string;
@@ -117,7 +116,6 @@ export function StockInfo({ symbol, data }: StockInfoProps) {
     }, [symbol, data]); // Reset when symbol changes
 
     const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
-    const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
     const [isInWatchlist, setIsInWatchlist] = useState(false);
 
     const handleAddAlert = (alert: PriceAlert) => {

@@ -1,0 +1,76 @@
+{
+  "tranche": "P171",
+  "description": "Active lint thirteenth tranche — local only",
+  "date": "2026-06-04",
+  "baseline_commit": "d625f8c",
+  "lint_before": {
+    "total_problems": 525,
+    "errors": 266,
+    "warnings": 259
+  },
+  "lint_after": {
+    "total_problems": 500,
+    "errors": 260,
+    "warnings": 240
+  },
+  "delta": {
+    "problems": -25,
+    "errors": -6,
+    "warnings": -19
+  },
+  "selected_tranche": {
+    "files": [
+      "src/components/realtime/LiveStockCard.tsx",
+      "src/components/stock/StockInfo.tsx",
+      "src/lib/agent-orchestrator/ctoReviewTick.ts"
+    ],
+    "rules_targeted": ["@typescript-eslint/no-unused-vars"],
+    "issues_resolved": 25
+  },
+  "excluded_from_tranche": {
+    "file": "src/lib/analysis/RuleBasedStockAnalyzer.ts",
+    "reason": "SHA256 hash invariance guard in p26a_renderer_fix.test.ts and p26a_batch_pipeline_wiring.test.ts — any modification to this file fails the hash-based DB invariance tests. Reverted to HEAD."
+  },
+  "fixes": [
+    {
+      "file": "src/components/realtime/LiveStockCard.tsx",
+      "issues_resolved": 7,
+      "fixes": [
+        {"rule": "@typescript-eslint/no-unused-vars", "item": "useEffect, useState imports", "fix": "removed from React import — function body returns null without side effects"},
+        {"rule": "@typescript-eslint/no-unused-vars", "item": "Zap import", "fix": "removed from lucide-react import"},
+        {"rule": "@typescript-eslint/no-unused-vars", "item": "symbol, initialQuote params in LiveStockCard", "fix": "removed params from signature entirely — function returns null placeholder, no external callers pass these props"},
+        {"rule": "@typescript-eslint/no-unused-vars", "item": "LiveStockCardProps interface", "fix": "removed unused interface — no external imports of this type"},
+        {"rule": "@typescript-eslint/no-unused-vars", "item": "keyLevels, tags props in LiveStockCardControlled", "fix": "omitted from destructuring — type annotation retained in parameter type for call-site compatibility"}
+      ]
+    },
+    {
+      "file": "src/components/stock/StockInfo.tsx",
+      "issues_resolved": 3,
+      "fixes": [
+        {"rule": "@typescript-eslint/no-unused-vars", "item": "TrendingUp, TrendingDown imports", "fix": "removed — only referenced inside commented-out JSX block, not active code"},
+        {"rule": "@typescript-eslint/no-unused-vars", "item": "AddStockDialog import", "fix": "removed entire import line — not referenced anywhere in active code"},
+        {"rule": "@typescript-eslint/no-unused-vars", "item": "isAddDialogOpen, setIsAddDialogOpen useState", "fix": "removed dead state declaration — state never read or updated in active code paths"}
+      ]
+    },
+    {
+      "file": "src/lib/agent-orchestrator/ctoReviewTick.ts",
+      "issues_resolved": 5,
+      "fixes": [
+        {"rule": "@typescript-eslint/no-unused-vars", "item": "evaluateExecutionPolicy, getPolicySkipMessage imports", "fix": "removed import — comment explains policy is intentionally bypassed for CTO tick to keep unit tests stable"},
+        {"rule": "@typescript-eslint/no-unused-vars", "item": "policyDecision assignment", "fix": "removed dead assignment line — the inline comment explaining the intent was preserved in surrounding context"},
+        {"rule": "@typescript-eslint/no-unused-vars", "item": "err in catch block", "fix": "changed catch(err) to catch{} — swallowing logging errors is intentional (comment retained)"},
+        {"rule": "@typescript-eslint/no-unused-vars", "item": "run = await prisma.ctoReviewRun.create(...)", "fix": "removed variable binding — DB write result is not used by callers or further code"}
+      ]
+    }
+  ],
+  "db_invariance_tests": {
+    "p26a_renderer_fix": "PASS",
+    "p26a_batch_pipeline_wiring": "PASS",
+    "p29d_dropzone_scaffold": "PASS"
+  },
+  "staged": false,
+  "committed": false,
+  "pushed": false,
+  "browser_review_allowed": false,
+  "final_classification": "P171_ACTIVE_LINT_TRANCHE_REPAIRED_CI_STILL_RED_PRODUCT_BEHAVIOR_OR_REMAINING_LINT_LOCAL_ONLY"
+}

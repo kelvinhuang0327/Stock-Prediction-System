@@ -9,7 +9,6 @@ import { randomUUID } from 'crypto';
 import { prisma } from '@/lib/prisma';
 import { batchInsertBacklogItems } from './backlogService';
 import { classifySignalState } from './signalStateClassifier';
-import { evaluateExecutionPolicy, getPolicySkipMessage } from './llmExecutionPolicy';
 import { logProviderPreflight } from './llmUsageLogger';
 import type {
   BacklogCategory,
@@ -179,7 +178,6 @@ export async function runCtoReviewTick(input: CtoReviewRunInput): Promise<CtoRev
   // the external execution policy used for worker/ai_service ticks. Avoid calling
   // the external execution_policy here to keep unit tests stable and prevent
   // accidental scheduler-driven skips. Always allow CTO review.
-  const policyDecision = { allowed: true, skip_reason: null } as any;
 
   // Log preflight immediately before any DB access so tests can observe ordering.
   try {
@@ -192,7 +190,7 @@ export async function runCtoReviewTick(input: CtoReviewRunInput): Promise<CtoRev
       taskId: null,
       noTaskReason: null,
     } as any);
-  } catch (err) {
+  } catch {
     // swallow logging errors
   }
 
@@ -314,7 +312,7 @@ export async function runCtoReviewTick(input: CtoReviewRunInput): Promise<CtoRev
     `Signal state: ${signalState.state} (${signalState.confidenceLabel} confidence)`;
 
   // 8. Persist CtoReviewRun
-  const run = await prisma.ctoReviewRun.create({
+  await prisma.ctoReviewRun.create({
     data: {
       runId,
       frequencyMode:  input.isManual ? 'manual' : 'scheduled',

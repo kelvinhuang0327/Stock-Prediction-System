@@ -1,8 +1,8 @@
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { RealTimeQuote } from '@/lib/services/RealTimeService';
 import { OrderBook } from './OrderBook';
-import { ArrowUp, ArrowDown, Activity, Zap } from 'lucide-react';
+import { ArrowUp, ArrowDown, Activity } from 'lucide-react';
 
 interface KeyLevels {
     pivot: number;
@@ -13,12 +13,7 @@ interface KeyLevels {
     ma60: number | null;
 }
 
-interface LiveStockCardProps {
-    symbol: string;
-    initialQuote?: RealTimeQuote;
-}
-
-export function LiveStockCard({ symbol, initialQuote }: LiveStockCardProps) {
+export function LiveStockCard() {
     // Determine color based on open price (Taiwan: Red is Up, Green is Down)
     // If no open price (e.g. pre-market), default to gray.
 
@@ -32,7 +27,7 @@ export function LiveStockCard({ symbol, initialQuote }: LiveStockCardProps) {
 }
 
 // Redefine as presentation component mostly
-export function LiveStockCardControlled({ quote, keyLevels, tags }: { quote: RealTimeQuote | null, keyLevels?: KeyLevels, tags?: string[] }) {
+export function LiveStockCardControlled({ quote }: { quote: RealTimeQuote | null, keyLevels?: KeyLevels, tags?: string[] }) {
     if (!quote) return (
         <div className="bg-slate-800 rounded-xl p-6 animate-pulse flex flex-col gap-4">
             <div className="h-6 w-24 bg-slate-700 rounded"></div>
