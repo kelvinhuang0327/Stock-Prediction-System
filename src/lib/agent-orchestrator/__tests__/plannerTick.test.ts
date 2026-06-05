@@ -1,3 +1,4 @@
+import type { ProjectProfile } from '../types';
 import { runPlannerTick } from '../plannerTick';
 
 jest.mock('../profile', () => ({
@@ -20,7 +21,7 @@ jest.mock('../profile', () => ({
     required_contract_fields: [],
     required_result_fields: [],
     ui: { show_contract: true, show_result: true, show_gate_verdict: true, show_last_output_time: true, show_latest_progress_summary: true },
-  } as any),
+  } as unknown as ProjectProfile),
 }));
 
 jest.mock('../storage', () => ({

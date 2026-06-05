@@ -14,9 +14,9 @@ describe('providers helpers', () => {
         organicTradeCount: 10,
         fullTradeCount: 12,
       },
-    } as any;
+    } as unknown as Parameters<typeof buildColdRegimePayload>[0];
 
-    const profile = { protected_paths: [], allowed_reference_paths: [] } as any;
+    const profile = { protected_paths: [], allowed_reference_paths: [] } as unknown as Parameters<typeof buildColdRegimePayload>[0];
     const draft = buildColdRegimePayload(signalState, profile);
     expect(draft).toHaveProperty('contract');
     expect(draft).toHaveProperty('promptMarkdown');

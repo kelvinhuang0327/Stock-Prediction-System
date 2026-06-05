@@ -42,7 +42,6 @@ import {
   computeSystemHealth,
   getSystemHealthStatus,
   emitHealthWarningIfDegraded,
-  type HealthStatus,
   type SystemHealthReport,
 } from '../systemHealth';
 import type { CleanupTrendReport, TrendSignal } from '../staleJobCleanup';

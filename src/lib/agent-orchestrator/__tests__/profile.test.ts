@@ -4,7 +4,7 @@ jest.mock('../common', () => ({
   readJsonFile: jest.fn(),
 }));
 
-const { readJsonFile } = require('../common');
+import { readJsonFile } from '../common';
 
 describe('profile validation', () => {
   it('rejects invalid shapes', () => {
@@ -35,13 +35,13 @@ describe('profile validation', () => {
       ui: { show_contract: true, show_result: true, show_gate_verdict: true, show_last_output_time: true, show_latest_progress_summary: true },
     };
 
-    readJsonFile.mockResolvedValueOnce(good);
+    (readJsonFile as jest.Mock).mockResolvedValueOnce(good);
     const loaded = await loadProjectProfile();
     expect(loaded).toHaveProperty('project_name', 'p');
   });
 
   it('loadProjectProfile throws on invalid profile returned by readJsonFile', async () => {
-    readJsonFile.mockResolvedValueOnce({ project_name: 'x' });
+    (readJsonFile as jest.Mock).mockResolvedValueOnce({ project_name: 'x' });
     await expect(loadProjectProfile()).rejects.toThrow(/Invalid project profile/);
   });
 });
