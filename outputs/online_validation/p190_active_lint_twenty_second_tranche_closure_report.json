@@ -1,0 +1,31 @@
+{
+  "phase": "P190_CLOSURE",
+  "status": "COMPLETED",
+  "verification": {
+    "db_invariance": {
+      "passed": 79,
+      "failed": 0,
+      "total": 79
+    },
+    "targeted_tests": {
+      "passed": 27,
+      "failed": 0,
+      "total": 27
+    },
+    "lint": "PASS"
+  },
+  "commit_details": {
+    "staged_files": [
+      "outputs/online_validation/p189_active_lint_twenty_second_tranche_report.json",
+      "outputs/online_validation/p189_active_lint_twenty_second_tranche_report.md",
+      "outputs/online_validation/p190_active_lint_twenty_second_tranche_closure_report.json",
+      "outputs/online_validation/p190_active_lint_twenty_second_tranche_closure_report.md",
+      "src/lib/agent-orchestrator/__tests__/plannerTick.test.ts",
+      "src/lib/agent-orchestrator/__tests__/profile.test.ts",
+      "src/lib/agent-orchestrator/__tests__/providers.test.ts",
+      "src/lib/agent-orchestrator/__tests__/storage.test.ts",
+      "src/lib/agent-orchestrator/__tests__/systemHealth.test.ts"
+    ],
+    "commit_message": "P189: active lint twenty-second tranche lane and CI verification"
+  }
+}
