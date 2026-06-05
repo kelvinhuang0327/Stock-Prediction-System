@@ -1,0 +1,46 @@
+{
+  "repo": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System",
+  "branch": "main",
+  "startHead": "8935685df5dfa144e138a3ec3419ab00164c48bb",
+  "p194CommitSha": "e127976e6cc13bc54ca502120e2ef6453664d47c",
+  "p195ReportCommitSha": "pending",
+  "endHead": "pending",
+  "phase0ActualState": {
+    "clean": true,
+    "head": "e127976"
+  },
+  "sharedGovernanceFilesRead": [
+    "00-Plan/roadmap/SHARED_AGENT_BOOTSTRAP.md",
+    "00-Plan/roadmap/TASK_TEMPLATES.md",
+    "00-Plan/roadmap/active_task.md"
+  ],
+  "p194IntegrityVerified": true,
+  "p194PushCompleted": true,
+  "p195ArtifactsCreated": true,
+  "p195ArtifactsCommitted": false,
+  "p195PushCompleted": false,
+  "ciRunId": "26992943744",
+  "ciRunUrl": "https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26992943744",
+  "ciFinalStatus": "completed",
+  "ciConclusion": "failure",
+  "failedJobs": [
+    "test-node",
+    "lint"
+  ],
+  "ciFailureSummary": "ESLint failed in lint job. test-node failed with Jest unit tests failures.",
+  "ciStillRedReason": "Remaining lint issues in React components and unrelated Jest test failures in main branch",
+  "browserReviewAllowed": false,
+  "noSourceModifiedInP195": true,
+  "noProductionLogicModified": true,
+  "noNewLintFixes": true,
+  "testsRun": {
+    "targeted": "86 PASS",
+    "db_invariance": "79 PASS"
+  },
+  "stagedCommitPushStatus": "P194 committed and pushed. P195 reports pending.",
+  "risks": "Remaining lint errors and failing watchlist/revenue tests in main branch CI",
+  "limitations": "CI remains red due to issues outside of the twenty-fourth tranche files",
+  "nextRecommendedTaskName": "P196: active lint twenty-fifth tranche planning",
+  "workerNeedsStrongModel": false,
+  "finalClassification": "P195_CLOSURE_COMMITTED_CI_STILL_RED_PRODUCT_BEHAVIOR_OR_REMAINING_LINT"
+}
