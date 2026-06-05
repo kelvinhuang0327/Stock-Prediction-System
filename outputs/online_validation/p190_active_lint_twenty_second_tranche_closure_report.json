@@ -3,11 +3,11 @@
   "branch": "main",
   "startHead": "5c262ba8c44b8ec88baa4652ee2d29a253ff032a",
   "p189CommitSha": "4225fe5966cb17cbb89b275fe674b0fa0a7d5ea0",
-  "p190ArtifactCommitSha": "pending",
-  "endHead": "4225fe5966cb17cbb89b275fe674b0fa0a7d5ea0",
+  "p190ArtifactCommitSha": "2c9bae2",
+  "endHead": "2c9bae2",
   "phase0ActualState": {
     "clean": true,
-    "head": "4225fe5966cb17cbb89b275fe674b0fa0a7d5ea0"
+    "head": "2c9bae2"
   },
   "sharedGovernanceFilesRead": [
     "00-Plan/roadmap/SHARED_AGENT_BOOTSTRAP.md",
@@ -24,8 +24,8 @@
   "p189CommitCreated": true,
   "p189PushCompleted": true,
   "p190ArtifactsCreated": true,
-  "p190ArtifactsCommitted": false,
-  "p190PushCompleted": false,
+  "p190ArtifactsCommitted": true,
+  "p190PushCompleted": true,
   "ciRunId": "26992214735",
   "ciRunUrl": "https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26992214735",
   "ciFinalStatus": "completed",
@@ -36,7 +36,7 @@
     "targeted": "27 PASS",
     "db_invariance": "79 PASS"
   },
-  "stagedCommitPushStatus": "P189 committed and pushed. P190 reports pending commit.",
+  "stagedCommitPushStatus": "P189 committed and pushed. P190 reports committed and pushed.",
   "risks": "Remaining lint errors and failing watchlist/revenue tests in main branch CI",
   "limitations": "CI remains red due to issues outside of the twenty-second tranche files",
   "nextRecommendedTaskName": "P191: active lint twenty-third tranche lane local-only",

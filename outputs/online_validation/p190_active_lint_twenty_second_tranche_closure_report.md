@@ -5,8 +5,8 @@
 - **Branch**: `main`
 - **Start HEAD**: `5c262ba8c44b8ec88baa4652ee2d29a253ff032a`
 - **P189 Commit SHA**: `4225fe5966cb17cbb89b275fe674b0fa0a7d5ea0`
-- **P190 Artifact Commit SHA**: `pending`
-- **End HEAD**: `4225fe5966cb17cbb89b275fe674b0fa0a7d5ea0`
+- **P190 Artifact Commit SHA**: `2c9bae2`
+- **End HEAD**: `2c9bae2`
 - **Final Classification**: `P190_CLOSURE_COMMITTED_CI_STILL_RED_PRODUCT_BEHAVIOR_OR_REMAINING_LINT`
 
 ## 2. 執行的修改與提交
