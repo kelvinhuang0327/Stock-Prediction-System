@@ -9,7 +9,7 @@
  *   - Unknown provider is treated as external.
  */
 
-import { appendFileSync, mkdirSync } from 'node:fs';
+import { appendFileSync } from 'node:fs';
 
 jest.mock('node:fs', () => ({
   appendFileSync: jest.fn(),

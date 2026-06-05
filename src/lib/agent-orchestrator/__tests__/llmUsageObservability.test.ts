@@ -6,7 +6,6 @@
  */
 
 import { appendFileSync } from 'node:fs';
-import { mkdirSync } from 'node:fs';
 
 jest.mock('node:fs', () => ({
   appendFileSync: jest.fn(),
@@ -14,7 +13,6 @@ jest.mock('node:fs', () => ({
 }));
 
 const mockAppend = appendFileSync as jest.Mock;
-const _mockMkdir = mkdirSync as jest.Mock;
 
 // Helper: get the last JSON record written to the mock
 function lastRecord(): Record<string, unknown> {

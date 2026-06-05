@@ -57,7 +57,7 @@ import {
   loadTaskIndex,
   saveSchedulerState,
 } from '../storage';
-import { toFinalStatus, updateTaskRecord, writeTaskCompletionArtifacts } from '../tasks';
+import { toFinalStatus, writeTaskCompletionArtifacts } from '../tasks';
 import { evaluateExecutionPolicy } from '../llmExecutionPolicy';
 import { processCompletedOptimizationTaskFromFS } from '../../autonomous/InsightIntegrationLayer';
 
@@ -72,7 +72,6 @@ const mockLoadSchedulerState = loadSchedulerState as jest.Mock;
 const mockLoadTaskIndex = loadTaskIndex as jest.Mock;
 const mockSaveSchedulerState = saveSchedulerState as jest.Mock;
 const mockToFinalStatus = toFinalStatus as jest.Mock;
-const mockUpdateTaskRecord = updateTaskRecord as jest.Mock;
 const mockWriteTaskCompletionArtifacts = writeTaskCompletionArtifacts as jest.Mock;
 const mockEvaluateExecutionPolicy = evaluateExecutionPolicy as jest.Mock;
 const mockProcessCompletedOptimizationTaskFromFS = processCompletedOptimizationTaskFromFS as jest.Mock;

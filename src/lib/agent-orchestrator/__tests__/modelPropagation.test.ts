@@ -15,7 +15,7 @@
  * 9.  logProviderExecutionStart writes all three model fields
  */
 
-import { appendFileSync, mkdirSync } from 'node:fs';
+import { appendFileSync } from 'node:fs';
 
 // ── Mock filesystem ──────────────────────────────────────────────────────────
 jest.mock('node:fs', () => ({
