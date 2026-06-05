@@ -199,8 +199,8 @@ describe('duplicate corpusEntryKey rejected', () => {
         ];
         // Override the key to match what P11 would generate
         const dupEntry = existingWithDuplicate[existingWithDuplicate.length - 1];
-        (dupEntry as any).corpusEntryKey = `SIM_CORPUS|p11-daily-real-market-simulation-20260515-001|2026-05-15|2330|MVP_CORE|5D`;
-        (dupEntry as any).originalAsOfDate = '2026-05-15';
+        (dupEntry as unknown as { corpusEntryKey: string }).corpusEntryKey = `SIM_CORPUS|p11-daily-real-market-simulation-20260515-001|2026-05-15|2330|MVP_CORE|5D`;
+        (dupEntry as unknown as { originalAsOfDate: string }).originalAsOfDate = '2026-05-15';
 
         const preview = buildDailySnapshotAppendPreview(VALID_SEED, existingWithDuplicate, DEFAULT_PREVIEW_OPTIONS);
         expect(preview.appendWouldPass).toBe(false);
@@ -216,7 +216,7 @@ describe('no production / optimizer readiness', () => {
 
     it('seed isProductionReady is not present (no such field)', () => {
         const preview = buildDailySnapshotAppendPreview(VALID_SEED, EXISTING_CORPUS, DEFAULT_PREVIEW_OPTIONS);
-        expect((preview as any).isProductionReady).toBeUndefined();
+        expect((preview as unknown as { isProductionReady?: unknown }).isProductionReady).toBeUndefined();
     });
 
     it('does not contain optimizer readiness claim', () => {
@@ -251,21 +251,21 @@ describe('validateDailySnapshotAppendPreview', () => {
 
     it('FAIL: appendWouldPass=true with non-zero duplicateKeyCount fails', () => {
         const preview = buildDailySnapshotAppendPreview(VALID_SEED, EXISTING_CORPUS, DEFAULT_PREVIEW_OPTIONS);
-        (preview as any).duplicateKeyCount = 3;
+        (preview as unknown as { duplicateKeyCount: number }).duplicateKeyCount = 3;
         const result = validateDailySnapshotAppendPreview(preview);
         expect(result.validationStatus).toBe('FAIL');
     });
 
     it('FAIL: productionWriteAllowed=true on a snapshot fails', () => {
         const preview = buildDailySnapshotAppendPreview(VALID_SEED, EXISTING_CORPUS, DEFAULT_PREVIEW_OPTIONS);
-        (preview.proposedSnapshots[0] as any).productionWriteAllowed = true;
+        (preview.proposedSnapshots[0] as unknown as { productionWriteAllowed: boolean }).productionWriteAllowed = true;
         const result = validateDailySnapshotAppendPreview(preview);
         expect(result.validationStatus).toBe('FAIL');
     });
 
     it('FAIL: PRODUCTION_READY in preview fails', () => {
         const preview = buildDailySnapshotAppendPreview(VALID_SEED, EXISTING_CORPUS, DEFAULT_PREVIEW_OPTIONS);
-        (preview as any).injectedField = 'PRODUCTION_READY';
+        (preview as unknown as { injectedField: string }).injectedField = 'PRODUCTION_READY';
         const result = validateDailySnapshotAppendPreview(preview);
         expect(result.validationStatus).toBe('FAIL');
     });

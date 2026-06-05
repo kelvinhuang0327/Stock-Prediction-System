@@ -9,6 +9,8 @@ import {
   ManualMonthlyRevenueRow,
   AcceptedManualRevenueRow,
 } from '../P26F32ManualSourceAcceptanceValidatorUtils';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 
 const CONTRACT = {
   targetPeriods: ['2025-09','2025-10','2025-11','2025-12','2026-01'],
@@ -188,18 +190,15 @@ describe('P26F32 Manual Source Acceptance Validator Utils', () => {
 
   describe('No forbidden patterns', () => {
     it('source does not use Math.random()', () => {
-      const fs = require('fs');
-      const src = fs.readFileSync(require('path').join(__dirname, '../P26F32ManualSourceAcceptanceValidatorUtils.ts'), 'utf8');
+      const src = fs.readFileSync(path.join(__dirname, '../P26F32ManualSourceAcceptanceValidatorUtils.ts'), 'utf8');
       expect(src).not.toMatch(/Math\.random\(\)/);
     });
     it('source does not use external npm imports', () => {
-      const fs = require('fs');
-      const src = fs.readFileSync(require('path').join(__dirname, '../P26F32ManualSourceAcceptanceValidatorUtils.ts'), 'utf8');
+      const src = fs.readFileSync(path.join(__dirname, '../P26F32ManualSourceAcceptanceValidatorUtils.ts'), 'utf8');
       expect(src).not.toMatch(/^import\s+.*from\s+['"][^.]/m);
     });
     it('source does not write to DB', () => {
-      const fs = require('fs');
-      const src = fs.readFileSync(require('path').join(__dirname, '../P26F32ManualSourceAcceptanceValidatorUtils.ts'), 'utf8');
+      const src = fs.readFileSync(path.join(__dirname, '../P26F32ManualSourceAcceptanceValidatorUtils.ts'), 'utf8');
       expect(src).not.toMatch(/prisma\.(create|update|delete|upsert)/);
     });
   });

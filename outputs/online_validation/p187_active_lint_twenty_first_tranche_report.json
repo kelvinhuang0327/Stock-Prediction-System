@@ -1,0 +1,30 @@
+{
+  "phase": "P187",
+  "title": "Active Lint Twenty-First Tranche Lane Local-Only",
+  "classification": "P187_ACTIVE_LINT_TRANCHE_REPAIRED_CI_STILL_RED_PRODUCT_BEHAVIOR_OR_REMAINING_LINT_LOCAL_ONLY",
+  "baseline_commit": "59928d5",
+  "branch": "main",
+  "timestamp": "2026-06-04T14:30:00Z",
+  "lint_before": { "problems": 375, "errors": 151, "warnings": 224 },
+  "lint_after": { "problems": 361, "errors": 143, "warnings": 218 },
+  "lint_delta": { "problems": -14, "errors": -8, "warnings": -6 },
+  "files_modified": [
+    "tests/agent-orchestrator/schedulerGuard.test.ts",
+    "src/lib/onlineValidation/__tests__/p11_daily_snapshot_append_preview.test.ts",
+    "src/lib/onlineValidation/__tests__/p26f3_2_manual_source_acceptance_validator_utils.test.ts",
+    "src/lib/agent-orchestrator/__tests__/service.test.ts",
+    "src/lib/agent-orchestrator/__tests__/signalStateClassifier.test.ts"
+  ],
+  "rules_fixed": [
+    "@typescript-eslint/no-require-imports",
+    "@typescript-eslint/no-explicit-any",
+    "@typescript-eslint/no-unused-vars"
+  ],
+  "db_invariance": "PASS",
+  "targeted_tests": "PASS (61/61)",
+  "staged": false,
+  "committed": false,
+  "pushed": false,
+  "ci_status": "failure (run 26957941752)",
+  "worker_needs_strong_model": false
+}

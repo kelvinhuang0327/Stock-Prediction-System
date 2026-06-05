@@ -1,3 +1,5 @@
+import type * as SignalType from '../signalStateClassifier';
+
 describe('signalStateClassifier', () => {
   afterEach(() => {
     jest.resetModules();
@@ -5,6 +7,7 @@ describe('signalStateClassifier', () => {
   });
 
   test('returns TRUE_EXHAUSTED when not enough full trades or insufficient coverage', async () => {
+    let classifySignalState: typeof SignalType.classifySignalState | undefined;
     jest.isolateModules(() => {
       jest.doMock('@/lib/prisma', () => ({
         prisma: {
@@ -17,18 +20,23 @@ describe('signalStateClassifier', () => {
       }));
 
       // require after mocking
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      const { classifySignalState } = require('../signalStateClassifier');
-      return classifySignalState().then((res: any) => {
-        expect(res.state).toBe('TRUE_EXHAUSTED');
-        expect(res.reason).toMatch(/fullTradeCount|dataCoverage/);
-      });
+      const mod = jest.requireActual('../signalStateClassifier') as typeof SignalType;
+      classifySignalState = mod.classifySignalState;
     });
+
+    if (!classifySignalState) {
+      throw new Error('Module failed to load');
+    }
+
+    const res = await classifySignalState();
+    expect(res.state).toBe('TRUE_EXHAUSTED');
+    expect(res.reason).toMatch(/fullTradeCount|dataCoverage/);
   });
 
   test('returns COLD_REGIME when overall win rate below threshold', async () => {
+    let classifySignalState: typeof SignalType.classifySignalState | undefined;
     jest.isolateModules(() => {
-      const trades = Array.from({ length: 6 }, (_, i) => ({ setupType: 'trend', pnlPct: -1, tradeMode: 'full' }));
+      const trades = Array.from({ length: 6 }, () => ({ setupType: 'trend', pnlPct: -1, tradeMode: 'full' }));
       jest.doMock('@/lib/prisma', () => ({
         prisma: {
           simulatedTrade: { findMany: jest.fn().mockResolvedValue(trades) },
@@ -39,12 +47,17 @@ describe('signalStateClassifier', () => {
         },
       }));
 
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      const { classifySignalState } = require('../signalStateClassifier');
-      return classifySignalState().then((res: any) => {
-        expect(res.state).toBe('COLD_REGIME');
-        expect(res.features.fullTradeCount).toBeGreaterThanOrEqual(6);
-      });
+      const mod = jest.requireActual('../signalStateClassifier') as typeof SignalType;
+      classifySignalState = mod.classifySignalState;
     });
+
+    if (!classifySignalState) {
+      throw new Error('Module failed to load');
+    }
+
+    const res = await classifySignalState();
+    expect(res.state).toBe('COLD_REGIME');
+    expect(res.features.fullTradeCount).toBeGreaterThanOrEqual(6);
   });
 });
+
