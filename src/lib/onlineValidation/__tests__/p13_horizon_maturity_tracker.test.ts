@@ -97,7 +97,7 @@ describe('HorizonMaturityTracker — P13', () => {
     });
 
     it('PRODUCTION_READY is rejected', () => {
-        const tampered = { ...tracker, maturityStatus: 'PRODUCTION_READY' as any };
+        const tampered = { ...tracker, maturityStatus: 'PRODUCTION_READY' as never };
         const result = validateHorizonMaturityTracker(tampered);
         expect(result.validationStatus).toBe('FAIL');
         expect(result.validationMessages.join(' ')).toMatch(/PRODUCTION_READY/);

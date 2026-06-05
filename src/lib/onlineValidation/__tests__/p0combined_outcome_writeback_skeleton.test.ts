@@ -195,7 +195,7 @@ describe('validateOutcomeWriteBackBatch (v0 — was stub)', () => {
             dryRun: true,
             writeMode: 'OUTCOME_ARTIFACT_ONLY',
         });
-        const result = validateOutcomeWriteBackBatch({ ...batch, writeMode: 'OTHER' as any });
+        const result = validateOutcomeWriteBackBatch({ ...batch, writeMode: 'OTHER' as never });
         expect(result.status).toBe('FAIL');
     });
 });

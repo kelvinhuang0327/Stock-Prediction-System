@@ -6,9 +6,9 @@ describe('aiModulesService (placeholder tests)', () => {
   });
 
   test('error path: missing modules handled', () => {
-    function parse(res: any) {
+    function parse(res: Record<string, unknown>) {
       if (!res.modules) throw new Error('no modules');
-      return res.modules.length;
+      return Array.isArray(res.modules) ? res.modules.length : 0;
     }
     expect(() => parse({})).toThrow('no modules');
   });

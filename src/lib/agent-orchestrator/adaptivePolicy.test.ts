@@ -9,7 +9,7 @@ describe('adaptivePolicy (placeholder tests)', () => {
       if (typeof input !== 'number') throw new Error('invalid');
       return input > 0;
     }
-    expect(() => decideStrict('x' as any)).toThrow('invalid');
+    expect(() => decideStrict('x')).toThrow('invalid');
   });
 
   test('edge case: zero is not positive', () => {

@@ -182,7 +182,7 @@ describe('validateFeatureContractEntry', () => {
   });
 
   it('catches invalid pitRiskLevel', () => {
-    const entry = makeEntry({ pitRiskLevel: 'UNKNOWN' as any });
+    const entry = makeEntry({ pitRiskLevel: 'UNKNOWN' as never });
     const errors = validateFeatureContractEntry(entry);
     expect(errors.some(e => e.field === 'pitRiskLevel')).toBe(true);
   });

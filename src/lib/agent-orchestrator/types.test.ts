@@ -11,7 +11,7 @@ describe('types.isTerminalTaskStatus', () => {
 
   test('handles unknown string gracefully (edge case)', () => {
     // Type-level safety means unknown values shouldn't occur, but function should return false
-    // @ts-ignore: deliberate
+    // @ts-expect-error: deliberate
     expect(isTerminalTaskStatus('SOMETHING_ELSE')).toBe(false);
   });
 });
