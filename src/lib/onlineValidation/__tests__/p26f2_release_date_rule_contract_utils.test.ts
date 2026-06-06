@@ -17,7 +17,7 @@ describe('P26F2MonthlyRevenueReleaseDateRuleContractUtils', () => {
   );
 
   test('1. buildP26F2ReleaseRuleDateContractV1 has inferenceRule with ruleName = INFERRED_NEXT_MONTH_10TH', () => {
-    const contract = buildP26F2ReleaseRuleDateContractV1() as Record<string, any>;
+    const contract = buildP26F2ReleaseRuleDateContractV1() as Record<string, { ruleName: string }>;
     expect(contract.inferenceRule.ruleName).toBe('INFERRED_NEXT_MONTH_10TH');
   });
 

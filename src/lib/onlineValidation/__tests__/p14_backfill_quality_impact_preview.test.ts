@@ -126,7 +126,7 @@ describe('BackfillQualityImpactPreview — P14', () => {
     });
 
     it('PRODUCTION_READY is rejected', () => {
-        const mutated = { ...preview, projectedQualityStatus: 'PRODUCTION_READY' as any };
+        const mutated = { ...preview, projectedQualityStatus: 'PRODUCTION_READY' as never };
         const result = validateBackfillQualityImpactPreview(mutated);
         expect(result.validationStatus).toBe('FAIL');
     });

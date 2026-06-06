@@ -41,7 +41,7 @@ describe('AssetDoublingStrategy', () => {
             institutionalChips: [{
                 stockId: id, totalBuy: 100, date: '20230101', id: 1, createdAt: new Date(), foreignBuy: 0, trustBuy: 0, dealerBuy: 0
             }]
-        } as any;
+        } as unknown as StockData;
     };
 
     it('should filter out stocks with weak revenue growth', async () => {

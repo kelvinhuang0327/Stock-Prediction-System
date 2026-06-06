@@ -214,7 +214,7 @@ describe('CoverageRecoveryPlanner — P13', () => {
     });
 
     it('PRODUCTION_READY is rejected', () => {
-        const tampered = { ...plan, recoveryStatus: 'PRODUCTION_READY' as any };
+        const tampered = { ...plan, recoveryStatus: 'PRODUCTION_READY' as never };
         const result = validateCoverageRecoveryPlan(tampered);
         expect(result.validationStatus).toBe('FAIL');
         expect(result.validationMessages.join(' ')).toMatch(/PRODUCTION_READY/);

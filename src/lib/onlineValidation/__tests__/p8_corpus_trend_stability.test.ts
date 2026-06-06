@@ -181,7 +181,7 @@ describe('CorpusTrendStability — P8', () => {
         it('should reject result with PRODUCTION_READY status', () => {
             const metrics = makeMetrics();
             const result = buildCorpusTrendStability(metrics, BASE_OPTIONS);
-            const mutated = { ...result, stabilityStatus: 'PRODUCTION_READY' as any };
+            const mutated = { ...result, stabilityStatus: 'PRODUCTION_READY' as never };
             const validation = validateCorpusTrendStability(mutated);
             expect(validation.status).toBe('FAIL');
         });

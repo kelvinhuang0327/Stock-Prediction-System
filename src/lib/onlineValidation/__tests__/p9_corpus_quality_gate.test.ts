@@ -296,7 +296,7 @@ describe('CorpusQualityGate — P9', () => {
             const metrics = makeMetrics();
             const entries = makeEntries();
             const result = buildCorpusQualityGate(metrics, entries, BASE_OPTIONS);
-            const mutated = { ...result, qualityStatus: 'PRODUCTION_READY' as any };
+            const mutated = { ...result, qualityStatus: 'PRODUCTION_READY' as never };
             const validation = validateCorpusQualityGate(mutated);
             expect(validation.status).toBe('FAIL');
         });

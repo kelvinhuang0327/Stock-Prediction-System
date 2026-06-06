@@ -161,7 +161,7 @@ describe('BackfillManualReviewPackage — P15', () => {
     });
 
     it('PRODUCTION_READY rejected', () => {
-        const mutated = { ...pkg, reviewStatus: 'PRODUCTION_READY' as any };
+        const mutated = { ...pkg, reviewStatus: 'PRODUCTION_READY' as never };
         const result = validateBackfillManualReviewPackage(mutated);
         expect(result.validationStatus).toBe('FAIL');
     });

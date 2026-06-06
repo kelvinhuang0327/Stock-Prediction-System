@@ -177,7 +177,7 @@ describe('P26F MonthlyRevenue Mapping Contract Utils', () => {
       const contract = buildP26FMappingContractV1();
       const incomplete = { ...contract } as Record<string, unknown>;
       delete incomplete['pitGateField'];
-      const result = validateP26FMappingContractCompleteness(incomplete as any);
+      const result = validateP26FMappingContractCompleteness(incomplete as never);
       expect(result.valid).toBe(false);
       expect(result.missingFields).toContain('pitGateField');
     });
