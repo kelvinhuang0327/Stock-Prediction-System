@@ -1,7 +1,8 @@
 {
   "closure_phase": "P199",
   "start_hash": "5fc47a54957b7b095958ac50796d7474908a50dd",
-  "end_hash": "PENDING",
+  "end_hash": "ed724ae0c0cf9cb216a6207865cde78a2e5d95fe",
+  "ci_run_id": "27050103786",
   "repaired_files": [
     "src/lib/onlineValidation/__tests__/p13_coverage_recovery_planner.test.ts",
     "src/lib/onlineValidation/__tests__/p14_backfill_quality_impact_preview.test.ts",
