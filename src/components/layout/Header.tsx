@@ -24,6 +24,12 @@ export function Header() {
                             總覽
                         </Link>
                         <Link
+                            href="/research/strategy-lab"
+                            className="transition-colors hover:text-foreground/80 text-foreground/60"
+                        >
+                            策略研究
+                        </Link>
+                        <Link
                             href="/watchlist"
                             className="transition-colors hover:text-foreground/80 text-foreground/60"
                         >
