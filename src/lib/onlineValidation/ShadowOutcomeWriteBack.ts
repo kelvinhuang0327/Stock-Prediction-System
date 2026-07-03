@@ -124,8 +124,6 @@ function assertNoForbiddenClaims(text: string): void {
     }
 }
 
- planOutcomeWriteBackTargets // 
-
 /**
  * planOutcomeWriteBackTargets
  *
@@ -222,8 +220,6 @@ export function planOutcomeWriteBackTargets(
     return targets;
 }
 
- resolveOutcomePriceAsOf // 
-
 export interface OutcomePriceSnapshot {
     symbol: string;
     date: string;
@@ -271,8 +267,6 @@ export async function resolveOutcomePriceAsOf(
         },
     };
 }
-
- buildOutcomeWriteBackBatch // 
 
 /**
  * buildOutcomeWriteBackBatch
@@ -397,8 +391,6 @@ export async function buildOutcomeWriteBackBatch(
     };
 }
 
- validateOutcomeWriteBackBatch // 
-
 /**
  * validateOutcomeWriteBackBatch
  *
@@ -470,8 +462,6 @@ export function validateOutcomeWriteBackBatch(
         messages,
     };
 }
-
- buildOutcomeWriteBackArtifact // 
 
 /**
  * buildOutcomeWriteBackArtifact
