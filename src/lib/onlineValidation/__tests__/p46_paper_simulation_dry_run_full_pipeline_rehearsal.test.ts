@@ -651,38 +651,38 @@ describe("P46 — Group 9: constants and version strings", () => {
 
 describe("P46 — Group 10: no forbidden exports from FullPipelineRehearsal module", () => {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const module = require("../p46/PaperSimulationDryRunFullPipelineRehearsal");
+  const mod = require("../p46/PaperSimulationDryRunFullPipelineRehearsal");
 
   it("no executeSimulation export", () => {
-    expect(module.executeSimulation).toBeUndefined();
+    expect(mod.executeSimulation).toBeUndefined();
   });
 
   it("no computePnL export", () => {
-    expect(module.computePnL).toBeUndefined();
+    expect(mod.computePnL).toBeUndefined();
   });
 
   it("no computeROI export", () => {
-    expect(module.computeROI).toBeUndefined();
+    expect(mod.computeROI).toBeUndefined();
   });
 
   it("no runSimulation export", () => {
-    expect(module.runSimulation).toBeUndefined();
+    expect(mod.runSimulation).toBeUndefined();
   });
 
   it("no computeWinRate export", () => {
-    expect(module.computeWinRate).toBeUndefined();
+    expect(mod.computeWinRate).toBeUndefined();
   });
 
   it("no generateRecommendation export", () => {
-    expect(module.generateRecommendation).toBeUndefined();
+    expect(mod.generateRecommendation).toBeUndefined();
   });
 
   it("no runBacktest export", () => {
-    expect(module.runBacktest).toBeUndefined();
+    expect(mod.runBacktest).toBeUndefined();
   });
 
   it("no runOptimizer export", () => {
-    expect(module.runOptimizer).toBeUndefined();
+    expect(mod.runOptimizer).toBeUndefined();
   });
 });
 
