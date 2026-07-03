@@ -269,6 +269,8 @@ export function buildProductionBackupPlan(inputs: {
 export function buildProductionRestorePlan(inputs: {
   dbProvider?: string;
 }): { restorePlan: RestorePlan; approvalGranted: false; productionMigrationApplied: false } {
+  void inputs;
+
   const steps = [
     '[PLACEHOLDER — requires P23 approval] Initiate maintenance window',
     '[PLACEHOLDER — requires P23 approval] Verify backup file checksum (sha256)',
@@ -312,6 +314,8 @@ export function buildProductionRestorePlan(inputs: {
 export function buildMigrationExecutionRunbook(inputs: {
   targetTable?: string;
 }): MigrationExecutionRunbook {
+  void inputs;
+
   const REQUIRED_TOKEN_P23 = 'P22_APPROVE_PRODUCTION_MIGRATION_IMPLEMENTATION_REVIEW_ONLY';
 
   const runbookSteps: RunbookStep[] = [
@@ -417,6 +421,8 @@ export function buildMigrationExecutionRunbook(inputs: {
 export function buildRollbackRunbook(inputs: {
   targetTable?: string;
 }): RollbackRunbook {
+  void inputs;
+
   const rollbackTriggers = [
     'Migration apply step (R05) failed or produced errors',
     'Backfill step (R06) produced incorrect releaseDate values',
@@ -500,6 +506,8 @@ export function buildRollbackRunbook(inputs: {
 export function buildPreMigrationChecklist(inputs: {
   targetTable?: string;
 }): PreMigrationChecklist {
+  void inputs;
+
   const checklistItems: ChecklistItem[] = [
     { itemId: 'PRE-01', label: 'P22 approval token verified: P21_APPROVE_PRODUCTION_MIGRATION_PLAN_ONLY', category: 'governance', mandatory: true },
     { itemId: 'PRE-02', label: 'P22 plan hardening artifacts all present and validated', category: 'governance', mandatory: true },
@@ -525,6 +533,8 @@ export function buildPreMigrationChecklist(inputs: {
 export function buildPostMigrationValidationChecklist(inputs: {
   targetTable?: string;
 }): PostMigrationValidationChecklist {
+  void inputs;
+
   const checklistItems: ChecklistItem[] = [
     { itemId: 'POST-01', label: 'MonthlyRevenue row count matches pre-migration baseline', category: 'data-integrity', mandatory: true, validationQuery: 'SELECT COUNT(*) FROM MonthlyRevenue' },
     { itemId: 'POST-02', label: 'releaseDate column exists in MonthlyRevenue', category: 'schema', mandatory: true, validationQuery: 'PRAGMA table_info(MonthlyRevenue)' },
@@ -556,6 +566,8 @@ export function buildPostMigrationValidationChecklist(inputs: {
 export function buildMonitoringChecklist(inputs: {
   targetTable?: string;
 }): MonitoringChecklist {
+  void inputs;
+
   const checklistItems: ChecklistItem[] = [
     { itemId: 'MON-01', label: 'MonthlyRevenue releaseDate field exists post-migration', category: 'schema', mandatory: true },
     { itemId: 'MON-02', label: 'releaseDateSource field exists post-migration', category: 'schema', mandatory: true },
