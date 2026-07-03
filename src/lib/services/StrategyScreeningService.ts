@@ -284,7 +284,7 @@ export class StrategyScreeningService {
             options: { skipFilters: true } // Pass skipFilters here
         });
 
-        let sorted = [...results];
+        const sorted = [...results];
 
         switch (metric.toLowerCase()) {
             case 'rsi':

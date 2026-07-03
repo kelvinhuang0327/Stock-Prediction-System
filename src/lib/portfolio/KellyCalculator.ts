@@ -68,7 +68,7 @@ export class KellyCalculator {
         const capped = Math.min(adjusted, this.MAX_POSITION);
 
         // Final recommendation
-        let recommended = capped;
+        const recommended = capped;
         let reasoning = `Full Kelly: ${(kellyFull * 100).toFixed(1)}%, using Half-Kelly for safety`;
 
         // Don't recommend if too small

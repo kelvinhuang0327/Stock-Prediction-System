@@ -537,7 +537,7 @@ export function AssetDoublingPlan() {
                                                 </span>
                                             </h5>
                                             <p className="text-indigo-900 text-sm mt-1 font-bold">
-                                                "{sentimentResult.headline}"
+                                                &quot;{sentimentResult.headline}&quot;
                                             </p>
                                             <ul className="mt-2 space-y-1">
                                                 {sentimentResult.factors.map((f: string, idx: number) => (
@@ -754,7 +754,7 @@ export function AssetDoublingPlan() {
                                                 </div>
                                                 {stock.kellyReasoning && (
                                                     <div className="col-span-2 text-[10px] text-blue-600/80 italic mt-1 bg-blue-50/50 p-1 rounded">
-                                                        "{stock.kellyReasoning}"
+                                                        &quot;{stock.kellyReasoning}&quot;
                                                     </div>
                                                 )}
                                             </div>
