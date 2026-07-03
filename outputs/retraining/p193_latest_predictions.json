@@ -1,0 +1,616 @@
+{
+  "schemaVersion": "p193.latest_predictions.1",
+  "runId": "p193-real-ohlcv-2d1aaee13c11-2024-07-18",
+  "sourceSha256": "2d1aaee13c11015b7d9619e7fe45901cf87283694679a32a410ac03e4854185f",
+  "dataEndDate": "2026-07-01",
+  "horizonTradingDays": 5,
+  "modelNote": "Predictions use the same weights as the chronological holdout evaluation, trained on the 70% chronological train split only.",
+  "holdoutAccuracy": 0.54692982,
+  "holdoutMajorityBaselineAccuracy": 0.55701754,
+  "modelBeatsBaseline": false,
+  "caveat": "Research pipeline output only. Not investment advice; must not be used for trading.",
+  "openPredictions": [
+    {
+      "symbol": "0050",
+      "featureDate": "2026-06-25",
+      "close": 107.2,
+      "probabilityUp": 0.5577273,
+      "predictedDirection": "up",
+      "isLatest": false
+    },
+    {
+      "symbol": "0050",
+      "featureDate": "2026-06-26",
+      "close": 103.1,
+      "probabilityUp": 0.53605071,
+      "predictedDirection": "up",
+      "isLatest": false
+    },
+    {
+      "symbol": "0050",
+      "featureDate": "2026-06-29",
+      "close": 104.45,
+      "probabilityUp": 0.54943388,
+      "predictedDirection": "up",
+      "isLatest": false
+    },
+    {
+      "symbol": "0050",
+      "featureDate": "2026-06-30",
+      "close": 107.8,
+      "probabilityUp": 0.54787307,
+      "predictedDirection": "up",
+      "isLatest": false
+    },
+    {
+      "symbol": "0050",
+      "featureDate": "2026-07-01",
+      "close": 109.35,
+      "probabilityUp": 0.55846422,
+      "predictedDirection": "up",
+      "isLatest": true
+    },
+    {
+      "symbol": "0056",
+      "featureDate": "2026-06-25",
+      "close": 53.2,
+      "probabilityUp": 0.5612362,
+      "predictedDirection": "up",
+      "isLatest": false
+    },
+    {
+      "symbol": "0056",
+      "featureDate": "2026-06-26",
+      "close": 51.45,
+      "probabilityUp": 0.55006937,
+      "predictedDirection": "up",
+      "isLatest": false
+    },
+    {
+      "symbol": "0056",
+      "featureDate": "2026-06-29",
+      "close": 51.8,
+      "probabilityUp": 0.54306573,
+      "predictedDirection": "up",
+      "isLatest": false
+    },
+    {
+      "symbol": "0056",
+      "featureDate": "2026-06-30",
+      "close": 53.25,
+      "probabilityUp": 0.55608185,
+      "predictedDirection": "up",
+      "isLatest": false
+    },
+    {
+      "symbol": "0056",
+      "featureDate": "2026-07-01",
+      "close": 52.75,
+      "probabilityUp": 0.54969376,
+      "predictedDirection": "up",
+      "isLatest": true
+    },
+    {
+      "symbol": "2317",
+      "featureDate": "2026-06-25",
+      "close": 257.5,
+      "probabilityUp": 0.55571066,
+      "predictedDirection": "up",
+      "isLatest": false
+    },
+    {
+      "symbol": "2317",
+      "featureDate": "2026-06-26",
+      "close": 248.5,
+      "probabilityUp": 0.55744458,
+      "predictedDirection": "up",
+      "isLatest": false
+    },
+    {
+      "symbol": "2317",
+      "featureDate": "2026-06-29",
+      "close": 246.5,
+      "probabilityUp": 0.55930101,
+      "predictedDirection": "up",
+      "isLatest": false
+    },
+    {
+      "symbol": "2317",
+      "featureDate": "2026-06-30",
+      "close": 251,
+      "probabilityUp": 0.56832803,
+      "predictedDirection": "up",
+      "isLatest": false
+    },
+    {
+      "symbol": "2317",
+      "featureDate": "2026-07-01",
+      "close": 248,
+      "probabilityUp": 0.56981437,
+      "predictedDirection": "up",
+      "isLatest": true
+    },
+    {
+      "symbol": "2330",
+      "featureDate": "2026-06-25",
+      "close": 2390,
+      "probabilityUp": 0.54153781,
+      "predictedDirection": "up",
+      "isLatest": false
+    },
+    {
+      "symbol": "2330",
+      "featureDate": "2026-06-26",
+      "close": 2340,
+      "probabilityUp": 0.53782069,
+      "predictedDirection": "up",
+      "isLatest": false
+    },
+    {
+      "symbol": "2330",
+      "featureDate": "2026-06-29",
+      "close": 2370,
+      "probabilityUp": 0.55494523,
+      "predictedDirection": "up",
+      "isLatest": false
+    },
+    {
+      "symbol": "2330",
+      "featureDate": "2026-06-30",
+      "close": 2410,
+      "probabilityUp": 0.54922231,
+      "predictedDirection": "up",
+      "isLatest": false
+    },
+    {
+      "symbol": "2330",
+      "featureDate": "2026-07-01",
+      "close": 2505,
+      "probabilityUp": 0.55284618,
+      "predictedDirection": "up",
+      "isLatest": true
+    },
+    {
+      "symbol": "2454",
+      "featureDate": "2026-06-25",
+      "close": 4310,
+      "probabilityUp": 0.60305733,
+      "predictedDirection": "up",
+      "isLatest": false
+    },
+    {
+      "symbol": "2454",
+      "featureDate": "2026-06-26",
+      "close": 3880,
+      "probabilityUp": 0.59585607,
+      "predictedDirection": "up",
+      "isLatest": false
+    },
+    {
+      "symbol": "2454",
+      "featureDate": "2026-06-29",
+      "close": 3910,
+      "probabilityUp": 0.57109254,
+      "predictedDirection": "up",
+      "isLatest": false
+    },
+    {
+      "symbol": "2454",
+      "featureDate": "2026-06-30",
+      "close": 4245,
+      "probabilityUp": 0.58932904,
+      "predictedDirection": "up",
+      "isLatest": false
+    },
+    {
+      "symbol": "2454",
+      "featureDate": "2026-07-01",
+      "close": 4335,
+      "probabilityUp": 0.58657671,
+      "predictedDirection": "up",
+      "isLatest": true
+    }
+  ],
+  "recentResolved": [
+    {
+      "symbol": "0050",
+      "featureDate": "2026-06-24",
+      "targetDate": "2026-07-01",
+      "probabilityUp": 0.53568781,
+      "predictedDirection": "up",
+      "actualDirection": "up",
+      "forwardReturn": 0.02053196,
+      "correct": true
+    },
+    {
+      "symbol": "0056",
+      "featureDate": "2026-06-24",
+      "targetDate": "2026-07-01",
+      "probabilityUp": 0.55247126,
+      "predictedDirection": "up",
+      "actualDirection": "down",
+      "forwardReturn": -0.00752587,
+      "correct": false
+    },
+    {
+      "symbol": "2317",
+      "featureDate": "2026-06-24",
+      "targetDate": "2026-07-01",
+      "probabilityUp": 0.556427,
+      "predictedDirection": "up",
+      "actualDirection": "down",
+      "forwardReturn": -0.03125,
+      "correct": false
+    },
+    {
+      "symbol": "2330",
+      "featureDate": "2026-06-24",
+      "targetDate": "2026-07-01",
+      "probabilityUp": 0.53734802,
+      "predictedDirection": "up",
+      "actualDirection": "up",
+      "forwardReturn": 0.04811715,
+      "correct": true
+    },
+    {
+      "symbol": "2454",
+      "featureDate": "2026-06-24",
+      "targetDate": "2026-07-01",
+      "probabilityUp": 0.60473552,
+      "predictedDirection": "up",
+      "actualDirection": "up",
+      "forwardReturn": 0.01166861,
+      "correct": true
+    },
+    {
+      "symbol": "0050",
+      "featureDate": "2026-06-23",
+      "targetDate": "2026-06-30",
+      "probabilityUp": 0.56337715,
+      "predictedDirection": "up",
+      "actualDirection": "down",
+      "forwardReturn": -0.0208901,
+      "correct": false
+    },
+    {
+      "symbol": "0056",
+      "featureDate": "2026-06-23",
+      "targetDate": "2026-06-30",
+      "probabilityUp": 0.56370159,
+      "predictedDirection": "up",
+      "actualDirection": "down",
+      "forwardReturn": -0.00652985,
+      "correct": false
+    },
+    {
+      "symbol": "2317",
+      "featureDate": "2026-06-23",
+      "targetDate": "2026-06-30",
+      "probabilityUp": 0.58289859,
+      "predictedDirection": "up",
+      "actualDirection": "down",
+      "forwardReturn": -0.0327553,
+      "correct": false
+    },
+    {
+      "symbol": "2330",
+      "featureDate": "2026-06-23",
+      "targetDate": "2026-06-30",
+      "probabilityUp": 0.55758334,
+      "predictedDirection": "up",
+      "actualDirection": "down",
+      "forwardReturn": -0.03212851,
+      "correct": false
+    },
+    {
+      "symbol": "2454",
+      "featureDate": "2026-06-23",
+      "targetDate": "2026-06-30",
+      "probabilityUp": 0.60042006,
+      "predictedDirection": "up",
+      "actualDirection": "down",
+      "forwardReturn": -0.06394708,
+      "correct": false
+    },
+    {
+      "symbol": "0050",
+      "featureDate": "2026-06-22",
+      "targetDate": "2026-06-29",
+      "probabilityUp": 0.5659866,
+      "predictedDirection": "up",
+      "actualDirection": "down",
+      "forwardReturn": -0.0602789,
+      "correct": false
+    },
+    {
+      "symbol": "0056",
+      "featureDate": "2026-06-22",
+      "targetDate": "2026-06-29",
+      "probabilityUp": 0.5524552,
+      "predictedDirection": "up",
+      "actualDirection": "down",
+      "forwardReturn": -0.04162812,
+      "correct": false
+    },
+    {
+      "symbol": "2317",
+      "featureDate": "2026-06-22",
+      "targetDate": "2026-06-29",
+      "probabilityUp": 0.57267724,
+      "predictedDirection": "up",
+      "actualDirection": "down",
+      "forwardReturn": -0.08193669,
+      "correct": false
+    },
+    {
+      "symbol": "2330",
+      "featureDate": "2026-06-22",
+      "targetDate": "2026-06-29",
+      "probabilityUp": 0.56547338,
+      "predictedDirection": "up",
+      "actualDirection": "down",
+      "forwardReturn": -0.05577689,
+      "correct": false
+    },
+    {
+      "symbol": "2454",
+      "featureDate": "2026-06-22",
+      "targetDate": "2026-06-29",
+      "probabilityUp": 0.59615567,
+      "predictedDirection": "up",
+      "actualDirection": "down",
+      "forwardReturn": -0.12430011,
+      "correct": false
+    },
+    {
+      "symbol": "0050",
+      "featureDate": "2026-06-18",
+      "targetDate": "2026-06-26",
+      "probabilityUp": 0.55784719,
+      "predictedDirection": "up",
+      "actualDirection": "down",
+      "forwardReturn": -0.03914259,
+      "correct": false
+    },
+    {
+      "symbol": "0056",
+      "featureDate": "2026-06-18",
+      "targetDate": "2026-06-26",
+      "probabilityUp": 0.55373044,
+      "predictedDirection": "up",
+      "actualDirection": "down",
+      "forwardReturn": -0.02556818,
+      "correct": false
+    },
+    {
+      "symbol": "2317",
+      "featureDate": "2026-06-18",
+      "targetDate": "2026-06-26",
+      "probabilityUp": 0.55136342,
+      "predictedDirection": "up",
+      "actualDirection": "down",
+      "forwardReturn": -0.0744879,
+      "correct": false
+    },
+    {
+      "symbol": "2330",
+      "featureDate": "2026-06-18",
+      "targetDate": "2026-06-26",
+      "probabilityUp": 0.54527724,
+      "predictedDirection": "up",
+      "actualDirection": "down",
+      "forwardReturn": -0.02904564,
+      "correct": false
+    },
+    {
+      "symbol": "2454",
+      "featureDate": "2026-06-18",
+      "targetDate": "2026-06-26",
+      "probabilityUp": 0.60251526,
+      "predictedDirection": "up",
+      "actualDirection": "down",
+      "forwardReturn": -0.11617312,
+      "correct": false
+    },
+    {
+      "symbol": "0050",
+      "featureDate": "2026-06-17",
+      "targetDate": "2026-06-25",
+      "probabilityUp": 0.55964392,
+      "predictedDirection": "up",
+      "actualDirection": "up",
+      "forwardReturn": 0.01132075,
+      "correct": true
+    },
+    {
+      "symbol": "0056",
+      "featureDate": "2026-06-17",
+      "targetDate": "2026-06-25",
+      "probabilityUp": 0.56998178,
+      "predictedDirection": "up",
+      "actualDirection": "up",
+      "forwardReturn": 0.0240616,
+      "correct": true
+    },
+    {
+      "symbol": "2317",
+      "featureDate": "2026-06-17",
+      "targetDate": "2026-06-25",
+      "probabilityUp": 0.58307088,
+      "predictedDirection": "up",
+      "actualDirection": "down",
+      "forwardReturn": -0.05330882,
+      "correct": false
+    },
+    {
+      "symbol": "2330",
+      "featureDate": "2026-06-17",
+      "targetDate": "2026-06-25",
+      "probabilityUp": 0.55935429,
+      "predictedDirection": "up",
+      "actualDirection": "up",
+      "forwardReturn": 0.00209644,
+      "correct": true
+    },
+    {
+      "symbol": "2454",
+      "featureDate": "2026-06-17",
+      "targetDate": "2026-06-25",
+      "probabilityUp": 0.58453552,
+      "predictedDirection": "up",
+      "actualDirection": "down",
+      "forwardReturn": -0.03363229,
+      "correct": false
+    },
+    {
+      "symbol": "0050",
+      "featureDate": "2026-06-16",
+      "targetDate": "2026-06-24",
+      "probabilityUp": 0.55420164,
+      "predictedDirection": "up",
+      "actualDirection": "up",
+      "forwardReturn": 0.01180359,
+      "correct": true
+    },
+    {
+      "symbol": "0056",
+      "featureDate": "2026-06-16",
+      "targetDate": "2026-06-24",
+      "probabilityUp": 0.54498462,
+      "predictedDirection": "up",
+      "actualDirection": "up",
+      "forwardReturn": 0.03103783,
+      "correct": true
+    },
+    {
+      "symbol": "2317",
+      "featureDate": "2026-06-16",
+      "targetDate": "2026-06-24",
+      "probabilityUp": 0.55416614,
+      "predictedDirection": "up",
+      "actualDirection": "down",
+      "forwardReturn": -0.04832714,
+      "correct": false
+    },
+    {
+      "symbol": "2330",
+      "featureDate": "2026-06-16",
+      "targetDate": "2026-06-24",
+      "probabilityUp": 0.56062208,
+      "predictedDirection": "up",
+      "actualDirection": "down",
+      "forwardReturn": -0.00416667,
+      "correct": false
+    },
+    {
+      "symbol": "2454",
+      "featureDate": "2026-06-16",
+      "targetDate": "2026-06-24",
+      "probabilityUp": 0.5646162,
+      "predictedDirection": "up",
+      "actualDirection": "down",
+      "forwardReturn": -0.06030702,
+      "correct": false
+    },
+    {
+      "symbol": "0050",
+      "featureDate": "2026-06-15",
+      "targetDate": "2026-06-23",
+      "probabilityUp": 0.55420757,
+      "predictedDirection": "up",
+      "actualDirection": "up",
+      "forwardReturn": 0.04608076,
+      "correct": true
+    },
+    {
+      "symbol": "0056",
+      "featureDate": "2026-06-15",
+      "targetDate": "2026-06-23",
+      "probabilityUp": 0.55723685,
+      "predictedDirection": "up",
+      "actualDirection": "up",
+      "forwardReturn": 0.0407767,
+      "correct": true
+    },
+    {
+      "symbol": "2317",
+      "featureDate": "2026-06-15",
+      "targetDate": "2026-06-23",
+      "probabilityUp": 0.5713586,
+      "predictedDirection": "up",
+      "actualDirection": "down",
+      "forwardReturn": -0.02990654,
+      "correct": false
+    },
+    {
+      "symbol": "2330",
+      "featureDate": "2026-06-15",
+      "targetDate": "2026-06-23",
+      "probabilityUp": 0.55287253,
+      "predictedDirection": "up",
+      "actualDirection": "up",
+      "forwardReturn": 0.04842105,
+      "correct": true
+    },
+    {
+      "symbol": "2454",
+      "featureDate": "2026-06-15",
+      "targetDate": "2026-06-23",
+      "probabilityUp": 0.5984434,
+      "predictedDirection": "up",
+      "actualDirection": "up",
+      "forwardReturn": 0.01454139,
+      "correct": true
+    },
+    {
+      "symbol": "0050",
+      "featureDate": "2026-06-12",
+      "targetDate": "2026-06-22",
+      "probabilityUp": 0.56172546,
+      "predictedDirection": "up",
+      "actualDirection": "up",
+      "forwardReturn": 0.09024031,
+      "correct": true
+    },
+    {
+      "symbol": "0056",
+      "featureDate": "2026-06-12",
+      "targetDate": "2026-06-22",
+      "probabilityUp": 0.55411867,
+      "predictedDirection": "up",
+      "actualDirection": "up",
+      "forwardReturn": 0.06818182,
+      "correct": true
+    },
+    {
+      "symbol": "2317",
+      "featureDate": "2026-06-12",
+      "targetDate": "2026-06-22",
+      "probabilityUp": 0.5653589,
+      "predictedDirection": "up",
+      "actualDirection": "up",
+      "forwardReturn": 0.03071017,
+      "correct": true
+    },
+    {
+      "symbol": "2330",
+      "featureDate": "2026-06-12",
+      "targetDate": "2026-06-22",
+      "probabilityUp": 0.54889657,
+      "predictedDirection": "up",
+      "actualDirection": "up",
+      "forwardReturn": 0.08658009,
+      "correct": true
+    },
+    {
+      "symbol": "2454",
+      "featureDate": "2026-06-12",
+      "targetDate": "2026-06-22",
+      "probabilityUp": 0.60400205,
+      "predictedDirection": "up",
+      "actualDirection": "up",
+      "forwardReturn": 0.06818182,
+      "correct": true
+    }
+  ]
+}

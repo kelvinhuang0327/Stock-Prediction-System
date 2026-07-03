@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "p194.twstock_ohlcv_export.1",
+  "repository": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System",
+  "symbolsRequested": ["2330", "2317", "2454", "0050", "0056"],
+  "symbolsFetched": ["2330", "2317", "2454", "0050", "0056"],
+  "dateRangeRequested": {
+    "start": "2020-01-01",
+    "end": "latest available from twstock through current month"
+  },
+  "actualDateRange": {
+    "min": "2020-01-02",
+    "max": "2026-07-01"
+  },
+  "rowCount": 7709,
+  "perSymbolRowCounts": {
+    "0050": 1530,
+    "0056": 1554,
+    "2317": 1575,
+    "2330": 1534,
+    "2454": 1516
+  },
+  "csvPath": "outputs/retraining/p194_twstock_ohlcv_export.csv",
+  "csvSha256": "2d1aaee13c11015b7d9619e7fe45901cf87283694679a32a410ac03e4854185f",
+  "twstockVersion": "1.5.1",
+  "commandsRun": [
+    "python3 -m venv /tmp/p194-twstock-venv",
+    "/tmp/p194-twstock-venv/bin/python -m pip install twstock",
+    "/tmp/p194-twstock-venv/bin/python scripts/p194_twstock_export_ohlcv.py"
+  ],
+  "rateLimitStrategy": {
+    "sleepSecondsAfterEachMonthlyFetch": 1.8,
+    "maxObservedRequestRate": "below 3 TWSE/TPEX requests per 5 seconds",
+    "monthlyFetchRequests": 395,
+    "totalRequestVolumeBound": "5 symbols x monthly range from 2020-01 through current month"
+  },
+  "source": "twstock Stock.fetch(year, month), using twstock's built-in TWSE/TPEX fetchers",
+  "fetchedAtUtc": "2026-07-01T08:07:37Z",
+  "validation": {
+    "schemaValidation": "PASS",
+    "boundedPitSafetyValidation": "BOUNDED_PASS_WITH_SOURCE_LIMITATION",
+    "pitSafetyNotes": [
+      "CSV columns are raw same-day OHLCV rows; no future-derived feature columns are exported.",
+      "The downstream refit wrapper computes features from same-row or prior-row data only.",
+      "The target is close[t+5 trading rows] / close[t] - 1 > 0 and is separated by a purged chronological split.",
+      "twstock does not provide full point-in-time archival metadata in this export, so PIT safety is bounded rather than absolute."
+    ]
+  },
+  "duplicateRowsDropped": 23,
+  "knownLimitations": [
+    "All requested symbols resolved to twstock/TWSE in the installed twstock code database.",
+    "The export uses twstock's available monthly historical rows; it does not prove full point-in-time archival immutability.",
+    "No canonical DB files were read or written by this script.",
+    "This artifact is historical data for bounded validation only; it is not investment advice or future prediction proof.",
+    "This manifest was restored from the immutable CSV and recorded P194 validation evidence after the original manifest was removed; the original per-request fetch log is unavailable."
+  ],
+  "restoration": {
+    "restoredFromExistingCsv": true,
+    "originalFetchLogAvailable": false,
+    "evidenceSources": [
+      "outputs/retraining/p194_twstock_ohlcv_export.csv",
+      "outputs/retraining/p194_twstock_ohlcv_export_report.md",
+      "outputs/retraining/p195_protocol_comparison_metrics.json"
+    ]
+  }
+}
