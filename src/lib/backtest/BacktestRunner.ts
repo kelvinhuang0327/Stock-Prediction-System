@@ -28,7 +28,7 @@ export class BacktestRunner {
 
     async run(strategy: Strategy, config: BacktestConfig): Promise<TradeResult[]> {
         const results: TradeResult[] = [];
-        let currentDate = new Date(config.startDate);
+        const currentDate = new Date(config.startDate);
         const endDate = new Date(config.endDate);
 
         console.log(`Starting Backtest from ${currentDate.toISOString().split('T')[0]} to ${endDate.toISOString().split('T')[0]}`);

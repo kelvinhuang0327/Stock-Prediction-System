@@ -206,7 +206,7 @@ export async function runDailyCycleLayer(simulationDate?: Date): Promise<LayerRu
   try { guardrailResult = runTieredGuardrail(activeInsights); } catch { /* non-blocking */ }
 
   // Step 4: Detect gate recovery signals from learning insight
-  let recoverySignals: string[] = [];
+  const recoverySignals: string[] = [];
   if (cycleResult.learningInsight) {
     // Build recovery signals from the cycle result
     const closedTrades = await prisma.simulatedTrade.findMany({

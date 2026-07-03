@@ -72,7 +72,7 @@ export class SignalPrecalculationService {
      * Pre-calculates signals for a date range
      */
     async precomputeRange(startDate: string, endDate: string, strategyName: string = 'AssetDoubling'): Promise<void> {
-        let current = new Date(startDate);
+        const current = new Date(startDate);
         const end = new Date(endDate);
 
         while (current <= end) {
