@@ -155,6 +155,12 @@ export function buildOutcomeBackfillGovernanceGate(
     const noPerformanceClaim = input.qualityImpactPreview.guardrails.noPerformanceClaim === true;
     const noTradingSignal = input.qualityImpactPreview.guardrails.noTradingSignal === true;
 
+    void noProductionWrite;
+    void noCorpusWrite;
+    void noOptimizerWrite;
+    void noPerformanceClaim;
+    void noTradingSignal;
+
     const gateChecks: OutcomeBackfillGovernanceGateChecks = {
         hasCandidates,
         hasRehearsalItems,
