@@ -10,6 +10,10 @@ import {
   buildStrategyLabCalibration,
   type StrategyLabCalibration,
 } from "@/lib/research/StrategyLabCalibrationEngine";
+import {
+  buildStrategyLabSymbolReliability,
+  type StrategyLabSymbolReliability,
+} from "@/lib/research/StrategyLabSymbolReliabilityEngine";
 
 const RETRAINING_DIR = path.join(process.cwd(), "outputs", "retraining");
 const CSV_PATH = path.join(RETRAINING_DIR, "p194_twstock_ohlcv_export.csv");
@@ -168,6 +172,7 @@ export interface StrategyLabSnapshot {
   predictions: StrategyLabPredictions;
   simulation?: StrategyLabSimulation;
   calibration?: StrategyLabCalibration;
+  symbolReliability?: StrategyLabSymbolReliability;
   runHistory: StrategyLabRunHistory;
   protocolComparison: StrategyLabProtocolComparison;
   productStance: {
@@ -698,14 +703,28 @@ export async function readStrategyLabSnapshot(): Promise<StrategyLabSnapshot> {
       }
     : decisionCopy(productDecision);
 
+  const simulation = buildStrategySimulation(predictions.recentResolved);
+  const calibration = buildStrategyLabCalibration(predictions.recentResolved);
+  const symbolReliability = buildStrategyLabSymbolReliability(
+    predictions.recentResolved,
+    predictions.latestBySymbol,
+    simulation.thresholdDrilldown.symbolBreakdown.status === "candidate"
+      ? simulation.thresholdDrilldown.symbolBreakdown.rows.map((row) => ({
+          symbol: row.symbol,
+          tradeCount: row.tradeCount,
+        }))
+      : [],
+  );
+
   return {
     generatedAt: new Date().toISOString(),
     artifactSetStatus,
     dataExport,
     refit,
     predictions,
-    simulation: buildStrategySimulation(predictions.recentResolved),
-    calibration: buildStrategyLabCalibration(predictions.recentResolved),
+    simulation,
+    calibration,
+    symbolReliability,
     runHistory,
     protocolComparison,
     productStance: {
