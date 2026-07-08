@@ -100,10 +100,40 @@ export interface StrategyLabThresholdSymbolBreakdown {
   reason: string;
 }
 
+export interface StrategyLabThresholdCohortContribution {
+  cohortKey: string;
+  featureDate: string;
+  targetDateRange: string;
+  targetDates: string[];
+  tradeCount: number;
+  tradeShare: number;
+  winCount: number;
+  hitRate: number;
+  averageProbabilityUp: number;
+  averageForwardReturnGross: number;
+  averageNetReturnAfterCost: number;
+  cumulativeNetContributionApprox: number;
+  bestTradeForwardReturn: number;
+  worstTradeForwardReturn: number;
+  symbols: string[];
+}
+
+export interface StrategyLabThresholdCohortBreakdown {
+  status: "candidate" | "no_candidate";
+  cohortCount: number;
+  dominantCohortKey: string | null;
+  dominantTradeShare: number | null;
+  isTimeConcentrated: boolean;
+  rows: StrategyLabThresholdCohortContribution[];
+  caveats: string[];
+  reason: string;
+}
+
 export interface StrategyLabThresholdDrilldown {
   status: "candidate" | "no_candidate";
   candidate: StrategyLabThresholdDrilldownCandidate | null;
   symbolBreakdown: StrategyLabThresholdSymbolBreakdown;
+  cohortBreakdown: StrategyLabThresholdCohortBreakdown;
   reason: string;
 }
 
@@ -326,6 +356,7 @@ function emptyThresholdDrilldown(reason: string): StrategyLabThresholdDrilldown 
     status: "no_candidate",
     candidate: null,
     symbolBreakdown: emptySymbolBreakdown(reason),
+    cohortBreakdown: emptyCohortBreakdown(reason),
     reason,
   };
 }
@@ -356,6 +387,22 @@ function emptySymbolBreakdown(reason: string): StrategyLabThresholdSymbolBreakdo
   };
 }
 
+function emptyCohortBreakdown(reason: string): StrategyLabThresholdCohortBreakdown {
+  return {
+    status: "no_candidate",
+    cohortCount: 0,
+    dominantCohortKey: null,
+    dominantTradeShare: null,
+    isTimeConcentrated: false,
+    rows: [],
+    caveats: [
+      "No candidate threshold selected; cohort contribution is empty.",
+      "Research-only time attribution; not investment advice.",
+    ],
+    reason,
+  };
+}
+
 function symbolBreakdownCaveats(tradeCount: number, isConcentrated: boolean): string[] {
   return [
     "Symbol contribution is sample attribution from selected artifact trades and is approximate.",
@@ -367,6 +414,32 @@ function symbolBreakdownCaveats(tradeCount: number, isConcentrated: boolean): st
       : []),
     "Research-only symbol breakdown; not investment advice.",
   ];
+}
+
+function cohortBreakdownCaveats(
+  tradeCount: number,
+  cohortCount: number,
+  isTimeConcentrated: boolean,
+): string[] {
+  return [
+    "Cohort contribution is sample attribution from selected artifact trades and is approximate.",
+    ...(tradeCount < 10
+      ? ["Small sample: selected trade count is below 10; date concentration can dominate sample results."]
+      : []),
+    ...(cohortCount <= 2
+      ? ["Date concentration warning: selected trades occur in two or fewer featureDate cohorts."]
+      : []),
+    ...(isTimeConcentrated
+      ? ["Concentration warning: selected trades are dominated by one featureDate cohort or a small number of cohorts."]
+      : []),
+    "Research-only cohort breakdown; not investment advice.",
+  ];
+}
+
+function targetDateRange(targetDates: string[]): string {
+  const first = targetDates[0] ?? "";
+  const last = targetDates.at(-1) ?? first;
+  return first === last ? first : `${first} -> ${last}`;
 }
 
 function buildSymbolBreakdown(
@@ -421,6 +494,71 @@ function buildSymbolBreakdown(
     isConcentrated,
     rows,
     caveats: symbolBreakdownCaveats(totalTradeCount, isConcentrated),
+    reason,
+  };
+}
+
+function buildCohortBreakdown(
+  selectedTrades: ValidPair[],
+  reason: string,
+): StrategyLabThresholdCohortBreakdown {
+  if (selectedTrades.length === 0) {
+    return emptyCohortBreakdown(reason);
+  }
+
+  const byFeatureDate = new Map<string, ValidPair[]>();
+  for (const trade of selectedTrades) {
+    byFeatureDate.set(trade.featureDate, [...(byFeatureDate.get(trade.featureDate) ?? []), trade]);
+  }
+
+  const totalTradeCount = selectedTrades.length;
+  const rows = [...byFeatureDate.entries()]
+    .map(([featureDate, trades]) => {
+      const netReturns = trades.map((trade) => trade.forwardReturn - TAIWAN_ROUND_TRIP_COST);
+      const forwardReturns = trades.map((trade) => trade.forwardReturn);
+      const targetDates = [...new Set(trades.map((trade) => trade.targetDate))]
+        .sort((left, right) => left.localeCompare(right));
+      const symbols = [...new Set(trades.map((trade) => trade.symbol))]
+        .sort((left, right) => left.localeCompare(right));
+      const winCount = trades.filter(tradeHit).length;
+      return {
+        cohortKey: featureDate,
+        featureDate,
+        targetDateRange: targetDateRange(targetDates),
+        targetDates,
+        tradeCount: trades.length,
+        tradeShare: round(trades.length / totalTradeCount),
+        winCount,
+        hitRate: round(winCount / trades.length),
+        averageProbabilityUp: round(mean(trades.map((trade) => trade.probabilityUp ?? 0))),
+        averageForwardReturnGross: round(mean(forwardReturns)),
+        averageNetReturnAfterCost: round(mean(netReturns)),
+        cumulativeNetContributionApprox: round(netReturns.reduce((total, value) => total + value, 0) / totalTradeCount),
+        bestTradeForwardReturn: round(Math.max(...forwardReturns)),
+        worstTradeForwardReturn: round(Math.min(...forwardReturns)),
+        symbols,
+      };
+    })
+    .sort((left, right) =>
+      right.tradeCount - left.tradeCount
+      || right.cumulativeNetContributionApprox - left.cumulativeNetContributionApprox
+      || left.featureDate.localeCompare(right.featureDate)
+      || left.targetDateRange.localeCompare(right.targetDateRange),
+    );
+
+  const dominant = rows[0] ?? null;
+  const dominantTradeShare = dominant?.tradeShare ?? null;
+  const cohortCount = rows.length;
+  const isTimeConcentrated = (dominantTradeShare ?? 0) >= 0.5 || cohortCount <= 2;
+
+  return {
+    status: "candidate",
+    cohortCount,
+    dominantCohortKey: dominant?.cohortKey ?? null,
+    dominantTradeShare,
+    isTimeConcentrated,
+    rows,
+    caveats: cohortBreakdownCaveats(totalTradeCount, cohortCount, isTimeConcentrated),
     reason,
   };
 }
@@ -480,6 +618,10 @@ function buildThresholdDrilldown(
     symbolBreakdown: buildSymbolBreakdown(
       selectedTrades,
       "Grouped selected artifact trades by symbol for sample attribution; contribution values are approximate.",
+    ),
+    cohortBreakdown: buildCohortBreakdown(
+      selectedTrades,
+      "Grouped selected artifact trades by featureDate cohort for sample time attribution; contribution values are approximate.",
     ),
     reason: "Selected highest deltaVsBaselineNet among nonzero-trade research_candidate threshold rows.",
   };

@@ -702,6 +702,7 @@ function ThresholdDrilldownBlock({ simulation }: { simulation: StrategyLabSimula
           )}
 
           <ThresholdSymbolBreakdownBlock breakdown={drilldown.symbolBreakdown} />
+          <ThresholdCohortBreakdownBlock breakdown={drilldown.cohortBreakdown} />
 
           <div className="overflow-x-auto">
             <table className="w-full min-w-[760px] text-sm">
@@ -844,6 +845,115 @@ function ThresholdSymbolBreakdownRow({
   );
 }
 
+function ThresholdCohortBreakdownBlock({
+  breakdown,
+}: {
+  breakdown: StrategyLabSimulation["thresholdDrilldown"]["cohortBreakdown"];
+}) {
+  return (
+    <div className="rounded-md border border-border/30 bg-card/45 p-3">
+      <div className="mb-3 flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <h4 className="text-sm font-semibold">時間區間與 cohort 貢獻</h4>
+          <p className="text-xs leading-5 text-muted-foreground">
+            依候選門檻實際選入的 artifact trades 以 featureDate 分組，貢獻值是樣本歸因近似，不代表未來表現。
+          </p>
+        </div>
+        <span className="text-xs text-muted-foreground">
+          {breakdown.cohortCount} cohorts
+        </span>
+      </div>
+
+      {breakdown.status === "no_candidate" ? (
+        <div className="rounded-md border border-amber-300/35 bg-amber-500/10 px-3 py-3 text-sm leading-6 text-amber-100">
+          尚無候選門檻可計算時間 cohort 貢獻。{breakdown.reason}
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {breakdown.isTimeConcentrated && (
+            <div className="flex items-start gap-2 rounded-md border border-amber-300/35 bg-amber-500/10 px-3 py-2 text-sm leading-6 text-amber-100">
+              <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
+              候選樣本集中於 {breakdown.dominantCohortKey ?? "少數日期區間"}，
+              交易占比 {formatPct(breakdown.dominantTradeShare)}。
+            </div>
+          )}
+
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[900px] text-sm">
+              <thead className="border-b border-border/60 text-left text-xs text-muted-foreground">
+                <tr>
+                  <th className="py-2 pr-3 font-medium">featureDate / target</th>
+                  <th className="py-2 pr-3 font-medium">交易數 / 占比</th>
+                  <th className="py-2 pr-3 font-medium">命中率</th>
+                  <th className="py-2 pr-3 font-medium">平均機率</th>
+                  <th className="py-2 pr-3 font-medium">平均 gross</th>
+                  <th className="py-2 pr-3 font-medium">平均成本後</th>
+                  <th className="py-2 pr-3 font-medium">近似貢獻</th>
+                  <th className="py-2 pr-3 font-medium">最佳 / 最差</th>
+                  <th className="py-2 pr-3 font-medium">標的</th>
+                </tr>
+              </thead>
+              <tbody>
+                {breakdown.rows.map((row) => (
+                  <ThresholdCohortBreakdownRow key={row.cohortKey} row={row} />
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <p className="text-xs leading-5 text-muted-foreground">
+            樣本集中於少數日期區間，僅供研究檢視，不能視為投資建議。
+          </p>
+          <ul className="space-y-1 text-xs leading-5 text-muted-foreground">
+            {breakdown.caveats.map((caveat) => (
+              <li key={caveat}>{thresholdCohortBreakdownCaveatText(caveat)}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ThresholdCohortBreakdownRow({
+  row,
+}: {
+  row: StrategyLabSimulation["thresholdDrilldown"]["cohortBreakdown"]["rows"][number];
+}) {
+  const avgGrossPositive = row.averageForwardReturnGross > 0;
+  const avgNetPositive = row.averageNetReturnAfterCost > 0;
+  const contributionPositive = row.cumulativeNetContributionApprox > 0;
+  const displayedSymbols = row.symbols.slice(0, 4).join(", ");
+  const hiddenSymbolCount = Math.max(0, row.symbols.length - 4);
+
+  return (
+    <tr className="border-b border-border/30 last:border-0">
+      <td className="py-2.5 pr-3 font-mono text-xs">
+        <div>{row.featureDate}</div>
+        <div className="text-muted-foreground">target {row.targetDateRange}</div>
+      </td>
+      <td className="py-2.5 pr-3 font-mono text-sm">{row.tradeCount} / {formatPct(row.tradeShare)}</td>
+      <td className="py-2.5 pr-3 font-mono text-sm">{row.winCount} / {formatPct(row.hitRate)}</td>
+      <td className="py-2.5 pr-3 font-mono text-sm">{formatPct(row.averageProbabilityUp)}</td>
+      <td className={`py-2.5 pr-3 font-mono text-sm ${avgGrossPositive ? "text-red-400" : "text-emerald-400"}`}>
+        {formatSignedPct(row.averageForwardReturnGross)}
+      </td>
+      <td className={`py-2.5 pr-3 font-mono text-sm ${avgNetPositive ? "text-red-400" : "text-emerald-400"}`}>
+        {formatSignedPct(row.averageNetReturnAfterCost)}
+      </td>
+      <td className={`py-2.5 pr-3 font-mono text-sm ${contributionPositive ? "text-red-400" : "text-emerald-400"}`}>
+        {formatSignedPct(row.cumulativeNetContributionApprox)}
+      </td>
+      <td className="py-2.5 pr-3 font-mono text-sm">
+        {formatSignedPct(row.bestTradeForwardReturn)} / {formatSignedPct(row.worstTradeForwardReturn)}
+      </td>
+      <td className="py-2.5 pr-3 text-xs text-muted-foreground">
+        {displayedSymbols}{hiddenSymbolCount > 0 ? ` +${hiddenSymbolCount}` : ""}
+      </td>
+    </tr>
+  );
+}
+
 function ThresholdDrilldownTradeRow({
   trade,
 }: {
@@ -904,6 +1014,25 @@ function thresholdSymbolBreakdownCaveatText(caveat: string): string {
   }
   if (caveat.includes("Concentration warning")) {
     return "候選樣本由單一或少數標的主導，需先擴大樣本再判讀。";
+  }
+  if (caveat.includes("Research-only")) {
+    return "僅供研究驗證；不是投資建議，不可用於交易。";
+  }
+  return caveat;
+}
+
+function thresholdCohortBreakdownCaveatText(caveat: string): string {
+  if (caveat.includes("sample attribution")) {
+    return "cohort 貢獻是候選樣本內的時間歸因近似，不能直接對應策略總報酬。";
+  }
+  if (caveat.includes("Small sample")) {
+    return "樣本交易數偏少，日期集中度容易主導結果，僅供研究檢視。";
+  }
+  if (caveat.includes("Date concentration warning")) {
+    return "候選樣本落在兩個以下 featureDate cohorts，需先擴大樣本再判讀。";
+  }
+  if (caveat.includes("Concentration warning")) {
+    return "候選樣本由單一或少數日期區間主導，需避免把樣本歸因視為可交易結論。";
   }
   if (caveat.includes("Research-only")) {
     return "僅供研究驗證；不是投資建議，不可用於交易。";
