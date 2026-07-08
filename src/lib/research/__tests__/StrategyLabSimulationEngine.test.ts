@@ -58,6 +58,7 @@ describe("buildStrategySimulation", () => {
     expect(simulation.stats.pairCount).toBe(0);
     expect(simulation.equityCurve).toEqual([]);
     expect(simulation.thresholdSweep).toEqual([]);
+    expect(simulation.thresholdDrilldown.status).toBe("no_candidate");
   });
 
   it("returns insufficient when fewer than 10 valid pairs are available", () => {
@@ -78,6 +79,7 @@ describe("buildStrategySimulation", () => {
     expect(simulation.stats.validPairCount).toBe(9);
     expect(simulation.equityCurve).toEqual([]);
     expect(simulation.thresholdSweep).toEqual([]);
+    expect(simulation.thresholdDrilldown.status).toBe("no_candidate");
   });
 
   it("keeps the strategy flat when every prediction is down while baseline compounds", () => {
@@ -262,5 +264,165 @@ describe("buildStrategySimulation", () => {
     expect(threshold06?.strategyNetCumulativeReturn).toBe(
       round((0.04 - TAIWAN_ROUND_TRIP_COST - 0.01 - TAIWAN_ROUND_TRIP_COST + 0.06 - TAIWAN_ROUND_TRIP_COST) / 10),
     );
+  });
+
+  it("selects the nonzero research candidate threshold with the highest positive delta", () => {
+    const pairs = [
+      ...Array.from({ length: 2 }, (_, index) =>
+        pair(index, {
+          probabilityUp: 0.55,
+          predictedDirection: "up",
+          forwardReturn: -0.04,
+        }),
+      ),
+      ...Array.from({ length: 4 }, (_, index) =>
+        pair(index + 2, {
+          probabilityUp: 0.6,
+          predictedDirection: "up",
+          forwardReturn: 0.05,
+        }),
+      ),
+      ...Array.from({ length: 4 }, (_, index) =>
+        pair(index + 6, {
+          probabilityUp: 0.9,
+          predictedDirection: "down",
+          forwardReturn: -0.04,
+        }),
+      ),
+    ];
+
+    const simulation = buildStrategySimulation(pairs);
+
+    expect(simulation.thresholdDrilldown.status).toBe("candidate");
+    expect(simulation.thresholdDrilldown.candidate?.threshold).toBe(0.6);
+    expect(simulation.thresholdDrilldown.candidate?.tradeCount).toBe(4);
+    expect(simulation.thresholdDrilldown.candidate?.deltaVsBaselineNet).toBeGreaterThan(0);
+    expect(simulation.thresholdDrilldown.candidate?.smallSample).toBe(true);
+  });
+
+  it("never selects zero-trade threshold rows even when flat strategy return beats a negative baseline", () => {
+    const pairs = Array.from({ length: 10 }, (_, index) =>
+      pair(index, {
+        probabilityUp: 0.9,
+        predictedDirection: "down",
+        forwardReturn: -0.03,
+      }),
+    );
+
+    const simulation = buildStrategySimulation(pairs);
+
+    expect(simulation.thresholdSweep.every((row) => row.tradeCount === 0)).toBe(true);
+    expect(simulation.thresholdSweep.every((row) => row.strategyNetCumulativeReturn === 0)).toBe(true);
+    expect(simulation.thresholdSweep.every((row) => row.baselineNetCumulativeReturn < 0)).toBe(true);
+    expect(simulation.thresholdDrilldown.status).toBe("no_candidate");
+    expect(simulation.thresholdDrilldown.candidate).toBeNull();
+  });
+
+  it("includes only selected up trades at or above the candidate threshold in the preview", () => {
+    const pairs = [
+      pair(0, { symbol: "LOWUP", probabilityUp: 0.55, predictedDirection: "up", forwardReturn: -0.04 }),
+      pair(1, { symbol: "UP60A", probabilityUp: 0.6, predictedDirection: "up", forwardReturn: 0.05 }),
+      pair(2, { symbol: "UP60B", probabilityUp: 0.62, predictedDirection: "up", forwardReturn: 0.04 }),
+      pair(3, { symbol: "DOWN90", probabilityUp: 0.9, predictedDirection: "down", forwardReturn: -0.03 }),
+      ...Array.from({ length: 6 }, (_, index) =>
+        pair(index + 4, {
+          symbol: `FILL${index}`,
+          probabilityUp: 0.9,
+          predictedDirection: "down",
+          forwardReturn: -0.03,
+        }),
+      ),
+    ];
+
+    const simulation = buildStrategySimulation(pairs);
+    const preview = simulation.thresholdDrilldown.candidate?.selectedTradesPreview ?? [];
+
+    expect(simulation.thresholdDrilldown.candidate?.threshold).toBe(0.6);
+    expect(preview.map((trade) => trade.symbol)).toEqual(["UP60A", "UP60B"]);
+    expect(preview.every((trade) => trade.predictedDirection === "up")).toBe(true);
+    expect(preview.every((trade) => (trade.probabilityUp ?? 0) >= 0.6)).toBe(true);
+  });
+
+  it("caps the selected trade preview at ten rows", () => {
+    const pairs = [
+      ...Array.from({ length: 12 }, (_, index) =>
+        pair(index, {
+          symbol: `UP${index}`,
+          probabilityUp: 0.6,
+          predictedDirection: "up",
+          forwardReturn: 0.03,
+        }),
+      ),
+      ...Array.from({ length: 8 }, (_, index) =>
+        pair(index + 12, {
+          symbol: `DOWN${index}`,
+          probabilityUp: 0.9,
+          predictedDirection: "down",
+          forwardReturn: -0.05,
+        }),
+      ),
+    ];
+
+    const simulation = buildStrategySimulation(pairs);
+
+    expect(simulation.thresholdDrilldown.status).toBe("candidate");
+    expect(simulation.thresholdDrilldown.candidate?.tradeCount).toBe(12);
+    expect(simulation.thresholdDrilldown.candidate?.selectedTradesPreview).toHaveLength(10);
+    expect(simulation.thresholdDrilldown.candidate?.smallSample).toBe(false);
+  });
+
+  it("returns a no-candidate drilldown when all threshold rows are do_not_promote or zero-trade", () => {
+    const pairs = [
+      ...Array.from({ length: 6 }, (_, index) =>
+        pair(index, {
+          probabilityUp: 0.6,
+          predictedDirection: "up",
+          forwardReturn: -0.03,
+        }),
+      ),
+      ...Array.from({ length: 4 }, (_, index) =>
+        pair(index + 6, {
+          probabilityUp: 0.9,
+          predictedDirection: "down",
+          forwardReturn: 0.02,
+        }),
+      ),
+    ];
+
+    const simulation = buildStrategySimulation(pairs);
+
+    expect(simulation.thresholdSweep.some((row) => row.verdict === "do_not_promote")).toBe(true);
+    expect(simulation.thresholdSweep.some((row) => row.tradeCount === 0)).toBe(true);
+    expect(simulation.thresholdDrilldown).toMatchObject({
+      status: "no_candidate",
+      candidate: null,
+    });
+  });
+
+  it("uses the active-long cost for selected trade netReturnAfterCost", () => {
+    const pairs = [
+      pair(0, { symbol: "COST", probabilityUp: 0.6, predictedDirection: "up", forwardReturn: 0.04 }),
+      ...Array.from({ length: 4 }, (_, index) =>
+        pair(index + 1, {
+          probabilityUp: 0.6,
+          predictedDirection: "up",
+          forwardReturn: 0.05,
+        }),
+      ),
+      ...Array.from({ length: 5 }, (_, index) =>
+        pair(index + 5, {
+          probabilityUp: 0.9,
+          predictedDirection: "down",
+          forwardReturn: -0.05,
+        }),
+      ),
+    ];
+
+    const simulation = buildStrategySimulation(pairs);
+    const costPreview = simulation.thresholdDrilldown.candidate?.selectedTradesPreview.find((trade) =>
+      trade.symbol === "COST",
+    );
+
+    expect(costPreview?.netReturnAfterCost).toBe(round(0.04 - TAIWAN_ROUND_TRIP_COST));
   });
 });

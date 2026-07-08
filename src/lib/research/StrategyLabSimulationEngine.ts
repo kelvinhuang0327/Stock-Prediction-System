@@ -6,6 +6,7 @@ import type {
 export const TAIWAN_ROUND_TRIP_COST = 0.00585;
 export const STRATEGY_LAB_CONFIDENCE_THRESHOLDS = [0.5, 0.55, 0.6, 0.65, 0.7, 0.75] as const;
 const MIN_VALID_PAIR_COUNT = 10;
+const THRESHOLD_DRILLDOWN_PREVIEW_LIMIT = 10;
 
 export type StrategyLabSimulationStatus = "missing" | "insufficient" | "ready";
 
@@ -48,6 +49,38 @@ export interface StrategyLabThresholdSweepResult {
   equityCurve: StrategyLabSimulationPoint[];
 }
 
+export interface StrategyLabThresholdDrilldownTrade {
+  symbol: string;
+  featureDate: string;
+  targetDate: string;
+  probabilityUp: number | null;
+  predictedDirection: StrategyLabResolvedPrediction["predictedDirection"];
+  actualDirection: StrategyLabResolvedPrediction["actualDirection"];
+  forwardReturn: number;
+  netReturnAfterCost: number;
+  correct: boolean;
+}
+
+export interface StrategyLabThresholdDrilldownCandidate {
+  threshold: number;
+  tradeCount: number;
+  validPairCount: number;
+  cohortCount: number;
+  strategyNetCumulativeReturn: number;
+  baselineNetCumulativeReturn: number;
+  deltaVsBaselineNet: number;
+  maxDrawdownStrategyNet: number;
+  smallSample: boolean;
+  selectedTradesPreview: StrategyLabThresholdDrilldownTrade[];
+  caveats: string[];
+}
+
+export interface StrategyLabThresholdDrilldown {
+  status: "candidate" | "no_candidate";
+  candidate: StrategyLabThresholdDrilldownCandidate | null;
+  reason: string;
+}
+
 export interface StrategyLabSimulation {
   status: StrategyLabSimulationStatus;
   verdict: StrategyDecision;
@@ -57,6 +90,7 @@ export interface StrategyLabSimulation {
   stats: StrategyLabSimulationStats;
   equityCurve: StrategyLabSimulationPoint[];
   thresholdSweep: StrategyLabThresholdSweepResult[];
+  thresholdDrilldown: StrategyLabThresholdDrilldown;
   limitations: string[];
 }
 
@@ -261,6 +295,79 @@ function buildThresholdSweep(
   });
 }
 
+function emptyThresholdDrilldown(reason: string): StrategyLabThresholdDrilldown {
+  return {
+    status: "no_candidate",
+    candidate: null,
+    reason,
+  };
+}
+
+function thresholdDrilldownCaveats(smallSample: boolean): string[] {
+  return [
+    ...(smallSample
+      ? ["Small sample: selected trade count is below 10; inspect only as a research sample."]
+      : []),
+    "Research-only drilldown; not investment advice.",
+    "Selected trades are artifact replay rows, not trading instructions.",
+  ];
+}
+
+function buildThresholdDrilldown(
+  thresholdSweep: StrategyLabThresholdSweepResult[],
+  validPairs: ValidPair[],
+): StrategyLabThresholdDrilldown {
+  const candidateRow = thresholdSweep
+    .filter((row) => row.verdict === "research_candidate" && row.tradeCount > 0)
+    .sort((left, right) =>
+      right.deltaVsBaselineNet - left.deltaVsBaselineNet
+      || right.strategyNetCumulativeReturn - left.strategyNetCumulativeReturn
+      || left.threshold - right.threshold,
+    )[0];
+
+  if (!candidateRow) {
+    return emptyThresholdDrilldown("No nonzero-trade research_candidate threshold is available in the current artifact sample.");
+  }
+
+  const selectedTradesPreview = validPairs
+    .filter((pair) =>
+      pair.predictedDirection === "up"
+      && pair.probabilityUp !== null
+      && pair.probabilityUp >= candidateRow.threshold,
+    )
+    .slice(0, THRESHOLD_DRILLDOWN_PREVIEW_LIMIT)
+    .map((pair) => ({
+      symbol: pair.symbol,
+      featureDate: pair.featureDate,
+      targetDate: pair.targetDate,
+      probabilityUp: pair.probabilityUp,
+      predictedDirection: pair.predictedDirection,
+      actualDirection: pair.actualDirection,
+      forwardReturn: pair.forwardReturn,
+      netReturnAfterCost: round(pair.forwardReturn - TAIWAN_ROUND_TRIP_COST),
+      correct: pair.correct,
+    }));
+  const smallSample = candidateRow.tradeCount < 10;
+
+  return {
+    status: "candidate",
+    candidate: {
+      threshold: candidateRow.threshold,
+      tradeCount: candidateRow.tradeCount,
+      validPairCount: candidateRow.validPairCount,
+      cohortCount: candidateRow.cohortCount,
+      strategyNetCumulativeReturn: candidateRow.strategyNetCumulativeReturn,
+      baselineNetCumulativeReturn: candidateRow.baselineNetCumulativeReturn,
+      deltaVsBaselineNet: candidateRow.deltaVsBaselineNet,
+      maxDrawdownStrategyNet: candidateRow.maxDrawdownStrategyNet,
+      smallSample,
+      selectedTradesPreview,
+      caveats: thresholdDrilldownCaveats(smallSample),
+    },
+    reason: "Selected highest deltaVsBaselineNet among nonzero-trade research_candidate threshold rows.",
+  };
+}
+
 export function buildStrategySimulation(
   pairs: StrategyLabResolvedPrediction[] | null | undefined,
 ): StrategyLabSimulation {
@@ -279,6 +386,7 @@ export function buildStrategySimulation(
       stats: emptyStats(pairCount, validPairCount),
       equityCurve: [],
       thresholdSweep: [],
+      thresholdDrilldown: emptyThresholdDrilldown("No resolved prediction/outcome pairs are available for threshold drilldown."),
       limitations,
     };
   }
@@ -293,6 +401,9 @@ export function buildStrategySimulation(
       stats: emptyStats(pairCount, validPairCount),
       equityCurve: [],
       thresholdSweep: [],
+      thresholdDrilldown: emptyThresholdDrilldown(
+        `Only ${validPairCount} valid forwardReturn pairs are available; at least ${MIN_VALID_PAIR_COUNT} are required.`,
+      ),
       limitations,
     };
   }
@@ -305,6 +416,7 @@ export function buildStrategySimulation(
     (pair) => pair.predictedDirection === "up",
   );
   const thresholdSweep = buildThresholdSweep(pairCount, validPairs, cohorts);
+  const thresholdDrilldown = buildThresholdDrilldown(thresholdSweep, validPairs);
   const cumulativeStrategyNet = defaultRun.stats.cumulativeStrategyNet;
   const cumulativeBaselineNet = defaultRun.stats.cumulativeBaselineNet;
   const verdict = verdictFromNetReturn(cumulativeStrategyNet, cumulativeBaselineNet);
@@ -320,6 +432,7 @@ export function buildStrategySimulation(
     stats: defaultRun.stats,
     equityCurve: defaultRun.equityCurve,
     thresholdSweep,
+    thresholdDrilldown,
     limitations,
   };
 }
