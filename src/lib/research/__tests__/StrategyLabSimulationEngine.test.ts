@@ -1,4 +1,5 @@
 import {
+  STRATEGY_LAB_CONFIDENCE_THRESHOLDS,
   TAIWAN_ROUND_TRIP_COST,
   buildStrategySimulation,
 } from "@/lib/research/StrategyLabSimulationEngine";
@@ -13,7 +14,7 @@ function pair(
     symbol: overrides.symbol ?? `T${index}`,
     featureDate: overrides.featureDate ?? "2026-06-01",
     targetDate: overrides.targetDate ?? "2026-06-08",
-    probabilityUp: overrides.probabilityUp ?? 0.55,
+    probabilityUp: "probabilityUp" in overrides ? overrides.probabilityUp ?? null : 0.55,
     predictedDirection: overrides.predictedDirection ?? "up",
     actualDirection: overrides.actualDirection ?? ((forwardReturn ?? 0) > 0 ? "up" : "down"),
     forwardReturn,
@@ -46,6 +47,7 @@ describe("buildStrategySimulation", () => {
     expect(simulation.stats.cohortCount).toBe(2);
     expect(simulation.stats.tradeCount).toBe(6);
     expect(simulation.equityCurve).toHaveLength(2);
+    expect(simulation.thresholdSweep.map((row) => row.threshold)).toEqual([...STRATEGY_LAB_CONFIDENCE_THRESHOLDS]);
   });
 
   it("returns missing for empty input", () => {
@@ -55,6 +57,7 @@ describe("buildStrategySimulation", () => {
     expect(simulation.verdict).toBe("needs_more_evidence");
     expect(simulation.stats.pairCount).toBe(0);
     expect(simulation.equityCurve).toEqual([]);
+    expect(simulation.thresholdSweep).toEqual([]);
   });
 
   it("returns insufficient when fewer than 10 valid pairs are available", () => {
@@ -74,6 +77,7 @@ describe("buildStrategySimulation", () => {
     expect(simulation.verdict).toBe("needs_more_evidence");
     expect(simulation.stats.validPairCount).toBe(9);
     expect(simulation.equityCurve).toEqual([]);
+    expect(simulation.thresholdSweep).toEqual([]);
   });
 
   it("keeps the strategy flat when every prediction is down while baseline compounds", () => {
@@ -166,5 +170,97 @@ describe("buildStrategySimulation", () => {
     expect(simulation.status).toBe("ready");
     expect(simulation.stats.pairCount).toBe(11);
     expect(simulation.stats.validPairCount).toBe(10);
+  });
+
+  it("filters threshold trades by probabilityUp while preserving the default strategy", () => {
+    const pairs = [
+      pair(0, { probabilityUp: 0.51, predictedDirection: "up", forwardReturn: 0.02 }),
+      pair(1, { probabilityUp: 0.59, predictedDirection: "up", forwardReturn: 0.03 }),
+      pair(2, { probabilityUp: 0.6, predictedDirection: "up", forwardReturn: 0.04 }),
+      pair(3, { probabilityUp: 0.7, predictedDirection: "up", forwardReturn: -0.01 }),
+      pair(4, { probabilityUp: null, predictedDirection: "up", forwardReturn: 0.05 }),
+      pair(5, { probabilityUp: 0.9, predictedDirection: "down", forwardReturn: 0.1 }),
+      pair(6, { probabilityUp: 0.5, predictedDirection: "down", forwardReturn: 0.1 }),
+      pair(7, { probabilityUp: 0.49, predictedDirection: "up", forwardReturn: 0.2 }),
+      pair(8, { probabilityUp: null, predictedDirection: "down", forwardReturn: -0.02 }),
+      pair(9, { probabilityUp: 0.8, predictedDirection: "up", forwardReturn: 0.06 }),
+    ];
+
+    const simulation = buildStrategySimulation(pairs);
+
+    expect(simulation.stats.tradeCount).toBe(7);
+    expect(simulation.thresholdSweep.map((row) => [row.threshold, row.tradeCount])).toEqual([
+      [0.5, 5],
+      [0.55, 4],
+      [0.6, 3],
+      [0.65, 2],
+      [0.7, 2],
+      [0.75, 1],
+    ]);
+  });
+
+  it("keeps baseline unchanged across thresholds", () => {
+    const pairs = Array.from({ length: 10 }, (_, index) =>
+      pair(index, {
+        probabilityUp: 0.5 + index * 0.03,
+        predictedDirection: index % 2 === 0 ? "up" : "down",
+        forwardReturn: index % 2 === 0 ? 0.02 : -0.01,
+      }),
+    );
+
+    const simulation = buildStrategySimulation(pairs);
+    const baselineReturns = new Set(
+      simulation.thresholdSweep.map((row) => row.baselineNetCumulativeReturn),
+    );
+
+    expect(baselineReturns.size).toBe(1);
+    expect([...baselineReturns][0]).toBe(simulation.stats.cumulativeBaselineNet);
+  });
+
+  it("keeps a threshold strategy flat when the threshold selects zero trades", () => {
+    const pairs = Array.from({ length: 10 }, (_, index) =>
+      pair(index, {
+        probabilityUp: 0.55,
+        predictedDirection: index % 2 === 0 ? "up" : "down",
+        forwardReturn: index % 2 === 0 ? 0.02 : -0.01,
+      }),
+    );
+
+    const simulation = buildStrategySimulation(pairs);
+    const threshold075 = simulation.thresholdSweep.find((row) => row.threshold === 0.75);
+
+    expect(threshold075).toBeDefined();
+    expect(threshold075?.tradeCount).toBe(0);
+    expect(threshold075?.hitRate).toBeNull();
+    expect(threshold075?.avgTradeReturnGross).toBeNull();
+    expect(threshold075?.strategyNetCumulativeReturn).toBe(0);
+    expect(threshold075?.maxDrawdownStrategyNet).toBe(0);
+    expect(threshold075?.verdict).toBe("needs_more_evidence");
+    expect(threshold075?.equityCurve.every((point) => point.strategyNetReturn === 0)).toBe(true);
+    expect(threshold075?.baselineNetCumulativeReturn).toBe(simulation.stats.cumulativeBaselineNet);
+  });
+
+  it("applies threshold strategy cost only to selected long trades", () => {
+    const pairs = [
+      pair(0, { probabilityUp: 0.6, predictedDirection: "up", forwardReturn: 0.04 }),
+      pair(1, { probabilityUp: 0.7, predictedDirection: "up", forwardReturn: -0.01 }),
+      pair(2, { probabilityUp: 0.8, predictedDirection: "up", forwardReturn: 0.06 }),
+      ...Array.from({ length: 7 }, (_, index) =>
+        pair(index + 3, {
+          probabilityUp: 0.9,
+          predictedDirection: "down",
+          forwardReturn: 0.02,
+        }),
+      ),
+    ];
+
+    const simulation = buildStrategySimulation(pairs);
+    const threshold06 = simulation.thresholdSweep.find((row) => row.threshold === 0.6);
+
+    expect(threshold06?.tradeCount).toBe(3);
+    expect(threshold06?.avgTradeReturnGross).toBe(0.03);
+    expect(threshold06?.strategyNetCumulativeReturn).toBe(
+      round((0.04 - TAIWAN_ROUND_TRIP_COST - 0.01 - TAIWAN_ROUND_TRIP_COST + 0.06 - TAIWAN_ROUND_TRIP_COST) / 10),
+    );
   });
 });

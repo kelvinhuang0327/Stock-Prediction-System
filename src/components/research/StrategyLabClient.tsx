@@ -524,41 +524,44 @@ function StrategySimulationSection({ simulation }: { simulation?: StrategyLabSim
           {failSafeMessage}
         </div>
       ) : simulation ? (
-        <div className="grid gap-5 xl:grid-cols-[1.15fr_0.85fr]">
-          <div className="min-w-0">
-            <SimulationEquityChart simulation={simulation} />
-            <div className="mt-3 flex flex-wrap gap-3 text-xs text-muted-foreground">
-              <span className="inline-flex items-center gap-1">
-                <span className="h-2.5 w-2.5 rounded-full bg-sky-300" />
-                跟隨模型
-              </span>
-              <span className="inline-flex items-center gap-1">
-                <span className="h-2.5 w-2.5 rounded-full bg-amber-300" />
-                全部做多 baseline
-              </span>
-              <span>每筆 active long round-trip cost {formatPct(simulation.costPerRoundTrip)}</span>
+        <>
+          <div className="grid gap-5 xl:grid-cols-[1.15fr_0.85fr]">
+            <div className="min-w-0">
+              <SimulationEquityChart simulation={simulation} />
+              <div className="mt-3 flex flex-wrap gap-3 text-xs text-muted-foreground">
+                <span className="inline-flex items-center gap-1">
+                  <span className="h-2.5 w-2.5 rounded-full bg-sky-300" />
+                  跟隨模型
+                </span>
+                <span className="inline-flex items-center gap-1">
+                  <span className="h-2.5 w-2.5 rounded-full bg-amber-300" />
+                  全部做多 baseline
+                </span>
+                <span>每筆 active long round-trip cost {formatPct(simulation.costPerRoundTrip)}</span>
+              </div>
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-2">
+              <SmallMetric
+                label="跟隨模型累積報酬"
+                value={`${formatSignedPct(simulation.stats.cumulativeStrategyGross)} gross / ${formatSignedPct(simulation.stats.cumulativeStrategyNet)} net`}
+                compact
+              />
+              <SmallMetric
+                label="Baseline 累積報酬"
+                value={`${formatSignedPct(simulation.stats.cumulativeBaselineGross)} gross / ${formatSignedPct(simulation.stats.cumulativeBaselineNet)} net`}
+                compact
+              />
+              <SmallMetric label="命中率" value={formatPct(simulation.stats.hitRate)} />
+              <SmallMetric label="平均單筆報酬" value={formatSignedPct(simulation.stats.avgTradeReturnGross)} />
+              <SmallMetric label="跟隨模型最大回撤" value={formatPct(simulation.stats.maxDrawdownStrategyNet)} />
+              <SmallMetric label="Baseline 最大回撤" value={formatPct(simulation.stats.maxDrawdownBaselineNet)} />
+              <SmallMetric label="樣本數 N" value={`${simulation.stats.validPairCount} / ${simulation.stats.pairCount}`} />
+              <SmallMetric label="Cohort count" value={formatNumber(simulation.stats.cohortCount)} />
             </div>
           </div>
-
-          <div className="grid gap-3 sm:grid-cols-2">
-            <SmallMetric
-              label="跟隨模型累積報酬"
-              value={`${formatSignedPct(simulation.stats.cumulativeStrategyGross)} gross / ${formatSignedPct(simulation.stats.cumulativeStrategyNet)} net`}
-              compact
-            />
-            <SmallMetric
-              label="Baseline 累積報酬"
-              value={`${formatSignedPct(simulation.stats.cumulativeBaselineGross)} gross / ${formatSignedPct(simulation.stats.cumulativeBaselineNet)} net`}
-              compact
-            />
-            <SmallMetric label="命中率" value={formatPct(simulation.stats.hitRate)} />
-            <SmallMetric label="平均單筆報酬" value={formatSignedPct(simulation.stats.avgTradeReturnGross)} />
-            <SmallMetric label="跟隨模型最大回撤" value={formatPct(simulation.stats.maxDrawdownStrategyNet)} />
-            <SmallMetric label="Baseline 最大回撤" value={formatPct(simulation.stats.maxDrawdownBaselineNet)} />
-            <SmallMetric label="樣本數 N" value={`${simulation.stats.validPairCount} / ${simulation.stats.pairCount}`} />
-            <SmallMetric label="Cohort count" value={formatNumber(simulation.stats.cohortCount)} />
-          </div>
-        </div>
+          <ThresholdSweepTable simulation={simulation} />
+        </>
       ) : null}
 
       {simulation && (
@@ -573,6 +576,95 @@ function StrategySimulationSection({ simulation }: { simulation?: StrategyLabSim
         </div>
       )}
     </section>
+  );
+}
+
+function ThresholdSweepTable({ simulation }: { simulation: StrategyLabSimulation }) {
+  const rows = simulation.thresholdSweep;
+  const sampleBestPool = rows.some((row) => row.tradeCount > 0)
+    ? rows.filter((row) => row.tradeCount > 0)
+    : rows;
+  const sampleBest = [...sampleBestPool].sort((left, right) =>
+    right.deltaVsBaselineNet - left.deltaVsBaselineNet
+    || right.strategyNetCumulativeReturn - left.strategyNetCumulativeReturn,
+  )[0];
+
+  if (rows.length === 0) return null;
+
+  return (
+    <div className="mt-5 rounded-md border border-border/30 bg-background/35 p-3">
+      <div className="mb-3 flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h3 className="text-base font-semibold">信心門檻掃描</h3>
+          <p className="text-sm text-muted-foreground">
+            只在預測看漲且上漲機率達門檻時做多；其他樣本維持空手，baseline 仍是同一批樣本全部做多。
+          </p>
+        </div>
+        <span className="text-xs text-muted-foreground">
+          active long cost {formatPct(simulation.costPerRoundTrip)}
+        </span>
+      </div>
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[680px] text-sm">
+          <thead className="border-b border-border/60 text-left text-xs text-muted-foreground">
+            <tr>
+              <th className="py-2 pr-3 font-medium">門檻</th>
+              <th className="py-2 pr-3 font-medium">交易數</th>
+              <th className="py-2 pr-3 font-medium">淨報酬</th>
+              <th className="py-2 pr-3 font-medium">vs baseline</th>
+              <th className="py-2 pr-3 font-medium">最大回撤</th>
+              <th className="py-2 pr-3 font-medium">verdict</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row) => (
+              <ThresholdSweepRow
+                key={row.threshold}
+                row={row}
+                sampleBest={sampleBest?.threshold === row.threshold}
+              />
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p className="mt-3 text-xs leading-5 text-muted-foreground">
+        sample best 只標示此 artifact 樣本內的最高 delta，不能視為推薦。小樣本、重疊 5 日窗口、研究用途限定；不是投資建議，不可用於交易。
+      </p>
+    </div>
+  );
+}
+
+function ThresholdSweepRow({
+  row,
+  sampleBest,
+}: {
+  row: StrategyLabSimulation["thresholdSweep"][number];
+  sampleBest: boolean;
+}) {
+  const positiveDelta = row.deltaVsBaselineNet > 0;
+  const verdictLabel = row.verdict === "research_candidate"
+    ? "研究候選"
+    : row.verdict === "needs_more_evidence"
+      ? "證據不足"
+      : "暫不啟用";
+  return (
+    <tr className="border-b border-border/30 last:border-0">
+      <td className="py-2.5 pr-3 font-mono text-sm">
+        {formatPct(row.threshold)}
+        {sampleBest && (
+          <span className="ml-2 rounded-sm border border-sky-300/45 bg-sky-500/10 px-1.5 py-0.5 text-[11px] font-medium text-sky-100">
+            sample best
+          </span>
+        )}
+      </td>
+      <td className="py-2.5 pr-3 font-mono text-sm">{row.tradeCount} / {row.validPairCount}</td>
+      <td className="py-2.5 pr-3 font-mono text-sm">{formatSignedPct(row.strategyNetCumulativeReturn)}</td>
+      <td className={`py-2.5 pr-3 font-mono text-sm ${positiveDelta ? "text-emerald-300" : "text-amber-300"}`}>
+        {formatSignedPct(row.deltaVsBaselineNet)}
+      </td>
+      <td className="py-2.5 pr-3 font-mono text-sm">{formatPct(row.maxDrawdownStrategyNet)}</td>
+      <td className="py-2.5 pr-3 text-xs text-muted-foreground">{verdictLabel}</td>
+    </tr>
   );
 }
 
