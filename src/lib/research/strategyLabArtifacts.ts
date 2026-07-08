@@ -6,6 +6,10 @@ import {
   buildStrategySimulation,
   type StrategyLabSimulation,
 } from "@/lib/research/StrategyLabSimulationEngine";
+import {
+  buildStrategyLabCalibration,
+  type StrategyLabCalibration,
+} from "@/lib/research/StrategyLabCalibrationEngine";
 
 const RETRAINING_DIR = path.join(process.cwd(), "outputs", "retraining");
 const CSV_PATH = path.join(RETRAINING_DIR, "p194_twstock_ohlcv_export.csv");
@@ -163,6 +167,7 @@ export interface StrategyLabSnapshot {
   refit: StrategyLabRefitResult;
   predictions: StrategyLabPredictions;
   simulation?: StrategyLabSimulation;
+  calibration?: StrategyLabCalibration;
   runHistory: StrategyLabRunHistory;
   protocolComparison: StrategyLabProtocolComparison;
   productStance: {
@@ -700,6 +705,7 @@ export async function readStrategyLabSnapshot(): Promise<StrategyLabSnapshot> {
     refit,
     predictions,
     simulation: buildStrategySimulation(predictions.recentResolved),
+    calibration: buildStrategyLabCalibration(predictions.recentResolved),
     runHistory,
     protocolComparison,
     productStance: {
