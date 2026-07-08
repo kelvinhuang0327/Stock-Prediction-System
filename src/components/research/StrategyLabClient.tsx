@@ -45,6 +45,13 @@ interface RunResponse {
   snapshot?: StrategyLabSnapshot;
 }
 
+interface ExecutiveSummaryItem {
+  label: string;
+  value: string;
+  note: string;
+  tone: "caution" | "neutral" | "info";
+}
+
 function formatPct(value: number | null): string {
   return value === null ? "N/A" : `${(value * 100).toFixed(2)}%`;
 }
@@ -112,11 +119,164 @@ function extractRunSummary(stdout?: string): string | null {
   }
 }
 
+function productVerdictLabel(decision: StrategyDecision): string {
+  if (decision === "do_not_promote") return "暫不推廣";
+  if (decision === "research_candidate") return "研究候選，需再驗證";
+  if (decision === "needs_more_evidence") return "研究觀察中";
+  return "artifact 不完整";
+}
+
+function simulationSummary(simulation?: StrategyLabSimulation): Pick<ExecutiveSummaryItem, "value" | "note" | "tone"> {
+  if (!simulation || simulation.status === "missing") {
+    return {
+      value: "尚無模擬",
+      note: "目前沒有可回放的 resolved prediction/outcome pairs。",
+      tone: "caution",
+    };
+  }
+  if (simulation.status === "insufficient") {
+    return {
+      value: "證據不足",
+      note: simulation.verdictReason,
+      tone: "caution",
+    };
+  }
+  return {
+    value: simulation.verdict === "research_candidate" ? "跟隨模型高於 baseline" : "跟隨模型未勝過 baseline",
+    note: `${simulation.verdictReason} N=${simulation.stats.validPairCount} resolved pairs。`,
+    tone: simulation.verdict === "research_candidate" ? "info" : "caution",
+  };
+}
+
+function thresholdCandidateSummary(
+  simulation?: StrategyLabSimulation,
+): Pick<ExecutiveSummaryItem, "value" | "note" | "tone"> {
+  const candidate = simulation?.thresholdDrilldown.candidate;
+  if (!candidate) {
+    return {
+      value: "無候選門檻",
+      note: simulation?.thresholdDrilldown.reason ?? "目前 artifact 沒有可判讀的候選門檻。",
+      tone: "caution",
+    };
+  }
+  return {
+    value: `${formatPct(candidate.threshold)} · ${candidate.tradeCount} 筆交易`,
+    note: candidate.smallSample
+      ? `小樣本；有效樣本 ${candidate.validPairCount} 筆，不能視為交易訊號。`
+      : `有效樣本 ${candidate.validPairCount} 筆；仍只代表目前 artifact 樣本。`,
+    tone: candidate.smallSample ? "caution" : "info",
+  };
+}
+
+function symbolConcentrationSummary(
+  simulation?: StrategyLabSimulation,
+): Pick<ExecutiveSummaryItem, "value" | "note" | "tone"> {
+  const breakdown = simulation?.thresholdDrilldown.symbolBreakdown;
+  if (!breakdown || breakdown.status === "no_candidate") {
+    return {
+      value: "無候選樣本",
+      note: breakdown?.reason ?? "尚無候選門檻可計算標的集中度。",
+      tone: "neutral",
+    };
+  }
+  if (breakdown.isConcentrated) {
+    return {
+      value: `集中於 ${breakdown.dominantSymbol ?? "單一標的"}`,
+      note: `候選樣本交易占比 ${formatPct(breakdown.dominantTradeShare)}；共 ${breakdown.symbolCount} 檔標的。`,
+      tone: "caution",
+    };
+  }
+  return {
+    value: "未由單一標的主導",
+    note: `候選樣本分布於 ${breakdown.symbolCount} 檔標的。`,
+    tone: "info",
+  };
+}
+
+function cohortConcentrationSummary(
+  simulation?: StrategyLabSimulation,
+): Pick<ExecutiveSummaryItem, "value" | "note" | "tone"> {
+  const breakdown = simulation?.thresholdDrilldown.cohortBreakdown;
+  if (!breakdown || breakdown.status === "no_candidate") {
+    return {
+      value: "無候選樣本",
+      note: breakdown?.reason ?? "尚無候選門檻可計算 cohort 集中度。",
+      tone: "neutral",
+    };
+  }
+  if (breakdown.isTimeConcentrated) {
+    return {
+      value: `集中於 ${breakdown.dominantCohortKey ?? "少數 cohort"}`,
+      note: `候選樣本交易占比 ${formatPct(breakdown.dominantTradeShare)}；共 ${breakdown.cohortCount} 個 cohorts。`,
+      tone: "caution",
+    };
+  }
+  return {
+    value: "未集中於單一 cohort",
+    note: `候選樣本分布於 ${breakdown.cohortCount} 個 cohorts。`,
+    tone: "info",
+  };
+}
+
+function calibrationSummary(
+  calibration?: StrategyLabCalibration,
+): Pick<ExecutiveSummaryItem, "value" | "note" | "tone"> {
+  if (!calibration || calibration.status === "missing") {
+    return {
+      value: "尚無校準檢查",
+      note: "目前沒有可校準的 resolved prediction/outcome pairs。",
+      tone: "caution",
+    };
+  }
+  return {
+    value: `${calibration.verdictLabel} / ${calibration.verdict}`,
+    note: `ECE ${formatPct(calibration.expectedCalibrationErrorApprox)}，最大差距 ${formatPct(calibration.maxCalibrationGap)}，N=${calibration.validPairCount}。`,
+    tone: calibration.verdict === "poorly_calibrated" || calibration.verdict === "needs_more_evidence"
+      ? "caution"
+      : "info",
+  };
+}
+
+function buildExecutiveSummary(snapshot: StrategyLabSnapshot): ExecutiveSummaryItem[] {
+  const simulation = simulationSummary(snapshot.simulation);
+  const threshold = thresholdCandidateSummary(snapshot.simulation);
+  const symbol = symbolConcentrationSummary(snapshot.simulation);
+  const cohort = cohortConcentrationSummary(snapshot.simulation);
+  const calibration = calibrationSummary(snapshot.calibration);
+  const resolvedPairCount = snapshot.simulation?.stats.pairCount
+    ?? snapshot.calibration?.pairCount
+    ?? snapshot.predictions.recentResolved.length;
+  const validPairCount = snapshot.simulation?.stats.validPairCount
+    ?? snapshot.calibration?.validPairCount
+    ?? snapshot.predictions.recentResolved.filter((pair) => pair.forwardReturn !== null).length;
+
+  return [
+    {
+      label: "整體狀態",
+      value: productVerdictLabel(snapshot.productStance.decision),
+      note: snapshot.productStance.reason,
+      tone: snapshot.productStance.decision === "research_candidate" ? "info" : "caution",
+    },
+    { label: "模擬", ...simulation },
+    { label: "候選門檻", ...threshold },
+    { label: "標的集中", ...symbol },
+    { label: "時間集中", ...cohort },
+    { label: "信心校準", ...calibration },
+    {
+      label: "樣本數",
+      value: `${validPairCount} / ${resolvedPairCount} resolved pairs`,
+      note: "僅計入目前 resolved artifact；不重新訓練、不重跑資料、不讀寫資料庫。",
+      tone: "neutral",
+    },
+  ];
+}
+
 export function StrategyLabClient({ initialSnapshot }: StrategyLabClientProps) {
   const [snapshot, setSnapshot] = useState(initialSnapshot);
   const [busyAction, setBusyAction] = useState<"refresh" | "rerun-refit" | null>(null);
   const [lastRun, setLastRun] = useState<{ ok: boolean; message: string } | null>(null);
   const style = decisionStyle(snapshot.productStance.decision);
+  const executiveSummary = buildExecutiveSummary(snapshot);
 
   async function refreshSnapshot() {
     setBusyAction("refresh");
@@ -217,6 +377,8 @@ export function StrategyLabClient({ initialSnapshot }: StrategyLabClientProps) {
           </div>
         )}
       </section>
+
+      <ExecutiveSummarySection items={executiveSummary} />
 
       <section className="min-w-0 rounded-lg border border-border/50 bg-card/70 p-5">
         <div className="mb-1 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
@@ -495,6 +657,51 @@ export function StrategyLabClient({ initialSnapshot }: StrategyLabClientProps) {
         </div>
       </section>
     </div>
+  );
+}
+
+function ExecutiveSummarySection({ items }: { items: ExecutiveSummaryItem[] }) {
+  const toneClass: Record<ExecutiveSummaryItem["tone"], string> = {
+    caution: "border-amber-300/35 bg-amber-500/10",
+    info: "border-sky-300/35 bg-sky-500/10",
+    neutral: "border-border/30 bg-background/40",
+  };
+
+  return (
+    <section className="min-w-0 rounded-lg border border-border/50 bg-card/70 p-5">
+      <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <div className="mb-1 flex items-center gap-2">
+            <AlertTriangle className="h-5 w-5 text-amber-300" />
+            <h2 className="text-lg font-semibold">目前研究結論</h2>
+          </div>
+          <p className="max-w-4xl text-sm leading-6 text-muted-foreground">
+            依目前 Strategy Lab resolved artifact 彙整；先看結論，再往下檢查模擬、門檻、集中度與校準明細。
+          </p>
+        </div>
+        <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-amber-300/45 bg-amber-500/10 px-2.5 py-1 text-xs font-medium text-amber-100">
+          <PauseCircle className="h-3.5 w-3.5" />
+          研究觀察中
+        </span>
+      </div>
+
+      <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+        {items.map((item) => (
+          <div key={item.label} className={`rounded-md border p-3 ${toneClass[item.tone]}`}>
+            <p className="text-xs font-medium text-muted-foreground">{item.label}</p>
+            <p className="mt-1 break-words text-base font-semibold leading-6 text-white">{item.value}</p>
+            <p className="mt-2 break-words text-xs leading-5 text-muted-foreground">{item.note}</p>
+          </div>
+        ))}
+      </div>
+
+      <ul className="mt-4 grid gap-2 text-xs leading-5 text-muted-foreground sm:grid-cols-2 xl:grid-cols-4">
+        <li>僅反映目前 resolved artifact。</li>
+        <li>非投資建議。</li>
+        <li>不代表未來預測能力。</li>
+        <li>不可作為交易訊號。</li>
+      </ul>
+    </section>
   );
 }
 
