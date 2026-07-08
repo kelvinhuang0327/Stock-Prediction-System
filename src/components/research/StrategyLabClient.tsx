@@ -561,6 +561,7 @@ function StrategySimulationSection({ simulation }: { simulation?: StrategyLabSim
             </div>
           </div>
           <ThresholdSweepTable simulation={simulation} />
+          <ThresholdDrilldownBlock simulation={simulation} />
         </>
       ) : null}
 
@@ -581,13 +582,7 @@ function StrategySimulationSection({ simulation }: { simulation?: StrategyLabSim
 
 function ThresholdSweepTable({ simulation }: { simulation: StrategyLabSimulation }) {
   const rows = simulation.thresholdSweep;
-  const sampleBestPool = rows.some((row) => row.tradeCount > 0)
-    ? rows.filter((row) => row.tradeCount > 0)
-    : rows;
-  const sampleBest = [...sampleBestPool].sort((left, right) =>
-    right.deltaVsBaselineNet - left.deltaVsBaselineNet
-    || right.strategyNetCumulativeReturn - left.strategyNetCumulativeReturn,
-  )[0];
+  const candidateThreshold = simulation.thresholdDrilldown.candidate?.threshold;
 
   if (rows.length === 0) return null;
 
@@ -621,14 +616,14 @@ function ThresholdSweepTable({ simulation }: { simulation: StrategyLabSimulation
               <ThresholdSweepRow
                 key={row.threshold}
                 row={row}
-                sampleBest={sampleBest?.threshold === row.threshold}
+                sampleBest={candidateThreshold === row.threshold}
               />
             ))}
           </tbody>
         </table>
       </div>
       <p className="mt-3 text-xs leading-5 text-muted-foreground">
-        sample best 只標示此 artifact 樣本內的最高 delta，不能視為推薦。小樣本、重疊 5 日窗口、研究用途限定；不是投資建議，不可用於交易。
+        candidate 只標示此 artifact 樣本內符合研究候選且交易數大於 0 的最高 delta 門檻，不能視為推薦。小樣本、重疊 5 日窗口、研究用途限定；不是投資建議，不可用於交易。
       </p>
     </div>
   );
@@ -653,7 +648,7 @@ function ThresholdSweepRow({
         {formatPct(row.threshold)}
         {sampleBest && (
           <span className="ml-2 rounded-sm border border-sky-300/45 bg-sky-500/10 px-1.5 py-0.5 text-[11px] font-medium text-sky-100">
-            sample best
+            candidate
           </span>
         )}
       </td>
@@ -666,6 +661,137 @@ function ThresholdSweepRow({
       <td className="py-2.5 pr-3 text-xs text-muted-foreground">{verdictLabel}</td>
     </tr>
   );
+}
+
+function ThresholdDrilldownBlock({ simulation }: { simulation: StrategyLabSimulation }) {
+  const drilldown = simulation.thresholdDrilldown;
+  const candidate = drilldown.candidate;
+
+  return (
+    <div className="mt-4 rounded-md border border-border/30 bg-background/35 p-3">
+      <div className="mb-3 flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <h3 className="text-base font-semibold">候選門檻明細</h3>
+          <p className="text-sm text-muted-foreground">
+            從信心門檻掃描中挑選非零交易數的研究候選列，展示 artifact 內實際被選入的交易樣本。
+          </p>
+        </div>
+        <span className="text-xs text-muted-foreground">
+          preview 最多 10 筆
+        </span>
+      </div>
+
+      {!candidate ? (
+        <div className="rounded-md border border-amber-300/35 bg-amber-500/10 px-3 py-4 text-sm leading-6 text-amber-100">
+          目前沒有符合條件的候選門檻。{drilldown.reason}
+        </div>
+      ) : (
+        <div className="space-y-3">
+          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            <SmallMetric label="候選門檻" value={formatPct(candidate.threshold)} />
+            <SmallMetric label="交易數 / 有效樣本" value={`${candidate.tradeCount} / ${candidate.validPairCount}`} />
+            <SmallMetric label="Strategy net vs baseline" value={`${formatSignedPct(candidate.strategyNetCumulativeReturn)} / ${formatSignedPct(candidate.baselineNetCumulativeReturn)}`} compact />
+            <SmallMetric label="Delta / 最大回撤" value={`${formatSignedPct(candidate.deltaVsBaselineNet)} / ${formatPct(candidate.maxDrawdownStrategyNet)}`} compact />
+          </div>
+
+          {candidate.smallSample && (
+            <div className="flex items-start gap-2 rounded-md border border-amber-300/35 bg-amber-500/10 px-3 py-2 text-sm leading-6 text-amber-100">
+              <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
+              樣本交易數偏少，僅供研究檢視，不能視為投資建議。
+            </div>
+          )}
+
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[760px] text-sm">
+              <thead className="border-b border-border/60 text-left text-xs text-muted-foreground">
+                <tr>
+                  <th className="py-2 pr-3 font-medium">預測日</th>
+                  <th className="py-2 pr-3 font-medium">股票</th>
+                  <th className="py-2 pr-3 font-medium">機率</th>
+                  <th className="py-2 pr-3 font-medium">預測 / 實際</th>
+                  <th className="py-2 pr-3 font-medium">5 日報酬</th>
+                  <th className="py-2 pr-3 font-medium">成本後單筆</th>
+                  <th className="py-2 pr-3 font-medium">命中</th>
+                </tr>
+              </thead>
+              <tbody>
+                {candidate.selectedTradesPreview.map((trade) => (
+                  <ThresholdDrilldownTradeRow
+                    key={`${trade.symbol}-${trade.featureDate}-${trade.targetDate}`}
+                    trade={trade}
+                  />
+                ))}
+                {candidate.selectedTradesPreview.length === 0 && (
+                  <tr>
+                    <td className="py-6 text-muted-foreground" colSpan={7}>
+                      候選門檻存在，但 preview 沒有可顯示的 selected trades。
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+
+          <ul className="space-y-1 text-xs leading-5 text-muted-foreground">
+            {candidate.caveats.map((caveat) => (
+              <li key={caveat}>{thresholdDrilldownCaveatText(caveat)}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ThresholdDrilldownTradeRow({
+  trade,
+}: {
+  trade: NonNullable<StrategyLabSimulation["thresholdDrilldown"]["candidate"]>["selectedTradesPreview"][number];
+}) {
+  const predicted = directionMeta(trade.predictedDirection);
+  const actual = directionMeta(trade.actualDirection);
+  const returnPositive = trade.forwardReturn > 0;
+  const netPositive = trade.netReturnAfterCost > 0;
+
+  return (
+    <tr className="border-b border-border/30 last:border-0">
+      <td className="py-2.5 pr-3 font-mono text-xs">
+        <div>{trade.featureDate}</div>
+        <div className="text-muted-foreground">→ {trade.targetDate}</div>
+      </td>
+      <td className="py-2.5 pr-3 font-medium">{trade.symbol}</td>
+      <td className="py-2.5 pr-3 font-mono text-sm">{formatPct(trade.probabilityUp)}</td>
+      <td className="py-2.5 pr-3">
+        <span className={`inline-flex items-center gap-1 ${predicted.textClass}`}>{predicted.icon}{predicted.label}</span>
+        <span className="mx-1 text-muted-foreground">/</span>
+        <span className={`inline-flex items-center gap-1 ${actual.textClass}`}>{actual.icon}{actual.label}</span>
+      </td>
+      <td className={`py-2.5 pr-3 font-mono text-sm ${returnPositive ? "text-red-400" : "text-emerald-400"}`}>
+        {formatSignedPct(trade.forwardReturn)}
+      </td>
+      <td className={`py-2.5 pr-3 font-mono text-sm ${netPositive ? "text-red-400" : "text-emerald-400"}`}>
+        {formatSignedPct(trade.netReturnAfterCost)}
+      </td>
+      <td className="py-2.5 pr-3">
+        {trade.correct
+          ? <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+          : <XCircle className="h-4 w-4 text-amber-400" />}
+      </td>
+    </tr>
+  );
+}
+
+function thresholdDrilldownCaveatText(caveat: string): string {
+  if (caveat.includes("Small sample")) {
+    return "樣本交易數偏少，僅供研究檢視，不能視為投資建議。";
+  }
+  if (caveat.includes("Research-only")) {
+    return "僅供研究驗證；不是投資建議，不可用於交易。";
+  }
+  if (caveat.includes("artifact replay")) {
+    return "表格列出的是 artifact 回放樣本，不是交易指示。";
+  }
+  return caveat;
 }
 
 function SimulationEquityChart({ simulation }: { simulation: StrategyLabSimulation }) {
