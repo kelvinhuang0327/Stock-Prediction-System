@@ -32,6 +32,10 @@ import type {
 } from "@/lib/research/strategyLabArtifacts";
 import type { StrategyLabCalibration } from "@/lib/research/StrategyLabCalibrationEngine";
 import type { StrategyLabSimulation } from "@/lib/research/StrategyLabSimulationEngine";
+import type {
+  StrategyLabSymbolReliability,
+  StrategyLabSymbolReliabilityRow,
+} from "@/lib/research/StrategyLabSymbolReliabilityEngine";
 
 interface StrategyLabClientProps {
   initialSnapshot: StrategyLabSnapshot;
@@ -323,6 +327,7 @@ export function StrategyLabClient({ initialSnapshot }: StrategyLabClientProps) {
   const predictions = snapshot.predictions;
   const simulation = snapshot.simulation;
   const calibration = snapshot.calibration;
+  const symbolReliability = snapshot.symbolReliability;
   const runHistory = snapshot.runHistory;
 
   return (
@@ -379,6 +384,8 @@ export function StrategyLabClient({ initialSnapshot }: StrategyLabClientProps) {
       </section>
 
       <ExecutiveSummarySection items={executiveSummary} />
+
+      <SymbolReliabilitySection reliability={symbolReliability} />
 
       <section className="min-w-0 rounded-lg border border-border/50 bg-card/70 p-5">
         <div className="mb-1 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
@@ -703,6 +710,168 @@ function ExecutiveSummarySection({ items }: { items: ExecutiveSummaryItem[] }) {
       </ul>
     </section>
   );
+}
+
+function SymbolReliabilitySection({ reliability }: { reliability?: StrategyLabSymbolReliability }) {
+  const rows = reliability?.rows ?? [];
+  const status = reliability?.status;
+  const worstCalibration = status?.worstCalibrationSymbol ?? "N/A";
+  const bestHitRate = status?.bestHitRateSymbol ?? "N/A";
+
+  return (
+    <section className="min-w-0 rounded-lg border border-border/50 bg-card/70 p-5">
+      <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <div className="mb-1 flex items-center gap-2">
+            <ShieldCheck className="h-5 w-5 text-sky-300" />
+            <h2 className="text-lg font-semibold">各股可靠度摘要</h2>
+          </div>
+          <p className="max-w-4xl text-sm leading-6 text-muted-foreground">
+            各股統計僅反映目前 resolved artifact，樣本很小，不能視為投資建議。
+          </p>
+        </div>
+        <span className={`inline-flex shrink-0 items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-medium ${
+          status?.enoughSymbols
+            ? "border-sky-300/45 bg-sky-500/10 text-sky-100"
+            : "border-amber-300/45 bg-amber-500/10 text-amber-100"
+        }`}>
+          <AlertTriangle className="h-3.5 w-3.5" />
+          {status?.enoughSymbols ? "可描述比較" : "樣本偏少"}
+        </span>
+      </div>
+
+      <div className="mb-4 grid gap-3 sm:grid-cols-3">
+        <SmallMetric label="標的數" value={formatNumber(rows.length)} />
+        <SmallMetric label="最大校準差距標的" value={worstCalibration} />
+        <SmallMetric label="最高命中率標的（描述）" value={bestHitRate} compact />
+      </div>
+
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[980px] text-sm">
+          <thead className="border-b border-border/60 text-left text-xs text-muted-foreground">
+            <tr>
+              <th className="py-2 pr-3 font-medium">股票</th>
+              <th className="py-2 pr-3 font-medium">resolved N</th>
+              <th className="py-2 pr-3 font-medium">最新方向 / 機率</th>
+              <th className="py-2 pr-3 font-medium">命中率</th>
+              <th className="py-2 pr-3 font-medium">實際上漲率</th>
+              <th className="py-2 pr-3 font-medium">平均 probabilityUp</th>
+              <th className="py-2 pr-3 font-medium">校準差距</th>
+              <th className="py-2 pr-3 font-medium">平均 5 日報酬</th>
+              <th className="py-2 pr-3 font-medium">預測上漲</th>
+              <th className="py-2 pr-3 font-medium">候選選入</th>
+              <th className="py-2 pr-3 font-medium">警示</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row) => (
+              <SymbolReliabilityRowView key={row.symbol} row={row} minPairCount={status?.minPairCount ?? 3} />
+            ))}
+            {rows.length === 0 && (
+              <tr>
+                <td className="py-6 text-muted-foreground" colSpan={11}>
+                  尚無可彙整的各股 resolved artifact。
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      <ul className="mt-4 grid gap-2 text-xs leading-5 text-muted-foreground sm:grid-cols-2">
+        {(status?.caveats ?? [
+          "Research-only reliability summary; not investment advice, not a trading signal, and not evidence of future predictive ability.",
+        ]).map((caveat) => (
+          <li key={caveat}>{symbolReliabilityCaveatText(caveat)}</li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+function SymbolReliabilityRowView({
+  row,
+  minPairCount,
+}: {
+  row: StrategyLabSymbolReliabilityRow;
+  minPairCount: number;
+}) {
+  const latest = directionMeta(row.latestPredictedDirection);
+  const gapAbs = Math.abs(row.calibrationGap ?? 0);
+  const gapClass = row.calibrationGap === null
+    ? "text-muted-foreground"
+    : gapAbs >= 0.25
+      ? "text-amber-300"
+      : gapAbs >= 0.15
+        ? "text-sky-300"
+        : "text-emerald-300";
+  const returnClass = (row.avgForwardReturn ?? 0) > 0
+    ? "text-red-400"
+    : row.avgForwardReturn === null
+      ? "text-muted-foreground"
+      : "text-emerald-400";
+
+  return (
+    <tr className="border-b border-border/30 last:border-0">
+      <td className="py-2.5 pr-3 font-semibold">{row.symbol}</td>
+      <td className="py-2.5 pr-3 font-mono text-sm">{row.resolvedPairCount}</td>
+      <td className="py-2.5 pr-3">
+        <span className={`inline-flex items-center gap-1 ${latest.textClass}`}>
+          {latest.icon}
+          {latest.label}
+        </span>
+        <span className="ml-2 font-mono text-sm text-muted-foreground">{formatPct(row.latestProbabilityUp)}</span>
+      </td>
+      <td className="py-2.5 pr-3 font-mono text-sm">{formatPct(row.correctRate)}</td>
+      <td className="py-2.5 pr-3 font-mono text-sm">{formatPct(row.actualUpRate)}</td>
+      <td className="py-2.5 pr-3 font-mono text-sm">{formatPct(row.meanProbabilityUp)}</td>
+      <td className={`py-2.5 pr-3 font-mono text-sm ${gapClass}`}>{formatSignedPct(row.calibrationGap)}</td>
+      <td className={`py-2.5 pr-3 font-mono text-sm ${returnClass}`}>{formatSignedPct(row.avgForwardReturn)}</td>
+      <td className="py-2.5 pr-3 text-sm">
+        <span className="font-mono">{row.predictedUpCount}</span>
+        <span className="ml-1 text-xs text-muted-foreground">
+          / avg {formatSignedPct(row.avgForwardReturnWhenPredictedUp)}
+        </span>
+      </td>
+      <td className="py-2.5 pr-3 font-mono text-sm">{row.candidateSelectedCount ?? "N/A"}</td>
+      <td className="py-2.5 pr-3">
+        <div className="flex flex-wrap gap-1.5">
+          {row.warnings.lowSample && <WarningBadge label={`N < ${minPairCount}`} />}
+          {row.warnings.poorCalibration && <WarningBadge label="校準偏差" />}
+          {row.warnings.negativeAvgReturn && <WarningBadge label="平均報酬<0" />}
+          {!row.warnings.lowSample && !row.warnings.poorCalibration && !row.warnings.negativeAvgReturn && (
+            <span className="text-xs text-muted-foreground">無額外警示</span>
+          )}
+        </div>
+      </td>
+    </tr>
+  );
+}
+
+function WarningBadge({ label }: { label: string }) {
+  return (
+    <span className="inline-flex items-center rounded-full border border-amber-300/35 bg-amber-500/10 px-2 py-0.5 text-xs text-amber-100">
+      {label}
+    </span>
+  );
+}
+
+function symbolReliabilityCaveatText(caveat: string): string {
+  if (caveat.includes("current resolved prediction artifact")) {
+    return "各股列只使用目前 resolved prediction artifact 與最新 prediction artifact。";
+  }
+  if (caveat.includes("fewer than")) {
+    return caveat
+      .replace("At least one symbol has fewer than", "至少一檔標的少於")
+      .replace("resolved pairs.", "筆 resolved pairs。");
+  }
+  if (caveat.includes("Candidate selected counts")) {
+    return "候選選入數只是在候選門檻存在時的 artifact 筆數描述。";
+  }
+  if (caveat.includes("Research-only")) {
+    return "此摘要僅供研究檢視；不是投資建議，不是交易訊號，也不代表未來預測能力。";
+  }
+  return caveat;
 }
 
 function StrategySimulationSection({ simulation }: { simulation?: StrategyLabSimulation }) {
