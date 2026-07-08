@@ -300,6 +300,103 @@ describe("buildStrategySimulation", () => {
     expect(simulation.thresholdDrilldown.candidate?.smallSample).toBe(true);
   });
 
+  it("marks a one-symbol candidate sample as concentrated", () => {
+    const pairs = [
+      ...Array.from({ length: 4 }, (_, index) =>
+        pair(index, {
+          symbol: "SINGLE",
+          probabilityUp: 0.6,
+          predictedDirection: "up",
+          forwardReturn: 0.05,
+        }),
+      ),
+      ...Array.from({ length: 6 }, (_, index) =>
+        pair(index + 4, {
+          symbol: `FILL${index}`,
+          probabilityUp: 0.9,
+          predictedDirection: "down",
+          forwardReturn: -0.04,
+        }),
+      ),
+    ];
+
+    const simulation = buildStrategySimulation(pairs);
+    const breakdown = simulation.thresholdDrilldown.symbolBreakdown;
+
+    expect(simulation.thresholdDrilldown.status).toBe("candidate");
+    expect(breakdown.status).toBe("candidate");
+    expect(breakdown.dominantSymbol).toBe("SINGLE");
+    expect(breakdown.dominantTradeShare).toBe(1);
+    expect(breakdown.symbolCount).toBe(1);
+    expect(breakdown.isConcentrated).toBe(true);
+    expect(breakdown.rows).toHaveLength(1);
+    expect(breakdown.rows[0]).toMatchObject({
+      symbol: "SINGLE",
+      tradeCount: 4,
+      tradeShare: 1,
+      winCount: 4,
+      hitRate: 1,
+      averageNetReturnAfterCost: round(0.05 - TAIWAN_ROUND_TRIP_COST),
+      cumulativeNetContributionApprox: round(0.05 - TAIWAN_ROUND_TRIP_COST),
+    });
+    expect(breakdown.caveats.some((caveat) => caveat.includes("Concentration warning"))).toBe(true);
+  });
+
+  it("groups candidate selected trades by symbol with hand-computed shares and hit rates", () => {
+    const pairs = [
+      pair(0, { symbol: "ALPHA", probabilityUp: 0.6, predictedDirection: "up", forwardReturn: 0.04 }),
+      pair(1, { symbol: "ALPHA", probabilityUp: 0.7, predictedDirection: "up", forwardReturn: -0.01 }),
+      pair(2, { symbol: "ALPHA", probabilityUp: 0.8, predictedDirection: "up", forwardReturn: 0.06 }),
+      pair(3, { symbol: "BETA", probabilityUp: 0.65, predictedDirection: "up", forwardReturn: 0.02 }),
+      pair(4, { symbol: "BETA", probabilityUp: 0.75, predictedDirection: "up", forwardReturn: 0.03 }),
+      ...Array.from({ length: 5 }, (_, index) =>
+        pair(index + 5, {
+          symbol: `SHORT${index}`,
+          probabilityUp: 0.9,
+          predictedDirection: "down",
+          forwardReturn: -0.04,
+        }),
+      ),
+    ];
+
+    const simulation = buildStrategySimulation(pairs);
+    const rows = simulation.thresholdDrilldown.symbolBreakdown.rows;
+    const alpha = rows.find((row) => row.symbol === "ALPHA");
+    const beta = rows.find((row) => row.symbol === "BETA");
+
+    expect(simulation.thresholdDrilldown.status).toBe("candidate");
+    expect(simulation.thresholdDrilldown.symbolBreakdown.symbolCount).toBe(2);
+    expect(simulation.thresholdDrilldown.symbolBreakdown.dominantSymbol).toBe("ALPHA");
+    expect(simulation.thresholdDrilldown.symbolBreakdown.dominantTradeShare).toBe(0.6);
+    expect(simulation.thresholdDrilldown.symbolBreakdown.isConcentrated).toBe(true);
+    expect(alpha).toMatchObject({
+      symbol: "ALPHA",
+      tradeCount: 3,
+      tradeShare: 0.6,
+      winCount: 2,
+      hitRate: round(2 / 3),
+      averageProbabilityUp: 0.7,
+      averageForwardReturnGross: 0.03,
+      averageNetReturnAfterCost: round(0.03 - TAIWAN_ROUND_TRIP_COST),
+      cumulativeNetContributionApprox: round((0.04 - TAIWAN_ROUND_TRIP_COST - 0.01 - TAIWAN_ROUND_TRIP_COST + 0.06 - TAIWAN_ROUND_TRIP_COST) / 5),
+      bestTradeForwardReturn: 0.06,
+      worstTradeForwardReturn: -0.01,
+    });
+    expect(beta).toMatchObject({
+      symbol: "BETA",
+      tradeCount: 2,
+      tradeShare: 0.4,
+      winCount: 2,
+      hitRate: 1,
+      averageProbabilityUp: 0.7,
+      averageForwardReturnGross: 0.025,
+      averageNetReturnAfterCost: round(0.025 - TAIWAN_ROUND_TRIP_COST),
+      cumulativeNetContributionApprox: round((0.02 - TAIWAN_ROUND_TRIP_COST + 0.03 - TAIWAN_ROUND_TRIP_COST) / 5),
+      bestTradeForwardReturn: 0.03,
+      worstTradeForwardReturn: 0.02,
+    });
+  });
+
   it("never selects zero-trade threshold rows even when flat strategy return beats a negative baseline", () => {
     const pairs = Array.from({ length: 10 }, (_, index) =>
       pair(index, {
@@ -316,6 +413,14 @@ describe("buildStrategySimulation", () => {
     expect(simulation.thresholdSweep.every((row) => row.baselineNetCumulativeReturn < 0)).toBe(true);
     expect(simulation.thresholdDrilldown.status).toBe("no_candidate");
     expect(simulation.thresholdDrilldown.candidate).toBeNull();
+    expect(simulation.thresholdDrilldown.symbolBreakdown).toMatchObject({
+      status: "no_candidate",
+      dominantSymbol: null,
+      dominantTradeShare: null,
+      symbolCount: 0,
+      isConcentrated: false,
+      rows: [],
+    });
   });
 
   it("includes only selected up trades at or above the candidate threshold in the preview", () => {
@@ -397,6 +502,7 @@ describe("buildStrategySimulation", () => {
       status: "no_candidate",
       candidate: null,
     });
+    expect(simulation.thresholdDrilldown.symbolBreakdown.rows).toEqual([]);
   });
 
   it("uses the active-long cost for selected trade netReturnAfterCost", () => {

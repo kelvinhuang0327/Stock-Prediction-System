@@ -75,9 +75,35 @@ export interface StrategyLabThresholdDrilldownCandidate {
   caveats: string[];
 }
 
+export interface StrategyLabThresholdSymbolContribution {
+  symbol: string;
+  tradeCount: number;
+  tradeShare: number;
+  winCount: number;
+  hitRate: number;
+  averageProbabilityUp: number;
+  averageForwardReturnGross: number;
+  averageNetReturnAfterCost: number;
+  cumulativeNetContributionApprox: number;
+  bestTradeForwardReturn: number;
+  worstTradeForwardReturn: number;
+}
+
+export interface StrategyLabThresholdSymbolBreakdown {
+  status: "candidate" | "no_candidate";
+  dominantSymbol: string | null;
+  dominantTradeShare: number | null;
+  symbolCount: number;
+  isConcentrated: boolean;
+  rows: StrategyLabThresholdSymbolContribution[];
+  caveats: string[];
+  reason: string;
+}
+
 export interface StrategyLabThresholdDrilldown {
   status: "candidate" | "no_candidate";
   candidate: StrategyLabThresholdDrilldownCandidate | null;
+  symbolBreakdown: StrategyLabThresholdSymbolBreakdown;
   reason: string;
 }
 
@@ -299,6 +325,7 @@ function emptyThresholdDrilldown(reason: string): StrategyLabThresholdDrilldown 
   return {
     status: "no_candidate",
     candidate: null,
+    symbolBreakdown: emptySymbolBreakdown(reason),
     reason,
   };
 }
@@ -311,6 +338,91 @@ function thresholdDrilldownCaveats(smallSample: boolean): string[] {
     "Research-only drilldown; not investment advice.",
     "Selected trades are artifact replay rows, not trading instructions.",
   ];
+}
+
+function emptySymbolBreakdown(reason: string): StrategyLabThresholdSymbolBreakdown {
+  return {
+    status: "no_candidate",
+    dominantSymbol: null,
+    dominantTradeShare: null,
+    symbolCount: 0,
+    isConcentrated: false,
+    rows: [],
+    caveats: [
+      "No candidate threshold selected; symbol contribution is empty.",
+      "Research-only attribution; not investment advice.",
+    ],
+    reason,
+  };
+}
+
+function symbolBreakdownCaveats(tradeCount: number, isConcentrated: boolean): string[] {
+  return [
+    "Symbol contribution is sample attribution from selected artifact trades and is approximate.",
+    ...(tradeCount < 10
+      ? ["Small sample: selected trade count is below 10; concentration can dominate sample results."]
+      : []),
+    ...(isConcentrated
+      ? ["Concentration warning: selected trades are dominated by one symbol or a single-symbol sample."]
+      : []),
+    "Research-only symbol breakdown; not investment advice.",
+  ];
+}
+
+function buildSymbolBreakdown(
+  selectedTrades: ValidPair[],
+  reason: string,
+): StrategyLabThresholdSymbolBreakdown {
+  if (selectedTrades.length === 0) {
+    return emptySymbolBreakdown(reason);
+  }
+
+  const bySymbol = new Map<string, ValidPair[]>();
+  for (const trade of selectedTrades) {
+    bySymbol.set(trade.symbol, [...(bySymbol.get(trade.symbol) ?? []), trade]);
+  }
+
+  const totalTradeCount = selectedTrades.length;
+  const rows = [...bySymbol.entries()]
+    .map(([symbol, trades]) => {
+      const netReturns = trades.map((trade) => trade.forwardReturn - TAIWAN_ROUND_TRIP_COST);
+      const forwardReturns = trades.map((trade) => trade.forwardReturn);
+      const winCount = trades.filter(tradeHit).length;
+      return {
+        symbol,
+        tradeCount: trades.length,
+        tradeShare: round(trades.length / totalTradeCount),
+        winCount,
+        hitRate: round(winCount / trades.length),
+        averageProbabilityUp: round(mean(trades.map((trade) => trade.probabilityUp ?? 0))),
+        averageForwardReturnGross: round(mean(forwardReturns)),
+        averageNetReturnAfterCost: round(mean(netReturns)),
+        cumulativeNetContributionApprox: round(netReturns.reduce((total, value) => total + value, 0) / totalTradeCount),
+        bestTradeForwardReturn: round(Math.max(...forwardReturns)),
+        worstTradeForwardReturn: round(Math.min(...forwardReturns)),
+      };
+    })
+    .sort((left, right) =>
+      right.tradeCount - left.tradeCount
+      || right.cumulativeNetContributionApprox - left.cumulativeNetContributionApprox
+      || left.symbol.localeCompare(right.symbol),
+    );
+
+  const dominant = rows[0] ?? null;
+  const dominantTradeShare = dominant?.tradeShare ?? null;
+  const symbolCount = rows.length;
+  const isConcentrated = (dominantTradeShare ?? 0) >= 0.5 || symbolCount === 1;
+
+  return {
+    status: "candidate",
+    dominantSymbol: dominant?.symbol ?? null,
+    dominantTradeShare,
+    symbolCount,
+    isConcentrated,
+    rows,
+    caveats: symbolBreakdownCaveats(totalTradeCount, isConcentrated),
+    reason,
+  };
 }
 
 function buildThresholdDrilldown(
@@ -329,12 +441,13 @@ function buildThresholdDrilldown(
     return emptyThresholdDrilldown("No nonzero-trade research_candidate threshold is available in the current artifact sample.");
   }
 
-  const selectedTradesPreview = validPairs
+  const selectedTrades = validPairs
     .filter((pair) =>
       pair.predictedDirection === "up"
       && pair.probabilityUp !== null
       && pair.probabilityUp >= candidateRow.threshold,
-    )
+    );
+  const selectedTradesPreview = selectedTrades
     .slice(0, THRESHOLD_DRILLDOWN_PREVIEW_LIMIT)
     .map((pair) => ({
       symbol: pair.symbol,
@@ -364,6 +477,10 @@ function buildThresholdDrilldown(
       selectedTradesPreview,
       caveats: thresholdDrilldownCaveats(smallSample),
     },
+    symbolBreakdown: buildSymbolBreakdown(
+      selectedTrades,
+      "Grouped selected artifact trades by symbol for sample attribution; contribution values are approximate.",
+    ),
     reason: "Selected highest deltaVsBaselineNet among nonzero-trade research_candidate threshold rows.",
   };
 }

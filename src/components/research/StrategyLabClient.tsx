@@ -701,6 +701,8 @@ function ThresholdDrilldownBlock({ simulation }: { simulation: StrategyLabSimula
             </div>
           )}
 
+          <ThresholdSymbolBreakdownBlock breakdown={drilldown.symbolBreakdown} />
+
           <div className="overflow-x-auto">
             <table className="w-full min-w-[760px] text-sm">
               <thead className="border-b border-border/60 text-left text-xs text-muted-foreground">
@@ -740,6 +742,105 @@ function ThresholdDrilldownBlock({ simulation }: { simulation: StrategyLabSimula
         </div>
       )}
     </div>
+  );
+}
+
+function ThresholdSymbolBreakdownBlock({
+  breakdown,
+}: {
+  breakdown: StrategyLabSimulation["thresholdDrilldown"]["symbolBreakdown"];
+}) {
+  return (
+    <div className="rounded-md border border-border/30 bg-card/45 p-3">
+      <div className="mb-3 flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <h4 className="text-sm font-semibold">標的集中度與貢獻</h4>
+          <p className="text-xs leading-5 text-muted-foreground">
+            依候選門檻實際選入的 artifact trades 分組，貢獻值是樣本歸因近似，不代表未來表現。
+          </p>
+        </div>
+        <span className="text-xs text-muted-foreground">
+          {breakdown.symbolCount} symbols
+        </span>
+      </div>
+
+      {breakdown.status === "no_candidate" ? (
+        <div className="rounded-md border border-amber-300/35 bg-amber-500/10 px-3 py-3 text-sm leading-6 text-amber-100">
+          尚無候選門檻可計算標的貢獻。{breakdown.reason}
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {breakdown.isConcentrated && (
+            <div className="flex items-start gap-2 rounded-md border border-amber-300/35 bg-amber-500/10 px-3 py-2 text-sm leading-6 text-amber-100">
+              <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
+              候選樣本由 {breakdown.dominantSymbol ?? "單一標的"} 主導，交易占比 {formatPct(breakdown.dominantTradeShare)}。
+            </div>
+          )}
+
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[820px] text-sm">
+              <thead className="border-b border-border/60 text-left text-xs text-muted-foreground">
+                <tr>
+                  <th className="py-2 pr-3 font-medium">股票</th>
+                  <th className="py-2 pr-3 font-medium">交易數 / 占比</th>
+                  <th className="py-2 pr-3 font-medium">命中率</th>
+                  <th className="py-2 pr-3 font-medium">平均機率</th>
+                  <th className="py-2 pr-3 font-medium">平均 gross</th>
+                  <th className="py-2 pr-3 font-medium">平均成本後</th>
+                  <th className="py-2 pr-3 font-medium">近似貢獻</th>
+                  <th className="py-2 pr-3 font-medium">最佳 / 最差</th>
+                </tr>
+              </thead>
+              <tbody>
+                {breakdown.rows.map((row) => (
+                  <ThresholdSymbolBreakdownRow key={row.symbol} row={row} />
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <p className="text-xs leading-5 text-muted-foreground">
+            樣本集中於少數標的，僅供研究檢視，不能視為投資建議。
+          </p>
+          <ul className="space-y-1 text-xs leading-5 text-muted-foreground">
+            {breakdown.caveats.map((caveat) => (
+              <li key={caveat}>{thresholdSymbolBreakdownCaveatText(caveat)}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ThresholdSymbolBreakdownRow({
+  row,
+}: {
+  row: StrategyLabSimulation["thresholdDrilldown"]["symbolBreakdown"]["rows"][number];
+}) {
+  const avgGrossPositive = row.averageForwardReturnGross > 0;
+  const avgNetPositive = row.averageNetReturnAfterCost > 0;
+  const contributionPositive = row.cumulativeNetContributionApprox > 0;
+
+  return (
+    <tr className="border-b border-border/30 last:border-0">
+      <td className="py-2.5 pr-3 font-medium">{row.symbol}</td>
+      <td className="py-2.5 pr-3 font-mono text-sm">{row.tradeCount} / {formatPct(row.tradeShare)}</td>
+      <td className="py-2.5 pr-3 font-mono text-sm">{row.winCount} / {formatPct(row.hitRate)}</td>
+      <td className="py-2.5 pr-3 font-mono text-sm">{formatPct(row.averageProbabilityUp)}</td>
+      <td className={`py-2.5 pr-3 font-mono text-sm ${avgGrossPositive ? "text-red-400" : "text-emerald-400"}`}>
+        {formatSignedPct(row.averageForwardReturnGross)}
+      </td>
+      <td className={`py-2.5 pr-3 font-mono text-sm ${avgNetPositive ? "text-red-400" : "text-emerald-400"}`}>
+        {formatSignedPct(row.averageNetReturnAfterCost)}
+      </td>
+      <td className={`py-2.5 pr-3 font-mono text-sm ${contributionPositive ? "text-red-400" : "text-emerald-400"}`}>
+        {formatSignedPct(row.cumulativeNetContributionApprox)}
+      </td>
+      <td className="py-2.5 pr-3 font-mono text-sm">
+        {formatSignedPct(row.bestTradeForwardReturn)} / {formatSignedPct(row.worstTradeForwardReturn)}
+      </td>
+    </tr>
   );
 }
 
@@ -790,6 +891,22 @@ function thresholdDrilldownCaveatText(caveat: string): string {
   }
   if (caveat.includes("artifact replay")) {
     return "表格列出的是 artifact 回放樣本，不是交易指示。";
+  }
+  return caveat;
+}
+
+function thresholdSymbolBreakdownCaveatText(caveat: string): string {
+  if (caveat.includes("sample attribution")) {
+    return "標的貢獻是候選樣本內的歸因近似，不能直接對應策略總報酬。";
+  }
+  if (caveat.includes("Small sample")) {
+    return "樣本交易數偏少，集中度容易主導結果，僅供研究檢視。";
+  }
+  if (caveat.includes("Concentration warning")) {
+    return "候選樣本由單一或少數標的主導，需先擴大樣本再判讀。";
+  }
+  if (caveat.includes("Research-only")) {
+    return "僅供研究驗證；不是投資建議，不可用於交易。";
   }
   return caveat;
 }
