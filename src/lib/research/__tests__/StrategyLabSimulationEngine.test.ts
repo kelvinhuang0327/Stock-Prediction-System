@@ -421,6 +421,14 @@ describe("buildStrategySimulation", () => {
       isConcentrated: false,
       rows: [],
     });
+    expect(simulation.thresholdDrilldown.cohortBreakdown).toMatchObject({
+      status: "no_candidate",
+      cohortCount: 0,
+      dominantCohortKey: null,
+      dominantTradeShare: null,
+      isTimeConcentrated: false,
+      rows: [],
+    });
   });
 
   it("includes only selected up trades at or above the candidate threshold in the preview", () => {
@@ -530,5 +538,208 @@ describe("buildStrategySimulation", () => {
     );
 
     expect(costPreview?.netReturnAfterCost).toBe(round(0.04 - TAIWAN_ROUND_TRIP_COST));
+  });
+
+  it("marks a one-featureDate candidate sample as time concentrated", () => {
+    const pairs = [
+      ...Array.from({ length: 4 }, (_, index) =>
+        pair(index, {
+          featureDate: "2026-06-01",
+          targetDate: index % 2 === 0 ? "2026-06-08" : "2026-06-09",
+          probabilityUp: 0.6,
+          predictedDirection: "up",
+          forwardReturn: 0.05,
+        }),
+      ),
+      ...Array.from({ length: 6 }, (_, index) =>
+        pair(index + 4, {
+          featureDate: "2026-06-02",
+          targetDate: "2026-06-10",
+          probabilityUp: 0.9,
+          predictedDirection: "down",
+          forwardReturn: -0.04,
+        }),
+      ),
+    ];
+
+    const simulation = buildStrategySimulation(pairs);
+    const breakdown = simulation.thresholdDrilldown.cohortBreakdown;
+
+    expect(simulation.thresholdDrilldown.status).toBe("candidate");
+    expect(breakdown.status).toBe("candidate");
+    expect(breakdown.cohortCount).toBe(1);
+    expect(breakdown.dominantCohortKey).toBe("2026-06-01");
+    expect(breakdown.dominantTradeShare).toBe(1);
+    expect(breakdown.isTimeConcentrated).toBe(true);
+    expect(breakdown.rows[0]).toMatchObject({
+      cohortKey: "2026-06-01",
+      featureDate: "2026-06-01",
+      targetDateRange: "2026-06-08 -> 2026-06-09",
+      targetDates: ["2026-06-08", "2026-06-09"],
+      tradeCount: 4,
+      tradeShare: 1,
+      winCount: 4,
+      hitRate: 1,
+      averageProbabilityUp: 0.6,
+      averageForwardReturnGross: 0.05,
+      averageNetReturnAfterCost: round(0.05 - TAIWAN_ROUND_TRIP_COST),
+      cumulativeNetContributionApprox: round(0.05 - TAIWAN_ROUND_TRIP_COST),
+    });
+    expect(breakdown.caveats.some((caveat) => caveat.includes("Date concentration warning"))).toBe(true);
+  });
+
+  it("groups candidate selected trades by featureDate with hand-computed shares and hit rates", () => {
+    const pairs = [
+      pair(0, {
+        symbol: "AAA",
+        featureDate: "2026-06-01",
+        targetDate: "2026-06-08",
+        probabilityUp: 0.6,
+        predictedDirection: "up",
+        forwardReturn: 0.04,
+      }),
+      pair(1, {
+        symbol: "BBB",
+        featureDate: "2026-06-01",
+        targetDate: "2026-06-09",
+        probabilityUp: 0.6,
+        predictedDirection: "up",
+        forwardReturn: -0.01,
+      }),
+      pair(2, {
+        symbol: "CCC",
+        featureDate: "2026-06-02",
+        targetDate: "2026-06-09",
+        probabilityUp: 0.6,
+        predictedDirection: "up",
+        forwardReturn: 0.02,
+      }),
+      pair(3, {
+        symbol: "DDD",
+        featureDate: "2026-06-02",
+        targetDate: "2026-06-10",
+        probabilityUp: 0.6,
+        predictedDirection: "up",
+        forwardReturn: 0.03,
+      }),
+      pair(4, {
+        symbol: "EEE",
+        featureDate: "2026-06-03",
+        targetDate: "2026-06-11",
+        probabilityUp: 0.6,
+        predictedDirection: "up",
+        forwardReturn: 0.01,
+      }),
+      ...Array.from({ length: 5 }, (_, index) =>
+        pair(index + 5, {
+          symbol: `FILL${index}`,
+          featureDate: "2026-06-04",
+          targetDate: "2026-06-12",
+          probabilityUp: 0.9,
+          predictedDirection: "down",
+          forwardReturn: -0.04,
+        }),
+      ),
+    ];
+
+    const simulation = buildStrategySimulation(pairs);
+    const rows = simulation.thresholdDrilldown.cohortBreakdown.rows;
+    const cohortA = rows.find((row) => row.featureDate === "2026-06-01");
+    const cohortB = rows.find((row) => row.featureDate === "2026-06-02");
+    const cohortC = rows.find((row) => row.featureDate === "2026-06-03");
+
+    expect(simulation.thresholdDrilldown.status).toBe("candidate");
+    expect(simulation.thresholdDrilldown.cohortBreakdown.cohortCount).toBe(3);
+    expect(simulation.thresholdDrilldown.cohortBreakdown.dominantCohortKey).toBe("2026-06-02");
+    expect(simulation.thresholdDrilldown.cohortBreakdown.dominantTradeShare).toBe(0.4);
+    expect(simulation.thresholdDrilldown.cohortBreakdown.isTimeConcentrated).toBe(false);
+    expect(cohortA).toMatchObject({
+      tradeCount: 2,
+      tradeShare: 0.4,
+      winCount: 1,
+      hitRate: 0.5,
+      averageProbabilityUp: 0.6,
+      averageForwardReturnGross: 0.015,
+      averageNetReturnAfterCost: round(0.015 - TAIWAN_ROUND_TRIP_COST),
+      cumulativeNetContributionApprox: round((0.04 - TAIWAN_ROUND_TRIP_COST - 0.01 - TAIWAN_ROUND_TRIP_COST) / 5),
+      bestTradeForwardReturn: 0.04,
+      worstTradeForwardReturn: -0.01,
+      symbols: ["AAA", "BBB"],
+    });
+    expect(cohortB).toMatchObject({
+      tradeCount: 2,
+      tradeShare: 0.4,
+      winCount: 2,
+      hitRate: 1,
+      averageForwardReturnGross: 0.025,
+      averageNetReturnAfterCost: round(0.025 - TAIWAN_ROUND_TRIP_COST),
+      cumulativeNetContributionApprox: round((0.02 - TAIWAN_ROUND_TRIP_COST + 0.03 - TAIWAN_ROUND_TRIP_COST) / 5),
+    });
+    expect(cohortC).toMatchObject({
+      tradeCount: 1,
+      tradeShare: 0.2,
+      winCount: 1,
+      hitRate: 1,
+      averageNetReturnAfterCost: round(0.01 - TAIWAN_ROUND_TRIP_COST),
+      cumulativeNetContributionApprox: round((0.01 - TAIWAN_ROUND_TRIP_COST) / 5),
+    });
+  });
+
+  it("keeps cohort grouping deterministic by dates and sorted symbol lists", () => {
+    const pairs = [
+      pair(0, {
+        symbol: "ZZZ",
+        featureDate: "2026-06-03",
+        targetDate: "2026-06-12",
+        probabilityUp: 0.6,
+        predictedDirection: "up",
+        forwardReturn: 0.02,
+      }),
+      pair(1, {
+        symbol: "AAA",
+        featureDate: "2026-06-02",
+        targetDate: "2026-06-11",
+        probabilityUp: 0.6,
+        predictedDirection: "up",
+        forwardReturn: 0.02,
+      }),
+      pair(2, {
+        symbol: "BBB",
+        featureDate: "2026-06-02",
+        targetDate: "2026-06-10",
+        probabilityUp: 0.6,
+        predictedDirection: "up",
+        forwardReturn: 0.02,
+      }),
+      pair(3, {
+        symbol: "CCC",
+        featureDate: "2026-06-01",
+        targetDate: "2026-06-09",
+        probabilityUp: 0.6,
+        predictedDirection: "up",
+        forwardReturn: 0.02,
+      }),
+      ...Array.from({ length: 6 }, (_, index) =>
+        pair(index + 4, {
+          symbol: `FILL${index}`,
+          featureDate: "2026-06-04",
+          targetDate: "2026-06-13",
+          probabilityUp: 0.9,
+          predictedDirection: "down",
+          forwardReturn: -0.03,
+        }),
+      ),
+    ];
+
+    const simulation = buildStrategySimulation(pairs);
+    const rows = simulation.thresholdDrilldown.cohortBreakdown.rows;
+    const singleTradeRows = rows.filter((row) => row.tradeCount === 1);
+    const cohortTwo = rows.find((row) => row.featureDate === "2026-06-02");
+
+    expect(rows.map((row) => row.featureDate)).toEqual(["2026-06-02", "2026-06-01", "2026-06-03"]);
+    expect(singleTradeRows.map((row) => row.featureDate)).toEqual(["2026-06-01", "2026-06-03"]);
+    expect(cohortTwo?.targetDates).toEqual(["2026-06-10", "2026-06-11"]);
+    expect(cohortTwo?.targetDateRange).toBe("2026-06-10 -> 2026-06-11");
+    expect(cohortTwo?.symbols).toEqual(["AAA", "BBB"]);
   });
 });
