@@ -2,6 +2,11 @@ import { createHash } from "node:crypto";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 
+import {
+  buildStrategySimulation,
+  type StrategyLabSimulation,
+} from "@/lib/research/StrategyLabSimulationEngine";
+
 const RETRAINING_DIR = path.join(process.cwd(), "outputs", "retraining");
 const CSV_PATH = path.join(RETRAINING_DIR, "p194_twstock_ohlcv_export.csv");
 const P194_MANIFEST_PATH = path.join(RETRAINING_DIR, "p194_twstock_ohlcv_export_manifest.json");
@@ -157,6 +162,7 @@ export interface StrategyLabSnapshot {
   dataExport: StrategyLabDataExport;
   refit: StrategyLabRefitResult;
   predictions: StrategyLabPredictions;
+  simulation?: StrategyLabSimulation;
   runHistory: StrategyLabRunHistory;
   protocolComparison: StrategyLabProtocolComparison;
   productStance: {
@@ -693,6 +699,7 @@ export async function readStrategyLabSnapshot(): Promise<StrategyLabSnapshot> {
     dataExport,
     refit,
     predictions,
+    simulation: buildStrategySimulation(predictions.recentResolved),
     runHistory,
     protocolComparison,
     productStance: {

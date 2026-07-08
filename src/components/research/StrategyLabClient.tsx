@@ -30,6 +30,7 @@ import type {
   StrategyLabSnapshot,
   StrategyLabSymbolHoldout,
 } from "@/lib/research/strategyLabArtifacts";
+import type { StrategyLabSimulation } from "@/lib/research/StrategyLabSimulationEngine";
 
 interface StrategyLabClientProps {
   initialSnapshot: StrategyLabSnapshot;
@@ -159,6 +160,7 @@ export function StrategyLabClient({ initialSnapshot }: StrategyLabClientProps) {
   const data = snapshot.dataExport;
   const comparison = snapshot.protocolComparison;
   const predictions = snapshot.predictions;
+  const simulation = snapshot.simulation;
   const runHistory = snapshot.runHistory;
 
   return (
@@ -245,6 +247,8 @@ export function StrategyLabClient({ initialSnapshot }: StrategyLabClientProps) {
           </p>
         )}
       </section>
+
+      <StrategySimulationSection simulation={simulation} />
 
       <section className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
         <MetricTile
@@ -488,6 +492,181 @@ export function StrategyLabClient({ initialSnapshot }: StrategyLabClientProps) {
       </section>
     </div>
   );
+}
+
+function StrategySimulationSection({ simulation }: { simulation?: StrategyLabSimulation }) {
+  const status: StrategyLabSimulation["status"] = simulation?.status ?? "missing";
+  const decision = simulation?.verdict ?? "needs_more_evidence";
+  const stats = simulation?.stats;
+  const failSafeMessage = status === "missing"
+    ? "目前沒有可回放的 resolved prediction/outcome pairs，暫不產生模擬曲線。"
+    : status === "insufficient"
+      ? `有效樣本數低於門檻，目前 N=${stats?.validPairCount ?? 0}，暫不產生模擬曲線。`
+      : null;
+
+  return (
+    <section className="min-w-0 rounded-lg border border-border/50 bg-card/70 p-5">
+      <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <div className="mb-1 flex items-center gap-2">
+            <BarChart3 className="h-5 w-5 text-sky-300" />
+            <h2 className="text-lg font-semibold">策略模擬對照</h2>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            從現有 artifact 回放已驗證的預測與實際 5 日報酬，對照「跟隨模型」與「全部做多 baseline」的成本後曲線。
+          </p>
+        </div>
+        <StatusPill decision={decision} label={simulation?.verdictLabel ?? "證據不足"} />
+      </div>
+
+      {failSafeMessage ? (
+        <div className="rounded-md border border-amber-300/35 bg-amber-500/10 px-3 py-5 text-sm leading-6 text-amber-100">
+          {failSafeMessage}
+        </div>
+      ) : simulation ? (
+        <div className="grid gap-5 xl:grid-cols-[1.15fr_0.85fr]">
+          <div className="min-w-0">
+            <SimulationEquityChart simulation={simulation} />
+            <div className="mt-3 flex flex-wrap gap-3 text-xs text-muted-foreground">
+              <span className="inline-flex items-center gap-1">
+                <span className="h-2.5 w-2.5 rounded-full bg-sky-300" />
+                跟隨模型
+              </span>
+              <span className="inline-flex items-center gap-1">
+                <span className="h-2.5 w-2.5 rounded-full bg-amber-300" />
+                全部做多 baseline
+              </span>
+              <span>每筆 active long round-trip cost {formatPct(simulation.costPerRoundTrip)}</span>
+            </div>
+          </div>
+
+          <div className="grid gap-3 sm:grid-cols-2">
+            <SmallMetric
+              label="跟隨模型累積報酬"
+              value={`${formatSignedPct(simulation.stats.cumulativeStrategyGross)} gross / ${formatSignedPct(simulation.stats.cumulativeStrategyNet)} net`}
+              compact
+            />
+            <SmallMetric
+              label="Baseline 累積報酬"
+              value={`${formatSignedPct(simulation.stats.cumulativeBaselineGross)} gross / ${formatSignedPct(simulation.stats.cumulativeBaselineNet)} net`}
+              compact
+            />
+            <SmallMetric label="命中率" value={formatPct(simulation.stats.hitRate)} />
+            <SmallMetric label="平均單筆報酬" value={formatSignedPct(simulation.stats.avgTradeReturnGross)} />
+            <SmallMetric label="跟隨模型最大回撤" value={formatPct(simulation.stats.maxDrawdownStrategyNet)} />
+            <SmallMetric label="Baseline 最大回撤" value={formatPct(simulation.stats.maxDrawdownBaselineNet)} />
+            <SmallMetric label="樣本數 N" value={`${simulation.stats.validPairCount} / ${simulation.stats.pairCount}`} />
+            <SmallMetric label="Cohort count" value={formatNumber(simulation.stats.cohortCount)} />
+          </div>
+        </div>
+      ) : null}
+
+      {simulation && (
+        <div className="mt-4 rounded-md border border-border/30 bg-background/35 p-3">
+          <p className="mb-2 text-xs font-medium text-muted-foreground">限制與警語</p>
+          <ul className="space-y-1 text-sm leading-6 text-muted-foreground">
+            {simulation.limitations.map((limitation) => (
+              <li key={limitation}>{simulationLimitationText(limitation)}</li>
+            ))}
+            <li>{simulation.verdictReason}</li>
+          </ul>
+        </div>
+      )}
+    </section>
+  );
+}
+
+function SimulationEquityChart({ simulation }: { simulation: StrategyLabSimulation }) {
+  const width = 720;
+  const height = 260;
+  const padX = 36;
+  const padY = 24;
+  const values = simulation.equityCurve.flatMap((point) => [
+    point.strategyNetReturn,
+    point.baselineNetReturn,
+  ]);
+  const minValue = Math.min(0, ...values);
+  const maxValue = Math.max(0, ...values);
+  const span = maxValue - minValue || 1;
+  const plotWidth = width - padX * 2;
+  const plotHeight = height - padY * 2;
+  const xFor = (index: number) =>
+    simulation.equityCurve.length <= 1
+      ? width / 2
+      : padX + (index / (simulation.equityCurve.length - 1)) * plotWidth;
+  const yFor = (value: number) => padY + ((maxValue - value) / span) * plotHeight;
+  const lineFor = (key: "strategyNetReturn" | "baselineNetReturn") =>
+    simulation.equityCurve
+      .map((point, index) => `${xFor(index).toFixed(2)},${yFor(point[key]).toFixed(2)}`)
+      .join(" ");
+  const zeroY = yFor(0);
+  const first = simulation.equityCurve[0];
+  const last = simulation.equityCurve.at(-1);
+
+  return (
+    <div className="overflow-hidden rounded-md border border-border/30 bg-background/35">
+      <svg
+        role="img"
+        aria-label="跟隨模型與全部做多 baseline 的成本後累積報酬曲線"
+        viewBox={`0 0 ${width} ${height}`}
+        className="block h-[260px] w-full"
+      >
+        <rect width={width} height={height} fill="transparent" />
+        <line x1={padX} x2={width - padX} y1={zeroY} y2={zeroY} stroke="rgba(255,255,255,0.22)" strokeDasharray="5 5" />
+        <text x={padX} y={18} fill="rgba(255,255,255,0.58)" fontSize="12">
+          {formatSignedPct(maxValue)}
+        </text>
+        <text x={padX} y={height - 8} fill="rgba(255,255,255,0.58)" fontSize="12">
+          {formatSignedPct(minValue)}
+        </text>
+        <polyline
+          fill="none"
+          stroke="#7dd3fc"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="3"
+          points={lineFor("strategyNetReturn")}
+        />
+        <polyline
+          fill="none"
+          stroke="#fcd34d"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="3"
+          points={lineFor("baselineNetReturn")}
+        />
+        {simulation.equityCurve.map((point, index) => (
+          <g key={`${point.featureDate}-${point.targetDate}`}>
+            <circle cx={xFor(index)} cy={yFor(point.strategyNetReturn)} r="3" fill="#7dd3fc" />
+            <circle cx={xFor(index)} cy={yFor(point.baselineNetReturn)} r="3" fill="#fcd34d" />
+          </g>
+        ))}
+        {first && (
+          <text x={padX} y={height - 30} fill="rgba(255,255,255,0.62)" fontSize="12">
+            {first.targetDate}
+          </text>
+        )}
+        {last && (
+          <text x={width - padX - 70} y={height - 30} fill="rgba(255,255,255,0.62)" fontSize="12">
+            {last.targetDate}
+          </text>
+        )}
+      </svg>
+    </div>
+  );
+}
+
+function simulationLimitationText(limitation: string): string {
+  if (limitation.includes("Overlapping 5-trading-day")) {
+    return "重疊的 5 個交易日前瞻報酬窗口只是近似回放，不能視為獨立交易樣本。";
+  }
+  if (limitation.includes("Small sample warning")) {
+    return limitation.replace("Small sample warning:", "小樣本警語：");
+  }
+  if (limitation.includes("Research-only")) {
+    return "僅供研究驗證；不是投資建議，不可用於交易。";
+  }
+  return limitation;
 }
 
 function MetricTile({
