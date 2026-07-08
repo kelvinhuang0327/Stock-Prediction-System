@@ -30,6 +30,7 @@ import type {
   StrategyLabSnapshot,
   StrategyLabSymbolHoldout,
 } from "@/lib/research/strategyLabArtifacts";
+import type { StrategyLabCalibration } from "@/lib/research/StrategyLabCalibrationEngine";
 import type { StrategyLabSimulation } from "@/lib/research/StrategyLabSimulationEngine";
 
 interface StrategyLabClientProps {
@@ -161,6 +162,7 @@ export function StrategyLabClient({ initialSnapshot }: StrategyLabClientProps) {
   const comparison = snapshot.protocolComparison;
   const predictions = snapshot.predictions;
   const simulation = snapshot.simulation;
+  const calibration = snapshot.calibration;
   const runHistory = snapshot.runHistory;
 
   return (
@@ -249,6 +251,8 @@ export function StrategyLabClient({ initialSnapshot }: StrategyLabClientProps) {
       </section>
 
       <StrategySimulationSection simulation={simulation} />
+
+      <StrategyCalibrationSection calibration={calibration} />
 
       <section className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
         <MetricTile
@@ -578,6 +582,164 @@ function StrategySimulationSection({ simulation }: { simulation?: StrategyLabSim
       )}
     </section>
   );
+}
+
+function calibrationVerdictStyle(verdict: StrategyLabCalibration["verdict"]): { shell: string; icon: React.ReactNode } {
+  if (verdict === "calibrated_candidate") {
+    return {
+      shell: "border-emerald-300/60 bg-emerald-500/10 text-emerald-100",
+      icon: <CheckCircle2 className="h-5 w-5 text-emerald-300" />,
+    };
+  }
+  if (verdict === "poorly_calibrated") {
+    return {
+      shell: "border-amber-300/60 bg-amber-500/10 text-amber-100",
+      icon: <AlertTriangle className="h-5 w-5 text-amber-300" />,
+    };
+  }
+  if (verdict === "mixed_evidence") {
+    return {
+      shell: "border-sky-300/60 bg-sky-500/10 text-sky-100",
+      icon: <Activity className="h-5 w-5 text-sky-300" />,
+    };
+  }
+  return {
+    shell: "border-zinc-500/60 bg-zinc-500/10 text-zinc-200",
+    icon: <PauseCircle className="h-5 w-5 text-zinc-300" />,
+  };
+}
+
+function CalibrationStatusPill({ calibration }: { calibration: StrategyLabCalibration }) {
+  const style = calibrationVerdictStyle(calibration.verdict);
+  return (
+    <span className={`inline-flex shrink-0 items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-medium ${style.shell}`}>
+      {style.icon}
+      {calibration.verdictLabel}
+    </span>
+  );
+}
+
+function StrategyCalibrationSection({ calibration }: { calibration?: StrategyLabCalibration }) {
+  const status = calibration?.status ?? "missing";
+  const failSafeMessage = !calibration || status === "missing" || calibration.bins.length === 0
+    ? "目前沒有可校準的 resolved prediction/outcome pairs。"
+    : null;
+  const sparseMessage = calibration && status === "insufficient" && calibration.bins.length > 0
+    ? `有效校準樣本不足，目前 N=${calibration.validPairCount}，先顯示計算結果但不判讀 probabilityUp 校準品質。`
+    : null;
+
+  return (
+    <section className="min-w-0 rounded-lg border border-border/50 bg-card/70 p-5">
+      <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <div className="mb-1 flex items-center gap-2">
+            <Activity className="h-5 w-5 text-violet-300" />
+            <h2 className="text-lg font-semibold">信心校準檢查</h2>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            使用現有 resolved artifact 將 probabilityUp 分箱，對照每個機率區間的實際上漲率與校準差距。
+          </p>
+        </div>
+        {calibration && <CalibrationStatusPill calibration={calibration} />}
+      </div>
+
+      {failSafeMessage ? (
+        <div className="rounded-md border border-amber-300/35 bg-amber-500/10 px-3 py-5 text-sm leading-6 text-amber-100">
+          {failSafeMessage}
+        </div>
+      ) : calibration ? (
+        <>
+          {sparseMessage && (
+            <div className="mb-4 flex items-start gap-2 rounded-md border border-amber-300/35 bg-amber-500/10 px-3 py-2 text-sm leading-6 text-amber-100">
+              <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
+              {sparseMessage}
+            </div>
+          )}
+
+          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
+            <SmallMetric label="Brier score" value={calibration.brierScore?.toFixed(4) ?? "N/A"} />
+            <SmallMetric label="平均 probabilityUp" value={formatPct(calibration.meanPredictedProbability)} />
+            <SmallMetric label="實際上漲率" value={formatPct(calibration.actualUpRate)} />
+            <SmallMetric label="近似 ECE" value={formatPct(calibration.expectedCalibrationErrorApprox)} />
+            <SmallMetric label="最大校準差距" value={formatPct(calibration.maxCalibrationGap)} />
+          </div>
+
+          <div className="mt-4 overflow-x-auto">
+            <table className="w-full min-w-[760px] text-sm">
+              <thead className="border-b border-border/60 text-left text-xs text-muted-foreground">
+                <tr>
+                  <th className="py-2 pr-3 font-medium">probabilityUp 區間</th>
+                  <th className="py-2 pr-3 font-medium">樣本數</th>
+                  <th className="py-2 pr-3 font-medium">平均機率</th>
+                  <th className="py-2 pr-3 font-medium">實際上漲率</th>
+                  <th className="py-2 pr-3 font-medium">命中率</th>
+                  <th className="py-2 pr-3 font-medium">平均 5 日報酬</th>
+                  <th className="py-2 pr-3 font-medium">校準差距</th>
+                </tr>
+              </thead>
+              <tbody>
+                {calibration.bins.map((bin) => (
+                  <CalibrationBinRow key={bin.rangeLabel} bin={bin} />
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="mt-4 rounded-md border border-border/30 bg-background/35 p-3">
+            <p className="mb-2 text-xs font-medium text-muted-foreground">限制與警語</p>
+            <ul className="space-y-1 text-sm leading-6 text-muted-foreground">
+              {calibration.caveats.map((caveat) => (
+                <li key={caveat}>{calibrationCaveatText(caveat)}</li>
+              ))}
+              <li>{calibration.verdictReason}</li>
+              <li>樣本數有限，校準結果只代表目前 resolved artifact，不代表未來預測能力或投資建議。</li>
+            </ul>
+          </div>
+        </>
+      ) : null}
+    </section>
+  );
+}
+
+function CalibrationBinRow({ bin }: { bin: StrategyLabCalibration["bins"][number] }) {
+  const gapAbs = Math.abs(bin.calibrationGap);
+  const gapClass = gapAbs <= 0.08
+    ? "text-emerald-300"
+    : gapAbs <= 0.15
+      ? "text-sky-300"
+      : "text-amber-300";
+
+  return (
+    <tr className="border-b border-border/30 last:border-0">
+      <td className="py-2.5 pr-3 font-mono text-sm">{bin.rangeLabel}</td>
+      <td className="py-2.5 pr-3 font-mono text-sm">{bin.pairCount}</td>
+      <td className="py-2.5 pr-3 font-mono text-sm">{formatPct(bin.meanProbabilityUp)}</td>
+      <td className="py-2.5 pr-3 font-mono text-sm">{formatPct(bin.actualUpRate)}</td>
+      <td className="py-2.5 pr-3 font-mono text-sm">{formatPct(bin.hitRate)}</td>
+      <td className={`py-2.5 pr-3 font-mono text-sm ${bin.avgForwardReturn > 0 ? "text-red-400" : "text-emerald-400"}`}>
+        {formatSignedPct(bin.avgForwardReturn)}
+      </td>
+      <td className={`py-2.5 pr-3 font-mono text-sm ${gapClass}`}>
+        {formatSignedPct(bin.calibrationGap)}
+      </td>
+    </tr>
+  );
+}
+
+function calibrationCaveatText(caveat: string): string {
+  if (caveat.includes("Small sample")) {
+    return caveat.replace("Small sample:", "小樣本警語：").replace("valid resolved pairs are required", "有效 resolved pairs 後才判讀");
+  }
+  if (caveat.includes("Sparse bins")) {
+    return "分箱樣本偏稀疏，需更多 resolved pairs 才能降低偶然波動。";
+  }
+  if (caveat.includes("resolved prediction artifacts")) {
+    return "校準檢查只讀取 resolved artifact，不重新訓練、不重跑資料、不讀寫資料庫。";
+  }
+  if (caveat.includes("Research-only")) {
+    return "僅供研究驗證；不是投資建議，也不代表未來預測能力。";
+  }
+  return caveat;
 }
 
 function ThresholdSweepTable({ simulation }: { simulation: StrategyLabSimulation }) {
