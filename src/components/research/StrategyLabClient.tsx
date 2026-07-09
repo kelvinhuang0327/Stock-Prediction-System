@@ -38,6 +38,7 @@ import type {
   StrategyLabSymbolReliability,
   StrategyLabSymbolReliabilityRow,
 } from "@/lib/research/StrategyLabSymbolReliabilityEngine";
+import { StrategyLabSnapshotPanel } from "@/components/research/StrategyLabSnapshotPanel";
 
 interface StrategyLabClientProps {
   initialSnapshot: StrategyLabSnapshot;
@@ -405,6 +406,8 @@ export function StrategyLabClient({ initialSnapshot }: StrategyLabClientProps) {
           </div>
         )}
       </section>
+
+      <StrategyLabSnapshotPanel snapshot={snapshot} />
 
       <ExecutiveSummarySection items={executiveSummary} />
 
