@@ -159,6 +159,8 @@ describe("buildStrategyLabCalibration", () => {
     expect(calibration.verdict).toBe("needs_more_evidence");
     expect(calibration.verdictLabel).toBe("證據不足");
     expect(calibration.verdictReason).not.toMatch(/投資|交易|profit|return/i);
+    expect(calibration.caveats.some((caveat) => caveat.includes("Small sample: N=2"))).toBe(true);
+    expect(calibration.caveats.some((caveat) => caveat.includes("Sparse bins"))).toBe(true);
     expect(calibration.caveats.some((caveat) => caveat.includes("not investment advice"))).toBe(true);
   });
 });

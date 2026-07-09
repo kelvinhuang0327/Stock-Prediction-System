@@ -176,6 +176,7 @@ describe("buildStrategyLabResearchBrief", () => {
     expect(buildStrategyLabResearchBrief(currentSnapshot)).toBe(brief);
     expect(brief).toContain("# Strategy Lab Research Brief");
     expect(brief).toContain("Generated from current resolved artifact.");
+    expect(brief).toContain("Artifact-scope note: results are computed from the current expanded resolved artifact sample and remain research-only.");
     expect(brief).toContain("## Expanded Sample Provenance");
     expect(brief).toContain("reader-derived from tracked P194 CSV + P193 metrics metadata");
     expect(brief).toContain("Validation status expanded; derived rows matched committed recentResolved sample.");
@@ -190,7 +191,7 @@ describe("buildStrategyLabResearchBrief", () => {
     expect(brief).toContain("Valid pairs 20; Brier");
     expect(brief).toContain("ECE");
     expect(brief).toContain("max gap");
-    expect(brief).toContain("Per-symbol reliability: 2 symbol rows");
+    expect(brief).toContain("Per-symbol diagnostics: 2 symbol rows; descriptive within this artifact sample and not trading signals or action guidance.");
     expect(brief).toContain("Worst calibration-gap diagnostic:");
     expect(brief).toContain("Highest hit-rate diagnostic:");
   });
@@ -205,6 +206,8 @@ describe("buildStrategyLabResearchBrief", () => {
     expect(brief).toContain("Sample count alone does not establish prediction quality");
     expect(brief).toContain("Sample size and date coverage do not establish prediction quality or production readiness.");
     expect(brief).toContain("descriptive artifact diagnostics only, not action guidance.");
+    expect(brief).not.toContain("Small sample warning: N=2280");
+    expect(brief).not.toMatch(/very small/i);
     expect(brief).not.toMatch(/\b(buy|sell|recommend|recommendation|recommended)\b/i);
   });
 
@@ -225,6 +228,6 @@ describe("buildStrategyLabResearchBrief", () => {
     expect(brief).toContain("resolved pairs 0/0");
     expect(brief).toContain("Simulation: missing");
     expect(brief).toContain("Calibration: missing");
-    expect(brief).toContain("Per-symbol reliability: no symbol rows");
+    expect(brief).toContain("Per-symbol diagnostics: no symbol rows");
   });
 });

@@ -298,6 +298,9 @@ describe("buildStrategySimulation", () => {
     expect(simulation.thresholdDrilldown.candidate?.tradeCount).toBe(4);
     expect(simulation.thresholdDrilldown.candidate?.deltaVsBaselineNet).toBeGreaterThan(0);
     expect(simulation.thresholdDrilldown.candidate?.smallSample).toBe(true);
+    expect(simulation.thresholdDrilldown.candidate?.caveats.some((caveat) =>
+      caveat.includes("Small sample"),
+    )).toBe(true);
   });
 
   it("marks a one-symbol candidate sample as concentrated", () => {
