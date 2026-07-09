@@ -112,6 +112,17 @@ function snapshot(overrides: Partial<StrategyLabSnapshot> = {}): StrategyLabSnap
       latestBySymbol: [],
       openPredictions: [],
       recentResolved: pairs,
+      resolvedSampleProvenance: {
+        source: "reader-derived from tracked P194 CSV + P193 metrics metadata",
+        validationStatus: "expanded",
+        validationReason: "derived rows matched committed recentResolved sample",
+        fallbackActive: false,
+        committedResolvedPairs: 40,
+        activeResolvedPairs: 2280,
+        featureDateRange: { start: "2024-07-19", end: "2026-06-24" },
+        targetDateRange: { start: "2024-07-30", end: "2026-07-01" },
+        caveat: "Research-only resolved artifact sample; not investment advice, not a trading signal, and not evidence of future predictive ability.",
+      },
       caveat: "Research only.",
     },
     simulation,
@@ -165,6 +176,13 @@ describe("buildStrategyLabResearchBrief", () => {
     expect(buildStrategyLabResearchBrief(currentSnapshot)).toBe(brief);
     expect(brief).toContain("# Strategy Lab Research Brief");
     expect(brief).toContain("Generated from current resolved artifact.");
+    expect(brief).toContain("## Expanded Sample Provenance");
+    expect(brief).toContain("reader-derived from tracked P194 CSV + P193 metrics metadata");
+    expect(brief).toContain("Validation status expanded; derived rows matched committed recentResolved sample.");
+    expect(brief).toContain("Active rows 2280 resolved pairs; committed sample 40 rows");
+    expect(brief).toContain("featureDate range 2024-07-19 to 2026-06-24");
+    expect(brief).toContain("targetDate range 2024-07-30 to 2026-07-01");
+    expect(brief).toContain("fallback inactive; no fallback caveat");
     expect(brief).toContain("暫不推廣 / research only");
     expect(brief).toContain("resolved pairs 20/20");
     expect(brief).toMatch(/Simulation: .*\((research_candidate|needs_more_evidence|do_not_promote)\)/);
@@ -184,6 +202,8 @@ describe("buildStrategyLabResearchBrief", () => {
     expect(brief).toContain("Not a trading signal or action guidance.");
     expect(brief).toContain("Does not claim future predictive ability.");
     expect(brief).toContain("Describes only the current resolved artifact sample.");
+    expect(brief).toContain("Sample count alone does not establish prediction quality");
+    expect(brief).toContain("Sample size and date coverage do not establish prediction quality or production readiness.");
     expect(brief).toContain("descriptive artifact diagnostics only, not action guidance.");
     expect(brief).not.toMatch(/\b(buy|sell|recommend|recommendation|recommended)\b/i);
   });

@@ -92,6 +92,26 @@ function describeSymbolReliabilityForBrief(reliability?: StrategyLabSymbolReliab
   ];
 }
 
+function describeResolvedSampleProvenance(snapshot: StrategyLabSnapshot): string {
+  const provenance = snapshot.predictions.resolvedSampleProvenance;
+  const featureRange = provenance.featureDateRange
+    ? `${provenance.featureDateRange.start} to ${provenance.featureDateRange.end}`
+    : "N/A";
+  const targetRange = provenance.targetDateRange
+    ? `${provenance.targetDateRange.start} to ${provenance.targetDateRange.end}`
+    : "N/A";
+  const fallbackStatus = provenance.fallbackActive
+    ? "active; showing fallback resolved sample"
+    : "inactive; no fallback caveat";
+
+  return [
+    `Expanded sample provenance: ${provenance.source}.`,
+    `Validation status ${provenance.validationStatus}; ${provenance.validationReason}.`,
+    `Active rows ${provenance.activeResolvedPairs} resolved pairs; committed sample ${provenance.committedResolvedPairs} rows; featureDate range ${featureRange}; targetDate range ${targetRange}; fallback ${fallbackStatus}.`,
+    `${provenance.caveat} Sample count alone does not establish prediction quality, investability, or production readiness.`,
+  ].join(" ");
+}
+
 export function buildStrategyLabResearchBrief(snapshot: StrategyLabSnapshot): string {
   const resolvedPairCount = snapshot.simulation?.stats.pairCount
     ?? snapshot.calibration?.pairCount
@@ -118,6 +138,10 @@ export function buildStrategyLabResearchBrief(snapshot: StrategyLabSnapshot): st
     "",
     `${productVerdictLabel(snapshot.productStance.decision)} / research only`,
     "",
+    "## Expanded Sample Provenance",
+    "",
+    describeResolvedSampleProvenance(snapshot),
+    "",
     "## Key Evidence",
     "",
     ...evidenceBullets.map((line) => `- ${line}`),
@@ -128,7 +152,7 @@ export function buildStrategyLabResearchBrief(snapshot: StrategyLabSnapshot): st
     "- Not a trading signal or action guidance.",
     "- Does not claim future predictive ability.",
     "- Describes only the current resolved artifact sample.",
-    "- Sample size is small; concentration and calibration caveats remain visible.",
+    "- Sample size and date coverage do not establish prediction quality or production readiness.",
     "- Symbol diagnostics such as 0050 or 2317, when present, are descriptive artifact diagnostics only, not action guidance.",
   ].join("\n");
 }

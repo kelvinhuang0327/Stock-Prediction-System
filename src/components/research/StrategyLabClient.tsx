@@ -414,6 +414,8 @@ export function StrategyLabClient({ initialSnapshot }: StrategyLabClientProps) {
         onCopy={copyResearchBrief}
       />
 
+      <ResolvedSampleProvenanceSection provenance={predictions.resolvedSampleProvenance} />
+
       <SymbolReliabilitySection reliability={symbolReliability} />
 
       <section className="min-w-0 rounded-lg border border-border/50 bg-card/70 p-5">
@@ -795,6 +797,76 @@ function ResearchBriefSection({
             : "text-muted-foreground"
       }`}>
         {statusText}
+      </p>
+    </section>
+  );
+}
+
+function ResolvedSampleProvenanceSection({
+  provenance,
+}: {
+  provenance: StrategyLabSnapshot["predictions"]["resolvedSampleProvenance"];
+}) {
+  const featureRange = provenance.featureDateRange
+    ? `${provenance.featureDateRange.start} → ${provenance.featureDateRange.end}`
+    : "N/A";
+  const targetRange = provenance.targetDateRange
+    ? `${provenance.targetDateRange.start} → ${provenance.targetDateRange.end}`
+    : "N/A";
+  const validationText = provenance.validationStatus === "expanded"
+    ? `matched ${provenance.committedResolvedPairs}-row sample before exposure`
+    : provenance.validationReason;
+  const fallbackText = provenance.fallbackActive
+    ? "active / fallback caveat present"
+    : "inactive / no fallback caveat";
+
+  return (
+    <section className="min-w-0 rounded-lg border border-border/50 bg-card/70 p-5">
+      <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <div className="mb-1 flex items-center gap-2">
+            <ShieldCheck className="h-5 w-5 text-emerald-300" />
+            <h2 className="text-lg font-semibold">Expanded Sample Provenance</h2>
+          </div>
+          <p className="max-w-4xl text-sm leading-6 text-muted-foreground">
+            {provenance.source}; describes the current resolved artifact sample only.
+          </p>
+        </div>
+        <span className={`inline-flex shrink-0 items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-medium ${
+          provenance.fallbackActive
+            ? "border-amber-300/45 bg-amber-500/10 text-amber-100"
+            : "border-emerald-300/45 bg-emerald-500/10 text-emerald-100"
+        }`}>
+          {provenance.fallbackActive ? <AlertTriangle className="h-3.5 w-3.5" /> : <CheckCircle2 className="h-3.5 w-3.5" />}
+          {fallbackText}
+        </span>
+      </div>
+
+      <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+        <SmallMetric
+          label="Active rows"
+          value={`${formatNumber(provenance.activeResolvedPairs)} resolved pairs`}
+          compact
+        />
+        <SmallMetric
+          label="Validation status"
+          value={validationText}
+          compact
+        />
+        <SmallMetric
+          label="featureDate range"
+          value={featureRange}
+          compact
+        />
+        <SmallMetric
+          label="targetDate range"
+          value={targetRange}
+          compact
+        />
+      </div>
+
+      <p className="mt-4 rounded-md border border-border/30 bg-background/40 px-3 py-2 text-sm leading-6 text-muted-foreground">
+        {provenance.caveat} Sample count alone does not establish prediction quality, investability, or production readiness.
       </p>
     </section>
   );

@@ -105,6 +105,18 @@ export interface StrategyLabResolvedPrediction {
   correct: boolean;
 }
 
+export interface StrategyLabResolvedSampleProvenance {
+  source: string;
+  validationStatus: "expanded" | "fallback";
+  validationReason: string;
+  fallbackActive: boolean;
+  committedResolvedPairs: number;
+  activeResolvedPairs: number;
+  featureDateRange: { start: string; end: string } | null;
+  targetDateRange: { start: string; end: string } | null;
+  caveat: string;
+}
+
 export interface StrategyLabPredictions {
   status: "present" | "missing";
   path: string;
@@ -116,6 +128,7 @@ export interface StrategyLabPredictions {
   latestBySymbol: StrategyLabOpenPrediction[];
   openPredictions: StrategyLabOpenPrediction[];
   recentResolved: StrategyLabResolvedPrediction[];
+  resolvedSampleProvenance: StrategyLabResolvedSampleProvenance;
   caveat: string;
 }
 
@@ -772,6 +785,15 @@ function validateExpandedResolvedRows(
   return null;
 }
 
+function dateRangeFromRows(
+  rows: StrategyLabResolvedPrediction[],
+  field: "featureDate" | "targetDate",
+): { start: string; end: string } | null {
+  const dates = rows.map((row) => row[field]).filter(Boolean).sort();
+  if (dates.length === 0) return null;
+  return { start: dates[0] ?? "UNKNOWN", end: dates.at(-1) ?? "UNKNOWN" };
+}
+
 export function expandResolvedPredictions(
   committedRows: StrategyLabResolvedPrediction[],
   csvRaw: string,
@@ -803,6 +825,8 @@ export function expandResolvedPredictions(
 
 const PREDICTIONS_CAVEAT_FALLBACK = "僅供研究驗證；不是投資建議，不可用於交易。";
 const PREDICTIONS_EXPANSION_FALLBACK_CAVEAT = "Expanded resolved sample validation failed; showing committed recentResolved sample only.";
+const RESOLVED_SAMPLE_SOURCE = "reader-derived from tracked P194 CSV + P193 metrics metadata";
+const RESOLVED_SAMPLE_CAVEAT = "Research-only resolved artifact sample; not investment advice, not a trading signal, and not evidence of future predictive ability.";
 
 async function buildPredictions(): Promise<StrategyLabPredictions> {
   const [record, mtime, csvRaw, metrics] = await Promise.all([
@@ -824,6 +848,17 @@ async function buildPredictions(): Promise<StrategyLabPredictions> {
       latestBySymbol: [],
       openPredictions: [],
       recentResolved: [],
+      resolvedSampleProvenance: {
+        source: RESOLVED_SAMPLE_SOURCE,
+        validationStatus: "fallback",
+        validationReason: "missing latest predictions artifact",
+        fallbackActive: true,
+        committedResolvedPairs: 0,
+        activeResolvedPairs: 0,
+        featureDateRange: null,
+        targetDateRange: null,
+        caveat: RESOLVED_SAMPLE_CAVEAT,
+      },
       caveat: PREDICTIONS_CAVEAT_FALLBACK,
     };
   }
@@ -851,6 +886,7 @@ async function buildPredictions(): Promise<StrategyLabPredictions> {
         validationStatus: "fallback" as const,
         reason: "missing P194 OHLCV CSV",
       };
+  const fallbackActive = expansion.validationStatus === "fallback";
 
   return {
     status: "present",
@@ -863,7 +899,18 @@ async function buildPredictions(): Promise<StrategyLabPredictions> {
     latestBySymbol: openPredictions.filter((prediction) => prediction.isLatest),
     openPredictions,
     recentResolved: expansion.rows,
-    caveat: expansion.validationStatus === "fallback"
+    resolvedSampleProvenance: {
+      source: RESOLVED_SAMPLE_SOURCE,
+      validationStatus: expansion.validationStatus,
+      validationReason: expansion.reason,
+      fallbackActive,
+      committedResolvedPairs: recentResolved.length,
+      activeResolvedPairs: expansion.rows.length,
+      featureDateRange: dateRangeFromRows(expansion.rows, "featureDate"),
+      targetDateRange: dateRangeFromRows(expansion.rows, "targetDate"),
+      caveat: RESOLVED_SAMPLE_CAVEAT,
+    },
+    caveat: fallbackActive
       ? appendCaveat(caveat, PREDICTIONS_EXPANSION_FALLBACK_CAVEAT)
       : caveat,
   };

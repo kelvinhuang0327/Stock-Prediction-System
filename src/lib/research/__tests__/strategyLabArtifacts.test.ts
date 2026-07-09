@@ -99,6 +99,17 @@ describe("Strategy Lab artifact resolved expansion", () => {
       featureDate: "2026-06-24",
       targetDate: "2026-07-01",
     });
+    expect(snapshot.predictions.resolvedSampleProvenance).toMatchObject({
+      source: "reader-derived from tracked P194 CSV + P193 metrics metadata",
+      validationStatus: "expanded",
+      validationReason: "derived rows matched committed recentResolved sample",
+      fallbackActive: false,
+      committedResolvedPairs: 40,
+      activeResolvedPairs: 2280,
+      featureDateRange: { start: "2024-07-19", end: "2026-06-24" },
+      targetDateRange: { start: "2024-07-30", end: "2026-07-01" },
+    });
+    expect(snapshot.predictions.caveat).not.toContain("Expanded resolved sample validation failed");
     expect(snapshot.safety).toMatchObject({
       canonicalDbRead: false,
       canonicalDbWrite: false,
