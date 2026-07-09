@@ -77,12 +77,12 @@ function describeCalibrationForBrief(calibration?: StrategyLabCalibration): stri
 function describeSymbolReliabilityForBrief(reliability?: StrategyLabSymbolReliability): string[] {
   const rows = reliability?.rows ?? [];
   if (rows.length === 0) {
-    return ["Per-symbol reliability: no symbol rows are available in the current artifact sample."];
+    return ["Per-symbol diagnostics: no symbol rows are available in the current artifact sample."];
   }
   const worstCalibrationRow = rows.find((row) => row.symbol === reliability?.status.worstCalibrationSymbol);
   const bestHitRateRow = rows.find((row) => row.symbol === reliability?.status.bestHitRateSymbol);
   return [
-    `Per-symbol reliability: ${rows.length} symbol rows; enough-symbols flag ${reliability?.status.enoughSymbols ? "true" : "false"}.`,
+    `Per-symbol diagnostics: ${rows.length} symbol rows; descriptive within this artifact sample and not trading signals or action guidance.`,
     worstCalibrationRow
       ? `Worst calibration-gap diagnostic: ${worstCalibrationRow.symbol}, gap ${formatSignedPct(worstCalibrationRow.calibrationGap)}, resolved N=${worstCalibrationRow.resolvedPairCount}.`
       : "Worst calibration-gap diagnostic: N/A.",
@@ -133,6 +133,7 @@ export function buildStrategyLabResearchBrief(snapshot: StrategyLabSnapshot): st
     "# Strategy Lab Research Brief",
     "",
     "Generated from current resolved artifact.",
+    "Artifact-scope note: results are computed from the current expanded resolved artifact sample and remain research-only.",
     "",
     "## Overall Verdict",
     "",

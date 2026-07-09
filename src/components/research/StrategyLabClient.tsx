@@ -887,7 +887,7 @@ function SymbolReliabilitySection({ reliability }: { reliability?: StrategyLabSy
             <h2 className="text-lg font-semibold">各股可靠度摘要</h2>
           </div>
           <p className="max-w-4xl text-sm leading-6 text-muted-foreground">
-            各股統計僅反映目前 resolved artifact，樣本很小，不能視為投資建議。
+            各股診斷只描述目前 resolved artifact 樣本，不能視為推薦、交易訊號或投資建議。
           </p>
         </div>
         <span className={`inline-flex shrink-0 items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-medium ${
@@ -1823,7 +1823,11 @@ function simulationLimitationText(limitation: string): string {
     return "重疊的 5 個交易日前瞻報酬窗口只是近似回放，不能視為獨立交易樣本。";
   }
   if (limitation.includes("Small sample warning")) {
-    return limitation.replace("Small sample warning:", "小樣本警語：");
+    const sampleCount = Number(limitation.match(/N=(\d+)/)?.[1] ?? Number.NaN);
+    if (Number.isFinite(sampleCount) && sampleCount < 10) {
+      return limitation.replace("Small sample warning:", "小樣本警語：");
+    }
+    return "Artifact-scope note: results are computed from the current expanded resolved artifact sample and remain research-only.";
   }
   if (limitation.includes("Research-only")) {
     return "僅供研究驗證；不是投資建議，不可用於交易。";
