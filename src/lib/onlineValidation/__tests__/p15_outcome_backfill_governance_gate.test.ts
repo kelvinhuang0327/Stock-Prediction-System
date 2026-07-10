@@ -6,6 +6,7 @@ import { selectOutcomeBackfillCandidates } from '../OutcomeBackfillCandidateSele
 import { buildOutcomeBackfillRehearsal } from '../OutcomeBackfillRehearsalEngine';
 import { buildBackfillQualityImpactPreview } from '../BackfillQualityImpactPreview';
 import { buildOutcomeBackfillGovernanceGate, validateOutcomeBackfillGovernanceGate } from '../OutcomeBackfillGovernanceGate';
+import type { BackfillQualityImpactPreview } from '../BackfillQualityImpactPreview';
 import type { CorpusMetrics } from '../CorpusMetricsStore';
 import type { CorpusQualityGateResult } from '../CorpusQualityGate';
 import type { OutcomeBackfillRehearsalSummary } from '../OutcomeBackfillRehearsalEngine';
@@ -13,6 +14,20 @@ import type { OutcomeBackfillRehearsalSummary } from '../OutcomeBackfillRehearsa
 const CORPUS_PATH = path.resolve(process.cwd(), 'outputs/online_validation/simulation_snapshot_corpus.jsonl');
 const P12_METRICS_PATH = path.resolve(process.cwd(), 'outputs/online_validation/p12_corpus_metrics_store.json');
 const P12_QUALITY_PATH = path.resolve(process.cwd(), 'outputs/online_validation/p12_corpus_quality_gate.json');
+
+const FALSIFIABLE_GUARDRAILS = [
+    'noProductionWrite',
+    'noCorpusWrite',
+    'noOptimizerWrite',
+    'noPerformanceClaim',
+    'noTradingSignal',
+] as const;
+
+type FalsifiableGuardrail = (typeof FALSIFIABLE_GUARDRAILS)[number];
+type FalsifiedBackfillQualityImpactPreview = Omit<BackfillQualityImpactPreview, 'guardrails'> & {
+    guardrails: Omit<BackfillQualityImpactPreview['guardrails'], FalsifiableGuardrail> &
+        Record<FalsifiableGuardrail, boolean>;
+};
 
 function loadCorpus() {
     return parseSnapshotCorpusJsonl(fs.readFileSync(CORPUS_PATH, 'utf8'));
@@ -100,6 +115,33 @@ describe('OutcomeBackfillGovernanceGate — P15', () => {
         },
     );
 
+    function buildGateWithFailedGuardrails(
+        failedGuardrails: readonly FalsifiableGuardrail[],
+    ) {
+        const falsifiedPreview = structuredClone(preview) as FalsifiedBackfillQualityImpactPreview;
+        for (const guardrail of failedGuardrails) {
+            falsifiedPreview.guardrails[guardrail] = false;
+        }
+
+        return buildOutcomeBackfillGovernanceGate(
+            {
+                candidateSelection,
+                rehearsal,
+                qualityImpactPreview: falsifiedPreview as BackfillQualityImpactPreview,
+                currentCorpusLineCount: corpusEntries.length,
+                currentQualityGate,
+            },
+            {
+                governanceRunId: 'p15-governance-failed-guardrail-001',
+                generatedAt: '2026-05-11T09:15:00.000Z',
+                requireManualApproval: true,
+                minRehearsedCount: 1,
+                minBlockedToReadyCount: 1,
+                maxAllowedCorpusWritePermission: false,
+            },
+        );
+    }
+
     it('BLOCKED_TO_READY still only allows manual review', () => {
         expect(gate.gateStatus).toBe('READY_FOR_MANUAL_REVIEW');
         expect(gate.decision).toBe('ALLOW_MANUAL_REVIEW_ONLY');
@@ -155,5 +197,34 @@ describe('OutcomeBackfillGovernanceGate — P15', () => {
         const mutated = { ...gate, riskFlags: ['profit', 'outperform'] };
         const result = validateOutcomeBackfillGovernanceGate(mutated as typeof gate);
         expect(result.validationStatus).toBe('FAIL');
+    });
+
+    it.each(FALSIFIABLE_GUARDRAILS)(
+        'false %s guardrail yields BLOCKED / BLOCK_WRITE_PATH / FAIL',
+        guardrail => {
+            const failedGate = buildGateWithFailedGuardrails([guardrail]);
+
+            expect(failedGate.gateChecks[guardrail]).toBe(false);
+            expect(failedGate.gateStatus).toBe('BLOCKED');
+            expect(failedGate.decision).toBe('BLOCK_WRITE_PATH');
+            expect(failedGate.validationStatus).toBe('FAIL');
+            expect(failedGate.validationMessages).toContain(
+                `FAIL: ${guardrail} guardrail must be true`,
+            );
+        },
+    );
+
+    it('all false guardrails yield BLOCKED / BLOCK_WRITE_PATH / FAIL', () => {
+        const failedGate = buildGateWithFailedGuardrails(FALSIFIABLE_GUARDRAILS);
+
+        expect(failedGate.gateStatus).toBe('BLOCKED');
+        expect(failedGate.decision).toBe('BLOCK_WRITE_PATH');
+        expect(failedGate.validationStatus).toBe('FAIL');
+        for (const guardrail of FALSIFIABLE_GUARDRAILS) {
+            expect(failedGate.gateChecks[guardrail]).toBe(false);
+            expect(failedGate.validationMessages).toContain(
+                `FAIL: ${guardrail} guardrail must be true`,
+            );
+        }
     });
 });
