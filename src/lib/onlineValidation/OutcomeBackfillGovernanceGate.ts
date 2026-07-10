@@ -69,11 +69,11 @@ export interface OutcomeBackfillGovernanceGateChecks {
     corpusUnchanged: boolean;
     qualityImpactIsPreviewOnly: true;
     requiresManualApproval: boolean;
-    noProductionWrite: true;
-    noCorpusWrite: true;
-    noOptimizerWrite: true;
-    noPerformanceClaim: true;
-    noTradingSignal: true;
+    noProductionWrite: boolean;
+    noCorpusWrite: boolean;
+    noOptimizerWrite: boolean;
+    noPerformanceClaim: boolean;
+    noTradingSignal: boolean;
 }
 
 export interface OutcomeBackfillGovernanceGateInput {
@@ -162,17 +162,27 @@ export function buildOutcomeBackfillGovernanceGate(
         corpusUnchanged,
         qualityImpactIsPreviewOnly,
         requiresManualApproval: requireManualApproval,
-        noProductionWrite: true,
-        noCorpusWrite: true,
-        noOptimizerWrite: true,
-        noPerformanceClaim: true,
-        noTradingSignal: true,
+        noProductionWrite,
+        noCorpusWrite,
+        noOptimizerWrite,
+        noPerformanceClaim,
+        noTradingSignal,
     };
+
+    const hasFailedGuardrail =
+        !gateChecks.noProductionWrite ||
+        !gateChecks.noCorpusWrite ||
+        !gateChecks.noOptimizerWrite ||
+        !gateChecks.noPerformanceClaim ||
+        !gateChecks.noTradingSignal;
 
     let gateStatus: OutcomeBackfillGovernanceGateStatus;
     let decision: OutcomeBackfillGovernanceDecision;
 
     if (!corpusUnchanged) {
+        gateStatus = 'BLOCKED';
+        decision = 'BLOCK_WRITE_PATH';
+    } else if (hasFailedGuardrail) {
         gateStatus = 'BLOCKED';
         decision = 'BLOCK_WRITE_PATH';
     } else if (!hasCandidates || !hasRehearsalItems || !hasBlockedToReadyTransition) {
@@ -315,6 +325,28 @@ export function validateOutcomeBackfillGovernanceGate(
     }
     if (p.artifactOnly !== true) {
         messages.push('FAIL: artifactOnly must be true');
+        status = 'FAIL';
+    }
+
+    const checks = gate.gateChecks;
+    if (!checks.noProductionWrite) {
+        messages.push('FAIL: noProductionWrite guardrail must be true');
+        status = 'FAIL';
+    }
+    if (!checks.noCorpusWrite) {
+        messages.push('FAIL: noCorpusWrite guardrail must be true');
+        status = 'FAIL';
+    }
+    if (!checks.noOptimizerWrite) {
+        messages.push('FAIL: noOptimizerWrite guardrail must be true');
+        status = 'FAIL';
+    }
+    if (!checks.noPerformanceClaim) {
+        messages.push('FAIL: noPerformanceClaim guardrail must be true');
+        status = 'FAIL';
+    }
+    if (!checks.noTradingSignal) {
+        messages.push('FAIL: noTradingSignal guardrail must be true');
         status = 'FAIL';
     }
 
