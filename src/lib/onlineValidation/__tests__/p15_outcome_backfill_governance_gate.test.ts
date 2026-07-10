@@ -29,6 +29,10 @@ type FalsifiedBackfillQualityImpactPreview = Omit<BackfillQualityImpactPreview, 
         Record<FalsifiableGuardrail, boolean>;
 };
 
+function cloneJson<T>(value: T): T {
+    return JSON.parse(JSON.stringify(value)) as T;
+}
+
 function loadCorpus() {
     return parseSnapshotCorpusJsonl(fs.readFileSync(CORPUS_PATH, 'utf8'));
 }
@@ -118,7 +122,7 @@ describe('OutcomeBackfillGovernanceGate — P15', () => {
     function buildGateWithFailedGuardrails(
         failedGuardrails: readonly FalsifiableGuardrail[],
     ) {
-        const falsifiedPreview = structuredClone(preview) as FalsifiedBackfillQualityImpactPreview;
+        const falsifiedPreview = cloneJson(preview) as FalsifiedBackfillQualityImpactPreview;
         for (const guardrail of failedGuardrails) {
             falsifiedPreview.guardrails[guardrail] = false;
         }
