@@ -210,7 +210,7 @@ describe("buildStrategyLabResultSnapshot", () => {
     expect(result.resolvedValidation.metrics).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          label: "resolved coverage",
+          label: "resolved-sample coverage (historical validation evidence)",
           value: "3/5 (60.00%)",
           note: "resolved / tracked rows currently available in the artifact-backed payload",
         }),

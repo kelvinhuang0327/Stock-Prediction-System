@@ -21,7 +21,7 @@ describe("StrategyLabSnapshotPanel", () => {
     expect(within(panel).getAllByText("diagnostic-only").length).toBeGreaterThan(0);
     expect(within(panel).getByText("no investment advice")).toBeInTheDocument();
     expect(within(panel).getByText("no trading signal")).toBeInTheDocument();
-    expect(within(panel).getByText("Research diagnostic only — not a buy/sell recommendation, not a profitability claim, and not a production trading signal.")).toBeInTheDocument();
+    expect(within(panel).getAllByText("Research diagnostic only — not a buy/sell recommendation, not a profitability claim, and not a production trading signal.")).toHaveLength(2);
     expect(within(panel).getByText(/Snapshot payload generated time:/)).toBeInTheDocument();
     expect(within(panel).getAllByText(/artifact file mtime:/).length).toBeGreaterThan(0);
     expect(within(panel).getAllByText(/run recorded time:/).length).toBeGreaterThan(0);
