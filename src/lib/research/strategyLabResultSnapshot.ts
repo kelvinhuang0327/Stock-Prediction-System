@@ -5,6 +5,8 @@ import type {
 } from "@/lib/research/strategyLabArtifacts";
 
 export const STRATEGY_LAB_RESULT_NOT_AVAILABLE = "NOT_AVAILABLE";
+export const STRATEGY_LAB_SNAPSHOT_DIAGNOSTIC_CAVEAT =
+  "Research diagnostic only — not a buy/sell recommendation, not a profitability claim, and not a production trading signal.";
 
 const RESULT_SNAPSHOT_CAVEATS = [
   "artifact-backed research-only snapshot",
@@ -24,7 +26,8 @@ export interface StrategyLabResultSnapshotMetric {
 
 export interface StrategyLabResultSnapshotProvenance {
   source: string;
-  stamp: string;
+  artifactFileMtime: string;
+  runRecordedAt: string;
   runId: string;
   status: Availability;
 }
@@ -150,18 +153,25 @@ function runIdSet(...runIds: Array<string | null | undefined>): Set<string> {
   return new Set(runIds.filter((runId): runId is string => typeof runId === "string" && runId.length > 0));
 }
 
-function blockProvenance(source: string, stamp: string | null, runId: string | null, status: Availability) {
+function blockProvenance(
+  source: string,
+  artifactFileMtime: string | null,
+  runRecordedAt: string | null,
+  runId: string | null,
+  status: Availability,
+) {
   return {
     source: source || unavailable(),
-    stamp: valueOrUnavailable(stamp) as string,
+    artifactFileMtime: valueOrUnavailable(artifactFileMtime) as string,
+    runRecordedAt: valueOrUnavailable(runRecordedAt) as string,
     runId: valueOrUnavailable(runId) as string,
     status,
   };
 }
 
-function latestRunHistoryStamp(snapshot: StrategyLabSnapshot): string | null {
-  return snapshot.runHistory.entries.find((entry) => entry.executedAt)?.executedAt
-    ?? snapshot.refit.mtime;
+function runRecordedAt(snapshot: StrategyLabSnapshot, runId: string | null): string | null {
+  if (!runId) return null;
+  return snapshot.runHistory.entries.find((entry) => entry.runId === runId)?.executedAt ?? null;
 }
 
 function rangeFromUnknown(value: unknown): string {
@@ -206,12 +216,13 @@ export function buildStrategyLabResultSnapshot(snapshot: StrategyLabSnapshot): S
       status: predictionStatus,
       provenance: blockProvenance(
         snapshot.predictions.path,
-        snapshot.predictions.mtime ?? snapshot.predictions.dataEndDate,
+        snapshot.predictions.mtime,
+        runRecordedAt(snapshot, predictionRunId),
         predictionRunId,
         predictionStatus,
       ),
       metrics: [
-        { label: "generatedAt / data end", value: valueOrUnavailable(snapshot.predictions.dataEndDate) },
+        { label: "market data coverage end", value: valueOrUnavailable(snapshot.predictions.dataEndDate) },
         { label: "latest symbol count", value: predictionStatus === "available" ? uniqueCount(snapshot.predictions.latestBySymbol.map((row) => row.symbol)) : unavailable() },
         { label: "latest model-direction counts", value: `up ${latestDirectionCounts.up} / down ${latestDirectionCounts.down} / NA ${latestDirectionCounts.notAvailable}` },
         { label: "open prediction rows", value: predictionStatus === "available" ? snapshot.predictions.openPredictions.length : unavailable() },
@@ -224,7 +235,8 @@ export function buildStrategyLabResultSnapshot(snapshot: StrategyLabSnapshot): S
       status: retrainingStatus,
       provenance: blockProvenance(
         snapshot.refit.path,
-        latestRunHistoryStamp(snapshot),
+        snapshot.refit.mtime,
+        runRecordedAt(snapshot, retrainingRunId),
         retrainingRunId,
         retrainingStatus,
       ),
@@ -233,7 +245,7 @@ export function buildStrategyLabResultSnapshot(snapshot: StrategyLabSnapshot): S
         { label: "training window", value: rangeFromUnknown(snapshot.refit.validationBoundary?.trainFeaturePeriod) },
         { label: "symbols", value: snapshot.dataExport.symbols.length > 0 ? snapshot.dataExport.symbols.join(", ") : unavailable() },
         { label: "train / holdout samples", value: `${valueOrUnavailable(snapshot.refit.trainSampleCount)} / ${valueOrUnavailable(snapshot.refit.holdoutSampleCount)}` },
-        { label: "accuracy / baseline", value: `${percent(snapshot.refit.metrics.accuracy)} / ${percent(snapshot.refit.metrics.majorityBaselineAccuracy)}` },
+        { label: "holdout accuracy / majority baseline (historical validation evidence)", value: `${percent(snapshot.refit.metrics.accuracy)} / ${percent(snapshot.refit.metrics.majorityBaselineAccuracy)}` },
         { label: "classification", value: valueOrUnavailable(snapshot.refit.finalClassification) },
       ],
     },
@@ -243,46 +255,52 @@ export function buildStrategyLabResultSnapshot(snapshot: StrategyLabSnapshot): S
       provenance: blockProvenance(
         snapshot.predictions.resolvedSampleProvenance.source || snapshot.predictions.path,
         snapshot.predictions.mtime,
+        runRecordedAt(snapshot, validationRunId),
         validationRunId,
         resolvedStatus,
       ),
       metrics: [
-        { label: "resolved sample size", value: resolvedRows.length > 0 ? resolvedRows.length : unavailable() },
+        { label: "resolved historical validation sample size", value: resolvedRows.length > 0 ? resolvedRows.length : unavailable() },
         { label: "total tracked prediction rows", value: totalTrackedPredictionCount > 0 ? totalTrackedPredictionCount : unavailable() },
-        { label: "resolved coverage", value: numericRatio(resolvedRows.length || null, totalTrackedPredictionCount || null), note: "resolved / tracked rows currently available in the artifact-backed payload" },
-        { label: "directional hit rate", value: directionalHitRate(resolvedRows) },
-        { label: "confusion counts", value: `trueUp ${confusion.trueUp} / trueDown ${confusion.trueDown} / predictedUpActualDown ${confusion.predictedUpActualDown} / predictedDownActualUp ${confusion.predictedDownActualUp} / NA ${confusion.notAvailable}` },
-        { label: "average forward return", value: percent(average(validForwardReturns)), note: "resolved-sample descriptive data only; not performance" },
+        { label: "resolved-sample coverage (historical validation evidence)", value: numericRatio(resolvedRows.length || null, totalTrackedPredictionCount || null), note: "resolved / tracked rows currently available in the artifact-backed payload" },
+        { label: "directional hit rate (historical validation evidence)", value: directionalHitRate(resolvedRows) },
+        { label: "historical validation confusion counts", value: `trueUp ${confusion.trueUp} / trueDown ${confusion.trueDown} / predictedUpActualDown ${confusion.predictedUpActualDown} / predictedDownActualUp ${confusion.predictedDownActualUp} / NA ${confusion.notAvailable}` },
+        { label: "average resolved forward return (historical validation observation)", value: percent(average(validForwardReturns)), note: "resolved-sample descriptive observation only; not a profitability claim or tradable strategy performance" },
       ],
     },
     researchReplay: {
-      title: "Research Replay",
+      title: "Research Replay (historical validation)",
       status: replayStatus,
       provenance: blockProvenance(
         snapshot.predictions.resolvedSampleProvenance.source || snapshot.predictions.path,
         snapshot.predictions.mtime,
+        runRecordedAt(snapshot, replayRunId),
         replayRunId,
         replayStatus,
       ),
       metrics: [
-        { label: "diagnostic sample count", value: validForwardReturns.length > 0 ? validForwardReturns.length : unavailable() },
-        { label: "overall directional hit rate", value: directionalHitRate(resolvedRows) },
-        { label: "by horizon", value: byHorizonSummary(resolvedRows, snapshot.predictions.horizonTradingDays) },
-        { label: "coverage", value: numericRatio(resolvedRows.length || null, totalTrackedPredictionCount || null) },
+        { label: "historical validation sample count", value: validForwardReturns.length > 0 ? validForwardReturns.length : unavailable() },
+        { label: "directional hit rate (historical validation evidence)", value: directionalHitRate(resolvedRows) },
+        { label: "by validation horizon", value: byHorizonSummary(resolvedRows, snapshot.predictions.horizonTradingDays) },
+        { label: "resolved-sample coverage (historical validation evidence)", value: numericRatio(resolvedRows.length || null, totalTrackedPredictionCount || null) },
         {
-          label: "hypothetical frictionless research replay - not performance",
+          label: "hypothetical frictionless resolved-sample observation — not a profitability claim",
           value: percent(average(followModelRows.map((row) => row.forwardReturn as number))),
-          note: "mean forward return of resolved rows where the model direction was up; resolved-row diagnostic only",
+          note: "mean observed forward return of resolved rows where the model direction was up; historical validation only, not tradable strategy performance",
         },
-        { label: "resolved direction counts", value: `up ${resolvedDirectionCounts.up} / down ${resolvedDirectionCounts.down} / NA ${resolvedDirectionCounts.notAvailable}` },
+        { label: "resolved historical validation direction counts", value: `up ${resolvedDirectionCounts.up} / down ${resolvedDirectionCounts.down} / NA ${resolvedDirectionCounts.notAvailable}` },
       ],
     },
     provenanceAndCaveats: {
       title: "Provenance + Caveats",
       status: snapshot.artifactSetStatus === "complete" ? "available" : "not_available",
-      provenance: blockProvenance("existing /api/research/strategy-lab payload", snapshot.generatedAt, null, "available"),
+      provenance: blockProvenance("existing /api/research/strategy-lab payload", null, null, null, "available"),
       mixedRun,
-      caveats: [...RESULT_SNAPSHOT_CAVEATS],
+      caveats: [
+        STRATEGY_LAB_SNAPSHOT_DIAGNOSTIC_CAVEAT,
+        ...RESULT_SNAPSHOT_CAVEATS,
+        "Validation and replay values are historical resolved-sample evidence, not prediction reliability or future performance.",
+      ],
       metrics: [
         { label: "prediction source", value: snapshot.predictions.path || unavailable(), note: valueOrUnavailable(predictionRunId) as string },
         { label: "retraining source", value: snapshot.refit.path || unavailable(), note: valueOrUnavailable(retrainingRunId) as string },

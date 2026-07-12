@@ -2,6 +2,7 @@ import { AlertTriangle, FileText, FlaskConical, ShieldCheck } from "lucide-react
 
 import {
   STRATEGY_LAB_RESULT_NOT_AVAILABLE,
+  STRATEGY_LAB_SNAPSHOT_DIAGNOSTIC_CAVEAT,
   buildStrategyLabResultSnapshot,
   type StrategyLabResultSnapshotBlock,
 } from "@/lib/research/strategyLabResultSnapshot";
@@ -55,8 +56,9 @@ function SnapshotBlock({
 
       <div className="mt-3 rounded-md border border-border/30 bg-card/50 px-2.5 py-2 text-xs leading-5 text-muted-foreground">
         <p className="break-words">source: {block.provenance.source}</p>
-        <p className="break-words">stamp: {block.provenance.stamp}</p>
-        <p className="break-words">run: {block.provenance.runId}</p>
+        <p className="break-words">artifact file mtime: {block.provenance.artifactFileMtime}</p>
+        <p className="break-words">run recorded time: {block.provenance.runRecordedAt}</p>
+        <p className="break-words">run id: {block.provenance.runId}</p>
       </div>
     </div>
   );
@@ -80,7 +82,13 @@ export function StrategyLabSnapshotPanel({ snapshot }: StrategyLabSnapshotPanelP
             <h2 className="text-lg font-semibold">{resultSnapshot.title}</h2>
           </div>
           <p className="max-w-4xl text-sm leading-6 text-muted-foreground">
-            Compact artifact-backed research replay and resolved validation summary from the existing Strategy Lab payload.
+            Compact artifact-backed historical validation summary from the existing Strategy Lab payload.
+          </p>
+          <p className="max-w-4xl text-sm leading-6 text-amber-100">
+            {STRATEGY_LAB_SNAPSHOT_DIAGNOSTIC_CAVEAT}
+          </p>
+          <p className="max-w-4xl text-xs leading-5 text-muted-foreground">
+            Snapshot payload generated time: {resultSnapshot.generatedAt}
           </p>
         </div>
         <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-amber-300/45 bg-amber-500/10 px-2.5 py-1 text-xs font-medium text-amber-100">

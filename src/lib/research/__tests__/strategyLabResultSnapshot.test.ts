@@ -1,5 +1,6 @@
 import {
   STRATEGY_LAB_RESULT_NOT_AVAILABLE,
+  STRATEGY_LAB_SNAPSHOT_DIAGNOSTIC_CAVEAT,
   buildStrategyLabResultSnapshot,
 } from "@/lib/research/strategyLabResultSnapshot";
 import type { StrategyLabSnapshot } from "@/lib/research/strategyLabArtifacts";
@@ -156,14 +157,14 @@ describe("buildStrategyLabResultSnapshot", () => {
     );
     expect(result.resolvedValidation.metrics).toEqual(
       expect.arrayContaining([
-        expect.objectContaining({ label: "resolved sample size", value: 3 }),
-        expect.objectContaining({ label: "directional hit rate", value: "1/3 (33.33%)" }),
+        expect.objectContaining({ label: "resolved historical validation sample size", value: 3 }),
+        expect.objectContaining({ label: "directional hit rate (historical validation evidence)", value: "1/3 (33.33%)" }),
       ]),
     );
     expect(result.researchReplay.metrics).toEqual(
       expect.arrayContaining([
-        expect.objectContaining({ label: "by horizon", value: "5 trading days: 1/3 (33.33%)" }),
-        expect.objectContaining({ label: "hypothetical frictionless research replay - not performance" }),
+        expect.objectContaining({ label: "by validation horizon", value: "5 trading days: 1/3 (33.33%)" }),
+        expect.objectContaining({ label: "hypothetical frictionless resolved-sample observation — not a profitability claim" }),
       ]),
     );
   });
@@ -209,7 +210,7 @@ describe("buildStrategyLabResultSnapshot", () => {
     expect(result.resolvedValidation.metrics).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          label: "resolved coverage",
+          label: "resolved-sample coverage (historical validation evidence)",
           value: "3/5 (60.00%)",
           note: "resolved / tracked rows currently available in the artifact-backed payload",
         }),
@@ -222,13 +223,47 @@ describe("buildStrategyLabResultSnapshot", () => {
 
     expect(result.provenanceAndCaveats.caveats).toEqual(
       expect.arrayContaining([
+        STRATEGY_LAB_SNAPSHOT_DIAGNOSTIC_CAVEAT,
         "artifact-backed research-only snapshot",
         "diagnostic-only",
         "no investment advice",
         "no trading signal",
         "not performance",
+        "Validation and replay values are historical resolved-sample evidence, not prediction reliability or future performance.",
       ]),
     );
+  });
+
+  it("distinguishes coverage, artifact mtime, and recorded run time", () => {
+    const result = buildStrategyLabResultSnapshot(makeSnapshot());
+
+    expect(result.prediction.metrics).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ label: "market data coverage end", value: "2026-07-01" }),
+      ]),
+    );
+    expect(result.prediction.provenance).toMatchObject({
+      artifactFileMtime: "2026-07-02T08:14:19.861Z",
+      runRecordedAt: "2026-07-02T08:14:19.861Z",
+      runId: "run-a",
+    });
+    expect(result.generatedAt).toBe("2026-07-09T01:00:00.000Z");
+  });
+
+  it("labels accuracy, baseline, replay, and returns as historical validation evidence", () => {
+    const result = buildStrategyLabResultSnapshot(makeSnapshot());
+
+    expect(result.retraining.metrics).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ label: "holdout accuracy / majority baseline (historical validation evidence)" }),
+      ]),
+    );
+    expect(result.resolvedValidation.metrics).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ label: "average resolved forward return (historical validation observation)" }),
+      ]),
+    );
+    expect(result.researchReplay.title).toBe("Research Replay (historical validation)");
   });
 
   it("does not mutate the input object", () => {
