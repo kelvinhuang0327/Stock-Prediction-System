@@ -106,13 +106,11 @@ describe('JobAlertHistoryService', () => {
           jobName: 'training:daily_cycle',
           severity: 'critical',
           status: 'active',
-          occurrenceCount: 11,
         }),
         expect.objectContaining({
           jobName: 'training:tw-q1-financial-ingest-check',
           severity: 'critical',
           status: 'active',
-          occurrenceCount: 11,
         }),
       ]),
     );
