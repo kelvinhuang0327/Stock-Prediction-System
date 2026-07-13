@@ -123,7 +123,7 @@ function buildLimitations(parts: Array<string | null | undefined>): string[] {
 export async function getAutonomousDashboardSummary(now = new Date()): Promise<AutonomousDashboardSummary> {
   const alertService = new AutonomousAlertService();
   const alertHistoryService = new JobAlertService();
-  const [snapshot, proposals, trades, reviews, learningInsight, jobHealth, alertReport] = await Promise.all([
+  const [snapshot, proposals, trades, reviewStats, learningInsight, jobHealth, alertReport] = await Promise.all([
     prisma.autonomousResearchSnapshot.findFirst({ orderBy: { createdAt: 'desc' } }),
     prisma.strategyProposal.findMany({
       select: { state: true },
@@ -131,10 +131,9 @@ export async function getAutonomousDashboardSummary(now = new Date()): Promise<A
     prisma.simulatedTrade.findMany({
       select: { status: true },
     }),
-    prisma.tradeReviewReport.findMany({
-      orderBy: { generatedAt: 'desc' },
-      take: 50,
-      select: { generatedAt: true },
+    prisma.tradeReviewReport.aggregate({
+      _count: true,
+      _max: { generatedAt: true },
     }),
     prisma.strategyLearningInsight.findFirst({ orderBy: { createdAt: 'desc' } }),
     getAutonomousJobsStatus(now),
@@ -189,8 +188,8 @@ export async function getAutonomousDashboardSummary(now = new Date()): Promise<A
   };
 
   const reviewSummary = {
-    total: reviews.length,
-    latestGeneratedAt: reviews[0]?.generatedAt.toISOString() ?? null,
+    total: reviewStats._count,
+    latestGeneratedAt: reviewStats._max.generatedAt?.toISOString() ?? null,
   };
 
   const learningSummary = parseLearningSummary(learningInsight);
@@ -201,7 +200,7 @@ export async function getAutonomousDashboardSummary(now = new Date()): Promise<A
     snapshot ? null : 'No autonomous research snapshot yet.',
     proposals.length === 0 ? 'No strategy proposals have been recorded yet.' : null,
     trades.length === 0 ? 'No simulated trades have been recorded yet.' : null,
-    reviews.length === 0 ? 'No review reports have been recorded yet.' : null,
+    reviewStats._count === 0 ? 'No review reports have been recorded yet.' : null,
     !learningInsight ? 'No strategy learning insight has been recorded yet.' : null,
     ...jobHealth.limitations,
   ]);
