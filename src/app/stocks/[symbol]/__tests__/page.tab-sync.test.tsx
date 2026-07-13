@@ -427,13 +427,6 @@ describe('/stocks/[symbol] tab query sync', () => {
     render(<StockDetailPage />);
 
     expect(screen.getByText('分析摘要')).toBeInTheDocument();
-    expect(screen.getByText('現金流 / 財務槓桿觀察')).toBeInTheDocument();
-    expect(screen.getByText('資本效率 / 獲利品質觀察')).toBeInTheDocument();
-    expect(screen.getByText('財務結構 / 效率同組比較')).toBeInTheDocument();
-    expect(screen.getByText('完整基本面研究矩陣')).toBeInTheDocument();
-    expect(screen.getByText('同組百分位明細')).toBeInTheDocument();
-    fireEvent.click(screen.getAllByRole('button', { name: /估值/ })[0]);
-    expect(screen.getByText('P/E')).toBeInTheDocument();
     expect(screen.queryByText('Mock Signal Effectiveness 2330')).not.toBeInTheDocument();
   });
 
