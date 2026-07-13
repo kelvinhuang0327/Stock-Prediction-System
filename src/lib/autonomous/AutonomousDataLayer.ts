@@ -70,7 +70,10 @@ async function buildTechnicalStatus(): Promise<DataLayerStatus> {
 }
 
 async function buildFundamentalStatus(): Promise<DataLayerStatus> {
-  const latestRevenue = await prisma.monthlyRevenue.findFirst({ orderBy: [{ year: 'desc' }, { month: 'desc' }] });
+  const latestRevenue = await prisma.monthlyRevenue.findFirst({
+    select: { year: true, month: true },
+    orderBy: [{ year: 'desc' }, { month: 'desc' }],
+  });
   const latestReport = await prisma.financialReport.findFirst({ orderBy: [{ year: 'desc' }, { quarter: 'desc' }] });
   const totalStocks = await prisma.stock.count();
   const revenueStocks = await prisma.monthlyRevenue.groupBy({ by: ['stockId'], _count: { _all: true } });
