@@ -1,18 +1,21 @@
 import { prisma } from '@/lib/prisma';
 import { AutonomousAlertService } from '../AutonomousAlertService';
+import { getAutonomousJobNames } from '../autonomousJobRegistry';
+
+const autonomousJobNames = getAutonomousJobNames();
 
 async function cleanup() {
   await prisma.jobRunLog.deleteMany({
     where: {
       jobName: {
-        in: ['autonomous:daily', 'autonomous:monitor', 'autonomous:review', 'autonomous:learning'],
+        in: autonomousJobNames,
       },
     },
   });
   await prisma.jobAlert.deleteMany({
     where: {
       jobName: {
-        in: ['autonomous:daily', 'autonomous:monitor', 'autonomous:review', 'autonomous:learning'],
+        in: autonomousJobNames,
       },
     },
   });
@@ -30,64 +33,29 @@ describe('AutonomousAlertService', () => {
   });
 
   test('returns empty alerts when all jobs are healthy', async () => {
+    const now = new Date('2026-03-31T23:45:00.000Z');
+
     await prisma.jobRunLog.createMany({
-      data: [
-        {
-          jobName: 'autonomous:daily',
-          scheduledFor: new Date('2026-03-31T00:00:00.000Z'),
-          startedAt: new Date('2026-03-31T00:10:00.000Z'),
-          finishedAt: new Date('2026-03-31T00:20:00.000Z'),
+      data: autonomousJobNames.map((jobName) => {
+        const scheduledFor = now;
+
+        return {
+          jobName,
+          scheduledFor,
+          startedAt: scheduledFor,
+          finishedAt: new Date(scheduledFor.getTime() + 60_000),
           status: 'success',
           runMode: 'live_run',
           triggerSource: 'cli',
-          idempotencyKey: 'autonomous:daily:2026-03-31T00:00:00.000Z',
-          summary: 'daily success',
+          idempotencyKey: `${jobName}:${scheduledFor.toISOString()}`,
+          summary: `${jobName} success`,
           errorMessage: null,
           metadata: null,
-        },
-        {
-          jobName: 'autonomous:monitor',
-          scheduledFor: new Date('2026-03-31T12:30:00.000Z'),
-          startedAt: new Date('2026-03-31T12:30:00.000Z'),
-          finishedAt: new Date('2026-03-31T12:31:00.000Z'),
-          status: 'success',
-          runMode: 'live_run',
-          triggerSource: 'local_scheduler',
-          idempotencyKey: 'autonomous:monitor:2026-03-31T12:30:00.000Z',
-          summary: 'monitor success',
-          errorMessage: null,
-          metadata: null,
-        },
-        {
-          jobName: 'autonomous:review',
-          scheduledFor: new Date('2026-03-31T00:00:00.000Z'),
-          startedAt: new Date('2026-03-31T00:10:00.000Z'),
-          finishedAt: new Date('2026-03-31T00:20:00.000Z'),
-          status: 'success',
-          runMode: 'live_run',
-          triggerSource: 'cli',
-          idempotencyKey: 'autonomous:review:2026-03-31T00:00:00.000Z',
-          summary: 'review success',
-          errorMessage: null,
-          metadata: null,
-        },
-        {
-          jobName: 'autonomous:learning',
-          scheduledFor: new Date('2026-03-31T00:00:00.000Z'),
-          startedAt: new Date('2026-03-31T00:10:00.000Z'),
-          finishedAt: new Date('2026-03-31T00:20:00.000Z'),
-          status: 'success',
-          runMode: 'live_run',
-          triggerSource: 'cli',
-          idempotencyKey: 'autonomous:learning:2026-03-31T00:00:00.000Z',
-          summary: 'learning success',
-          errorMessage: null,
-          metadata: null,
-        },
-      ],
+        };
+      }),
     });
 
-    const report = await service.listAlerts({}, new Date('2026-03-31T12:45:00.000Z'));
+    const report = await service.listAlerts({}, now);
 
     expect(report.alerts).toEqual([]);
     expect(report.summary.total).toBe(0);
