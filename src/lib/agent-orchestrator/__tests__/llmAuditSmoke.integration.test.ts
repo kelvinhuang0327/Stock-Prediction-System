@@ -1,391 +1,337 @@
 /**
- * LLM Audit Guard — Controlled Integration Smoke Test
+ * LLM Audit Guard — controlled aiService integration smoke tests.
  *
- * PURPOSE:
- *   Verify that llm_audit.jsonl is written correctly by the real aiService path
- *   when a safe fake echo command is used as the external worker command.
- *
- * DESIGN:
- *   - fs module is NOT mocked → real llm_audit.jsonl is written
- *   - llmExecutionPolicy is mocked to return allowed=true (avoids Python subprocess)
- *   - recordLlmExecution is mocked to no-op
- *   - External command = "echo" (safe, deterministic, no real LLM)
- *   - Smoke entries are cleaned from llm_audit.jsonl in afterAll
- *
- * HARD RULES SATISFIED:
- *   - Does not call real Codex / Claude / GitHub Copilot
- *   - Does not bypass aiService (calls executeWorkerProviderCommand directly)
- *   - Does not manually fabricate audit logs
- *   - Does not change scheduler state
- *   - Does not change provider config permanently
+ * The policy subprocess is mocked, but the audit and usage filesystem writers
+ * are real. Every writer is routed to one OS temporary root owned by this Jest
+ * process. Provider execution is limited to deterministic local printf calls.
  */
 
-import { readFileSync, existsSync, writeFileSync } from 'node:fs';
+import {
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs';
+import { tmpdir } from 'node:os';
 import nodePath from 'node:path';
 import type { ProjectProfile } from '../types';
 
-// ── Mock ONLY the execution policy (Python subprocess) ──────────────────────
-// We do NOT mock node:fs so real files get written.
 jest.mock('../llmExecutionPolicy', () => ({
-  evaluateExecutionPolicy: jest.fn().mockResolvedValue({
+  evaluateExecutionPolicy: jest.fn(),
+  recordLlmExecution: jest.fn(),
+  getPolicySkipMessage: jest.fn((reason: string | null) => reason ?? 'SCHEDULER_DISABLED'),
+}));
+
+import { executeWorkerProviderCommand } from '../aiService';
+import { isExternalProvider } from '../llmAuditGuard';
+import {
+  evaluateExecutionPolicy,
+  recordLlmExecution,
+  type LlmPolicyDecision,
+} from '../llmExecutionPolicy';
+import type { WorkerExecutionInput } from '../providers';
+
+const mockEvaluateExecutionPolicy = evaluateExecutionPolicy as jest.MockedFunction<typeof evaluateExecutionPolicy>;
+const mockRecordLlmExecution = recordLlmExecution as jest.MockedFunction<typeof recordLlmExecution>;
+
+let temporaryRoot = '';
+let cwdSpy: jest.SpyInstance<string, []>;
+
+function auditLogPath(): string {
+  return nodePath.join(temporaryRoot, 'runtime', 'agent_orchestrator', 'llm_audit.jsonl');
+}
+
+function usageLogPath(): string {
+  return nodePath.join(temporaryRoot, 'runtime', 'agent_orchestrator', 'llm_usage.jsonl');
+}
+
+function readJsonl(filePath: string): Record<string, unknown>[] {
+  if (!existsSync(filePath)) return [];
+  return readFileSync(filePath, 'utf-8')
+    .split('\n')
+    .filter(Boolean)
+    .map((line) => JSON.parse(line) as Record<string, unknown>);
+}
+
+function auditRecordsFor(taskId: number): Record<string, unknown>[] {
+  return readJsonl(auditLogPath()).filter((record) => record['task_id'] === String(taskId));
+}
+
+function usageRecordsFor(taskId: number): Record<string, unknown>[] {
+  return readJsonl(usageLogPath()).filter((record) => record['taskId'] === String(taskId));
+}
+
+function allowedPolicyDecision(taskId: number): LlmPolicyDecision {
+  return {
     allowed: true,
     mode: 'safe-run',
     scheduler_enabled: true,
     caller: 'ai_service',
     caller_context: 'manual',
     provider: 'copilot-daemon',
-    model: '',
-    task_id: 'smoke-9999',
+    model: 'smoke-model',
+    task_id: String(taskId),
     skip_reason: null,
     blocked_execution_count: 0,
     last_llm_call_at: null,
     state_path: '',
     event_log_path: '',
-    usage_log_path: '',
-  }),
-  recordLlmExecution: jest.fn().mockResolvedValue({ ok: true, last_llm_call_at: new Date().toISOString() }),
-  getPolicySkipMessage: jest.fn().mockReturnValue('SCHEDULER_DISABLED'),
-}));
-
-import { executeWorkerProviderCommand } from '../aiService';
-import type { WorkerExecutionInput } from '../providers';
-
-// ── Paths ────────────────────────────────────────────────────────────────────
-
-const AUDIT_LOG = nodePath.join(process.cwd(), 'runtime', 'agent_orchestrator', 'llm_audit.jsonl');
-const USAGE_LOG = nodePath.join(process.cwd(), 'runtime', 'agent_orchestrator', 'llm_usage.jsonl');
-
-const SMOKE_TASK_ID = 'smoke-audit-9999';
-// Audit records write taskId as the numeric string "9999".
-// JSONL is written compact (no spaces after colons).
-const SMOKE_AUDIT_MARKER = '"task_id":"9999"';
-// Usage log is restored by snapshot in afterAll (execution records don't carry task_id).
-
-// ── Cleanup helpers ──────────────────────────────────────────────────────────
-
-function readAuditLines(): Record<string, unknown>[] {
-  if (!existsSync(AUDIT_LOG)) return [];
-  return readFileSync(AUDIT_LOG, 'utf-8')
-    .split('\n')
-    .filter(Boolean)
-    .map((l) => {
-      try { return JSON.parse(l) as Record<string, unknown>; }
-      catch { return null; }
-    })
-    .filter((r): r is Record<string, unknown> => r !== null);
+  };
 }
 
-function readUsageLines(): Record<string, unknown>[] {
-  if (!existsSync(USAGE_LOG)) return [];
-  return readFileSync(USAGE_LOG, 'utf-8')
-    .split('\n')
-    .filter(Boolean)
-    .map((l) => {
-      try { return JSON.parse(l) as Record<string, unknown>; }
-      catch { return null; }
-    })
-    .filter((r): r is Record<string, unknown> => r !== null);
-}
+function buildSmokeInput(taskId: number): WorkerExecutionInput {
+  const smokeProfile = {
+    project_name: 'smoke-test',
+    project_slug: 'smoke',
+    backlog_path: nodePath.join(temporaryRoot, 'backlog.md'),
+    orchestrator_root: temporaryRoot,
+    task_storage_path: temporaryRoot,
+    log_storage_path: temporaryRoot,
+    database_path: nodePath.join(temporaryRoot, 'unused.db'),
+    default_schedule_minutes: 60,
+    planner_provider: 'local-planner',
+    worker_provider: 'copilot-daemon',
+    planner_rules: { max_tasks_per_run: 1 },
+    worker_rules: { max_concurrent: 1 },
+    protected_paths: [],
+    required_checks: [],
+    allowed_reference_paths: [],
+    required_contract_fields: [],
+    required_result_fields: [],
+    ui: {},
+  } as unknown as ProjectProfile;
 
-/** Remove smoke-tagged lines from a JSONL file after the test run. */
-function cleanupSmokeLines(filePath: string, marker: string): number {
-  if (!existsSync(filePath)) return 0;
-  const original = readFileSync(filePath, 'utf-8');
-  const lines = original.split('\n').filter(Boolean);
-  const kept = lines.filter((l) => !l.includes(marker));
-  const removed = lines.length - kept.length;
-  if (removed > 0) {
-    writeFileSync(filePath, kept.join('\n') + (kept.length > 0 ? '\n' : ''), 'utf-8');
-  }
-  return removed;
-}
-
-// ── Minimal profile ──────────────────────────────────────────────────────────
-
-const smokeProfile = {
-  project_name: 'smoke-test',
-  project_slug: 'smoke',
-  backlog_path: '/dev/null',
-  orchestrator_root: process.cwd(),
-  task_storage_path: process.cwd(),
-  log_storage_path: process.cwd(),
-  database_path: '/dev/null',
-  default_schedule_minutes: 60,
-  planner_provider: 'local-planner',
-  worker_provider: 'copilot-daemon',
-  planner_rules: { max_tasks_per_run: 1 },
-  worker_rules: { max_concurrent: 1 },
-  protected_paths: [],
-  required_checks: [],
-  allowed_reference_paths: [],
-  required_contract_fields: [],
-  required_result_fields: [],
-  ui: {},
-} as unknown as ProjectProfile;
-
-// ── Shared smoke input ────────────────────────────────────────────────────────
-
-function buildSmokeInput(taskId: string | number = SMOKE_TASK_ID): WorkerExecutionInput {
   return {
     workerProvider: 'copilot-daemon',
     workerCopilotModel: 'smoke-model',
     callerContext: 'manual',
-    taskId: Number(typeof taskId === 'string' ? 9999 : taskId),
-    promptPath: '/dev/null',
-    contractPath: '/dev/null',
-    objective: `LLM Audit Guard smoke test — taskId=${SMOKE_TASK_ID}`,
+    taskId,
+    promptPath: nodePath.join(temporaryRoot, 'prompt.md'),
+    contractPath: nodePath.join(temporaryRoot, 'contract.json'),
+    objective: `LLM Audit Guard smoke test ${taskId}`,
     profile: smokeProfile,
   };
 }
 
-// ── Baselines & snapshots ─────────────────────────────────────────────────────
-
-let auditLinesBefore = 0;
-let usageSnapshotLines: string[] = [];
-
 beforeAll(() => {
-  auditLinesBefore = readAuditLines().length;
-  // Snapshot the usage log so we can restore it exactly (usage records don't carry task_id)
-  usageSnapshotLines = existsSync(USAGE_LOG)
-    ? readFileSync(USAGE_LOG, 'utf-8').split('\n').filter(Boolean)
-    : [];
+  temporaryRoot = mkdtempSync(nodePath.join(tmpdir(), `llm-audit-smoke-${process.pid}-`));
+  cwdSpy = jest.spyOn(process, 'cwd').mockReturnValue(temporaryRoot);
+});
+
+beforeEach(() => {
+  mockEvaluateExecutionPolicy.mockReset();
+  mockEvaluateExecutionPolicy.mockImplementation(async (input) => (
+    allowedPolicyDecision(Number(input.taskId))
+  ));
+  mockRecordLlmExecution.mockReset();
+  mockRecordLlmExecution.mockResolvedValue({
+    ok: true,
+    last_llm_call_at: '2026-07-13T00:00:00.000Z',
+  });
+  cwdSpy.mockReturnValue(temporaryRoot);
 });
 
 afterAll(() => {
-  // Audit: remove lines that carry the smoke task_id (compact JSON, no spaces)
-  const auditRemoved = cleanupSmokeLines(AUDIT_LOG, SMOKE_AUDIT_MARKER);
-
-  // Usage: restore to exact pre-test snapshot (execution records have no task_id marker)
-  const usageNow = existsSync(USAGE_LOG)
-    ? readFileSync(USAGE_LOG, 'utf-8').split('\n').filter(Boolean)
-    : [];
-  const usageRemoved = usageNow.length - usageSnapshotLines.length;
-  writeFileSync(
-    USAGE_LOG,
-    usageSnapshotLines.join('\n') + (usageSnapshotLines.length > 0 ? '\n' : ''),
-    'utf-8',
-  );
-
-  console.log(`[smoke-cleanup] Removed ${auditRemoved} audit lines (task_id=9999), restored usage log (−${usageRemoved} lines).`);
+  mockEvaluateExecutionPolicy.mockReset();
+  mockRecordLlmExecution.mockReset();
+  cwdSpy.mockRestore();
+  rmSync(temporaryRoot, { recursive: true, force: true });
 });
 
-// ────────────────────────────────────────────────────────────────────────────
-// SMOKE 1: Happy path — LLM_CALL_ATTEMPT + LLM_CALL_RESULT (success)
-// ────────────────────────────────────────────────────────────────────────────
-test('SMOKE-1: executeWorkerProviderCommand writes LLM_CALL_ATTEMPT + LLM_CALL_RESULT to real llm_audit.jsonl', async () => {
-  const input = buildSmokeInput();
+test('SMOKE-1: allowed execution persists correlated ATTEMPT before command and RESULT', async () => {
+  const taskId = 9901;
+  let attemptWasPersistedBeforeCommand = false;
+  const interpolateCommand = jest.fn((command: string) => {
+    const records = auditRecordsFor(taskId);
+    attemptWasPersistedBeforeCommand = records.some(
+      (record) => record['event_type'] === 'LLM_CALL_ATTEMPT',
+    ) && records.every((record) => record['event_type'] !== 'LLM_CALL_RESULT');
+    return command;
+  });
 
-  const result = await executeWorkerProviderCommand({
-    input,
-    externalCommand: `echo "# Worker Completion Summary\n\nObjective: ${SMOKE_TASK_ID}"`,
+  const output = await executeWorkerProviderCommand({
+    input: buildSmokeInput(taskId),
+    externalCommand: "printf '# Worker Completion Summary\\nObjective: smoke-1\\n'",
     callerContext: 'manual',
-    interpolateCommand: (cmd) => cmd,
+    interpolateCommand,
     parseChangedFiles: () => [],
     detectProviderRateLimit: () => null,
   });
 
-  // Worker should succeed (echo exits 0)
-  expect(result.runtimeFailed).toBe(false);
+  expect(output.runtimeFailed).toBe(false);
+  expect(interpolateCommand).toHaveBeenCalledTimes(1);
+  expect(attemptWasPersistedBeforeCommand).toBe(true);
 
-  // Read audit log
-  const auditLines = readAuditLines();
-  const smokeLines = auditLines.filter((r) =>
-    typeof r['task_id'] === 'string' && r['task_id'].includes('9999') ||
-    typeof r['trigger_source'] === 'string'
-  );
+  const records = auditRecordsFor(taskId);
+  expect(records.map((record) => record['event_type'])).toEqual([
+    'LLM_CALL_ATTEMPT',
+    'LLM_CALL_RESULT',
+  ]);
+  const [attempt, result] = records;
+  expect(attempt['provider']).toBe('copilot-daemon');
+  expect(attempt['usage_role']).toBe('worker');
+  expect(attempt['runner_type']).toBe('ai_service');
+  expect(attempt['trigger_source']).toBe('manual_preview');
+  expect(attempt['caller_file']).toBe('aiService.ts');
+  expect(result['success']).toBe(true);
+  expect(result['correlation_id']).toBe(attempt['correlation_id']);
+  expect(typeof result['duration_ms']).toBe('number');
+});
 
-  const newLines = auditLines.slice(auditLinesBefore);
-  expect(newLines.length).toBeGreaterThanOrEqual(2);
+test('SMOKE-2: allowed execution writes usage start followed by usage success', async () => {
+  const taskId = 9902;
 
-  // Find ATTEMPT
-  const attempt = newLines.find((r) => r['event_type'] === 'LLM_CALL_ATTEMPT');
-  expect(attempt).toBeDefined();
-  expect(attempt!['provider']).toBe('copilot-daemon');
-  expect(attempt!['usage_role']).toBe('worker');
-  expect(attempt!['runner_type']).toBe('ai_service');
-  expect(attempt!['blocked']).toBe(false);
-  expect(attempt!['correlation_id']).toBeTruthy();
-  expect(attempt!['timestamp']).toBeTruthy();
-  expect(attempt!['trigger_source']).toBe('manual_preview');
-  expect(attempt!['caller_file']).toBe('aiService.ts');
+  const output = await executeWorkerProviderCommand({
+    input: buildSmokeInput(taskId),
+    externalCommand: "printf '# Worker Completion Summary\\nObjective: smoke-2\\n'",
+    callerContext: 'manual',
+    interpolateCommand: (command) => command,
+    parseChangedFiles: () => [],
+    detectProviderRateLimit: () => null,
+  });
 
-  // Find RESULT
-  const resultRecord = newLines.find((r) => r['event_type'] === 'LLM_CALL_RESULT');
-  expect(resultRecord).toBeDefined();
-  expect(resultRecord!['success']).toBe(true);
-  expect(resultRecord!['provider']).toBe('copilot-daemon');
-  expect(resultRecord!['usage_role']).toBe('worker');
-  expect(typeof resultRecord!['duration_ms']).toBe('number');
-  // ATTEMPT and RESULT must share correlation_id
-  expect(resultRecord!['correlation_id']).toBe(attempt!['correlation_id']);
+  expect(output.runtimeFailed).toBe(false);
+  const records = usageRecordsFor(taskId);
+  expect(records.map((record) => record['event'])).toEqual([
+    'provider_execution_start',
+    'provider_execution_success',
+  ]);
+  expect(records[0]['decision']).toBe('allow');
+  expect(records[1]['decision']).toBe('success');
+  expect(records[0]['provider']).toBe('copilot-daemon');
+  expect(records[0]['desiredModel']).toBe('smoke-model');
+  expect(records[0]['actualModel']).toBe('provider-managed');
+});
 
-  console.log('[SMOKE-1] ATTEMPT:', JSON.stringify(attempt, null, 2));
-  console.log('[SMOKE-1] RESULT:', JSON.stringify(resultRecord, null, 2));
-}, 15000);
-
-// ────────────────────────────────────────────────────────────────────────────
-// SMOKE 2: Usage log also records execution
-// ────────────────────────────────────────────────────────────────────────────
-test('SMOKE-2: llm_usage.jsonl also records provider_execution_start and provider_execution_success', async () => {
-  const usageLinesAfterSmoke1 = readUsageLines();
-  const newUsageLines = usageLinesAfterSmoke1.slice(usageSnapshotLines.length);
-
-  // Should have at least preflight + execution start + execution success
-  expect(newUsageLines.length).toBeGreaterThanOrEqual(2);
-
-  const startLine = newUsageLines.find((r) => r['event'] === 'provider_execution_start');
-  expect(startLine).toBeDefined();
-  expect(startLine!['phase']).toBe('execution');
-  expect(startLine!['provider']).toBe('copilot-daemon');
-  expect(startLine!['decision']).toBe('allow');
-
-  const successLine = newUsageLines.find((r) => r['event'] === 'provider_execution_success');
-  expect(successLine).toBeDefined();
-  expect(successLine!['phase']).toBe('execution');
-  expect(successLine!['decision']).toBe('success');
-
-  console.log('[SMOKE-2] Usage start:', JSON.stringify(startLine, null, 2));
-  console.log('[SMOKE-2] Usage success:', JSON.stringify(successLine, null, 2));
-}, 15000);
-
-// ────────────────────────────────────────────────────────────────────────────
-// SMOKE 3: BLOCKED path — policy-blocked execution writes LLM_CALL_BLOCKED, NOT ATTEMPT
-// ────────────────────────────────────────────────────────────────────────────
-test('SMOKE-3: Policy-blocked execution writes LLM_CALL_BLOCKED to llm_audit.jsonl', async () => {
-  const { evaluateExecutionPolicy } = await import('../llmExecutionPolicy');
-  const mockPolicy = evaluateExecutionPolicy as jest.Mock;
-  const origImpl = mockPolicy.getMockImplementation();
-
-  // Override: return blocked
-  mockPolicy.mockResolvedValueOnce({
+test('SMOKE-3: policy block writes audit and usage BLOCKED without executing a command', async () => {
+  const taskId = 9903;
+  mockEvaluateExecutionPolicy.mockResolvedValueOnce({
+    ...allowedPolicyDecision(taskId),
     allowed: false,
     mode: 'hard-off',
-    scheduler_enabled: true,
-    caller: 'ai_service',
-    caller_context: 'manual',
-    provider: 'copilot-daemon',
-    model: '',
-    task_id: 'smoke-9999-blocked',
     skip_reason: 'GLOBAL_HARD_OFF',
     blocked_execution_count: 1,
-    last_llm_call_at: null,
-    state_path: '',
-    event_log_path: '',
-    usage_log_path: '',
   });
+  const interpolateCommand = jest.fn((command: string) => command);
+  const commandSentinel = nodePath.join(temporaryRoot, 'policy-block-command-executed');
 
-  const linesBefore = readAuditLines().length;
-
-  const input = buildSmokeInput('smoke-9999-blocked');
-  await executeWorkerProviderCommand({
-    input,
-    externalCommand: 'echo should-never-run',
+  const output = await executeWorkerProviderCommand({
+    input: buildSmokeInput(taskId),
+    externalCommand: `printf 'executed' > ${JSON.stringify(commandSentinel)}`,
     callerContext: 'manual',
-    interpolateCommand: (cmd) => cmd,
+    interpolateCommand,
     parseChangedFiles: () => [],
     detectProviderRateLimit: () => null,
   });
 
-  const auditLines = readAuditLines();
-  const newLines = auditLines.slice(linesBefore);
-
-  // A BLOCKED event should be written
-  const blocked = newLines.find((r) => r['event_type'] === 'LLM_CALL_BLOCKED');
-  expect(blocked).toBeDefined();
-  expect(blocked!['blocked']).toBe(true);
-  expect(blocked!['block_reason']).toBe('GLOBAL_HARD_OFF');
-  expect(blocked!['provider']).toBe('copilot-daemon');
-
-  // No ATTEMPT should be written (policy blocked before exec)
-  const attempt = newLines.find((r) => r['event_type'] === 'LLM_CALL_ATTEMPT');
-  expect(attempt).toBeUndefined();
-
-  console.log('[SMOKE-3] BLOCKED:', JSON.stringify(blocked, null, 2));
-}, 15000);
-
-// ────────────────────────────────────────────────────────────────────────────
-// SMOKE 4: Allowlist-blocked provider writes LLM_CALL_BLOCKED, NOT ATTEMPT
-// ────────────────────────────────────────────────────────────────────────────
-test('SMOKE-4: Allowlist-blocked provider writes LLM_CALL_BLOCKED, no ATTEMPT written', async () => {
-  const linesBefore = readAuditLines().length;
-
-  const input: WorkerExecutionInput = {
-    ...buildSmokeInput(),
-    workerProvider: 'unknown-provider-xyz' as unknown as 'copilot-daemon',
-  };
-
-  await executeWorkerProviderCommand({
-    input,
-    externalCommand: 'echo should-never-run',
-    callerContext: 'manual',
-    interpolateCommand: (cmd) => cmd,
-    parseChangedFiles: () => [],
-    detectProviderRateLimit: () => null,
-  });
-
-  const newLines = readAuditLines().slice(linesBefore);
-  const blocked = newLines.find((r) => r['event_type'] === 'LLM_CALL_BLOCKED');
-  expect(blocked).toBeDefined();
-  expect(blocked!['blocked']).toBe(true);
-  expect(blocked!['provider']).toBe('unknown-provider-xyz');
-
-  // No ATTEMPT
-  const attempt = newLines.find((r) => r['event_type'] === 'LLM_CALL_ATTEMPT');
-  expect(attempt).toBeUndefined();
-
-  console.log('[SMOKE-4] Allowlist BLOCKED:', JSON.stringify(blocked, null, 2));
-}, 15000);
-
-// ────────────────────────────────────────────────────────────────────────────
-// SMOKE 5: Planner provider is local — no audit written
-// ────────────────────────────────────────────────────────────────────────────
-test('SMOKE-5: Local providers (local-planner, local-review) do NOT trigger external calls', () => {
-  const { isExternalProvider } = require('../llmAuditGuard') as typeof import('../llmAuditGuard');
-
-  // These must never be classified as external
-  expect(isExternalProvider('local-planner')).toBe(false);
-  expect(isExternalProvider('local-review')).toBe(false);
-  expect(isExternalProvider('local')).toBe(false);
-  expect(isExternalProvider('deterministic')).toBe(false);
-
-  // External providers must be classified correctly
-  expect(isExternalProvider('copilot-daemon')).toBe(true);
-  expect(isExternalProvider('claude')).toBe(true);
-  expect(isExternalProvider('codex')).toBe(true);
+  expect(output.runtimeFailed).toBe(true);
+  expect(interpolateCommand).not.toHaveBeenCalled();
+  expect(mockRecordLlmExecution).not.toHaveBeenCalled();
+  expect(existsSync(commandSentinel)).toBe(false);
+  const auditRecords = auditRecordsFor(taskId);
+  expect(auditRecords.map((record) => record['event_type'])).toEqual(['LLM_CALL_BLOCKED']);
+  expect(auditRecords[0]['block_reason']).toBe('GLOBAL_HARD_OFF');
+  expect(auditRecords.some((record) => record['event_type'] === 'LLM_CALL_ATTEMPT')).toBe(false);
+  const usageRecords = usageRecordsFor(taskId);
+  expect(usageRecords.map((record) => record['event'])).toEqual(['provider_blocked']);
+  expect(usageRecords[0]['skipReason']).toBe('GLOBAL_HARD_OFF');
 });
 
-// ────────────────────────────────────────────────────────────────────────────
-// SMOKE 6: Fail-closed — audit write failure blocks exec
-// ────────────────────────────────────────────────────────────────────────────
-test('SMOKE-6: Fail-closed — writeAuditAttempt failure returns written=false (cite unit test 21)', () => {
-  // This is covered by unit test #21 in llmAuditGuard.test.ts:
-  //   "ATTEMPT write failure returns written=false (fail-closed)"
-  //   mockAppend.mockImplementationOnce(() => { throw new Error('disk full') })
-  //   → result.written === false, result.blockReason === 'BLOCKED_AUDIT_LOG_UNAVAILABLE'
-  //
-  // We cite the passing test rather than risk real filesystem mutation.
-  // The integration path in aiService.ts checks:
-  //   if (!auditAttempt.written) { return buildPolicyBlockedWorkerOutput(..., null) }
-  // This guard is at line ~110 of aiService.ts.
+test('SMOKE-4: allowlist block writes audit and usage BLOCKED without policy or command execution', async () => {
+  const taskId = 9904;
+  const input = buildSmokeInput(taskId);
+  input.workerProvider = 'unknown-provider-xyz' as WorkerExecutionInput['workerProvider'];
+  const interpolateCommand = jest.fn((command: string) => command);
+  const commandSentinel = nodePath.join(temporaryRoot, 'allowlist-block-command-executed');
 
-  const { writeAuditAttempt } = require('../llmAuditGuard') as typeof import('../llmAuditGuard');
-
-  // Verify the function signature contracts hold in real code
-  // (fs is NOT mocked here, but we use a non-existent path to trigger failure)
-  // Temporarily point cwd to a non-existent path to force write failure
-  const cwdSpy = jest.spyOn(process, 'cwd').mockReturnValueOnce('/dev/null/nonexistent/path');
-
-  const result = writeAuditAttempt({
-    runnerType: 'ai_service',
-    usageRole: 'worker',
-    provider: 'copilot-daemon',
-    taskId: 'smoke-fail-closed',
+  const output = await executeWorkerProviderCommand({
+    input,
+    externalCommand: `printf 'executed' > ${JSON.stringify(commandSentinel)}`,
+    callerContext: 'manual',
+    interpolateCommand,
+    parseChangedFiles: () => [],
+    detectProviderRateLimit: () => null,
   });
 
-  // Restore
-  cwdSpy.mockRestore();
+  expect(output.runtimeFailed).toBe(true);
+  expect(mockEvaluateExecutionPolicy).not.toHaveBeenCalled();
+  expect(mockRecordLlmExecution).not.toHaveBeenCalled();
+  expect(interpolateCommand).not.toHaveBeenCalled();
+  expect(existsSync(commandSentinel)).toBe(false);
+  const auditRecords = auditRecordsFor(taskId);
+  expect(auditRecords.map((record) => record['event_type'])).toEqual(['LLM_CALL_BLOCKED']);
+  expect(auditRecords[0]['block_reason']).toBe('PROVIDER_NOT_IN_ALLOWLIST');
+  expect(auditRecords.some((record) => record['event_type'] === 'LLM_CALL_ATTEMPT')).toBe(false);
+  const usageRecords = usageRecordsFor(taskId);
+  expect(usageRecords.map((record) => record['event'])).toEqual(['provider_blocked']);
+  expect(usageRecords[0]['skipReason']).toBe('PROVIDER_NOT_IN_ALLOWLIST');
+});
 
-  expect(result.written).toBe(false);
-  expect(result.blockReason).toBe('BLOCKED_AUDIT_LOG_UNAVAILABLE');
-  console.log('[SMOKE-6] Fail-closed verified: written=false, blockReason=', result.blockReason);
-}, 5000);
+test('SMOKE-5: local classification stays local and rate limits write failed RESULT and usage', async () => {
+  expect(isExternalProvider('local-planner')).toBe(false);
+  expect(isExternalProvider('local-review')).toBe(false);
+  expect(isExternalProvider('deterministic')).toBe(false);
+  expect(isExternalProvider('copilot-daemon')).toBe(true);
+
+  const taskId = 9905;
+  const output = await executeWorkerProviderCommand({
+    input: buildSmokeInput(taskId),
+    externalCommand: "printf 'status 429 rate limit\\n'",
+    callerContext: 'manual',
+    interpolateCommand: (command) => command,
+    parseChangedFiles: () => [],
+    detectProviderRateLimit: (message) => message.includes('429')
+      ? {
+          finalMessage: message.trim(),
+          resetHint: 'wait for deterministic reset',
+          httpStatus: 429,
+        }
+      : null,
+  });
+
+  expect(output.runtimeFailed).toBe(true);
+  expect(output.failureReason).toBe('rate_limit');
+  expect(output.httpStatus).toBe(429);
+  const auditRecords = auditRecordsFor(taskId);
+  expect(auditRecords.map((record) => record['event_type'])).toEqual([
+    'LLM_CALL_ATTEMPT',
+    'LLM_CALL_RESULT',
+  ]);
+  expect(auditRecords[1]['success']).toBe(false);
+  expect(auditRecords[1]['rate_limit_type']).toBe('provider_rate_limit');
+  expect(auditRecords[1]['correlation_id']).toBe(auditRecords[0]['correlation_id']);
+  const usageRecords = usageRecordsFor(taskId);
+  expect(usageRecords.map((record) => record['event'])).toEqual([
+    'provider_execution_start',
+    'provider_execution_failed',
+  ]);
+  expect(usageRecords[1]['errorCode']).toBe('provider_rate_limit');
+  expect(usageRecords[1]['decision']).toBe('failed');
+});
+
+test('SMOKE-6: ATTEMPT write failure fails closed before record or command execution', async () => {
+  const taskId = 9906;
+  const failClosedRoot = nodePath.join(temporaryRoot, 'fail-closed');
+  mkdirSync(failClosedRoot, { recursive: true });
+  writeFileSync(nodePath.join(failClosedRoot, 'runtime'), 'not a directory', 'utf-8');
+  const commandSentinel = nodePath.join(failClosedRoot, 'command-executed');
+  const interpolateCommand = jest.fn((command: string) => command);
+  cwdSpy.mockReturnValue(failClosedRoot);
+
+  const output = await executeWorkerProviderCommand({
+    input: buildSmokeInput(taskId),
+    externalCommand: `printf 'executed' > ${JSON.stringify(commandSentinel)}`,
+    callerContext: 'manual',
+    interpolateCommand,
+    parseChangedFiles: () => [],
+    detectProviderRateLimit: () => null,
+  }).finally(() => cwdSpy.mockReturnValue(temporaryRoot));
+
+  expect(output.runtimeFailed).toBe(true);
+  expect(interpolateCommand).not.toHaveBeenCalled();
+  expect(mockRecordLlmExecution).not.toHaveBeenCalled();
+  expect(existsSync(commandSentinel)).toBe(false);
+  expect(auditRecordsFor(taskId)).toEqual([]);
+});
