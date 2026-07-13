@@ -56,7 +56,7 @@ export class JobAlertHistoryService {
     const days = params.days ?? 14;
     const cutoff = buildCutoff(days, now);
     const [allRecent, active] = await Promise.all([
-      this.alertService.listRecentAlerts(days),
+      this.alertService.listRecentAlerts(days, now),
       this.alertService.listAlerts({ jobName: params.jobName, severity: params.severity, onlyActive: true }),
     ]);
 

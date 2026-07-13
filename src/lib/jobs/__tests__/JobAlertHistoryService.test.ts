@@ -90,15 +90,40 @@ describe('JobAlertHistoryService', () => {
       },
     });
 
-    const summary = await historyService.buildSummary({ days: 14 }, base);
-    expect(summary.total).toBe(4);
-    expect(summary.active).toBe(3);
+    const [summary, alerts] = await Promise.all([
+      historyService.buildSummary({ days: 14 }, base),
+      historyService.listHistory({ includeResolved: true }, base),
+    ]);
+
+    expect(alerts).toHaveLength(6);
+    expect(alerts).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ jobName: 'autonomous:daily', severity: 'critical', status: 'active' }),
+        expect.objectContaining({ jobName: 'autonomous:monitor', severity: 'warning', status: 'active' }),
+        expect.objectContaining({ jobName: 'autonomous:review', severity: 'critical', status: 'resolved' }),
+        expect.objectContaining({ jobName: 'autonomous:learning', severity: 'critical', status: 'active' }),
+        expect.objectContaining({
+          jobName: 'training:daily_cycle',
+          severity: 'critical',
+          status: 'active',
+          occurrenceCount: 11,
+        }),
+        expect.objectContaining({
+          jobName: 'training:tw-q1-financial-ingest-check',
+          severity: 'critical',
+          status: 'active',
+          occurrenceCount: 11,
+        }),
+      ]),
+    );
+    expect(summary.total).toBe(alerts.length);
+    expect(summary.active).toBe(5);
     expect(summary.resolvedRecently).toBe(1);
-    expect(summary.critical + summary.warning + summary.info).toBe(4);
+    expect(summary.critical + summary.warning + summary.info).toBe(alerts.length);
     expect(summary.topNoisyJobs.length).toBeGreaterThan(0);
     expect(summary.recentReoccurAlerts.length).toBeGreaterThan(0);
     expect(summary.recentResolvedAlerts.length).toBeGreaterThan(0);
-    expect(summary.severityDistribution.critical).toBe(3);
+    expect(summary.severityDistribution.critical).toBe(5);
     expect(summary.severityDistribution.warning).toBe(1);
   });
 
