@@ -39,8 +39,21 @@ describe('WatchlistTable fundamental cue', () => {
   test('shows revenue YoY cue when basic fundamental data exists', () => {
     render(
       <WatchlistTable
-        rows={[makeRow()]}
-        totalCount={1}
+        rows={[
+          makeRow(),
+          makeRow({
+            symbol: '2317',
+            name: '鴻海',
+            analysis: {
+              ...makeRow().analysis!,
+              stockId: '2317',
+              name: '鴻海',
+              revenueYoY: 0,
+              eps: 0,
+            },
+          }),
+        ]}
+        totalCount={2}
         searchQuery=""
         sortConfig={{ key: 'symbol', dir: 'asc' }}
         onSearchChange={jest.fn()}
@@ -52,6 +65,33 @@ describe('WatchlistTable fundamental cue', () => {
     );
 
     expect(screen.getByText(/基本面：營收 YoY \+18.5% \/ EPS 8.20/i)).toBeInTheDocument();
+    expect(screen.getByText('基本面：營收 YoY 0.0% / EPS 0.00')).toBeInTheDocument();
+  });
+
+  test('shows revenue cue with explicit EPS-unavailable state', () => {
+    render(
+      <WatchlistTable
+        rows={[
+          makeRow({
+            analysis: {
+              ...makeRow().analysis!,
+              revenueYoY: 18.5,
+              eps: null,
+            } as unknown as NonNullable<WatchlistRowViewModel['analysis']>,
+          }),
+        ]}
+        totalCount={1}
+        searchQuery=""
+        sortConfig={{ key: 'symbol', dir: 'asc' }}
+        onSearchChange={jest.fn()}
+        onSort={jest.fn()}
+        onEditHoldings={jest.fn()}
+        onSetAlert={jest.fn()}
+        onRemove={jest.fn()}
+      />,
+    );
+
+    expect(screen.getByText('基本面：營收 YoY +18.5% / EPS 資料不足')).toBeInTheDocument();
   });
 
   test('shows degraded cue when revenue data is unavailable', () => {

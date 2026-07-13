@@ -297,9 +297,10 @@ function FundamentalCell({ analysis }: { analysis: ScreeningResult | null }) {
     }
 
     const revenueSign = analysis.revenueYoY > 0 ? '+' : '';
+    const epsText = analysis.eps == null ? '資料不足' : analysis.eps.toFixed(2);
     return (
         <span className="text-xs text-muted-foreground">
-            基本面：營收 YoY {revenueSign}{analysis.revenueYoY.toFixed(1)}% / EPS {analysis.eps.toFixed(2)}
+            基本面：營收 YoY {revenueSign}{analysis.revenueYoY.toFixed(1)}% / EPS {epsText}
         </span>
     );
 }
