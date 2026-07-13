@@ -164,6 +164,13 @@ export interface DeliveryEngineResult {
   generatedAt: string;
 }
 
+function countDeliverableAlerts(result: DailyAlertsResult): number {
+  const autonomousAlertCount = result.autonomousAlerts?.shouldAttach
+    ? result.autonomousAlerts.alerts.length
+    : 0;
+  return result.alerts.length + autonomousAlertCount;
+}
+
 export async function deliverAlerts(
   alertsResult: DailyAlertsResult,
   options?: DeliveryEngineOptions,
@@ -181,14 +188,15 @@ export async function deliverAlerts(
   ];
 
   const channels: ChannelDeliveryReport[] = [];
+  const alertCount = countDeliverableAlerts(alertsResult);
 
   // Skip delivery if no alerts and not forced
-  if (!sendWhenEmpty && alertsResult.alerts.length < minAlerts) {
+  if (!sendWhenEmpty && alertCount < minAlerts) {
     return {
       reportDate: alertsResult.reportDate,
-      alertCount: alertsResult.alerts.length,
+      alertCount,
       channels,
-      skippedReason: `Alert count ${alertsResult.alerts.length} below minimum threshold ${minAlerts}`,
+      skippedReason: `Alert count ${alertCount} below minimum threshold ${minAlerts}`,
       generatedAt: new Date().toISOString(),
     };
   }
@@ -205,7 +213,7 @@ export async function deliverAlerts(
         error: `Channel not configured (env var missing)`,
       };
       channels.push(report);
-      await writeDeliveryLog(alertsResult, provider, report);
+      await writeDeliveryLog(alertsResult, provider, report, alertCount);
       continue;
     }
 
@@ -231,7 +239,7 @@ export async function deliverAlerts(
         error: `Payload format error: ${fmtErr instanceof Error ? fmtErr.message : String(fmtErr)}`,
       };
       channels.push(report);
-      await writeDeliveryLog(alertsResult, provider, report);
+      await writeDeliveryLog(alertsResult, provider, report, alertCount);
       continue;
     }
 
@@ -255,13 +263,13 @@ export async function deliverAlerts(
       error: lastResult.success ? undefined : lastResult.error,
     };
     channels.push(report);
-    const logEntry = await writeDeliveryLog(alertsResult, provider, report);
+    const logEntry = await writeDeliveryLog(alertsResult, provider, report, alertCount);
     if (logEntry) report.logId = logEntry.id;
   }
 
   return {
     reportDate: alertsResult.reportDate,
-    alertCount: alertsResult.alerts.length,
+    alertCount,
     channels,
     generatedAt: new Date().toISOString(),
   };
@@ -273,6 +281,7 @@ async function writeDeliveryLog(
   result: DailyAlertsResult,
   provider: DeliveryProvider,
   report: ChannelDeliveryReport,
+  alertCount: number,
 ) {
   try {
     return await prisma.notificationDeliveryLog.create({
@@ -283,7 +292,7 @@ async function writeDeliveryLog(
         status: report.status,
         errorMessage: report.error ?? null,
         retryCount: report.retryCount,
-        alertCount: result.alerts.length,
+        alertCount,
         reportDate: result.reportDate,
         metadata: JSON.stringify({
           overallSeverity: result.overallSeverity,
