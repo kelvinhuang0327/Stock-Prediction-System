@@ -55,6 +55,7 @@ export function WatchlistTable({
                             <SortableTh align="center" className="bg-purple-50/50 hidden md:table-cell" onClick={() => onSort('alphaScore')}>Alpha{sortIndicator('alphaScore')}</SortableTh>
                             <Th className="bg-red-50/50">策略訊號</Th>
                             <Th className="hidden md:table-cell">分析摘要</Th>
+                            <Th className="hidden lg:table-cell">基本面</Th>
                             <Th className="hidden lg:table-cell">持倉脈絡</Th>
                             <Th align="right" className="hidden lg:table-cell">持有成本</Th>
                             <Th align="right" className="bg-primary/5">庫存股數</Th>
@@ -165,6 +166,10 @@ function WatchlistRow({ row, onEditHoldings, onSetAlert, onRemove }: {
                 ) : (
                     <span className="text-xs text-muted-foreground">—</span>
                 )}
+            </td>
+            {/* Fundamental cue */}
+            <td className="p-4 hidden lg:table-cell">
+                <FundamentalCell analysis={analysis} />
             </td>
             {/* Portfolio context */}
             <td className="p-4 hidden lg:table-cell">
@@ -280,6 +285,22 @@ function SignalCell({ analysis }: { analysis: ScreeningResult | null }) {
                 {analysis.riskLevel === 'High' ? '⚠️ 高波動警告' : '✅ 波動穩定'}
             </span>
         </div>
+    );
+}
+
+function FundamentalCell({ analysis }: { analysis: ScreeningResult | null }) {
+    if (!analysis) {
+        return <span className="text-xs text-muted-foreground">基本面：分析資料不足</span>;
+    }
+    if (analysis.revenueYoY == null) {
+        return <span className="text-xs text-amber-600">基本面：營收資料不足</span>;
+    }
+
+    const revenueSign = analysis.revenueYoY > 0 ? '+' : '';
+    return (
+        <span className="text-xs text-muted-foreground">
+            基本面：營收 YoY {revenueSign}{analysis.revenueYoY.toFixed(1)}% / EPS {analysis.eps.toFixed(2)}
+        </span>
     );
 }
 
