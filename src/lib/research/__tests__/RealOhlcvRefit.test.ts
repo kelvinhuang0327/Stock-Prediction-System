@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
 
@@ -133,6 +134,20 @@ describe("RealOhlcvRefit", () => {
     const lines = raw.trimEnd().split("\n");
     [lines[1], lines[2]] = [lines[2], lines[1]];
     expect(() => parseRealOhlcvCsv(`${lines.join("\n")}\n`)).toThrow(/ordering is nondeterministic/);
+  });
+
+  it("rejects empty required numeric fields and impossible calendar dates", () => {
+    const emptyVolumeLines = toCsv(syntheticRows()).trimEnd().split("\n");
+    const emptyVolumeFields = emptyVolumeLines[1].split(",");
+    emptyVolumeFields[6] = "";
+    emptyVolumeLines[1] = emptyVolumeFields.join(",");
+    expect(() => parseRealOhlcvCsv(`${emptyVolumeLines.join("\n")}\n`)).toThrow(
+      /invalid volume value/,
+    );
+
+    const impossibleDateRows = syntheticRows();
+    impossibleDateRows[10] = { ...impossibleDateRows[10], date: "2024-01-32" };
+    expect(() => parseRealOhlcvCsv(toCsv(impossibleDateRows))).toThrow(/invalid ISO date/);
   });
 
   it("constructs features only from the current or historical rows", () => {
@@ -285,6 +300,40 @@ describe("RealOhlcvRefit", () => {
       promotionEligibility: "BLOCKED_DATA_QUALITY",
       protectedFilesUnchanged: true,
     });
+  });
+
+  it("routes a check-only CLI failure to stderr and exits non-zero", () => {
+    const temporaryRoot = mkdtempSync(path.join(tmpdir(), `strategy-lab-refit-failure-${process.pid}-`));
+    try {
+      const tsNodeBin = resolveTsNodeBin();
+      const execution = spawnSync(
+        process.execPath,
+        [tsNodeBin, path.join(ROOT, "scripts/strategy-lab-refit-check.ts")],
+        {
+          cwd: temporaryRoot,
+          encoding: "utf8",
+          env: {
+            ...process.env,
+            TS_NODE_COMPILER_OPTIONS: JSON.stringify({
+              module: "commonjs",
+              moduleResolution: "node",
+              typeRoots: [path.resolve(path.dirname(tsNodeBin), "../../@types")],
+            }),
+          },
+          maxBuffer: 5 * 1024 * 1024,
+        },
+      );
+      expect(execution.status).not.toBe(0);
+      expect(execution.stdout).toBe("");
+      const lines = execution.stderr.trim().split(/\r?\n/);
+      expect(lines).toHaveLength(1);
+      expect(JSON.parse(lines[0])).toMatchObject({
+        reproductionStatus: "FAIL",
+        promotionEligibility: "BLOCKED_DATA_QUALITY",
+      });
+    } finally {
+      rmSync(temporaryRoot, { recursive: true, force: true });
+    }
   });
 
   it("does not write any tracked outputs/retraining artifact", () => {
