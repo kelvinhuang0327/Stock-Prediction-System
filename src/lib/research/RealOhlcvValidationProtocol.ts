@@ -40,6 +40,17 @@ export const THRESHOLD_SELECTION_RULE = Object.freeze({
     "SENSITIVITY_SPECIFICITY_AND_PRECISION_ARE_ZERO_WHEN_THEIR_DENOMINATOR_IS_ZERO",
 } as const);
 
+declare const validationPartitionRowsBrand: unique symbol;
+declare const finalTestPartitionRowsBrand: unique symbol;
+
+export type ValidationPartitionRows = readonly RealOhlcvFeatureRow[] & {
+  readonly [validationPartitionRowsBrand]: "VALIDATION";
+};
+
+export type FinalTestPartitionRows = readonly RealOhlcvFeatureRow[] & {
+  readonly [finalTestPartitionRowsBrand]: "FINAL_TEST";
+};
+
 export interface ThreeWayChronologicalSplit {
   uniqueFeatureDates: string[];
   trainEndDate: string;
@@ -48,9 +59,9 @@ export interface ThreeWayChronologicalSplit {
   finalTestStartDate: string;
   training: RealOhlcvFeatureRow[];
   trainValidationPurge: RealOhlcvFeatureRow[];
-  validation: RealOhlcvFeatureRow[];
+  validation: ValidationPartitionRows;
   validationFinalPurge: RealOhlcvFeatureRow[];
-  finalTest: RealOhlcvFeatureRow[];
+  finalTest: FinalTestPartitionRows;
 }
 
 export interface ThresholdMetrics {
@@ -265,9 +276,9 @@ export function splitForUntouchedFinalTest(
     finalTestStartDate,
     training,
     trainValidationPurge,
-    validation,
+    validation: validation as unknown as ValidationPartitionRows,
     validationFinalPurge,
-    finalTest,
+    finalTest: finalTest as unknown as FinalTestPartitionRows,
   };
 }
 
@@ -351,6 +362,32 @@ export function evaluateAtThreshold(
   };
 }
 
+export interface FinalTestEvaluationGuard {
+  evaluate(
+    finalTestRows: FinalTestPartitionRows,
+    scaler: ScalerFit,
+    model: LogisticRegressionFit,
+    threshold: number,
+  ): ThresholdMetrics;
+  assertExactlyOnce(): 1;
+}
+
+export function createFinalTestEvaluationGuard(): FinalTestEvaluationGuard {
+  let evaluationCount = 0;
+  return {
+    evaluate(finalTestRows, scaler, model, threshold) {
+      evaluationCount += 1;
+      return evaluateAtThreshold(finalTestRows, scaler, model, threshold);
+    },
+    assertExactlyOnce() {
+      if (evaluationCount !== 1) {
+        fail(`final test evaluation count differs: expected 1, received ${evaluationCount}`);
+      }
+      return 1;
+    },
+  };
+}
+
 function candidateIsBetter(
   candidate: ValidationCandidateResult,
   incumbent: ValidationCandidateResult,
@@ -378,7 +415,7 @@ export function chooseValidationCandidate(
 }
 
 export function selectValidationThreshold(
-  validationRows: readonly RealOhlcvFeatureRow[],
+  validationRows: ValidationPartitionRows,
   scaler: ScalerFit,
   model: LogisticRegressionFit,
 ): ValidationThresholdSelection {
@@ -468,10 +505,17 @@ export function runRealOhlcvValidationProtocol(
   requireExpectedDataQualityFinding(scan.discontinuities);
 
   const selectedThreshold = selection.selectedThreshold;
-  let finalTestEvaluationCount = 0;
-  const finalTestMetrics = evaluateAtThreshold(split.finalTest, scaler, model, selectedThreshold);
-  finalTestEvaluationCount += 1;
-  if (finalTestEvaluationCount !== 1) fail("final test was not evaluated exactly once");
+  const finalTestUsedForSelection = selection.scoredValidationRowIdentitySha256
+    === featureRowIdentitySha256(split.finalTest);
+  if (finalTestUsedForSelection) fail("final-test rows reached threshold selection");
+  const finalTestEvaluationGuard = createFinalTestEvaluationGuard();
+  const finalTestMetrics = finalTestEvaluationGuard.evaluate(
+    split.finalTest,
+    scaler,
+    model,
+    selectedThreshold,
+  );
+  const finalTestEvaluationCount = finalTestEvaluationGuard.assertExactlyOnce();
 
   const sortedDataDates = rows.map((row) => row.date).sort(compareText);
   return {
@@ -513,8 +557,8 @@ export function runRealOhlcvValidationProtocol(
     validationScoredRowIdentitySha256: selection.scoredValidationRowIdentitySha256,
     validationCandidateStateSha256: selection.validationCandidateStateSha256,
     finalTestMetrics,
-    finalTestUsedForSelection: false,
-    finalTestEvaluationCount: 1,
+    finalTestUsedForSelection,
+    finalTestEvaluationCount,
     isolationGuards: {
       splitBoundariesUseSortedFeatureDatesOnly: true,
       finalTestFeaturesAndLabelsExcludedFromBoundaryCalculation: true,

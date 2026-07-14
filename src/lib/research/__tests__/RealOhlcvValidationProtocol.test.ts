@@ -15,10 +15,14 @@ import {
   THRESHOLD_SELECTION_RULE,
   VALIDATION_THRESHOLD_GRID,
   chooseValidationCandidate,
+  createFinalTestEvaluationGuard,
+  evaluateAtThreshold,
   fitAndSelectValidationThreshold,
   requireExpectedDataQualityFinding,
   runRealOhlcvValidationProtocol,
+  selectValidationThreshold,
   splitForUntouchedFinalTest,
+  type FinalTestPartitionRows,
   type RealOhlcvValidationProtocolResult,
   type ThresholdMetrics,
   type ValidationCandidateResult,
@@ -253,6 +257,10 @@ describe("RealOhlcvValidationProtocol", () => {
       .toEqual(Array(VALIDATION_THRESHOLD_GRID.length).fill(
         selection.candidates[0].metrics.brierScore,
       ));
+    expect(selection.candidates.map((candidate) => candidate.metrics.logLoss))
+      .toEqual(Array(VALIDATION_THRESHOLD_GRID.length).fill(
+        selection.candidates[0].metrics.logLoss,
+      ));
   });
 
   it("applies every deterministic threshold tie-break in the declared order", () => {
@@ -284,8 +292,18 @@ describe("RealOhlcvValidationProtocol", () => {
 
   it("never passes final-test rows into validation threshold selection", () => {
     const { split, selection } = fitAndSelectValidationThreshold(syntheticRows);
+    type SelectorRows = Parameters<typeof selectValidationThreshold>[0];
+    const finalTestRowsAreAssignableToSelector:
+      FinalTestPartitionRows extends SelectorRows ? true : false = false;
+    const finalTestIdentity = createHash("sha256")
+      .update(split.finalTest
+        .map((row) => `${row.symbol}:${row.featureDate}:${row.targetDate}`)
+        .join("\n"))
+      .digest("hex");
+    expect(finalTestRowsAreAssignableToSelector).toBe(false);
     expect(selection.scoredValidationRowCount).toBe(split.validation.length);
     expect(selection.scoredValidationRowCount).not.toBe(split.finalTest.length);
+    expect(selection.scoredValidationRowIdentitySha256).not.toBe(finalTestIdentity);
     expect(selection.candidates.every(
       (candidate) => candidate.metrics.sampleCount === split.validation.length,
     )).toBe(true);
@@ -295,6 +313,40 @@ describe("RealOhlcvValidationProtocol", () => {
     expect(protocolResult.finalTestEvaluationCount).toBe(1);
     expect(protocolResult.finalTestUsedForSelection).toBe(false);
     expect(protocolResult.finalTestMetrics.sampleCount).toBe(protocolResult.finalTestCount);
+  });
+
+  it("fails closed when the final-test evaluation counter is zero or greater than one", () => {
+    const { split, scaler, model, selection } = fitAndSelectValidationThreshold(syntheticRows);
+    const zeroEvaluationGuard = createFinalTestEvaluationGuard();
+    expect(() => zeroEvaluationGuard.assertExactlyOnce())
+      .toThrow(/expected 1, received 0/);
+
+    const multipleEvaluationGuard = createFinalTestEvaluationGuard();
+    multipleEvaluationGuard.evaluate(split.finalTest, scaler, model, selection.selectedThreshold);
+    multipleEvaluationGuard.evaluate(split.finalTest, scaler, model, selection.selectedThreshold);
+    expect(() => multipleEvaluationGuard.assertExactlyOnce())
+      .toThrow(/expected 1, received 2/);
+
+    const exactlyOnceGuard = createFinalTestEvaluationGuard();
+    exactlyOnceGuard.evaluate(split.finalTest, scaler, model, selection.selectedThreshold);
+    expect(exactlyOnceGuard.assertExactlyOnce()).toBe(1);
+  });
+
+  it("uses deterministic zero-denominator metrics and threshold-independent probability scores", () => {
+    const { split, scaler, model } = fitAndSelectValidationThreshold(syntheticRows);
+    const metricRows = split.validation.slice(0, 3);
+    const positiveOnly = metricRows.map((row) => ({ ...row, target: 1 as const }));
+    const negativeOnly = metricRows.map((row) => ({ ...row, target: 0 as const }));
+    const positiveMetrics = evaluateAtThreshold(positiveOnly, scaler, model, 1);
+    const negativeMetrics = evaluateAtThreshold(negativeOnly, scaler, model, 1);
+    expect(positiveMetrics.specificity).toBe(0);
+    expect(negativeMetrics.sensitivity).toBe(0);
+    expect(negativeMetrics.precision).toBe(0);
+
+    const lowThreshold = evaluateAtThreshold(split.validation, scaler, model, 0.45);
+    const highThreshold = evaluateAtThreshold(split.validation, scaler, model, 0.65);
+    expect(highThreshold.brierScore).toBe(lowThreshold.brierScore);
+    expect(highThreshold.logLoss).toBe(lowThreshold.logLoss);
   });
 
   it("changes fitted state when training data changes", () => {
@@ -349,6 +401,19 @@ describe("RealOhlcvValidationProtocol", () => {
     expect(mutated.selection.validationCandidateStateSha256)
       .toBe(baseline.selection.validationCandidateStateSha256);
     expect(mutated.selection.selectedThreshold).toBe(baseline.selection.selectedThreshold);
+    const baselineMetrics = evaluateAtThreshold(
+      baseline.split.finalTest,
+      baseline.scaler,
+      baseline.model,
+      baseline.selection.selectedThreshold,
+    );
+    const mutatedMetrics = evaluateAtThreshold(
+      mutated.split.finalTest,
+      mutated.scaler,
+      mutated.model,
+      mutated.selection.selectedThreshold,
+    );
+    expect(mutatedMetrics).not.toEqual(baselineMetrics);
   });
 
   it("keeps fit and selection unchanged after either purged partition is mutated", () => {
@@ -394,6 +459,9 @@ describe("RealOhlcvValidationProtocol", () => {
       symbol: "0050",
       priorDate: "2025-06-10",
       nextAvailableDate: "2025-06-18",
+      priorClose: 188.65,
+      nextClose: 47.57,
+      approximateCloseDiscontinuityPct: -74.783992,
       classification: "UNADJUSTED_PRICE_DISCONTINUITY_RISK",
     })]);
   });
