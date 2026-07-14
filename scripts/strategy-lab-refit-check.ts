@@ -37,10 +37,14 @@ async function protectedFilePaths(): Promise<string[]> {
   const recursiveFiles = (await Promise.all(recursiveRoots.map(walkFiles))).flat();
   const explicitFiles = [
     "dev.db",
+    "dev.db-wal",
+    "dev.db-shm",
     "prisma/dev.db",
     "prisma/dev.db-wal",
     "prisma/dev.db-shm",
     "prisma/dev.p24_premigration_backup_2026-05-12_0716.db",
+    "prisma/dev.p24_premigration_backup_2026-05-12_0716.db-wal",
+    "prisma/dev.p24_premigration_backup_2026-05-12_0716.db-shm",
     "runtime/agent_orchestrator/orchestrator.db",
     "runtime/orchestrator.db",
     "runtime/agent_orchestrator/llm_audit.jsonl",
@@ -70,11 +74,11 @@ async function captureProtectedHashes(): Promise<Record<string, string>> {
 
 async function main(): Promise<void> {
   const before = await captureProtectedHashes();
-  const [csvRaw, committedMetricsRaw] = await Promise.all([
-    readFile(INPUT_PATH, "utf8"),
+  const [csvBytes, committedMetricsRaw] = await Promise.all([
+    readFile(INPUT_PATH),
     readFile(METRICS_PATH, "utf8"),
   ]);
-  const result = runReproducibleRefitCheck(csvRaw, committedMetricsRaw);
+  const result = runReproducibleRefitCheck(csvBytes, committedMetricsRaw);
   const after = await captureProtectedHashes();
   if (JSON.stringify(after) !== JSON.stringify(before)) {
     throw new Error("forbidden protected-file write detected during check-only execution");
@@ -84,7 +88,7 @@ async function main(): Promise<void> {
 
 main().catch((error: unknown) => {
   const message = error instanceof Error ? error.message : String(error);
-  process.stdout.write(`${JSON.stringify({
+  process.stderr.write(`${JSON.stringify({
     reproductionStatus: "FAIL",
     promotionEligibility: "BLOCKED_DATA_QUALITY",
     error: message,

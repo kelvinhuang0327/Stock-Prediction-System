@@ -199,6 +199,22 @@ function asFeatureVector(values: readonly number[]): FeatureVector {
   return [values[0], values[1], values[2], values[3], values[4]];
 }
 
+function parseRequiredNumber(value: string, field: string, rowNumber: number): number {
+  const normalized = value.trim();
+  if (!/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$/.test(normalized)) {
+    fail(`invalid ${field} value at data row ${rowNumber}`);
+  }
+  const parsed = Number(normalized);
+  if (!Number.isFinite(parsed)) fail(`non-finite ${field} value at data row ${rowNumber}`);
+  return parsed;
+}
+
+function isCanonicalIsoDate(value: string): boolean {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const parsed = new Date(`${value}T00:00:00.000Z`);
+  return Number.isFinite(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value;
+}
+
 function parseCsvLine(line: string, rowNumber: number): string[] {
   const fields: string[] = [];
   let field = "";
@@ -249,17 +265,17 @@ export function parseRealOhlcvCsv(raw: string): RealOhlcvRow[] {
     if (fields.length !== 9) fail(`expected 9 fields at CSV row ${rowNumber}`);
     const [symbol, date, open, high, low, close, volume, source, fetchedAtUtc] = fields;
     if (!/^\d{4}$/.test(symbol)) fail(`invalid symbol at data row ${index + 1}`);
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) fail(`invalid ISO date at data row ${index + 1}`);
+    if (!isCanonicalIsoDate(date)) fail(`invalid ISO date at data row ${index + 1}`);
     if (!source.startsWith("twstock/")) fail(`unexpected source at data row ${index + 1}`);
     if (fetchedAtUtc.length === 0) fail(`missing fetch timestamp at data row ${index + 1}`);
     const row = {
       symbol,
       date,
-      open: Number(open),
-      high: Number(high),
-      low: Number(low),
-      close: Number(close),
-      volume: Number(volume),
+      open: parseRequiredNumber(open, "open", index + 1),
+      high: parseRequiredNumber(high, "high", index + 1),
+      low: parseRequiredNumber(low, "low", index + 1),
+      close: parseRequiredNumber(close, "close", index + 1),
+      volume: parseRequiredNumber(volume, "volume", index + 1),
       source,
       fetchedAtUtc,
     };
@@ -627,17 +643,18 @@ function assertExpectedDiscontinuity(discontinuities: readonly PriceDiscontinuit
 }
 
 export function runReproducibleRefitCheck(
-  csvRaw: string,
+  csvInput: string | Buffer,
   committedMetricsRaw: string,
   options: { expectedInputSha256?: string } = {},
 ): RefitCheckResult {
   const expectedInputSha256 = options.expectedInputSha256 ?? P193_EXPECTED.inputSha256;
-  const inputSha256 = sha256(csvRaw);
+  const inputBytes = typeof csvInput === "string" ? Buffer.from(csvInput, "utf8") : csvInput;
+  const inputSha256 = createHash("sha256").update(inputBytes).digest("hex");
   assertEqual(inputSha256, expectedInputSha256, "input SHA256");
   assertEqual(expectedInputSha256, P193_EXPECTED.inputSha256, "authorized P193 input SHA256");
   validateCommittedP193Artifact(committedMetricsRaw);
 
-  const rows = parseRealOhlcvCsv(csvRaw);
+  const rows = parseRealOhlcvCsv(inputBytes.toString("utf8"));
   const samples = buildHistoricalFeatureRows(rows);
   const split = splitChronologically(samples);
   const scaler = fitTrainingScaler(split.train);
