@@ -1,0 +1,38 @@
+
+version: '3.8'
+
+services:
+  app:
+    container_name: stock-system
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # Restarts automatically unless stopped
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      # Persist SQLite DB
+      - ./prisma:/app/prisma
+      # Persist Logs
+      - ./logs:/app/logs
+    environment:
+      # Use the mounted volume DB
+      - DATABASE_URL=file:./prisma/dev.db
+      - NODE_ENV=production
+      # - LINE_NOTIFY_TOKEN=${LINE_NOTIFY_TOKEN}
+      # - OPENAI_API_KEY=${OPENAI_API_KEY}
+    # Optional: Run migration on start (usually better to do manually or via init script)
+    # command: sh -c "npx prisma db push && node server.js"
+
+  # Optional: Watchdog Service (Agent)
+  # watchdog:
+  #   container_name: stock-watchdog
+  #   build: .
+  #   command: sh -c "npm run monitor" # Needs cron logic or infinite loop in script
+  #   volumes:
+  #     - ./prisma:/app/prisma
+  #     - ./logs:/app/logs
+  #   environment:
+  #     - DATABASE_URL=file:./prisma/dev.db
+  #   restart: always

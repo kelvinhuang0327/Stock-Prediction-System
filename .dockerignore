@@ -1,0 +1,12 @@
+
+node_modules
+.next
+.git
+logs
+.env
+.DS_Store
+*.md
+coverage
+test-results
+dev.db
+dev.db-journal
