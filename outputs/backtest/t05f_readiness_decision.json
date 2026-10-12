@@ -1,0 +1,83 @@
+{
+  "task": "T-05F_WALK_FORWARD_OBSERVABILITY_RUNNER",
+  "classification": "T05F_WALK_FORWARD_OBSERVABILITY_RUNNER_COMPLETE",
+  "date": "2026-05-07",
+  "safetyLabels": [
+    "T-05F",
+    "WalkForward Observability Runner",
+    "dry-run only",
+    "safe-run only",
+    "no DB write",
+    "no external API",
+    "no LLM call",
+    "no production overwrite",
+    "no strategy mutation",
+    "no performance claim",
+    "no edge claim"
+  ],
+  "readinessStatus": "READY",
+  "decision": "T-05F WalkForward Observability Runner is COMPLETE. All guardrails PASS. Tests 53/53. Full regression 331/331.",
+  "observabilityNote": "Readiness decision for T-05F observability runner only. Not a strategy validation. Not investment advice. No ROI claim. No edge claim.",
+  "completedItems": [
+    "WalkForwardObservabilityRunner.ts created with 5 required exports",
+    "runWalkForwardObservability() wires T-05C + T-05D + T-05E into T-05B",
+    "buildWalkForwardRunConfig() uses resolveCurrentDate() — no hardcoded TODAY_CAP",
+    "validateWalkForwardRunGuardrails() returns PASS/WARN/FAIL with 13 checks",
+    "summarizeWalkForwardObservabilityRun() computes observability-only coverage stats",
+    "buildWalkForwardRunnerArtifacts() returns parseable JSON + MD payloads",
+    "t05f_walk_forward_observability_runner.test.ts created with 53 tests",
+    "All 53 T-05F tests PASS",
+    "T-05B + T-05C + T-05D + T-05E + T-05F: 242/242 PASS",
+    "Full regression: 12 suites / 331 tests PASS",
+    "All 9 required output artifacts created",
+    "All 4 JSON artifacts parse successfully"
+  ],
+  "testResults": {
+    "t05fOnly": {
+      "command": "npx jest src/lib/backtest/__tests__/t05f_walk_forward_observability_runner.test.ts --no-coverage",
+      "suites": 1,
+      "tests": 53,
+      "status": "PASS"
+    },
+    "t05bThroughT05f": {
+      "command": "npx jest t05b t05c t05d t05e t05f --no-coverage",
+      "suites": 5,
+      "tests": 242,
+      "status": "PASS"
+    },
+    "fullRegression": {
+      "command": "npx jest [all 12 suites] --no-coverage",
+      "suites": 12,
+      "tests": 331,
+      "status": "PASS"
+    }
+  },
+  "artifacts": {
+    "t05f_walk_forward_observability_runner_contract.json": "CREATED — parse OK",
+    "t05f_walk_forward_observability_runner_contract.md": "CREATED",
+    "t05f_walk_forward_observability_run.json": "CREATED — parse OK",
+    "t05f_walk_forward_observability_run.md": "CREATED",
+    "t05f_guardrail_validation.json": "CREATED — parse OK",
+    "t05f_guardrail_validation.md": "CREATED",
+    "t05f_readiness_decision.json": "CREATED — parse OK",
+    "t05f_readiness_decision.md": "CREATED",
+    "t05f_next_execution_order_20260507.md": "CREATED"
+  },
+  "pendingItems": [
+    "T-05G: Observability Report QA / Artifact Auditor (next task)",
+    "DB backfill for MarketRegimeResult coverage (required for production run)",
+    "DB backfill for candidate data coverage (required for production run)",
+    "Annual Taiwan calendar holiday list maintenance",
+    "Full PIT audit beyond sourceDate <= rebalanceDate check",
+    "Formal backtest metrics — prohibited until explicitly authorized"
+  ],
+  "riskNotes": [
+    "T-05F is dry-run observability only — not a production backtest",
+    "Candidate data coverage depends on DB backfill state",
+    "MarketRegimeResult coverage depends on DB backfill state",
+    "Taiwan calendar static holiday list requires annual maintenance",
+    "sourceDate <= rebalanceDate prevents obvious future leakage but is not a complete PIT audit",
+    "Formal backtest metrics remain prohibited"
+  ],
+  "nextTask": "T-05G_OBSERVABILITY_REPORT_QA_ARTIFACT_AUDITOR"
+}

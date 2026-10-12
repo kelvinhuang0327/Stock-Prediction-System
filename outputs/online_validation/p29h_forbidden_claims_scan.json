@@ -1,0 +1,53 @@
+{
+  "audit_id": "P29H-forbidden-claims-scan",
+  "audit_date": "2026-05-20",
+  "phase": "P29H-Phase3-verification",
+
+  "scan_scope": "src/lib/onlineValidation/p29e/",
+  "scan_method": "grep -rniE boundary term scan",
+
+  "terms_scanned": [
+    "buy", "sell", "roi", "profit", "win-rate", "outperform",
+    "alpha score", "guaranteed", "return N%", "investment recommendation"
+  ],
+
+  "matches_found": [
+    {
+      "file": "PaperSimulationScaffoldRunner.ts",
+      "line": 3,
+      "text": "paper-only / simulation-only / NOT investment recommendation",
+      "classification": "DISCLAIMER_HEADER — prohibition context, not a claim"
+    },
+    {
+      "file": "PaperSimulationScaffoldRunner.ts",
+      "line": 11,
+      "text": "produce any performance claims (ROI / win-rate / alpha / edge / profit)",
+      "classification": "PROHIBITION_COMMENT — listing what is NOT done, not a claim"
+    },
+    {
+      "file": "LeakageGatePlaceholder.ts",
+      "line": 3,
+      "text": "paper-only / simulation-only / NOT investment recommendation",
+      "classification": "DISCLAIMER_HEADER — prohibition context, not a claim"
+    },
+    {
+      "file": "PaperSimulationOutputSchema.ts",
+      "line": 3,
+      "text": "paper-only / simulation-only / NOT investment recommendation",
+      "classification": "DISCLAIMER_HEADER — prohibition context, not a claim"
+    },
+    {
+      "file": "PaperSimulationOutputSchema.ts",
+      "line": 93,
+      "text": "roi, returnPct, winRate, alpha, edge, profit",
+      "classification": "FORBIDDEN_OUTPUT_FIELDS_DEFINITION — EXPLICITLY PROHIBITING these fields, not claiming them"
+    }
+  ],
+
+  "actual_performance_claim_violations": 0,
+  "actual_buy_sell_signal_violations": 0,
+  "actual_roi_profit_alpha_violations": 0,
+
+  "verdict": "CLEAN — 0 violations",
+  "note": "All matches are in prohibition/disclaimer/documentation contexts. No performance claims made."
+}

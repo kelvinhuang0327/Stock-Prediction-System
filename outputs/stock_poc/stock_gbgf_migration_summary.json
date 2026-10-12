@@ -1,0 +1,32 @@
+{
+  "task": "P3-04",
+  "description": "GBGF Migration from LotteryNew to Stock Project",
+  "date": "2026-05-05",
+  "status": "COMPLETE",
+  "classification": "STOCK_GBGF_SMOKE_TEST_PASS",
+  "gate_results": {
+    "G01": "PASS",
+    "G02": "PASS",
+    "G03": "FAIL",
+    "G04": "WARN",
+    "G05": "WARN",
+    "G06": "WARN",
+    "G07": "WARN",
+    "G08": "PASS",
+    "G09": "BLOCKED",
+    "G10": "BLOCKED"
+  },
+  "g03_fail_expected": true,
+  "reproducibility": {
+    "checks_pass": 7,
+    "checks_total": 7
+  },
+  "pytest": {
+    "passed": 29,
+    "failed": 0,
+    "skipped": 0
+  },
+  "no_external_data": true,
+  "no_production_write": true,
+  "lottery_contamination": false
+}

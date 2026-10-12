@@ -1,0 +1,59 @@
+{
+  "phase": "P21-HARDRESET",
+  "part": "E",
+  "generatedAt": "2026-05-12T05:46:14.229Z",
+  "description": "Production Migration Approval Decision — P21",
+  "classification": "P21_READY_TO_REQUEST_PRODUCTION_MIGRATION_APPROVAL",
+  "readyToRequestApprovalToken": true,
+  "approvalGranted": false,
+  "productionMigrationApplied": false,
+  "recommendedApprovalToken": "P21_APPROVE_PRODUCTION_MIGRATION_PLAN_ONLY",
+  "hardGatePassCount": 15,
+  "hardGateFailCount": 0,
+  "riskCount": 10,
+  "criticalHighRiskCount": 7,
+  "requiredBeforeProductionCount": 4,
+  "requiredBeforeProductionRiskIds": [
+    "RISK-01",
+    "RISK-02",
+    "RISK-08",
+    "RISK-10"
+  ],
+  "decisionRationale": "All 15 hard gates PASS. Production DB safety confirmed. Risk register complete. Ready to request CTO/CEO approval token.",
+  "requiredActionsBeforeTokenUse": [
+    {
+      "actionId": "ACT-01",
+      "description": "Document production DB backup procedure (RISK-02)",
+      "owner": "DevOps / Engineering Lead",
+      "blocksTokenUse": true
+    },
+    {
+      "actionId": "ACT-02",
+      "description": "Define and test production rollback runbook on staging (RISK-08)",
+      "owner": "Engineering Lead / DevOps",
+      "blocksTokenUse": true
+    },
+    {
+      "actionId": "ACT-03",
+      "description": "Run migration on staging environment before production (RISK-01)",
+      "owner": "Engineering Lead",
+      "blocksTokenUse": true
+    },
+    {
+      "actionId": "ACT-04",
+      "description": "CTO/CEO review this P21 report and explicitly provide approval token",
+      "owner": "CTO / CEO",
+      "blocksTokenUse": true
+    }
+  ],
+  "productionSafetyStatement": [
+    "Production DB has NOT been written at any phase (P17-P21)",
+    "productionApplyAllowed=false confirmed in P20 decision",
+    "productionMigrationApplied=false in this decision",
+    "approvalGranted=false — token must come from CTO/CEO",
+    "P22 is the next phase: Production Migration Plan Hardening (requires approval token)"
+  ],
+  "noProductionWriteStatement": "This script and all P21 artifacts do NOT write to, modify, or apply any changes to the production database. Production migration is deferred to P22 pending CTO/CEO approval token.",
+  "reviewArtifact": "p21production_migration_approval_review.json",
+  "riskArtifact": "p21production_migration_risk_register.json"
+}

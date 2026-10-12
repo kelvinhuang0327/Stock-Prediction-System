@@ -1,0 +1,32 @@
+{
+  "seedVersion": "daily-real-market-seed-v0",
+  "asOfDate": "2026-05-15",
+  "reviewDate": "2026-07-06",
+  "simulationRunId": "p11-daily-real-market-simulation-20260515-001",
+  "symbols": [
+    "2330",
+    "2454"
+  ],
+  "horizons": [
+    "5D",
+    "20D",
+    "60D"
+  ],
+  "sourceMode": "EXISTING_LOCAL_DATA_ONLY",
+  "tradingDayStatus": {
+    "isKnownTradingDay": true,
+    "calendarVersion": "twse-static-2024-2026-v1",
+    "note": "2026-05-15 is a known TWSE trading day"
+  },
+  "guardrails": {
+    "noProductionWrite": true,
+    "noExternalApi": true,
+    "noOptimizerWrite": true,
+    "noTradingSignal": true,
+    "observabilityOnly": true
+  },
+  "validationStatus": "PASS",
+  "validationMessages": [
+    "PASS: daily real-market snapshot seed validated"
+  ]
+}

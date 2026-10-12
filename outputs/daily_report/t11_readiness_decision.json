@@ -1,0 +1,67 @@
+{
+  "task": "T-11 Freshness Alert for MarketRegimeResult",
+  "decision_date": "2026-05-06",
+  "decision": "READY",
+  "readiness_answers": {
+    "Q01_freshness_alert_complete": true,
+    "Q02_api_includes_freshnessAlert": true,
+    "Q03_t09_api_contract_preserved": true,
+    "Q04_can_integrate_daily_report_engine": true,
+    "Q05_can_integrate_scheduler_pipeline_alert": true,
+    "Q06_db_write": false,
+    "Q07_external_api_call": false,
+    "Q08_h001_h012_leakage": false,
+    "Q09_buy_sell_signal_leakage": false,
+    "Q10_roi_win_rate_edge_leakage": false,
+    "Q11_p0_blocker_remaining": false
+  },
+  "evidence": {
+    "computeFreshnessAlert_exists": "src/lib/marketRegimeResult.ts line 82",
+    "alert_levels_implemented": ["FRESH", "STALE", "CRITICAL_STALE", "MISSING", "FUTURE_DATE_ERROR"],
+    "api_includes_freshnessAlert": "route.ts: all 3 branches (ok, missing, error) include freshnessAlert",
+    "t09_fields_preserved": "status, reportDate, regime, guardrails all retained",
+    "jest_pass": "40/40 tests PASS (T-09 service 10, T-09 API 10, T-11 unit 12, T-11 API 8)",
+    "t09_regression_fixed": "t09_market_regime_api.test.ts mock updated to include computeFreshnessAlert"
+  },
+  "next_round_recommendations": {
+    "P0_Immediate": [
+      {
+        "task": "T-12",
+        "title": "DailyReportEngine Deeper Integration",
+        "description": "Replace live detectRegime() calls with persisted MarketRegimeResult reads. Integrate freshnessAlert into the DailyReportEngine pipeline. This is the logical next step after T-11 adds freshnessAlert to the API."
+      }
+    ],
+    "P1_Next": [
+      {
+        "task": "T-03",
+        "title": "Daily Ops Report v1",
+        "description": "Build the Daily Ops Report that surfaces freshnessAlert status, MarketRegimeResult context, and walk-forward skeleton summary into a single structured daily report. Depends on T-12 for full engine integration."
+      },
+      {
+        "task": "T-02b",
+        "title": "Unified Freshness Guard + dataCoverage Write",
+        "description": "Wire the freshness alert into the scheduler/pipeline as a blocking guard. If freshnessAlert.requiresAction is true, block dependent tasks or emit alerts."
+      }
+    ],
+    "P2_Deferred": [
+      {
+        "task": "T-01b",
+        "title": "Lane-based Scheduler Heartbeat",
+        "description": "Extend the scheduler with heartbeat that checks freshnessAlert levels across all data sources."
+      },
+      {
+        "task": "T-05b",
+        "title": "Portfolio Walk-Forward with Regime Context",
+        "description": "Run the enriched walk-forward skeleton (T-10) at scale and integrate outputs into the DailyReportEngine."
+      }
+    ],
+    "Do_Not_Continue": [
+      "H013+ design",
+      "Strategy validation",
+      "ML model training",
+      "ROI / win-rate calculation",
+      "External data API calls",
+      "Production DB writes"
+    ]
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "phase": "P29F-HARDRESET",
+  "task": "Forbidden Claims Scan (Part I)",
+  "generatedAt": "2026-05-20T00:00:00Z",
+  "auditMode": "STATIC_REGEX_SCAN",
+
+  "scannedFiles": [
+    "src/lib/onlineValidation/p29f/quoteRegimeChipPitAudit.ts",
+    "src/lib/onlineValidation/p29f/pitAuditTypes.ts",
+    "src/lib/onlineValidation/__tests__/p29f_quote_regime_chip_pit_audit.test.ts"
+  ],
+
+  "patterns": [
+    "ROI",
+    "win-rate",
+    "win rate",
+    "alpha (not alphaScore)",
+    "edge (standalone)",
+    "profit",
+    "outperform",
+    "beat",
+    "buy (signal/claim)",
+    "sell (signal/claim)",
+    "guaranteed",
+    "investment recommendation",
+    "買進",
+    "賣出",
+    "買入"
+  ],
+
+  "findings": [
+    {
+      "file": "src/lib/onlineValidation/p29f/quoteRegimeChipPitAudit.ts",
+      "line": 3,
+      "matchedText": "paper-only / audit-only / NOT investment recommendation",
+      "pattern": "investment recommendation",
+      "context": "PROHIBITION_CONTEXT",
+      "isViolation": false,
+      "reason": "Appears as a negation/disclaimer ('NOT investment recommendation'). This is an anti-claim, not a claim."
+    },
+    {
+      "file": "src/lib/onlineValidation/__tests__/p29f_quote_regime_chip_pit_audit.test.ts",
+      "line": 3,
+      "matchedText": "audit-only / NOT investment recommendation / no production mutation",
+      "pattern": "investment recommendation",
+      "context": "PROHIBITION_CONTEXT",
+      "isViolation": false,
+      "reason": "Appears as a negation/disclaimer ('NOT investment recommendation'). Anti-claim, not a violation."
+    },
+    {
+      "file": "src/lib/onlineValidation/p29f/quoteRegimeChipPitAudit.ts",
+      "lines": [262, 384, 525],
+      "matchedText": "mayRemainInAlphaScore: true",
+      "pattern": "alphaScore (governance field)",
+      "context": "AUDIT_GOVERNANCE_FIELD",
+      "isViolation": false,
+      "reason": "alphaScore used as a governance boolean field (mayRemainInAlphaScore). Not a performance claim. The pattern alpha(?!Score) is designed to exclude alphaScore — this is a correct alphaScore reference."
+    },
+    {
+      "file": "src/lib/onlineValidation/__tests__/p29f_quote_regime_chip_pit_audit.test.ts",
+      "lines": [164, 165, 282, 283, 295, 296],
+      "matchedText": "alphaScore",
+      "pattern": "alphaScore (test governance)",
+      "context": "AUDIT_TEST_GOVERNANCE",
+      "isViolation": false,
+      "reason": "Test description strings referencing alphaScore as a governance concept (entersAlphaScore=false). Not a performance claim."
+    }
+  ],
+
+  "violationsFound": 0,
+  "prohibitionContextHits": 2,
+  "governanceFieldHits": 1,
+
+  "patternResults": {
+    "ROI": "NOT_FOUND",
+    "win-rate": "NOT_FOUND",
+    "win rate": "NOT_FOUND",
+    "alpha_standalone": "NOT_FOUND",
+    "edge_standalone": "NOT_FOUND",
+    "profit": "NOT_FOUND",
+    "outperform": "NOT_FOUND",
+    "beat": "NOT_FOUND",
+    "buy_signal": "NOT_FOUND",
+    "sell_signal": "NOT_FOUND",
+    "guaranteed": "NOT_FOUND",
+    "investment_recommendation": "FOUND_PROHIBITION_CONTEXT_ONLY",
+    "alphaScore": "FOUND_GOVERNANCE_ONLY",
+    "買進": "NOT_FOUND",
+    "賣出": "NOT_FOUND",
+    "買入": "NOT_FOUND"
+  },
+
+  "overallVerdict": "CLEAN",
+  "summary": "No forbidden data/output performance claims found in any P29F added or modified files. Two matches for 'investment recommendation' are both explicit negations (anti-claims). alphaScore references are governance audit fields, not performance claims. Forbidden Claims Scan: PASS."
+}

@@ -1,0 +1,114 @@
+{
+  "phase": "P29F-HARDRESET",
+  "task": "Boundary Validation (Part J)",
+  "generatedAt": "2026-05-20T00:00:00Z",
+  "auditMode": "GIT_DIFF_BOUNDARY_CHECK",
+
+  "p29fChangedFiles": {
+    "newFiles": [
+      "src/lib/onlineValidation/p29f/quoteRegimeChipPitAudit.ts",
+      "src/lib/onlineValidation/p29f/pitAuditTypes.ts",
+      "src/lib/onlineValidation/__tests__/p29f_quote_regime_chip_pit_audit.test.ts",
+      "outputs/online_validation/p29f_pit_classification.json",
+      "outputs/online_validation/p29f_pit_classification.md",
+      "outputs/online_validation/p29f_pit_rule_definition.json",
+      "outputs/online_validation/p29f_pit_rule_definition.md",
+      "outputs/online_validation/p29f_quote_regime_chip_pit_audit_preflight.json",
+      "outputs/online_validation/p29f_quote_regime_chip_pit_audit_preflight.md",
+      "outputs/online_validation/p29f_quote_regime_chip_pit_audit_tests.json",
+      "outputs/online_validation/p29f_quote_regime_chip_pit_audit_tests.md",
+      "outputs/online_validation/p29f_simulation_dependency_gate.json",
+      "outputs/online_validation/p29f_simulation_dependency_gate.md",
+      "outputs/online_validation/p29f_source_discovery.json",
+      "outputs/online_validation/p29f_source_discovery.md",
+      "outputs/online_validation/p29f_static_audit_results.json",
+      "outputs/online_validation/p29f_static_audit_results.md",
+      "outputs/online_validation/p29f_quote_regime_chip_pit_audit_invariance.json",
+      "outputs/online_validation/p29f_quote_regime_chip_pit_audit_invariance.md",
+      "outputs/online_validation/p29f_forbidden_claims_scan.json",
+      "outputs/online_validation/p29f_forbidden_claims_scan.md"
+    ],
+    "modifiedProductionFiles": [],
+    "runtimeModified": [
+      "prisma/dev.db",
+      "prisma/dev.db-shm",
+      "prisma/dev.db-wal",
+      "runtime/agent_orchestrator/llm_usage.jsonl",
+      "logs/launchd/*"
+    ]
+  },
+
+  "boundaryChecks": {
+    "productionScoringBehaviorChange": {
+      "verdict": "PASS",
+      "detail": "RuleBasedStockAnalyzer.ts, SignalFusionEngine.ts, ActiveScoringSnapshotBuilder.ts — all INVARIANT. Zero diff from HEAD. No production scoring behavior changed."
+    },
+    "alphaScoreBehaviorChange": {
+      "verdict": "PASS",
+      "detail": "alphaScore computation path untouched. mayRemainInAlphaScore is an audit governance boolean in read-only audit module — does not modify alphaScore logic."
+    },
+    "bucketBehaviorChange": {
+      "verdict": "PASS",
+      "detail": "No bucket scoring or ranking files modified. P29F is audit-only."
+    },
+    "optimizerReadiness": {
+      "verdict": "PASS",
+      "detail": "No optimizer files modified. P29F explicitly blocks optimizer readiness pending PIT repair."
+    },
+    "realBacktest": {
+      "verdict": "PASS",
+      "detail": "No backtest route or engine files modified. P29F is static audit only."
+    },
+    "corpusExpansion": {
+      "verdict": "PASS",
+      "detail": "All JSONL corpus files are INVARIANT. No new corpus rows added."
+    },
+    "dbMigration": {
+      "verdict": "PASS",
+      "detail": "prisma/schema.prisma unchanged. dev.db WAL changes are runtime-only (daemon writes). No schema migration executed."
+    },
+    "financialReportSourceImport": {
+      "verdict": "PASS",
+      "detail": "P29F audit references FinancialReport only as entersAlphaScore=false governance note. No import code, no sync code, no DB write for FinancialReport added."
+    },
+    "newsEventSourceImport": {
+      "verdict": "PASS",
+      "detail": "P29F audit references NewsEvent only as entersAlphaScore=false governance note. No import code added."
+    },
+    "p27Housekeeping": {
+      "verdict": "PASS",
+      "detail": "No P27 housekeeping files modified or added. P29F explicitly excludes P27 scope."
+    },
+    "scannerConsolidation": {
+      "verdict": "PASS",
+      "detail": "No scanner consolidation code modified. Out of P29F scope."
+    }
+  },
+
+  "nonP29FUncommittedChanges": {
+    "files": [
+      "00-StockPlan/roadmap/stock_roadmapPlan_20260504.md",
+      "outputs/online_validation/p26f3_5_dropzone_scan_result.json",
+      "outputs/online_validation/p26f3_5_dropzone_scan_result.md",
+      "outputs/online_validation/p28c_renderer_only_repair_9case_before_after.json",
+      "outputs/online_validation/p28d_9case_integrated_review_validation.json",
+      "outputs/online_validation/p28d_p3_p19_renderer_regression_sweep.json"
+    ],
+    "note": "These are pre-existing uncommitted changes from earlier tracks (P26F/P28C/P28D). They are NOT part of P29F diff. P29F commit will include only P29F files.",
+    "verdict": "NOT_P29F_BOUNDARY_VIOLATIONS"
+  },
+
+  "additionalUntrackedNonP29F": [
+    "generate_artifacts.py (standalone utility)",
+    "p28c_9case_validation.js (P28C validator)",
+    "src/lib/onlineValidation/__tests__/p29d_dropzone_scaffold.test.ts (P29D test)",
+    "outputs/online_validation/p27_overnight_deep_audit_preflight.json (P27 artifact)",
+    "00-StockPlan/20260514/ (planning folder)",
+    "00-StockPlan/20260515/ (planning folder)",
+    "data/manual/financial-report/ (manual data folder)",
+    "data/manual/news-event/ (manual data folder)"
+  ],
+
+  "overallVerdict": "PASS",
+  "summary": "All 11 boundary checks PASS. P29F diff is strictly limited to: audit TypeScript module (2 files), test file (1 file), and output artifacts (19+ JSON/MD files). No production scoring, no alphaScore, no bucket, no optimizer, no backtest, no corpus, no DB schema, no FinancialReport/NewsEvent import, no P27, no scanner consolidation changes."
+}

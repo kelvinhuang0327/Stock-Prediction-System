@@ -1,0 +1,36 @@
+{
+  "phase": "P26F2-HARDRESET",
+  "date": "2026-05-13",
+  "p3CorpusRows": 4500,
+  "p19CorpusRows": 4500,
+  "candidateRows": 2143,
+  "candidateDateRange": {
+    "earliest": "2026-03-10",
+    "latest": "2026-04-10"
+  },
+  "corpusAsOfDateRange": {
+    "min": null,
+    "max": null
+  },
+  "p3MatchedRows": 0,
+  "p19MatchedRows": 0,
+  "totalMatchedRows": 0,
+  "candidateCoverageRatio": 0,
+  "coverageClassification": "NONE",
+  "unmatchedReason": "All candidateReleaseDates (2026-03-10, 2026-04-10) exceed corpus asOfDates max (2026-02-11). Data gap: DB only has 2026-02 and 2026-03 revenue data, but corpus covers 2025-10 to 2026-02.",
+  "dataGapAnalysis": {
+    "dbDataMonths": [
+      "2026-02",
+      "2026-03"
+    ],
+    "corpusAsOfMonths": "2025-10 to 2026-02",
+    "candidateDatesRange": "2026-03-10 to 2026-04-10",
+    "gapType": "DB_DATA_TOO_RECENT_FOR_CORPUS_PERIOD",
+    "requiredDataMonths": "2025-09 through 2026-01 (for asOfDates 2025-10 to 2026-02)",
+    "requiredCandidateDates": "2025-10-10 through 2026-02-10"
+  },
+  "scoringImprovementClaimed": false,
+  "optimizerReadinessClaimed": false,
+  "classification": "P26F2_RELEASE_DATE_CANDIDATE_NO_COVERAGE",
+  "status": "PREVIEW_COMPLETE"
+}

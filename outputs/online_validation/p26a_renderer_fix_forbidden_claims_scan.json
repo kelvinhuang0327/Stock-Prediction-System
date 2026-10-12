@@ -1,0 +1,27 @@
+{
+  "scanId": "P26A-RENDERER-FIX-FORBIDDEN-CLAIMS",
+  "generatedAt": "2026-05-14T11:00:00.000Z",
+  "scannedFiles": [
+    "outputs/online_validation/p26a_renderer_fix_*",
+    "src/lib/onlineValidation/P26ACorpusReasonRenderer.ts",
+    "src/lib/onlineValidation/__tests__/p26a_renderer_fix.test.ts"
+  ],
+  "hits": [
+    {
+      "file": "src/lib/onlineValidation/__tests__/p26a_renderer_fix.test.ts",
+      "line": 205,
+      "match": "Pattern definition in test (ALLOWED)",
+      "allowed": true
+    },
+    {
+      "file": "src/lib/onlineValidation/__tests__/p26a_renderer_fix.test.ts",
+      "line": 343,
+      "match": "Pattern definition in test (ALLOWED)",
+      "allowed": true
+    }
+  ],
+  "forbiddenHitCount": 0,
+  "allowedHitCount": 2,
+  "result": "CLEAN",
+  "disclaimer": "Does not constitute investment advice."
+}

@@ -1,0 +1,21 @@
+{
+  "version": "1.0",
+  "task_id": 173,
+  "slug": "diagnose-and-rebalance-trigger-distributio",
+  "status": "PENDING_REVIEW",
+  "gate_verdict": "PASS",
+  "planner_provider": "codex",
+  "worker_provider": "copilot-daemon",
+  "created_at": "2026-04-27T01:59:51.116Z",
+  "updated_at": "2026-04-27T02:00:16.700Z",
+  "last_output_at": "2026-04-27T02:00:16.700Z",
+  "latest_progress_summary": "Auto-committed 2 file(s) (sha: 6baed51). Awaiting CTO review.",
+  "planner_context": {
+    "taskType": "optimization_execution_layer",
+    "game": null,
+    "regimeState": "OPTIMIZATION",
+    "dedupeKey": "execution_layer__trigger_skew",
+    "confidenceScore": null,
+    "regimeTaskType": "execution_layer"
+  }
+}

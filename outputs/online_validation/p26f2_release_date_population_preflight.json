@@ -1,0 +1,28 @@
+{
+  "phase": "P26F2-HARDRESET",
+  "date": "2026-05-13",
+  "p26fClassification": "P26F_SOURCE_MAPPING_IMPLEMENTED_BUT_NO_REAL_COVERAGE",
+  "p26fSourceMode": "REAL_SOURCE_PRESENT_NO_RELEASE_DATE",
+  "p26fMatchedRows": 0,
+  "prismaMonthlyRevenueModelFound": true,
+  "prismaReleaseDateFieldInSchema": true,
+  "prismaReleaseDateMigrationApplied": false,
+  "dbMonthlyRevenueRowCount": 2143,
+  "dbReleaseDateColumnExists": false,
+  "dbYearMonthCoverage": [{"year": 2026, "month": 2, "count": 1070}, {"year": 2026, "month": 3, "count": 1073}],
+  "p3P19CorpusAsOfDateRange": {"min": "2025-10-14", "max": "2026-02-11"},
+  "candidateReleaseDatePreview": {
+    "month2026_02": "2026-03-10",
+    "month2026_03": "2026-04-10"
+  },
+  "predictedCoverageWithCandidateDates": 0,
+  "reasonNoCoverage": "candidateReleaseDates (2026-03-10, 2026-04-10) all exceed corpus asOfDates max (2026-02-11)",
+  "artifactsPresent": true,
+  "frozenCorpus": {"simulation": 60, "p0": 4500, "p1": 9900, "p3": 4500, "p19": 4500},
+  "codeBaselineSnapshot": {
+    "ActiveScoringSnapshotBuilder.ts": "063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d",
+    "RuleBasedStockAnalyzer.ts": "bc3716cc8e74be304f2e262aac586a61760bb59d6c95e82a575c38e03ea7373d",
+    "SignalFusionEngine.ts": "b8ce3fa3ae63fd7edf6b6067dd8ccea63c02741454b93792e87bfbc1e95d2bf4"
+  },
+  "status": "PREFLIGHT_PASS"
+}

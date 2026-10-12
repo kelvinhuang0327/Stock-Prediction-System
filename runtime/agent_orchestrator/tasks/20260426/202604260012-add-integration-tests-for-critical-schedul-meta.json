@@ -1,0 +1,21 @@
+{
+  "version": "1.0",
+  "task_id": 167,
+  "slug": "add-integration-tests-for-critical-schedul",
+  "status": "PENDING_REVIEW",
+  "gate_verdict": "PASS",
+  "planner_provider": "claude",
+  "worker_provider": "copilot-daemon",
+  "created_at": "2026-04-26T00:12:54.200Z",
+  "updated_at": "2026-04-26T00:13:00.196Z",
+  "last_output_at": "2026-04-26T00:13:00.196Z",
+  "latest_progress_summary": "Auto-committed 3 file(s) (sha: a47c1c4). Awaiting CTO review.",
+  "planner_context": {
+    "taskType": "optimization_test_coverage",
+    "game": null,
+    "regimeState": "OPTIMIZATION",
+    "dedupeKey": "test_coverage__missing_e2e_flows",
+    "confidenceScore": null,
+    "regimeTaskType": "test_coverage"
+  }
+}

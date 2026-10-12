@@ -1,0 +1,86 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { buildAllSignalHistories } from '@/lib/signals/SignalHistoryBuilder';
+import { runWalkForwardValidation } from '@/lib/signals/WalkForwardValidator';
+import type { SignalType, SignalWindow } from '@/lib/signals/types';
+import type { WalkForwardResult } from '@/lib/signals/WalkForwardValidator';
+
+export interface WalkForwardApiResponse {
+  symbol?: string;
+  window: SignalWindow;
+  results: WalkForwardResult[];
+  generatedAt: string;
+  limitations: string[];
+}
+
+function parseWindow(value: string | null): SignalWindow {
+  if (value === '3') return 3;
+  if (value === '10') return 10;
+  return 5;
+}
+
+const STOCK_SIGNAL_TYPES: SignalType[] = [
+  'topic_surging',
+  'theme_diffusing',
+  'strong_alpha_candidate',
+  'chip_accumulation_signal',
+  'risk_cluster_elevated',
+];
+
+/**
+ * GET /api/signals/walkforward
+ *
+ * Query:
+ * - symbol: optional stock symbol filter
+ * - window: 3 | 5 | 10 (default 5)
+ * - days:   lookback window in days (default 180)
+ *
+ * Returns walk-forward validation results for stock-relevant signal types.
+ * Research-only layer — does not affect alphaScore or screen results.
+ */
+export async function GET(req: NextRequest) {
+  const q = req.nextUrl.searchParams;
+  const symbol = (q.get('symbol') ?? '').trim().toUpperCase();
+  const window = parseWindow(q.get('window'));
+  const days = parseInt(q.get('days') ?? '180', 10) || 180;
+
+  try {
+    const histories = await buildAllSignalHistories(days);
+
+    const scopedHistories = histories
+      .filter((h) => (STOCK_SIGNAL_TYPES as string[]).includes(h.signalType))
+      .map((h) => {
+        if (!symbol) return h;
+        const filtered = h.observations.filter((o) => o.symbol === symbol);
+        return {
+          ...h,
+          observations: filtered,
+          limitations:
+            filtered.length === 0
+              ? [...h.limitations, `symbol=${symbol} 無對應訊號觀察`]
+              : h.limitations,
+        };
+      });
+
+    const results = await Promise.all(
+      scopedHistories.map((h) => runWalkForwardValidation(h, window)),
+    );
+
+    const response: WalkForwardApiResponse = {
+      ...(symbol ? { symbol } : {}),
+      window,
+      results,
+      generatedAt: new Date().toISOString(),
+      limitations: [...new Set(results.flatMap((r) => r.limitations))],
+    };
+
+    return NextResponse.json(response, {
+      headers: { 'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=120' },
+    });
+  } catch (error) {
+    console.error('[signals/walkforward] error:', error);
+    return NextResponse.json(
+      { error: '走勢驗證計算失敗', window, results: [], generatedAt: new Date().toISOString(), limitations: ['走勢驗證計算失敗'] },
+      { status: 500 },
+    );
+  }
+}

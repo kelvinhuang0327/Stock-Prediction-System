@@ -1,0 +1,73 @@
+{
+  "audit_id": "T08_CURRENT_SCHEMA_AUDIT",
+  "audit_date": "2026-05-06",
+  "generated_at": "2026-05-06T14:43:56.691606",
+  "market_regime_result_in_prisma_schema": false,
+  "market_regime_result_in_sqlite_db": false,
+  "related_existing_tables": {
+    "MarketIndex": {
+      "exists": true,
+      "row_count": 2666,
+      "max_date": "2026-05-18"
+    },
+    "DailyMarketSnapshot": {
+      "exists": true,
+      "row_count": 4,
+      "note": "DO NOT TOUCH - TypeScript production table"
+    },
+    "WalkForwardResult": {
+      "exists": true,
+      "row_count": 522,
+      "note": "H001-H012 era, deprecated, DO NOT TOUCH"
+    },
+    "JobRunLog": {
+      "exists": true,
+      "row_count": 315,
+      "note": "TypeScript scheduler log, DO NOT TOUCH"
+    },
+    "StockQuote": {
+      "exists": true,
+      "row_count": 129151,
+      "note": "DO NOT TOUCH"
+    },
+    "MarketRegimeResult": {
+      "exists": false,
+      "row_count": 0
+    }
+  },
+  "latest_p4_03b_regime_date": "2026-05-06",
+  "sample_record_count": 300,
+  "candidate_schema_fields": [
+    "id",
+    "date",
+    "regimeLabel",
+    "confidence",
+    "taiexClose",
+    "taiexMa50",
+    "taiexMa200",
+    "taiexReturn1d",
+    "taiexReturn20d",
+    "taiexVolatility20d",
+    "marketBreadthProxy",
+    "evidenceJson",
+    "missingFeaturesJson",
+    "pitSafetyJson",
+    "source",
+    "version",
+    "createdAt",
+    "updatedAt"
+  ],
+  "prisma_version": "5.22.0",
+  "decisions": {
+    "needs_prisma_schema_migration": true,
+    "needs_db_table_create": true,
+    "additive_migration_safe": true,
+    "should_avoid_modify_daily_market_snapshot": true,
+    "should_avoid_write_walk_forward_result": true,
+    "should_avoid_modify_stock_quote": true,
+    "should_avoid_modify_market_index": true,
+    "migration_strategy": "npx prisma db push (SQLite dev, additive only)",
+    "old_h001_h012_walk_forward_result_reuse": false
+  },
+  "risk_assessment": "LOW - additive only, new table, no existing table modification"
+}

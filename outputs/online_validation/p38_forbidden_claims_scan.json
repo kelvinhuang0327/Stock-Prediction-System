@@ -1,0 +1,77 @@
+{
+  "phase": "P38",
+  "capturedAt": "2026-05-15T00:00:00.000Z",
+  "mode": "forbidden-claims-scan",
+  "paperOnly": true,
+  "dryRunOnly": true,
+  "entersAlphaScore": false,
+  "notInvestmentRecommendation": true,
+
+  "scannedFiles": [
+    "src/lib/onlineValidation/p38/SimulationInputReadinessTypes.ts",
+    "src/lib/onlineValidation/p38/SimulationInputReadinessMapper.ts",
+    "src/lib/onlineValidation/__tests__/p38_simulation_input_readiness_mapping.test.ts"
+  ],
+
+  "checks": [
+    {
+      "check": "entersAlphaScore = true",
+      "pattern": "entersAlphaScore\\s*=\\s*true",
+      "result": "CLEAN",
+      "violations": []
+    },
+    {
+      "check": "paperOnly = false",
+      "pattern": "paperOnly\\s*=\\s*false",
+      "result": "CLEAN",
+      "violations": []
+    },
+    {
+      "check": "notInvestmentRecommendation = false",
+      "pattern": "notInvestmentRecommendation\\s*=\\s*false",
+      "result": "CLEAN",
+      "violations": []
+    },
+    {
+      "check": "noBuySellActionSemantics = false",
+      "pattern": "noBuySellActionSemantics\\s*=\\s*false",
+      "result": "CLEAN",
+      "violations": []
+    },
+    {
+      "check": "Prisma client import",
+      "pattern": "import.*PrismaClient|from.*prisma/client|require.*prisma",
+      "result": "CLEAN",
+      "violations": []
+    },
+    {
+      "check": "DB / SQL access",
+      "pattern": "prisma\\.|db\\.|knex\\.|sequelize\\.",
+      "result": "CLEAN",
+      "violations": []
+    },
+    {
+      "check": "Scoring module import",
+      "pattern": "RuleBasedStockAnalyzer|SignalFusionEngine|ActiveScoringSnapshotBuilder",
+      "result": "CLEAN",
+      "violations": []
+    },
+    {
+      "check": "Investment advice claim",
+      "pattern": "investment advice|buy signal|sell signal|hold signal|recommend.*buy|recommend.*sell",
+      "result": "CLEAN",
+      "violations": [],
+      "note": "File contains investment advice PROHIBITION strings — these are correct"
+    },
+    {
+      "check": "Performance claim",
+      "pattern": "win rate|profit|expected return|alpha edge",
+      "result": "CLEAN",
+      "violations": [],
+      "note": "File contains performance claim PROHIBITION strings in forbiddenUse — these are correct"
+    }
+  ],
+
+  "overallResult": "CLEAN",
+  "classification": "P38_FORBIDDEN_CLAIMS_SCAN_CLEAN"
+}

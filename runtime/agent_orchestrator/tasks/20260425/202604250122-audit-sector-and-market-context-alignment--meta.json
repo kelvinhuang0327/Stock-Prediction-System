@@ -1,0 +1,21 @@
+{
+  "version": "1.0",
+  "task_id": 162,
+  "slug": "audit-sector-and-market-context-alignment-",
+  "status": "REPLAN_REQUIRED",
+  "gate_verdict": "WORKER_RUNTIME_FAILED",
+  "planner_provider": "codex",
+  "worker_provider": "copilot-daemon",
+  "created_at": "2026-04-25T01:22:37.303Z",
+  "updated_at": "2026-04-25T01:22:51.650Z",
+  "last_output_at": "2026-04-25T01:22:51.650Z",
+  "latest_progress_summary": "Worker finished task but gate=WORKER_RUNTIME_FAILED.",
+  "planner_context": {
+    "taskType": "optimization_price_analysis_quality",
+    "game": null,
+    "regimeState": "OPTIMIZATION",
+    "dedupeKey": "price_analysis_quality__sector_context_audit",
+    "confidenceScore": null,
+    "regimeTaskType": "price_analysis_quality"
+  }
+}

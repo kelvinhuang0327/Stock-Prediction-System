@@ -1,0 +1,126 @@
+{
+  "conformanceReportId": "p34_spec_conformance",
+  "capturedAt": "2026-05-21T00:00:00.000Z",
+  "phase": "P34",
+  "specReference": {
+    "sourceGateSpec": "outputs/online_validation/p32prep_report_spec_v0_source_gate.json",
+    "dryRunSampleSpec": "outputs/online_validation/p32prep_report_spec_v0_dry_run_sample.json",
+    "pitAuditSpec": "outputs/online_validation/p32prep_report_spec_v0_pit_audit.json"
+  },
+  "p32PatternReference": "outputs/online_validation/p32_monthly_revenue_dry_run_sample.json",
+
+  "p34ArtifactsEvaluated": [
+    "outputs/online_validation/p34_news_event_source_present_dry_run.json",
+    "outputs/online_validation/p34_news_event_dry_run_sample.json",
+    "outputs/online_validation/p34_news_event_pit_audit.json"
+  ],
+
+  "governanceHardFlags": {
+    "entersAlphaScore_false": {
+      "status": "PASS",
+      "presentIn": "all three P34 artifacts",
+      "value": false
+    },
+    "paperOnly_true": {
+      "status": "PASS",
+      "presentIn": "all three P34 artifacts",
+      "value": true
+    },
+    "dryRun_true": {
+      "status": "PASS",
+      "presentIn": "all three P34 artifacts",
+      "value": true
+    },
+    "notInvestmentRecommendation_true": {
+      "status": "PASS",
+      "presentIn": "all three P34 artifacts",
+      "value": true
+    },
+    "noBuySellActionSemantics_true": {
+      "status": "PASS",
+      "presentIn": "all three P34 artifacts",
+      "value": true
+    }
+  },
+
+  "dryRunSampleSpecAlignment": {
+    "requiredFieldsCheck": {
+      "phase":                    { "present": true, "status": "PASS", "value": "P34" },
+      "capturedAt":               { "present": true, "status": "PASS", "value": "2026-05-21T00:00:00.000Z" },
+      "mode":                     { "present": true, "status": "PASS", "value": "source-present-dry-run" },
+      "paperOnly":                { "present": true, "status": "PASS", "value": true },
+      "dryRun":                   { "present": true, "status": "PASS", "value": true },
+      "entersAlphaScore":         { "present": true, "status": "PASS", "value": false },
+      "notInvestmentRecommendation": { "present": true, "status": "PASS", "value": true },
+      "dryRunStatus":             { "present": true, "status": "PASS", "value": "READY" },
+      "overallClassification":    { "present": true, "status": "PASS", "value": "NEWS_EVENT_SOURCE_PRESENT_DRY_RUN_READY" },
+      "disclaimer":               { "present": true, "status": "PASS" }
+    },
+    "hardConstraintViolations": 0,
+    "conformance": "FULL_CONFORMANCE"
+  },
+
+  "pitAuditSpecAlignment": {
+    "requiredFieldsCheck": {
+      "pitGateField":         { "present": true, "status": "PASS", "value": "publishedAt" },
+      "pitPolicy":            { "present": true, "status": "PASS", "value": "RECORDED_FROM_SOURCE" },
+      "coverage":             { "present": true, "status": "PASS", "note": "publishedAt 100%, source 100%, trustLevel 100%" },
+      "anomalyCheck":         { "present": true, "status": "PASS", "value": "0 rows publishedAt > ingestedAt" },
+      "pitAuditResult":       { "present": true, "status": "PASS", "value": "PASS" },
+      "entersAlphaScore":     { "present": true, "status": "PASS", "value": false }
+    },
+    "conformance": "FULL_CONFORMANCE"
+  },
+
+  "differenceFromMonthlyRevenue": [
+    {
+      "dimension": "pitGateField",
+      "MonthlyRevenue": "releaseDate (added via Prisma migration)",
+      "NewsEvent": "publishedAt (inherent schema field)",
+      "semantic": "NewsEvent has stronger built-in PIT support — no migration required"
+    },
+    {
+      "dimension": "pitPolicy",
+      "MonthlyRevenue": "INFERRED_NEXT_MONTH_10TH",
+      "NewsEvent": "RECORDED_FROM_SOURCE",
+      "semantic": "NewsEvent publishedAt is recorded directly from the RSS/web source; no inference needed"
+    },
+    {
+      "dimension": "pitConfidence",
+      "MonthlyRevenue": "LOW",
+      "NewsEvent": "RECORDED",
+      "semantic": "RECORDED confidence is stronger than LOW/INFERRED"
+    },
+    {
+      "dimension": "companionFields",
+      "MonthlyRevenue": "releaseDateSource + releaseDateConfidence",
+      "NewsEvent": "source + trustLevel (equivalent roles; no new fields needed)",
+      "semantic": "NewsEvent source/trustLevel cover the companion field role"
+    },
+    {
+      "dimension": "historicalImportGap",
+      "MonthlyRevenue": "n/a",
+      "NewsEvent": "~76 day gap for oldest events. PIT gate uses publishedAt (not ingestedAt). Gap does not affect PIT correctness.",
+      "semantic": "PIT gate is publishedAt throughout"
+    }
+  ],
+
+  "intentionalExclusions": [
+    { "field": "roi",              "reason": "Forbidden — investment performance claim" },
+    { "field": "winRate",          "reason": "Forbidden — investment performance claim" },
+    { "field": "edge",             "reason": "Forbidden — investment performance claim" },
+    { "field": "profit",           "reason": "Forbidden — investment performance claim" },
+    { "field": "buySignal",        "reason": "Forbidden — buy/sell/hold/action semantics" },
+    { "field": "sellSignal",       "reason": "Forbidden — buy/sell/hold/action semantics" },
+    { "field": "holdSignal",       "reason": "Forbidden — buy/sell/hold/action semantics" },
+    { "field": "outperform",       "reason": "Forbidden — prediction quality claim" },
+    { "field": "guaranteed",       "reason": "Forbidden — investment guarantee claim" },
+    { "field": "predictedReturn",  "reason": "Forbidden — investment performance claim" },
+    { "field": "alphaScore",       "reason": "Forbidden — entersAlphaScore=false enforced" }
+  ],
+
+  "overallConformanceResult": "FULL_CONFORMANCE",
+  "conformanceClassification": "P34_SPEC_CONFORMANCE_PASS",
+
+  "disclaimer": "Conformance report only. Does not constitute investment advice."
+}

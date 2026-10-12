@@ -1,0 +1,65 @@
+{
+  "taskId": "P0-02A",
+  "taskName": "MVP API As-of Gate Integration",
+  "date": "2026-05-07",
+  "observabilityOnly": true,
+  "noEdgeClaim": true,
+  "noProductionWrite": true,
+  "noDBWrite": true,
+  "noExternalAPI": true,
+  "noLLMCall": true,
+  "noStrategyMutation": true,
+  "noPerformanceClaim": true,
+  "finalClassification": "P002A_MVP_API_AS_OF_GATE_INTEGRATION_COMPLETE",
+  "testResults": {
+    "newTestSuites": 2,
+    "newTestsPassed": 41,
+    "fullRegressionSuites": 16,
+    "fullRegressionTests": 455,
+    "allPass": true
+  },
+  "apiIntegration": {
+    "strategyScreen": "COMPLETE",
+    "stockDetail": "COMPLETE",
+    "stockHistory": "BLOCKED",
+    "stocksBacktest": "AUDIT_ONLY",
+    "backtestValidate": "AUDIT_ONLY",
+    "adminDataQuality": "COMPLETE",
+    "reportOps": "AUDIT_ONLY"
+  },
+  "completedItems": [
+    "Added asOfDate query param to /api/strategy/screen GET and POST",
+    "Passed asOf to runScreen() for stockQuote.groupBy gate",
+    "Response includes asOfDate, asOfGateStatus, asOfGateNote for screen",
+    "Added asOfDate query param to /api/stocks/[id]/detail GET",
+    "stockQuote.findMany gated with date lte asOfDateDb",
+    "runScreen() in detail route receives asOf param",
+    "cacheKey includes asOfDate to prevent stale cache",
+    "Response includes asOfDate, asOfGateStatus, asOfGateNote for detail",
+    "StockDetailResponse interface extended with 3 new fields",
+    "Added as-of readiness summary to /api/admin/data-quality",
+    "asOfReadiness includes: asOfDate, futureRowsDetected, futureRowsExcludedByGate, mvpUniverseTierSummary, readinessStatus",
+    "Created 41 new tests across 2 test files — all PASS",
+    "Full regression: 16 suites / 455 tests PASS"
+  ],
+  "pendingItems": [
+    "/api/stocks/[id]/history — BLOCKED (external proxy), deferred to P0-03",
+    "/api/stocks/backtest — AUDIT_ONLY, add lte gate in P0-03",
+    "/api/backtest/validate — AUDIT_ONLY, add lte gate in P0-03",
+    "stockMetrics.findMany in detail — not gated, deferred to P0-03",
+    "fuseBatch() in StrategyScreenEngine — does not fully propagate asOf to sub-agents",
+    "NewsEvent — not gated, no direct queries in P0-02A scope"
+  ],
+  "readinessGates": {
+    "asOfDateParamExposed": true,
+    "defaultsToResolveAsOfDate": true,
+    "stockQuoteGated": true,
+    "futureRowsExcluded": true,
+    "futureRowsWarnIfInDB": true,
+    "noStrategyMutation": true,
+    "noPerformanceClaim": true,
+    "regressionPreserved": true
+  },
+  "nextRound": "P0-02B — Shadow Prediction Log Contract",
+  "generatedAt": "2026-05-07T00:00:00.000Z"
+}

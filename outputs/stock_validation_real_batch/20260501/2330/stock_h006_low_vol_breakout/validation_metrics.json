@@ -1,0 +1,17 @@
+{
+  "hypothesis_id": "STOCK_H006_LOW_VOL_BREAKOUT",
+  "symbol": "2330",
+  "as_of_date": "2026-05-01",
+  "windows_tested": [
+    150,
+    500
+  ],
+  "windows_ok": [
+    500
+  ],
+  "avg_sharpe_annualized": 8.8776,
+  "avg_roi_annualized": 2.0827,
+  "bh_fdr_pass_count": 0,
+  "promoted": "REJECTED",
+  "run_ts": "2026-05-05T09:41:38.658247+00:00"
+}

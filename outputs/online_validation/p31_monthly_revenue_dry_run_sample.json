@@ -1,0 +1,18 @@
+{
+  "phase": "P31",
+  "capturedAt": "2026-05-21T00:00:00.000Z",
+  "mode": "source-present-dry-run",
+  "paperOnly": true,
+  "dryRun": true,
+  "entersAlphaScore": false,
+  "notInvestmentRecommendation": true,
+  "rowCount": 2143,
+  "releaseDateCoverage": { "count": 2143, "pct": 100 },
+  "releaseDateSourceCoverage": { "count": 2143, "pct": 100, "policy": "INFERRED_NEXT_MONTH_10TH" },
+  "releaseDateConfidenceCoverage": { "count": 2143, "pct": 100, "confidence": "LOW" },
+  "blockedRows": 0,
+  "dryRunStatus": "READY",
+  "overallClassification": "MONTHLY_REVENUE_DRY_RUN_READY",
+  "auditConclusion": "All 2143 MonthlyRevenue rows pass source-present dry-run gate. No leakage risk detected. releaseDate metadata 100% populated. No rows enter alphaScore.",
+  "disclaimer": "Structural audit contract only. Does not constitute investment advice. No profit, return, or investment performance claims are made. MonthlyRevenue entersAlphaScore = false. ALWAYS. Results must not be used as buy/sell/hold signals or investment recommendations."
+}

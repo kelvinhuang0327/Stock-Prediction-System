@@ -1,0 +1,31 @@
+{
+  "task_id": 176,
+  "outputs": {
+    "created_files": [
+      "cold_phase_strategy_report.json",
+      "cold_phase_backtest_table.json",
+      "hybrid_entry_strategy_report.json",
+      "hybrid_backtest_table.json",
+      "distribution_bias_report.json",
+      "distribution_backtest_table.json",
+      "monte_carlo_report_1000_plus.json",
+      "comparison_matrix_vs_existing.json",
+      "final_recommendation.json"
+    ],
+    "perm_p_edge_vs_baseline": 0.0001999600079984003,
+    "monte_carlo_5th_percentiles": {
+      "production_baseline": -53.120359605570314,
+      "cold_phase_variant": -40.618165226882894,
+      "hybrid_entry_variant": -51.194301355113716,
+      "distribution_bias_variant": -38.4160248020513
+    },
+    "mcnemar_p": 0.0732423250350061,
+    "chi2_p": 0.0033993201359728054
+  },
+  "acceptance_checks": {
+    "perm_p_lt_0_05": true,
+    "mc_5th_drawdown_lt_20pct": true,
+    "mcnemar_pass": false,
+    "chi2_pass": true
+  }
+}

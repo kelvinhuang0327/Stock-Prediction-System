@@ -1,0 +1,92 @@
+{
+  "generatedAt": "2026-05-12T00:00:00.000Z",
+  "disclaimer": "Pre-flight audit only. No investment recommendations. No scoring changes. No corpus modifications.",
+  "phase": "P12-HARDRESET",
+  "preflightStatus": "PASS",
+  "artifactChecks": [
+    {
+      "path": "outputs/online_validation/p6lite_bucket_contract_freeze.json",
+      "exists": true,
+      "sizeBytes": 3987
+    },
+    {
+      "path": "outputs/online_validation/p6lite_bucket_contract_freeze.md",
+      "exists": true,
+      "sizeBytes": 2263
+    },
+    {
+      "path": "outputs/online_validation/p8preflight_signal_reason_diagnosis.json",
+      "exists": true,
+      "sizeBytes": 20235
+    },
+    {
+      "path": "outputs/online_validation/p8preflight_signal_reason_diagnosis.md",
+      "exists": true,
+      "sizeBytes": 20279
+    },
+    {
+      "path": "outputs/online_validation/p5walkthrough_review.json",
+      "exists": true,
+      "sizeBytes": 45345
+    },
+    {
+      "path": "outputs/online_validation/p4calibration_full_audit.json",
+      "exists": true,
+      "sizeBytes": 46338
+    },
+    {
+      "path": "outputs/online_validation/p3active_scoring_historical_replay_corpus.jsonl",
+      "exists": true,
+      "sizeBytes": 10858745
+    },
+    {
+      "path": "outputs/online_validation/p1baseline_historical_replay_corpus.jsonl",
+      "exists": true,
+      "sizeBytes": 6226238
+    },
+    {
+      "path": "outputs/online_validation/simulation_snapshot_corpus.jsonl",
+      "exists": true,
+      "sizeBytes": 89395
+    }
+  ],
+  "corpusChecks": {
+    "simulation": {
+      "path": "outputs/online_validation/simulation_snapshot_corpus.jsonl",
+      "expected": 60,
+      "actual": 60,
+      "ok": true
+    },
+    "p0": {
+      "path": "outputs/online_validation/p0hardreset_historical_replay_corpus.jsonl",
+      "expected": 4500,
+      "actual": 4500,
+      "ok": true
+    },
+    "p1": {
+      "path": "outputs/online_validation/p1baseline_historical_replay_corpus.jsonl",
+      "expected": 9900,
+      "actual": 9900,
+      "ok": true
+    },
+    "p3": {
+      "path": "outputs/online_validation/p3active_scoring_historical_replay_corpus.jsonl",
+      "expected": 4500,
+      "actual": 4500,
+      "ok": true
+    }
+  },
+  "stateChecks": {
+    "p6FinalVerdict": "BY_DESIGN_BOUNDARY",
+    "p6VerdictOk": true,
+    "contractFreeze": {
+      "canonicalBucketLabels": true,
+      "nonGoals": true
+    },
+    "p8CaseCount": 24,
+    "p8CasesOk": true,
+    "p3MockDeterministicCount": 0,
+    "noMockDeterministic": true
+  },
+  "summary": "All pre-flight checks passed. P12-HARDRESET may proceed."
+}

@@ -1,0 +1,87 @@
+{
+  "phase": "P34",
+  "capturedAt": "2026-05-21T00:00:00.000Z",
+  "source": "NewsEvent",
+  "mode": "source-present-dry-run",
+  "paperOnly": true,
+  "dryRun": true,
+  "entersAlphaScore": false,
+  "notInvestmentRecommendation": true,
+  "noBuySellActionSemantics": true,
+
+  "priorGateReference": "outputs/online_validation/p33_news_event_source_present_scan.json",
+  "specReference": "outputs/online_validation/p32prep_report_spec_v0_dry_run_sample.json",
+  "pitAuditReference": "outputs/online_validation/p34_news_event_pit_audit.json",
+
+  "pitGateField": "publishedAt",
+  "pitPolicy": "RECORDED_FROM_SOURCE",
+  "pitConfidence": "RECORDED",
+
+  "dbQueryMethod": "sqlite3 prisma/dev.db",
+  "dbQueries": [
+    "SELECT COUNT(*), COUNT(publishedAt), COUNT(source), COUNT(trustLevel) FROM NewsEvent;",
+    "SELECT COUNT(*) FROM NewsEvent WHERE publishedAt > ingestedAt;",
+    "SELECT MIN(publishedAt), MAX(publishedAt), MIN(ingestedAt), MAX(ingestedAt) FROM NewsEvent;",
+    "SELECT trustLevel, COUNT(*) FROM NewsEvent GROUP BY trustLevel ORDER BY 2 DESC;",
+    "SELECT source, COUNT(*) FROM NewsEvent GROUP BY source ORDER BY 2 DESC LIMIT 10;"
+  ],
+
+  "rowCounts": {
+    "total": 1018,
+    "readyRows": 1018,
+    "blockedRows": 0,
+    "skippedRows": 0,
+    "withPublishedAt": 1018,
+    "withSource": 1018,
+    "withTrustLevel": 1018,
+    "nullPublishedAt": 0
+  },
+
+  "pitMetrics": {
+    "publishedAtCoverage": { "count": 1018, "pct": 100 },
+    "publishedAtNullCount": 0,
+    "publishedAtAfterIngestedAt": 0,
+    "historicalImportGapNote": "1018 rows span publishedAt from 2025-12-29 to 2026-05-05. Minimum ingestedAt is 2026-03-15, meaning the earliest ~3 months of events were ingested retrospectively (historical import). This is expected for RSS backfill. PIT gate uses publishedAt (publication time), not ingestedAt, which correctly reflects when events were publicly available."
+  },
+
+  "dateRange": {
+    "publishedAtMin": "2025-12-29 UTC (ms: 1766995200000)",
+    "publishedAtMax": "2026-05-05 UTC (ms: 1777976893000)",
+    "ingestedAtMin": "2026-03-15 UTC (ms: 1773856621019)",
+    "ingestedAtMax": "2026-05-05 UTC (ms: 1777977006548)"
+  },
+
+  "trustLevelDistribution": {
+    "mainstream": 952,
+    "secondary": 63,
+    "official": 3,
+    "total": 1018
+  },
+
+  "topSources": [
+    { "source": "Yahoo 台股新聞 RSS", "count": 857 },
+    { "source": "Yahoo股市",          "count": 83  },
+    { "source": "sinotrade.com.tw",   "count": 30  },
+    { "source": "自由財經",            "count": 15  },
+    { "source": "FTNN 新聞網",         "count": 4   },
+    { "source": "Yahoo新聞",           "count": 4   },
+    { "source": "工商時報",            "count": 4   },
+    { "source": "news.cnyes.com",     "count": 2   },
+    { "source": "中時新聞網",          "count": 2   },
+    { "source": "經濟日報",            "count": 2   }
+  ],
+
+  "dryRunStatus": "READY",
+
+  "governanceFlags": {
+    "entersAlphaScore": false,
+    "paperOnly": true,
+    "dryRun": true,
+    "notInvestmentRecommendation": true,
+    "noBuySellActionSemantics": true
+  },
+
+  "overallClassification": "NEWS_EVENT_SOURCE_PRESENT_DRY_RUN_READY",
+
+  "disclaimer": "Structural dry-run contract only. Does not constitute investment advice. No profit, return, ROI, win-rate, or investment performance claims are made. NewsEvent entersAlphaScore = false. ALWAYS. Results must not be used as buy/sell/hold signals or investment recommendations."
+}

@@ -1,0 +1,67 @@
+{
+  "contractVersion": "backfill-write-path-contract-v0",
+  "contractRunId": "p15-backfill-write-path-contract-20260511-001",
+  "generatedAt": "2026-05-11T09:15:00.000Z",
+  "mode": "ARTIFACT_ONLY_REHEARSAL",
+  "allowedOperations": [
+    "read corpus",
+    "read P14 artifacts",
+    "generate governance artifact",
+    "generate manual review package",
+    "generate preview-only quality impact"
+  ],
+  "forbiddenOperations": [
+    "write production DB",
+    "write corpus JSONL",
+    "write Prediction row",
+    "write StrategySignal",
+    "call optimizer",
+    "auto promote",
+    "emit trading signal",
+    "claim performance"
+  ],
+  "writePathMatrix": [
+    {
+      "mode": "ARTIFACT_ONLY_REHEARSAL",
+      "productionDbWriteAllowed": false,
+      "corpusJsonlWriteAllowed": false,
+      "predictionRowWriteAllowed": false,
+      "strategySignalWriteAllowed": false,
+      "artifactWriteAllowed": true,
+      "reason": "artifact-only rehearsal"
+    },
+    {
+      "mode": "MANUAL_REVIEW",
+      "productionDbWriteAllowed": false,
+      "corpusJsonlWriteAllowed": false,
+      "predictionRowWriteAllowed": false,
+      "strategySignalWriteAllowed": false,
+      "artifactWriteAllowed": true,
+      "reason": "manual review package only"
+    },
+    {
+      "mode": "PRODUCTION_BACKFILL",
+      "productionDbWriteAllowed": false,
+      "corpusJsonlWriteAllowed": false,
+      "predictionRowWriteAllowed": false,
+      "strategySignalWriteAllowed": false,
+      "artifactWriteAllowed": true,
+      "reason": "NOT_ENABLED_IN_P15"
+    }
+  ],
+  "escalationPolicy": {
+    "manualReviewRequired": true,
+    "automaticPromotionAllowed": false,
+    "productionBackfillAllowed": false,
+    "artifactOnly": true,
+    "notes": [
+      "P15 is artifact-only.",
+      "Manual review may inspect rehearsal and preview artifacts.",
+      "Production backfill is not enabled in this phase."
+    ]
+  },
+  "validationStatus": "PASS",
+  "validationMessages": [
+    "PASS: backfill write-path contract safety contracts verified"
+  ]
+}

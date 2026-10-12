@@ -1,0 +1,32 @@
+{
+  "contractVersion": "p26a-renderer-integration-v1",
+  "backwardCompatible": true,
+  "additiveOnly": true,
+  "existingFieldsPreserved": [
+    "reasonSnapshot",
+    "reasonSnapshotSummary",
+    "topSignalOrFactor"
+  ],
+  "newAdditiveFields": {
+    "renderedReason": "string - enriched display reason from factorSnapshot (if available) else original reasonSnapshot",
+    "renderedReasonFactorCount": "number - count of factor dimensions in renderedReason",
+    "reasonRendererVersion": "string - always p26a-corpus-renderer-v1",
+    "reasonRendererOutcome": "ENRICHED | ALREADY_RICH | FALLBACK_EMPTY | FALLBACK_NO_SNAPSHOT",
+    "dataAvailabilityNote": "string - neutral data availability note when missingSources present, empty string otherwise"
+  },
+  "guarantees": {
+    "noScoringChange": true,
+    "noAlphaScoreChange": true,
+    "noBucketChange": true,
+    "noDBWrite": true,
+    "noCorpusMutation": true,
+    "deterministic": true,
+    "noExternalAPICall": true,
+    "noInvestmentClaim": true
+  },
+  "inputExtension": {
+    "factorSnapshot": "string[] optional - from activeScoringSnapshot.factorSnapshot",
+    "usedSources": "string[] optional - for data availability note",
+    "missingSources": "string[] optional - for data availability note"
+  }
+}

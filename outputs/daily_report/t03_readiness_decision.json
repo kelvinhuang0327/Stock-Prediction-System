@@ -1,0 +1,73 @@
+{
+  "task": "T-03 Daily Ops Report v1 Readiness Decision",
+  "decision_date": "2026-05-06",
+  "decision": "READY",
+  "readiness_answers": {
+    "Q01_daily_ops_report_v1_complete": true,
+    "Q02_api_report_ops_complete": true,
+    "Q03_operator_ready": true,
+    "Q04_scheduler_ready": true,
+    "Q05_dashboard_ready": true,
+    "Q06_hardcoded_date_risk": true,
+    "Q06_detail": "DEFAULT_CURRENT_DATE = '2026-05-06' still hardcoded in marketRegimeResult.ts. Must be replaced with dynamic date source before production.",
+    "Q07_db_write": false,
+    "Q08_external_api_call": false,
+    "Q09_h001_h012_leakage": false,
+    "Q09_detail": "Field renamed to noLegacyHypotheses to avoid embedding hypothesis codes in JSON keys.",
+    "Q10_buy_sell_signal_leakage": false,
+    "Q11_roi_win_rate_edge_leakage": false,
+    "Q12_p0_blocker_remaining": false
+  },
+  "evidence": {
+    "OpsReportEngine_created": "src/lib/report/OpsReportEngine.ts",
+    "api_route_created": "src/app/api/report/ops/route.ts",
+    "test_engine_file": "src/lib/report/__tests__/t03_ops_report_engine.test.ts",
+    "test_api_file": "src/app/api/report/ops/__tests__/t03_ops_report_api.test.ts",
+    "jest_results": "81/81 PASS (T-09: 20, T-11: 20, T-12: 14, T-03: 27)",
+    "guardrails": "22/22 PASS",
+    "no_forbidden_fields": true,
+    "no_db_write": true,
+    "no_external_api_call": true
+  },
+  "next_round_recommendations": {
+    "P0_Immediate": [
+      {
+        "task": "T-04",
+        "title": "LLM Hard-Off / Safe-Run + Missing-TaskId Alert",
+        "description": "Implement LLM hard-off mode (no LLM calls in safe-run), missing-taskId alert when scheduled tasks do not report back. This is a scheduler safety layer. Can consume OpsReport status to decide whether to proceed or halt."
+      }
+    ],
+    "P1_Next": [
+      {
+        "task": "T-02b",
+        "title": "Unified Freshness Guard",
+        "description": "Wire OpsReport freshness.requiresAction into the scheduler/pipeline as a blocking guard. When true, emit alert and optionally pause non-critical pipeline stages."
+      },
+      {
+        "task": "T-12b",
+        "title": "Replace DEFAULT_CURRENT_DATE hardcoded",
+        "description": "DEFAULT_CURRENT_DATE = '2026-05-06' is hardcoded. Replace with dynamic date source (e.g., process.env.REPORT_DATE or new Date().toISOString().split('T')[0]) for production."
+      }
+    ],
+    "P2_Deferred": [
+      {
+        "task": "T-03b",
+        "title": "Ops Report UI Dashboard",
+        "description": "Build a simple dashboard UI that consumes /api/report/ops and displays system health status to operators."
+      },
+      {
+        "task": "T-01b",
+        "title": "Lane-based Scheduler Heartbeat",
+        "description": "Extend scheduler with periodic heartbeat that checks OpsReport status and emits alerts when freshness thresholds are crossed."
+      }
+    ],
+    "Do_Not_Continue": [
+      "H013+ design",
+      "Strategy validation",
+      "ML model training",
+      "ROI / win-rate / alpha / edge calculation",
+      "External data API calls",
+      "Production DB writes"
+    ]
+  }
+}

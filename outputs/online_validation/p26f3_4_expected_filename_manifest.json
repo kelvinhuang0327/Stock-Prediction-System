@@ -1,0 +1,43 @@
+{
+  "phase": "P26F3-4-HARDRESET",
+  "generatedAt": "2026-05-13T06:48:30.899188+00:00",
+  "expectedPeriods": [
+    "2025-09",
+    "2025-10",
+    "2025-11",
+    "2025-12",
+    "2026-01"
+  ],
+  "acceptedExtensions": [
+    ".csv",
+    ".json",
+    ".jsonl"
+  ],
+  "filenameRegex": "(\\d{4})[_-]?(0[1-9]|1[0-2])",
+  "periodExtractionRule": "Match YYYY_MM or YYYY-MM in filename; extract as YYYY-MM",
+  "suggestedFilenames": [
+    "twse_monthly_revenue_2025_09.csv",
+    "twse_monthly_revenue_2025_10.csv",
+    "twse_monthly_revenue_2025_11.csv",
+    "twse_monthly_revenue_2025_12.csv",
+    "twse_monthly_revenue_2026_01.csv"
+  ],
+  "combinedFileOption": "twse_monthly_revenue_2025_09_to_2026_01.jsonl",
+  "duplicateHandling": "Last row wins per stockId+year+month (deterministic)",
+  "allowedSourceNames": [
+    "TWSE",
+    "MOPS",
+    "OFFICIAL",
+    "MANUAL"
+  ],
+  "ignoredPatterns": [
+    "DO_NOT_IMPORT",
+    "TEMPLATE",
+    "EXPECTED_SCHEMA",
+    "EXPECTED_FILENAMES",
+    "README",
+    ".gitkeep"
+  ],
+  "dbWriteAllowed": false,
+  "corpusWriteAllowed": false
+}

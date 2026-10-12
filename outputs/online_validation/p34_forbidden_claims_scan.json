@@ -1,0 +1,75 @@
+{
+  "phase": "P34",
+  "capturedAt": "2026-05-21T00:00:00.000Z",
+  "scanScope": "outputs/online_validation/p34_*.json outputs/online_validation/p34_*.md",
+  "patterns": [
+    "ROI", "win-rate", "win rate", "winRate", "\\balpha[^S]",
+    "profit", "outperform", "beat", "guaranteed", "investment recommendation",
+    "買進", "賣出", "買入", "buySignal", "sellSignal", "holdSignal"
+  ],
+  "command": "grep -in <patterns> outputs/online_validation/p34_*.json outputs/online_validation/p34_*.md",
+
+  "matchSummary": [
+    {
+      "file": "p34_news_event_dry_run_sample.json",
+      "matchedPatterns": ["ROI", "win-rate", "profit"],
+      "context": "disclaimer field — exclusion documentation only",
+      "classification": "BENIGN"
+    },
+    {
+      "file": "p34_news_event_pit_audit.json",
+      "matchedPatterns": ["ROI", "win-rate", "profit"],
+      "context": "disclaimer field — exclusion documentation only",
+      "classification": "BENIGN"
+    },
+    {
+      "file": "p34_news_event_source_present_dry_run.json",
+      "matchedPatterns": ["ROI", "win-rate", "profit"],
+      "context": "disclaimer field — exclusion documentation only",
+      "classification": "BENIGN"
+    },
+    {
+      "file": "p34_spec_conformance.json",
+      "matchedPatterns": ["roi", "winRate", "profit", "buySignal", "sellSignal", "holdSignal", "outperform", "guaranteed"],
+      "context": "intentionalExclusions array — lists forbidden fields and reasons for their absence",
+      "classification": "BENIGN"
+    },
+    {
+      "file": "p34_news_event_dry_run_sample.md",
+      "matchedPatterns": ["ROI", "win-rate", "profit", "investment recommendation"],
+      "context": "disclaimer and governance exclusion list — explicit prohibition documentation",
+      "classification": "BENIGN"
+    },
+    {
+      "file": "p34_news_event_source_present_dry_run.md",
+      "matchedPatterns": ["ROI", "win-rate", "profit"],
+      "context": "disclaimer — explicit prohibition documentation",
+      "classification": "BENIGN"
+    },
+    {
+      "file": "p34_spec_conformance.md",
+      "matchedPatterns": ["roi", "winRate", "profit", "buySignal", "sellSignal", "holdSignal", "outperform", "guaranteed"],
+      "context": "intentional exclusions section — lists forbidden fields",
+      "classification": "BENIGN"
+    }
+  ],
+
+  "allMatchesClassification": "BENIGN",
+  "liveClaimCount": 0,
+  "prohibitionDocumentationCount": 15,
+
+  "verdict": "All pattern matches are inside disclaimer text or intentional-exclusion documentation. No live investment performance claims, buy/sell/hold action fields, or prediction quality claims found in P34 artifacts.",
+
+  "scanResult": "CLEAN",
+  "overallClassification": "P34_FORBIDDEN_CLAIMS_SCAN_CLEAN",
+
+  "governanceFlags": {
+    "entersAlphaScore": false,
+    "paperOnly": true,
+    "dryRun": true,
+    "notInvestmentRecommendation": true,
+    "noBuySellActionSemantics": true
+  },
+
+  "disclaimer": "Forbidden claims scan only. Governance audit artifact."
+}

@@ -1,0 +1,295 @@
+{
+  "reviewId": "p15-migration-approval-review-v0",
+  "phase": "P15",
+  "reviewDate": "2026-05-12",
+  "disclaimer": "Does not constitute investment advice. Does not compute ROI, profit, alpha, win-rate, edge, or outperformance. Governance / review only. No production DB writes. No automatic approval granted.",
+  "gateResults": [
+    {
+      "gate": "migration_draft_safe",
+      "pass": true,
+      "detail": "SAFE_DRY_RUN_ONLY"
+    },
+    {
+      "gate": "rollback_ready",
+      "pass": true,
+      "detail": "ROLLBACK_READY"
+    },
+    {
+      "gate": "query_gate_covered",
+      "pass": true,
+      "detail": "QUERY_GATE_COVERAGE_SUFFICIENT"
+    },
+    {
+      "gate": "fixture_dry_run_covered",
+      "pass": true,
+      "detail": "FIXTURE_COVERAGE_SUFFICIENT"
+    },
+    {
+      "gate": "production_safe",
+      "pass": true,
+      "detail": "PRODUCTION_SAFE"
+    }
+  ],
+  "allGatesPass": true,
+  "migrationDraftSafety": {
+    "safe": true,
+    "summary": "SAFE_DRY_RUN_ONLY",
+    "errors": [],
+    "warnings": [],
+    "gates": [
+      {
+        "gate": "draft_exists",
+        "pass": true,
+        "detail": "Draft object present"
+      },
+      {
+        "gate": "production_apply_allowed_false",
+        "pass": true,
+        "detail": "productionApplyAllowed=false"
+      },
+      {
+        "gate": "safety_validation_status",
+        "pass": true,
+        "detail": "safetyValidation.status=SAFE_DRY_RUN_ONLY"
+      },
+      {
+        "gate": "safety_validation_no_explicit_errors",
+        "pass": true,
+        "detail": "safetyValidation.safe=undefined"
+      },
+      {
+        "gate": "proposed_schema_change_has_fields",
+        "pass": true,
+        "detail": "fieldsToAdd count=3"
+      },
+      {
+        "gate": "release_date_field_proposed",
+        "pass": true,
+        "detail": "releaseDate in fieldsToAdd: true"
+      },
+      {
+        "gate": "backfill_forbidden_inputs_declared",
+        "pass": true,
+        "detail": "forbiddenInputs count=9"
+      }
+    ]
+  },
+  "rollbackReadiness": {
+    "ready": true,
+    "summary": "ROLLBACK_READY",
+    "errors": [],
+    "strategies": [
+      {
+        "name": "Strategy A",
+        "description": "Set releaseDate fields to NULL (soft rollback)"
+      },
+      {
+        "name": "Strategy B",
+        "description": "DROP releaseDate columns (hard rollback, irreversible)"
+      }
+    ],
+    "gates": [
+      {
+        "gate": "rollback_draft_exists",
+        "pass": true,
+        "detail": "Rollback draft present"
+      },
+      {
+        "gate": "rollback_has_strategies",
+        "pass": true,
+        "detail": "strategies count=2"
+      },
+      {
+        "gate": "rollback_production_apply_allowed_false",
+        "pass": true,
+        "detail": "productionApplyAllowed=false"
+      }
+    ]
+  },
+  "queryGateCoverage": {
+    "covered": true,
+    "summary": "QUERY_GATE_COVERAGE_SUFFICIENT",
+    "coveredPaths": [
+      "RuleBasedStockAnalyzer",
+      "FundamentalResearchService"
+    ],
+    "missingPaths": [],
+    "proposalCount": 3,
+    "ruleCount": 7,
+    "gates": [
+      {
+        "gate": "query_gate_proposal_exists",
+        "pass": true,
+        "detail": "Proposal present"
+      },
+      {
+        "gate": "query_gate_rules_exist",
+        "pass": true,
+        "detail": "queryGateRules count=7"
+      },
+      {
+        "gate": "proposals_exist",
+        "pass": true,
+        "detail": "proposals count=3"
+      },
+      {
+        "gate": "production_apply_allowed_false",
+        "pass": true,
+        "detail": "productionApplyAllowed=false"
+      },
+      {
+        "gate": "covers_RuleBasedStockAnalyzer",
+        "pass": true,
+        "detail": "RuleBasedStockAnalyzer in proposals: true"
+      },
+      {
+        "gate": "covers_FundamentalResearchService",
+        "pass": true,
+        "detail": "FundamentalResearchService in proposals: true"
+      }
+    ]
+  },
+  "fixtureDryRunCoverage": {
+    "covered": true,
+    "summary": "FIXTURE_COVERAGE_SUFFICIENT",
+    "passed": 11,
+    "total": 11,
+    "validationStatus": "PASS",
+    "errors": [],
+    "gates": [
+      {
+        "gate": "fixture_dry_run_exists",
+        "pass": true,
+        "detail": "Dry run present"
+      },
+      {
+        "gate": "validation_status_pass",
+        "pass": true,
+        "detail": "validationStatus=PASS"
+      },
+      {
+        "gate": "all_fixture_tests_pass",
+        "pass": true,
+        "detail": "passed=11/11"
+      },
+      {
+        "gate": "production_db_not_written",
+        "pass": true,
+        "detail": "productionDbWritten=false"
+      }
+    ]
+  },
+  "productionSafety": {
+    "safe": true,
+    "summary": "PRODUCTION_SAFE",
+    "errors": [],
+    "gates": [
+      {
+        "gate": "preflight_production_db_not_written",
+        "pass": true,
+        "detail": "preflight.productionDbWritten=false"
+      },
+      {
+        "gate": "draft_production_apply_allowed_false",
+        "pass": true,
+        "detail": "draft.productionApplyAllowed=false"
+      },
+      {
+        "gate": "no_automatic_approval",
+        "pass": true,
+        "detail": "approvalStatus=NOT_APPROVED"
+      },
+      {
+        "gate": "preflight_status_pass",
+        "pass": true,
+        "detail": "preflightStatus=PASS"
+      }
+    ]
+  },
+  "p13Context": {
+    "planId": "p13-monthly-revenue-migration-plan-v0",
+    "overallRisk": "HIGH",
+    "pitGateValidationStatus": "PASS",
+    "pitGatePassed": 35,
+    "pitGateTotal": 35
+  },
+  "residualRisks": [
+    {
+      "riskId": "R-001",
+      "title": "Schema migration breaks existing queries",
+      "severity": "HIGH",
+      "likelihood": "MEDIUM",
+      "mitigation": "P14 query gate proposal covers RuleBasedStockAnalyzer (HIGH risk) and FundamentalResearchService (HIGH risk) — both require explicit code patch in P16.",
+      "approvalImpact": "Blocking if patches not applied before migration"
+    },
+    {
+      "riskId": "R-002",
+      "title": "Backfill inference introduces systematic date bias",
+      "severity": "MEDIUM",
+      "likelihood": "LOW",
+      "mitigation": "Field declared as releaseDateSource=INFERRED with confidence LOW_TO_MEDIUM. Query gate checks releaseDateSource; authoritative data can override.",
+      "approvalImpact": "Non-blocking if confidence field is populated correctly"
+    },
+    {
+      "riskId": "R-003",
+      "title": "Query gate regression — existing tests fail after patch",
+      "severity": "HIGH",
+      "likelihood": "LOW",
+      "mitigation": "P14 fixture dry-run 11/11 PASS covers all gate edge cases. Test coverage must be verified again post-patch in P16.",
+      "approvalImpact": "Blocking if full suite drops below baseline"
+    },
+    {
+      "riskId": "R-004",
+      "title": "Historical replay comparability affected by releaseDate backfill",
+      "severity": "MEDIUM",
+      "likelihood": "LOW",
+      "mitigation": "Frozen corpus files (P0/P1/P3/P4) are not modified. Replay comparability is maintained by design — frozen lines verified: P0=4500, P1=9900, P3=4500.",
+      "approvalImpact": "Non-blocking if frozen corpus verified unchanged"
+    },
+    {
+      "riskId": "R-005",
+      "title": "Rollback incomplete — column DROP may lose backfilled data",
+      "severity": "MEDIUM",
+      "likelihood": "LOW",
+      "mitigation": "P14 rollback draft includes Strategy A (set fields to NULL) as soft rollback. Strategy B (drop) is documented as hard rollback requiring explicit decision.",
+      "approvalImpact": "Non-blocking — soft rollback path sufficient"
+    },
+    {
+      "riskId": "R-006",
+      "title": "Production DB safety — unintended writes during migration",
+      "severity": "HIGH",
+      "likelihood": "LOW",
+      "mitigation": "All P14 utilities hardcode productionApplyAllowed=false. P15 utilities maintain this invariant. P16 requires explicit approval token to unlock.",
+      "approvalImpact": "Hard blocker — must not be bypassed"
+    },
+    {
+      "riskId": "R-007",
+      "title": "PIT leakage residual — releaseDate not yet enforced in production code",
+      "severity": "HIGH",
+      "likelihood": "HIGH",
+      "mitigation": "P14 query gate proposal documents all three patch targets. Patches are proposed but not applied — requires P16 schema migration first.",
+      "approvalImpact": "Non-blocking for approval review — leakage documented and mitigated in P16 plan"
+    },
+    {
+      "riskId": "R-008",
+      "title": "Reason/scoring downstream impact from releaseDate enforcement",
+      "severity": "MEDIUM",
+      "likelihood": "MEDIUM",
+      "mitigation": "P15 review confirms scoring formula and alphaScore/recommendationBucket are NOT modified. Impact limited to data availability — not formula changes.",
+      "approvalImpact": "Non-blocking if scoring formulas are not changed"
+    }
+  ],
+  "requiredApproverAction": "Review this artifact and P15 risk register. If satisfied, provide explicit token: P14_APPROVE_SCHEMA_MIGRATION_DRY_RUN_ONLY to unlock P16 implementation.",
+  "recommendedApprovalToken": "P14_APPROVE_SCHEMA_MIGRATION_DRY_RUN_ONLY",
+  "recommendedApprovalTokenNote": "This is a TEXT RECOMMENDATION only. This review artifact does NOT grant approval. Token must be provided explicitly by authorized operator (CTO/CEO).",
+  "whyNoMigrationApplied": [
+    "Approval token P14_APPROVE_SCHEMA_MIGRATION_DRY_RUN_ONLY was NOT present in P14.",
+    "P15 is a governance/review phase only — no migration implementation.",
+    "productionApplyAllowed is hardcoded false on all P14 draft artifacts.",
+    "Schema migration requires explicit approval token to be provided by operator in P16.",
+    "Frozen corpora (P0/P1/P3/P4) must not be modified without separate approval."
+  ],
+  "approvalGranted": false,
+  "productionDbWritten": false,
+  "finalDecisionClassification": "APPROVAL_REVIEW_PASS_READY_FOR_DRY_RUN_IMPLEMENTATION"
+}

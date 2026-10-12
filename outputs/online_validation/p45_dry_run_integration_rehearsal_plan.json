@@ -1,0 +1,33 @@
+{
+  "phase": "P45",
+  "frameworkStatus": "EXECUTION_LIFECYCLE_RUNNER_INTEGRATION_REHEARSAL_READY",
+  "version": "p45-paper-simulation-dry-run-lifecycle-runner-integration-rehearsal-v1",
+  "rehearsalFlow": [
+    "IntegrationResult (P44: runDryRunIntegration)",
+    "IntegrationReport (P44: buildIntegrationReport)",
+    "RehearsalResult (P45: runDryRunIntegrationRehearsal)"
+  ],
+  "rehearsalStepsTotal": 2,
+  "pipelineStepsTotal": 5,
+  "executedAt": null,
+  "governance": {
+    "dryRunOnly": true,
+    "paperOnly": true,
+    "noActualMetrics": true,
+    "entersAlphaScore": false,
+    "noAlphaScore": true,
+    "noRecommendation": true,
+    "noPnL": true,
+    "noROI": true,
+    "noWinRate": true,
+    "noReturnPct": true,
+    "noOptimizer": true,
+    "noRealBacktest": true,
+    "noInvestmentAdvice": true,
+    "noBuySellActionSemantics": true,
+    "noRealExecution": true,
+    "stubResult": "DRY_RUN_STUB_ONLY"
+  },
+  "authorizationPhrase": "YES design paper simulation dry-run integration rehearsal for P45",
+  "generatedAt": "2024-01-16T10:00:00.000Z"
+}

@@ -1,0 +1,78 @@
+{
+  "generatedAt": "2025-05-15T00:00:00.000Z",
+  "phase": "P28D",
+  "part": "H - Forbidden Claims Scan",
+  "classification": "P28D_FORBIDDEN_CLAIMS_SCAN_PASS",
+  "verdict": "NO_FORBIDDEN_CLAIMS_IN_OUTPUT",
+  "scanScope": [
+    "src/lib/onlineValidation/P26ACorpusReasonRenderer.ts",
+    "src/lib/onlineValidation/P26AReasonFactorEnrichmentUtils.ts",
+    "src/lib/onlineValidation/P5WalkthroughReviewUtils.ts",
+    "src/lib/onlineValidation/P26ACorpusRowAdapter.ts",
+    "src/lib/onlineValidation/__tests__/p28d_post_renderer_validation.test.ts",
+    "outputs/online_validation/p28d_post_renderer_validation_preflight.json",
+    "outputs/online_validation/p28d_integrated_renderer_path_trace.json",
+    "outputs/online_validation/p28d_9case_integrated_review_validation.json",
+    "outputs/online_validation/p28d_p3_p19_renderer_regression_sweep.json"
+  ],
+  "forbiddenPatterns": [
+    "ROI", "win-rate", "win rate", "alpha(?!Score)", "edge", "profit",
+    "outperform", "beat", "buy", "sell", "guaranteed",
+    "investment recommendation", "買進", "賣出", "買入"
+  ],
+  "findings": [
+    {
+      "file": "P26AReasonFactorEnrichmentUtils.ts",
+      "line": 13,
+      "matchedPattern": "ROI, win-rate, profit, outperform, buy, sell",
+      "context": "* NO investment recommendations. NO ROI / win-rate / profit / outperform / buy / sell claims.",
+      "verdict": "ALLOWED",
+      "reason": "This is the guard comment that DECLARES the constraint — it is the rule, not a violation"
+    },
+    {
+      "file": "P26AReasonFactorEnrichmentUtils.ts",
+      "lines": "50-60",
+      "matchedPattern": "ROI, edge, profit, outperform, beat, guaranteed, investment recommendation",
+      "context": "FORBIDDEN_OUTPUT_PATTERNS regex array — runtime guard",
+      "verdict": "ALLOWED",
+      "reason": "These are the forbidden-claim detection patterns (runtime guard). Not emitted output."
+    },
+    {
+      "file": "P5WalkthroughReviewUtils.ts",
+      "line": 6,
+      "matchedPattern": "investment recommendations, ROI, alpha, edge, profit, win-rate",
+      "context": "File header comment: No investment recommendations...",
+      "verdict": "ALLOWED",
+      "reason": "Documentation guard comment — not emitted output"
+    },
+    {
+      "file": "P5WalkthroughReviewUtils.ts",
+      "lines": "232, 290",
+      "matchedPattern": "investment recommendations, investment recommendation",
+      "context": "JSDoc: 'It does NOT make investment recommendations.' and 'Not an investment recommendation.'",
+      "verdict": "ALLOWED",
+      "reason": "Negating disclaimers in documentation — not emitted output"
+    },
+    {
+      "file": "P5WalkthroughReviewUtils.ts",
+      "lines": "517-523",
+      "matchedPattern": "win-rate, outperform, guaranteed, profit, trading-edge, alpha-edge, beat-market",
+      "context": "Runtime forbidden-claim detector array",
+      "verdict": "ALLOWED",
+      "reason": "These are detection patterns for the runtime guard — not emitted output"
+    },
+    {
+      "file": "p28d_post_renderer_validation.test.ts",
+      "line": 298,
+      "matchedPattern": "Verify no investment recommendation language",
+      "context": "Test assertion comment and toMatch() pattern",
+      "verdict": "ALLOWED",
+      "reason": "Test code verifying absence of forbidden claims — not emitted output"
+    }
+  ],
+  "violationsInRenderedOutput": 0,
+  "violationsInArtifacts": 0,
+  "violationsInSourceCode": 0,
+  "allFindingsAreAllowed": true,
+  "scanResult": "PASS"
+}

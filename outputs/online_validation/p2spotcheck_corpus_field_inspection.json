@@ -1,0 +1,187 @@
+{
+  "inspectionType": "P2_CORPUS_FIELD_INSPECTION",
+  "inspectionDate": "2026-05-11",
+  "classification": "P2_SPOTCHECK_LIMITED_BY_MISSING_SCORE_FIELDS",
+  "auditMode": "LIMITED_NON_DISCRIMINATIVE_FIELDS",
+  "p0": {
+    "totalRows": 4500,
+    "totalFields": 29,
+    "allFields": [
+      "closePriceAtPrediction",
+      "corpusRunId",
+      "createdAt",
+      "duplicateKey",
+      "entryPriceSource",
+      "logVersion",
+      "originalAsOfDate",
+      "outcomeSnapshot.horizonDays",
+      "outcomeSnapshot.horizonLabel",
+      "outcomeSnapshot.outcomeAvailable",
+      "outcomeSnapshot.outcomeClose",
+      "outcomeSnapshot.outcomeDate",
+      "outcomeSnapshot.priceSource",
+      "outcomeSnapshot.returnPct",
+      "researchBucket",
+      "runId",
+      "scoreSnapshot.chipScore",
+      "scoreSnapshot.confidenceScore",
+      "scoreSnapshot.fundamentalScore",
+      "scoreSnapshot.marketAdjustment",
+      "scoreSnapshot.researchScore",
+      "scoreSnapshot.technicalScore",
+      "sourceDateBasis.missingDataFlags[]",
+      "sourceDateBasis.sourceDate",
+      "sourceDateBasis.sourceType",
+      "symbol",
+      "universeTier",
+      "validationMessages[]",
+      "writerVersion"
+    ],
+    "scoreFields": {
+      "found": [
+        "scoreSnapshot.researchScore",
+        "scoreSnapshot.confidenceScore",
+        "scoreSnapshot.technicalScore",
+        "scoreSnapshot.chipScore",
+        "scoreSnapshot.fundamentalScore",
+        "scoreSnapshot.marketAdjustment"
+      ],
+      "discriminative": false,
+      "details": {
+        "scoreSnapshot.researchScore": {
+          "cardinality": 1,
+          "distribution": {
+            "0": 4500
+          }
+        },
+        "scoreSnapshot.confidenceScore": {
+          "cardinality": 1,
+          "distribution": {
+            "0": 4500
+          }
+        },
+        "scoreSnapshot.technicalScore": {
+          "cardinality": 1,
+          "distribution": {
+            "0": 4500
+          }
+        },
+        "scoreSnapshot.chipScore": {
+          "cardinality": 1,
+          "distribution": {
+            "0": 4500
+          }
+        },
+        "scoreSnapshot.fundamentalScore": {
+          "cardinality": 1,
+          "distribution": {
+            "0": 4500
+          }
+        },
+        "scoreSnapshot.marketAdjustment": {
+          "cardinality": 1,
+          "distribution": {
+            "0": 4500
+          }
+        }
+      }
+    },
+    "bucketFields": {
+      "found": [
+        "researchBucket"
+      ],
+      "discriminative": false,
+      "details": {
+        "researchBucket": {
+          "cardinality": 1,
+          "distribution": {
+            "Neutral": 4500
+          }
+        }
+      }
+    },
+    "outcomeFields": {
+      "outcomeSnapshot.horizonDays": {
+        "present": true,
+        "cardinality": 3
+      },
+      "outcomeSnapshot.returnPct": {
+        "present": true,
+        "cardinality": 3844
+      },
+      "outcomeSnapshot.priceSource": {
+        "present": true,
+        "cardinality": 3
+      },
+      "outcomeSnapshot.outcomeAvailable": {
+        "present": true,
+        "cardinality": 2
+      },
+      "closePriceAtPrediction": {
+        "present": true,
+        "cardinality": 948
+      },
+      "symbol": {
+        "present": true,
+        "cardinality": 25
+      },
+      "originalAsOfDate": {
+        "present": true,
+        "cardinality": 60
+      }
+    }
+  },
+  "p1": {
+    "totalRows": 9900,
+    "totalFields": 16,
+    "allFields": [
+      "baselineRunId",
+      "baselineType",
+      "createdAt",
+      "duplicateKey",
+      "entryPrice",
+      "horizonDays",
+      "horizonLabel",
+      "limitations[]",
+      "originalAsOfDate",
+      "outcomeDate",
+      "outcomePrice",
+      "priceSource",
+      "returnPct",
+      "symbol",
+      "validationMessages[]",
+      "writerVersion"
+    ],
+    "expectedFieldStatus": {
+      "baselineType": {
+        "present": true,
+        "cardinality": 4
+      },
+      "symbol": {
+        "present": true,
+        "cardinality": 25
+      },
+      "originalAsOfDate": {
+        "present": true,
+        "cardinality": 60
+      },
+      "horizonDays": {
+        "present": true,
+        "cardinality": 3
+      },
+      "returnPct": {
+        "present": true,
+        "cardinality": 3844
+      },
+      "priceSource": {
+        "present": true,
+        "cardinality": 3
+      },
+      "duplicateKey": {
+        "present": true,
+        "cardinality": 9900
+      }
+    }
+  },
+  "recommendation": "Bucket and score fields exist but are not discriminative (all Neutral / all zero). Downgrade to return distribution + descriptive audit. Mark P2_SPOTCHECK_LIMITED_BY_MISSING_SCORE_FIELDS."
+}

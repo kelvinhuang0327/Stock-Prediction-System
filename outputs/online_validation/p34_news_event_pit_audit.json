@@ -1,0 +1,86 @@
+{
+  "phase": "P34",
+  "capturedAt": "2026-05-21T00:00:00.000Z",
+  "source": "NewsEvent",
+  "mode": "pit-audit",
+  "conformsTo": "p32prep_report_spec_v0_pit_audit",
+  "paperOnly": true,
+  "dryRun": true,
+  "entersAlphaScore": false,
+  "notInvestmentRecommendation": true,
+  "noBuySellActionSemantics": true,
+
+  "pitGateField": "publishedAt",
+  "pitPolicy": "RECORDED_FROM_SOURCE",
+
+  "dbQueryMethod": "sqlite3 prisma/dev.db",
+
+  "coverage": {
+    "totalRows": 1018,
+    "publishedAtCount": 1018,
+    "publishedAtNullCount": 0,
+    "publishedAtCoveragePct": 100,
+    "sourceCount": 1018,
+    "sourceNullCount": 0,
+    "sourceCoveragePct": 100,
+    "trustLevelCount": 1018,
+    "trustLevelNullCount": 0,
+    "trustLevelCoveragePct": 100,
+    "ingestedAtCount": 1018,
+    "ingestedAtNullCount": 0
+  },
+
+  "dateRange": {
+    "publishedAtMin": 1766995200000,
+    "publishedAtMinDate": "2025-12-29 UTC (approx)",
+    "publishedAtMax": 1777976893000,
+    "publishedAtMaxDate": "2026-05-05 UTC (approx)",
+    "ingestedAtMin": 1773856621019,
+    "ingestedAtMinDate": "2026-03-15 UTC (approx)",
+    "ingestedAtMax": 1777977006548,
+    "ingestedAtMaxDate": "2026-05-05 UTC (approx)"
+  },
+
+  "pitTimingAnomalies": {
+    "rowsWherePublishedAtAfterIngestedAt": 0,
+    "assessment": "PASS — no impossible timing anomalies detected. publishedAt <= ingestedAt for all rows."
+  },
+
+  "historicalImportAnalysis": {
+    "description": "publishedAt range starts 2025-12-29 while ingestedAt range starts 2026-03-15. This indicates a historical backfill import: events from late December 2025 through mid-March 2026 were ingested retroactively (approximately 3-month gap for oldest events). This is expected behavior for RSS historical import. The PIT gate should use publishedAt (when event was publicly available), NOT ingestedAt (when the system ingested it). Using ingestedAt as PIT gate would incorrectly treat historical events as 'future known' data.",
+    "oldestEventAge_vs_firstIngestion_days": 76,
+    "recommendation": "Use publishedAt as PIT gate. ingestedAt is ingestion bookkeeping only.",
+    "pitGateField_confirmed": "publishedAt"
+  },
+
+  "metadataGaps": {
+    "missingSource": 0,
+    "missingTrustLevel": 0,
+    "missingPublishedAt": 0,
+    "assessment": "No metadata gaps detected. All three key fields (publishedAt, source, trustLevel) are 100% populated."
+  },
+
+  "pitStatus": "PASS",
+  "pitStatusDetail": "publishedAt 100% populated (0 nulls). No impossible timing anomalies (publishedAt <= ingestedAt for all 1018 rows). source 100% populated. trustLevel 100% populated. Historical import gap is expected and does not affect PIT correctness when publishedAt is used as the gate field.",
+
+  "comparisonToMonthlyRevenue": {
+    "MonthlyRevenue_pitPolicy": "INFERRED_NEXT_MONTH_10TH",
+    "MonthlyRevenue_pitConfidence": "LOW",
+    "NewsEvent_pitPolicy": "RECORDED_FROM_SOURCE",
+    "NewsEvent_pitConfidence": "RECORDED",
+    "assessment": "NewsEvent publishedAt is a stronger PIT guarantee than MonthlyRevenue releaseDate. MonthlyRevenue required an inference policy (next 10th of the month). NewsEvent publishedAt is the actual recorded publication timestamp from the originating RSS/web source — no inference required."
+  },
+
+  "governanceFlags": {
+    "entersAlphaScore": false,
+    "paperOnly": true,
+    "dryRun": true,
+    "notInvestmentRecommendation": true,
+    "noBuySellActionSemantics": true
+  },
+
+  "pitAuditResult": "PASS",
+  "overallClassification": "NEWS_EVENT_PIT_AUDIT_PASS",
+
+  "disclaimer": "PIT audit report only. Does not constitute investment advice. No profit, return, ROI, win-rate, or investment performance claims are made. entersAlphaScore = false. ALWAYS."
+}

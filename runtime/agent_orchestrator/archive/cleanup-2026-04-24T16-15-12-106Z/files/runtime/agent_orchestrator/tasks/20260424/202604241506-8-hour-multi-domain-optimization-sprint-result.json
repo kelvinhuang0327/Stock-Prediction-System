@@ -1,0 +1,27 @@
+{
+  "version": "1.0",
+  "task_id": 134,
+  "status": "REPLAN_REQUIRED",
+  "gate_verdict": "WORKER_RUNTIME_FAILED",
+  "gate_reason": "Command failed: bash scripts/orchestrator_worker_external.sh 134 \"/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241506-8-hour-multi-domain-optimization-sprint-prompt.md\" \"/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241506-8-hour-multi-domain-optimization-sprint-contract.json\" \"codex\" \"8-Hour Multi-Domain Optimization Sprint (系統 / 功能 / 模擬 / 實戰 / 自我學習)\"\nerror: the argument '--full-auto' cannot be used with '--dangerously-bypass-approvals-and-sandbox'\n\nUsage: codex exec --cd <DIR> --skip-git-repo-check --full-auto <PROMPT>\n\nFor more information, try '--help'.\n",
+  "failure_provider": null,
+  "failure_reason": "runtime_failure",
+  "reset_hint": null,
+  "final_message": "Command failed: bash scripts/orchestrator_worker_external.sh 134 \"/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241506-8-hour-multi-domain-optimization-sprint-prompt.md\" \"/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241506-8-hour-multi-domain-optimization-sprint-contract.json\" \"codex\" \"8-Hour Multi-Domain Optimization Sprint (系統 / 功能 / 模擬 / 實戰 / 自我學習)\"\nerror: the argument '--full-auto' cannot be used with '--dangerously-bypass-approvals-and-sandbox'\n\nUsage: codex exec --cd <DIR> --skip-git-repo-check --full-auto <PROMPT>\n\nFor more information, try '--help'.\n",
+  "http_status": null,
+  "duration_seconds": 0,
+  "changed_files": [],
+  "error_markers_hit": [
+    "worker_runtime_failed"
+  ],
+  "missing_required_outputs": [],
+  "forbidden_change_violations": [],
+  "acceptance_results": [
+    {
+      "name": "Worker command completed",
+      "passed": false,
+      "evidence": "Command failed: bash scripts/orchestrator_worker_external.sh 134 \"/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241506-8-hour-multi-domain-optimization-sprint-prompt.md\" \"/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241506-8-hour-multi-domain-optimization-sprint-contract.json\" \"codex\" \"8-Hour Multi-Domain Optimization Sprint (系統 / 功能 / 模擬 / 實戰 / 自我學習)\"\nerror: the argument '--full-auto' cannot be used with '--dangerously-bypass-approvals-and-sandbox'\n\nUsage: codex exec --cd <DIR> --skip-git-repo-check --full-auto <PROMPT>\n\nFor more information, try '--help'.\n"
+    }
+  ],
+  "next_action": "Planner must inspect this result and create a replan task."
+}

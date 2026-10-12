@@ -1,0 +1,77 @@
+[
+  {
+    "params": {
+      "minRevenueYoY": 20,
+      "maShort": 10,
+      "maLong": 60,
+      "minTechnicalScore": 75,
+      "atrFilterRatio": 5
+    },
+    "totalTrades": 84,
+    "winRate": 59.523809523809526,
+    "avgReturn": 11.865485729158431,
+    "totalReturn": 996.7008012493081,
+    "score": 83.25478098212639,
+    "trailingStopActivation": 0.15
+  },
+  {
+    "params": {
+      "minRevenueYoY": 20,
+      "maShort": 10,
+      "maLong": 60,
+      "minTechnicalScore": 75,
+      "atrFilterRatio": 5
+    },
+    "totalTrades": 84,
+    "winRate": 59.523809523809526,
+    "avgReturn": 11.865485729158431,
+    "totalReturn": 996.7008012493081,
+    "score": 83.25478098212639,
+    "trailingStopActivation": 0.2
+  },
+  {
+    "params": {
+      "minRevenueYoY": 20,
+      "maShort": 10,
+      "maLong": 60,
+      "minTechnicalScore": 75,
+      "atrFilterRatio": 5
+    },
+    "totalTrades": 84,
+    "winRate": 59.523809523809526,
+    "avgReturn": 11.865485729158431,
+    "totalReturn": 996.7008012493081,
+    "score": 83.25478098212639,
+    "trailingStopActivation": 0.25
+  },
+  {
+    "params": {
+      "minRevenueYoY": 20,
+      "maShort": 10,
+      "maLong": 60,
+      "minTechnicalScore": 75,
+      "atrFilterRatio": 5
+    },
+    "totalTrades": 84,
+    "winRate": 59.523809523809526,
+    "avgReturn": 11.865485729158431,
+    "totalReturn": 996.7008012493081,
+    "score": 83.25478098212639,
+    "trailingStopActivation": 0.3
+  },
+  {
+    "params": {
+      "minRevenueYoY": 20,
+      "maShort": 20,
+      "maLong": 60,
+      "minTechnicalScore": 75,
+      "atrFilterRatio": 5
+    },
+    "totalTrades": 84,
+    "winRate": 59.523809523809526,
+    "avgReturn": 11.865485729158431,
+    "totalReturn": 996.7008012493081,
+    "score": 83.25478098212639,
+    "trailingStopActivation": 0.15
+  }
+]

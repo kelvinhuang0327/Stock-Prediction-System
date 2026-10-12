@@ -1,0 +1,98 @@
+{
+  "stockquote": {
+    "total_rows": 129151,
+    "iso_rows": 129151,
+    "iso_ratio_pct": 100.0,
+    "anomaly_rows_pre2010": 1355,
+    "effective_min_date": "2017-04-05",
+    "effective_max_date": "2026-05-18"
+  },
+  "market_index": {
+    "total_rows": 2665,
+    "iso_rows": 2665,
+    "iso_ratio_pct": 100.0
+  },
+  "taiex": {
+    "count": 766,
+    "distinct_trading_days": 766,
+    "min_date": "2017-12-01",
+    "max_date": "2026-05-05",
+    "today": "2026-05-06",
+    "freshness_gap_days": 1,
+    "sufficient_for_500d_window": true,
+    "sufficient_for_200d_window": true
+  },
+  "date_overlap": {
+    "taiex_distinct_dates_ge2010": 766,
+    "stockquote_distinct_dates_ge2010": 803,
+    "overlapping_dates": 727,
+    "taiex_dates_not_in_stockquote": 39,
+    "taiex_dates_not_in_stockquote_sample": [
+      "2023-01-03",
+      "2023-01-04",
+      "2023-01-05",
+      "2023-01-06",
+      "2023-01-09",
+      "2023-01-10",
+      "2023-01-11",
+      "2023-01-12",
+      "2023-01-13",
+      "2023-01-16"
+    ],
+    "stockquote_dates_not_in_taiex": 76,
+    "stockquote_dates_not_in_taiex_sample": [
+      "2017-04-05",
+      "2017-04-06",
+      "2017-04-07",
+      "2017-04-10",
+      "2017-04-11",
+      "2017-04-12",
+      "2017-04-13",
+      "2017-04-14",
+      "2017-04-17",
+      "2017-04-18"
+    ]
+  },
+  "stockquote_coverage": {
+    "distinct_symbols": 1357,
+    "symbols_ge500_rows": 185,
+    "symbols_ge200_rows": 245
+  },
+  "sector_indices": {
+    "sector_index_names_count": 75,
+    "sample_sector_names": [
+      "光電類指數",
+      "其他電子類指數",
+      "其他類指數",
+      "化學生技醫療類指數",
+      "化學類指數",
+      "半導體類指數",
+      "塑膠化工類指數",
+      "塑膠類指數",
+      "居家生活類指數",
+      "建材營造類指數",
+      "數位雲端類指數",
+      "機電類指數",
+      "橡膠類指數",
+      "水泥窯製類指數",
+      "水泥類指數",
+      "汽車類指數",
+      "油電燃氣類指數",
+      "玻璃陶瓷類指數",
+      "生技醫療類指數",
+      "紡織纖維類指數"
+    ]
+  },
+  "readiness": {
+    "stockquote_iso_clean": true,
+    "marketindex_iso_clean": true,
+    "taiex_fresh": true,
+    "join_safe": true,
+    "p4_02_can_proceed": true,
+    "p4_03_can_proceed": true,
+    "p4_04_can_proceed": false,
+    "p4_04_blocker": "InstitutionalChip only 236 trading days (need >=500); T-05 walk-forward needs redesign",
+    "remaining_p0_blockers": []
+  },
+  "generated_at": "2026-05-06T11:10:26Z"
+}

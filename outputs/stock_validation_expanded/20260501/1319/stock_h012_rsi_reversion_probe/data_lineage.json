@@ -1,0 +1,14 @@
+{
+  "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+  "base_hypothesis_id": "STOCK_H002_RSI_REVERSION",
+  "symbol": "1319",
+  "as_of_date": "2026-05-01",
+  "db_source": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/prisma/dev.db",
+  "pit_enforced": true,
+  "random_split_used": false,
+  "time_based_split": true,
+  "primary_window": 500,
+  "secondary_window": 150,
+  "pipeline_version": "P3-13",
+  "run_ts": "2026-05-05T14:59:49.213656+00:00"
+}

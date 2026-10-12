@@ -1,0 +1,126 @@
+{
+  "mode": "paper-simulation-input-contract",
+  "generatedAt": "2026-05-21T00:00:00.000Z",
+  "version": "p39-paper-simulation-input-contract-v1",
+  "paperOnly": true,
+  "dryRunOnly": true,
+  "entersAlphaScore": false,
+  "noInvestmentAdvice": true,
+  "noBuySellActionSemantics": true,
+  "notSimulationExecution": true,
+  "notOptimizer": true,
+  "notRealBacktest": true,
+  "disclaimer": "DISCLAIMER: This bundle is a paper-only simulation input contract. It does not constitute investment advice, a buy/sell/hold recommendation, a prediction, or a guarantee of any financial outcome. entersAlphaScore=false. paperOnly=true. dryRunOnly=true. No production scoring mutation occurs.",
+  "eligibleSources": [
+    {
+      "sourceName": "MonthlyRevenue",
+      "readinessStatus": "SIMULATION_INPUT_ELIGIBLE",
+      "paperOnly": true,
+      "dryRunOnly": true,
+      "entersAlphaScore": false,
+      "noInvestmentAdvice": true,
+      "noBuySellActionSemantics": true,
+      "asOfDate": "2026-05-21T00:00:00.000Z",
+      "payloadSummary": "MonthlyRevenue: PIT gate present, consumer ready, controlled consumer contract validated. Eligible for paper-only simulation input. Does not enter alphaScore. No buy/sell/hold semantics.",
+      "sourceTrace": "P38 → SimulationInputReadinessMapper → SIMULATION_INPUT_ELIGIBLE"
+    },
+    {
+      "sourceName": "Quote",
+      "readinessStatus": "SIMULATION_INPUT_ELIGIBLE",
+      "paperOnly": true,
+      "dryRunOnly": true,
+      "entersAlphaScore": false,
+      "noInvestmentAdvice": true,
+      "noBuySellActionSemantics": true,
+      "asOfDate": "2026-05-21T00:00:00.000Z",
+      "payloadSummary": "Quote: PIT gate present, lag evidence acceptable, consumer ready. Eligible for paper-only simulation input. Does not enter alphaScore. No buy/sell/hold semantics.",
+      "sourceTrace": "P38 → SimulationInputReadinessMapper → SIMULATION_INPUT_ELIGIBLE"
+    },
+    {
+      "sourceName": "Regime",
+      "readinessStatus": "SIMULATION_INPUT_ELIGIBLE",
+      "paperOnly": true,
+      "dryRunOnly": true,
+      "entersAlphaScore": false,
+      "noInvestmentAdvice": true,
+      "noBuySellActionSemantics": true,
+      "asOfDate": "2026-05-21T00:00:00.000Z",
+      "payloadSummary": "Regime: PIT gate present, lag evidence acceptable, consumer ready. Eligible for paper-only simulation input. Does not enter alphaScore. No buy/sell/hold semantics.",
+      "sourceTrace": "P38 → SimulationInputReadinessMapper → SIMULATION_INPUT_ELIGIBLE"
+    }
+  ],
+  "blockedSources": [
+    {
+      "sourceName": "NewsEvent",
+      "blockedStatus": "BLOCKED_QUALITY_EVIDENCE",
+      "blockingReasons": [
+        "NLP quality validation absent — no schema or parser quality score",
+        "Quality evidence gate not satisfied per P33/P34/P35 audit",
+        "Cannot guarantee point-in-time isolation without NLP validation"
+      ],
+      "requiredNextEvidence": [
+        "NLP quality score ≥ threshold (schema-enforced)",
+        "Parser validation artifact committed",
+        "P39+ authorization for NewsEvent simulation consumption"
+      ],
+      "forbiddenUse": [
+        "production scoring",
+        "alphaScore mutation",
+        "optimizer input",
+        "real backtest",
+        "buy/sell/hold action semantics",
+        "investment recommendation",
+        "performance claims (profit, ROI, win-rate, edge, expected return)",
+        "scoring formula modification"
+      ]
+    },
+    {
+      "sourceName": "FinancialReport",
+      "blockedStatus": "BLOCKED_PIT_METADATA",
+      "blockingReasons": [
+        "releaseDate metadata absent or not schema-enforced",
+        "Point-in-time gate cannot be satisfied without releaseDate",
+        "Look-ahead contamination risk — P33/P35 audit finding"
+      ],
+      "requiredNextEvidence": [
+        "releaseDate field present and schema-enforced in all rows",
+        "PIT gate validation passing with releaseDate",
+        "P39+ authorization for FinancialReport simulation consumption"
+      ],
+      "forbiddenUse": [
+        "production scoring",
+        "alphaScore mutation",
+        "optimizer input",
+        "real backtest",
+        "buy/sell/hold action semantics",
+        "investment recommendation",
+        "performance claims (profit, ROI, win-rate, edge, expected return)",
+        "scoring formula modification"
+      ]
+    },
+    {
+      "sourceName": "Chip",
+      "blockedStatus": "BLOCKED_AUTHORIZATION",
+      "blockingReasons": [
+        "availableAt field absent — migration not yet applied",
+        "Schema migration (P30) deferred — no commit authorization",
+        "Cannot guarantee simulation input eligibility without availableAt"
+      ],
+      "requiredNextEvidence": [
+        "availableAt field present and populated in Chip rows",
+        "Schema migration applied and verified",
+        "P39+ authorization for Chip simulation consumption"
+      ],
+      "forbiddenUse": [
+        "production scoring",
+        "alphaScore mutation",
+        "optimizer input",
+        "real backtest",
+        "buy/sell/hold action semantics",
+        "investment recommendation",
+        "performance claims (profit, ROI, win-rate, edge, expected return)",
+        "scoring formula modification"
+      ]
+    }
+  ]
+}

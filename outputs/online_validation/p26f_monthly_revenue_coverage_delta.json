@@ -1,0 +1,21 @@
+{
+  "phase": "P26F-HARDRESET",
+  "baseline": "P26E baseline (MonthlyRevenue in P3/P19 = 0)",
+  "beforeMatchedRows": 0,
+  "afterCandidateMatchedRows": 0,
+  "deltaMatchedRows": 0,
+  "candidateCoverageRatio": 0,
+  "coverageClassification": "NONE",
+  "coverageImproved": false,
+  "sourceMode": "REAL_SOURCE_PRESENT_NO_RELEASE_DATE",
+  "missingReleaseDateCount": 2143,
+  "missingReleaseDateBlocksAllMatches": true,
+  "topMissingReasons": [
+    "All 2143 MonthlyRevenue rows have releaseDate=null. PIT gate requires non-null releaseDate. No matches possible until releaseDate is populated."
+  ],
+  "classification": "P26F_SOURCE_MAPPING_IMPLEMENTED_BUT_NO_REAL_COVERAGE",
+  "nextAction": "P26F_2_RELEASE_DATE_POPULATION: Populate releaseDate field in MonthlyRevenue table. Infer from TWSE public release schedule (typically next month's 10th day) or use explicit release dates.",
+  "scoringImprovementClaimed": false,
+  "optimizerReadinessClaimed": false,
+  "status": "DELTA_COMPUTED"
+}

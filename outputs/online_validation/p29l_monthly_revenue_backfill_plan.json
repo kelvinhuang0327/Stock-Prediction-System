@@ -1,0 +1,35 @@
+{
+  "planId": "P29L-MONTHLY-REVENUE-BACKFILL-PLAN",
+  "capturedAt": "2026-05-20T00:00:00.000Z",
+  "disclaimer": "Structural backfill plan only. Does not constitute investment advice. No profit, return, or investment performance claims. MonthlyRevenue entersAlphaScore = false. Results must not be used as buy/sell/hold signals.",
+  "classification": "BACKFILL_SCRIPT_READY_NOT_APPLIED",
+  "policy": "INFERRED_NEXT_MONTH_10TH",
+  "policyDetails": {
+    "rule": "releaseDate = 10th day of month following the revenue month, UTC midnight",
+    "decemberWrap": "month=12 → nextYear=year+1, nextMonth=1",
+    "pitSafe": true,
+    "confidence": "LOW — inferred, not sourced from official announcements"
+  },
+  "scriptPath": "scripts/p29l_monthly_revenue_release_date_backfill.ts",
+  "scriptSafety": {
+    "defaultDryRun": true,
+    "requiresExplicitApplyFlag": true,
+    "applyFlag": "--apply",
+    "batchSize": 100,
+    "entersAlphaScore": false
+  },
+  "estimatedAffectedRows": "unknown — depends on historical sync history",
+  "sampleComputed": [
+    { "year": 2024, "month": 1, "computedReleaseDate": "2024-02-10", "releaseDateSource": "INFERRED_NEXT_MONTH_10TH", "releaseDateConfidence": "LOW" },
+    { "year": 2024, "month": 12, "computedReleaseDate": "2025-01-10", "releaseDateSource": "INFERRED_NEXT_MONTH_10TH", "releaseDateConfidence": "LOW" },
+    { "year": 2025, "month": 6, "computedReleaseDate": "2025-07-10", "releaseDateSource": "INFERRED_NEXT_MONTH_10TH", "releaseDateConfidence": "LOW" }
+  ],
+  "executionGate": {
+    "dryRunApproved": true,
+    "productionApplyApproved": false,
+    "ctoAuthRequired": true,
+    "sourcePresentDryRunGate": "NOT_YET — NULL rows remain in dev.db"
+  },
+  "pureFunctionModule": "src/lib/onlineValidation/p29l/MonthlyRevenueBackfillReadiness.ts",
+  "version": "p29l-monthly-revenue-backfill-v1"
+}

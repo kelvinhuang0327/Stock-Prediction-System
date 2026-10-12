@@ -1,0 +1,32 @@
+{
+  "task": "P0-04",
+  "title": "P0-04 Readiness Decision",
+  "date": "2026-05-07",
+  "finalClassification": "P004_MARKET_INDEX_REGIME_AS_OF_GATE_COMPLETE",
+  "disclaimer": "research tool only — no auto trading — no precision prediction claim — no DB write — no external API — no LLM call — no strategy mutation — no regime logic mutation — no performance claim — no edge claim",
+  "integrationResults": {
+    "marketIndexQueryPath": "COMPLETE",
+    "marketRegimeEngine": "COMPLETE",
+    "marketRegimeResultLookup": "COMPLETE",
+    "signalFusionEngine": "COMPLETE",
+    "strategyScreenEngine": "COMPLETE",
+    "dailyReportRegimeApi": "COMPLETE",
+    "reportOpsApi": "COMPLETE"
+  },
+  "testResults": {
+    "p004NewTests": "5 suites / 29 tests PASS",
+    "fullRegression": "20 suites / 476 tests PASS"
+  },
+  "futureProtection": {
+    "marketIndexDateGate": "detectRegime(asOf) — date <= asOfDate enforced at query layer",
+    "marketRegimeResultDateGate": "getLatestMarketRegimeContext(currentDate, asOf) — date <= asOf enforced + safety net",
+    "fusionEngineGate": "detectRegime(asOf) propagated through fuseBatch and fuseSignals",
+    "screenEngineGate": "detectRegime(asOf) propagated through StrategyScreenEngine"
+  },
+  "pendingWork": [
+    "Out-of-scope detectRegime() callers deferred to P0-05: detail/route.ts, market/regime/route.ts, RelevanceInsightsService, DailyAlertEngine, DailyReportEngine, PortfolioImpactEngine, AutonomousResearchEngine",
+    "Shadow Prediction Log not yet enabled",
+    "NewsEvent out of scope"
+  ],
+  "nextRecommendedTask": "P0-02B — Shadow Prediction Log Contract"
+}

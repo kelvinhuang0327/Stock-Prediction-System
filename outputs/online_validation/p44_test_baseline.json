@@ -1,0 +1,21 @@
+{
+  "phase": "P44",
+  "testRun": "2024-01-15T10:00:00.000Z",
+  "results": {
+    "P44": { "total": 98, "passed": 98, "failed": 0, "status": "PASS" },
+    "P43_regression": { "total": 98, "passed": 98, "failed": 0, "status": "PASS" },
+    "P42_regression": { "total": 98, "passed": 98, "failed": 0, "status": "PASS" },
+    "P41_regression": { "total": 97, "passed": 97, "failed": 0, "status": "PASS" },
+    "P40_regression": { "total": 118, "passed": 118, "failed": 0, "status": "PASS" },
+    "P39_regression": { "total": 77, "passed": 77, "failed": 0, "status": "PASS" },
+    "P38_regression": { "total": 55, "passed": 55, "failed": 0, "status": "PASS" }
+  },
+  "totals": {
+    "suites": 7,
+    "tests": 641,
+    "passed": 641,
+    "failed": 0
+  },
+  "baselineStatus": "ALL_GREEN",
+  "executionStatus": "EXECUTION_LIFECYCLE_RUNNER_INTEGRATION_READY"
+}

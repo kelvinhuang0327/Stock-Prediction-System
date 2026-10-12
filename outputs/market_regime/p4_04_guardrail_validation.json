@@ -1,0 +1,97 @@
+{
+  "guardrail_id": "P4_04_GUARDRAIL_VALIDATION",
+  "validation_date": "2026-05-06",
+  "generated_at": "2026-05-06T14:59:08.271290",
+  "overall_status": "PASS",
+  "total_checks": 16,
+  "passed": 16,
+  "failed": 0,
+  "checks": [
+    {
+      "check": "no_h001_h012_as_values_in_outputs",
+      "result": "PASS",
+      "note": "[]"
+    },
+    {
+      "check": "no_buy_sell_signal_as_data_fields",
+      "result": "PASS",
+      "note": "only in forbidden_field check lists"
+    },
+    {
+      "check": "no_roi_winrate_as_data_fields",
+      "result": "PASS",
+      "note": ""
+    },
+    {
+      "check": "no_alpha_edge_profit_outperform_as_data_fields",
+      "result": "PASS",
+      "note": ""
+    },
+    {
+      "check": "no_production_db_write",
+      "result": "PASS",
+      "note": ""
+    },
+    {
+      "check": "no_stockquote_mutation",
+      "result": "PASS",
+      "note": "sq=129151"
+    },
+    {
+      "check": "no_marketindex_mutation",
+      "result": "PASS",
+      "note": "mi=2666"
+    },
+    {
+      "check": "no_walkforward_mutation",
+      "result": "PASS",
+      "note": "wfr=522"
+    },
+    {
+      "check": "no_strategy_table_mutation",
+      "result": "PASS",
+      "note": ""
+    },
+    {
+      "check": "no_external_api_call",
+      "result": "PASS",
+      "note": ""
+    },
+    {
+      "check": "no_threshold_optimization",
+      "result": "PASS",
+      "note": ""
+    },
+    {
+      "check": "no_performance_claim",
+      "result": "PASS",
+      "note": ""
+    },
+    {
+      "check": "all_json_artifacts_parse",
+      "result": "PASS",
+      "note": ""
+    },
+    {
+      "check": "latest_date_lte_cap",
+      "result": "PASS",
+      "note": "max_date=2026-05-06"
+    },
+    {
+      "check": "mrr_row_count_unchanged_during_validation",
+      "result": "PASS",
+      "note": "mrr=300"
+    },
+    {
+      "check": "required_output_files_a_to_f_exist",
+      "result": "PASS",
+      "note": ""
+    }
+  ],
+  "db_snapshot": {
+    "MarketRegimeResult": 300,
+    "StockQuote": 129151,
+    "MarketIndex": 2666,
+    "WalkForwardResult": 522
+  }
+}

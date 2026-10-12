@@ -1,0 +1,164 @@
+{
+  "audit_id": "T07_EXISTING_SCHEDULER_AUDIT",
+  "audit_date": "2026-05-06",
+  "audited_by": "T-07 Worker Agent",
+  "existing_files_found": {
+    "typescript_scheduler": [
+      "scripts/local-autonomous-scheduler.ts",
+      "scripts/local-agent-orchestrator-scheduler.ts",
+      "scripts/run-training-scheduler.ts",
+      "src/app/api/cron/daily-sync/route.ts",
+      "src/app/api/autonomous/scheduler-status/route.ts",
+      "src/lib/jobs/SchedulerStateEngine.ts",
+      "src/lib/jobs/TaiwanStockJobOrchestrator.ts",
+      "src/lib/jobs/autonomousJobRunners.ts",
+      "src/lib/jobs/JobOrchestrationService.ts",
+      "src/lib/jobs/JobHealthService.ts",
+      "src/lib/data/SyncScheduler.ts"
+    ],
+    "python_scripts": [
+      "scripts/backfill-taiex-gap.py",
+      "scripts/build-market-regime-classifier.py",
+      "scripts/build-portfolio-walk-forward-skeleton.py",
+      "scripts/build-daily-regime-walkforward-report.py"
+    ],
+    "cron_config": [
+      "vercel.json"
+    ]
+  },
+  "existing_scheduler_modules": [
+    {
+      "name": "scripts/local-autonomous-scheduler.ts",
+      "type": "TypeScript daemon",
+      "description": "Stateful local scheduler using SchedulerStateEngine. Tick loop, reconciliation, JobRunLog writes.",
+      "writes_db": true,
+      "calls_external_api": true,
+      "writes_tables": [
+        "JobRunLog"
+      ],
+      "safe_reuse": false,
+      "reason": "Writes JobRunLog to production DB. Tied to autonomous trading job lanes. Cannot safely add regime report lane."
+    },
+    {
+      "name": "src/app/api/cron/daily-sync/route.ts",
+      "type": "Vercel Cron endpoint",
+      "description": "Daily sync: calls runAllSyncs, createDailySnapshot, generateDailyAlerts, deliverAlerts",
+      "writes_db": true,
+      "calls_external_api": true,
+      "writes_tables": [
+        "DailyMarketSnapshot",
+        "DailyWatchlistSnapshot",
+        "DailyCandidateSnapshot",
+        "SyncLog",
+        "NotificationDeliveryLog"
+      ],
+      "safe_reuse": false,
+      "reason": "Writes multiple production DB tables. Calls external TWSE APIs. Not safe to wrap for regime report."
+    },
+    {
+      "name": "src/lib/data/SyncScheduler.ts",
+      "type": "TypeScript module",
+      "description": "runAllSyncs job orchestrator. Executes stock_master, stock_price, institutional, market_index, revenue sync.",
+      "writes_db": true,
+      "calls_external_api": true,
+      "safe_reuse": false,
+      "reason": "Writes SyncLog and triggers full data sync. Not safe to hook regime pipeline into."
+    },
+    {
+      "name": "src/lib/jobs/SchedulerStateEngine.ts",
+      "type": "TypeScript module",
+      "description": "State machine for job scheduling. Reads/writes JobRunLog. Manages job lanes.",
+      "writes_db": true,
+      "calls_external_api": false,
+      "safe_reuse": false,
+      "reason": "Writes to JobRunLog (production). Changing lane config risks disrupting autonomous trading jobs."
+    }
+  ],
+  "existing_freshness_guard_modules": [
+    {
+      "name": "src/lib/jobs/AutonomousDashboardService.ts",
+      "description": "Reads dataCoverage from DailyMarketSnapshot. Not a standalone freshness guard.",
+      "safe_reuse": false,
+      "reason": "Tied to production snapshot tables."
+    },
+    {
+      "name": "scripts/backfill-taiex-gap.py",
+      "description": "Python TAIEX gap backfill from TWSE. Supports --dry-run / --apply. Writes only MarketIndex table.",
+      "safe_reuse": true,
+      "reason": "Already used in T-05/T-06. Only writes MarketIndex. Has --dry-run safety. SAFE TO WRAP."
+    }
+  ],
+  "existing_job_log_tables": {
+    "JobRunLog": {
+      "exists": true,
+      "row_count": 315,
+      "schema_cols": [
+        "id",
+        "jobName",
+        "scheduledFor",
+        "startedAt",
+        "finishedAt",
+        "status",
+        "runMode",
+        "triggerSource",
+        "idempotencyKey",
+        "summary",
+        "errorMessage",
+        "metadata",
+        "createdAt",
+        "updatedAt"
+      ],
+      "latest_jobs": [
+        "training:daily_cycle (failed)",
+        "autonomous:daily (failed)",
+        "twstock:data_sync_health (success)"
+      ]
+    },
+    "SyncLog": {
+      "exists": true,
+      "row_count": 423,
+      "schema_cols": [
+        "id",
+        "endpoint",
+        "status",
+        "records",
+        "duration",
+        "error",
+        "metadata",
+        "syncedAt"
+      ],
+      "latest_endpoints": [
+        "institutional_chip",
+        "RealRevenue",
+        "BasicInfo"
+      ]
+    }
+  },
+  "whether_synclog_exists": true,
+  "whether_jobrunlog_exists": true,
+  "whether_daily_report_already_scheduled": false,
+  "whether_taiex_freshness_already_checked": false,
+  "whether_report_artifacts_generated_by_scheduler": false,
+  "lane_based_scheduler_exists": true,
+  "daily_job_lane_exists": true,
+  "daily_job_lane_name": "autonomous:daily (training:daily_cycle, data_sync_health)",
+  "regime_report_in_daily_lane": false,
+  "reusable_components": [
+    "scripts/backfill-taiex-gap.py - safe TAIEX freshness check and backfill",
+    "scripts/build-market-regime-classifier.py - P4-03 regime classifier (read-only)",
+    "scripts/build-portfolio-walk-forward-skeleton.py - T-05 walk-forward skeleton (read-only)",
+    "scripts/build-daily-regime-walkforward-report.py - T-06 daily report builder (read-only)"
+  ],
+  "components_must_not_reuse": [
+    "local-autonomous-scheduler.ts - writes JobRunLog (production)",
+    "src/app/api/cron/daily-sync/route.ts - writes DailyMarketSnapshot, triggers external APIs",
+    "src/lib/data/SyncScheduler.ts - writes SyncLog, calls external TWSE APIs",
+    "src/lib/report/DailySnapshotEngine.ts - writes DailyMarketSnapshot, DailyCandidateSnapshot",
+    "WalkForwardResult table - H001-H012 era, deprecated",
+    "StrategySignal, SimulatedTrade, StrategyProposal - must not touch"
+  ],
+  "production_write_risk": "HIGH - TypeScript scheduler writes JobRunLog, SyncLog, DailyMarketSnapshot. Python pipeline must be standalone.",
+  "external_api_risk": "HIGH - TypeScript daily-sync hits TWSE external endpoints. Python pipeline limited to TAIEX via backfill-taiex-gap.py.",
+  "strategy": "Option 2 - standalone Python pipeline (run-daily-regime-aware-pipeline.py). Create integration proposal for future TypeScript hook.",
+  "verdict": "SAFE_TO_CREATE_STANDALONE_PYTHON_PIPELINE"
+}

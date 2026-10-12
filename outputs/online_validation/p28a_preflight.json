@@ -1,0 +1,178 @@
+{
+  "auditId": "p28a-scoring-underoutput-audit-preflight",
+  "generatedAt": "2026-05-15T00:00:00.000Z",
+  "phase": "PREFLIGHT_GATE",
+  "status": "PASS",
+  "requiredArtifactsFound": true,
+  "frozenBaselineIntact": true,
+  "p27OvernightAuditConclusionValid": true,
+  "artifactStatus": {
+    "p26a_scoring_underoutput_9case_audit_json": {
+      "file": "outputs/online_validation/p26a_scoring_underoutput_9case_audit.json",
+      "found": true,
+      "cases": 9,
+      "caseIds": [
+        "P5-CASE-010",
+        "P5-CASE-011",
+        "P5-CASE-013",
+        "P5-CASE-023",
+        "P5-CASE-026",
+        "P5-CASE-037",
+        "P5-CASE-053",
+        "P5-CASE-054",
+        "P5-CASE-055"
+      ]
+    },
+    "p26a_feature_snapshot_v1_final_report_md": {
+      "file": "outputs/online_validation/p26a_feature_snapshot_v1_final_report.md",
+      "found": true
+    },
+    "p26a_walkthrough_reason_quality_compare_json": {
+      "file": "outputs/online_validation/p26a_walkthrough_reason_quality_compare.json",
+      "found": true
+    },
+    "p27_overnight_invariance_recheck_json": {
+      "file": "outputs/online_validation/p27_overnight_invariance_recheck.json",
+      "found": true,
+      "status": "PASS"
+    },
+    "p27_overnight_governance_deep_audit_summary_json": {
+      "file": "outputs/online_validation/p27_overnight_governance_deep_audit_summary.json",
+      "found": true,
+      "blockerCount": 0
+    },
+    "artifact_index_v2_json": {
+      "file": "outputs/online_validation/ARTIFACT_INDEX_V2.json",
+      "found": true
+    }
+  },
+  "baselineChecksum": {
+    "prismaDevDb": {
+      "baseline": "a5cf277182c161dfe97ba05f9b81528d6c8e477dd5ac0bec6810ffbb8711c6f8",
+      "current": "a5cf277182c161dfe97ba05f9b81528d6c8e477dd5ac0bec6810ffbb8711c6f8",
+      "match": true
+    },
+    "corpus": {
+      "simulation_snapshot": {
+        "lines": 60,
+        "baseline": "6a668ba2196fba05aa96304262f3eff154fc797612a5adf878ed4794af2fe18e",
+        "current": "6a668ba2196fba05aa96304262f3eff154fc797612a5adf878ed4794af2fe18e",
+        "match": true
+      },
+      "p0_hardreset": {
+        "lines": 4500,
+        "baseline": "f231e3b768cec2250a1c792751f7ec61bc307aa3281cbcc6b454c0fd81f51189",
+        "current": "f231e3b768cec2250a1c792751f7ec61bc307aa3281cbcc6b454c0fd81f51189",
+        "match": true
+      },
+      "p1_baseline": {
+        "lines": 9900,
+        "baseline": "66f62cb2a2b8e9a04f414a033dece8408ac68764c44130102ad6994a9399bded",
+        "current": "66f62cb2a2b8e9a04f414a033dece8408ac68764c44130102ad6994a9399bded",
+        "match": true
+      },
+      "p3_active_scoring": {
+        "lines": 4500,
+        "baseline": "e8b4e1a9f255e3a96af13925176559538ed0fdca7793d7030bb7164c71101712",
+        "current": "e8b4e1a9f255e3a96af13925176559538ed0fdca7793d7030bb7164c71101712",
+        "match": true
+      },
+      "p19_active_scoring_pit": {
+        "lines": 4499,
+        "baseline": "da92963f0d0f596cdd8673d63e3a19c6a70ca92e23a31b1029595ce913c90a94",
+        "current": "da92963f0d0f596cdd8673d63e3a19c6a70ca92e23a31b1029595ce913c90a94",
+        "match": true
+      }
+    },
+    "scoring": {
+      "RuleBasedStockAnalyzer_ts": {
+        "baseline": "bc3716cc8e74be304f2e262aac586a61760bb59d6c95e82a575c38e03ea7373d",
+        "current": "bc3716cc8e74be304f2e262aac586a61760bb59d6c95e82a575c38e03ea7373d",
+        "match": true
+      },
+      "SignalFusionEngine_ts": {
+        "baseline": "b8ce3fa3ae63fd7edf6b6067dd8ccea63c02741454b93792e87bfbc1e95d2bf4",
+        "current": "b8ce3fa3ae63fd7edf6b6067dd8ccea63c02741454b93792e87bfbc1e95d2bf4",
+        "match": true
+      },
+      "ActiveScoringSnapshotBuilder_ts": {
+        "baseline": "063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d",
+        "current": "063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d",
+        "match": true
+      }
+    }
+  },
+  "p27OvernightAuditValidation": {
+    "status": "PASS",
+    "invarianceStatus": "PASS",
+    "dbChanged": false,
+    "corpusChanged": false,
+    "scoringChanged": false,
+    "blockerCount": 0,
+    "testsMatrix": {
+      "total": 2885,
+      "passed": 2885,
+      "failed": 0
+    }
+  },
+  "p26AUnderoutputCaseSummary": {
+    "totalCases": 9,
+    "caseIds": [
+      "P5-CASE-010",
+      "P5-CASE-011",
+      "P5-CASE-013",
+      "P5-CASE-023",
+      "P5-CASE-026",
+      "P5-CASE-037",
+      "P5-CASE-053",
+      "P5-CASE-054",
+      "P5-CASE-055"
+    ],
+    "uniqueSymbols": 3,
+    "symbols": [
+      "1710",
+      "00738U",
+      "00891"
+    ],
+    "allClassifiedAsNoTriggeredFactor": true,
+    "allBlockedByMonthlyRevenue": true,
+    "allRendererUnderoutput": true,
+    "allFixableWithoutScoringChange": true
+  },
+  "readinessGates": [
+    {
+      "gate": "Artifacts exist",
+      "result": "PASS"
+    },
+    {
+      "gate": "DB frozen",
+      "result": "PASS"
+    },
+    {
+      "gate": "Corpus frozen",
+      "result": "PASS"
+    },
+    {
+      "gate": "Scoring files frozen",
+      "result": "PASS"
+    },
+    {
+      "gate": "P27 overnight audit PASS",
+      "result": "PASS"
+    },
+    {
+      "gate": "P27 invariance recheck PASS",
+      "result": "PASS"
+    },
+    {
+      "gate": "P27 blocker count = 0",
+      "result": "PASS"
+    },
+    {
+      "gate": "9 cases extractable",
+      "result": "PASS"
+    }
+  ],
+  "classification": "P28A_PREFLIGHT_GATE_PASS",
+  "disclaimer": "Observability only. No investment recommendations."
+}

@@ -1,0 +1,127 @@
+{
+  "phase": "P14",
+  "part": "A",
+  "generatedAt": "2026-05-12T03:43:12.477Z",
+  "preflightStatus": "PASS",
+  "approvalTokenPresent": false,
+  "approvalStatus": "NOT_APPROVED",
+  "approvalNote": "No approval token detected. Only approval-pending artifacts and dry-run plans may be produced.",
+  "approvalScope": {
+    "canProduceMigrationDraft": true,
+    "canProduceRollbackDraft": true,
+    "canModifyProductionDb": false,
+    "canModifyPrismaProductionSchema": false,
+    "canModifyCorpus": false,
+    "canModifyScoringFormulas": false,
+    "reason": "Awaiting approval token. Draft plan artifacts only. No production apply."
+  },
+  "artifactChecks": [
+    {
+      "path": "outputs/online_validation/p13monthly_revenue_final_report.md",
+      "status": "OK",
+      "size": 10811
+    },
+    {
+      "path": "outputs/online_validation/p13monthly_revenue_source_audit.json",
+      "status": "OK",
+      "keys": 11
+    },
+    {
+      "path": "outputs/online_validation/p13monthly_revenue_migration_plan.json",
+      "status": "OK",
+      "keys": 12
+    },
+    {
+      "path": "outputs/online_validation/p13monthly_revenue_pit_gate_validation.json",
+      "status": "OK",
+      "keys": 11
+    },
+    {
+      "path": "outputs/online_validation/p12pit_feature_contract_v0.json",
+      "status": "OK",
+      "keys": 11
+    }
+  ],
+  "allArtifactsPresent": true,
+  "p13ConclusionChecks": [
+    {
+      "check": "productionSafety.writesProductionDb",
+      "value": false,
+      "expected": false,
+      "pass": true
+    },
+    {
+      "check": "pitGate.validationStatus",
+      "value": "PASS",
+      "expected": "PASS",
+      "pass": true
+    },
+    {
+      "check": "pitGate.passed",
+      "value": 35,
+      "expected": 35,
+      "pass": true
+    },
+    {
+      "check": "pitGate.failed",
+      "value": 0,
+      "expected": 0,
+      "pass": true
+    },
+    {
+      "check": "sourceAudit.dataAuditMode",
+      "value": "SCHEMA_ONLY",
+      "expected": "SCHEMA_ONLY",
+      "pass": true
+    },
+    {
+      "check": "sourceAudit.pitRisk",
+      "value": "HIGH",
+      "expected": "HIGH",
+      "pass": true
+    },
+    {
+      "check": "finalReport.classification",
+      "value": "present",
+      "expected": "P13_MONTHLY_REVENUE_REQUIRES_SCHEMA_MIGRATION_APPROVAL",
+      "pass": true
+    }
+  ],
+  "allConclusionsPass": true,
+  "frozenCorpusChecks": [
+    {
+      "path": "outputs/online_validation/simulation_snapshot_corpus.jsonl",
+      "expected": 60,
+      "actual": 60,
+      "pass": true
+    },
+    {
+      "path": "outputs/online_validation/p0hardreset_historical_replay_corpus.jsonl",
+      "expected": 4500,
+      "actual": 4500,
+      "pass": true
+    },
+    {
+      "path": "outputs/online_validation/p1baseline_historical_replay_corpus.jsonl",
+      "expected": 9900,
+      "actual": 9900,
+      "pass": true
+    },
+    {
+      "path": "outputs/online_validation/p3active_scoring_historical_replay_corpus.jsonl",
+      "expected": 4500,
+      "actual": 4500,
+      "pass": true
+    }
+  ],
+  "allCorpusFrozen": true,
+  "finalClassification": "P14_MONTHLY_REVENUE_AWAITING_SCHEMA_MIGRATION_APPROVAL",
+  "productionDbWritten": false,
+  "nonGoals": [
+    "Does not write production DB.",
+    "Does not modify scoring formulas.",
+    "Does not modify frozen corpora.",
+    "Does not compute ROI, profit, alpha, or win-rate.",
+    "Does not constitute investment advice."
+  ]
+}

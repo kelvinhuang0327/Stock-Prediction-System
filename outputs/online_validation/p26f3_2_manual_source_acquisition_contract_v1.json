@@ -1,0 +1,101 @@
+{
+  "phase": "P26F3-2-HARDRESET",
+  "version": "v1",
+  "generatedAt": "2026-05-13T06:27:55.870Z",
+  "targetPeriods": [
+    "2025-09",
+    "2025-10",
+    "2025-11",
+    "2025-12",
+    "2026-01"
+  ],
+  "targetSymbols": [
+    "0055",
+    "00712",
+    "00738U",
+    "00830",
+    "00891",
+    "00903",
+    "1210",
+    "1308",
+    "1314",
+    "1319",
+    "1326",
+    "1402",
+    "1434",
+    "1513",
+    "1536",
+    "1560",
+    "1598",
+    "1605",
+    "1710",
+    "1717",
+    "1802",
+    "2317",
+    "2330",
+    "2454",
+    "6415"
+  ],
+  "acceptedFormats": [
+    "csv",
+    "json",
+    "jsonl"
+  ],
+  "requiredFields": [
+    "stockId",
+    "year",
+    "month",
+    "revenue",
+    "releaseDate",
+    "sourceName",
+    "sourceFileName"
+  ],
+  "optionalFields": [
+    "companyName",
+    "yoyGrowth",
+    "momGrowth",
+    "accumulatedRevenue",
+    "accumulatedYoyGrowth",
+    "sourceUrl",
+    "sourceHash"
+  ],
+  "forbiddenFields": [
+    "outcomePrice",
+    "returnPct",
+    "realizedReturnClass"
+  ],
+  "allowedSourceNames": [
+    "TWSE",
+    "MOPS",
+    "OFFICIAL",
+    "MANUAL"
+  ],
+  "dryRunContract": {
+    "outputMode": "MANUAL_SOURCE_ACCEPTANCE_ONLY",
+    "dbWriteAllowed": false,
+    "corpusWriteAllowed": false,
+    "scoringChangeAllowed": false,
+    "optimizerAllowed": false,
+    "externalFetchAllowed": false,
+    "fabricatedDataAllowed": false,
+    "unknownSourceAllowed": false
+  },
+  "pitRules": {
+    "visibilityGate": "releaseDate <= asOfDate",
+    "yearMonthAreRevenuePeriodsOnly": true,
+    "releaseDateMustBeVerifiedOfficial": true
+  },
+  "classifications": {
+    "SOURCE_NOT_PROVIDED_PACKAGE_READY": "P26F3_2_SOURCE_NOT_PROVIDED_PACKAGE_READY",
+    "MANUAL_SOURCE_ACCEPTED_DRY_RUN": "P26F3_2_MANUAL_SOURCE_ACCEPTED_DRY_RUN",
+    "SOURCE_FILES_REJECTED": "P26F3_2_SOURCE_FILES_REJECTED",
+    "ACCEPTED_SOURCE_COVERAGE_AVAILABLE": "P26F3_2_ACCEPTED_SOURCE_COVERAGE_AVAILABLE",
+    "UNEXPECTED_WRITE_DETECTED": "P26F3_2_UNEXPECTED_WRITE_DETECTED",
+    "FAILED_TESTS": "P26F3_2_FAILED_TESTS"
+  },
+  "dropzonePath": "data/manual/monthly-revenue/p26f3-2-dropzone/",
+  "disclaimer": [
+    "Does not constitute investment advice.",
+    "Does not compute ROI, profit, alpha, win-rate, edge, or outperformance."
+  ]
+}

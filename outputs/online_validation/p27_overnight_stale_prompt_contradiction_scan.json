@@ -1,0 +1,42 @@
+{
+  "auditId": "p27-overnight-stale-prompt-contradiction-scan",
+  "generatedAt": "2026-05-13T15:22:05.052209+00:00",
+  "blockers": [],
+  "warnings": [
+    {
+      "id": "W1",
+      "file": "p26f4_next_prompt_when_source_present.md",
+      "issue": "Superseded next_prompt",
+      "canonical": "p26_next_prompt_source_arrival_only.md",
+      "action": "Labeled SUPERSEDED in ARTIFACT_INDEX. No runtime impact."
+    }
+  ],
+  "info": [
+    {
+      "id": "I1",
+      "files": "p26f4_or_p26a_* series",
+      "issue": "Historical route-decision artifacts (3 files)",
+      "action": "Labeled HISTORICAL"
+    },
+    {
+      "id": "I2",
+      "issue": "50 artifacts missing json/md pairs (pre-dates pair convention)"
+    },
+    {
+      "id": "I3",
+      "issue": "267+ unknown-type artifacts in historical phase reports"
+    }
+  ],
+  "checks": {
+    "importReadyInFreezeArtifacts": "PASS",
+    "emptyDropzoneScanAsPrimaryTask": "PASS",
+    "contradictingNextPrompts": "PASS",
+    "sourceRequiredActionsUnblocked": "PASS",
+    "tokenRequiredDbWrite": "PASS"
+  },
+  "blockerCount": 0,
+  "warningCount": 1,
+  "infoCount": 3,
+  "classification": "NO_BLOCKERS_FOUND",
+  "disclaimer": "Observability only. No investment recommendations."
+}

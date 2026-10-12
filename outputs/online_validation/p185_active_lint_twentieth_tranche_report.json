@@ -1,0 +1,31 @@
+{
+  "phase": "P185",
+  "title": "Active Lint Twentieth Tranche Lane Local-Only",
+  "classification": "P185_ACTIVE_LINT_TRANCHE_REPAIRED_CI_STILL_RED_PRODUCT_BEHAVIOR_OR_REMAINING_LINT_LOCAL_ONLY",
+  "baseline_commit": "7c267c1",
+  "branch": "main",
+  "timestamp": "2026-06-04T14:15:00Z",
+  "lint_before": { "problems": 445, "errors": 217, "warnings": 228 },
+  "lint_after": { "problems": 397, "errors": 170, "warnings": 227 },
+  "lint_delta": { "problems": -48, "errors": -47, "warnings": -1 },
+  "files_modified": [
+    "src/lib/agent-orchestrator/__tests__/tasks.test.ts",
+    "src/lib/onlineValidation/__tests__/p24production_migration_execution_utils.test.ts",
+    "src/lib/onlineValidation/__tests__/p28c_9case_before_after_generator.test.ts",
+    "src/lib/onlineValidation/__tests__/p40_paper_simulation_framework_design_gate.test.ts",
+    "src/lib/onlineValidation/__tests__/p26b_event_news_pit_adapter_utils.test.ts"
+  ],
+  "rules_fixed": [
+    "@typescript-eslint/no-explicit-any",
+    "@typescript-eslint/no-unused-vars",
+    "@typescript-eslint/no-require-imports",
+    "@typescript-eslint/ban-ts-comment"
+  ],
+  "db_invariance": "PASS",
+  "targeted_tests": "PASS (279/279)",
+  "staged": false,
+  "committed": false,
+  "pushed": false,
+  "ci_status": "failure (run 26955934929)",
+  "worker_needs_strong_model": false
+}

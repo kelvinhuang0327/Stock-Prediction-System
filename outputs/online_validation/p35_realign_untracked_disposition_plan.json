@@ -1,0 +1,371 @@
+{
+  "phase": "P35-REALIGN",
+  "capturedAt": "2026-05-21T00:00:00.000Z",
+  "untrackedInventorySource": "git status --short | grep -E '^\\?\\? (outputs/online_validation/(p32|p33|p34)|data/manual|verify_p34\\.py)'",
+  "totalEntries": 42,
+  "groupings": {
+    "p32prep_outputs": 11,
+    "p32_outputs": 8,
+    "p33_outputs": 10,
+    "p34_outputs": 10,
+    "data_manual_dirs": 2,
+    "repo_root_scripts": 1
+  },
+  "dispositions": [
+    {
+      "path": "outputs/online_validation/p32prep_artifact_inventory.json",
+      "group": "p32prep",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "P32PREP: Dry-run spec scaffolding and artifact inventory",
+      "rationale": "Canonical artifact inventory for P32PREP phase. Reference for future phase spec generation."
+    },
+    {
+      "path": "outputs/online_validation/p32prep_artifact_inventory.md",
+      "group": "p32prep",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "P32PREP: Dry-run spec scaffolding and artifact inventory",
+      "rationale": "Human-readable companion to the inventory JSON."
+    },
+    {
+      "path": "outputs/online_validation/p32prep_final_report.md",
+      "group": "p32prep",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "P32PREP: Dry-run spec scaffolding and artifact inventory",
+      "rationale": "Final gate report for P32PREP. Audit evidence that spec scaffolding was completed."
+    },
+    {
+      "path": "outputs/online_validation/p32prep_golden_fixture_candidates.json",
+      "group": "p32prep",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "P32PREP: Dry-run spec scaffolding and artifact inventory",
+      "rationale": "Golden fixture candidate list for MonthlyRevenue. Required input for any future fixture materialization task."
+    },
+    {
+      "path": "outputs/online_validation/p32prep_golden_fixture_candidates.md",
+      "group": "p32prep",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "P32PREP: Dry-run spec scaffolding and artifact inventory",
+      "rationale": "Human-readable companion."
+    },
+    {
+      "path": "outputs/online_validation/p32prep_report_spec_v0_dry_run_sample.json",
+      "group": "p32prep",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "P32PREP: Dry-run spec scaffolding and artifact inventory",
+      "rationale": "Version 0 spec schema for dry-run sample artifacts. Referenced by P32/P33/P34 conformance checks."
+    },
+    {
+      "path": "outputs/online_validation/p32prep_report_spec_v0_dry_run_sample.md",
+      "group": "p32prep",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "P32PREP: Dry-run spec scaffolding and artifact inventory",
+      "rationale": "Human-readable companion."
+    },
+    {
+      "path": "outputs/online_validation/p32prep_report_spec_v0_pit_audit.json",
+      "group": "p32prep",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "P32PREP: Dry-run spec scaffolding and artifact inventory",
+      "rationale": "Version 0 spec schema for PIT audit artifacts. Spec reference used by P32/P33/P34."
+    },
+    {
+      "path": "outputs/online_validation/p32prep_report_spec_v0_pit_audit.md",
+      "group": "p32prep",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "P32PREP: Dry-run spec scaffolding and artifact inventory",
+      "rationale": "Human-readable companion."
+    },
+    {
+      "path": "outputs/online_validation/p32prep_report_spec_v0_source_gate.json",
+      "group": "p32prep",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "P32PREP: Dry-run spec scaffolding and artifact inventory",
+      "rationale": "Version 0 spec schema for source-gate artifacts. Referenced by P33/P34 conformance checks."
+    },
+    {
+      "path": "outputs/online_validation/p32prep_report_spec_v0_source_gate.md",
+      "group": "p32prep",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "P32PREP: Dry-run spec scaffolding and artifact inventory",
+      "rationale": "Human-readable companion."
+    },
+    {
+      "path": "outputs/online_validation/p32_monthly_revenue_source_present_dry_run.json",
+      "group": "p32",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "P32: MonthlyRevenue source-present dry-run",
+      "rationale": "Core dry-run gate result for MonthlyRevenue. Primary evidence artifact for PROMOTE decision."
+    },
+    {
+      "path": "outputs/online_validation/p32_monthly_revenue_source_present_dry_run.md",
+      "group": "p32",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "P32: MonthlyRevenue source-present dry-run",
+      "rationale": "Human-readable companion."
+    },
+    {
+      "path": "outputs/online_validation/p32_monthly_revenue_dry_run_sample.json",
+      "group": "p32",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "P32: MonthlyRevenue source-present dry-run",
+      "rationale": "Stratified sample rows with PIT trace. Required reference for Feature Consumer DESIGN."
+    },
+    {
+      "path": "outputs/online_validation/p32_monthly_revenue_dry_run_sample.md",
+      "group": "p32",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "P32: MonthlyRevenue source-present dry-run",
+      "rationale": "Human-readable companion."
+    },
+    {
+      "path": "outputs/online_validation/p32_monthly_revenue_spec_conformance.json",
+      "group": "p32",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "P32: MonthlyRevenue source-present dry-run",
+      "rationale": "Spec conformance verification artifact. Evidence of FULL_CONFORMANCE."
+    },
+    {
+      "path": "outputs/online_validation/p32_monthly_revenue_spec_conformance.md",
+      "group": "p32",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "P32: MonthlyRevenue source-present dry-run",
+      "rationale": "Human-readable companion."
+    },
+    {
+      "path": "outputs/online_validation/p32_forbidden_claims_scan.json",
+      "group": "p32",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "P32: MonthlyRevenue source-present dry-run",
+      "rationale": "Governance compliance artifact. Evidence of CLEAN scan."
+    },
+    {
+      "path": "outputs/online_validation/p32_final_report.md",
+      "group": "p32",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "P32: MonthlyRevenue source-present dry-run",
+      "rationale": "Phase completion gate report. Primary human-readable evidence summary."
+    },
+    {
+      "path": "outputs/online_validation/p33_financial_report_source_present_scan.json",
+      "group": "p33",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "P33: FinancialReport+NewsEvent source-present gate",
+      "rationale": "Core gate result for FinancialReport (BLOCKED). Required audit evidence for migration authorization workflow."
+    },
+    {
+      "path": "outputs/online_validation/p33_financial_report_source_present_scan.md",
+      "group": "p33",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "P33: FinancialReport+NewsEvent source-present gate",
+      "rationale": "Human-readable companion."
+    },
+    {
+      "path": "outputs/online_validation/p33_news_event_source_present_scan.json",
+      "group": "p33",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "P33: FinancialReport+NewsEvent source-present gate",
+      "rationale": "Core gate result for NewsEvent (ELIGIBLE). Evidence of RECORDED_FROM_SOURCE PIT policy."
+    },
+    {
+      "path": "outputs/online_validation/p33_news_event_source_present_scan.md",
+      "group": "p33",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "P33: FinancialReport+NewsEvent source-present gate",
+      "rationale": "Human-readable companion."
+    },
+    {
+      "path": "outputs/online_validation/p33_source_present_gate_summary.json",
+      "group": "p33",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "P33: FinancialReport+NewsEvent source-present gate",
+      "rationale": "Multi-source summary. Evidence of NEWS_ONLY_SOURCE_PRESENT_GATE_READY classification."
+    },
+    {
+      "path": "outputs/online_validation/p33_source_present_gate_summary.md",
+      "group": "p33",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "P33: FinancialReport+NewsEvent source-present gate",
+      "rationale": "Human-readable companion."
+    },
+    {
+      "path": "outputs/online_validation/p33_spec_conformance.json",
+      "group": "p33",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "P33: FinancialReport+NewsEvent source-present gate",
+      "rationale": "Spec conformance evidence (GOVERNANCE_ALIGNED)."
+    },
+    {
+      "path": "outputs/online_validation/p33_spec_conformance.md",
+      "group": "p33",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "P33: FinancialReport+NewsEvent source-present gate",
+      "rationale": "Human-readable companion."
+    },
+    {
+      "path": "outputs/online_validation/p33_forbidden_claims_scan.json",
+      "group": "p33",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "P33: FinancialReport+NewsEvent source-present gate",
+      "rationale": "Governance compliance artifact (CLEAN)."
+    },
+    {
+      "path": "outputs/online_validation/p33_final_report.md",
+      "group": "p33",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "P33: FinancialReport+NewsEvent source-present gate",
+      "rationale": "Phase completion gate report."
+    },
+    {
+      "path": "outputs/online_validation/p34_news_event_source_present_dry_run.json",
+      "group": "p34",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "P34: NewsEvent source-present dry-run sample",
+      "rationale": "Core dry-run gate result for NewsEvent. Primary evidence for PROMOTE decision."
+    },
+    {
+      "path": "outputs/online_validation/p34_news_event_source_present_dry_run.md",
+      "group": "p34",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "P34: NewsEvent source-present dry-run sample",
+      "rationale": "Human-readable companion."
+    },
+    {
+      "path": "outputs/online_validation/p34_news_event_dry_run_sample.json",
+      "group": "p34",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "P34: NewsEvent source-present dry-run sample",
+      "rationale": "Stratified sample rows (official/mainstream/secondary) with PIT trace. Reference for NewsEvent Feature Consumer DESIGN."
+    },
+    {
+      "path": "outputs/online_validation/p34_news_event_dry_run_sample.md",
+      "group": "p34",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "P34: NewsEvent source-present dry-run sample",
+      "rationale": "Human-readable companion."
+    },
+    {
+      "path": "outputs/online_validation/p34_news_event_pit_audit.json",
+      "group": "p34",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "P34: NewsEvent source-present dry-run sample",
+      "rationale": "PIT audit evidence: 0 nulls, 0 anomalies, RECORDED confidence. Strongest PIT result in system."
+    },
+    {
+      "path": "outputs/online_validation/p34_news_event_pit_audit.md",
+      "group": "p34",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "P34: NewsEvent source-present dry-run sample",
+      "rationale": "Human-readable companion."
+    },
+    {
+      "path": "outputs/online_validation/p34_spec_conformance.json",
+      "group": "p34",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "P34: NewsEvent source-present dry-run sample",
+      "rationale": "Spec conformance evidence (FULL_CONFORMANCE)."
+    },
+    {
+      "path": "outputs/online_validation/p34_spec_conformance.md",
+      "group": "p34",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "P34: NewsEvent source-present dry-run sample",
+      "rationale": "Human-readable companion."
+    },
+    {
+      "path": "outputs/online_validation/p34_forbidden_claims_scan.json",
+      "group": "p34",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "P34: NewsEvent source-present dry-run sample",
+      "rationale": "Governance compliance artifact (CLEAN)."
+    },
+    {
+      "path": "outputs/online_validation/p34_final_report.md",
+      "group": "p34",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "P34: NewsEvent source-present dry-run sample",
+      "rationale": "Phase completion gate report."
+    },
+    {
+      "path": "data/manual/financial-report/",
+      "group": "data_manual",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "data/manual: p29b dropzone templates (FinancialReport + NewsEvent)",
+      "rationale": "Contains p29b-dropzone schema templates, README, and import instructions. Required reference when FinancialReport block is lifted and manual data import is authorized. Evidence: EXPECTED_SCHEMA.json, SOURCE_MANIFEST_TEMPLATE.json, TEMPLATE_DO_NOT_IMPORT CSV.",
+      "fileCount": 5
+    },
+    {
+      "path": "data/manual/news-event/",
+      "group": "data_manual",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "commitGroup": "data/manual: p29b dropzone templates (FinancialReport + NewsEvent)",
+      "rationale": "Same as above for NewsEvent. Contains dropzone schema, README, and import instructions.",
+      "fileCount": 5
+    },
+    {
+      "path": "verify_p34.py",
+      "group": "repo_root_scripts",
+      "disposition": "RELOCATE",
+      "proposedDestination": "scripts/verify_p34.py",
+      "commitGroup": "scripts: relocate verify_p34.py from repo root",
+      "rationale": "Phase-specific verification script placed at repo root during P34 execution. Belongs in scripts/ per repo convention. Not suitable for DELETE — it provides an executable audit trail of D7 verification. Relocate and commit."
+    }
+  ],
+
+  "proposedCommitPlan": [
+    {
+      "commitOrder": 1,
+      "message": "P32PREP: Add dry-run spec scaffolding and artifact inventory",
+      "paths": ["outputs/online_validation/p32prep_*"],
+      "fileCount": 11
+    },
+    {
+      "commitOrder": 2,
+      "message": "P32: Add MonthlyRevenue source-present dry-run artifacts",
+      "paths": ["outputs/online_validation/p32_*"],
+      "fileCount": 8
+    },
+    {
+      "commitOrder": 3,
+      "message": "P33: Add FinancialReport+NewsEvent source-present gate artifacts",
+      "paths": ["outputs/online_validation/p33_*"],
+      "fileCount": 10
+    },
+    {
+      "commitOrder": 4,
+      "message": "P34: Add NewsEvent source-present dry-run sample artifacts",
+      "paths": ["outputs/online_validation/p34_*"],
+      "fileCount": 10
+    },
+    {
+      "commitOrder": 5,
+      "message": "data/manual: Add p29b dropzone templates for FinancialReport and NewsEvent",
+      "paths": ["data/manual/financial-report/", "data/manual/news-event/"],
+      "fileCount": 10
+    },
+    {
+      "commitOrder": 6,
+      "message": "scripts: Relocate verify_p34.py from repo root to scripts/",
+      "paths": ["scripts/verify_p34.py"],
+      "fileCount": 1,
+      "note": "Requires: mv verify_p34.py scripts/verify_p34.py (not executed in this task)"
+    }
+  ],
+
+  "dispositionSummary": {
+    "COMMIT_WITH_RETENTION": 41,
+    "RETIRE_WITH_RATIONALE": 0,
+    "RELOCATE": 1,
+    "DELETE": 0,
+    "total": 42
+  },
+
+  "governanceFlags": {
+    "entersAlphaScore": false,
+    "paperOnly": true,
+    "dryRun": true,
+    "notInvestmentRecommendation": true,
+    "noBuySellActionSemantics": true
+  },
+
+  "note": "This is a PLAN only. No git add/rm/commit/mv commands were executed in this task."
+}

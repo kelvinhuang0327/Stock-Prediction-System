@@ -1,0 +1,41 @@
+{
+  "phase": "P42",
+  "step": "Phase 0 — Governance Pre-flight",
+  "timestamp": "2026-05-21T00:00:00+08:00",
+  "canonicalRepo": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System",
+  "canonicalBranch": "main",
+  "actualRepo": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System",
+  "actualBranch": "main",
+  "headCommit": "2c0685dbf59ae524499ced635b82d6f43c2357af",
+  "headMessage": "P41: Add paper simulation execution dry-run design",
+  "detachedHead": false,
+  "stagedFiles": 0,
+  "unrelatedDirtySourceFiles": false,
+  "dirtyFilesClassification": {
+    "logs/launchd/*": "RUNTIME — launchd service logs, never committed",
+    "prisma/dev.db*": "RUNTIME — SQLite dev database, never committed",
+    "runtime/*": "RUNTIME — agent orchestrator runtime, never committed",
+    "outputs/online_validation/p26-p35*": "PRE-EXISTING untracked outputs — not P42",
+    "00-StockPlan/20260514/": "PRE-EXISTING untracked — not P42",
+    "00-StockPlan/20260515/": "PRE-EXISTING untracked — not P42"
+  },
+  "preflightResult": "PASS",
+  "stopConditions": {
+    "wrongRepo": false,
+    "wrongBranch": false,
+    "detachedHead": false,
+    "unrelatedDirtySourceFiles": false,
+    "stagedFiles": false
+  },
+  "p41BaselineVerified": {
+    "commit": "2c0685d",
+    "classification": "P41_PAPER_SIMULATION_DRY_RUN_DESIGN_READY",
+    "executionStatus": "EXECUTION_DRY_RUN_AUTHORIZED",
+    "tests": "97/97 PASS",
+    "regressions": {
+      "p40": "118/118 PASS",
+      "p39": "77/77 PASS",
+      "p38": "55/55 PASS"
+    }
+  }
+}

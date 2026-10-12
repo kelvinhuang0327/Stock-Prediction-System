@@ -1,0 +1,111 @@
+{
+  "extractionId": "p28a-extract-underoutput-cases",
+  "generatedAt": "2026-05-15T03:29:17.087Z",
+  "totalCases": 9,
+  "uniqueSymbols": 3,
+  "symbols": [
+    "00738U",
+    "00891",
+    "1710"
+  ],
+  "uniqueSymbolDateCombinations": 5,
+  "caseList": [
+    {
+      "caseId": "P5-CASE-010",
+      "symbol": "1710",
+      "asOfDate": "2025-12-15",
+      "horizon": 5,
+      "alphaScore": 68,
+      "bucket": "NEUTRAL",
+      "auditClassification": "NO_TRIGGERED_FACTOR",
+      "reasonRaw": "技術偏多"
+    },
+    {
+      "caseId": "P5-CASE-011",
+      "symbol": "00738U",
+      "asOfDate": "2025-12-19",
+      "horizon": 5,
+      "alphaScore": 63,
+      "bucket": "NEUTRAL",
+      "auditClassification": "NO_TRIGGERED_FACTOR",
+      "reasonRaw": "技術偏多"
+    },
+    {
+      "caseId": "P5-CASE-013",
+      "symbol": "1710",
+      "asOfDate": "2025-12-15",
+      "horizon": 5,
+      "alphaScore": 68,
+      "bucket": "NEUTRAL",
+      "auditClassification": "NO_TRIGGERED_FACTOR",
+      "reasonRaw": "技術偏多"
+    },
+    {
+      "caseId": "P5-CASE-023",
+      "symbol": "00891",
+      "asOfDate": "2025-11-12",
+      "horizon": 20,
+      "alphaScore": 63,
+      "bucket": "NEUTRAL",
+      "auditClassification": "NO_TRIGGERED_FACTOR",
+      "reasonRaw": "技術偏多"
+    },
+    {
+      "caseId": "P5-CASE-026",
+      "symbol": "00891",
+      "asOfDate": "2025-11-12",
+      "horizon": 20,
+      "alphaScore": 63,
+      "bucket": "NEUTRAL",
+      "auditClassification": "NO_TRIGGERED_FACTOR",
+      "reasonRaw": "技術偏多"
+    },
+    {
+      "caseId": "P5-CASE-037",
+      "symbol": "00891",
+      "asOfDate": "2025-10-15",
+      "horizon": 60,
+      "alphaScore": 63,
+      "bucket": "NEUTRAL",
+      "auditClassification": "NO_TRIGGERED_FACTOR",
+      "reasonRaw": "技術偏多"
+    },
+    {
+      "caseId": "P5-CASE-053",
+      "symbol": "00738U",
+      "asOfDate": "2025-12-19",
+      "horizon": 5,
+      "alphaScore": 63,
+      "bucket": "NEUTRAL",
+      "auditClassification": "NO_TRIGGERED_FACTOR",
+      "reasonRaw": "技術偏多"
+    },
+    {
+      "caseId": "P5-CASE-054",
+      "symbol": "00891",
+      "asOfDate": "2025-12-30",
+      "horizon": 5,
+      "alphaScore": 63,
+      "bucket": "NEUTRAL",
+      "auditClassification": "NO_TRIGGERED_FACTOR",
+      "reasonRaw": "技術偏多"
+    },
+    {
+      "caseId": "P5-CASE-055",
+      "symbol": "1710",
+      "asOfDate": "2025-12-15",
+      "horizon": 5,
+      "alphaScore": 68,
+      "bucket": "NEUTRAL",
+      "auditClassification": "NO_TRIGGERED_FACTOR",
+      "reasonRaw": "技術偏多"
+    }
+  ],
+  "summary": {
+    "allNoTriggeredFactor": true,
+    "allBlockedByMonthlyRevenue": true,
+    "allRendererUnderoutput": true,
+    "allFixableWithoutScoringChange": true
+  },
+  "disclaimer": "Observability only. No investment recommendations."
+}

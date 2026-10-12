@@ -1,0 +1,1500 @@
+{
+  "pipeline_version": "P3-13",
+  "run_ts": "2026-05-05T14:59:49.213656+00:00",
+  "as_of_date": "2026-05-01",
+  "primary_window": 500,
+  "secondary_window": 150,
+  "symbols_evaluated": [
+    "1326",
+    "1560",
+    "1802",
+    "2330",
+    "2454",
+    "2317",
+    "6415",
+    "1210",
+    "1308",
+    "1314",
+    "1319",
+    "1402",
+    "1434",
+    "1513",
+    "1536",
+    "1598",
+    "1605",
+    "1710",
+    "1717",
+    "1789",
+    "1795",
+    "1903",
+    "1904",
+    "1907",
+    "2006",
+    "2015",
+    "2027",
+    "2105",
+    "2206",
+    "2231",
+    "2308",
+    "2312",
+    "2323",
+    "2360",
+    "2367",
+    "2368",
+    "2376",
+    "2383",
+    "2385",
+    "2393",
+    "2404",
+    "2439",
+    "2441",
+    "2455",
+    "2458",
+    "2459",
+    "2466",
+    "2485",
+    "2492",
+    "2504"
+  ],
+  "etf_symbols_skipped": [
+    "0055",
+    "00712",
+    "00903",
+    "00891",
+    "00830",
+    "00738U"
+  ],
+  "symbol_count": 50,
+  "candidates_evaluated": [
+    "STOCK_H009_PULLBACK_10D_HOLD",
+    "STOCK_H010_MOM_MODERATE_VOLUME",
+    "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+    "STOCK_H012_RSI_REVERSION_PROBE"
+  ],
+  "review_eligible_candidates": [
+    "STOCK_H009_PULLBACK_10D_HOLD",
+    "STOCK_H010_MOM_MODERATE_VOLUME",
+    "STOCK_H011_NEAR_BREAKOUT_LOW_VOL"
+  ],
+  "observation_only_candidates": [
+    "STOCK_H012_RSI_REVERSION_PROBE"
+  ],
+  "universe_stats": {
+    "total_in_db": 1357,
+    "eligible_total": 118,
+    "eligible_stock_like": 112,
+    "eligible_etf_like": 6,
+    "selected_stock": 50,
+    "selected_etf": 6,
+    "selected_total": 56
+  },
+  "total_tests": 302,
+  "ok_tests": 150,
+  "bh_fdr_alpha": 0.1,
+  "primary_bh_fdr_pass_count": 0,
+  "diagnostic_bh_fdr_pass_count": 0,
+  "review_candidates": [],
+  "rejected": [
+    {
+      "symbol": "1326",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1326",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1560",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1560",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1802",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1802",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2330",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2330",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2330",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2454",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2454",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2317",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2317",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2317",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "6415",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "6415",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1210",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1210",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1210",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1308",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1308",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1314",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1314",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1319",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1319",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1402",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1402",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1402",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1434",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1434",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1434",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1513",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1513",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1536",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1536",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1598",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1598",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1605",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1605",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1710",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1710",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1717",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1717",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1717",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1789",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1789",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1795",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1795",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1903",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1903",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1904",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1904",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1904",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1907",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1907",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "1907",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2006",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2006",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2006",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2015",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2015",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2015",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2027",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2027",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2105",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2105",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2206",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2206",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2206",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2231",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2231",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2308",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2308",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2308",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2312",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2312",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2323",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2323",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2360",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2360",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2367",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2367",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2368",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2368",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2376",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2376",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2376",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2383",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2383",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2383",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2385",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2385",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2385",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2393",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2393",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2393",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2404",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2404",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2439",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2439",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2441",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2441",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2441",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2455",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2455",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2458",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2458",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2459",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2459",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2459",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2466",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2466",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2485",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2485",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2492",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2492",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2504",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2504",
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "status": "REJECTED"
+    },
+    {
+      "symbol": "2504",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "REJECTED"
+    }
+  ],
+  "data_insufficient": [
+    {
+      "symbol": "1326",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "DATA_INSUFFICIENT"
+    },
+    {
+      "symbol": "1560",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "DATA_INSUFFICIENT"
+    },
+    {
+      "symbol": "1802",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "DATA_INSUFFICIENT"
+    },
+    {
+      "symbol": "2454",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "DATA_INSUFFICIENT"
+    },
+    {
+      "symbol": "6415",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "DATA_INSUFFICIENT"
+    },
+    {
+      "symbol": "1308",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "DATA_INSUFFICIENT"
+    },
+    {
+      "symbol": "1314",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "DATA_INSUFFICIENT"
+    },
+    {
+      "symbol": "1319",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "DATA_INSUFFICIENT"
+    },
+    {
+      "symbol": "1513",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "DATA_INSUFFICIENT"
+    },
+    {
+      "symbol": "1536",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "DATA_INSUFFICIENT"
+    },
+    {
+      "symbol": "1598",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "DATA_INSUFFICIENT"
+    },
+    {
+      "symbol": "1605",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "DATA_INSUFFICIENT"
+    },
+    {
+      "symbol": "1710",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "DATA_INSUFFICIENT"
+    },
+    {
+      "symbol": "1789",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "DATA_INSUFFICIENT"
+    },
+    {
+      "symbol": "1795",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "DATA_INSUFFICIENT"
+    },
+    {
+      "symbol": "1903",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "DATA_INSUFFICIENT"
+    },
+    {
+      "symbol": "2027",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "DATA_INSUFFICIENT"
+    },
+    {
+      "symbol": "2105",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "DATA_INSUFFICIENT"
+    },
+    {
+      "symbol": "2231",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "DATA_INSUFFICIENT"
+    },
+    {
+      "symbol": "2312",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "DATA_INSUFFICIENT"
+    },
+    {
+      "symbol": "2323",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "DATA_INSUFFICIENT"
+    },
+    {
+      "symbol": "2360",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "DATA_INSUFFICIENT"
+    },
+    {
+      "symbol": "2367",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "DATA_INSUFFICIENT"
+    },
+    {
+      "symbol": "2368",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "DATA_INSUFFICIENT"
+    },
+    {
+      "symbol": "2404",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "DATA_INSUFFICIENT"
+    },
+    {
+      "symbol": "2439",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "DATA_INSUFFICIENT"
+    },
+    {
+      "symbol": "2455",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "DATA_INSUFFICIENT"
+    },
+    {
+      "symbol": "2458",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "DATA_INSUFFICIENT"
+    },
+    {
+      "symbol": "2466",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "DATA_INSUFFICIENT"
+    },
+    {
+      "symbol": "2485",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "DATA_INSUFFICIENT"
+    },
+    {
+      "symbol": "2492",
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "status": "DATA_INSUFFICIENT"
+    }
+  ],
+  "observation_only_results": [
+    {
+      "symbol": "1326",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "1560",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "1802",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "2330",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "2454",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "2317",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "6415",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "1210",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "1308",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "1314",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "1319",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "1402",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "1434",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "1513",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "1536",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "1598",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "1605",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "1710",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "1717",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "1789",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "1795",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "1903",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "1904",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "1907",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "2006",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "2015",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "2027",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "2105",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "2206",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "2231",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "2308",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "2312",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "2323",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "2360",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "2367",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "2368",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "2376",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "2383",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "2385",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "2393",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "2404",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "2439",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "2441",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "2455",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "2458",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "2459",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "2466",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "2485",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "2492",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    },
+    {
+      "symbol": "2504",
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "status": "OBSERVATION_ONLY"
+    }
+  ],
+  "candidate_diagnostics": [
+    {
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "symbols_tested": [
+        "1326",
+        "1560",
+        "1802",
+        "2330",
+        "2454",
+        "2317",
+        "6415",
+        "1210",
+        "1308",
+        "1314",
+        "1319",
+        "1402",
+        "1434",
+        "1513",
+        "1536",
+        "1598",
+        "1605",
+        "1710",
+        "1717",
+        "1789",
+        "1795",
+        "1903",
+        "1904",
+        "1907",
+        "2006",
+        "2015",
+        "2027",
+        "2105",
+        "2206",
+        "2231",
+        "2308",
+        "2312",
+        "2323",
+        "2360",
+        "2367",
+        "2368",
+        "2376",
+        "2383",
+        "2385",
+        "2393",
+        "2404",
+        "2439",
+        "2441",
+        "2455",
+        "2458",
+        "2459",
+        "2466",
+        "2485",
+        "2492",
+        "2504"
+      ],
+      "symbols_with_signal": [
+        "1326",
+        "1560",
+        "1802",
+        "2330",
+        "2454",
+        "2317",
+        "6415",
+        "1210",
+        "1308",
+        "1314",
+        "1319",
+        "1402",
+        "1434",
+        "1513",
+        "1536",
+        "1598",
+        "1605",
+        "1710",
+        "1717",
+        "1789",
+        "1795",
+        "1903",
+        "1904",
+        "1907",
+        "2006",
+        "2015",
+        "2027",
+        "2105",
+        "2206",
+        "2231",
+        "2308",
+        "2312",
+        "2323",
+        "2360",
+        "2367",
+        "2368",
+        "2376",
+        "2383",
+        "2385",
+        "2393",
+        "2404",
+        "2439",
+        "2441",
+        "2455",
+        "2458",
+        "2459",
+        "2466",
+        "2485",
+        "2492",
+        "2504"
+      ],
+      "primary_signal_count": 2372,
+      "secondary_signal_count": 103,
+      "avg_primary_roi": 0.555806,
+      "avg_primary_sharpe": -2.0431,
+      "primary_permutation_pass_count": 0,
+      "primary_bh_fdr_pass_count": 0,
+      "review_candidate_symbols": [],
+      "final_status": "REJECTED"
+    },
+    {
+      "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "symbols_tested": [
+        "1326",
+        "1560",
+        "1802",
+        "2330",
+        "2454",
+        "2317",
+        "6415",
+        "1210",
+        "1308",
+        "1314",
+        "1319",
+        "1402",
+        "1434",
+        "1513",
+        "1536",
+        "1598",
+        "1605",
+        "1710",
+        "1717",
+        "1789",
+        "1795",
+        "1903",
+        "1904",
+        "1907",
+        "2006",
+        "2015",
+        "2027",
+        "2105",
+        "2206",
+        "2231",
+        "2308",
+        "2312",
+        "2323",
+        "2360",
+        "2367",
+        "2368",
+        "2376",
+        "2383",
+        "2385",
+        "2393",
+        "2404",
+        "2439",
+        "2441",
+        "2455",
+        "2458",
+        "2459",
+        "2466",
+        "2485",
+        "2492",
+        "2504"
+      ],
+      "symbols_with_signal": [
+        "1326",
+        "1560",
+        "1802",
+        "2330",
+        "2454",
+        "2317",
+        "6415",
+        "1210",
+        "1308",
+        "1314",
+        "1319",
+        "1402",
+        "1434",
+        "1513",
+        "1536",
+        "1598",
+        "1605",
+        "1710",
+        "1717",
+        "1789",
+        "1795",
+        "1903",
+        "1904",
+        "1907",
+        "2006",
+        "2015",
+        "2027",
+        "2105",
+        "2206",
+        "2231",
+        "2308",
+        "2312",
+        "2323",
+        "2360",
+        "2367",
+        "2368",
+        "2376",
+        "2383",
+        "2385",
+        "2393",
+        "2404",
+        "2439",
+        "2441",
+        "2455",
+        "2458",
+        "2459",
+        "2466",
+        "2485",
+        "2492",
+        "2504"
+      ],
+      "primary_signal_count": 3211,
+      "secondary_signal_count": 632,
+      "avg_primary_roi": 0.380601,
+      "avg_primary_sharpe": -0.5893,
+      "primary_permutation_pass_count": 0,
+      "primary_bh_fdr_pass_count": 0,
+      "review_candidate_symbols": [],
+      "final_status": "REJECTED"
+    },
+    {
+      "hypothesis_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "symbols_tested": [
+        "1326",
+        "1560",
+        "1802",
+        "2330",
+        "2454",
+        "2317",
+        "6415",
+        "1210",
+        "1308",
+        "1314",
+        "1319",
+        "1402",
+        "1434",
+        "1513",
+        "1536",
+        "1598",
+        "1605",
+        "1710",
+        "1717",
+        "1789",
+        "1795",
+        "1903",
+        "1904",
+        "1907",
+        "2006",
+        "2015",
+        "2027",
+        "2105",
+        "2206",
+        "2231",
+        "2308",
+        "2312",
+        "2323",
+        "2360",
+        "2367",
+        "2368",
+        "2376",
+        "2383",
+        "2385",
+        "2393",
+        "2404",
+        "2439",
+        "2441",
+        "2455",
+        "2458",
+        "2459",
+        "2466",
+        "2485",
+        "2492",
+        "2504"
+      ],
+      "symbols_with_signal": [
+        "2330",
+        "2317",
+        "1210",
+        "1402",
+        "1434",
+        "1717",
+        "1904",
+        "1907",
+        "2006",
+        "2015",
+        "2206",
+        "2308",
+        "2376",
+        "2383",
+        "2385",
+        "2393",
+        "2441",
+        "2459",
+        "2504"
+      ],
+      "primary_signal_count": 852,
+      "secondary_signal_count": 57,
+      "avg_primary_roi": 0.009981,
+      "avg_primary_sharpe": -2.2408,
+      "primary_permutation_pass_count": 0,
+      "primary_bh_fdr_pass_count": 0,
+      "review_candidate_symbols": [],
+      "final_status": "REJECTED"
+    },
+    {
+      "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "symbols_tested": [
+        "1326",
+        "1560",
+        "1802",
+        "2330",
+        "2454",
+        "2317",
+        "6415",
+        "1210",
+        "1308",
+        "1314",
+        "1319",
+        "1402",
+        "1434",
+        "1513",
+        "1536",
+        "1598",
+        "1605",
+        "1710",
+        "1717",
+        "1789",
+        "1795",
+        "1903",
+        "1904",
+        "1907",
+        "2006",
+        "2015",
+        "2027",
+        "2105",
+        "2206",
+        "2231",
+        "2308",
+        "2312",
+        "2323",
+        "2360",
+        "2367",
+        "2368",
+        "2376",
+        "2383",
+        "2385",
+        "2393",
+        "2404",
+        "2439",
+        "2441",
+        "2455",
+        "2458",
+        "2459",
+        "2466",
+        "2485",
+        "2492",
+        "2504"
+      ],
+      "symbols_with_signal": [
+        "2317"
+      ],
+      "primary_signal_count": 263,
+      "secondary_signal_count": 77,
+      "avg_primary_roi": 0.424203,
+      "avg_primary_sharpe": 1.3134,
+      "primary_permutation_pass_count": 0,
+      "primary_bh_fdr_pass_count": 0,
+      "review_candidate_symbols": [],
+      "final_status": "OBSERVATION_ONLY"
+    }
+  ],
+  "final_classification": "EXPANDED_UNIVERSE_NO_EDGE_FOUND",
+  "safety_confirmations": {
+    "no_production_write": true,
+    "no_trade_execution": true,
+    "not_trading_advice": true,
+    "real_data_read_only": true,
+    "primary_bh_fdr_corrected": true,
+    "diagnostic_bh_fdr_corrected": true,
+    "pit_guard_enforced": true,
+    "no_random_split": true,
+    "no_auto_promotion": true,
+    "refinement_guard_passed": true,
+    "h012_observation_only": true,
+    "secondary_window_not_used_for_promotion": true
+  }
+}

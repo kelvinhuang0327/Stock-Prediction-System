@@ -1,0 +1,75 @@
+{
+  "phase": "P29F-HARDRESET",
+  "task": "Invariance Re-check (Part H)",
+  "generatedAt": "2026-05-20T00:00:00Z",
+  "auditMode": "SHA256_DIFF_CHECK",
+
+  "checkedFiles": {
+    "prisma/dev.db": {
+      "headHash": "a5cf277182c161dfe97ba05f9b81528d6c8e477dd5ac0bec6810ffbb8711c6f8",
+      "currentHash": "9c24c697f7980c910802e37faecdf05d0d821db097358cda1ad6c5085af99ba6",
+      "changed": true,
+      "verdict": "RUNTIME_OK",
+      "reason": "SQLite WAL-mode runtime writes (dev.db-shm, dev.db-wal also modified). No schema migration. prisma/schema.prisma is unchanged. P29F audit code does not write to DB."
+    },
+    "corpus_p19active_scoring_pit_replay": {
+      "path": "outputs/online_validation/p19active_scoring_pit_replay_corpus.jsonl",
+      "currentHash": "da92963f0d0f596cdd8673d63e3a19c6a70ca92e23a31b1029595ce913c90a94",
+      "changed": false,
+      "verdict": "INVARIANT",
+      "reason": "No git diff from HEAD. Corpus not mutated."
+    },
+    "corpus_p3active_scoring_historical_replay": {
+      "path": "outputs/online_validation/p3active_scoring_historical_replay_corpus.jsonl",
+      "currentHash": "e8b4e1a9f255e3a96af13925176559538ed0fdca7793d7030bb7164c71101712",
+      "changed": false,
+      "verdict": "INVARIANT",
+      "reason": "No git diff from HEAD. Corpus not mutated."
+    },
+    "corpus_simulation_snapshot": {
+      "path": "outputs/online_validation/simulation_snapshot_corpus.jsonl",
+      "currentHash": "6a668ba2196fba05aa96304262f3eff154fc797612a5adf878ed4794af2fe18e",
+      "changed": false,
+      "verdict": "INVARIANT",
+      "reason": "No git diff from HEAD. Corpus not mutated."
+    },
+    "RuleBasedStockAnalyzer.ts": {
+      "path": "src/lib/analysis/RuleBasedStockAnalyzer.ts",
+      "currentHash": "bc3716cc8e74be304f2e262aac586a61760bb59d6c95e82a575c38e03ea7373d",
+      "changed": false,
+      "verdict": "INVARIANT",
+      "reason": "No git diff from HEAD. Production scoring logic untouched."
+    },
+    "SignalFusionEngine.ts": {
+      "path": "src/lib/alpha/SignalFusionEngine.ts",
+      "currentHash": "b8ce3fa3ae63fd7edf6b6067dd8ccea63c02741454b93792e87bfbc1e95d2bf4",
+      "changed": false,
+      "verdict": "INVARIANT",
+      "reason": "No git diff from HEAD. Production scoring logic untouched."
+    },
+    "ActiveScoringSnapshotBuilder.ts": {
+      "path": "src/lib/onlineValidation/ActiveScoringSnapshotBuilder.ts",
+      "currentHash": "063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d",
+      "changed": false,
+      "verdict": "INVARIANT",
+      "reason": "No git diff from HEAD. Production scoring logic untouched."
+    }
+  },
+
+  "runtimeChanges": {
+    "logs": "Modified (launchd daemon logs — expected)",
+    "llm_usage.jsonl": "Modified (agent runtime usage tracking — expected)",
+    "prisma/dev.db-shm": "Modified (SQLite WAL shared memory — expected)",
+    "prisma/dev.db-wal": "Modified (SQLite WAL file — expected)"
+  },
+
+  "invarianceVerdicts": {
+    "corpusInvariant": true,
+    "productionScoringInvariant": true,
+    "dbSchemaInvariant": true,
+    "dbRuntimeChangesAreExpected": true
+  },
+
+  "overallVerdict": "PASS",
+  "summary": "All protected production scoring files (RuleBasedStockAnalyzer, SignalFusionEngine, ActiveScoringSnapshotBuilder) are INVARIANT with zero diff from HEAD. All corpus JSONL files are INVARIANT. prisma/dev.db shows WAL runtime writes — classified as RUNTIME_OK (not a P29F mutation, no schema change). Invariance gate: PASS."
+}

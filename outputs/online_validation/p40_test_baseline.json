@@ -1,0 +1,93 @@
+{
+  "phase": "P40",
+  "task": "Paper Simulation Framework Design Gate",
+  "testRunAt": "2026-05-21T00:00:00.000Z",
+  "testResults": {
+    "p40_targeted": {
+      "suite": "src/lib/onlineValidation/__tests__/p40_paper_simulation_framework_design_gate.test.ts",
+      "total": 118,
+      "passed": 118,
+      "failed": 0,
+      "status": "PASS",
+      "groups": [
+        { "group": "Group 1 — Framework governance invariants", "tests": 10, "passed": 10 },
+        { "group": "Group 2 — Framework accepts P39 input bundle", "tests": 5, "passed": 5 },
+        { "group": "Group 3 — Framework phase and mode", "tests": 5, "passed": 5 },
+        { "group": "Group 4 — Execution is blocked", "tests": 5, "passed": 5 },
+        { "group": "Group 5 — Eligible sources (MonthlyRevenue, Quote, Regime)", "tests": 5, "passed": 5 },
+        { "group": "Group 6 — Blocked sources (NewsEvent, FinancialReport, Chip)", "tests": 8, "passed": 8 },
+        { "group": "Group 7 — Validator accepts valid framework plan", "tests": 5, "passed": 5 },
+        { "group": "Group 8 — Validator rejects invalid framework plans", "tests": 12, "passed": 12 },
+        { "group": "Group 9 — assertNoSimulationExecution", "tests": 10, "passed": 10 },
+        { "group": "Group 10 — summarizeFrameworkReadiness", "tests": 7, "passed": 7 },
+        { "group": "Group 11 — Forbidden outputs and uses constants", "tests": 13, "passed": 13 },
+        { "group": "Group 12 — No forbidden outputs appear as plan result fields", "tests": 12, "passed": 12 },
+        { "group": "Group 13 — Isolation and governance", "tests": 8, "passed": 8 },
+        { "group": "Group 14 — P39 contract regression", "tests": 5, "passed": 5 },
+        { "group": "Group 15 — No simulation execution function is implemented", "tests": 8, "passed": 8 }
+      ]
+    },
+    "p39_regression": {
+      "suite": "src/lib/onlineValidation/__tests__/p39_paper_simulation_input_contract.test.ts",
+      "total": 77,
+      "passed": 77,
+      "failed": 0,
+      "status": "PASS"
+    },
+    "p38_regression": {
+      "suite": "src/lib/onlineValidation/__tests__/p38_simulation_input_readiness_mapping.test.ts",
+      "total": 55,
+      "passed": 55,
+      "failed": 0,
+      "status": "PASS"
+    },
+    "full_online_validation_suite": {
+      "directory": "src/lib/onlineValidation/__tests__",
+      "suitesTotal": 119,
+      "suitesPassed": 115,
+      "suitesFailed": 4,
+      "testsTotal": 4061,
+      "testsPassed": 4057,
+      "testsFailed": 4,
+      "status": "PASS_WITH_PRE_EXISTING_FAILURES",
+      "preExistingFailures": [
+        {
+          "suite": "p26a_batch_pipeline_wiring.test.ts",
+          "reason": "pre-existing DB hash drift (prisma/dev.db changed by runtime)",
+          "p40Related": false
+        },
+        {
+          "suite": "p26a_renderer_fix.test.ts",
+          "reason": "pre-existing DB hash drift",
+          "p40Related": false
+        },
+        {
+          "suite": "p27_waiting_state_policy_guard.test.ts",
+          "reason": "pre-existing DB hash drift",
+          "p40Related": false
+        },
+        {
+          "suite": "p29d_dropzone_scaffold.test.ts",
+          "reason": "pre-existing DB hash drift",
+          "p40Related": false
+        }
+      ]
+    }
+  },
+  "p40TestsSummary": {
+    "p40Pass": 118,
+    "p39Pass": 77,
+    "p38Pass": 55,
+    "totalP38P39P40": 250,
+    "allPass": true
+  },
+  "forbiddenDiffResult": {
+    "forbiddenFilesInDiff": ["prisma/dev.db", "runtime/agent_orchestrator/llm_usage.jsonl"],
+    "classification": "RUNTIME_ONLY_NO_COMMIT",
+    "willBeCommitted": false,
+    "verdict": "CLEAN"
+  },
+  "entersAlphaScore": false,
+  "noSimulationExecution": true,
+  "classification": "P40_TEST_BASELINE_PASS"
+}

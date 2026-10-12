@@ -1,0 +1,57 @@
+{
+  "task": "T-12 DailyReportEngine Deeper Integration",
+  "audit_date": "2026-05-06",
+  "engine_file_path": "src/lib/report/DailyReportEngine.ts",
+  "api_route_path": "src/app/api/report/daily/route.ts",
+  "current_market_summary_fields": [
+    "regime",
+    "regimeConfidence",
+    "summary",
+    "keyFactors",
+    "limitations",
+    "regimeContext (added by T-12)"
+  ],
+  "current_regime_source": {
+    "primary_live": "detectRegime() from @/lib/market/MarketRegimeEngine",
+    "primary_persisted": "getLatestMarketRegimeContext() from @/lib/marketRegimeResult (added by T-12)",
+    "persisted_freshness_alert": "computeFreshnessAlert() from @/lib/marketRegimeResult (added by T-12)"
+  },
+  "pre_t12_state": {
+    "detectRegime_used": true,
+    "persisted_MarketRegimeResult_used": false,
+    "freshnessAlert_included": false,
+    "api_report_daily_returns_regime": true,
+    "report_has_forbidden_fields": false
+  },
+  "post_t12_state": {
+    "detectRegime_used": true,
+    "detectRegime_role": "live fallback / secondary — provides live regime for existing MarketSummary fields",
+    "persisted_MarketRegimeResult_used": true,
+    "persisted_role": "primary source for marketSummary.regimeContext",
+    "freshnessAlert_included": true,
+    "api_report_daily_returns_regimeContext": true,
+    "report_has_forbidden_fields": false
+  },
+  "reusable_parts": [
+    "detectRegime() — retained as live diagnostic fallback",
+    "buildMarketSummary() — extended with optional persistedCtx parameter",
+    "generateDailyReport() async Promise.all — getLatestMarketRegimeContext added in parallel",
+    "MarketSummary interface — extended with optional regimeContext field"
+  ],
+  "unsafe_parts": [
+    "None — all changes are additive optional fields"
+  ],
+  "audit_questions": {
+    "Q1_fully_replace_detectRegime": false,
+    "Q1_rationale": "detectRegime() is retained as live diagnostic and existing regime/regimeConfidence source for backward compatibility",
+    "Q2_preserve_fallback": true,
+    "Q2_rationale": "When persisted context isAvailable=false, regimeContext.source='UNAVAILABLE', fallbackUsed=true",
+    "Q3_persisted_regime_as_primary": true,
+    "Q3_rationale": "marketSummary.regimeContext uses PERSISTED_MARKET_REGIME_RESULT as primary source",
+    "Q4_stale_missing_handling": "regimeContext.source='UNAVAILABLE' for missing; stale shows warning in regimeContext.warning and freshnessAlert",
+    "Q5_modify_DailyReport_interface": true,
+    "Q5_rationale": "Added optional regimeContext? field to MarketSummary — backward compatible",
+    "Q6_schema_migration_needed": false,
+    "Q6_rationale": "No DB schema changes required — reads from existing MarketRegimeResult table"
+  }
+}

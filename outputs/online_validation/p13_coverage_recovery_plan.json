@@ -1,0 +1,65 @@
+{
+  "recoveryPlanVersion": "coverage-recovery-plan-v0",
+  "recoveryRunId": "p13-coverage-recovery-20260511-001",
+  "generatedAt": "2026-05-11T08:03:05.940Z",
+  "currentCoverageRatio": 0.23333333333333334,
+  "targetCoverageRatio": 0.5,
+  "currentHorizonCoverageGap": 0.35,
+  "targetHorizonCoverageGap": 0.35,
+  "currentUniqueAsOfDateCount": 10,
+  "targetUniqueAsOfDateCount": 10,
+  "recoveryStatus": "DATA_LIMITED",
+  "blockers": [
+    "coverageRatio=0.2333 is below targetCoverageRatio=0.5000",
+    "60D horizon is not due dominant"
+  ],
+  "recommendedActions": [
+    "Wait for more outcomes to settle before reevaluating coverage."
+  ],
+  "horizonRecoveryItems": [
+    {
+      "horizonLabel": "5D",
+      "currentCoverageRatio": 0.4,
+      "targetCoverageRatio": 0.5,
+      "blockedCount": 12,
+      "topBlockedReason": "WINDOW_NOT_DUE",
+      "recoveryNeed": "WAIT_FOR_MATURITY",
+      "estimatedNextStep": "Hold 5D until target dates mature",
+      "productionWriteAllowed": false,
+      "optimizerWriteAllowed": false
+    },
+    {
+      "horizonLabel": "20D",
+      "currentCoverageRatio": 0.25,
+      "targetCoverageRatio": 0.5,
+      "blockedCount": 15,
+      "topBlockedReason": "WINDOW_NOT_DUE",
+      "recoveryNeed": "WAIT_FOR_MATURITY",
+      "estimatedNextStep": "Hold 20D until target dates mature",
+      "productionWriteAllowed": false,
+      "optimizerWriteAllowed": false
+    },
+    {
+      "horizonLabel": "60D",
+      "currentCoverageRatio": 0.05,
+      "targetCoverageRatio": 0.5,
+      "blockedCount": 19,
+      "topBlockedReason": "WINDOW_NOT_DUE",
+      "recoveryNeed": "WAIT_FOR_MATURITY",
+      "estimatedNextStep": "Hold 60D until target dates mature",
+      "productionWriteAllowed": false,
+      "optimizerWriteAllowed": false
+    }
+  ],
+  "guardrails": {
+    "noProductionWrite": true,
+    "noOptimizerWrite": true,
+    "noPerformanceClaim": true,
+    "noTradingSignal": true,
+    "observabilityOnly": true
+  },
+  "validationStatus": "PASS",
+  "validationMessages": [
+    "PASS: coverage recovery plan safety contracts verified"
+  ]
+}

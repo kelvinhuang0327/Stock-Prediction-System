@@ -1,0 +1,214 @@
+{
+  "phase": "P25-HARDRESET",
+  "part": "A",
+  "generatedAt": "2026-05-12T10:10:29.317Z",
+  "disclaimer": "Does not constitute investment advice. Does not compute ROI, profit, alpha, win-rate, edge, or outperformance.",
+  "gatePassCount": 26,
+  "gateTotalCount": 26,
+  "gateFailCount": 0,
+  "classification": "P25_PREFLIGHT_PASS",
+  "gates": [
+    {
+      "id": "A1-p24production_migrat",
+      "description": "P24 artifact exists: p24production_migration_execution_final_report.md",
+      "status": "PASS",
+      "detail": "outputs/online_validation/p24production_migration_execution_final_report.md"
+    },
+    {
+      "id": "A1-p24production_backup",
+      "description": "P24 artifact exists: p24production_backup_gate.json",
+      "status": "PASS",
+      "detail": "outputs/online_validation/p24production_backup_gate.json"
+    },
+    {
+      "id": "A1-p24production_migrat",
+      "description": "P24 artifact exists: p24production_migration_gate.json",
+      "status": "PASS",
+      "detail": "outputs/online_validation/p24production_migration_gate.json"
+    },
+    {
+      "id": "A1-p24production_backfi",
+      "description": "P24 artifact exists: p24production_backfill_gate.json",
+      "status": "PASS",
+      "detail": "outputs/online_validation/p24production_backfill_gate.json"
+    },
+    {
+      "id": "A1-p24production_post_m",
+      "description": "P24 artifact exists: p24production_post_migration_validation.json",
+      "status": "PASS",
+      "detail": "outputs/online_validation/p24production_post_migration_validation.json"
+    },
+    {
+      "id": "A1-p24production_rollba",
+      "description": "P24 artifact exists: p24production_rollback_readiness.json",
+      "status": "PASS",
+      "detail": "outputs/online_validation/p24production_rollback_readiness.json"
+    },
+    {
+      "id": "A2-backup-status",
+      "description": "P24 backup gate = PASS",
+      "status": "PASS",
+      "detail": "backupStatus=PASS"
+    },
+    {
+      "id": "A2-migration-status",
+      "description": "P24 migration gate = PASS",
+      "status": "PASS",
+      "detail": "migrationStatus=PASS"
+    },
+    {
+      "id": "A2-migration-applied",
+      "description": "P24 productionMigrationApplied = true",
+      "status": "PASS",
+      "detail": "productionMigrationApplied=true"
+    },
+    {
+      "id": "A2-backfill-status",
+      "description": "P24 backfill gate = PASS",
+      "status": "PASS",
+      "detail": "backfillStatus=PASS"
+    },
+    {
+      "id": "A2-rows-backfilled",
+      "description": "P24 rowsBackfilled >= 2143",
+      "status": "PASS",
+      "detail": "rowsBackfilled=2143"
+    },
+    {
+      "id": "A2-rows-skipped",
+      "description": "P24 rowsSkipped = 0",
+      "status": "PASS",
+      "detail": "rowsSkipped=0"
+    },
+    {
+      "id": "A2-postval-status",
+      "description": "P24 post-migration validation = PASS",
+      "status": "PASS",
+      "detail": "validationStatus=PASS"
+    },
+    {
+      "id": "A2-rollback-status",
+      "description": "P24 rollback readiness = PASS",
+      "status": "PASS",
+      "detail": "rollbackReadinessStatus=PASS"
+    },
+    {
+      "id": "A2-distribution",
+      "description": "P24 distribution has INFERRED_NEXT_MONTH_10TH",
+      "status": "PASS",
+      "detail": "dist={\"INFERRED_NEXT_MONTH_10TH\":2143}"
+    },
+    {
+      "id": "A3-schema-releaseDate",
+      "description": "DB MonthlyRevenue has releaseDate column",
+      "status": "PASS",
+      "detail": "PRAGMA table_info"
+    },
+    {
+      "id": "A3-schema-releaseDateSource",
+      "description": "DB MonthlyRevenue has releaseDateSource column",
+      "status": "PASS",
+      "detail": "PRAGMA table_info"
+    },
+    {
+      "id": "A3-schema-releaseDateConfidence",
+      "description": "DB MonthlyRevenue has releaseDateConfidence column",
+      "status": "PASS",
+      "detail": "PRAGMA table_info"
+    },
+    {
+      "id": "A3-row-count",
+      "description": "MonthlyRevenue row count >= 2143",
+      "status": "PASS",
+      "detail": "rowCount=2143"
+    },
+    {
+      "id": "A3-null-releaseDate",
+      "description": "No rows with NULL releaseDate",
+      "status": "PASS",
+      "detail": "nullCount=0"
+    },
+    {
+      "id": "A3-source-distribution",
+      "description": "All non-null releaseDateSource = INFERRED_NEXT_MONTH_10TH",
+      "status": "PASS",
+      "detail": "unexpectedSourceRows=0"
+    },
+    {
+      "id": "A4-simulation_snapshot_corpu",
+      "description": "Frozen: simulation_snapshot_corpus.jsonl = 60 lines",
+      "status": "PASS",
+      "detail": "actual=60"
+    },
+    {
+      "id": "A4-p0hardreset_historical_re",
+      "description": "Frozen: p0hardreset_historical_replay_corpus.jsonl = 4500 lines",
+      "status": "PASS",
+      "detail": "actual=4500"
+    },
+    {
+      "id": "A4-p1baseline_historical_rep",
+      "description": "Frozen: p1baseline_historical_replay_corpus.jsonl = 9900 lines",
+      "status": "PASS",
+      "detail": "actual=9900"
+    },
+    {
+      "id": "A4-p3active_scoring_historic",
+      "description": "Frozen: p3active_scoring_historical_replay_corpus.jsonl = 4500 lines",
+      "status": "PASS",
+      "detail": "actual=4500"
+    },
+    {
+      "id": "A4-p19active_scoring_pit_rep",
+      "description": "Frozen: p19active_scoring_pit_replay_corpus.jsonl = 4500 lines",
+      "status": "PASS",
+      "detail": "actual=4500"
+    }
+  ],
+  "p24Summary": {
+    "backupStatus": "PASS",
+    "migrationStatus": "PASS",
+    "productionMigrationApplied": true,
+    "backfillStatus": "PASS",
+    "rowsBackfilled": 2143,
+    "postMigrationValidationStatus": "PASS",
+    "rollbackReadinessStatus": "PASS"
+  },
+  "dbSchema": {
+    "releaseDateExists": true,
+    "releaseDateSourceExists": true,
+    "releaseDateConfidenceExists": true,
+    "totalRows": 2143,
+    "nullReleaseDateRows": 0
+  },
+  "frozenCorpora": {
+    "simulation_snapshot_corpus.jsonl": {
+      "expected": 60,
+      "actual": 60,
+      "ok": true
+    },
+    "p0hardreset_historical_replay_corpus.jsonl": {
+      "expected": 4500,
+      "actual": 4500,
+      "ok": true
+    },
+    "p1baseline_historical_replay_corpus.jsonl": {
+      "expected": 9900,
+      "actual": 9900,
+      "ok": true
+    },
+    "p3active_scoring_historical_replay_corpus.jsonl": {
+      "expected": 4500,
+      "actual": 4500,
+      "ok": true
+    },
+    "p19active_scoring_pit_replay_corpus.jsonl": {
+      "expected": 4500,
+      "actual": 4500,
+      "ok": true
+    }
+  },
+  "productionDbWritten": false,
+  "corpusModified": false,
+  "scoringFormulaModified": false
+}

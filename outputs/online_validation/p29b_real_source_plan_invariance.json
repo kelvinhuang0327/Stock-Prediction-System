@@ -1,0 +1,1 @@
+{"phase":"P29B","generatedAt":"2026-05-24T00:00:00Z","classification":"P29B_INVARIANCE_PASS","verdict":"ALL_FROZEN_FILES_UNCHANGED","db":{"match":true},"scoringFiles":{"RuleBasedStockAnalyzer.ts":true,"SignalFusionEngine.ts":true,"ActiveScoringSnapshotBuilder.ts":true},"corpusLineCounts":{"simulation":60,"p0":4500,"p1":9900,"p3":4500,"p19":4499}}

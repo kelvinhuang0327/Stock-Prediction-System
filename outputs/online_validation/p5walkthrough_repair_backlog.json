@@ -1,0 +1,103 @@
+{
+  "generatedAt": "2026-05-11T15:14:15.014Z",
+  "disclaimer": "Engineering repair backlog only. No investment recommendations. No model changes. Descriptive analysis only.",
+  "primaryFocus": "BUCKET_SCHEMA_REVIEW",
+  "priorityCounts": {
+    "P0": 1,
+    "P1": 2,
+    "P2": 2
+  },
+  "totalItems": 5,
+  "items": [
+    {
+      "priority": "P0",
+      "category": "BUCKET_SCHEMA_REVIEW",
+      "symptom": "5 cases have INCONSISTENT score/bucket alignment. 0 are high-score in low bucket, 5 are low-score in high bucket. This may indicate stale bucket assignments or score recalculation not propagating to bucket labels.",
+      "evidenceCount": 5,
+      "exampleCaseIds": [
+        "P5-CASE-004",
+        "P5-CASE-006",
+        "P5-CASE-012",
+        "P5-CASE-040",
+        "P5-CASE-041"
+      ],
+      "recommendedNextPhase": "P6 Bucket Schema Calibration Repair — audit bucket assignment logic, verify score-to-bucket mapping table, check if bucket is assigned at scoring time vs. at a different pipeline stage.",
+      "constraints": [
+        "Do NOT modify alphaScore or recommendationBucket calculation logic",
+        "Do NOT reclassify cases based on realized returns",
+        "Investigate data pipeline ordering only"
+      ],
+      "whyNotFixNow": "Root cause is unknown — inconsistency may be from data pipeline timing or band definition. P6 must identify root cause before any fix."
+    },
+    {
+      "priority": "P1",
+      "category": "SIGNAL_REASON_REVIEW",
+      "symptom": "24 cases have GENERIC reason snapshots, 0 have CONFLICTING signal/reason patterns, 0 have WEAK explainability. Generic reasons (e.g. single-token \"技術偏空\") do not provide enough context to verify signal consistency.",
+      "evidenceCount": 24,
+      "exampleCaseIds": [
+        "P5-CASE-003",
+        "P5-CASE-005",
+        "P5-CASE-008",
+        "P5-CASE-019",
+        "P5-CASE-022"
+      ],
+      "recommendedNextPhase": "P6 Signal / Reason Snapshot Quality Repair — review reasonSnapshot construction in ActiveScoringSnapshotBuilder, add multi-token reason format validation, audit cases where single-token reasons appear.",
+      "constraints": [
+        "Do NOT modify scoring logic or formula weights",
+        "Do NOT modify ActiveScoringSnapshotBuilder scoring behavior",
+        "Only audit reasonSnapshot construction and format, not score calculation"
+      ],
+      "whyNotFixNow": "P5 cannot determine if single-token reasons are correct summaries or truncated output. P6 must trace reasonSnapshot generation path."
+    },
+    {
+      "priority": "P1",
+      "category": "DATA_COVERAGE_REVIEW",
+      "symptom": "15 walkthrough cases are PARTIAL completeness (31.1% of P3 corpus = PARTIAL, all are Neutral bucket). 0 cases have missing realized return. This reflects fundamental data availability constraints for the Neutral bucket tier.",
+      "evidenceCount": 15,
+      "exampleCaseIds": [
+        "P5-CASE-010",
+        "P5-CASE-011",
+        "P5-CASE-013",
+        "P5-CASE-023",
+        "P5-CASE-024"
+      ],
+      "recommendedNextPhase": "P6 Feature Coverage Backfill — investigate why all Neutral bucket rows are PARTIAL, trace which data sources are unavailable, determine if additional data ingestion can improve completeness.",
+      "constraints": [
+        "Do NOT modify P3 corpus",
+        "Do NOT modify scoringCompletenessStatus calculation",
+        "Data backfill must go through normal data pipeline — no PIT violations"
+      ],
+      "whyNotFixNow": "Data coverage gaps require upstream data availability work. Cannot be fixed within the validation layer alone."
+    },
+    {
+      "priority": "P2",
+      "category": "CORPUS_EXPANSION_REVIEW",
+      "symptom": "Current P3 corpus covers 25 symbols × 3 horizons = 4500 rows. 60-day horizon has 0/13 walkthrough cases with missing returns. InsufficientData bucket is absent (all 25 symbols had data). A larger corpus would expose more edge cases and exercise the InsufficientData bucket.",
+      "evidenceCount": 0,
+      "exampleCaseIds": [],
+      "recommendedNextPhase": "P6 or future round — expand symbol universe to ≥50 symbols, include symbols with known data gaps to exercise InsufficientData path, run on 3 non-overlapping historical windows.",
+      "constraints": [
+        "Do NOT modify frozen P0/P1/P3 corpora",
+        "New corpus must pass same PIT and completeness invariants",
+        "Expansion is a separate corpus generation run"
+      ],
+      "whyNotFixNow": "Corpus expansion requires a separate data collection run. Not a P5 deliverable."
+    },
+    {
+      "priority": "P2",
+      "category": "NO_IMMEDIATE_REPAIR",
+      "symptom": "29 cases passed all review dimensions (COMPLETE explainability, CONSISTENT score/bucket, CONSISTENT signal/reason). These cases are representative of expected scoring behavior.",
+      "evidenceCount": 29,
+      "exampleCaseIds": [
+        "P5-CASE-001",
+        "P5-CASE-002",
+        "P5-CASE-007",
+        "P5-CASE-009",
+        "P5-CASE-014"
+      ],
+      "recommendedNextPhase": "Continue to next scheduled audit round. No immediate action required for these cases.",
+      "constraints": [],
+      "whyNotFixNow": "No issues detected. These cases are the calibration baseline."
+    }
+  ]
+}

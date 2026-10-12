@@ -1,0 +1,43 @@
+{
+  "auditId": "p27-waiting-state-ci-guard-proposal",
+  "generatedAt": "2026-05-13T14:44:09.265953+00:00",
+  "purpose": "Prevent future agents from running import/corpus expansion/optimizer when source is not present",
+  "errorsToPrevent": [
+    "import without source files present",
+    "import without dry-run PASS",
+    "import without approval token",
+    "corpus expansion without controlled import complete",
+    "optimizer without corpus expansion authorized",
+    "repeated empty drop-zone scan as primary 24h task",
+    "DB write without token"
+  ],
+  "guardRules": [
+    {
+      "rule": "READ_FREEZE_MARKER",
+      "logic": "Read outputs/online_validation/p26f4_waiting_state_freeze_marker.json",
+      "condition": "if currentState == P26F4_WAITING_FOR_OPERATOR_SOURCE",
+      "action": "block import, corpus expansion, optimizer scripts"
+    },
+    {
+      "rule": "REQUIRE_SOURCE_ARRIVAL_FLAG",
+      "logic": "candidateSourceFiles must be > 0 before source-present gate runs",
+      "condition": "if candidateSourceFiles == 0",
+      "action": "skip source-present gate, log WAITING_FOR_OPERATOR_SOURCE"
+    },
+    {
+      "rule": "REQUIRE_DRY_RUN_PASS",
+      "logic": "dry-run gate must PASS before token is requested",
+      "condition": "if dry-run != PASS",
+      "action": "block token collection, block import"
+    },
+    {
+      "rule": "REQUIRE_EXACT_TOKEN",
+      "logic": "token must exactly match P26F4_APPROVE_HISTORICAL_MONTHLY_REVENUE_IMPORT_ONLY",
+      "condition": "if token missing or incorrect",
+      "action": "block DB write"
+    }
+  ],
+  "proposedTestFile": "src/lib/onlineValidation/__tests__/p27_waiting_state_policy_guard.test.ts",
+  "implementationStatus": "TEST_IMPLEMENTED_THIS_ROUND",
+  "disclaimer": "Observability only. No investment recommendations."
+}

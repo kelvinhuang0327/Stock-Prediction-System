@@ -1,0 +1,93 @@
+{
+  "task": "T-05F_WALK_FORWARD_OBSERVABILITY_RUNNER",
+  "version": "1.0.0",
+  "date": "2026-05-07",
+  "safetyLabels": [
+    "T-05F",
+    "WalkForward Observability Runner",
+    "dry-run only",
+    "safe-run only",
+    "no DB write",
+    "no external API",
+    "no LLM call",
+    "no production overwrite",
+    "no strategy mutation",
+    "no performance claim",
+    "no edge claim"
+  ],
+  "observabilityNote": "T-05F contract only. Not a trading recommendation. Not investment advice. No ROI evidence. No win-rate evidence. No proof of any edge.",
+  "contract": {
+    "taskName": "T-05F_WALK_FORWARD_OBSERVABILITY_RUNNER",
+    "runMode": "DRY_RUN_OBSERVABILITY_ONLY",
+    "sourceModules": [
+      "T-05B: WalkForwardEngine (buildWalkForwardSkeleton)",
+      "T-05C: RegimeContextLoader (loadRegimeContextMap)",
+      "T-05D: TaiwanTradingCalendar (buildTaiwanTradingCalendar)",
+      "T-05E: CandidateDataAdapter (loadCandidateSnapshotsForDate)"
+    ],
+    "exportedFunctions": [
+      "runWalkForwardObservability",
+      "buildWalkForwardRunConfig",
+      "validateWalkForwardRunGuardrails",
+      "summarizeWalkForwardObservabilityRun",
+      "buildWalkForwardRunnerArtifacts"
+    ],
+    "configContract": {
+      "dryRun": "always true (locked)",
+      "safeRun": "always true (locked)",
+      "lookbackDays": "default 500 (T05B_LOOKBACK_DAYS)",
+      "currentDate": "resolved via resolveCurrentDate() — no hardcoded TODAY_CAP",
+      "startDate": "endDate minus lookbackDays if not provided",
+      "endDate": "currentDate if not provided",
+      "maxCandidates": "default 50",
+      "artifactOutputDir": "default outputs/backtest"
+    },
+    "injectionPoints": {
+      "preloadedRegimeContextMap": "Map<string, PersistedRegimeContext> — bypasses DB for tests",
+      "preloadedCandidateSnapshots": "CandidateSnapshot[] — bypasses DB for tests",
+      "regimePrismaClient": "PrismaClientLike — used if no preloaded map",
+      "candidatePrismaClient": "CandidateAdapterPrismaLike — used if no preloaded snapshots",
+      "calendarHolidayOverrides": "string[] — optional holiday overrides for T-05D"
+    },
+    "guardrails": {
+      "dryRunEnabled": "PASS if dryRun === true",
+      "safeRunEnabled": "PASS if safeRun === true",
+      "noDbWrite": "always PASS (structural guarantee)",
+      "noExternalApiCall": "always PASS (structural guarantee)",
+      "noLlmCall": "always PASS (structural guarantee)",
+      "noStrategyMutation": "always PASS (structural guarantee)",
+      "noProductionOverwrite": "always PASS (outputs/backtest and outputs/system_readiness only)",
+      "noForbiddenFieldsAsClaims": "always PASS (output field naming enforced)",
+      "noPerformanceMetricComputation": "always PASS (no forward returns or drawdowns)",
+      "sourceDateLeRebalanceDate": "PASS if candidate data provided, WARN if empty",
+      "tradingCalendarInjected": "always PASS (T-05D used)",
+      "regimeContextReadOnly": "PASS if regime data provided, WARN if empty",
+      "candidateSnapshotsReadOnly": "PASS if candidate data provided, WARN if empty"
+    },
+    "outputFields": {
+      "taskName": "T-05F_WALK_FORWARD_OBSERVABILITY_RUNNER",
+      "runMode": "DRY_RUN_OBSERVABILITY_ONLY",
+      "dateRange": "startDate, endDate, tradingDayCount",
+      "calendarSummary": "T-05D TradingCalendarCoverageSummary",
+      "regimeCoverageSummary": "T-05C RegimeContextCoverageSummary",
+      "candidateCoverageSummary": "T-05E CandidateSnapshotCoverageSummary",
+      "skeletonSummary": "T-05B WalkForwardSkeletonSummary",
+      "guardrailSummary": "WalkForwardRunGuardrailSummary",
+      "observabilitySummary": "WalkForwardObservabilitySummary",
+      "artifactPlan": "string[] paths under outputs/",
+      "readinessStatus": "READY | WARN | BLOCKED"
+    },
+    "forbiddenOutputFields": [
+      "buy", "sell", "signal", "roi", "win_rate", "alpha",
+      "edge", "profit", "recommendation", "outperform",
+      "H001", "H002", "H003", "H004", "H005", "H006",
+      "H007", "H008", "H009", "H010", "H011", "H012"
+    ],
+    "lookbackContract": {
+      "defaultDays": 500,
+      "contractSource": "T05B_LOOKBACK_DAYS",
+      "configurable": true,
+      "hardcodedTodayCap": false
+    }
+  }
+}

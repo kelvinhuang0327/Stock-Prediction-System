@@ -1,0 +1,57 @@
+{
+  "auditId": "P29K-SYNC-PATH-INVENTORY",
+  "capturedAt": "2026-05-20T00:00:00.000Z",
+  "disclaimer": "Structural audit-only. Does not constitute investment advice. No guaranteed profit, guaranteed return, risk-free claims. Results must not be used as buy/sell/hold signals.",
+  "syncFunction": "syncRealRevenue()",
+  "syncFunctionFile": "src/lib/services/syncService.ts",
+  "syncFunctionLine": 298,
+  "upstreamApiFunction": "twseApi.getMonthlyRevenueSummary()",
+  "upstreamApiFile": "src/lib/api/twseApi.ts",
+  "upstreamApiLine": 651,
+  "upstreamApiEndpoint": "/opendata/t187ap05_L",
+  "upstreamApiFields": ["code", "name", "month", "revenue", "yoyGrowth", "momGrowth"],
+  "upstreamProvidesReleaseDate": false,
+  "upstreamProvidesAnnouncementDate": false,
+  "callSites": [
+    "src/app/api/sync/run/route.ts:21",
+    "src/app/api/data/sync/route.ts:55",
+    "src/app/api/cron/daily-sync/route.ts:76",
+    "src/lib/jobs/TaiwanStockJobOrchestrator.ts:88"
+  ],
+  "prismaUpsertCurrentPayload": {
+    "where": "stockId_year_month",
+    "update": ["revenue", "yoyGrowth", "momGrowth"],
+    "create": ["stockId", "year", "month", "revenue", "yoyGrowth", "momGrowth"],
+    "missing": ["releaseDate", "releaseDateSource", "releaseDateConfidence"]
+  },
+  "schemaReleaseDateFields": {
+    "releaseDate": "DateTime? — P17 PIT gate field, NEVER written by sync",
+    "releaseDateSource": "String? — NEVER written by sync",
+    "releaseDateConfidence": "String? — NEVER written by sync"
+  },
+  "repairStrategy": "INFERRED_NEXT_MONTH_10TH",
+  "repairStrategyRationale": "TWSE API does not provide explicit releaseDate or announcementDate. Taiwan regulatory rule: monthly revenue must be released by the 10th of the following month. Using deterministic conservative fallback: releaseDate = next-month-10th (UTC midnight), releaseDateSource = INFERRED_NEXT_MONTH_10TH, releaseDateConfidence = LOW.",
+  "pitSafetyGuarantee": "Next-month-10th is always AFTER the last day of the revenue month. No lookahead possible.",
+  "existingInfrastructure": [
+    {
+      "file": "src/lib/onlineValidation/P26F2MonthlyRevenueReleaseDateInferenceUtils.ts",
+      "function": "inferMonthlyRevenueCandidateReleaseDate(row)",
+      "purpose": "Same NEXT_MONTH_10TH inference logic — dry-run only, dryRunOnly=true, productionWriteAllowed=false"
+    },
+    {
+      "file": "src/lib/onlineValidation/MonthlyRevenueAvailability.ts",
+      "function": "filterMonthlyRevenueAvailableAsOf()",
+      "purpose": "PIT gate reads releaseDate — already handles allowInferredReleaseDate=true fallback"
+    },
+    {
+      "file": "src/lib/onlineValidation/P26FMonthlyRevenueMappingContractUtils.ts",
+      "purpose": "Mapping contract — releaseDate is the sole PIT gate field, entersAlphaScore=false"
+    }
+  ],
+  "repairScope": {
+    "newPolicyFile": "src/lib/onlineValidation/p29k/MonthlyRevenueReleaseDatePolicy.ts",
+    "modifiedSyncFile": "src/lib/services/syncService.ts — syncRealRevenue() only",
+    "forbiddenFiles": ["RuleBasedStockAnalyzer.ts", "SignalFusionEngine.ts", "ActiveScoringSnapshotBuilder.ts", "MarketRegimeEngine.ts"]
+  },
+  "entersAlphaScore": false
+}

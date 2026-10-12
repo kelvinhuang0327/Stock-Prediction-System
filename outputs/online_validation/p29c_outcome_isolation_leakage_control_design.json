@@ -1,0 +1,25 @@
+{
+  "phase": "P29C", "part": "D - Outcome Isolation / Leakage Control Design",
+  "generatedAt": "2026-05-25T00:00:00Z", "paperDesignOnly": true,
+  "outcomeFields": [
+    {"field":"outcomePrice","forbiddenIn":["ActiveScoringSnapshot","factorSnapshot","scoreSnapshot","renderer input","alphaScore calculation"]},
+    {"field":"returnPct","forbiddenIn":["ActiveScoringSnapshot","factorSnapshot","scoreSnapshot","renderer input","alphaScore calculation"]},
+    {"field":"realizedReturnClass","forbiddenIn":["ActiveScoringSnapshot","factorSnapshot","scoreSnapshot","renderer input","alphaScore calculation"]},
+    {"field":"benchmarkReturn","forbiddenIn":["scoring input"],"note":"If used, must be in evaluation artifact only"},
+    {"field":"maxDrawdownAfterAsOf","forbiddenIn":["scoring input"],"note":"Post-asOf metric only"},
+    {"field":"futureVolatility","forbiddenIn":["ALL scoring paths"],"note":"Strictly future-known"}
+  ],
+  "allowedLocation": "post-scoring evaluation artifact only — separate from ActiveScoringSnapshot",
+  "joinTiming": "After: (1) scoring snapshot frozen, (2) asOfDate feature snapshot sealed, (3) PIT registry gate passed",
+  "leakageClassification": {
+    "OUTCOME_LEAKAGE_DETECTED": "Outcome field found in scoring snapshot or feature input",
+    "PIT_JOIN_VIOLATION": "Outcome joined before scoring snapshot was sealed",
+    "SCORING_INPUT_CONTAMINATED": "alphaScore calculation uses outcome-derived data",
+    "SAFE_OBSERVABILITY_ONLY": "No leakage detected; outcome properly isolated"
+  },
+  "existingEvidence": {
+    "RealPriceOutcomeResolver": "Already isolates entry (PIT-safe) from outcome (post-asOf) — reference implementation",
+    "P3/P19_corpus_scan": "P28D sweep confirmed 0 outcomeLeakageCount across 572 sampled rows"
+  },
+  "disclaimer": "Paper design only. Not investment advice."
+}

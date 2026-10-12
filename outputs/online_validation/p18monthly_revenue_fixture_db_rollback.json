@@ -1,0 +1,163 @@
+{
+  "phase": "P18-HARDRESET",
+  "task": "MonthlyRevenue fixture DB rollback validation",
+  "date": "2026-05-12",
+  "validationStatus": "PASS",
+  "passCount": 27,
+  "failCount": 0,
+  "total": 27,
+  "gates": [
+    {
+      "label": "RB-SG1: Fixture DB exists",
+      "status": "PASS"
+    },
+    {
+      "label": "RB-1: Pre-rollback has releaseDate",
+      "status": "PASS"
+    },
+    {
+      "label": "RB-2: Pre-rollback has releaseDateSource",
+      "status": "PASS"
+    },
+    {
+      "label": "RB-3: Pre-rollback has releaseDateConfidence",
+      "status": "PASS"
+    },
+    {
+      "label": "RB-4: Pre-rollback row count >= 6",
+      "status": "PASS"
+    },
+    {
+      "label": "RB-5: Rollback SQL executed without error",
+      "status": "PASS"
+    },
+    {
+      "label": "RB-6: releaseDate removed after rollback",
+      "status": "PASS"
+    },
+    {
+      "label": "RB-7: releaseDateSource removed after rollback",
+      "status": "PASS"
+    },
+    {
+      "label": "RB-8: releaseDateConfidence removed after rollback",
+      "status": "PASS"
+    },
+    {
+      "label": "RB-9-id: Original column 'id' preserved",
+      "status": "PASS"
+    },
+    {
+      "label": "RB-9-stockId: Original column 'stockId' preserved",
+      "status": "PASS"
+    },
+    {
+      "label": "RB-9-year: Original column 'year' preserved",
+      "status": "PASS"
+    },
+    {
+      "label": "RB-9-month: Original column 'month' preserved",
+      "status": "PASS"
+    },
+    {
+      "label": "RB-9-revenue: Original column 'revenue' preserved",
+      "status": "PASS"
+    },
+    {
+      "label": "RB-9-yoyGrowth: Original column 'yoyGrowth' preserved",
+      "status": "PASS"
+    },
+    {
+      "label": "RB-9-momGrowth: Original column 'momGrowth' preserved",
+      "status": "PASS"
+    },
+    {
+      "label": "RB-10: Row count preserved after rollback",
+      "status": "PASS"
+    },
+    {
+      "label": "RB-11: s1 row data preserved (revenue=10000)",
+      "status": "PASS"
+    },
+    {
+      "label": "RB-11b: s1 has no releaseDate field",
+      "status": "PASS"
+    },
+    {
+      "label": "RB-12: s3 row data preserved (revenue=5000)",
+      "status": "PASS"
+    },
+    {
+      "label": "RB-12b: s3 has no releaseDateSource field",
+      "status": "PASS"
+    },
+    {
+      "label": "RB-Safety: rollback affected fixture DB only",
+      "status": "PASS"
+    },
+    {
+      "label": "RB-Safety: productionDbWritten=false",
+      "status": "PASS"
+    },
+    {
+      "label": "RB-Safety: productionApplyAllowed=false",
+      "status": "PASS"
+    },
+    {
+      "label": "RB-13: Post-rollback re-migration restores releaseDate",
+      "status": "PASS"
+    },
+    {
+      "label": "RB-14: Post-rollback re-migration restores releaseDateSource",
+      "status": "PASS"
+    },
+    {
+      "label": "RB-15: Post-rollback re-migration restores releaseDateConfidence",
+      "status": "PASS"
+    }
+  ],
+  "fixtureDbPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/outputs/online_validation/fixture_db/p18_monthly_revenue_fixture.sqlite",
+  "productionApplyAllowed": false,
+  "dryRunOnly": true,
+  "productionDbWritten": false,
+  "preRollbackColumns": [
+    "id",
+    "stockId",
+    "year",
+    "month",
+    "revenue",
+    "yoyGrowth",
+    "momGrowth",
+    "createdAt",
+    "releaseDate",
+    "releaseDateSource",
+    "releaseDateConfidence"
+  ],
+  "postRollbackColumns": [
+    "id",
+    "stockId",
+    "year",
+    "month",
+    "revenue",
+    "yoyGrowth",
+    "momGrowth",
+    "createdAt"
+  ],
+  "reMigratedColumns": [
+    "id",
+    "stockId",
+    "year",
+    "month",
+    "revenue",
+    "yoyGrowth",
+    "momGrowth",
+    "createdAt",
+    "releaseDate",
+    "releaseDateSource",
+    "releaseDateConfidence"
+  ],
+  "rowCountBeforeRollback": 6,
+  "rowCountAfterRollback": 6,
+  "rollbackSql": "-- P18 Rollback: Remove releaseDate PIT gate columns from MonthlyRevenue fixture DB\n-- Does NOT affect production DB.\n-- productionApplyAllowed = false\n\nBEGIN TRANSACTION;\n\n-- Step 1: Create rollback table without PIT gate columns\nCREATE TABLE \"MonthlyRevenue_rollback\" (\n  \"id\" TEXT NOT NULL PRIMARY KEY,\n  \"stockId\" TEXT NOT NULL,\n  \"year\" INTEGER NOT NULL,\n  \"month\" INTEGER NOT NULL,\n  \"revenue\" REAL NOT NULL,\n  \"yoyGrowth\" REAL,\n  \"momGrowth\" REAL,\n  \"createdAt\" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,\n  CONSTRAINT \"MonthlyRevenue_rollback_stockId_year_month_key\" UNIQUE (\"stockId\",\"year\",\"month\")\n);\n\n-- Step 2: Copy data (excluding releaseDate columns)\nINSERT INTO \"MonthlyRevenue_rollback\" (\"id\",\"stockId\",\"year\",\"month\",\"revenue\",\"yoyGrowth\",\"momGrowth\",\"createdAt\")\nSELECT \"id\",\"stockId\",\"year\",\"month\",\"revenue\",\"yoyGrowth\",\"momGrowth\",\"createdAt\"\nFROM \"MonthlyRevenue\";\n\n-- Step 3: Drop migrated table\nDROP TABLE \"MonthlyRevenue\";\n\n-- Step 4: Rename rollback table to original name\nALTER TABLE \"MonthlyRevenue_rollback\" RENAME TO \"MonthlyRevenue\";\n\nCOMMIT;",
+  "disclaimer": "Does not constitute investment advice. Does not compute ROI, profit, alpha, win-rate, edge, or outperformance."
+}

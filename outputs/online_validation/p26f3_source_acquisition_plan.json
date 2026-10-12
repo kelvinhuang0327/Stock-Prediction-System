@@ -1,0 +1,108 @@
+{
+  "phase": "P26F3-HARDRESET",
+  "date": "2026-05-13",
+  "neededPeriods": [
+    "2025-09",
+    "2025-10",
+    "2025-11",
+    "2025-12",
+    "2026-01"
+  ],
+  "neededSymbols": [
+    "0055",
+    "00712",
+    "00738U",
+    "00830",
+    "00891",
+    "00903",
+    "1210",
+    "1308",
+    "1314",
+    "1319",
+    "1326",
+    "1402",
+    "1434",
+    "1513",
+    "1536",
+    "1560",
+    "1598",
+    "1605",
+    "1710",
+    "1717",
+    "1802",
+    "2317",
+    "2330",
+    "2454",
+    "6415"
+  ],
+  "neededSymbolCount": 25,
+  "requiredOfficialSourceFields": [
+    "stockId",
+    "year",
+    "month",
+    "revenue",
+    "releaseDate",
+    "releaseDateSource"
+  ],
+  "localSourceGaps": {
+    "periodsWithNoLocalData": [
+      "2025-09",
+      "2025-10",
+      "2025-11",
+      "2025-12",
+      "2026-01"
+    ],
+    "symbolsWithNoLocalHistoricalData": 25,
+    "reason": "DB seeded with 2026-02/03 data only; no historical sync performed"
+  },
+  "officialSourceMapping": {
+    "source": "TWSE (Taiwan Stock Exchange) / MOPS",
+    "dataType": "Monthly Revenue (月營收)",
+    "publicInfoUrl": "https://www.twse.com.tw (reference only — do not fetch without P26F4 approval)",
+    "releaseSchedule": "Typically released by the 10th of the following month",
+    "releaseDateVerification": "REQUIRES_MANUAL_VERIFICATION — inferred 10th is not official",
+    "externalFetchAllowed": false,
+    "acquisitionRequiresApproval": true
+  },
+  "candidateReleaseDates": {
+    "2025-09": "2025-10-10",
+    "2025-10": "2025-11-10",
+    "2025-11": "2025-12-10",
+    "2025-12": "2026-01-10",
+    "2026-01": "2026-02-10"
+  },
+  "acquisitionSteps": [
+    "1. CTO/manual approval to acquire historical TWSE MonthlyRevenue data",
+    "2. Download TWSE monthly revenue data for 2025-09 to 2026-01 for 25 target symbols",
+    "3. Verify actual releaseDate for each period from official source metadata",
+    "4. Apply Prisma migration: 20260512000000_monthly_revenue_release_date_pit_draft",
+    "5. Import data via P26F4 controlled import approval gate",
+    "6. Re-run P26F2/P26F3 coverage preview with real data",
+    "7. Confirm PIT safety and scoring invariance post-import"
+  ],
+  "suggestedFutureCommands": [
+    "# DO NOT RUN without P26F4 controlled import approval:",
+    "# npx prisma migrate deploy",
+    "# node scripts/run-p26f4-controlled-historical-import.js --approved"
+  ],
+  "dbImportPrerequisites": [
+    "P26F4 controlled import approval gate PASS",
+    "prisma migrate deploy: 20260512000000_monthly_revenue_release_date_pit_draft",
+    "Manual releaseDate verification for each period",
+    "DB backup taken before import",
+    "Scoring invariance baseline captured before import"
+  ],
+  "reviewChecklist": [
+    "releaseDate verified from official TWSE source (not inferred)",
+    "No fabricated revenue data",
+    "PIT safety validated before DB import",
+    "Scoring invariance confirmed: alphaScore/recommendationBucket unchanged",
+    "Frozen corpus (60/4500/9900/4500/4500) unchanged after import"
+  ],
+  "dbWriteAllowed": false,
+  "corpusOverwriteAllowed": false,
+  "scoringChangeAllowed": false,
+  "optimizerAllowed": false,
+  "externalFetchAllowed": false,
+  "status": "SOURCE_ACQUISITION_PLAN_COMPLETE"
+}

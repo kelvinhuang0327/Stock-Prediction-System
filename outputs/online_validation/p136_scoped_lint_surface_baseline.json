@@ -1,0 +1,382 @@
+{
+  "schemaVersion": 1,
+  "taskId": "P136",
+  "generatedAtUtc": "2026-06-01T02:31:56.866Z",
+  "baselineCommit": "a66e424",
+  "sourceLintCapture": "/tmp/p135_lint_full.txt",
+  "scenarios": {
+    "full_repo": {
+      "total": 5686,
+      "errors": 3712,
+      "warnings": 1974,
+      "topRules": [
+        {
+          "rule": "@typescript-eslint/no-require-imports",
+          "count": 2428
+        },
+        {
+          "rule": "@typescript-eslint/no-unused-vars",
+          "count": 1741
+        },
+        {
+          "rule": "@typescript-eslint/no-explicit-any",
+          "count": 1160
+        },
+        {
+          "rule": "@typescript-eslint/no-unused-expressions",
+          "count": 176
+        },
+        {
+          "rule": "(none)",
+          "count": 85
+        },
+        {
+          "rule": "prefer-const",
+          "count": 28
+        },
+        {
+          "rule": "react-hooks/exhaustive-deps",
+          "count": 28
+        },
+        {
+          "rule": "react/no-unescaped-entities",
+          "count": 16
+        },
+        {
+          "rule": "@next/next/no-assign-module-variable",
+          "count": 8
+        },
+        {
+          "rule": "@typescript-eslint/ban-ts-comment",
+          "count": 8
+        }
+      ],
+      "topDirs": [
+        {
+          "directory": ".claude/worktrees",
+          "count": 4265
+        },
+        {
+          "directory": "src/lib",
+          "count": 534
+        },
+        {
+          "directory": "src/components",
+          "count": 102
+        },
+        {
+          "directory": "src/app",
+          "count": 43
+        },
+        {
+          "directory": "scripts/validate-p22-artifacts.js",
+          "count": 32
+        },
+        {
+          "directory": "scripts/generate-p14-outcome-backfill-rehearsal-artifacts.js",
+          "count": 17
+        },
+        {
+          "directory": "tests/agent-orchestrator",
+          "count": 15
+        },
+        {
+          "directory": "scripts/run-p23-preflight.js",
+          "count": 12
+        },
+        {
+          "directory": "scripts/generate-p12-multi-date-daily-corpus-append-artifacts.js",
+          "count": 11
+        },
+        {
+          "directory": "scripts/decide-p20-production-migration-readiness.js",
+          "count": 9
+        }
+      ]
+    },
+    "exclude_claude_worktrees": {
+      "total": 1421,
+      "errors": 928,
+      "warnings": 493,
+      "topRules": [
+        {
+          "rule": "@typescript-eslint/no-require-imports",
+          "count": 607
+        },
+        {
+          "rule": "@typescript-eslint/no-unused-vars",
+          "count": 434
+        },
+        {
+          "rule": "@typescript-eslint/no-explicit-any",
+          "count": 290
+        },
+        {
+          "rule": "@typescript-eslint/no-unused-expressions",
+          "count": 44
+        },
+        {
+          "rule": "(none)",
+          "count": 22
+        },
+        {
+          "rule": "prefer-const",
+          "count": 7
+        },
+        {
+          "rule": "react-hooks/exhaustive-deps",
+          "count": 7
+        },
+        {
+          "rule": "react/no-unescaped-entities",
+          "count": 4
+        },
+        {
+          "rule": "@next/next/no-assign-module-variable",
+          "count": 2
+        },
+        {
+          "rule": "@typescript-eslint/ban-ts-comment",
+          "count": 2
+        }
+      ],
+      "topDirs": [
+        {
+          "directory": "src/lib",
+          "count": 534
+        },
+        {
+          "directory": "src/components",
+          "count": 102
+        },
+        {
+          "directory": "src/app",
+          "count": 43
+        },
+        {
+          "directory": "scripts/validate-p22-artifacts.js",
+          "count": 32
+        },
+        {
+          "directory": "scripts/generate-p14-outcome-backfill-rehearsal-artifacts.js",
+          "count": 17
+        },
+        {
+          "directory": "tests/agent-orchestrator",
+          "count": 15
+        },
+        {
+          "directory": "scripts/run-p23-preflight.js",
+          "count": 12
+        },
+        {
+          "directory": "scripts/generate-p12-multi-date-daily-corpus-append-artifacts.js",
+          "count": 11
+        },
+        {
+          "directory": "scripts/decide-p20-production-migration-readiness.js",
+          "count": 9
+        },
+        {
+          "directory": "scripts/run-p25-active-scoring-smoke-after-migration.js",
+          "count": 9
+        }
+      ]
+    },
+    "exclude_non_target_surfaces": {
+      "total": 1412,
+      "errors": 920,
+      "warnings": 492,
+      "topRules": [
+        {
+          "rule": "@typescript-eslint/no-require-imports",
+          "count": 599
+        },
+        {
+          "rule": "@typescript-eslint/no-unused-vars",
+          "count": 434
+        },
+        {
+          "rule": "@typescript-eslint/no-explicit-any",
+          "count": 290
+        },
+        {
+          "rule": "@typescript-eslint/no-unused-expressions",
+          "count": 44
+        },
+        {
+          "rule": "(none)",
+          "count": 21
+        },
+        {
+          "rule": "prefer-const",
+          "count": 7
+        },
+        {
+          "rule": "react-hooks/exhaustive-deps",
+          "count": 7
+        },
+        {
+          "rule": "react/no-unescaped-entities",
+          "count": 4
+        },
+        {
+          "rule": "@next/next/no-assign-module-variable",
+          "count": 2
+        },
+        {
+          "rule": "@typescript-eslint/ban-ts-comment",
+          "count": 2
+        }
+      ],
+      "topDirs": [
+        {
+          "directory": "src/lib",
+          "count": 534
+        },
+        {
+          "directory": "src/components",
+          "count": 102
+        },
+        {
+          "directory": "src/app",
+          "count": 43
+        },
+        {
+          "directory": "scripts/validate-p22-artifacts.js",
+          "count": 32
+        },
+        {
+          "directory": "scripts/generate-p14-outcome-backfill-rehearsal-artifacts.js",
+          "count": 17
+        },
+        {
+          "directory": "tests/agent-orchestrator",
+          "count": 15
+        },
+        {
+          "directory": "scripts/run-p23-preflight.js",
+          "count": 12
+        },
+        {
+          "directory": "scripts/generate-p12-multi-date-daily-corpus-append-artifacts.js",
+          "count": 11
+        },
+        {
+          "directory": "scripts/decide-p20-production-migration-readiness.js",
+          "count": 9
+        },
+        {
+          "directory": "scripts/run-p25-active-scoring-smoke-after-migration.js",
+          "count": 9
+        }
+      ]
+    },
+    "active_source_and_tests_only": {
+      "total": 1409,
+      "errors": 918,
+      "warnings": 491,
+      "topRules": [
+        {
+          "rule": "@typescript-eslint/no-require-imports",
+          "count": 597
+        },
+        {
+          "rule": "@typescript-eslint/no-unused-vars",
+          "count": 434
+        },
+        {
+          "rule": "@typescript-eslint/no-explicit-any",
+          "count": 290
+        },
+        {
+          "rule": "@typescript-eslint/no-unused-expressions",
+          "count": 44
+        },
+        {
+          "rule": "(none)",
+          "count": 21
+        },
+        {
+          "rule": "prefer-const",
+          "count": 7
+        },
+        {
+          "rule": "react-hooks/exhaustive-deps",
+          "count": 7
+        },
+        {
+          "rule": "react/no-unescaped-entities",
+          "count": 4
+        },
+        {
+          "rule": "@next/next/no-assign-module-variable",
+          "count": 2
+        },
+        {
+          "rule": "@typescript-eslint/ban-ts-comment",
+          "count": 2
+        }
+      ],
+      "topDirs": [
+        {
+          "directory": "src/lib",
+          "count": 534
+        },
+        {
+          "directory": "src/components",
+          "count": 102
+        },
+        {
+          "directory": "src/app",
+          "count": 43
+        },
+        {
+          "directory": "scripts/validate-p22-artifacts.js",
+          "count": 32
+        },
+        {
+          "directory": "scripts/generate-p14-outcome-backfill-rehearsal-artifacts.js",
+          "count": 17
+        },
+        {
+          "directory": "tests/agent-orchestrator",
+          "count": 15
+        },
+        {
+          "directory": "scripts/run-p23-preflight.js",
+          "count": 12
+        },
+        {
+          "directory": "scripts/generate-p12-multi-date-daily-corpus-append-artifacts.js",
+          "count": 11
+        },
+        {
+          "directory": "scripts/decide-p20-production-migration-readiness.js",
+          "count": 9
+        },
+        {
+          "directory": "scripts/run-p25-active-scoring-smoke-after-migration.js",
+          "count": 9
+        }
+      ]
+    }
+  },
+  "impact": {
+    "removedByExcludeWorktrees": 4265,
+    "removedByExcludeNonTargetSurfaces": 4274,
+    "removedByActiveSourceAndTestsOnly": 4277
+  },
+  "ciLintGateAssessment": {
+    "currentWorkflowLintCommand": "npm run lint",
+    "currentScope": "repository root (all files ESLint traverses)",
+    "includesWorktreeSurface": true,
+    "recommendation": "Narrow CI lint target to active source/test surfaces and explicitly ignore non-target archival/worktree outputs.",
+    "proposedScopedLintCommand": "npx eslint src tests scripts e2e *.js *.ts --ignore-pattern '.claude/worktrees/**' --ignore-pattern 'archive/**' --ignore-pattern '00-Plan/**' --ignore-pattern '00-StockPlan/**' --ignore-pattern 'outputs/**' --ignore-pattern 'coverage/**' --ignore-pattern 'playwright-report/**' --ignore-pattern 'test-results/**' --ignore-pattern 'runtime/**' --ignore-pattern 'logs/**'"
+  },
+  "safeTrancheCandidate": {
+    "status": "none",
+    "reason": "This phase is scope attribution and gate alignment only; no new tranche selected without follow-up governance decision."
+  },
+  "classification": "P136_SCOPED_LINT_BASELINE_CREATED_NO_CODE_CHANGE"
+}

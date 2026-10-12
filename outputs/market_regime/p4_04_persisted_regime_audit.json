@@ -1,0 +1,68 @@
+{
+  "audit_id": "P4_04_PERSISTED_REGIME_AUDIT",
+  "audit_date": "2026-05-06",
+  "generated_at": "2026-05-06T14:58:03.508851",
+  "row_count": 300,
+  "min_date": "2025-01-15",
+  "max_date": "2026-05-06",
+  "distinct_date_count": 300,
+  "duplicate_date_source_version_count": 0,
+  "label_distribution": {
+    "BEAR": 4,
+    "BULL": 126,
+    "HIGH_VOLATILITY": 63,
+    "SIDEWAYS": 107
+  },
+  "confidence_min": 0.3846,
+  "confidence_max": 1.0,
+  "confidence_avg": 0.8167,
+  "confidence_median": 0.8462,
+  "confidence_by_label": {
+    "BEAR": {
+      "min": 0.8462,
+      "max": 0.8462,
+      "avg": 0.8462
+    },
+    "BULL": {
+      "min": 0.8462,
+      "max": 1.0,
+      "avg": 0.9072
+    },
+    "HIGH_VOLATILITY": {
+      "min": 1.0,
+      "max": 1.0,
+      "avg": 1.0
+    },
+    "SIDEWAYS": {
+      "min": 0.3846,
+      "max": 0.6923,
+      "avg": 0.601
+    }
+  },
+  "source_distribution": {
+    "P4_03_MARKET_REGIME_CLASSIFIER": 300
+  },
+  "version_distribution": {
+    "p4_03b_v1": 300
+  },
+  "future_date_count": 0,
+  "invalid_date_count": 0,
+  "invalid_label_count": 0,
+  "invalid_confidence_count": 0,
+  "null_critical_field_count": {
+    "date": 0,
+    "regimeLabel": 0,
+    "confidence": 0
+  },
+  "evidenceJson_parse_ok": 300,
+  "missingFeaturesJson_parse_ok": 300,
+  "pitSafetyJson_parse_ok": 300,
+  "latest_persisted_regime": {
+    "date": "2026-05-06",
+    "label": "BULL",
+    "confidence": 1.0,
+    "taiex_close": 41138.85
+  },
+  "matches_expected_sample_count": true,
+  "verdict": "PASS"
+}

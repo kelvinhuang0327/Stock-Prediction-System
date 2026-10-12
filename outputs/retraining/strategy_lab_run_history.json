@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "strategy_lab.run_history.1",
+  "note": "Execution log of P193 refit runs. executedAt is wall-clock and intentionally non-deterministic; metrics artifacts stay deterministic.",
+  "runs": [
+    {
+      "executedAt": "2026-07-02T08:08:56.890Z",
+      "runId": "p193-real-ohlcv-2d1aaee13c11-2024-07-18",
+      "rows": 7709,
+      "dataEndDate": "2026-07-01",
+      "trainSampleCount": 5279,
+      "holdoutSampleCount": 2280,
+      "holdoutAccuracy": 0.54692982,
+      "majorityBaselineAccuracy": 0.55701754,
+      "deltaVsBaseline": -0.01008772,
+      "finalClassification": "P194_TWSTOCK_EXPORT_AND_P193_REFIT_COMPLETE_NEGATIVE_HISTORICAL_EVIDENCE"
+    },
+    {
+      "executedAt": "2026-07-02T08:14:19.861Z",
+      "runId": "p193-real-ohlcv-2d1aaee13c11-2024-07-18",
+      "rows": 7709,
+      "dataEndDate": "2026-07-01",
+      "trainSampleCount": 5279,
+      "holdoutSampleCount": 2280,
+      "holdoutAccuracy": 0.54692982,
+      "majorityBaselineAccuracy": 0.55701754,
+      "deltaVsBaseline": -0.01008772,
+      "finalClassification": "P194_TWSTOCK_EXPORT_AND_P193_REFIT_COMPLETE_NEGATIVE_HISTORICAL_EVIDENCE"
+    },
+    {
+      "executedAt": "2026-07-02T08:38:53.673Z",
+      "runId": "p193-real-ohlcv-2d1aaee13c11-2024-07-18",
+      "rows": 7709,
+      "dataEndDate": "2026-07-01",
+      "trainSampleCount": 5279,
+      "holdoutSampleCount": 2280,
+      "holdoutAccuracy": 0.54692982,
+      "majorityBaselineAccuracy": 0.55701754,
+      "deltaVsBaseline": -0.01008772,
+      "finalClassification": "P194_TWSTOCK_EXPORT_AND_P193_REFIT_COMPLETE_NEGATIVE_HISTORICAL_EVIDENCE"
+    }
+  ]
+}

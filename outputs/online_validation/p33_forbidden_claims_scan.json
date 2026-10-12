@@ -1,0 +1,128 @@
+{
+  "phase": "P33",
+  "capturedAt": "2026-05-21T00:00:00.000Z",
+  "mode": "forbidden-claims-scan",
+  "scanTarget": "outputs/online_validation/p33_*",
+  "paperOnly": true,
+  "dryRun": true,
+  "entersAlphaScore": false,
+  "notInvestmentRecommendation": true,
+
+  "grepPatterns": [
+    "ROI", "win-rate", "win rate", "winRate", "alpha[^S]",
+    "buySignal", "sellSignal", "holdSignal", "guaranteed", "predictedReturn",
+    "investment recommendation", "買進", "賣出", "買入",
+    "outperform", "beat the market", "profit guarantee"
+  ],
+
+  "totalMatchCount": 14,
+  "actionableMatches": 0,
+  "cleanStatus": "CLEAN",
+
+  "matches": [
+    {
+      "file": "p33_financial_report_source_present_scan.json",
+      "pattern": "investment recommendation",
+      "matchType": "BENIGN_PROHIBITION_REFERENCE",
+      "context": "disclaimer — 'Results must not be used as buy/sell/hold signals or investment recommendations.'",
+      "verdict": "BENIGN"
+    },
+    {
+      "file": "p33_financial_report_source_present_scan.md",
+      "pattern": "investment recommendation",
+      "matchType": "BENIGN_PROHIBITION_REFERENCE",
+      "context": "disclaimer — identical to JSON",
+      "verdict": "BENIGN"
+    },
+    {
+      "file": "p33_news_event_source_present_scan.json",
+      "pattern": "investment recommendation",
+      "matchType": "BENIGN_PROHIBITION_REFERENCE",
+      "context": "disclaimer",
+      "verdict": "BENIGN"
+    },
+    {
+      "file": "p33_news_event_source_present_scan.md",
+      "pattern": "investment recommendation",
+      "matchType": "BENIGN_PROHIBITION_REFERENCE",
+      "context": "disclaimer",
+      "verdict": "BENIGN"
+    },
+    {
+      "file": "p33_source_present_gate_summary.json",
+      "pattern": "investment recommendation",
+      "matchType": "BENIGN_PROHIBITION_REFERENCE",
+      "context": "disclaimer",
+      "verdict": "BENIGN"
+    },
+    {
+      "file": "p33_source_present_gate_summary.md",
+      "pattern": "investment recommendation",
+      "matchType": "BENIGN_PROHIBITION_REFERENCE",
+      "context": "disclaimer",
+      "verdict": "BENIGN"
+    },
+    {
+      "file": "p33_spec_conformance.json",
+      "pattern": "winRate",
+      "matchType": "BENIGN_EXCLUSION_DOCUMENTATION",
+      "context": "intentionalExclusions table — documenting that winRate is forbidden",
+      "verdict": "BENIGN"
+    },
+    {
+      "file": "p33_spec_conformance.json",
+      "pattern": "buySignal",
+      "matchType": "BENIGN_EXCLUSION_DOCUMENTATION",
+      "context": "intentionalExclusions table",
+      "verdict": "BENIGN"
+    },
+    {
+      "file": "p33_spec_conformance.json",
+      "pattern": "sellSignal",
+      "matchType": "BENIGN_EXCLUSION_DOCUMENTATION",
+      "context": "intentionalExclusions table",
+      "verdict": "BENIGN"
+    },
+    {
+      "file": "p33_spec_conformance.json",
+      "pattern": "holdSignal",
+      "matchType": "BENIGN_EXCLUSION_DOCUMENTATION",
+      "context": "intentionalExclusions table",
+      "verdict": "BENIGN"
+    },
+    {
+      "file": "p33_spec_conformance.json",
+      "pattern": "outperform",
+      "matchType": "BENIGN_EXCLUSION_DOCUMENTATION",
+      "context": "intentionalExclusions table",
+      "verdict": "BENIGN"
+    },
+    {
+      "file": "p33_spec_conformance.json",
+      "pattern": "guaranteed",
+      "matchType": "BENIGN_EXCLUSION_DOCUMENTATION",
+      "context": "intentionalExclusions table",
+      "verdict": "BENIGN"
+    },
+    {
+      "file": "p33_spec_conformance.md",
+      "pattern": "multiple forbidden term docs",
+      "matchType": "BENIGN_EXCLUSION_DOCUMENTATION",
+      "context": "Intentional Exclusions table in MD spec conformance report",
+      "verdict": "BENIGN"
+    },
+    {
+      "file": "p33_spec_conformance.json",
+      "pattern": "predictedReturn",
+      "matchType": "BENIGN_EXCLUSION_DOCUMENTATION",
+      "context": "intentionalExclusions table",
+      "verdict": "BENIGN"
+    }
+  ],
+
+  "scanResult": "CLEAN",
+  "forbiddenClaimsFound": false,
+  "overallClassification": "P33_FORBIDDEN_CLAIMS_SCAN_CLEAN",
+
+  "disclaimer": "Forbidden claims governance scan result only. No investment claims present."
+}

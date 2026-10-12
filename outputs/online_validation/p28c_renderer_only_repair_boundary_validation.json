@@ -1,0 +1,25 @@
+{
+  "phase": "P28C",
+  "part": "I",
+  "label": "SAFETY_BOUNDARY_VALIDATION",
+  "result": "PASS",
+  "rendererFilesModified": [
+    "src/lib/onlineValidation/P26ACorpusReasonRenderer.ts",
+    "src/lib/onlineValidation/P26ACorpusRowAdapter.ts",
+    "src/lib/onlineValidation/P26AReasonFactorEnrichmentUtils.ts",
+    "src/lib/onlineValidation/P5WalkthroughReviewUtils.ts"
+  ],
+  "frozenFilesModified": [],
+  "corpusFilesModified": [],
+  "dbFilesModified": [],
+  "scoringFilesModified": [],
+  "testFilesCreated": [
+    "src/lib/onlineValidation/__tests__/p28c_renderer_only_repair.test.ts",
+    "src/lib/onlineValidation/__tests__/p28c_9case_before_after_generator.test.ts"
+  ],
+  "gitDiffFrozenFilesEmpty": true,
+  "noDBWrites": true,
+  "noAlphaScoreChange": true,
+  "noBucketChange": true,
+  "allChangesRendererOnly": true
+}

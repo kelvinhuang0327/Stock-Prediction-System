@@ -1,0 +1,263 @@
+{
+  "inventoryId": "p32prep_artifact_inventory",
+  "capturedAt": "2026-05-21T00:00:00.000Z",
+  "scanRoot": "outputs/online_validation/",
+  "scopedPhases": ["P29I", "P29G", "P30", "P31"],
+  "disclaimer": "Design-only artifact inventory. Does not constitute investment advice. No profit, return, or investment performance claims are made.",
+
+  "artifacts": [
+    {
+      "filename": "p29g_dry_run_sample_output.json",
+      "phase": "P29G",
+      "topLevelKeys": ["output"],
+      "nestedOutputKeys": [
+        "runId", "asOfDate", "simulationMode", "contractVersion", "candidateId",
+        "sourceFeatureSet", "sourceFeaturePitStatus", "inputSnapshotRef", "outputRef",
+        "leakageGateStatus", "scoringMutation", "corpusMutation", "optimizerExecuted",
+        "realBacktestExecuted", "generatedAt", "warnings", "notInvestmentRecommendation",
+        "scaffoldNotes", "p29gContractVersion", "sourceClassifications"
+      ],
+      "artifactType": "dry-run-sample",
+      "goldenFixtureCandidate": true,
+      "notes": "Paper-only scaffold dry-run output with full source classification list; structure is stable post-P29G."
+    },
+    {
+      "filename": "p29g_invariance_baseline.json",
+      "phase": "P29G",
+      "topLevelKeys": ["phase", "capturedAt", "invariants"],
+      "artifactType": "other",
+      "goldenFixtureCandidate": false,
+      "notes": "Invariance assertions for the P29G dry-run runner; governance meta-artifact."
+    },
+    {
+      "filename": "p29g_test_baseline.json",
+      "phase": "P29G",
+      "topLevelKeys": ["phase", "capturedAt", "totalTests", "passed", "failed", "result", "testGroups", "fullSuiteBaseline"],
+      "artifactType": "other",
+      "goldenFixtureCandidate": false,
+      "notes": "Test suite baseline snapshot for P29G; stable unless test count changes."
+    },
+    {
+      "filename": "p29g_preflight_scaffold_inventory.json",
+      "phase": "P29G",
+      "topLevelKeys": ["phase", "capturedAt", "scaffoldFiles", "preflight"],
+      "artifactType": "other",
+      "goldenFixtureCandidate": false,
+      "notes": "File inventory preflight for P29G scaffold; structural meta-artifact."
+    },
+    {
+      "filename": "p29i_pit_audit_scan.json",
+      "phase": "P29I",
+      "topLevelKeys": [
+        "phase", "scannerVersion", "capturedAt", "disclaimer",
+        "overallResult", "allowedAlphaScoreSources", "blockedSources", "sourceOutputs"
+      ],
+      "artifactType": "pit-audit",
+      "goldenFixtureCandidate": true,
+      "notes": "Full PIT audit scan with PSR-01..15 rule checks per source (Quote, Regime, Chip). Stable at HEAD a6fb753."
+    },
+    {
+      "filename": "p29i_source_path_inventory.json",
+      "phase": "P29I",
+      "topLevelKeys": ["phase", "capturedAt", "sources"],
+      "artifactType": "source-gate",
+      "goldenFixtureCandidate": true,
+      "notes": "Maps each source (Quote, Regime, Chip, MonthlyRevenue, FinancialReport, NewsEvent) to DB path, gate status, and audit conclusion."
+    },
+    {
+      "filename": "p29i_preflight_mainline_status.json",
+      "phase": "P29I",
+      "topLevelKeys": [
+        "phase", "capturedAt", "gitHead", "currentBranch", "branchCheck",
+        "lastCommits", "localBranches", "runtimeDirtyFiles", "runtimeDirtyClassification",
+        "preconditions", "preflight"
+      ],
+      "artifactType": "other",
+      "goldenFixtureCandidate": false,
+      "notes": "Git topology snapshot at P29I start; ephemeral HEAD-specific data."
+    },
+    {
+      "filename": "p29i_test_baseline.json",
+      "phase": "P29I",
+      "topLevelKeys": [
+        "phase", "capturedAt", "testFile", "testSuite", "testCommand",
+        "totalTests", "passed", "failed", "result", "testGroups",
+        "regressionSuites", "fullSuiteBaseline", "baselineChange"
+      ],
+      "artifactType": "pit-audit",
+      "goldenFixtureCandidate": false,
+      "notes": "Test suite snapshot at P29I; 33/33 new tests; 3348 total. Not a fixture candidate because suite size drifts."
+    },
+    {
+      "filename": "p29i_forbidden_claims_scan.json",
+      "phase": "P29I",
+      "topLevelKeys": [
+        "phase", "capturedAt", "scanScope", "filesScanned",
+        "forbiddenTermGroups", "violations", "falsePositivesResolved", "result"
+      ],
+      "artifactType": "other",
+      "goldenFixtureCandidate": false,
+      "notes": "Forbidden-claims governance scan; CLEAN_NO_VIOLATIONS. Not a fixture target — depends on code files scanned."
+    },
+    {
+      "filename": "p29i_pit_safety_rules.md",
+      "phase": "P29I",
+      "topLevelKeys": ["(markdown — PSR-01..15 table, forbidden field pattern groups)"],
+      "artifactType": "pit-audit",
+      "goldenFixtureCandidate": false,
+      "notes": "Markdown reference for PIT Safety Rules; human-readable companion to PitSafetyRules.ts."
+    },
+    {
+      "filename": "p30_chip_schema_migration_readiness.json",
+      "phase": "P30",
+      "topLevelKeys": [
+        "phase", "capturedAt", "schemaModel", "hadAvailableAtBefore", "availableAtAddedInP30",
+        "migrationArtifactCreated", "migrationFile", "migrationAppliedToDevDb",
+        "migrationAppliedToProdDb", "schemaChangeType", "breakingChange", "indexAdded",
+        "lagWarningMaintained", "canClaimChipLagConfirmed", "prodLogsRequired",
+        "entersAlphaScore", "classification", "disclaimer"
+      ],
+      "artifactType": "source-gate",
+      "goldenFixtureCandidate": false,
+      "notes": "Chip availableAt schema migration gate. Migration not applied; awaiting explicit user authorization. Stable structure but migrationApplied will change after authorization."
+    },
+    {
+      "filename": "p30_monthly_revenue_backfill_dry_run.json",
+      "phase": "P30",
+      "topLevelKeys": [
+        "phase", "capturedAt", "dryRun", "authorizationPhrase", "authorizationReceived",
+        "gate", "totalNullRows", "wouldUpdateRows", "safeToApply", "applyCommand",
+        "applyNote", "executionNote", "dbQueryMethod", "tsNodeCompileError",
+        "totalMonthlyRevenueRows", "entersAlphaScore", "disclaimer"
+      ],
+      "artifactType": "dry-run-sample",
+      "goldenFixtureCandidate": false,
+      "notes": "Backfill dry-run with 0 null rows found; WAITING_FOR_USER_AUTHORIZATION gate. Not a fixture target — authorization state is ephemeral."
+    },
+    {
+      "filename": "p30_reaudit_result.json",
+      "phase": "P30",
+      "topLevelKeys": [
+        "phase", "capturedAt", "chipAvailableAt", "monthlyRevenueBackfill",
+        "tests", "finalClassification", "entersAlphaScore", "disclaimer"
+      ],
+      "artifactType": "pit-audit",
+      "goldenFixtureCandidate": false,
+      "notes": "Combined reaudit covering Chip schema and MonthlyRevenue backfill. Reflects P30_CHIP_SCHEMA_READY_BACKFILL_WAITING_FOR_AUTH. Not a stable fixture due to pending authorization."
+    },
+    {
+      "filename": "p30_preflight_mainline_status.json",
+      "phase": "P30",
+      "topLevelKeys": [
+        "phase", "capturedAt", "repo", "branch", "headCommit", "detachedHead",
+        "canonicalRepoMatch", "canonicalBranchMatch", "dirtyFiles", "stagedFiles",
+        "preflightStatus", "stopConditions"
+      ],
+      "artifactType": "other",
+      "goldenFixtureCandidate": false,
+      "notes": "Git topology at P30 start; HEAD-specific."
+    },
+    {
+      "filename": "p30_forbidden_claims_scan.json",
+      "phase": "P30",
+      "topLevelKeys": ["phase", "capturedAt", "scanTargets", "forbiddenTerms", "findings"],
+      "artifactType": "other",
+      "goldenFixtureCandidate": false,
+      "notes": "Governance scan with BENIGN verdicts on prohibited terms found in prohibition contexts."
+    },
+    {
+      "filename": "p30_test_baseline.json",
+      "phase": "P30",
+      "topLevelKeys": ["phase", "capturedAt", "p30NewTests", "p29lRegression", "fullSuite", "finalClassification"],
+      "artifactType": "other",
+      "goldenFixtureCandidate": false,
+      "notes": "Test baseline at P30 end; 49 new + regression passes."
+    },
+    {
+      "filename": "p31_monthly_revenue_dry_run_sample.json",
+      "phase": "P31",
+      "topLevelKeys": [
+        "phase", "capturedAt", "mode", "paperOnly", "dryRun", "entersAlphaScore",
+        "notInvestmentRecommendation", "rowCount", "releaseDateCoverage",
+        "releaseDateSourceCoverage", "releaseDateConfidenceCoverage",
+        "blockedRows", "dryRunStatus", "overallClassification", "auditConclusion", "disclaimer"
+      ],
+      "artifactType": "dry-run-sample",
+      "goldenFixtureCandidate": true,
+      "notes": "Flat, compact dry-run summary: 2143/2143 ready, 0 blocked, 100% coverage. Ideal fixture anchor for P32 output contract."
+    },
+    {
+      "filename": "p31_monthly_revenue_dry_run_gate_scan.json",
+      "phase": "P31",
+      "topLevelKeys": [
+        "phase", "capturedAt", "source", "dbQueryMethod", "dbQuery",
+        "totalRows", "withReleaseDate", "withReleaseDateSource", "withReleaseDateConfidence",
+        "coveragePct", "readyRows", "blockedRows", "overallClassification",
+        "policy", "entersAlphaScore", "paperOnly", "dryRun", "disclaimer"
+      ],
+      "artifactType": "dry-run-sample",
+      "goldenFixtureCandidate": true,
+      "notes": "DB-level gate scan companion to dry_run_sample. Records SQL query and per-field coverage counts. Stable at 2143 rows."
+    },
+    {
+      "filename": "p31_monthly_revenue_artifact_review.json",
+      "phase": "P31",
+      "topLevelKeys": [
+        "phase", "capturedAt", "artifactChain", "policyInEffect",
+        "releaseDateSource", "releaseDateConfidence", "entersAlphaScore", "disclaimer"
+      ],
+      "artifactType": "other",
+      "goldenFixtureCandidate": false,
+      "notes": "Provenance chain review from P29K through P31. Narrative; not a fixture target."
+    },
+    {
+      "filename": "p31_preflight_mainline_status.json",
+      "phase": "P31",
+      "topLevelKeys": [
+        "phase", "capturedAt", "repo", "branch", "headCommit", "detachedHead",
+        "canonicalRepoMatch", "canonicalBranchMatch", "stagedFiles", "preflightStatus",
+        "stopConditions", "priorState", "monthlyRevenueCoverage"
+      ],
+      "artifactType": "other",
+      "goldenFixtureCandidate": false,
+      "notes": "Git topology + coverage snapshot at P31 start. HEAD-specific."
+    },
+    {
+      "filename": "p31_forbidden_claims_scan.json",
+      "phase": "P31",
+      "topLevelKeys": ["phase", "capturedAt", "scanTargets", "forbiddenTerms", "findings", "result"],
+      "artifactType": "other",
+      "goldenFixtureCandidate": false,
+      "notes": "Governance scan for P31 files; expected CLEAN."
+    },
+    {
+      "filename": "p31_test_baseline.json",
+      "phase": "P31",
+      "topLevelKeys": [
+        "phase", "capturedAt", "p31NewTests", "p30Regression", "p29lRegression",
+        "p29kRegression", "fullSuite", "preExistingFailures", "forbiddenDiff", "newFilesCreated"
+      ],
+      "artifactType": "other",
+      "goldenFixtureCandidate": false,
+      "notes": "Test baseline at P31 end; 64 new + regression passes; 3697/3701."
+    }
+  ],
+
+  "summary": {
+    "totalArtifactsScanned": 22,
+    "byPhase": {
+      "P29G": 4,
+      "P29I": 6,
+      "P30": 6,
+      "P31": 6
+    },
+    "byType": {
+      "source-gate": 3,
+      "dry-run-sample": 5,
+      "pit-audit": 4,
+      "other": 10
+    },
+    "goldenFixtureCandidates": 5,
+    "nonCandidates": 17
+  }
+}

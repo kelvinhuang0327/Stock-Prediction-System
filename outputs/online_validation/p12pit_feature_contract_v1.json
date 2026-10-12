@@ -1,0 +1,107 @@
+{
+  "contractVersion": "p12-pit-feature-contract-v1",
+  "generatedAt": "2026-05-13T00:00:00.000Z",
+  "supersedes": "p12-pit-feature-contract-v0",
+  "disclaimer": "PIT feature contract v1. No investment recommendations. Research only.",
+  "featureSources": [
+    {
+      "sourceName": "StockQuote",
+      "pitStatus": "ALREADY_PIT_GATED",
+      "pitRiskLevel": "LOW",
+      "asOfGateRule": "WHERE date <= asOfDate (YYYYMMDD string, lexicographic)",
+      "gateField": "date",
+      "entersAlphaScore": true,
+      "entersReasonOrFactorSnapshot": true,
+      "activeSnapshotFields": [
+        "technicalScore",
+        "scoreSnapshot.technicalScore",
+        "factorSnapshot[MA 趨勢]",
+        "factorSnapshot[RSI(14)]",
+        "factorSnapshot[MACD]",
+        "factorSnapshot[近 20 日動能]",
+        "factorSnapshot[量能變化]",
+        "factorSnapshot[波動率]"
+      ]
+    },
+    {
+      "sourceName": "MarketRegime",
+      "pitStatus": "ALREADY_PIT_GATED",
+      "pitRiskLevel": "LOW",
+      "asOfGateRule": "detectRegime(asOf) using TAIEX quotes up to asOfDate only",
+      "gateField": "asOf param",
+      "entersAlphaScore": true,
+      "entersReasonOrFactorSnapshot": true,
+      "activeSnapshotFields": [
+        "scoreSnapshot.marketAdjustment",
+        "factorSnapshot[Market Regime]",
+        "factorSnapshot[Regime Confidence]"
+      ]
+    },
+    {
+      "sourceName": "InstitutionalChip",
+      "pitStatus": "ALREADY_PIT_GATED",
+      "pitRiskLevel": "LOW",
+      "asOfGateRule": "WHERE date <= asOfDate (YYYYMMDD string)",
+      "gateField": "date",
+      "entersAlphaScore": true,
+      "entersReasonOrFactorSnapshot": true,
+      "activeSnapshotFields": [
+        "chipScore",
+        "scoreSnapshot.chipScore",
+        "factorSnapshot[法人近 10 日買超]"
+      ]
+    },
+    {
+      "sourceName": "MonthlyRevenue",
+      "pitStatus": "REPAIRED_2026_05_12",
+      "pitRiskLevel": "REPAIRED",
+      "asOfGateRule": "WHERE releaseDate <= asOfDate (DateTime field added P24). Fallback: inferred as 10th of following month.",
+      "gateField": "releaseDate",
+      "entersAlphaScore": true,
+      "entersReasonOrFactorSnapshot": true,
+      "activeSnapshotFields": [
+        "scoreSnapshot revenueScore component (when revenueCount>=13)",
+        "factorSnapshot[營收年增率]"
+      ],
+      "repairReferences": [
+        "P17-HARDRESET",
+        "P24-HARDRESET",
+        "P25-HARDRESET"
+      ],
+      "supersededV0Notes": "v0 described as HIGH-RISK pending repair. Superseded by REPAIRED_2026_05_12."
+    },
+    {
+      "sourceName": "FinancialReport",
+      "pitStatus": "STILL_HIGH_RISK_NOT_PIT_GATED",
+      "pitRiskLevel": "HIGH",
+      "asOfGateRule": "NOT IMPLEMENTED — not used in scoring",
+      "gateField": null,
+      "entersAlphaScore": false,
+      "entersReasonOrFactorSnapshot": false,
+      "activeSnapshotFields": [],
+      "notes": "Not used in RuleBasedStockAnalyzer or SignalFusionEngine. Requires publishedDate gate if activated."
+    },
+    {
+      "sourceName": "NewsEvent",
+      "pitStatus": "STILL_HIGH_RISK_NOT_PIT_GATED",
+      "pitRiskLevel": "HIGH",
+      "asOfGateRule": "Must gate by publishedAt, NOT ingestedAt. Not currently used in scoring.",
+      "gateField": "publishedAt (if activated)",
+      "entersAlphaScore": false,
+      "entersReasonOrFactorSnapshot": false,
+      "activeSnapshotFields": [],
+      "notes": "Not used in scoring. ingestedAt is NOT PIT-safe."
+    }
+  ],
+  "knownStaleness": [
+    "v0 MonthlyRevenue HIGH-RISK description is superseded by this v1 contract.",
+    "FinancialReport and NewsEvent remain NOT in scoring."
+  ],
+  "nonGoals": [
+    "Does not add FinancialReport or NewsEvent to scoring",
+    "No activation date committed for FinancialReport or NewsEvent PIT gating repair",
+    "Does not describe outcome fields (outcomePrice, returnPct, realizedReturnClass)",
+    "Does not add any factor not already computed by RuleBasedStockAnalyzer + SignalFusionEngine"
+  ],
+  "verdict": "CONTRACT_V1_COMPLETE"
+}

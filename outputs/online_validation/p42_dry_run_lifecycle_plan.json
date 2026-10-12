@@ -1,0 +1,61 @@
+{
+  "phase": "P42",
+  "step": "Phase 5 — Dry-Run Lifecycle Design Plan",
+  "timestamp": "2026-05-21T00:00:00+08:00",
+  "version": "p42-paper-simulation-dry-run-lifecycle-v1",
+  "authorizationGranted": true,
+  "authorizationPhrase": "YES design paper simulation dry-run lifecycle for P42",
+  "executionStatus": "EXECUTION_LIFECYCLE_READY",
+  "executedAt": null,
+  "stubResult": "DRY_RUN_STUB_ONLY",
+  "noActualMetrics": true,
+  "dryRunOnly": true,
+  "paperOnly": true,
+  "entersAlphaScore": false,
+  "noRealExecution": true,
+  "lifecycleStates": ["PENDING", "RUNNING", "COMPLETE", "CANCELLED"],
+  "initialState": "PENDING",
+  "terminalStates": ["COMPLETE", "CANCELLED"],
+  "validTransitions": [
+    ["PENDING", "RUNNING"],
+    ["PENDING", "CANCELLED"],
+    ["RUNNING", "COMPLETE"],
+    ["RUNNING", "CANCELLED"]
+  ],
+  "logEventTypes": [
+    "LIFECYCLE_CREATED",
+    "TRANSITION_REQUESTED",
+    "TRANSITION_COMPLETED",
+    "TRANSITION_REJECTED",
+    "LIFECYCLE_CANCELLED",
+    "VALIDATION_PASSED",
+    "BOUNDARY_CHECK_PASSED"
+  ],
+  "newSrcFiles": [
+    "src/lib/onlineValidation/p42/PaperSimulationDryRunLifecycle.ts",
+    "src/lib/onlineValidation/p42/PaperSimulationDryRunLog.ts"
+  ],
+  "functions": [
+    "createDryRunLifecycle(input) — creates PENDING lifecycle from P41 DryRunResult",
+    "transitionLifecycle(current, to, transitionedAt) — pure immutable state transition",
+    "cancelLifecycle(current, cancelledAt) — cancel from PENDING or RUNNING",
+    "isValidTransition(from, to) — guard predicate",
+    "isTerminalState(state) — terminal predicate",
+    "createDryRunLogEntry(params) — immutable stub log entry",
+    "appendLogEntry(log, entry) — pure append, returns new log",
+    "createEmptyLog() — empty immutable log"
+  ],
+  "governanceFlags": {
+    "paperOnly": true,
+    "dryRunOnly": true,
+    "entersAlphaScore": false,
+    "noActualMetrics": true,
+    "noInvestmentAdvice": true,
+    "noBuySellActionSemantics": true,
+    "noRealExecution": true,
+    "noOptimizer": true,
+    "noRealBacktest": true
+  },
+  "allowedNextStep": "P43 requires further authorization",
+  "validationSummary": "P42 dry-run lifecycle design complete. executionStatus upgraded to EXECUTION_LIFECYCLE_READY. All lifecycle transitions are stub-only. No real simulation. No metrics. executedAt=null."
+}

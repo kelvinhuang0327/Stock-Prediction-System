@@ -1,0 +1,25 @@
+{
+  "phase": "P26D-HARDRESET",
+  "generatedAt": "2026-05-13",
+  "p26aClassification": "P26A_FEATURE_SNAPSHOT_V1_COMPLETE",
+  "p26bClassification": "P26B_EVENT_NEWS_PIT_CONTEXT_ADAPTER_COMPLETE",
+  "p26cClassification": "P26C_FINANCIAL_REPORT_AVAILABILITY_CONTRACT_COMPLETE",
+  "artifactsPresent": true,
+  "inputArtifacts": {
+    "p5walkthroughReview": "outputs/online_validation/p5walkthrough_review.json",
+    "p25postMigrationObservabilityFinalReport": "outputs/online_validation/p25post_migration_observability_final_report.md",
+    "p26aWalkthroughReasonQualityCompare": "outputs/online_validation/p26a_walkthrough_reason_quality_compare.json"
+  },
+  "inputArtifactSha256": {
+    "p5walkthrough_review.json": "d1cdcf56751ecb49d9481a9e36e92e830a87300c143d3a99af70aa91343912c4",
+    "p25post_migration_observability_final_report.md": "e5fb0b8f344e7697132aec8c57dc21799a7fb72c9511868c1ace5d9ca8401e6a",
+    "p26a_walkthrough_reason_quality_compare.json": "a584a9c5dd95ecf8e5f514d05bbad2a873e3540e79742dcc35dad22c76398cd3"
+  },
+  "codeBaselineSnapshot": {
+    "ActiveScoringSnapshotBuilder.ts": "063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d",
+    "RuleBasedStockAnalyzer.ts": "bc3716cc8e74be304f2e262aac586a61760bb59d6c95e82a575c38e03ea7373d",
+    "SignalFusionEngine.ts": "b8ce3fa3ae63fd7edf6b6067dd8ccea63c02741454b93792e87bfbc1e95d2bf4"
+  },
+  "status": "PREFLIGHT_PASS",
+  "disclaimer": "No investment recommendations. No ROI/win-rate/profit/outperform/buy/sell claims."
+}

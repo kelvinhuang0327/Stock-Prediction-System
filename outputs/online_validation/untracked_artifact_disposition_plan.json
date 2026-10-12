@@ -1,0 +1,311 @@
+{
+  "dispositionVersion": "p3-untracked-disposition-v1",
+  "generatedAt": "2026-05-23T00:00:00.000Z",
+  "documentationType": "GOVERNANCE_DOCUMENTATION_ONLY",
+  "entersAlphaScore": false,
+  "priorArtWork": "outputs/online_validation/p35_realign_untracked_disposition_plan.md (P35 plan, never executed)",
+  "totalUntrackedEntries": 77,
+  "note": "P35 plan covered 42 entries. P3 extends to 77 entries (same core + new P49/P1/P29G/P27-orphan/CEO-Decision/active_task/StockPlan/root additions). Same decision: COMMIT_WITH_RETENTION for all outputs; KEEP_IN_PLACE for src/; NEEDS_USER_DECISION for root scripts.",
+  "disclaimer": "Governance documentation only. No git operations. No buy/sell/hold. No scoring change. No DB apply. entersAlphaScore=false.",
+  "summaryByDisposition": {
+    "COMMIT_WITH_RETENTION": {
+      "count": 65,
+      "description": "Governance/research artifact — must be committed with its phase group"
+    },
+    "KEEP_IN_PLACE_SRC": {
+      "count": 4,
+      "description": "src/ files — already in canonical location; commit with their phase"
+    },
+    "KEEP_IN_PLACE_DATA": {
+      "count": 2,
+      "description": "data/ directories — never move; commit when source authorization lifted"
+    },
+    "KEEP_IN_PLACE_STOCKPLAN": {
+      "count": 2,
+      "description": "00-StockPlan/ directories — active plan directories; commit when complete"
+    },
+    "KEEP_IN_PLACE_GOVERNANCE": {
+      "count": 2,
+      "description": "00-Plan/roadmap/ files — governance planning docs; commit at end of session"
+    },
+    "NEEDS_USER_DECISION": {
+      "count": 2,
+      "description": "Root-level scripts (generate_artifacts.py, p28c_9case_validation.js) — may belong in scripts/ or may be obsolete; user must decide relocation or deletion"
+    }
+  },
+  "groups": [
+    {
+      "groupId": "G1",
+      "groupName": "P32PREP artifacts",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "proposedCommit": "P32PREP: Add dry-run spec scaffolding and artifact inventory",
+      "files": [
+        "outputs/online_validation/p32prep_artifact_inventory.json",
+        "outputs/online_validation/p32prep_artifact_inventory.md",
+        "outputs/online_validation/p32prep_final_report.md",
+        "outputs/online_validation/p32prep_golden_fixture_candidates.json",
+        "outputs/online_validation/p32prep_golden_fixture_candidates.md",
+        "outputs/online_validation/p32prep_report_spec_v0_dry_run_sample.json",
+        "outputs/online_validation/p32prep_report_spec_v0_dry_run_sample.md",
+        "outputs/online_validation/p32prep_report_spec_v0_pit_audit.json",
+        "outputs/online_validation/p32prep_report_spec_v0_pit_audit.md",
+        "outputs/online_validation/p32prep_report_spec_v0_source_gate.json",
+        "outputs/online_validation/p32prep_report_spec_v0_source_gate.md"
+      ],
+      "fileCount": 11,
+      "rationale": "Canonical P32PREP artifact inventory and spec schemas; referenced by P32/P33/P34 conformance; required for future fixture materialization authorization"
+    },
+    {
+      "groupId": "G2",
+      "groupName": "P32 artifacts",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "proposedCommit": "P32: Add MonthlyRevenue source-present dry-run artifacts",
+      "files": [
+        "outputs/online_validation/p32_monthly_revenue_source_present_dry_run.json",
+        "outputs/online_validation/p32_monthly_revenue_source_present_dry_run.md",
+        "outputs/online_validation/p32_monthly_revenue_dry_run_sample.json",
+        "outputs/online_validation/p32_monthly_revenue_dry_run_sample.md",
+        "outputs/online_validation/p32_monthly_revenue_spec_conformance.json",
+        "outputs/online_validation/p32_monthly_revenue_spec_conformance.md",
+        "outputs/online_validation/p32_forbidden_claims_scan.json",
+        "outputs/online_validation/p32_final_report.md"
+      ],
+      "fileCount": 8,
+      "rationale": "Core MonthlyRevenue dry-run gate evidence; FULL_CONFORMANCE; required for PROMOTE decision audit trail"
+    },
+    {
+      "groupId": "G3",
+      "groupName": "P33 artifacts",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "proposedCommit": "P33: Add FinancialReport+NewsEvent source-present gate artifacts",
+      "files": [
+        "outputs/online_validation/p33_financial_report_source_present_scan.json",
+        "outputs/online_validation/p33_financial_report_source_present_scan.md",
+        "outputs/online_validation/p33_news_event_source_present_scan.json",
+        "outputs/online_validation/p33_news_event_source_present_scan.md",
+        "outputs/online_validation/p33_source_present_gate_summary.json",
+        "outputs/online_validation/p33_source_present_gate_summary.md",
+        "outputs/online_validation/p33_spec_conformance.json",
+        "outputs/online_validation/p33_spec_conformance.md",
+        "outputs/online_validation/p33_forbidden_claims_scan.json",
+        "outputs/online_validation/p33_final_report.md"
+      ],
+      "fileCount": 10,
+      "rationale": "FinancialReport BLOCK and NewsEvent ELIGIBLE evidence; required for migration authorization workflow; GOVERNANCE_ALIGNED"
+    },
+    {
+      "groupId": "G4",
+      "groupName": "P34 artifacts",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "proposedCommit": "P34: Add NewsEvent source-present dry-run sample artifacts",
+      "files": [
+        "outputs/online_validation/p34_news_event_source_present_dry_run.json",
+        "outputs/online_validation/p34_news_event_source_present_dry_run.md",
+        "outputs/online_validation/p34_news_event_dry_run_sample.json",
+        "outputs/online_validation/p34_news_event_dry_run_sample.md",
+        "outputs/online_validation/p34_news_event_pit_audit.json",
+        "outputs/online_validation/p34_news_event_pit_audit.md",
+        "outputs/online_validation/p34_spec_conformance.json",
+        "outputs/online_validation/p34_spec_conformance.md",
+        "outputs/online_validation/p34_forbidden_claims_scan.json",
+        "outputs/online_validation/p34_final_report.md"
+      ],
+      "fileCount": 10,
+      "rationale": "Core NewsEvent dry-run gate evidence; 1018/1018 READY; strongest PIT result in system; required for NewsEvent consumer design authorization"
+    },
+    {
+      "groupId": "G5",
+      "groupName": "P35-REALIGN artifacts",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "proposedCommit": "P35-REALIGN: Add realign decision matrix and disposition plan",
+      "files": [
+        "outputs/online_validation/p35_realign_decision_matrix.md",
+        "outputs/online_validation/p35_realign_final_report.md",
+        "outputs/online_validation/p35_realign_next_implementation_p0.md",
+        "outputs/online_validation/p35_realign_untracked_disposition_plan.json",
+        "outputs/online_validation/p35_realign_untracked_disposition_plan.md"
+      ],
+      "fileCount": 5,
+      "rationale": "P35 governance audit and prior disposition plan; P3 (this task) is the continuation — prior plan should remain for audit trail"
+    },
+    {
+      "groupId": "G6",
+      "groupName": "P29G preflight artifacts",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "proposedCommit": "P29G: Add preflight governance artifacts",
+      "files": [
+        "outputs/online_validation/p29g_preflight_final_report.md",
+        "outputs/online_validation/p29g_preflight_forbidden_claims_scan.json",
+        "outputs/online_validation/p29g_preflight_forbidden_claims_scan.md",
+        "outputs/online_validation/p29g_preflight_git_ancestry_audit.json",
+        "outputs/online_validation/p29g_preflight_git_ancestry_audit.md",
+        "outputs/online_validation/p29g_preflight_invariance_baseline.json",
+        "outputs/online_validation/p29g_preflight_invariance_baseline.md",
+        "outputs/online_validation/p29g_preflight_scaffold_inventory.json",
+        "outputs/online_validation/p29g_preflight_scaffold_inventory.md",
+        "outputs/online_validation/p29g_preflight_test_baseline.json",
+        "outputs/online_validation/p29g_preflight_test_baseline.md"
+      ],
+      "fileCount": 11,
+      "rationale": "P29G preflight gate evidence (forbidden claims, git ancestry, invariance baseline, test baseline); governance clean record"
+    },
+    {
+      "groupId": "G7",
+      "groupName": "P27 orphaned artifact",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "proposedCommit": "P27: Add overnight deep audit preflight JSON (missing companion)",
+      "files": [
+        "outputs/online_validation/p27_overnight_deep_audit_preflight.json"
+      ],
+      "fileCount": 1,
+      "note": "All other P27 artifacts are already committed. This is the JSON companion to the committed p27_overnight_deep_audit_preflight.md.",
+      "rationale": "Missing JSON companion to committed P27 audit; should be committed alongside existing P27 set"
+    },
+    {
+      "groupId": "G8",
+      "groupName": "P49-LEDGER artifacts",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "proposedCommit": "P49-LEDGER: Add post-P48 full-suite baseline and known failure ledger",
+      "files": [
+        "outputs/online_validation/p49_ledger_context_lock_scan.json",
+        "outputs/online_validation/p49_ledger_context_lock_scan.md",
+        "outputs/online_validation/p49_ledger_final_report.md",
+        "outputs/online_validation/p49_ledger_full_suite_baseline.json",
+        "outputs/online_validation/p49_ledger_full_suite_baseline.md",
+        "outputs/online_validation/p49_ledger_known_failures.json",
+        "outputs/online_validation/p49_ledger_known_failures.md"
+      ],
+      "fileCount": 7,
+      "rationale": "Canonical P49-LEDGER baseline (4842/4846 PASS, 4 pre-existing failures pinned); source of truth for all subsequent implementation rounds"
+    },
+    {
+      "groupId": "G9",
+      "groupName": "P1 Axis A artifacts",
+      "disposition": "COMMIT_WITH_RETENTION",
+      "proposedCommit": "P1-AXIS-A: Add controlled research snapshot v0 report",
+      "files": [
+        "outputs/online_validation/p1_axis_a_controlled_research_snapshot_final_report.md"
+      ],
+      "fileCount": 1,
+      "rationale": "P1 Axis A phase gate report; P1_AXIS_A_RESEARCH_SNAPSHOT_READY classification; 46/46 tests PASS"
+    },
+    {
+      "groupId": "G10",
+      "groupName": "P1 Axis A src files",
+      "disposition": "KEEP_IN_PLACE_SRC",
+      "proposedCommit": "P1-AXIS-A: Add ControlledResearchSnapshot types, builder, and tests",
+      "files": [
+        "src/lib/research/ControlledResearchSnapshot.ts",
+        "src/lib/research/ControlledResearchSnapshotBuilder.ts",
+        "src/lib/research/__tests__/controlled_research_snapshot.test.ts"
+      ],
+      "fileCount": 3,
+      "rationale": "P1 canonical src/ implementation; 46/46 PASS; already in correct location"
+    },
+    {
+      "groupId": "G11",
+      "groupName": "Pre-existing failing test (untracked)",
+      "disposition": "KEEP_IN_PLACE_SRC",
+      "proposedCommit": "NOTE: commit with appropriate phase when fixed",
+      "files": [
+        "src/lib/onlineValidation/__tests__/p29d_dropzone_scaffold.test.ts"
+      ],
+      "fileCount": 1,
+      "note": "This is one of the 4 pinned pre-existing failures in P49 ledger. DO NOT delete. DO NOT move. Commit when fixed.",
+      "rationale": "Pre-existing known failure test; tracked in P49 ledger known_failures.json; must be committed when repaired"
+    },
+    {
+      "groupId": "G12",
+      "groupName": "data/manual dropzone templates",
+      "disposition": "KEEP_IN_PLACE_DATA",
+      "proposedCommit": "data/manual: Add dropzone templates for FinancialReport and NewsEvent (when authorization lifted)",
+      "directories": [
+        "data/manual/financial-report/",
+        "data/manual/news-event/"
+      ],
+      "fileCount": 2,
+      "rationale": "P29B dropzone schema templates; NEVER MOVE; commit when FinancialReport/NewsEvent block is lifted",
+      "constraint": "DO NOT MOVE — data/ is blocked from modification by governance rules"
+    },
+    {
+      "groupId": "G13",
+      "groupName": "00-StockPlan directories",
+      "disposition": "KEEP_IN_PLACE_STOCKPLAN",
+      "directories": [
+        "00-StockPlan/20260514/",
+        "00-StockPlan/20260515/"
+      ],
+      "fileCount": 2,
+      "rationale": "Active Taiwan stock plan directories; commit at end of session or when plan is complete"
+    },
+    {
+      "groupId": "G14",
+      "groupName": "00-Plan/roadmap governance docs",
+      "disposition": "KEEP_IN_PLACE_GOVERNANCE",
+      "proposedCommit": "governance: Add CEO-Decision and active_task post-P48",
+      "files": [
+        "00-Plan/roadmap/CEO-Decision.md",
+        "00-Plan/roadmap/active_task.md"
+      ],
+      "fileCount": 2,
+      "rationale": "CEO Decision 2026-05-23 and active task spec; governance planning docs; commit at end of current session"
+    },
+    {
+      "groupId": "G15",
+      "groupName": "Root-level scripts — NEEDS USER DECISION",
+      "disposition": "NEEDS_USER_DECISION",
+      "files": [
+        "generate_artifacts.py",
+        "p28c_9case_validation.js"
+      ],
+      "fileCount": 2,
+      "options": [
+        "RELOCATE to scripts/ (if still useful)",
+        "DELETE (if obsolete — requires user authorization)"
+      ],
+      "note": "verify_p34.py was in P35 disposition plan as RELOCATE to scripts/; p28c_9case_validation.js and generate_artifacts.py were not in P35 plan — user must decide.",
+      "rationale": "Root-level scripts do not belong in root per repo convention. P35 plan already identified verify_p34.py for relocation. P3 extends this to the two additional scripts."
+    },
+    {
+      "groupId": "G16",
+      "groupName": "verify_p34.py (P35 carry-over relocation)",
+      "disposition": "NEEDS_USER_DECISION",
+      "files": [
+        "verify_p34.py"
+      ],
+      "fileCount": 1,
+      "options": [
+        "RELOCATE to scripts/verify_p34.py (P35 plan recommendation, not yet executed)",
+        "DELETE (if obsolete)"
+      ],
+      "rationale": "P35 plan said RELOCATE to scripts/verify_p34.py. Move not yet executed. Carry forward decision to user."
+    }
+  ],
+  "proposedCommitSequence": [
+    "1. P27: Add overnight deep audit preflight JSON (missing companion)",
+    "2. P29G: Add preflight governance artifacts",
+    "3. P32PREP: Add dry-run spec scaffolding and artifact inventory",
+    "4. P32: Add MonthlyRevenue source-present dry-run artifacts",
+    "5. P33: Add FinancialReport+NewsEvent source-present gate artifacts",
+    "6. P34: Add NewsEvent source-present dry-run sample artifacts",
+    "7. P35-REALIGN: Add realign decision matrix and disposition plan",
+    "8. P49-LEDGER: Add post-P48 full-suite baseline and known failure ledger",
+    "9. P1-AXIS-A: Add ControlledResearchSnapshot types, builder, tests, and final report",
+    "10. governance: Add CEO-Decision and active_task post-P48",
+    "NOTE: data/, src/p29d, 00-StockPlan/, root scripts — defer to user decision"
+  ],
+  "pendingUserDecisions": [
+    {
+      "file": "generate_artifacts.py",
+      "question": "Relocate to scripts/generate_artifacts.py or delete?"
+    },
+    {
+      "file": "p28c_9case_validation.js",
+      "question": "Relocate to scripts/p28c_9case_validation.js or delete?"
+    },
+    {
+      "file": "verify_p34.py",
+      "question": "Execute P35 plan: mv verify_p34.py scripts/ — confirm?"
+    }
+  ]
+}

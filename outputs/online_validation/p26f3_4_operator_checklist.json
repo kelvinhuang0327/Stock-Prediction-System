@@ -1,0 +1,84 @@
+{
+  "phase": "P26F3-4-HARDRESET",
+  "version": "v1",
+  "generatedAt": "2026-05-13T06:48:30.899188+00:00",
+  "items": [
+    {
+      "step": 1,
+      "title": "Download 5 period files from TWSE/MOPS",
+      "periods": [
+        "2025-09",
+        "2025-10",
+        "2025-11",
+        "2025-12",
+        "2026-01"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "step": 2,
+      "title": "Confirm coverage of 25 target symbols",
+      "symbolCount": 25,
+      "status": "PENDING"
+    },
+    {
+      "step": 3,
+      "title": "Confirm releaseDate is official announcement date",
+      "rule": "releaseDate <= asOfDate for PIT safety",
+      "status": "PENDING"
+    },
+    {
+      "step": 4,
+      "title": "Confirm revenue field is numeric",
+      "status": "PENDING"
+    },
+    {
+      "step": 5,
+      "title": "Confirm no forbidden outcome fields",
+      "forbidden": [
+        "outcomePrice",
+        "returnPct",
+        "realizedReturnClass",
+        "futureReturn"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "step": 6,
+      "title": "Place files in drop-zone",
+      "path": "data/manual/monthly-revenue/p26f3-2-dropzone/",
+      "status": "PENDING"
+    },
+    {
+      "step": 7,
+      "title": "Run inventory",
+      "command": "node scripts/run-p26f3-3-dropzone-inventory.js",
+      "expectedClassification": "SOURCE_FILES_PRESENT",
+      "status": "PENDING"
+    },
+    {
+      "step": 8,
+      "title": "Run validator + check acceptedRows",
+      "command": "node scripts/run-p26f3-2-manual-source-validator.js",
+      "expectedAcceptedRows": ">0",
+      "status": "PENDING"
+    },
+    {
+      "step": 9,
+      "title": "Run coverage preview",
+      "command": "node scripts/run-p26f3-2-accepted-source-coverage-preview.js",
+      "expectedClassification": "P26F3_2_ACCEPTED_SOURCE_COVERAGE_AVAILABLE",
+      "status": "PENDING"
+    },
+    {
+      "step": 10,
+      "title": "Send CTO approval for P26F4 if matchedRows > 0",
+      "p26f4Gate": "REQUIRED",
+      "status": "PENDING"
+    }
+  ],
+  "currentStatus": "AWAITING_MANUAL_FILE_PLACEMENT",
+  "readyForP26F4": false,
+  "dbWriteAllowed": false,
+  "corpusWriteAllowed": false
+}

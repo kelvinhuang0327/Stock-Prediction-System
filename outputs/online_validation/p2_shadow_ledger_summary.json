@@ -1,0 +1,24 @@
+{
+  "totalEntries": 2,
+  "uniqueRunCount": 1,
+  "uniqueAsOfDateCount": 1,
+  "symbolCount": 2,
+  "byAsOfDate": {
+    "2026-05-11": 2
+  },
+  "byRunId": {
+    "p2-ledger-accumulation-20260511-001": 2
+  },
+  "byResearchBucket": {
+    "Strong": 2
+  },
+  "byValidationStatus": {
+    "PASS": 2
+  },
+  "byGuardrailStatus": {
+    "PASS": 2
+  },
+  "pendingOutcomeCount": 4,
+  "readyOutcomeCount": 0,
+  "malformedLineCount": 0
+}

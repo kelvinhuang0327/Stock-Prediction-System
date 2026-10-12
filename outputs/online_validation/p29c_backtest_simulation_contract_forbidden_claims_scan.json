@@ -1,0 +1,25 @@
+{
+  "phase": "P29C",
+  "generatedAt": "2026-05-25T00:00:00Z",
+  "verdict": "CLEAN",
+  "totalNonDisclaimerHits": 0,
+  "note": "All regex matches in forbidden-behavior / must-NOT / disclaimer contexts. No investment claims.",
+  "totalRawHits": 5,
+  "hitsReviewed": [
+    {
+      "match": "buy/sell in forbiddenBehavior",
+      "context": "\"Must NOT generate investment recommendations, buy/sell signals\"",
+      "verdict": "ALLOWED — prohibition statement"
+    },
+    {
+      "match": "alpha/edge in gate G8 passCriteria",
+      "context": "\"No ROI/win-rate/alpha/edge/profit/buy/sell claims in outputs\"",
+      "verdict": "ALLOWED — gate description, not a claim"
+    },
+    {
+      "match": "ledger in PitSafeLedgerReplayEngine",
+      "context": "\"ledger\" contains substring \"edge\" (l-edge-r); module name",
+      "verdict": "ALLOWED — module name reference"
+    }
+  ]
+}

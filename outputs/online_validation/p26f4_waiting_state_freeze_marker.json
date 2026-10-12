@@ -1,0 +1,29 @@
+{
+  "auditId": "p26f4-waiting-state-freeze-marker",
+  "generatedAt": "2026-05-13T14:27:40.891875+00:00",
+  "currentState": "P26F4_WAITING_FOR_OPERATOR_SOURCE",
+  "candidateSourceFiles": 0,
+  "sourceManifest": "missing",
+  "dryRunGate": "skipped",
+  "import": "blocked",
+  "dbWrite": false,
+  "corpusExpansion": "blocked",
+  "optimizer": "blocked",
+  "repeatedEmptyScanPolicy": "DO_NOT_SCHEDULE_AS_24H_TASK_UNLESS_OPERATOR_CONFIRMS_SOURCE_ADDED",
+  "nextAllowedP26F4Actions": [
+    "1. operator places real TWSE/MOPS source files (2025-09 ~ 2026-01) in drop-zone",
+    "2. operator provides SOURCE_MANIFEST.json (filled from SOURCE_MANIFEST_TEMPLATE.json)",
+    "3. agent runs source-present gate (P26F4-SOURCE-PRESENT-GATE)",
+    "4. dry-run gate PASS",
+    "5. operator provides exact token: P26F4_APPROVE_HISTORICAL_MONTHLY_REVENUE_IMPORT_ONLY",
+    "6. agent runs controlled import"
+  ],
+  "blockedActions": [
+    "P26F4 import (no source, no dry-run PASS, no token)",
+    "corpus expansion",
+    "optimizer",
+    "backtest on new data",
+    "scoring patch"
+  ],
+  "disclaimer": "Observability only. No investment recommendations."
+}

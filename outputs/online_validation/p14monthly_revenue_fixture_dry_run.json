@@ -1,0 +1,239 @@
+{
+  "phase": "P14",
+  "part": "E",
+  "generatedAt": "2026-05-12T03:46:01.010Z",
+  "validationStatus": "PASS",
+  "total": 11,
+  "passed": 11,
+  "failed": 0,
+  "migrationDraftSafety": "SAFE_DRY_RUN_ONLY",
+  "queryGateContractId": "p14-monthly-revenue-query-gate-contract-v0",
+  "testCases": [
+    {
+      "id": "TC-01",
+      "description": "explicit releaseDate=2024-02-10, asOf=2024-02-09 → unavailable",
+      "status": "PASS",
+      "result": {
+        "available": false,
+        "gateResult": "UNAVAILABLE_RELEASE_DATE_FUTURE",
+        "reason": "Authoritative releaseDate 2024-02-10 > asOfDate 2024-02-09.",
+        "releaseDateUsed": "2024-02-10",
+        "releaseDateSource": "AUTHORITATIVE",
+        "confidence": "HIGH",
+        "forbiddenOutcomeFieldsPresent": []
+      },
+      "expected": {
+        "available": false,
+        "releaseDateSource": "AUTHORITATIVE"
+      },
+      "errors": []
+    },
+    {
+      "id": "TC-02",
+      "description": "explicit releaseDate=2024-02-10, asOf=2024-02-10 → available",
+      "status": "PASS",
+      "result": {
+        "available": true,
+        "gateResult": "AVAILABLE",
+        "reason": "Authoritative releaseDate 2024-02-10 <= asOfDate 2024-02-10.",
+        "releaseDateUsed": "2024-02-10",
+        "releaseDateSource": "AUTHORITATIVE",
+        "confidence": "HIGH",
+        "forbiddenOutcomeFieldsPresent": []
+      },
+      "expected": {
+        "available": true,
+        "releaseDateSource": "AUTHORITATIVE"
+      },
+      "errors": []
+    },
+    {
+      "id": "TC-03",
+      "description": "missing releaseDate, allowInferred=true, year=2024 month=1, asOf=2024-02-10 → available",
+      "status": "PASS",
+      "result": {
+        "available": true,
+        "gateResult": "AVAILABLE",
+        "reason": "Inferred releaseDate 2024-02-10 <= asOfDate 2024-02-10 (INFERRED_NEXT_MONTH_10TH).",
+        "releaseDateUsed": "2024-02-10",
+        "releaseDateSource": "INFERRED_NEXT_MONTH_10TH",
+        "confidence": "LOW_TO_MEDIUM",
+        "forbiddenOutcomeFieldsPresent": []
+      },
+      "expected": {
+        "available": true,
+        "releaseDateSource": "INFERRED_NEXT_MONTH_10TH"
+      },
+      "errors": []
+    },
+    {
+      "id": "TC-04",
+      "description": "missing releaseDate, allowInferred=false → unavailable",
+      "status": "PASS",
+      "result": {
+        "available": false,
+        "gateResult": "UNAVAILABLE_INFERRED_NOT_ALLOWED",
+        "reason": "releaseDate missing and allowInferredReleaseDate=false.",
+        "releaseDateUsed": null,
+        "releaseDateSource": "MISSING",
+        "confidence": "NONE",
+        "forbiddenOutcomeFieldsPresent": []
+      },
+      "expected": {
+        "available": false,
+        "releaseDateSource": "MISSING",
+        "gateResult": "UNAVAILABLE_INFERRED_NOT_ALLOWED"
+      },
+      "errors": []
+    },
+    {
+      "id": "TC-05",
+      "description": "Dec 2024: inferred releaseDate=2025-01-10, asOf=2025-01-10 → available",
+      "status": "PASS",
+      "result": {
+        "available": true,
+        "gateResult": "AVAILABLE",
+        "reason": "Inferred releaseDate 2025-01-10 <= asOfDate 2025-01-10 (INFERRED_NEXT_MONTH_10TH).",
+        "releaseDateUsed": "2025-01-10",
+        "releaseDateSource": "INFERRED_NEXT_MONTH_10TH",
+        "confidence": "LOW_TO_MEDIUM",
+        "forbiddenOutcomeFieldsPresent": []
+      },
+      "expected": {
+        "available": true,
+        "releaseDateSource": "INFERRED_NEXT_MONTH_10TH"
+      },
+      "errors": []
+    },
+    {
+      "id": "TC-06",
+      "description": "missing year/month → unavailable",
+      "status": "PASS",
+      "result": {
+        "available": false,
+        "gateResult": "UNAVAILABLE_MISSING_PERIOD",
+        "reason": "Missing or invalid year/month — cannot determine release date.",
+        "releaseDateUsed": null,
+        "releaseDateSource": "MISSING",
+        "confidence": "NONE",
+        "forbiddenOutcomeFieldsPresent": []
+      },
+      "expected": {
+        "available": false,
+        "gateResult": "UNAVAILABLE_MISSING_PERIOD"
+      },
+      "errors": []
+    },
+    {
+      "id": "TC-07",
+      "description": "invalid releaseDate format → unavailable",
+      "status": "PASS",
+      "result": {
+        "available": false,
+        "gateResult": "UNAVAILABLE_INVALID_RELEASE_DATE",
+        "reason": "releaseDate \"not-a-date\" has invalid format.",
+        "releaseDateUsed": "not-a-date",
+        "releaseDateSource": "INVALID",
+        "confidence": "NONE",
+        "forbiddenOutcomeFieldsPresent": []
+      },
+      "expected": {
+        "available": false,
+        "releaseDateSource": "INVALID",
+        "gateResult": "UNAVAILABLE_INVALID_RELEASE_DATE"
+      },
+      "errors": []
+    },
+    {
+      "id": "TC-08",
+      "description": "record with forbidden outcome fields → flagged, but gate still evaluates normally",
+      "status": "PASS",
+      "result": {
+        "available": true,
+        "gateResult": "AVAILABLE",
+        "reason": "Authoritative releaseDate 2024-02-10 <= asOfDate 2024-02-10.",
+        "releaseDateUsed": "2024-02-10",
+        "releaseDateSource": "AUTHORITATIVE",
+        "confidence": "HIGH",
+        "forbiddenOutcomeFieldsPresent": [
+          "outcomePrice",
+          "realizedReturnClass",
+          "returnPct"
+        ]
+      },
+      "expected": {
+        "available": true,
+        "releaseDateSource": "AUTHORITATIVE",
+        "forbiddenOutcomeFieldsPresent": [
+          "outcomePrice",
+          "realizedReturnClass",
+          "returnPct"
+        ]
+      },
+      "errors": []
+    },
+    {
+      "id": "TC-09",
+      "description": "AUTHORITATIVE releaseDate set → source=AUTHORITATIVE, confidence=HIGH",
+      "status": "PASS",
+      "result": {
+        "available": true,
+        "gateResult": "AVAILABLE",
+        "reason": "Authoritative releaseDate 2024-03-08 <= asOfDate 2024-03-10.",
+        "releaseDateUsed": "2024-03-08",
+        "releaseDateSource": "AUTHORITATIVE",
+        "confidence": "HIGH",
+        "forbiddenOutcomeFieldsPresent": []
+      },
+      "expected": {
+        "available": true,
+        "releaseDateSource": "AUTHORITATIVE",
+        "confidence": "HIGH"
+      },
+      "errors": []
+    },
+    {
+      "id": "TC-09b",
+      "description": "inferred releaseDate → source=INFERRED_NEXT_MONTH_10TH, confidence=LOW_TO_MEDIUM",
+      "status": "PASS",
+      "result": {
+        "available": true,
+        "gateResult": "AVAILABLE",
+        "reason": "Inferred releaseDate 2024-03-10 <= asOfDate 2024-03-10 (INFERRED_NEXT_MONTH_10TH).",
+        "releaseDateUsed": "2024-03-10",
+        "releaseDateSource": "INFERRED_NEXT_MONTH_10TH",
+        "confidence": "LOW_TO_MEDIUM",
+        "forbiddenOutcomeFieldsPresent": []
+      },
+      "expected": {
+        "available": true,
+        "releaseDateSource": "INFERRED_NEXT_MONTH_10TH",
+        "confidence": "LOW_TO_MEDIUM"
+      },
+      "errors": []
+    },
+    {
+      "id": "TC-10",
+      "description": "rollback draft exists and productionApplyAllowed=false",
+      "status": "PASS",
+      "result": {
+        "rollbackDraftExists": true,
+        "rollbackProductionApplyAllowed": false
+      },
+      "expected": {
+        "rollbackDraftExists": true,
+        "rollbackProductionApplyAllowed": false
+      },
+      "errors": []
+    }
+  ],
+  "productionDbWritten": false,
+  "productionApplyAllowed": false,
+  "nonGoals": [
+    "Does not query production DB.",
+    "Does not modify corpus or schema.",
+    "Does not compute ROI, profit, win-rate, or alpha.",
+    "Does not constitute investment advice.",
+    "Fixtures are in-memory only."
+  ]
+}

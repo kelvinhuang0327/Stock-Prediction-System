@@ -1,0 +1,46 @@
+{
+  "dashboardRunId": "p10-dashboard-metrics-contract-20260511-001",
+  "generatedAt": "2026-05-11T06:55:18.139Z",
+  "readinessCards": {
+    "metricsReadiness": {
+      "cardId": "readiness_metrics",
+      "label": "Corpus Metrics Readiness",
+      "status": "OK",
+      "note": "Corpus metrics safety contracts verified"
+    },
+    "qualityGateReadiness": {
+      "cardId": "readiness_quality_gate",
+      "label": "Quality Gate Readiness",
+      "status": "DATA_LIMITED",
+      "note": "horizonCoverageGap=0.875 > maxHorizonCoverageGap=0.35 => DATA_LIMITED"
+    },
+    "trendStabilityReadiness": {
+      "cardId": "readiness_trend_stability",
+      "label": "Trend Stability Readiness",
+      "status": "READY_FOR_OBSERVABILITY_DASHBOARD",
+      "note": "hasEnoughDates=true coverageDropWithinLimit=true avgCoverage=0.556; Observability-only stability; no production, simulation, or optimizer writes permitted"
+    },
+    "finalDashboardReadiness": {
+      "cardId": "readiness_final_dashboard",
+      "label": "Final Dashboard Readiness",
+      "status": "DATA_LIMITED",
+      "note": "Dashboard is DATA_LIMITED — observability only. Not for production. Not for optimizer."
+    },
+    "isProductionReady": false,
+    "isOptimizerReady": false,
+    "disclaimers": [
+      "Dashboard readiness does not imply production readiness.",
+      "Dashboard readiness does not imply optimizer readiness.",
+      "All metrics are observability-only. No trading signals. No performance claims."
+    ]
+  },
+  "guardrailCards": {
+    "noProductionWrite": true,
+    "noSimulationWrite": true,
+    "noOptimizerWrite": true,
+    "noPerformanceClaim": true,
+    "noTradingSignal": true,
+    "observabilityOnly": true,
+    "allGuardrailsActive": true
+  }
+}
