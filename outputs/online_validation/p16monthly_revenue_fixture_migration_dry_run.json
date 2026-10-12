@@ -1,0 +1,252 @@
+{
+  "phase": "P16-HARDRESET",
+  "task": "Fixture Schema Migration Dry-Run",
+  "date": "2026-05-12",
+  "disclaimer": "Does not constitute investment advice. Governance / dry-run only. No production DB writes.",
+  "approvalToken": "P14_APPROVE_SCHEMA_MIGRATION_DRY_RUN_ONLY",
+  "productionApplyAllowed": false,
+  "dryRunOnly": true,
+  "migrationTarget": "fixture",
+  "productionDbWritten": false,
+  "migrationSpec": {
+    "migrationId": "p16-dry-run-migration-fixture-v0",
+    "migrationTarget": "fixture",
+    "productionApplyAllowed": false,
+    "dryRunOnly": true,
+    "tableName": "MonthlyRevenue",
+    "fieldsToAdd": [
+      {
+        "name": "releaseDate",
+        "type": "DateTime",
+        "nullable": true
+      },
+      {
+        "name": "releaseDateSource",
+        "type": "String",
+        "nullable": true
+      },
+      {
+        "name": "releaseDateConfidence",
+        "type": "String",
+        "nullable": true
+      }
+    ],
+    "fieldsToRemoveOnRollback": [
+      "releaseDate",
+      "releaseDateSource",
+      "releaseDateConfidence"
+    ],
+    "approvalToken": "P14_APPROVE_SCHEMA_MIGRATION_DRY_RUN_ONLY",
+    "generatedAt": "2026-05-12T04:19:04.949Z"
+  },
+  "rollbackSpec": {
+    "rollbackId": "p16-dry-run-rollback-fixture-v0",
+    "migrationTarget": "fixture",
+    "productionApplyAllowed": false,
+    "dryRunOnly": true,
+    "tableName": "MonthlyRevenue",
+    "fieldsToRemove": [
+      "releaseDate",
+      "releaseDateSource",
+      "releaseDateConfidence"
+    ],
+    "description": "Rollback: DROP COLUMN releaseDate, releaseDateSource, releaseDateConfidence from MonthlyRevenue (fixture only, dry-run proof)",
+    "generatedAt": "2026-05-12T04:19:04.950Z"
+  },
+  "schemaBeforeMigration": {
+    "tableName": "MonthlyRevenue",
+    "fields": [
+      {
+        "name": "id",
+        "type": "String",
+        "nullable": false
+      },
+      {
+        "name": "stockId",
+        "type": "String",
+        "nullable": false
+      },
+      {
+        "name": "year",
+        "type": "Int",
+        "nullable": false
+      },
+      {
+        "name": "month",
+        "type": "Int",
+        "nullable": false
+      },
+      {
+        "name": "revenue",
+        "type": "Float",
+        "nullable": true
+      },
+      {
+        "name": "createdAt",
+        "type": "DateTime",
+        "nullable": true
+      },
+      {
+        "name": "updatedAt",
+        "type": "DateTime",
+        "nullable": true
+      }
+    ]
+  },
+  "schemaAfterMigration": {
+    "tableName": "MonthlyRevenue",
+    "fields": [
+      {
+        "name": "id",
+        "type": "String",
+        "nullable": false
+      },
+      {
+        "name": "stockId",
+        "type": "String",
+        "nullable": false
+      },
+      {
+        "name": "year",
+        "type": "Int",
+        "nullable": false
+      },
+      {
+        "name": "month",
+        "type": "Int",
+        "nullable": false
+      },
+      {
+        "name": "revenue",
+        "type": "Float",
+        "nullable": true
+      },
+      {
+        "name": "createdAt",
+        "type": "DateTime",
+        "nullable": true
+      },
+      {
+        "name": "updatedAt",
+        "type": "DateTime",
+        "nullable": true
+      },
+      {
+        "name": "releaseDate",
+        "type": "DateTime",
+        "nullable": true
+      },
+      {
+        "name": "releaseDateSource",
+        "type": "String",
+        "nullable": true
+      },
+      {
+        "name": "releaseDateConfidence",
+        "type": "String",
+        "nullable": true
+      }
+    ]
+  },
+  "schemaAfterRollback": {
+    "tableName": "MonthlyRevenue",
+    "fields": [
+      {
+        "name": "id",
+        "type": "String",
+        "nullable": false
+      },
+      {
+        "name": "stockId",
+        "type": "String",
+        "nullable": false
+      },
+      {
+        "name": "year",
+        "type": "Int",
+        "nullable": false
+      },
+      {
+        "name": "month",
+        "type": "Int",
+        "nullable": false
+      },
+      {
+        "name": "revenue",
+        "type": "Float",
+        "nullable": true
+      },
+      {
+        "name": "createdAt",
+        "type": "DateTime",
+        "nullable": true
+      },
+      {
+        "name": "updatedAt",
+        "type": "DateTime",
+        "nullable": true
+      }
+    ]
+  },
+  "schemaValidation": {
+    "valid": true,
+    "hasReleaseDate": true,
+    "hasReleaseDateSource": true,
+    "hasReleaseDateConfidence": true,
+    "errors": []
+  },
+  "rollbackProof": {
+    "rollbackFieldsRemoved": true,
+    "originalFieldsRestored": true,
+    "description": "Rollback removes releaseDate/releaseDateSource/releaseDateConfidence from fixture schema and restores original schema exactly."
+  },
+  "gates": [
+    {
+      "gate": "migrationSpec.productionApplyAllowed === false",
+      "status": "PASS"
+    },
+    {
+      "gate": "migrationSpec.dryRunOnly === true",
+      "status": "PASS"
+    },
+    {
+      "gate": "migrationSpec.migrationTarget === 'fixture'",
+      "status": "PASS"
+    },
+    {
+      "gate": "migration adds exactly 3 fields (releaseDate, releaseDateSource, releaseDateConfidence)",
+      "status": "PASS"
+    },
+    {
+      "gate": "post-migration schema has releaseDate field",
+      "status": "PASS"
+    },
+    {
+      "gate": "post-migration schema has releaseDateSource field",
+      "status": "PASS"
+    },
+    {
+      "gate": "post-migration schema has releaseDateConfidence field",
+      "status": "PASS"
+    },
+    {
+      "gate": "rollback removes all 3 added fields",
+      "status": "PASS"
+    },
+    {
+      "gate": "rollback restores all original fields",
+      "status": "PASS"
+    },
+    {
+      "gate": "rollbackSpec.productionApplyAllowed === false",
+      "status": "PASS"
+    },
+    {
+      "gate": "no production DB connection (fixture-only dry-run)",
+      "status": "PASS"
+    }
+  ],
+  "allGatesPass": true,
+  "validationStatus": "PASS",
+  "summary": "Fixture schema migration dry-run PASS. All 11 gates passed. No production DB written."
+}

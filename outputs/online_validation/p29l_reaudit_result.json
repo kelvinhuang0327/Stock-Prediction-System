@@ -1,0 +1,87 @@
+{
+  "auditId": "P29L-REAUDIT",
+  "capturedAt": "2026-05-20T00:00:00.000Z",
+  "disclaimer": "Structural re-audit only. Does not constitute investment advice. No profit, return, or investment performance claims. InstitutionalChip entersAlphaScore = false. MonthlyRevenue entersAlphaScore = false. Results must not be used as buy/sell/hold signals.",
+  "priorAuditId": "P29K",
+  "priorCommit": "ecfa744",
+  "classificationSummary": {
+    "chip": {
+      "prior": "CHIP_AVAILABLE_AT_NEEDS_MIGRATION_PLAN",
+      "current": "CHIP_AVAILABLE_AT_MIGRATION_PLAN_READY",
+      "rationale": "ChipAvailableAtMigrationReadiness.ts created. Both primary (INFERRED_SAME_DAY_T86_0930_UTC) and conservative (INFERRED_NEXT_DAY_0930_UTC_CONSERVATIVE) policies implemented and tested. Schema NOT modified (Option A). Cannot claim CHIP_LAG_CONFIRMED without prod logs.",
+      "lagClassification": "CHIP_LAG_WARN_ASSUMPTION_REQUIRED",
+      "lagChanged": false
+    },
+    "monthlyRevenue": {
+      "prior": "MONTHLY_REVENUE_RELEASE_DATE_POLICY_READY",
+      "current": "BACKFILL_SCRIPT_READY_NOT_APPLIED",
+      "rationale": "Backfill script created (scripts/p29l_monthly_revenue_release_date_backfill.ts). dryRun=true default. NOT applied in P29L session. Historical NULL rows remain in dev.db.",
+      "sourcePresentDryRunGate": "NOT_YET",
+      "productionApplied": false
+    },
+    "overall": "P29L_CHIP_PLAN_ONLY_MONTHLY_REVENUE_BACKFILL_SCRIPT_READY"
+  },
+  "testResults": {
+    "p29lTargeted": {
+      "file": "src/lib/onlineValidation/__tests__/p29l_chip_available_at_and_monthly_revenue_backfill.test.ts",
+      "pass": 96,
+      "fail": 0,
+      "total": 96,
+      "status": "PASS"
+    },
+    "p29kRegression": {
+      "file": "src/lib/onlineValidation/__tests__/p29k_monthly_revenue_release_date_repair.test.ts",
+      "pass": 68,
+      "fail": 0,
+      "total": 68,
+      "status": "PASS"
+    },
+    "p29jRegression": {
+      "file": "src/lib/onlineValidation/__tests__/p29j_chip_lag_and_monthly_revenue_readiness.test.ts",
+      "pass": 76,
+      "fail": 0,
+      "total": 76,
+      "status": "PASS"
+    },
+    "p29iRegression": {
+      "file": "src/lib/onlineValidation/__tests__/p29i_quote_regime_chip_pit_audit.test.ts",
+      "pass": 33,
+      "fail": 0,
+      "total": 33,
+      "status": "PASS"
+    }
+  },
+  "forbiddenDiff": {
+    "status": "BENIGN",
+    "notes": [
+      "prisma/dev.db — pre-existing dirty (SQLite WAL activity), NOT modified by P29L",
+      "runtime/agent_orchestrator/llm_usage.jsonl — pre-existing dirty (orchestrator writes), NOT modified by P29L",
+      "RuleBasedStockAnalyzer.ts — UNTOUCHED",
+      "SignalFusionEngine.ts — UNTOUCHED",
+      "ActiveScoringSnapshotBuilder.ts — UNTOUCHED",
+      "MarketRegimeEngine.ts — UNTOUCHED"
+    ]
+  },
+  "newArtifacts": [
+    "src/lib/onlineValidation/p29l/ChipAvailableAtMigrationReadiness.ts",
+    "src/lib/onlineValidation/p29l/MonthlyRevenueBackfillReadiness.ts",
+    "scripts/p29l_monthly_revenue_release_date_backfill.ts",
+    "src/lib/onlineValidation/__tests__/p29l_chip_available_at_and_monthly_revenue_backfill.test.ts",
+    "outputs/online_validation/p29l_preflight_mainline_status.json",
+    "outputs/online_validation/p29l_preflight_mainline_status.md",
+    "outputs/online_validation/p29l_chip_available_at_migration_scope.json",
+    "outputs/online_validation/p29l_chip_available_at_migration_scope.md",
+    "outputs/online_validation/p29l_monthly_revenue_backfill_plan.json",
+    "outputs/online_validation/p29l_monthly_revenue_backfill_plan.md",
+    "outputs/online_validation/p29l_reaudit_result.json",
+    "outputs/online_validation/p29l_reaudit_result.md",
+    "outputs/online_validation/p29l_final_report.md"
+  ],
+  "pendingForP30": [
+    "prisma/schema.prisma — add availableAt DateTime? to InstitutionalChip (Option A deferred)",
+    "prisma migrate dev — run after schema change",
+    "syncInstitutionalChip() — update to write availableAt",
+    "MonthlyRevenue backfill apply — run with --apply flag after CTO auth",
+    "ChipLagEvidenceAudit re-classification — upgrade CHIP_LAG_WARN_ASSUMPTION_REQUIRED → CHIP_LAG_CONFIRMED only after prod logs"
+  ]
+}

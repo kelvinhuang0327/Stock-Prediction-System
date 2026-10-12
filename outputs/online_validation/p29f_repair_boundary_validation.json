@@ -1,0 +1,86 @@
+{
+  "reportId": "p29f-repair-boundary-validation",
+  "generatedAt": "2026-05-21T00:00:00Z",
+  "passed": true,
+  "boundaryTests": [
+    {
+      "id": "BV-01",
+      "scenario": "Future same-year ISO record excluded by new gate",
+      "asOf": "2026-05-20",
+      "recordDate": "2026-05-21",
+      "comparison": "\"2026-05-21\" <= \"2026-05-20\"",
+      "result": "false",
+      "expected": "false — EXCLUDED (correct PIT gate)",
+      "pass": true
+    },
+    {
+      "id": "BV-02",
+      "scenario": "Same-day record included",
+      "asOf": "2026-05-20",
+      "recordDate": "2026-05-20",
+      "comparison": "\"2026-05-20\" <= \"2026-05-20\"",
+      "result": "true",
+      "expected": "true — INCLUDED (correct)",
+      "pass": true
+    },
+    {
+      "id": "BV-03",
+      "scenario": "Historical record included",
+      "asOf": "2026-05-20",
+      "recordDate": "2026-05-01",
+      "comparison": "\"2026-05-01\" <= \"2026-05-20\"",
+      "result": "true",
+      "expected": "true — INCLUDED (correct)",
+      "pass": true
+    },
+    {
+      "id": "BV-04",
+      "scenario": "Cross-year boundary — prior year record included",
+      "asOf": "2026-01-01",
+      "recordDate": "2025-12-31",
+      "comparison": "\"2025-12-31\" <= \"2026-01-01\"",
+      "result": "true",
+      "expected": "true — INCLUDED (correct, lexicographic works cross-year for ISO)",
+      "pass": true
+    },
+    {
+      "id": "BV-05",
+      "scenario": "OLD BUG: future ISO vs YYYYMMDD — was incorrectly included",
+      "asOf_yyyymmdd": "20260520",
+      "recordDate_iso": "2026-05-21",
+      "comparison": "\"2026-05-21\" <= \"20260520\"",
+      "result": "true",
+      "expected": "SHOULD BE false but was true — confirms the bug",
+      "bugsRemainingAfterRepair": false,
+      "note": "This comparison no longer occurs after P29F-Repair; gate uses ISO asOfIso"
+    },
+    {
+      "id": "BV-06",
+      "scenario": "YYYYMMDD asOf input normalized to ISO",
+      "asOf": "20260520",
+      "normalizedAsOfIso": "2026-05-20",
+      "futureRecord": "2026-05-21",
+      "comparison": "\"2026-05-21\" <= \"2026-05-20\"",
+      "result": "false",
+      "expected": "false — correctly excluded even when asOf passed as YYYYMMDD",
+      "pass": true
+    },
+    {
+      "id": "BV-07",
+      "scenario": "Invalid date format throws — gate bypass prevention",
+      "asOf": "not-a-date",
+      "expected": "throw Error('[PIT] Invalid date format...')",
+      "pass": true,
+      "note": "Tested in T10-T11 of p29f_repair_quote_chip_pit_date.test.ts"
+    },
+    {
+      "id": "BV-08",
+      "scenario": "No asOf (undefined) — gate disabled, all records returned",
+      "asOf": null,
+      "expected": "asOfIso = null; Prisma where clause has no date filter",
+      "pass": true,
+      "note": "Standard backtest behavior for full-history analysis"
+    }
+  ],
+  "allBoundaryTestsPassed": true
+}

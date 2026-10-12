@@ -1,0 +1,10 @@
+{
+  "auditId": "p26f4-source-present-token-check",
+  "generatedAt": "2026-05-13T14:19:56.823963+00:00",
+  "requiredToken": "P26F4_APPROVE_HISTORICAL_MONTHLY_REVENUE_IMPORT_ONLY",
+  "tokenStatus": "TOKEN_NOT_PROVIDED",
+  "reason": "candidateSourceFiles=0; token cannot be used without source files and dry-run PASS",
+  "importAllowed": false,
+  "classification": "P26F4_WAITING_FOR_OPERATOR_SOURCE",
+  "disclaimer": "Observability only. No investment recommendations."
+}

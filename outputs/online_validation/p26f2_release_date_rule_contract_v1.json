@@ -1,0 +1,52 @@
+{
+  "version": "v1",
+  "phase": "P26F2-HARDRESET",
+  "inferenceRule": {
+    "ruleName": "INFERRED_NEXT_MONTH_10TH",
+    "description": "candidateReleaseDate = first day of (year/month + 1 month), specifically the 10th day",
+    "examples": [
+      {"year": 2026, "month": 2, "candidateReleaseDate": "2026-03-10"},
+      {"year": 2026, "month": 3, "candidateReleaseDate": "2026-04-10"},
+      {"year": 2026, "month": 12, "candidateReleaseDate": "2027-01-10"}
+    ],
+    "confidence": "LOW",
+    "source": "INFERRED_NEXT_MONTH_10TH",
+    "needsManualReview": true,
+    "isVerifiedOfficialDate": false
+  },
+  "pitSafetyRules": {
+    "visibilityGate": "candidateReleaseDate <= asOfDate",
+    "nullCandidateIsNotVisible": true,
+    "yearMonthAreNotVisibilityGates": true,
+    "createdAtIsNotVisibilityGate": true,
+    "existingReleaseDateNotOverwritten": true
+  },
+  "dryRunContract": {
+    "outputMode": "DRY_RUN_ONLY",
+    "writeAllowed": false,
+    "productionBackfillAllowed": false,
+    "corpusOverwriteAllowed": false,
+    "databaseWriteAllowed": false,
+    "migrationApplyAllowed": false,
+    "requiresManualApproval": true
+  },
+  "excludedScope": {
+    "dbWrite": false,
+    "corpusGeneration": false,
+    "scoringChange": false,
+    "optimizer": false,
+    "externalApi": false,
+    "performanceClaim": false
+  },
+  "outputClassifications": {
+    "NO_COVERAGE": "P26F2_RELEASE_DATE_CANDIDATE_NO_COVERAGE",
+    "PARTIAL_COVERAGE": "P26F2_RELEASE_DATE_CANDIDATE_PARTIAL_COVERAGE",
+    "FULL_COVERAGE": "P26F2_RELEASE_DATE_CANDIDATE_FULL_COVERAGE",
+    "INVALID_CANDIDATES": "P26F2_RELEASE_DATE_CANDIDATE_INVALID",
+    "DRY_RUN_ONLY": "P26F2_RELEASE_DATE_DRY_RUN_ONLY",
+    "PREFLIGHT_PASS": "P26F2_PREFLIGHT_PASS",
+    "QUALITY_GATE_PASS": "P26F2_QUALITY_GATE_PASS",
+    "PIT_SAFETY_PASS": "P26F2_PIT_SAFETY_VALIDATION_PASS"
+  },
+  "status": "CONTRACT_ACTIVE"
+}

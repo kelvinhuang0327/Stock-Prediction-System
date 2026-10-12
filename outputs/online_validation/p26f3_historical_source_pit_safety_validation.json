@@ -1,0 +1,90 @@
+{
+  "phase": "P26F3-HARDRESET",
+  "date": "2026-05-13",
+  "totalTests": 13,
+  "passedTests": 13,
+  "failedTests": 0,
+  "tests": [
+    {
+      "id": 1,
+      "name": "releaseDate <= asOfDate → visible",
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": 2,
+      "name": "releaseDate > asOfDate → not visible",
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": 3,
+      "name": "releaseDate === asOfDate → visible",
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": 4,
+      "name": "missing candidateReleaseDate → not visible",
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": 5,
+      "name": "templateOnlyRow has isRealSource=false",
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": 6,
+      "name": "year=2025,month=9 → candidateReleaseDate=2025-10-10; asOfDate=2025-10-14 → visible",
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": 7,
+      "name": "year=2025,month=10 → candidateReleaseDate=2025-11-10; asOfDate=2025-11-10 → visible",
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": 8,
+      "name": "year=2025,month=10 → candidateReleaseDate=2025-11-10; asOfDate=2025-10-31 → NOT visible",
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": 9,
+      "name": "template row with revenueMissing=true → not counted as real coverage",
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": 10,
+      "name": "dryRunOnly=true always",
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": 11,
+      "name": "dbWriteAllowed=false always",
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": 12,
+      "name": "no outcome fields in template candidates",
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": 13,
+      "name": "deterministic rowHash: same inputs → same hash",
+      "passed": true,
+      "error": null
+    }
+  ],
+  "allPassed": true,
+  "classification": "PASS",
+  "status": "PIT_SAFETY_VALIDATION_PASS"
+}

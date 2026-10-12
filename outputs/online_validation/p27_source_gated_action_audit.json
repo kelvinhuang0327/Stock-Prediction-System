@@ -1,0 +1,60 @@
+{
+  "auditId": "p27-source-gated-action-audit",
+  "generatedAt": "2026-05-13T14:44:09.265953+00:00",
+  "actions": [
+    {
+      "category": "SAFE_NOW_NO_SOURCE",
+      "items": [
+        "artifact index consistency check",
+        "phase registry update / read",
+        "stale prompt audit",
+        "no-write guard tests (policy tests)",
+        "forbidden claims scanner consolidation",
+        "report naming convention audit",
+        "source-arrival trigger policy test",
+        "CI guard proposal creation",
+        "governance backlog creation",
+        "next workstream decision doc"
+      ]
+    },
+    {
+      "category": "SOURCE_REQUIRED",
+      "items": [
+        "source-present gate (P26F4-SOURCE-PRESENT-GATE)",
+        "source manifest validation",
+        "dry-run gate (MonthlyRevenue rows)",
+        "coverage preview after import"
+      ]
+    },
+    {
+      "category": "TOKEN_REQUIRED",
+      "items": [
+        "controlled import to DB (requires P26F4_APPROVE_HISTORICAL_MONTHLY_REVENUE_IMPORT_ONLY token)",
+        "any DB write for MonthlyRevenue historical data"
+      ]
+    },
+    {
+      "category": "FORBIDDEN_UNTIL_IMPORT",
+      "items": [
+        "corpus expansion gate decision",
+        "active scoring corpus refresh with new data",
+        "downstream replay quality gate with new data"
+      ]
+    },
+    {
+      "category": "FORBIDDEN_UNTIL_CORPUS_EXPANSION",
+      "items": [
+        "optimizer on expanded corpus",
+        "backtest on expanded corpus",
+        "performance-oriented evaluation on new data"
+      ]
+    },
+    {
+      "category": "STALE_OR_AMBIGUOUS",
+      "items": [
+        "any prompt scheduling repeated empty drop-zone scan as 24h primary task"
+      ]
+    }
+  ],
+  "disclaimer": "Observability only. No investment recommendations."
+}

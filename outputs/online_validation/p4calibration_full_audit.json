@@ -1,0 +1,1924 @@
+{
+  "auditVersion": "p4hardreset-calibration-audit-v1",
+  "runDate": "2026-05-11",
+  "p3CorpusLines": 4500,
+  "p1BaselineLines": 9900,
+  "corpusSummary": {
+    "uniqueSymbols": 25,
+    "uniqueAsOfDates": 60,
+    "uniqueBuckets": [
+      "LowPriority",
+      "Watch",
+      "Neutral",
+      "Strong"
+    ],
+    "COMPLETE": 3099,
+    "PARTIAL": 1401,
+    "EMPTY": 0,
+    "usableRatio": "1.0000"
+  },
+  "byHorizon": {
+    "5": {
+      "count": 1500,
+      "nonMissingCount": 1500,
+      "mean": 0.923,
+      "median": 0.2586,
+      "min": -28.8136,
+      "max": 56.2952,
+      "standardDeviation": 6.1509,
+      "positiveReturnRatio": 0.4227,
+      "negativeReturnRatio": 0.4587,
+      "flatReturnRatio": 0.1187,
+      "missingRatio": 0,
+      "lines": 1500,
+      "uniqueSymbols": 25
+    },
+    "20": {
+      "count": 1500,
+      "nonMissingCount": 1486,
+      "mean": 4.5893,
+      "median": 1.6153,
+      "min": -27.521,
+      "max": 75.5306,
+      "standardDeviation": 12.2628,
+      "positiveReturnRatio": 0.5373,
+      "negativeReturnRatio": 0.3833,
+      "flatReturnRatio": 0.07,
+      "missingRatio": 0.0093,
+      "lines": 1500,
+      "uniqueSymbols": 25
+    },
+    "60": {
+      "count": 1500,
+      "nonMissingCount": 1218,
+      "mean": 15.0948,
+      "median": 9.0626,
+      "min": -35.8718,
+      "max": 144.6889,
+      "standardDeviation": 23.6993,
+      "positiveReturnRatio": 0.5653,
+      "negativeReturnRatio": 0.2273,
+      "flatReturnRatio": 0.0193,
+      "missingRatio": 0.188,
+      "lines": 1500,
+      "uniqueSymbols": 25
+    }
+  },
+  "byBucket": [
+    {
+      "researchBucket": "LowPriority",
+      "horizonDays": 5,
+      "count": 386,
+      "nonMissingCount": 386,
+      "mean": 0.33,
+      "median": -0.0939,
+      "min": -12.5296,
+      "max": 27.6178,
+      "standardDeviation": 5.2101,
+      "positiveReturnRatio": 0.3472,
+      "negativeReturnRatio": 0.5078,
+      "flatReturnRatio": 0.1451,
+      "missingRatio": 0,
+      "scoringCompletenessDistribution": {
+        "COMPLETE": 386,
+        "PARTIAL": 0,
+        "EMPTY": 0
+      }
+    },
+    {
+      "researchBucket": "LowPriority",
+      "horizonDays": 20,
+      "count": 386,
+      "nonMissingCount": 380,
+      "mean": 0.7191,
+      "median": 0,
+      "min": -23.8683,
+      "max": 50.1305,
+      "standardDeviation": 9.2063,
+      "positiveReturnRatio": 0.399,
+      "negativeReturnRatio": 0.4793,
+      "flatReturnRatio": 0.1062,
+      "missingRatio": 0.0155,
+      "scoringCompletenessDistribution": {
+        "COMPLETE": 386,
+        "PARTIAL": 0,
+        "EMPTY": 0
+      }
+    },
+    {
+      "researchBucket": "LowPriority",
+      "horizonDays": 60,
+      "count": 386,
+      "nonMissingCount": 279,
+      "mean": 2.5451,
+      "median": 0.7896,
+      "min": -34.9565,
+      "max": 55,
+      "standardDeviation": 13.7416,
+      "positiveReturnRatio": 0.3575,
+      "negativeReturnRatio": 0.3394,
+      "flatReturnRatio": 0.0259,
+      "missingRatio": 0.2772,
+      "scoringCompletenessDistribution": {
+        "COMPLETE": 386,
+        "PARTIAL": 0,
+        "EMPTY": 0
+      }
+    },
+    {
+      "researchBucket": "Neutral",
+      "horizonDays": 5,
+      "count": 467,
+      "nonMissingCount": 467,
+      "mean": 0.9866,
+      "median": 0.6711,
+      "min": -28.8136,
+      "max": 25.3521,
+      "standardDeviation": 6.0609,
+      "positiveReturnRatio": 0.4797,
+      "negativeReturnRatio": 0.4218,
+      "flatReturnRatio": 0.0985,
+      "missingRatio": 0,
+      "scoringCompletenessDistribution": {
+        "COMPLETE": 0,
+        "PARTIAL": 467,
+        "EMPTY": 0
+      }
+    },
+    {
+      "researchBucket": "Neutral",
+      "horizonDays": 20,
+      "count": 467,
+      "nonMissingCount": 464,
+      "mean": 6.1867,
+      "median": 2.9228,
+      "min": -27.521,
+      "max": 56.1936,
+      "standardDeviation": 12.4725,
+      "positiveReturnRatio": 0.6103,
+      "negativeReturnRatio": 0.3276,
+      "flatReturnRatio": 0.0557,
+      "missingRatio": 0.0064,
+      "scoringCompletenessDistribution": {
+        "COMPLETE": 0,
+        "PARTIAL": 467,
+        "EMPTY": 0
+      }
+    },
+    {
+      "researchBucket": "Neutral",
+      "horizonDays": 60,
+      "count": 467,
+      "nonMissingCount": 401,
+      "mean": 21.4563,
+      "median": 15.0628,
+      "min": -35.8718,
+      "max": 144.6889,
+      "standardDeviation": 28.1781,
+      "positiveReturnRatio": 0.6745,
+      "negativeReturnRatio": 0.1627,
+      "flatReturnRatio": 0.0214,
+      "missingRatio": 0.1413,
+      "scoringCompletenessDistribution": {
+        "COMPLETE": 0,
+        "PARTIAL": 467,
+        "EMPTY": 0
+      }
+    },
+    {
+      "researchBucket": "Strong",
+      "horizonDays": 5,
+      "count": 493,
+      "nonMissingCount": 493,
+      "mean": 1.7403,
+      "median": 0.6266,
+      "min": -13.9332,
+      "max": 56.2952,
+      "standardDeviation": 7.4086,
+      "positiveReturnRatio": 0.4544,
+      "negativeReturnRatio": 0.428,
+      "flatReturnRatio": 0.1176,
+      "missingRatio": 0,
+      "scoringCompletenessDistribution": {
+        "COMPLETE": 493,
+        "PARTIAL": 0,
+        "EMPTY": 0
+      }
+    },
+    {
+      "researchBucket": "Strong",
+      "horizonDays": 20,
+      "count": 493,
+      "nonMissingCount": 488,
+      "mean": 7.69,
+      "median": 3.3531,
+      "min": -17.2174,
+      "max": 75.5306,
+      "standardDeviation": 14.3022,
+      "positiveReturnRatio": 0.6207,
+      "negativeReturnRatio": 0.3164,
+      "flatReturnRatio": 0.0527,
+      "missingRatio": 0.0101,
+      "scoringCompletenessDistribution": {
+        "COMPLETE": 493,
+        "PARTIAL": 0,
+        "EMPTY": 0
+      }
+    },
+    {
+      "researchBucket": "Strong",
+      "horizonDays": 60,
+      "count": 493,
+      "nonMissingCount": 403,
+      "mean": 23.4558,
+      "median": 20,
+      "min": -12.4044,
+      "max": 105.2863,
+      "standardDeviation": 20.7602,
+      "positiveReturnRatio": 0.714,
+      "negativeReturnRatio": 0.0974,
+      "flatReturnRatio": 0.0061,
+      "missingRatio": 0.1826,
+      "scoringCompletenessDistribution": {
+        "COMPLETE": 493,
+        "PARTIAL": 0,
+        "EMPTY": 0
+      }
+    },
+    {
+      "researchBucket": "Watch",
+      "horizonDays": 5,
+      "count": 154,
+      "nonMissingCount": 154,
+      "mean": -0.3999,
+      "median": -0.3243,
+      "min": -10.4034,
+      "max": 10.181,
+      "standardDeviation": 3.028,
+      "positiveReturnRatio": 0.3377,
+      "negativeReturnRatio": 0.5455,
+      "flatReturnRatio": 0.1169,
+      "missingRatio": 0,
+      "scoringCompletenessDistribution": {
+        "COMPLETE": 154,
+        "PARTIAL": 0,
+        "EMPTY": 0
+      }
+    },
+    {
+      "researchBucket": "Watch",
+      "horizonDays": 20,
+      "count": 154,
+      "nonMissingCount": 154,
+      "mean": -0.4999,
+      "median": -0.5676,
+      "min": -10.8974,
+      "max": 15.4255,
+      "standardDeviation": 5.1049,
+      "positiveReturnRatio": 0.3961,
+      "negativeReturnRatio": 0.526,
+      "flatReturnRatio": 0.0779,
+      "missingRatio": 0,
+      "scoringCompletenessDistribution": {
+        "COMPLETE": 154,
+        "PARTIAL": 0,
+        "EMPTY": 0
+      }
+    },
+    {
+      "researchBucket": "Watch",
+      "horizonDays": 60,
+      "count": 154,
+      "nonMissingCount": 135,
+      "mean": -2.8245,
+      "median": -4.1667,
+      "min": -15.5056,
+      "max": 12.825,
+      "standardDeviation": 7.9612,
+      "positiveReturnRatio": 0.2792,
+      "negativeReturnRatio": 0.5584,
+      "flatReturnRatio": 0.039,
+      "missingRatio": 0.1234,
+      "scoringCompletenessDistribution": {
+        "COMPLETE": 154,
+        "PARTIAL": 0,
+        "EMPTY": 0
+      }
+    }
+  ],
+  "byScoreDecile": [
+    {
+      "decile": 1,
+      "horizonDays": 5,
+      "count": 214,
+      "nonMissingCount": 214,
+      "mean": -0.4227,
+      "median": -0.4723,
+      "min": -12.5296,
+      "max": 18.5379,
+      "standardDeviation": 4.6788,
+      "positiveReturnRatio": 0.3224,
+      "negativeReturnRatio": 0.5748,
+      "flatReturnRatio": 0.1028,
+      "missingRatio": 0,
+      "scoreMin": 21,
+      "scoreMax": 30,
+      "bucketDistribution": {
+        "Watch": 154,
+        "LowPriority": 60
+      },
+      "tieCount": 1500,
+      "uniqueScoreCount": 21
+    },
+    {
+      "decile": 2,
+      "horizonDays": 5,
+      "count": 99,
+      "nonMissingCount": 99,
+      "mean": 1.3759,
+      "median": 0.1764,
+      "min": -9.8009,
+      "max": 27.6178,
+      "standardDeviation": 7.2286,
+      "positiveReturnRatio": 0.3939,
+      "negativeReturnRatio": 0.4747,
+      "flatReturnRatio": 0.1313,
+      "missingRatio": 0,
+      "scoreMin": 33,
+      "scoreMax": 36,
+      "bucketDistribution": {
+        "LowPriority": 99
+      },
+      "tieCount": 1500,
+      "uniqueScoreCount": 21
+    },
+    {
+      "decile": 3,
+      "horizonDays": 5,
+      "count": 167,
+      "nonMissingCount": 167,
+      "mean": -0.0964,
+      "median": -0.0543,
+      "min": -6.1556,
+      "max": 6.2016,
+      "standardDeviation": 2.3806,
+      "positiveReturnRatio": 0.2994,
+      "negativeReturnRatio": 0.509,
+      "flatReturnRatio": 0.1916,
+      "missingRatio": 0,
+      "scoreMin": 38,
+      "scoreMax": 42,
+      "bucketDistribution": {
+        "LowPriority": 167
+      },
+      "tieCount": 1500,
+      "uniqueScoreCount": 21
+    },
+    {
+      "decile": 4,
+      "horizonDays": 5,
+      "count": 60,
+      "nonMissingCount": 60,
+      "mean": 0.6025,
+      "median": 0.6047,
+      "min": -8.7227,
+      "max": 9.2409,
+      "standardDeviation": 4.0066,
+      "positiveReturnRatio": 0.4667,
+      "negativeReturnRatio": 0.4167,
+      "flatReturnRatio": 0.1167,
+      "missingRatio": 0,
+      "scoreMin": 44,
+      "scoreMax": 47,
+      "bucketDistribution": {
+        "LowPriority": 60
+      },
+      "tieCount": 1500,
+      "uniqueScoreCount": 21
+    },
+    {
+      "decile": 5,
+      "horizonDays": 5,
+      "count": 167,
+      "nonMissingCount": 167,
+      "mean": 0.767,
+      "median": 0,
+      "min": -9.7996,
+      "max": 25.3521,
+      "standardDeviation": 5.9222,
+      "positiveReturnRatio": 0.4311,
+      "negativeReturnRatio": 0.4731,
+      "flatReturnRatio": 0.0958,
+      "missingRatio": 0,
+      "scoreMin": 53,
+      "scoreMax": 59,
+      "bucketDistribution": {
+        "Neutral": 167
+      },
+      "tieCount": 1500,
+      "uniqueScoreCount": 21
+    },
+    {
+      "decile": 6,
+      "horizonDays": 5,
+      "count": 193,
+      "nonMissingCount": 193,
+      "mean": 1.807,
+      "median": 1.7544,
+      "min": -28.8136,
+      "max": 21.5517,
+      "standardDeviation": 6.8628,
+      "positiveReturnRatio": 0.5751,
+      "negativeReturnRatio": 0.3316,
+      "flatReturnRatio": 0.0933,
+      "missingRatio": 0,
+      "scoreMin": 63,
+      "scoreMax": 65,
+      "bucketDistribution": {
+        "Neutral": 193
+      },
+      "tieCount": 1500,
+      "uniqueScoreCount": 21
+    },
+    {
+      "decile": 7,
+      "horizonDays": 5,
+      "count": 167,
+      "nonMissingCount": 167,
+      "mean": 0.0812,
+      "median": 0.4115,
+      "min": -13.0606,
+      "max": 19.7531,
+      "standardDeviation": 4.3145,
+      "positiveReturnRatio": 0.4431,
+      "negativeReturnRatio": 0.4671,
+      "flatReturnRatio": 0.0898,
+      "missingRatio": 0,
+      "scoreMin": 68,
+      "scoreMax": 75,
+      "bucketDistribution": {
+        "Strong": 60,
+        "Neutral": 107
+      },
+      "tieCount": 1500,
+      "uniqueScoreCount": 21
+    },
+    {
+      "decile": 8,
+      "horizonDays": 5,
+      "count": 154,
+      "nonMissingCount": 154,
+      "mean": 1.7239,
+      "median": 0.2294,
+      "min": -13.2239,
+      "max": 56.2952,
+      "standardDeviation": 8.0721,
+      "positiveReturnRatio": 0.4221,
+      "negativeReturnRatio": 0.4481,
+      "flatReturnRatio": 0.1299,
+      "missingRatio": 0,
+      "scoreMin": 76,
+      "scoreMax": 77,
+      "bucketDistribution": {
+        "Strong": 154
+      },
+      "tieCount": 1500,
+      "uniqueScoreCount": 21
+    },
+    {
+      "decile": 9,
+      "horizonDays": 5,
+      "count": 86,
+      "nonMissingCount": 86,
+      "mean": 3.1626,
+      "median": 0.7693,
+      "min": -11.1441,
+      "max": 35.8537,
+      "standardDeviation": 9.2723,
+      "positiveReturnRatio": 0.4186,
+      "negativeReturnRatio": 0.407,
+      "flatReturnRatio": 0.1744,
+      "missingRatio": 0,
+      "scoreMin": 82,
+      "scoreMax": 85,
+      "bucketDistribution": {
+        "Strong": 86
+      },
+      "tieCount": 1500,
+      "uniqueScoreCount": 21
+    },
+    {
+      "decile": 10,
+      "horizonDays": 5,
+      "count": 193,
+      "nonMissingCount": 193,
+      "mean": 1.5069,
+      "median": 0.3571,
+      "min": -13.9332,
+      "max": 27.4933,
+      "standardDeviation": 6.5955,
+      "positiveReturnRatio": 0.4663,
+      "negativeReturnRatio": 0.4301,
+      "flatReturnRatio": 0.1036,
+      "missingRatio": 0,
+      "scoreMin": 94,
+      "scoreMax": 94,
+      "bucketDistribution": {
+        "Strong": 193
+      },
+      "tieCount": 1500,
+      "uniqueScoreCount": 21
+    },
+    {
+      "decile": 1,
+      "horizonDays": 20,
+      "count": 214,
+      "nonMissingCount": 213,
+      "mean": -0.1892,
+      "median": -0.9474,
+      "min": -23.8683,
+      "max": 50.1305,
+      "standardDeviation": 10.2422,
+      "positiveReturnRatio": 0.3879,
+      "negativeReturnRatio": 0.5514,
+      "flatReturnRatio": 0.0561,
+      "missingRatio": 0.0047,
+      "scoreMin": 21,
+      "scoreMax": 30,
+      "bucketDistribution": {
+        "Watch": 154,
+        "LowPriority": 60
+      },
+      "tieCount": 1500,
+      "uniqueScoreCount": 21
+    },
+    {
+      "decile": 2,
+      "horizonDays": 20,
+      "count": 99,
+      "nonMissingCount": 96,
+      "mean": 1.2669,
+      "median": 0.552,
+      "min": -20,
+      "max": 22.9917,
+      "standardDeviation": 9.2245,
+      "positiveReturnRatio": 0.4747,
+      "negativeReturnRatio": 0.4141,
+      "flatReturnRatio": 0.0808,
+      "missingRatio": 0.0303,
+      "scoreMin": 33,
+      "scoreMax": 36,
+      "bucketDistribution": {
+        "LowPriority": 99
+      },
+      "tieCount": 1500,
+      "uniqueScoreCount": 21
+    },
+    {
+      "decile": 3,
+      "horizonDays": 20,
+      "count": 167,
+      "nonMissingCount": 166,
+      "mean": -0.4749,
+      "median": -0.2053,
+      "min": -11.036,
+      "max": 9.3496,
+      "standardDeviation": 3.7566,
+      "positiveReturnRatio": 0.3114,
+      "negativeReturnRatio": 0.5269,
+      "flatReturnRatio": 0.1557,
+      "missingRatio": 0.006,
+      "scoreMin": 38,
+      "scoreMax": 42,
+      "bucketDistribution": {
+        "LowPriority": 167
+      },
+      "tieCount": 1500,
+      "uniqueScoreCount": 21
+    },
+    {
+      "decile": 4,
+      "horizonDays": 20,
+      "count": 60,
+      "nonMissingCount": 59,
+      "mean": 3.2849,
+      "median": 1.6931,
+      "min": -11.4428,
+      "max": 17.3469,
+      "standardDeviation": 7.0193,
+      "positiveReturnRatio": 0.55,
+      "negativeReturnRatio": 0.3167,
+      "flatReturnRatio": 0.1167,
+      "missingRatio": 0.0167,
+      "scoreMin": 44,
+      "scoreMax": 47,
+      "bucketDistribution": {
+        "LowPriority": 60
+      },
+      "tieCount": 1500,
+      "uniqueScoreCount": 21
+    },
+    {
+      "decile": 5,
+      "horizonDays": 20,
+      "count": 167,
+      "nonMissingCount": 165,
+      "mean": 2.065,
+      "median": 1.4414,
+      "min": -13.7466,
+      "max": 36.5325,
+      "standardDeviation": 8.6742,
+      "positiveReturnRatio": 0.521,
+      "negativeReturnRatio": 0.3772,
+      "flatReturnRatio": 0.0898,
+      "missingRatio": 0.012,
+      "scoreMin": 53,
+      "scoreMax": 59,
+      "bucketDistribution": {
+        "Neutral": 167
+      },
+      "tieCount": 1500,
+      "uniqueScoreCount": 21
+    },
+    {
+      "decile": 6,
+      "horizonDays": 20,
+      "count": 193,
+      "nonMissingCount": 193,
+      "mean": 12.2018,
+      "median": 9.9898,
+      "min": -27.521,
+      "max": 56.1936,
+      "standardDeviation": 15.1551,
+      "positiveReturnRatio": 0.7565,
+      "negativeReturnRatio": 0.2228,
+      "flatReturnRatio": 0.0207,
+      "missingRatio": 0,
+      "scoreMin": 63,
+      "scoreMax": 65,
+      "bucketDistribution": {
+        "Neutral": 193
+      },
+      "tieCount": 1500,
+      "uniqueScoreCount": 21
+    },
+    {
+      "decile": 7,
+      "horizonDays": 20,
+      "count": 167,
+      "nonMissingCount": 166,
+      "mean": 1.2608,
+      "median": 0.9802,
+      "min": -12.377,
+      "max": 17.8138,
+      "standardDeviation": 6.0152,
+      "positiveReturnRatio": 0.497,
+      "negativeReturnRatio": 0.4491,
+      "flatReturnRatio": 0.0479,
+      "missingRatio": 0.006,
+      "scoreMin": 68,
+      "scoreMax": 75,
+      "bucketDistribution": {
+        "Strong": 60,
+        "Neutral": 107
+      },
+      "tieCount": 1500,
+      "uniqueScoreCount": 21
+    },
+    {
+      "decile": 8,
+      "horizonDays": 20,
+      "count": 154,
+      "nonMissingCount": 154,
+      "mean": 7.6509,
+      "median": 4.0378,
+      "min": -10.2041,
+      "max": 50.2122,
+      "standardDeviation": 11.6371,
+      "positiveReturnRatio": 0.6429,
+      "negativeReturnRatio": 0.2922,
+      "flatReturnRatio": 0.0649,
+      "missingRatio": 0,
+      "scoreMin": 76,
+      "scoreMax": 77,
+      "bucketDistribution": {
+        "Strong": 154
+      },
+      "tieCount": 1500,
+      "uniqueScoreCount": 21
+    },
+    {
+      "decile": 9,
+      "horizonDays": 20,
+      "count": 86,
+      "nonMissingCount": 83,
+      "mean": 10.8772,
+      "median": 2.1711,
+      "min": -9.3458,
+      "max": 75.5306,
+      "standardDeviation": 21.6946,
+      "positiveReturnRatio": 0.5814,
+      "negativeReturnRatio": 0.3488,
+      "flatReturnRatio": 0.0349,
+      "missingRatio": 0.0349,
+      "scoreMin": 82,
+      "scoreMax": 85,
+      "bucketDistribution": {
+        "Strong": 86
+      },
+      "tieCount": 1500,
+      "uniqueScoreCount": 21
+    },
+    {
+      "decile": 10,
+      "horizonDays": 20,
+      "count": 193,
+      "nonMissingCount": 191,
+      "mean": 8.5724,
+      "median": 5.3004,
+      "min": -17.2174,
+      "max": 53.9894,
+      "standardDeviation": 13.3706,
+      "positiveReturnRatio": 0.6528,
+      "negativeReturnRatio": 0.2746,
+      "flatReturnRatio": 0.0622,
+      "missingRatio": 0.0104,
+      "scoreMin": 94,
+      "scoreMax": 94,
+      "bucketDistribution": {
+        "Strong": 193
+      },
+      "tieCount": 1500,
+      "uniqueScoreCount": 21
+    },
+    {
+      "decile": 1,
+      "horizonDays": 60,
+      "count": 214,
+      "nonMissingCount": 176,
+      "mean": 2.5713,
+      "median": -1.9063,
+      "min": -26.2791,
+      "max": 55,
+      "standardDeviation": 15.8271,
+      "positiveReturnRatio": 0.3505,
+      "negativeReturnRatio": 0.4439,
+      "flatReturnRatio": 0.028,
+      "missingRatio": 0.1776,
+      "scoreMin": 21,
+      "scoreMax": 30,
+      "bucketDistribution": {
+        "Watch": 154,
+        "LowPriority": 60
+      },
+      "tieCount": 1500,
+      "uniqueScoreCount": 21
+    },
+    {
+      "decile": 2,
+      "horizonDays": 60,
+      "count": 99,
+      "nonMissingCount": 58,
+      "mean": -2.3618,
+      "median": 0.1007,
+      "min": -34.9565,
+      "max": 21.1111,
+      "standardDeviation": 13.0641,
+      "positiveReturnRatio": 0.2727,
+      "negativeReturnRatio": 0.2929,
+      "flatReturnRatio": 0.0202,
+      "missingRatio": 0.4141,
+      "scoreMin": 33,
+      "scoreMax": 36,
+      "bucketDistribution": {
+        "LowPriority": 99
+      },
+      "tieCount": 1500,
+      "uniqueScoreCount": 21
+    },
+    {
+      "decile": 3,
+      "horizonDays": 60,
+      "count": 167,
+      "nonMissingCount": 138,
+      "mean": -0.8422,
+      "median": -1.3047,
+      "min": -16.2896,
+      "max": 17.8184,
+      "standardDeviation": 6.3112,
+      "positiveReturnRatio": 0.3174,
+      "negativeReturnRatio": 0.4611,
+      "flatReturnRatio": 0.0479,
+      "missingRatio": 0.1737,
+      "scoreMin": 38,
+      "scoreMax": 42,
+      "bucketDistribution": {
+        "LowPriority": 167
+      },
+      "tieCount": 1500,
+      "uniqueScoreCount": 21
+    },
+    {
+      "decile": 4,
+      "horizonDays": 60,
+      "count": 60,
+      "nonMissingCount": 42,
+      "mean": 3.0817,
+      "median": 4.4778,
+      "min": -13.0344,
+      "max": 18.1912,
+      "standardDeviation": 8.3606,
+      "positiveReturnRatio": 0.4333,
+      "negativeReturnRatio": 0.2667,
+      "flatReturnRatio": 0,
+      "missingRatio": 0.3,
+      "scoreMin": 44,
+      "scoreMax": 47,
+      "bucketDistribution": {
+        "LowPriority": 60
+      },
+      "tieCount": 1500,
+      "uniqueScoreCount": 21
+    },
+    {
+      "decile": 5,
+      "horizonDays": 60,
+      "count": 167,
+      "nonMissingCount": 139,
+      "mean": 8.2996,
+      "median": 3.1941,
+      "min": -17.9558,
+      "max": 65.316,
+      "standardDeviation": 18.881,
+      "positiveReturnRatio": 0.479,
+      "negativeReturnRatio": 0.3293,
+      "flatReturnRatio": 0.024,
+      "missingRatio": 0.1677,
+      "scoreMin": 53,
+      "scoreMax": 59,
+      "bucketDistribution": {
+        "Neutral": 167
+      },
+      "tieCount": 1500,
+      "uniqueScoreCount": 21
+    },
+    {
+      "decile": 6,
+      "horizonDays": 60,
+      "count": 193,
+      "nonMissingCount": 181,
+      "mean": 38.1066,
+      "median": 27.5404,
+      "min": -35.8718,
+      "max": 144.6889,
+      "standardDeviation": 30.9876,
+      "positiveReturnRatio": 0.8549,
+      "negativeReturnRatio": 0.0674,
+      "flatReturnRatio": 0.0155,
+      "missingRatio": 0.0622,
+      "scoreMin": 63,
+      "scoreMax": 65,
+      "bucketDistribution": {
+        "Neutral": 193
+      },
+      "tieCount": 1500,
+      "uniqueScoreCount": 21
+    },
+    {
+      "decile": 7,
+      "horizonDays": 60,
+      "count": 167,
+      "nonMissingCount": 138,
+      "mean": 4.7193,
+      "median": 4.1644,
+      "min": -12.4044,
+      "max": 31.7164,
+      "standardDeviation": 8.8013,
+      "positiveReturnRatio": 0.5269,
+      "negativeReturnRatio": 0.2635,
+      "flatReturnRatio": 0.0359,
+      "missingRatio": 0.1737,
+      "scoreMin": 68,
+      "scoreMax": 75,
+      "bucketDistribution": {
+        "Strong": 60,
+        "Neutral": 107
+      },
+      "tieCount": 1500,
+      "uniqueScoreCount": 21
+    },
+    {
+      "decile": 8,
+      "horizonDays": 60,
+      "count": 154,
+      "nonMissingCount": 136,
+      "mean": 21.9596,
+      "median": 17.2234,
+      "min": -7.571,
+      "max": 105.2863,
+      "standardDeviation": 20.8753,
+      "positiveReturnRatio": 0.8506,
+      "negativeReturnRatio": 0.0325,
+      "flatReturnRatio": 0,
+      "missingRatio": 0.1169,
+      "scoreMin": 76,
+      "scoreMax": 77,
+      "bucketDistribution": {
+        "Strong": 154
+      },
+      "tieCount": 1500,
+      "uniqueScoreCount": 21
+    },
+    {
+      "decile": 9,
+      "horizonDays": 60,
+      "count": 86,
+      "nonMissingCount": 48,
+      "mean": 45.7705,
+      "median": 52.038,
+      "min": -0.7067,
+      "max": 77.8351,
+      "standardDeviation": 20.6369,
+      "positiveReturnRatio": 0.5465,
+      "negativeReturnRatio": 0.0116,
+      "flatReturnRatio": 0,
+      "missingRatio": 0.4419,
+      "scoreMin": 82,
+      "scoreMax": 85,
+      "bucketDistribution": {
+        "Strong": 86
+      },
+      "tieCount": 1500,
+      "uniqueScoreCount": 21
+    },
+    {
+      "decile": 10,
+      "horizonDays": 60,
+      "count": 193,
+      "nonMissingCount": 162,
+      "mean": 25.7469,
+      "median": 23.7845,
+      "min": -8.6022,
+      "max": 71.1599,
+      "standardDeviation": 15.0942,
+      "positiveReturnRatio": 0.8083,
+      "negativeReturnRatio": 0.0311,
+      "flatReturnRatio": 0,
+      "missingRatio": 0.1606,
+      "scoreMin": 94,
+      "scoreMax": 94,
+      "bucketDistribution": {
+        "Strong": 193
+      },
+      "tieCount": 1500,
+      "uniqueScoreCount": 21
+    }
+  ],
+  "scoreDecileMeta": [
+    {
+      "horizonDays": 5,
+      "tieCount": 1500,
+      "uniqueScoreCount": 21,
+      "totalRows": 1500,
+      "decileBoundaries": [
+        {
+          "decile": 1,
+          "scoreMin": 21,
+          "scoreMax": 30,
+          "count": 214
+        },
+        {
+          "decile": 2,
+          "scoreMin": 33,
+          "scoreMax": 36,
+          "count": 99
+        },
+        {
+          "decile": 3,
+          "scoreMin": 38,
+          "scoreMax": 42,
+          "count": 167
+        },
+        {
+          "decile": 4,
+          "scoreMin": 44,
+          "scoreMax": 47,
+          "count": 60
+        },
+        {
+          "decile": 5,
+          "scoreMin": 53,
+          "scoreMax": 59,
+          "count": 167
+        },
+        {
+          "decile": 6,
+          "scoreMin": 63,
+          "scoreMax": 65,
+          "count": 193
+        },
+        {
+          "decile": 7,
+          "scoreMin": 68,
+          "scoreMax": 75,
+          "count": 167
+        },
+        {
+          "decile": 8,
+          "scoreMin": 76,
+          "scoreMax": 77,
+          "count": 154
+        },
+        {
+          "decile": 9,
+          "scoreMin": 82,
+          "scoreMax": 85,
+          "count": 86
+        },
+        {
+          "decile": 10,
+          "scoreMin": 94,
+          "scoreMax": 94,
+          "count": 193
+        }
+      ]
+    },
+    {
+      "horizonDays": 20,
+      "tieCount": 1500,
+      "uniqueScoreCount": 21,
+      "totalRows": 1500,
+      "decileBoundaries": [
+        {
+          "decile": 1,
+          "scoreMin": 21,
+          "scoreMax": 30,
+          "count": 214
+        },
+        {
+          "decile": 2,
+          "scoreMin": 33,
+          "scoreMax": 36,
+          "count": 99
+        },
+        {
+          "decile": 3,
+          "scoreMin": 38,
+          "scoreMax": 42,
+          "count": 167
+        },
+        {
+          "decile": 4,
+          "scoreMin": 44,
+          "scoreMax": 47,
+          "count": 60
+        },
+        {
+          "decile": 5,
+          "scoreMin": 53,
+          "scoreMax": 59,
+          "count": 167
+        },
+        {
+          "decile": 6,
+          "scoreMin": 63,
+          "scoreMax": 65,
+          "count": 193
+        },
+        {
+          "decile": 7,
+          "scoreMin": 68,
+          "scoreMax": 75,
+          "count": 167
+        },
+        {
+          "decile": 8,
+          "scoreMin": 76,
+          "scoreMax": 77,
+          "count": 154
+        },
+        {
+          "decile": 9,
+          "scoreMin": 82,
+          "scoreMax": 85,
+          "count": 86
+        },
+        {
+          "decile": 10,
+          "scoreMin": 94,
+          "scoreMax": 94,
+          "count": 193
+        }
+      ]
+    },
+    {
+      "horizonDays": 60,
+      "tieCount": 1500,
+      "uniqueScoreCount": 21,
+      "totalRows": 1500,
+      "decileBoundaries": [
+        {
+          "decile": 1,
+          "scoreMin": 21,
+          "scoreMax": 30,
+          "count": 214
+        },
+        {
+          "decile": 2,
+          "scoreMin": 33,
+          "scoreMax": 36,
+          "count": 99
+        },
+        {
+          "decile": 3,
+          "scoreMin": 38,
+          "scoreMax": 42,
+          "count": 167
+        },
+        {
+          "decile": 4,
+          "scoreMin": 44,
+          "scoreMax": 47,
+          "count": 60
+        },
+        {
+          "decile": 5,
+          "scoreMin": 53,
+          "scoreMax": 59,
+          "count": 167
+        },
+        {
+          "decile": 6,
+          "scoreMin": 63,
+          "scoreMax": 65,
+          "count": 193
+        },
+        {
+          "decile": 7,
+          "scoreMin": 68,
+          "scoreMax": 75,
+          "count": 167
+        },
+        {
+          "decile": 8,
+          "scoreMin": 76,
+          "scoreMax": 77,
+          "count": 154
+        },
+        {
+          "decile": 9,
+          "scoreMin": 82,
+          "scoreMax": 85,
+          "count": 86
+        },
+        {
+          "decile": 10,
+          "scoreMin": 94,
+          "scoreMax": 94,
+          "count": 193
+        }
+      ]
+    }
+  ],
+  "byCompleteness": [
+    {
+      "scoringCompletenessStatus": "COMPLETE",
+      "horizonDays": 5,
+      "count": 1033,
+      "nonMissingCount": 1033,
+      "mean": 0.8943,
+      "median": 0,
+      "min": -13.9332,
+      "max": 56.2952,
+      "standardDeviation": 6.1939,
+      "positiveReturnRatio": 0.3969,
+      "negativeReturnRatio": 0.4753,
+      "flatReturnRatio": 0.1278,
+      "missingRatio": 0
+    },
+    {
+      "scoringCompletenessStatus": "COMPLETE",
+      "horizonDays": 20,
+      "count": 1033,
+      "nonMissingCount": 1022,
+      "mean": 3.864,
+      "median": 1.1635,
+      "min": -23.8683,
+      "max": 75.5306,
+      "standardDeviation": 12.1031,
+      "positiveReturnRatio": 0.5044,
+      "negativeReturnRatio": 0.4085,
+      "flatReturnRatio": 0.0765,
+      "missingRatio": 0.0106
+    },
+    {
+      "scoringCompletenessStatus": "COMPLETE",
+      "horizonDays": 60,
+      "count": 1033,
+      "nonMissingCount": 817,
+      "mean": 11.9724,
+      "median": 6.6798,
+      "min": -34.9565,
+      "max": 105.2863,
+      "standardDeviation": 20.4646,
+      "positiveReturnRatio": 0.516,
+      "negativeReturnRatio": 0.2565,
+      "flatReturnRatio": 0.0184,
+      "missingRatio": 0.2091
+    },
+    {
+      "scoringCompletenessStatus": "PARTIAL",
+      "horizonDays": 5,
+      "count": 467,
+      "nonMissingCount": 467,
+      "mean": 0.9866,
+      "median": 0.6711,
+      "min": -28.8136,
+      "max": 25.3521,
+      "standardDeviation": 6.0609,
+      "positiveReturnRatio": 0.4797,
+      "negativeReturnRatio": 0.4218,
+      "flatReturnRatio": 0.0985,
+      "missingRatio": 0
+    },
+    {
+      "scoringCompletenessStatus": "PARTIAL",
+      "horizonDays": 20,
+      "count": 467,
+      "nonMissingCount": 464,
+      "mean": 6.1867,
+      "median": 2.9228,
+      "min": -27.521,
+      "max": 56.1936,
+      "standardDeviation": 12.4725,
+      "positiveReturnRatio": 0.6103,
+      "negativeReturnRatio": 0.3276,
+      "flatReturnRatio": 0.0557,
+      "missingRatio": 0.0064
+    },
+    {
+      "scoringCompletenessStatus": "PARTIAL",
+      "horizonDays": 60,
+      "count": 467,
+      "nonMissingCount": 401,
+      "mean": 21.4563,
+      "median": 15.0628,
+      "min": -35.8718,
+      "max": 144.6889,
+      "standardDeviation": 28.1781,
+      "positiveReturnRatio": 0.6745,
+      "negativeReturnRatio": 0.1627,
+      "flatReturnRatio": 0.0214,
+      "missingRatio": 0.1413
+    }
+  ],
+  "confusionMatrices": {
+    "byBucket": [
+      {
+        "dimension": "bucket",
+        "key": "LowPriority",
+        "horizonDays": 5,
+        "NEGATIVE": 196,
+        "FLAT": 56,
+        "POSITIVE": 134,
+        "MISSING": 0,
+        "total": 386
+      },
+      {
+        "dimension": "bucket",
+        "key": "LowPriority",
+        "horizonDays": 20,
+        "NEGATIVE": 185,
+        "FLAT": 41,
+        "POSITIVE": 154,
+        "MISSING": 6,
+        "total": 386
+      },
+      {
+        "dimension": "bucket",
+        "key": "LowPriority",
+        "horizonDays": 60,
+        "NEGATIVE": 131,
+        "FLAT": 10,
+        "POSITIVE": 138,
+        "MISSING": 107,
+        "total": 386
+      },
+      {
+        "dimension": "bucket",
+        "key": "Neutral",
+        "horizonDays": 5,
+        "NEGATIVE": 197,
+        "FLAT": 46,
+        "POSITIVE": 224,
+        "MISSING": 0,
+        "total": 467
+      },
+      {
+        "dimension": "bucket",
+        "key": "Neutral",
+        "horizonDays": 20,
+        "NEGATIVE": 153,
+        "FLAT": 26,
+        "POSITIVE": 285,
+        "MISSING": 3,
+        "total": 467
+      },
+      {
+        "dimension": "bucket",
+        "key": "Neutral",
+        "horizonDays": 60,
+        "NEGATIVE": 76,
+        "FLAT": 10,
+        "POSITIVE": 315,
+        "MISSING": 66,
+        "total": 467
+      },
+      {
+        "dimension": "bucket",
+        "key": "Strong",
+        "horizonDays": 5,
+        "NEGATIVE": 211,
+        "FLAT": 58,
+        "POSITIVE": 224,
+        "MISSING": 0,
+        "total": 493
+      },
+      {
+        "dimension": "bucket",
+        "key": "Strong",
+        "horizonDays": 20,
+        "NEGATIVE": 156,
+        "FLAT": 26,
+        "POSITIVE": 306,
+        "MISSING": 5,
+        "total": 493
+      },
+      {
+        "dimension": "bucket",
+        "key": "Strong",
+        "horizonDays": 60,
+        "NEGATIVE": 48,
+        "FLAT": 3,
+        "POSITIVE": 352,
+        "MISSING": 90,
+        "total": 493
+      },
+      {
+        "dimension": "bucket",
+        "key": "Watch",
+        "horizonDays": 5,
+        "NEGATIVE": 84,
+        "FLAT": 18,
+        "POSITIVE": 52,
+        "MISSING": 0,
+        "total": 154
+      },
+      {
+        "dimension": "bucket",
+        "key": "Watch",
+        "horizonDays": 20,
+        "NEGATIVE": 81,
+        "FLAT": 12,
+        "POSITIVE": 61,
+        "MISSING": 0,
+        "total": 154
+      },
+      {
+        "dimension": "bucket",
+        "key": "Watch",
+        "horizonDays": 60,
+        "NEGATIVE": 86,
+        "FLAT": 6,
+        "POSITIVE": 43,
+        "MISSING": 19,
+        "total": 154
+      }
+    ],
+    "byScoreDecile": [
+      {
+        "dimension": "scoreDecile",
+        "key": "1",
+        "horizonDays": 5,
+        "NEGATIVE": 123,
+        "FLAT": 22,
+        "POSITIVE": 69,
+        "MISSING": 0,
+        "total": 214
+      },
+      {
+        "dimension": "scoreDecile",
+        "key": "2",
+        "horizonDays": 5,
+        "NEGATIVE": 47,
+        "FLAT": 13,
+        "POSITIVE": 39,
+        "MISSING": 0,
+        "total": 99
+      },
+      {
+        "dimension": "scoreDecile",
+        "key": "3",
+        "horizonDays": 5,
+        "NEGATIVE": 85,
+        "FLAT": 32,
+        "POSITIVE": 50,
+        "MISSING": 0,
+        "total": 167
+      },
+      {
+        "dimension": "scoreDecile",
+        "key": "4",
+        "horizonDays": 5,
+        "NEGATIVE": 25,
+        "FLAT": 7,
+        "POSITIVE": 28,
+        "MISSING": 0,
+        "total": 60
+      },
+      {
+        "dimension": "scoreDecile",
+        "key": "5",
+        "horizonDays": 5,
+        "NEGATIVE": 79,
+        "FLAT": 16,
+        "POSITIVE": 72,
+        "MISSING": 0,
+        "total": 167
+      },
+      {
+        "dimension": "scoreDecile",
+        "key": "6",
+        "horizonDays": 5,
+        "NEGATIVE": 64,
+        "FLAT": 18,
+        "POSITIVE": 111,
+        "MISSING": 0,
+        "total": 193
+      },
+      {
+        "dimension": "scoreDecile",
+        "key": "7",
+        "horizonDays": 5,
+        "NEGATIVE": 78,
+        "FLAT": 15,
+        "POSITIVE": 74,
+        "MISSING": 0,
+        "total": 167
+      },
+      {
+        "dimension": "scoreDecile",
+        "key": "8",
+        "horizonDays": 5,
+        "NEGATIVE": 69,
+        "FLAT": 20,
+        "POSITIVE": 65,
+        "MISSING": 0,
+        "total": 154
+      },
+      {
+        "dimension": "scoreDecile",
+        "key": "9",
+        "horizonDays": 5,
+        "NEGATIVE": 35,
+        "FLAT": 15,
+        "POSITIVE": 36,
+        "MISSING": 0,
+        "total": 86
+      },
+      {
+        "dimension": "scoreDecile",
+        "key": "10",
+        "horizonDays": 5,
+        "NEGATIVE": 83,
+        "FLAT": 20,
+        "POSITIVE": 90,
+        "MISSING": 0,
+        "total": 193
+      },
+      {
+        "dimension": "scoreDecile",
+        "key": "1",
+        "horizonDays": 20,
+        "NEGATIVE": 118,
+        "FLAT": 12,
+        "POSITIVE": 83,
+        "MISSING": 1,
+        "total": 214
+      },
+      {
+        "dimension": "scoreDecile",
+        "key": "2",
+        "horizonDays": 20,
+        "NEGATIVE": 41,
+        "FLAT": 8,
+        "POSITIVE": 47,
+        "MISSING": 3,
+        "total": 99
+      },
+      {
+        "dimension": "scoreDecile",
+        "key": "3",
+        "horizonDays": 20,
+        "NEGATIVE": 88,
+        "FLAT": 26,
+        "POSITIVE": 52,
+        "MISSING": 1,
+        "total": 167
+      },
+      {
+        "dimension": "scoreDecile",
+        "key": "4",
+        "horizonDays": 20,
+        "NEGATIVE": 19,
+        "FLAT": 7,
+        "POSITIVE": 33,
+        "MISSING": 1,
+        "total": 60
+      },
+      {
+        "dimension": "scoreDecile",
+        "key": "5",
+        "horizonDays": 20,
+        "NEGATIVE": 63,
+        "FLAT": 15,
+        "POSITIVE": 87,
+        "MISSING": 2,
+        "total": 167
+      },
+      {
+        "dimension": "scoreDecile",
+        "key": "6",
+        "horizonDays": 20,
+        "NEGATIVE": 43,
+        "FLAT": 4,
+        "POSITIVE": 146,
+        "MISSING": 0,
+        "total": 193
+      },
+      {
+        "dimension": "scoreDecile",
+        "key": "7",
+        "horizonDays": 20,
+        "NEGATIVE": 75,
+        "FLAT": 8,
+        "POSITIVE": 83,
+        "MISSING": 1,
+        "total": 167
+      },
+      {
+        "dimension": "scoreDecile",
+        "key": "8",
+        "horizonDays": 20,
+        "NEGATIVE": 45,
+        "FLAT": 10,
+        "POSITIVE": 99,
+        "MISSING": 0,
+        "total": 154
+      },
+      {
+        "dimension": "scoreDecile",
+        "key": "9",
+        "horizonDays": 20,
+        "NEGATIVE": 30,
+        "FLAT": 3,
+        "POSITIVE": 50,
+        "MISSING": 3,
+        "total": 86
+      },
+      {
+        "dimension": "scoreDecile",
+        "key": "10",
+        "horizonDays": 20,
+        "NEGATIVE": 53,
+        "FLAT": 12,
+        "POSITIVE": 126,
+        "MISSING": 2,
+        "total": 193
+      },
+      {
+        "dimension": "scoreDecile",
+        "key": "1",
+        "horizonDays": 60,
+        "NEGATIVE": 95,
+        "FLAT": 6,
+        "POSITIVE": 75,
+        "MISSING": 38,
+        "total": 214
+      },
+      {
+        "dimension": "scoreDecile",
+        "key": "2",
+        "horizonDays": 60,
+        "NEGATIVE": 29,
+        "FLAT": 2,
+        "POSITIVE": 27,
+        "MISSING": 41,
+        "total": 99
+      },
+      {
+        "dimension": "scoreDecile",
+        "key": "3",
+        "horizonDays": 60,
+        "NEGATIVE": 77,
+        "FLAT": 8,
+        "POSITIVE": 53,
+        "MISSING": 29,
+        "total": 167
+      },
+      {
+        "dimension": "scoreDecile",
+        "key": "4",
+        "horizonDays": 60,
+        "NEGATIVE": 16,
+        "FLAT": 0,
+        "POSITIVE": 26,
+        "MISSING": 18,
+        "total": 60
+      },
+      {
+        "dimension": "scoreDecile",
+        "key": "5",
+        "horizonDays": 60,
+        "NEGATIVE": 55,
+        "FLAT": 4,
+        "POSITIVE": 80,
+        "MISSING": 28,
+        "total": 167
+      },
+      {
+        "dimension": "scoreDecile",
+        "key": "6",
+        "horizonDays": 60,
+        "NEGATIVE": 13,
+        "FLAT": 3,
+        "POSITIVE": 165,
+        "MISSING": 12,
+        "total": 193
+      },
+      {
+        "dimension": "scoreDecile",
+        "key": "7",
+        "horizonDays": 60,
+        "NEGATIVE": 44,
+        "FLAT": 6,
+        "POSITIVE": 88,
+        "MISSING": 29,
+        "total": 167
+      },
+      {
+        "dimension": "scoreDecile",
+        "key": "8",
+        "horizonDays": 60,
+        "NEGATIVE": 5,
+        "FLAT": 0,
+        "POSITIVE": 131,
+        "MISSING": 18,
+        "total": 154
+      },
+      {
+        "dimension": "scoreDecile",
+        "key": "9",
+        "horizonDays": 60,
+        "NEGATIVE": 1,
+        "FLAT": 0,
+        "POSITIVE": 47,
+        "MISSING": 38,
+        "total": 86
+      },
+      {
+        "dimension": "scoreDecile",
+        "key": "10",
+        "horizonDays": 60,
+        "NEGATIVE": 6,
+        "FLAT": 0,
+        "POSITIVE": 156,
+        "MISSING": 31,
+        "total": 193
+      }
+    ]
+  },
+  "predictionVsBaseline": {
+    "disclaimer": "Descriptive distribution comparison only. No performance claims implied. Not investment advice.",
+    "horizons": [
+      {
+        "horizonDays": 5,
+        "prediction": {
+          "count": 1500,
+          "nonMissingCount": 1500,
+          "mean": 0.923,
+          "median": 0.2586,
+          "min": -28.8136,
+          "max": 56.2952,
+          "standardDeviation": 6.1509,
+          "positiveReturnRatio": 0.4227,
+          "negativeReturnRatio": 0.4587,
+          "flatReturnRatio": 0.1187,
+          "missingRatio": 0
+        },
+        "baselines": [
+          {
+            "baselineType": "BUY_AND_HOLD_ALL",
+            "horizonDays": 5,
+            "count": 1500,
+            "mean": 0.923,
+            "median": 0.2586,
+            "standardDeviation": 6.1509,
+            "positiveRatio": 0.4227,
+            "negativeRatio": 0.4587,
+            "flatRatio": 0.1187,
+            "missingRatio": 0
+          },
+          {
+            "baselineType": "TOP_N_EQUAL_WEIGHT",
+            "horizonDays": 5,
+            "count": 600,
+            "mean": 0.6883,
+            "median": 0.3889,
+            "standardDeviation": 4.9315,
+            "positiveRatio": 0.43,
+            "negativeRatio": 0.4433,
+            "flatRatio": 0.1267,
+            "missingRatio": 0
+          },
+          {
+            "baselineType": "RANDOM_N_DETERMINISTIC",
+            "horizonDays": 5,
+            "count": 600,
+            "mean": 0.9352,
+            "median": 0,
+            "standardDeviation": 6.4709,
+            "positiveRatio": 0.4067,
+            "negativeRatio": 0.4817,
+            "flatRatio": 0.1117,
+            "missingRatio": 0
+          },
+          {
+            "baselineType": "STOCKQUOTE_COVERAGE_TOP_N",
+            "horizonDays": 5,
+            "count": 600,
+            "mean": 1.3596,
+            "median": 0.8277,
+            "standardDeviation": 6.4175,
+            "positiveRatio": 0.4767,
+            "negativeRatio": 0.41,
+            "flatRatio": 0.1133,
+            "missingRatio": 0
+          }
+        ],
+        "note": "Descriptive distribution for horizon 5d. Descriptive distribution comparison only. No performance claims implied. Not investment advice."
+      },
+      {
+        "horizonDays": 20,
+        "prediction": {
+          "count": 1500,
+          "nonMissingCount": 1486,
+          "mean": 4.5893,
+          "median": 1.6153,
+          "min": -27.521,
+          "max": 75.5306,
+          "standardDeviation": 12.2628,
+          "positiveReturnRatio": 0.5373,
+          "negativeReturnRatio": 0.3833,
+          "flatReturnRatio": 0.07,
+          "missingRatio": 0.0093
+        },
+        "baselines": [
+          {
+            "baselineType": "BUY_AND_HOLD_ALL",
+            "horizonDays": 20,
+            "count": 1500,
+            "mean": 4.5893,
+            "median": 1.6153,
+            "standardDeviation": 12.2628,
+            "positiveRatio": 0.5373,
+            "negativeRatio": 0.3833,
+            "flatRatio": 0.07,
+            "missingRatio": 0.0093
+          },
+          {
+            "baselineType": "TOP_N_EQUAL_WEIGHT",
+            "horizonDays": 20,
+            "count": 600,
+            "mean": 3.0339,
+            "median": 1.1559,
+            "standardDeviation": 9.7062,
+            "positiveRatio": 0.505,
+            "negativeRatio": 0.4067,
+            "flatRatio": 0.08,
+            "missingRatio": 0.0083
+          },
+          {
+            "baselineType": "RANDOM_N_DETERMINISTIC",
+            "horizonDays": 20,
+            "count": 600,
+            "mean": 4.6686,
+            "median": 1.5152,
+            "standardDeviation": 12.2142,
+            "positiveRatio": 0.5317,
+            "negativeRatio": 0.3717,
+            "flatRatio": 0.085,
+            "missingRatio": 0.0117
+          },
+          {
+            "baselineType": "STOCKQUOTE_COVERAGE_TOP_N",
+            "horizonDays": 20,
+            "count": 600,
+            "mean": 6.8809,
+            "median": 3.4224,
+            "standardDeviation": 12.4354,
+            "positiveRatio": 0.625,
+            "negativeRatio": 0.3133,
+            "flatRatio": 0.06,
+            "missingRatio": 0.0017
+          }
+        ],
+        "note": "Descriptive distribution for horizon 20d. Descriptive distribution comparison only. No performance claims implied. Not investment advice."
+      },
+      {
+        "horizonDays": 60,
+        "prediction": {
+          "count": 1500,
+          "nonMissingCount": 1218,
+          "mean": 15.0948,
+          "median": 9.0626,
+          "min": -35.8718,
+          "max": 144.6889,
+          "standardDeviation": 23.6993,
+          "positiveReturnRatio": 0.5653,
+          "negativeReturnRatio": 0.2273,
+          "flatReturnRatio": 0.0193,
+          "missingRatio": 0.188
+        },
+        "baselines": [
+          {
+            "baselineType": "BUY_AND_HOLD_ALL",
+            "horizonDays": 60,
+            "count": 1500,
+            "mean": 15.0948,
+            "median": 9.0626,
+            "standardDeviation": 23.6993,
+            "positiveRatio": 0.5653,
+            "negativeRatio": 0.2273,
+            "flatRatio": 0.0193,
+            "missingRatio": 0.188
+          },
+          {
+            "baselineType": "TOP_N_EQUAL_WEIGHT",
+            "horizonDays": 60,
+            "count": 600,
+            "mean": 8.7251,
+            "median": 4.0293,
+            "standardDeviation": 22.1441,
+            "positiveRatio": 0.48,
+            "negativeRatio": 0.315,
+            "flatRatio": 0.03,
+            "missingRatio": 0.175
+          },
+          {
+            "baselineType": "RANDOM_N_DETERMINISTIC",
+            "horizonDays": 60,
+            "count": 600,
+            "mean": 14.3091,
+            "median": 7.8847,
+            "standardDeviation": 22.3629,
+            "positiveRatio": 0.5667,
+            "negativeRatio": 0.2283,
+            "flatRatio": 0.0117,
+            "missingRatio": 0.1933
+          },
+          {
+            "baselineType": "STOCKQUOTE_COVERAGE_TOP_N",
+            "horizonDays": 60,
+            "count": 600,
+            "mean": 22.3198,
+            "median": 19.5337,
+            "standardDeviation": 26.5849,
+            "positiveRatio": 0.7033,
+            "negativeRatio": 0.21,
+            "flatRatio": 0.0183,
+            "missingRatio": 0.0683
+          }
+        ],
+        "note": "Descriptive distribution for horizon 60d. Descriptive distribution comparison only. No performance claims implied. Not investment advice."
+      }
+    ],
+    "coverageNote": "predictionRows=4500 baselineRows=9900",
+    "predictionCoverageRatio": 0.9342,
+    "baselineCoverageRatios": {
+      "BUY_AND_HOLD_ALL": 0.9342,
+      "TOP_N_EQUAL_WEIGHT": 0.9389,
+      "RANDOM_N_DETERMINISTIC": 0.9317,
+      "STOCKQUOTE_COVERAGE_TOP_N": 0.9767
+    }
+  },
+  "limitations": [
+    "All statistics are descriptive only. No causal claims implied.",
+    "Return data covers a specific historical window and may not reflect current market conditions.",
+    "Score decile assignment uses unique-score percentile mapping; buckets with many tied scores show low unique-score count.",
+    "PARTIAL/EMPTY corpus rows may have incomplete signal coverage, affecting bucket/score distributions.",
+    "Baseline corpus (P1) uses deterministic random seed and may not capture all market scenarios.",
+    "Not investment advice. Not a trading system. Not for production use."
+  ],
+  "durationMs": 108
+}

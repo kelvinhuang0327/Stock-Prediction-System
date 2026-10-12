@@ -1,0 +1,6588 @@
+{
+  "auditId": "p27-artifact-inventory",
+  "generatedAt": "2026-05-13T15:08:49.581828+00:00",
+  "totalFiles": 658,
+  "items": [
+    {
+      "filename": "PHASE_INDEX.md",
+      "extension": ".md",
+      "artifactType": "index",
+      "inferredPhase": "governance",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1267,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p001_as_of_data_gate_audit.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 3041,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p001_as_of_data_gate_audit.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1662,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p001_future_date_quarantine.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1639,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p001_future_date_quarantine.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1172,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p001_guardrail_validation.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 2805,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p001_guardrail_validation.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1703,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p001_mvp_universe_lock.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1709,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p001_mvp_universe_lock.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1136,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p001_readiness_decision.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 2741,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p001_readiness_decision.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1999,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p002a_api_as_of_gate_audit.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 4801,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p002a_api_as_of_gate_audit.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 2308,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p002a_guardrail_validation.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 3679,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p002a_guardrail_validation.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1712,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p002a_readiness_decision.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 2574,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p002a_readiness_decision.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1705,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p002a_stock_detail_as_of_validation.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 2568,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p002a_stock_detail_as_of_validation.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1844,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p002a_strategy_screen_as_of_validation.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 2607,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p002a_strategy_screen_as_of_validation.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 2115,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p002b_guardrail_validation.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 3207,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p002b_guardrail_validation.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1464,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p002b_readiness_decision.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1838,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p002b_readiness_decision.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1536,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p002b_shadow_prediction_log_artifact_preview.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 3305,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p002b_shadow_prediction_log_artifact_preview.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 849,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p002b_shadow_prediction_log_contract.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 3028,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p002b_shadow_prediction_log_contract.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1674,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p002b_shadow_prediction_log_preview.jsonl",
+      "extension": ".jsonl",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 2189,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p003_backtest_as_of_validation.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1607,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p003_backtest_as_of_validation.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1433,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p003_guardrail_validation.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 2010,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p003_guardrail_validation.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1477,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p003_ops_as_of_readiness_validation.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1234,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p003_ops_as_of_readiness_validation.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1350,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p003_readiness_decision.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 2126,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p003_readiness_decision.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1557,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p003_remaining_api_as_of_gap_audit.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 3147,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p003_remaining_api_as_of_gap_audit.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 2187,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p003_strategy_screen_propagation_validation.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1462,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p003_strategy_screen_propagation_validation.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1385,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p004_guardrail_validation.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 2033,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p004_guardrail_validation.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1795,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p004_market_index_as_of_audit.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 2243,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p004_market_index_as_of_audit.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1455,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p004_market_regime_as_of_validation.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1648,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p004_market_regime_as_of_validation.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1574,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p004_ops_market_regime_readiness.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1405,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p004_ops_market_regime_readiness.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1505,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p004_readiness_decision.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1629,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p004_readiness_decision.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1562,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p004_signal_fusion_market_regime_validation.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1478,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p004_signal_fusion_market_regime_validation.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1217,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p0combined_date_format_audit.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 3778,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p0combined_date_format_audit.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 2406,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p0combined_guardrail_validation.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 2355,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p0combined_guardrail_validation.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1329,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p0combined_outcome_writeback_skeleton.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 2251,
+      "pairedArtifactExists": false,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p0combined_readiness_decision.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1086,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p0combined_readiness_decision.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 633,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p0combined_shadow_daily_dry_run.jsonl",
+      "extension": ".jsonl",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 2319,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p0combined_shadow_daily_dry_run_contract.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 731,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p0combined_shadow_daily_dry_run_contract.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 385,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p0combined_shadow_daily_dry_run_result.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 4979,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p0combined_shadow_daily_dry_run_result.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 874,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p0hardreset_corpus_quality_gate_rerun.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 5469,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p0hardreset_corpus_quality_gate_rerun.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1292,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p0hardreset_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 11700,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p0hardreset_historical_asofdate_candidates.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 18021,
+      "pairedArtifactExists": false,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p0hardreset_historical_replay_artifact.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 29704,
+      "pairedArtifactExists": false,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p0hardreset_historical_replay_corpus.jsonl",
+      "extension": ".jsonl",
+      "artifactType": "corpus",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 3877277,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p0hardreset_historical_replay_summary.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1231,
+      "pairedArtifactExists": false,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p0hardreset_universe_audit.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 17215,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p0hardreset_universe_audit.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P0",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 6673,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p10_dashboard_metrics_contract.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "unknown",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 11930,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p10_dashboard_metrics_contract.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "unknown",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 3387,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p10_dashboard_quality_warnings.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "unknown",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 3479,
+      "pairedArtifactExists": false,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p10_dashboard_readiness_cards.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "unknown",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1741,
+      "pairedArtifactExists": false,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p11_daily_corpus_append_dry_run_result.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "unknown",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 611,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p11_daily_corpus_append_dry_run_result.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "unknown",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1739,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p11_daily_snapshot_append_preview.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "unknown",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 10773,
+      "pairedArtifactExists": false,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p11_daily_snapshot_seed.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "unknown",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 764,
+      "pairedArtifactExists": false,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p12_corpus_metrics_store.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P12",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 5068,
+      "pairedArtifactExists": false,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p12_corpus_quality_gate.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P12",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1752,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p12_dashboard_metrics_contract.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P12",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 13645,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p12_multi_date_daily_append_plan.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P12",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 3116,
+      "pairedArtifactExists": false,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p12_multi_date_daily_append_result.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P12",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 4360,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p12_multi_date_daily_append_result.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P12",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1742,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p12pit_feature_contract_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P12",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 12631,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p12pit_feature_contract_preflight_audit.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P12",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 2569,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p12pit_feature_contract_preflight_audit.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P12",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 1382,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p12pit_feature_contract_v0.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P12",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 19222,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p12pit_feature_contract_v0.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P12",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 4535,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p12pit_feature_contract_v1.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P12",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 4009,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p12pit_feature_contract_v1.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P12",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1658,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p12pit_feature_contract_validation.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P12",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 887,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p12pit_feature_contract_validation.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P12",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 1056,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p12pit_feature_source_discovery.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P12",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 13627,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p12pit_feature_source_discovery.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P12",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 12047,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p13_blocked_reason_by_horizon.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P13",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 587,
+      "pairedArtifactExists": false,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p13_coverage_recovery_plan.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P13",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 2062,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p13_coverage_recovery_plan.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P13",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1156,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p13_horizon_maturity_tracker.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P13",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 2246,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p13_horizon_maturity_tracker.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P13",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 966,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p13monthly_revenue_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P13",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 10811,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p13monthly_revenue_migration_plan.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P13",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 7641,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p13monthly_revenue_migration_plan.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P13",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 6592,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p13monthly_revenue_pit_gate_validation.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P13",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 8231,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p13monthly_revenue_pit_gate_validation.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P13",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 2765,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p13monthly_revenue_preflight_audit.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P13",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 4479,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p13monthly_revenue_preflight_audit.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P13",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 1981,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p13monthly_revenue_source_audit.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P13",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 7250,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p13monthly_revenue_source_audit.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P13",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 3198,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p14_backfill_candidate_selection.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P14",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 23161,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p14_backfill_candidate_selection.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P14",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 627,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p14_backfill_quality_impact_preview.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P14",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 988,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p14_backfill_quality_impact_preview.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P14",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 488,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p14_outcome_backfill_rehearsal.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P14",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 4121,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p14_outcome_backfill_rehearsal.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P14",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 505,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p14monthly_revenue_approval_preflight.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P14",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 3380,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p14monthly_revenue_approval_preflight.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P14",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 2252,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p14monthly_revenue_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P14",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 12972,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p14monthly_revenue_fixture_dry_run.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P14",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 7593,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p14monthly_revenue_fixture_dry_run.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P14",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 1687,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p14monthly_revenue_migration_draft.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P14",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 4273,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p14monthly_revenue_migration_draft.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P14",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 3432,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p14monthly_revenue_query_gate_proposal.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P14",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 9405,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p14monthly_revenue_query_gate_proposal.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P14",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 6832,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p14monthly_revenue_rollback_draft.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P14",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 1505,
+      "pairedArtifactExists": false,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p15_backfill_governance_gate.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P15",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1809,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p15_backfill_governance_gate.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P15",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 231,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p15_backfill_manual_review_package.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P15",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 3107,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p15_backfill_manual_review_package.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P15",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 236,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p15_backfill_write_path_contract.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P15",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 2015,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p15_backfill_write_path_contract.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P15",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 195,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p15migration_approval_decision.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P15",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 4193,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p15migration_approval_decision.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P15",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 1993,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p15migration_approval_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P15",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 14619,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p15migration_approval_preflight_review.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P15",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 3014,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p15migration_approval_review.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P15",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 9810,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p15migration_approval_review.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P15",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 3916,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p15migration_risk_register.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P15",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 6282,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p15migration_risk_register.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P15",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 7250,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p16_manual_review_action_schema.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P16",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 4825,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p16_manual_review_action_schema.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P16",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 158,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p16_manual_review_status_cards.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P16",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1291,
+      "pairedArtifactExists": false,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p16_manual_review_workflow_binding.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P16",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 6609,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p16_manual_review_workflow_binding.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P16",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 513,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p16monthly_revenue_backfill_dry_run.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P16",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 5423,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p16monthly_revenue_backfill_dry_run.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P16",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 2097,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p16monthly_revenue_dry_run_preflight.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P16",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 1925,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p16monthly_revenue_dry_run_preflight.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P16",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 1790,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p16monthly_revenue_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P16",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 14623,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p16monthly_revenue_fixture_migration_dry_run.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P16",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 5950,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p16monthly_revenue_fixture_migration_dry_run.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P16",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 2094,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p16monthly_revenue_query_gate_dry_run.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P16",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 6369,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p16monthly_revenue_query_gate_dry_run.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P16",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 2421,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p17_manual_review_ops_surface_audit.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P17",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 4516,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p17_manual_review_ops_surface_audit.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P17",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 188,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p17_manual_review_surface_action_sections.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P17",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 2194,
+      "pairedArtifactExists": false,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p17_manual_review_surface_contract.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P17",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 9883,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p17_manual_review_surface_contract.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P17",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 231,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p17_manual_review_surface_status_sections.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P17",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1021,
+      "pairedArtifactExists": false,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p17monthly_revenue_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P17",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 6888,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p17monthly_revenue_patch_preflight.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P17",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 2339,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p17monthly_revenue_patch_preflight.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P17",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 1147,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p17monthly_revenue_query_gate_patch.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P17",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 1707,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p17monthly_revenue_query_gate_patch.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P17",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 1579,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p17monthly_revenue_query_gate_validation.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P17",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 6669,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p17monthly_revenue_query_gate_validation.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P17",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 1715,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p17monthly_revenue_schema_patch.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P17",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 1436,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p17monthly_revenue_schema_patch.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P17",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 951,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p18monthly_revenue_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P18",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 8749,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p18monthly_revenue_fixture_db_backfill.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P18",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 4690,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p18monthly_revenue_fixture_db_backfill.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P18",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 2245,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p18monthly_revenue_fixture_db_migration.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P18",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 2751,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p18monthly_revenue_fixture_db_migration.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P18",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 1736,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p18monthly_revenue_fixture_db_preflight.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P18",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 1929,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p18monthly_revenue_fixture_db_preflight.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P18",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 1537,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p18monthly_revenue_fixture_db_query_gate.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P18",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 3675,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p18monthly_revenue_fixture_db_query_gate.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P18",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 2145,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p18monthly_revenue_fixture_db_rollback.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P18",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 5089,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p18monthly_revenue_fixture_db_rollback.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P18",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 2583,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p19active_scoring_pit_replay_corpus.jsonl",
+      "extension": ".jsonl",
+      "artifactType": "corpus",
+      "inferredPhase": "P19",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 13908244,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p19active_scoring_pit_replay_field_inspection.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P19",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 1763,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p19active_scoring_pit_replay_field_inspection.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P19",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 1138,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p19active_scoring_pit_replay_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P19",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 7500,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p19active_scoring_pit_replay_preflight.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P19",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 1133,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p19active_scoring_pit_replay_summary.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P19",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 1343,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p19active_scoring_pit_replay_summary.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P19",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 1201,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p19monthly_revenue_pit_guard_validation.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P19",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 735,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p19monthly_revenue_pit_guard_validation.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P19",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 848,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p1_append_only_ledger_guard_result.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "unknown",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 396,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p1_append_only_ledger_guard_result.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "unknown",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 364,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p1_outcome_writeback_v0.jsonl",
+      "extension": ".jsonl",
+      "artifactType": "unknown",
+      "inferredPhase": "unknown",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 2207,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p1_outcome_writeback_v0_result.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "unknown",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 3202,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p1_outcome_writeback_v0_result.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "unknown",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 993,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p1baseline_comparison_observability.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P1",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 6333,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p1baseline_comparison_observability.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P1",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 2326,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p1baseline_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P1",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 8331,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p1baseline_historical_replay_corpus.jsonl",
+      "extension": ".jsonl",
+      "artifactType": "corpus",
+      "inferredPhase": "P1",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 6226238,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p1baseline_historical_replay_summary.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P1",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1360,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p1baseline_historical_replay_summary.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P1",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1605,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p1baseline_preflight_audit.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P1",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 892,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p1baseline_preflight_audit.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P1",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1001,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p20pit_impact_changed_cases.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P20",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 19627,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p20pit_impact_changed_cases.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P20",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 1998,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p20pit_impact_comparison.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P20",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 3465,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p20pit_impact_comparison.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P20",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 2797,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p20pit_impact_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P20",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 16353,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p20pit_impact_preflight.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P20",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 1968,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p20pit_impact_preflight.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P20",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 1186,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p20production_migration_readiness_decision.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P20",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 2979,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p20production_migration_readiness_decision.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P20",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 1789,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p21production_migration_approval_decision.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P21",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 2342,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p21production_migration_approval_decision.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P21",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 2341,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p21production_migration_approval_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P21",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 13787,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p21production_migration_approval_preflight.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P21",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 3894,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p21production_migration_approval_preflight.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P21",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 2205,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p21production_migration_approval_review.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P21",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 7949,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p21production_migration_approval_review.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P21",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 5988,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p21production_migration_risk_register.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P21",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 8559,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p21production_migration_risk_register.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P21",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 8232,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p22production_backup_restore_plan.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P22",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 5421,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p22production_backup_restore_plan.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P22",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 3646,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p22production_migration_plan_decision.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P22",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 2345,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p22production_migration_plan_decision.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P22",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 2354,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p22production_migration_plan_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P22",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 11745,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p22production_migration_plan_preflight.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P22",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 5476,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p22production_migration_plan_preflight.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P22",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 2414,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p22production_migration_runbook.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P22",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 7420,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p22production_migration_runbook.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P22",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 5053,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p22production_monitoring_checklist.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P22",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 4917,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p22production_monitoring_checklist.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P22",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 3785,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p23production_execution_approval_request.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P23",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 3434,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p23production_execution_approval_request.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P23",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 2623,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p23production_implementation_readiness_decision.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P23",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 1136,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p23production_implementation_readiness_decision.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P23",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 1261,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p23production_migration_implementation_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P23",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 14776,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p23production_migration_implementation_preflight.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P23",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 4287,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p23production_migration_implementation_preflight.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P23",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 2677,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p23production_migration_implementation_review.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P23",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 1592,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p23production_migration_implementation_review.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P23",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 1694,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p24production_backfill_gate.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P24",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 1642,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p24production_backfill_gate.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P24",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 1292,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p24production_backup_gate.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P24",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 1330,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p24production_backup_gate.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P24",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 1081,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p24production_migration_execution_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P24",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 14435,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p24production_migration_execution_preflight.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P24",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 6197,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p24production_migration_execution_preflight.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P24",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 3401,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p24production_migration_gate.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P24",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 1718,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p24production_migration_gate.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P24",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 915,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p24production_post_migration_validation.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P24",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 3926,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p24production_post_migration_validation.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P24",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 2308,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p24production_rollback_readiness.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P24",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 3987,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p24production_rollback_readiness.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P24",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 2261,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p25active_scoring_smoke_after_migration.json",
+      "extension": ".json",
+      "artifactType": "smoke",
+      "inferredPhase": "P25",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 17547,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p25active_scoring_smoke_after_migration.md",
+      "extension": ".md",
+      "artifactType": "smoke",
+      "inferredPhase": "P25",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 3376,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p25artifact_validation.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P25",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 10091,
+      "pairedArtifactExists": false,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p25monthly_revenue_distribution_audit.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P25",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 2396,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p25monthly_revenue_distribution_audit.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P25",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 1162,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p25monthly_revenue_query_gate_smoke.json",
+      "extension": ".json",
+      "artifactType": "smoke",
+      "inferredPhase": "P25",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 5557,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p25monthly_revenue_query_gate_smoke.md",
+      "extension": ".md",
+      "artifactType": "smoke",
+      "inferredPhase": "P25",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 2315,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p25post_migration_contract_validation.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P25",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 5772,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p25post_migration_contract_validation.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P25",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 3350,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p25post_migration_observability_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P25",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 6599,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p25post_migration_observability_preflight.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P25",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 6512,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p25post_migration_observability_preflight.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P25",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 3961,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26_governance_next_actions.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26_cross",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 906,
+      "pairedArtifactExists": false,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26_next_prompt_source_arrival_only.md",
+      "extension": ".md",
+      "artifactType": "next_prompt",
+      "inferredPhase": "P26_cross",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1548,
+      "pairedArtifactExists": true,
+      "risk": "DUAL_NEXT_PROMPT_INFO"
+    },
+    {
+      "filename": "p26_phase_chain_registry.json",
+      "extension": ".json",
+      "artifactType": "registry",
+      "inferredPhase": "P26_cross",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 2035,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26_phase_chain_registry.md",
+      "extension": ".md",
+      "artifactType": "registry",
+      "inferredPhase": "P26_cross",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 987,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26a_active_scoring_smoke_regression.json",
+      "extension": ".json",
+      "artifactType": "smoke",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 2001,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26a_active_scoring_smoke_regression.md",
+      "extension": ".md",
+      "artifactType": "smoke",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1442,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26a_batch_pipeline_wiring_9case_real_corpus_validation.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 5182,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26a_batch_pipeline_wiring_9case_real_corpus_validation.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1435,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26a_batch_pipeline_wiring_contract.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1296,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26a_batch_pipeline_wiring_contract.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1140,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26a_batch_pipeline_wiring_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 2634,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p26a_batch_pipeline_wiring_invariance.json",
+      "extension": ".json",
+      "artifactType": "invariance",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1331,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p26a_batch_pipeline_wiring_path_trace.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 2162,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26a_batch_pipeline_wiring_path_trace.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1881,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26a_batch_pipeline_wiring_preflight.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 2535,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26a_batch_pipeline_wiring_preflight.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1846,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26a_feature_snapshot_preflight.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 2159,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26a_feature_snapshot_preflight.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1806,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26a_feature_snapshot_v1_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 9988,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p26a_renderer_fix_9case_before_after.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 6853,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26a_renderer_fix_9case_before_after.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 2807,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26a_renderer_fix_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 4839,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p26a_renderer_fix_forbidden_claims_scan.json",
+      "extension": ".json",
+      "artifactType": "forbidden_claims",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 821,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26a_renderer_fix_forbidden_claims_scan.md",
+      "extension": ".md",
+      "artifactType": "forbidden_claims",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 237,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26a_renderer_fix_invariance.json",
+      "extension": ".json",
+      "artifactType": "invariance",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 2140,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26a_renderer_fix_invariance.md",
+      "extension": ".md",
+      "artifactType": "invariance",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 839,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26a_renderer_fix_preflight.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 2677,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26a_renderer_fix_preflight.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1086,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26a_renderer_fix_spec.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 940,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26a_renderer_fix_spec.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 524,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26a_renderer_integration_9case_before_after.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 8093,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26a_renderer_integration_9case_before_after.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1089,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26a_renderer_integration_contract.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1259,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26a_renderer_integration_contract.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1014,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26a_renderer_integration_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 7874,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p26a_renderer_integration_forbidden_claims_scan.json",
+      "extension": ".json",
+      "artifactType": "forbidden_claims",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 498,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26a_renderer_integration_forbidden_claims_scan.md",
+      "extension": ".md",
+      "artifactType": "forbidden_claims",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 385,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26a_renderer_integration_invariance.json",
+      "extension": ".json",
+      "artifactType": "invariance",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 685,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26a_renderer_integration_invariance.md",
+      "extension": ".md",
+      "artifactType": "invariance",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 518,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26a_renderer_integration_path_trace.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 543,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26a_renderer_integration_path_trace.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 819,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26a_renderer_integration_preflight.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1118,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26a_renderer_integration_preflight.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1195,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26a_renderer_path_trace.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 3086,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26a_renderer_path_trace.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1135,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26a_scoring_invariance_check.json",
+      "extension": ".json",
+      "artifactType": "invariance",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1307,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26a_scoring_invariance_check.md",
+      "extension": ".md",
+      "artifactType": "invariance",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 863,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26a_scoring_underoutput_9case_audit.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 16600,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26a_scoring_underoutput_9case_audit.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 6752,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26a_scoring_underoutput_audit.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 6977,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26a_scoring_underoutput_audit.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1366,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26a_walkthrough_reason_quality_compare.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 24271,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26a_walkthrough_reason_quality_compare.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26A",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 833,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26b_event_news_pit_context_adapter_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P26B",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 15566,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p26b_event_news_pit_contract_v0.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P26B",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 2894,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26b_event_news_pit_contract_v0.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P26B",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1633,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26b_event_news_pit_leakage_validation.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26B",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 2093,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26b_event_news_pit_leakage_validation.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26B",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1478,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26b_event_news_pit_preflight.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P26B",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1544,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26b_event_news_pit_preflight.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P26B",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1284,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26b_event_news_reason_context_smoke.json",
+      "extension": ".json",
+      "artifactType": "smoke",
+      "inferredPhase": "P26B",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1999,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26b_event_news_reason_context_smoke.md",
+      "extension": ".md",
+      "artifactType": "smoke",
+      "inferredPhase": "P26B",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1369,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26b_news_events_fixture_report.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P26B",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1221,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p26b_scoring_invariance_check.json",
+      "extension": ".json",
+      "artifactType": "invariance",
+      "inferredPhase": "P26B",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 2577,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26b_scoring_invariance_check.md",
+      "extension": ".md",
+      "artifactType": "invariance",
+      "inferredPhase": "P26B",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 866,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26c_financial_report_availability_contract_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P26C",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 19506,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p26c_financial_report_availability_contract_v0.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P26C",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1441,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p26c_financial_report_availability_preflight.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P26C",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1460,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26c_financial_report_availability_preflight.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P26C",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1999,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26c_financial_report_availability_validation.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P26C",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 2261,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26c_financial_report_availability_validation.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P26C",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1511,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26c_financial_report_reason_context_smoke.json",
+      "extension": ".json",
+      "artifactType": "smoke",
+      "inferredPhase": "P26C",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 2078,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26c_financial_report_reason_context_smoke.md",
+      "extension": ".md",
+      "artifactType": "smoke",
+      "inferredPhase": "P26C",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1091,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26c_financial_reports_fixture_report.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P26C",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1497,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p26c_scoring_invariance_check.json",
+      "extension": ".json",
+      "artifactType": "invariance",
+      "inferredPhase": "P26C",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1218,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26c_scoring_invariance_check.md",
+      "extension": ".md",
+      "artifactType": "invariance",
+      "inferredPhase": "P26C",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 436,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26d_coverage_readiness_gate.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P26D",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 831,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26d_coverage_readiness_gate.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P26D",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 851,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26d_monthly_revenue_targeted_coverage.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26D",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1185,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26d_monthly_revenue_targeted_coverage.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26D",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 642,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26d_read_only_context_coverage.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26D",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 754,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26d_read_only_context_coverage.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26D",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 668,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26d_scoring_invariance_check.json",
+      "extension": ".json",
+      "artifactType": "invariance",
+      "inferredPhase": "P26D",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1270,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26d_scoring_invariance_check.md",
+      "extension": ".md",
+      "artifactType": "invariance",
+      "inferredPhase": "P26D",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 806,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26d_targeted_post_migration_replay_coverage_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P26D",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 9304,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p26d_targeted_replay_coverage_comparison.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26D",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 776,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26d_targeted_replay_coverage_comparison.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26D",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1030,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26d_targeted_replay_coverage_contract_v0.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P26D",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 4237,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26d_targeted_replay_coverage_contract_v0.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P26D",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1396,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26d_targeted_replay_coverage_preflight.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P26D",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1497,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26d_targeted_replay_coverage_preflight.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P26D",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1179,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26e_corpus_expansion_readiness.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26E",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 790,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26e_corpus_expansion_readiness.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26E",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 809,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26e_coverage_ratio_scan.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26E",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1241,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26e_coverage_ratio_scan.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26E",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 917,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26e_data_coverage_corpus_expansion_gate_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P26E",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 9874,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p26e_data_coverage_expansion_gate_contract_v2.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P26E",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 2205,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26e_data_coverage_expansion_gate_contract_v2.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P26E",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1950,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26e_data_coverage_expansion_gate_preflight.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P26E",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 891,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26e_data_coverage_expansion_gate_preflight.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P26E",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1293,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26e_data_coverage_expansion_gate_result.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P26E",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 769,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26e_data_coverage_expansion_gate_result.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P26E",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1005,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26e_scoring_invariance_check.json",
+      "extension": ".json",
+      "artifactType": "invariance",
+      "inferredPhase": "P26E",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1711,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26e_scoring_invariance_check.md",
+      "extension": ".md",
+      "artifactType": "invariance",
+      "inferredPhase": "P26E",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 637,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26e_source_mapping_scan.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26E",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 2055,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26e_source_mapping_scan.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26E",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1255,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f2_candidate_release_date_coverage_preview.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F2",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1199,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f2_candidate_release_date_coverage_preview.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F2",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1156,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f2_monthly_revenue_release_date_candidates.jsonl",
+      "extension": ".jsonl",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F2",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1012159,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f2_monthly_revenue_release_date_candidates_summary.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F2",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 507,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f2_monthly_revenue_release_date_candidates_summary.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F2",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 629,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f2_monthly_revenue_release_date_population_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P26F2",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 8215,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p26f2_release_date_dry_run_quality_gate.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P26F2",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 473,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f2_release_date_dry_run_quality_gate.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P26F2",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 540,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f2_release_date_pit_safety_validation.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F2",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1798,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f2_release_date_pit_safety_validation.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F2",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1158,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f2_release_date_population_preflight.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P26F2",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1361,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f2_release_date_population_preflight.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P26F2",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1270,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f2_release_date_rule_contract_v1.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P26F2",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1864,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f2_release_date_rule_contract_v1.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P26F2",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1283,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f2_scoring_invariance_check.json",
+      "extension": ".json",
+      "artifactType": "invariance",
+      "inferredPhase": "P26F2",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1880,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f2_scoring_invariance_check.md",
+      "extension": ".md",
+      "artifactType": "invariance",
+      "inferredPhase": "P26F2",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 582,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f3_2_accepted_source_coverage_preview.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 251,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_2_accepted_source_coverage_preview.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 178,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_2_manual_historical_source_acquisition_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 7501,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p26f3_2_manual_source_acceptance.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 252,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_2_manual_source_acceptance.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 185,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_2_manual_source_acquisition_contract_v1.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 2217,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f3_2_manual_source_acquisition_contract_v1.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 894,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f3_2_manual_source_acquisition_preflight.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1373,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f3_2_manual_source_acquisition_preflight.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 641,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f3_2_manual_source_manifest.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 296,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_2_manual_source_manifest.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 163,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_2_manual_source_safety_gate.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1976,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f3_2_manual_source_safety_gate.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 95,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f3_2_manual_source_scan.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 606,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_2_manual_source_scan.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 225,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_2_scoring_invariance_check.json",
+      "extension": ".json",
+      "artifactType": "invariance",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1375,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f3_2_scoring_invariance_check.md",
+      "extension": ".md",
+      "artifactType": "invariance",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 143,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f3_3_accepted_source_coverage_preview.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 251,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_3_accepted_source_coverage_preview.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 178,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_3_dropzone_inventory.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 2981,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_3_dropzone_inventory.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 335,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_3_manual_source_acceptance.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 252,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_3_manual_source_acceptance.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 185,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_3_manual_source_acceptance_preflight.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1369,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f3_3_manual_source_acceptance_preflight.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 738,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f3_3_manual_source_manifest.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 296,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_3_manual_source_manifest.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 163,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_3_manual_source_safety_gate.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1976,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f3_3_manual_source_safety_gate.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 95,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f3_3_manual_source_scan.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 384,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_3_manual_source_scan.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 225,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_3_manual_twse_source_acceptance_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 7704,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p26f3_3_scoring_invariance_check.json",
+      "extension": ".json",
+      "artifactType": "invariance",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1375,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f3_3_scoring_invariance_check.md",
+      "extension": ".md",
+      "artifactType": "invariance",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 143,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f3_4_accepted_source_coverage_preview.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 251,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_4_accepted_source_coverage_preview.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 178,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_4_blank_csv_template_report.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 705,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f3_4_blank_csv_template_report.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 220,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f3_4_dropzone_inventory.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 2981,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_4_dropzone_inventory.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 335,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_4_expected_filename_manifest.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1062,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_4_expected_filename_manifest.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 326,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_4_manual_source_acceptance.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 252,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_4_manual_source_acceptance.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 185,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_4_manual_source_manifest.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 296,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_4_manual_source_manifest.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 163,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_4_manual_source_safety_gate.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1976,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f3_4_manual_source_safety_gate.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 95,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f3_4_manual_source_scan.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 606,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_4_manual_source_scan.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 225,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_4_manual_twse_file_preparation_preflight.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1257,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f3_4_manual_twse_file_preparation_preflight.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 629,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f3_4_operator_checklist.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 2155,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f3_4_operator_checklist.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 641,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f3_4_scoring_invariance_check.json",
+      "extension": ".json",
+      "artifactType": "invariance",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1375,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f3_4_scoring_invariance_check.md",
+      "extension": ".md",
+      "artifactType": "invariance",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 143,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f3_4_twse_acquisition_request.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1754,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_4_twse_acquisition_request.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 407,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_4_twse_manual_source_preparation_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 11714,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p26f3_5_dropzone_scan_result.json",
+      "extension": ".json",
+      "artifactType": "scan_result",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 991,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f3_5_dropzone_scan_result.md",
+      "extension": ".md",
+      "artifactType": "scan_result",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1022,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f3_5_operator_handoff_packet_summary.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1741,
+      "pairedArtifactExists": false,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_5_pipeline_preflight_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 19084,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p26f3_5_pipeline_preflight_summary.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 2142,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f3_5_pipeline_preflight_summary.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1380,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f3_5_preflight.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 3264,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f3_5_preflight.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1965,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f3_5_tsc_hygiene.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1266,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_5_tsc_hygiene.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 732,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_historical_coverage_preview.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1748,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_historical_coverage_preview.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1359,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_historical_source_acquisition_contract_v1.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1683,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f3_historical_source_acquisition_contract_v1.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 992,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f3_historical_source_dry_run_quality_gate.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1729,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f3_historical_source_dry_run_quality_gate.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 749,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f3_historical_source_pit_safety_validation.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 2035,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_historical_source_pit_safety_validation.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1146,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_local_historical_source_scan.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 761,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_local_historical_source_scan.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 598,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_monthly_revenue_historical_source_candidates.jsonl",
+      "extension": ".jsonl",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 71105,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_monthly_revenue_historical_source_summary.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 659,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_monthly_revenue_historical_source_summary.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 985,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_monthly_revenue_historical_source_sync_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 13943,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p26f3_monthly_revenue_historical_sync_preflight.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1325,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f3_monthly_revenue_historical_sync_preflight.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 985,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f3_scoring_invariance_check.json",
+      "extension": ".json",
+      "artifactType": "invariance",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1846,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f3_scoring_invariance_check.md",
+      "extension": ".md",
+      "artifactType": "invariance",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 889,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f3_source_acquisition_plan.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 3205,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f3_source_acquisition_plan.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F3",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 2166,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f4_next_prompt_when_source_present.md",
+      "extension": ".md",
+      "artifactType": "next_prompt",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 4428,
+      "pairedArtifactExists": true,
+      "risk": "DUAL_NEXT_PROMPT_INFO"
+    },
+    {
+      "filename": "p26f4_operator_source_docs_audit.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1500,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f4_operator_source_docs_audit.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 2409,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f4_operator_source_packet_v2_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 6050,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p26f4_operator_source_packet_v2_forbidden_claims_scan.json",
+      "extension": ".json",
+      "artifactType": "forbidden_claims",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1084,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f4_operator_source_packet_v2_forbidden_claims_scan.md",
+      "extension": ".md",
+      "artifactType": "forbidden_claims",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1471,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f4_operator_source_packet_v2_preflight.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1135,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f4_operator_source_packet_v2_preflight.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1886,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f4_operator_source_packet_v2_smoke.json",
+      "extension": ".json",
+      "artifactType": "smoke",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1151,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f4_operator_source_packet_v2_smoke.md",
+      "extension": ".md",
+      "artifactType": "smoke",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1363,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f4_or_p26a_followup_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 4456,
+      "pairedArtifactExists": false,
+      "risk": "ORPHAN"
+    },
+    {
+      "filename": "p26f4_or_p26a_followup_preflight.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 2768,
+      "pairedArtifactExists": true,
+      "risk": "ORPHAN"
+    },
+    {
+      "filename": "p26f4_or_p26a_followup_preflight.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1168,
+      "pairedArtifactExists": true,
+      "risk": "ORPHAN"
+    },
+    {
+      "filename": "p26f4_or_p26a_route_decision.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 750,
+      "pairedArtifactExists": true,
+      "risk": "ORPHAN"
+    },
+    {
+      "filename": "p26f4_or_p26a_route_decision.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 828,
+      "pairedArtifactExists": true,
+      "risk": "ORPHAN"
+    },
+    {
+      "filename": "p26f4_readiness_approval_token_check.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 649,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f4_readiness_approval_token_check.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 864,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f4_readiness_dropzone_rescan.json",
+      "extension": ".json",
+      "artifactType": "scan_result",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1341,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f4_readiness_dropzone_rescan.md",
+      "extension": ".md",
+      "artifactType": "scan_result",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1673,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f4_readiness_forbidden_claims_scan.json",
+      "extension": ".json",
+      "artifactType": "forbidden_claims",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 987,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f4_readiness_forbidden_claims_scan.md",
+      "extension": ".md",
+      "artifactType": "forbidden_claims",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1198,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f4_readiness_invariance.json",
+      "extension": ".json",
+      "artifactType": "invariance",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1190,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f4_readiness_invariance.md",
+      "extension": ".md",
+      "artifactType": "invariance",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1427,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f4_readiness_recheck_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 5345,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p26f4_readiness_recheck_preflight.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1505,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f4_readiness_recheck_preflight.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1789,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f4_source_present_forbidden_claims_scan.json",
+      "extension": ".json",
+      "artifactType": "forbidden_claims",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1096,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f4_source_present_forbidden_claims_scan.md",
+      "extension": ".md",
+      "artifactType": "forbidden_claims",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 999,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f4_source_present_gate_dropzone_scan.json",
+      "extension": ".json",
+      "artifactType": "scan_result",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1241,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f4_source_present_gate_dropzone_scan.md",
+      "extension": ".md",
+      "artifactType": "scan_result",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1305,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f4_source_present_gate_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 4815,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p26f4_source_present_gate_preflight.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1480,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f4_source_present_gate_preflight.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1183,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f4_source_present_invariance.json",
+      "extension": ".json",
+      "artifactType": "invariance",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 810,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f4_source_present_invariance.md",
+      "extension": ".md",
+      "artifactType": "invariance",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 893,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f4_source_present_tests.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 505,
+      "pairedArtifactExists": false,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f4_source_present_token_check.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 469,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f4_source_present_token_check.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 641,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f4_stale_prompt_audit.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 738,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f4_stale_prompt_audit.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 681,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f4_waiting_for_operator_source.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1559,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f4_waiting_for_operator_source.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 2118,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f4_waiting_state_freeze_marker.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1136,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f4_waiting_state_freeze_marker.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 889,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f4_waiting_state_governance_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 3456,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p26f4_waiting_state_governance_forbidden_claims_scan.json",
+      "extension": ".json",
+      "artifactType": "forbidden_claims",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 493,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f4_waiting_state_governance_forbidden_claims_scan.md",
+      "extension": ".md",
+      "artifactType": "forbidden_claims",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 381,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f4_waiting_state_governance_preflight.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1126,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f4_waiting_state_governance_preflight.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 851,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f4_waiting_state_governance_smoke.json",
+      "extension": ".json",
+      "artifactType": "smoke",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 570,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f4_waiting_state_governance_smoke.md",
+      "extension": ".md",
+      "artifactType": "smoke",
+      "inferredPhase": "P26F4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 500,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f_candidate_corpus_quality_gate.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P26F",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 398,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f_candidate_corpus_quality_gate.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P26F",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 633,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f_monthly_revenue_candidate_corpus_summary.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 587,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f_monthly_revenue_candidate_corpus_summary.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 807,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f_monthly_revenue_candidate_p19_enriched.jsonl",
+      "extension": ".jsonl",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 15519245,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f_monthly_revenue_candidate_p3_enriched.jsonl",
+      "extension": ".jsonl",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 12469745,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f_monthly_revenue_corpus_expansion_candidate_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P26F",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 8047,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p26f_monthly_revenue_corpus_expansion_preflight.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P26F",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1013,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f_monthly_revenue_corpus_expansion_preflight.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P26F",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1526,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f_monthly_revenue_coverage_delta.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 980,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f_monthly_revenue_coverage_delta.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1143,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f_monthly_revenue_mapping_contract_v1.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P26F",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 2053,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f_monthly_revenue_mapping_contract_v1.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P26F",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1640,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f_monthly_revenue_pit_leakage_validation.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 2155,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f_monthly_revenue_pit_leakage_validation.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P26F",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1352,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p26f_scoring_invariance_check.json",
+      "extension": ".json",
+      "artifactType": "invariance",
+      "inferredPhase": "P26F",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1037,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p26f_scoring_invariance_check.md",
+      "extension": ".md",
+      "artifactType": "invariance",
+      "inferredPhase": "P26F",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 537,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p27_next_workstream_decision.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P27",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 668,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p27_next_workstream_decision.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P27",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1021,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p27_non_source_governance_backlog.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P27",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 4256,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p27_non_source_governance_backlog.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P27",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1451,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p27_non_source_governance_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P27",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 3582,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p27_non_source_governance_forbidden_claims_scan.json",
+      "extension": ".json",
+      "artifactType": "forbidden_claims",
+      "inferredPhase": "P27",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 481,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p27_non_source_governance_forbidden_claims_scan.md",
+      "extension": ".md",
+      "artifactType": "forbidden_claims",
+      "inferredPhase": "P27",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 385,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p27_non_source_governance_preflight.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P27",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1051,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p27_non_source_governance_preflight.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P27",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1098,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p27_non_source_governance_smoke.json",
+      "extension": ".json",
+      "artifactType": "smoke",
+      "inferredPhase": "P27",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 565,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p27_non_source_governance_smoke.md",
+      "extension": ".md",
+      "artifactType": "smoke",
+      "inferredPhase": "P27",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 496,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p27_source_gated_action_audit.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P27",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1797,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p27_source_gated_action_audit.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P27",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1094,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p27_waiting_state_ci_guard_proposal.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P27",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1801,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p27_waiting_state_ci_guard_proposal.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P27",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 1247,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p2_shadow_ledger_accumulation_result.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P2",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 767,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p2_shadow_ledger_accumulation_result.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P2",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 785,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p2_shadow_ledger_summary.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P2",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 417,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p2_shadow_ledger_summary.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P2",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 642,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p2spotcheck_corpus_field_inspection.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P2",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 4623,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p2spotcheck_corpus_field_inspection.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P2",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 3056,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p2spotcheck_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P2",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 10284,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p2spotcheck_prediction_layer_audit.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P2",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 8959,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p2spotcheck_prediction_layer_audit.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P2",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 3594,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p2spotcheck_preflight_audit.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P2",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 2929,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p2spotcheck_preflight_audit.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P2",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 2203,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p2spotcheck_walkthrough_cases.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P2",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 23143,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p2spotcheck_walkthrough_cases.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P2",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 4725,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p3_backfill_scheduler_plan.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P3",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 3056,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p3_backfill_scheduler_plan.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P3",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1126,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p3_outcome_window_summary.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P3",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 343,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p3_outcome_window_summary.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P3",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 439,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p3_outcome_window_tracker_result.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P3",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 5331,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p3_outcome_window_tracker_result.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P3",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 999,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p3active_scoring_field_inspection.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P3",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 6179,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p3active_scoring_field_inspection.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P3",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 4130,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p3active_scoring_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P3",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 3635,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p3active_scoring_historical_replay_artifact.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P3",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 30055,
+      "pairedArtifactExists": false,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p3active_scoring_historical_replay_corpus.jsonl",
+      "extension": ".jsonl",
+      "artifactType": "corpus",
+      "inferredPhase": "P3",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 10858745,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p3active_scoring_historical_replay_summary.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P3",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1282,
+      "pairedArtifactExists": false,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p3active_scoring_preflight_audit.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P3",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 5064,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p3active_scoring_preflight_audit.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P3",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 2757,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p4_replay_dataset_result.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P4",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 12225,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p4_replay_dataset_result.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P4",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1191,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p4_replay_dataset_summary.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P4",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 572,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p4_replay_dataset_summary.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P4",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 698,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p4_replay_run_result.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P4",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 12900,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p4_replay_run_result.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P4",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 945,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p4calibration_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P4",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 13464,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p4calibration_full_audit.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P4",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 46338,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p4calibration_full_audit.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P4",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 9004,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p4calibration_preflight_audit.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P4",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 3287,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p4calibration_preflight_audit.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P4",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 2016,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p4calibration_readiness_decision.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P4",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 3185,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p4calibration_readiness_decision.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P4",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 2201,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p4calibration_walkthrough_cases.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 81831,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p4calibration_walkthrough_cases.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P4",
+      "modifiedDate": "2026-05-13",
+      "sizeBytes": 7118,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p5_simulation_readiness_decision.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P5",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 411,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p5_simulation_readiness_decision.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P5",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 691,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p5_simulation_snapshot_batch.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P5",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 12931,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p5_simulation_snapshot_batch.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P5",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1098,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p5_simulation_snapshot_summary.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P5",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 581,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p5_simulation_snapshot_summary.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P5",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 741,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p5walkthrough_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P5",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 12929,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p5walkthrough_preflight_audit.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P5",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 3628,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p5walkthrough_preflight_audit.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P5",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1946,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p5walkthrough_repair_backlog.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P5",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 5256,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p5walkthrough_repair_backlog.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P5",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 4618,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p5walkthrough_review.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P5",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 45345,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p5walkthrough_review.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P5",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 14913,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p6_snapshot_corpus_accumulation_result.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P6_8",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1296,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p6_snapshot_corpus_accumulation_result.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P6_8",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 862,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p6_snapshot_corpus_readiness_decision.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P6_8",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 491,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p6_snapshot_corpus_readiness_decision.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P6_8",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 494,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p6_snapshot_corpus_summary.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P6_8",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 799,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p6_snapshot_corpus_summary.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P6_8",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 352,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p6lite_bucket_contract_freeze.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P6_8",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 3987,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p6lite_bucket_contract_freeze.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P6_8",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 2263,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p6lite_bucket_schema_diagnosis.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P6_8",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 8768,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p6lite_bucket_schema_diagnosis.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P6_8",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 7198,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p6lite_p8preflight_final_report.md",
+      "extension": ".md",
+      "artifactType": "final_report",
+      "inferredPhase": "P6_8",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 6950,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p6lite_preflight_audit.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P6_8",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 1486,
+      "pairedArtifactExists": false,
+      "risk": "MISSING_PAIR"
+    },
+    {
+      "filename": "p7_corpus_metrics_readiness_decision.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "P6_8",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 503,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p7_corpus_metrics_readiness_decision.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "P6_8",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 562,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p7_corpus_metrics_store.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P6_8",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 2179,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p7_corpus_metrics_store.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P6_8",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 843,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p7_second_date_corpus_append_result.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P6_8",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1498,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p7_second_date_corpus_append_result.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P6_8",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 941,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p7_second_date_snapshot_batch.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P6_8",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 13552,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p7_second_date_snapshot_batch.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P6_8",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 761,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p8_corpus_metrics_store.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P6_8",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 2412,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p8_corpus_metrics_store.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P6_8",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 723,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p8_corpus_trend_stability.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P6_8",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 2415,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p8_corpus_trend_stability.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P6_8",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1236,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p8_third_date_corpus_append_result.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P6_8",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1135,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p8_third_date_corpus_append_result.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P6_8",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 485,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p8_third_date_snapshot_batch.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "P6_8",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 13535,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p8_third_date_snapshot_batch.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "P6_8",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 629,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p8preflight_signal_reason_diagnosis.json",
+      "extension": ".json",
+      "artifactType": "preflight",
+      "inferredPhase": "P6_8",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 20235,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p8preflight_signal_reason_diagnosis.md",
+      "extension": ".md",
+      "artifactType": "preflight",
+      "inferredPhase": "P6_8",
+      "modifiedDate": "2026-05-12",
+      "sizeBytes": 20279,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p9_corpus_metrics_store.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "unknown",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 2940,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p9_corpus_metrics_store.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "unknown",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1014,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p9_corpus_quality_gate.json",
+      "extension": ".json",
+      "artifactType": "report",
+      "inferredPhase": "unknown",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1755,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p9_corpus_quality_gate.md",
+      "extension": ".md",
+      "artifactType": "report",
+      "inferredPhase": "unknown",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1192,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    },
+    {
+      "filename": "p9_fourth_date_corpus_append_result.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "unknown",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 1142,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p9_fourth_date_corpus_append_result.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "unknown",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 486,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p9_fourth_date_snapshot_batch.json",
+      "extension": ".json",
+      "artifactType": "unknown",
+      "inferredPhase": "unknown",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 13562,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "p9_fourth_date_snapshot_batch.md",
+      "extension": ".md",
+      "artifactType": "unknown",
+      "inferredPhase": "unknown",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 631,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "shadow_prediction_ledger.jsonl",
+      "extension": ".jsonl",
+      "artifactType": "unknown",
+      "inferredPhase": "unknown",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 2709,
+      "pairedArtifactExists": true,
+      "risk": "UNKNOWN_TYPE"
+    },
+    {
+      "filename": "simulation_snapshot_corpus.jsonl",
+      "extension": ".jsonl",
+      "artifactType": "corpus",
+      "inferredPhase": "unknown",
+      "modifiedDate": "2026-05-11",
+      "sizeBytes": 89395,
+      "pairedArtifactExists": true,
+      "risk": "LOW"
+    }
+  ],
+  "disclaimer": "Observability only. No investment recommendations."
+}

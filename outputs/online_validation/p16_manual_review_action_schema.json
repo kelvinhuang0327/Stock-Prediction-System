@@ -1,0 +1,163 @@
+{
+  "schemaVersion": "manual-review-action-schema-v0",
+  "schemaRunId": "p16-manual-review-action-schema-20260511-001",
+  "generatedAt": "2026-05-11T10:00:00.000Z",
+  "actions": [
+    {
+      "actionId": "REVIEW_REHEARSAL_ARTIFACT",
+      "label": "Review Rehearsal Artifact",
+      "description": "Inspect the artifact-only rehearsal package.",
+      "enabled": true,
+      "category": "REVIEW",
+      "requiresHuman": true,
+      "writePathEffect": "NONE",
+      "productionWriteAllowed": false,
+      "corpusWriteAllowed": false,
+      "optimizerAllowed": false
+    },
+    {
+      "actionId": "REVIEW_WRITE_PATH_POLICY",
+      "label": "Review Write Path Policy",
+      "description": "Inspect the locked write-path contract.",
+      "enabled": true,
+      "category": "REVIEW",
+      "requiresHuman": true,
+      "writePathEffect": "NONE",
+      "productionWriteAllowed": false,
+      "corpusWriteAllowed": false,
+      "optimizerAllowed": false
+    },
+    {
+      "actionId": "REVIEW_QUALITY_IMPACT_PREVIEW",
+      "label": "Review Quality Impact Preview",
+      "description": "Inspect the preview-only coverage impact.",
+      "enabled": true,
+      "category": "REVIEW",
+      "requiresHuman": true,
+      "writePathEffect": "NONE",
+      "productionWriteAllowed": false,
+      "corpusWriteAllowed": false,
+      "optimizerAllowed": false
+    },
+    {
+      "actionId": "REQUEST_MORE_DATA",
+      "label": "Request More Data",
+      "description": "Ask for more data accumulation before proceeding.",
+      "enabled": true,
+      "category": "REQUEST",
+      "requiresHuman": true,
+      "writePathEffect": "NONE",
+      "productionWriteAllowed": false,
+      "corpusWriteAllowed": false,
+      "optimizerAllowed": false
+    },
+    {
+      "actionId": "ACKNOWLEDGE_DATA_LIMITED",
+      "label": "Acknowledge Data Limited",
+      "description": "Acknowledge that the workflow is data limited.",
+      "enabled": true,
+      "category": "ACKNOWLEDGE",
+      "requiresHuman": true,
+      "writePathEffect": "NONE",
+      "productionWriteAllowed": false,
+      "corpusWriteAllowed": false,
+      "optimizerAllowed": false
+    }
+  ],
+  "disabledActions": [
+    {
+      "actionId": "APPROVE_PRODUCTION_BACKFILL",
+      "label": "Approve Production Backfill",
+      "description": "Disabled in this phase.",
+      "enabled": false,
+      "category": "DISABLED",
+      "requiresHuman": true,
+      "writePathEffect": "NONE",
+      "productionWriteAllowed": false,
+      "corpusWriteAllowed": false,
+      "optimizerAllowed": false
+    },
+    {
+      "actionId": "APPROVE_CORPUS_WRITE",
+      "label": "Approve Corpus Write",
+      "description": "Disabled in this phase.",
+      "enabled": false,
+      "category": "DISABLED",
+      "requiresHuman": true,
+      "writePathEffect": "NONE",
+      "productionWriteAllowed": false,
+      "corpusWriteAllowed": false,
+      "optimizerAllowed": false
+    },
+    {
+      "actionId": "APPROVE_OPTIMIZER",
+      "label": "Approve Optimizer",
+      "description": "Disabled in this phase.",
+      "enabled": false,
+      "category": "DISABLED",
+      "requiresHuman": true,
+      "writePathEffect": "NONE",
+      "productionWriteAllowed": false,
+      "corpusWriteAllowed": false,
+      "optimizerAllowed": false
+    },
+    {
+      "actionId": "APPROVE_TRADING_ACTION",
+      "label": "Approve Trading Action",
+      "description": "Disabled in this phase.",
+      "enabled": false,
+      "category": "DISABLED",
+      "requiresHuman": true,
+      "writePathEffect": "NONE",
+      "productionWriteAllowed": false,
+      "corpusWriteAllowed": false,
+      "optimizerAllowed": false
+    },
+    {
+      "actionId": "AUTO_PROMOTE",
+      "label": "Auto Promote",
+      "description": "Disabled in this phase.",
+      "enabled": false,
+      "category": "DISABLED",
+      "requiresHuman": true,
+      "writePathEffect": "NONE",
+      "productionWriteAllowed": false,
+      "corpusWriteAllowed": false,
+      "optimizerAllowed": false
+    }
+  ],
+  "actionGroups": [
+    {
+      "groupId": "group_manual_review",
+      "title": "Manual Review Actions",
+      "actionIds": [
+        "REVIEW_REHEARSAL_ARTIFACT",
+        "REVIEW_WRITE_PATH_POLICY",
+        "REVIEW_QUALITY_IMPACT_PREVIEW"
+      ]
+    },
+    {
+      "groupId": "group_review_followup",
+      "title": "Review Follow-Up",
+      "actionIds": [
+        "REQUEST_MORE_DATA",
+        "ACKNOWLEDGE_DATA_LIMITED"
+      ]
+    },
+    {
+      "groupId": "group_blocked_actions",
+      "title": "Blocked Actions",
+      "actionIds": [
+        "APPROVE_PRODUCTION_BACKFILL",
+        "APPROVE_CORPUS_WRITE",
+        "APPROVE_OPTIMIZER",
+        "APPROVE_TRADING_ACTION",
+        "AUTO_PROMOTE"
+      ]
+    }
+  ],
+  "validationStatus": "PASS",
+  "validationMessages": [
+    "PASS: manual review action schema safety contracts verified"
+  ]
+}

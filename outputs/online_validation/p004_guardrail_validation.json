@@ -1,0 +1,29 @@
+{
+  "task": "P0-04",
+  "title": "P0-04 Guardrail Validation",
+  "date": "2026-05-07",
+  "status": "COMPLETE",
+  "disclaimer": "research tool only — no auto trading — no precision prediction claim — no DB write — no external API — no LLM call — no strategy mutation — no regime logic mutation — no performance claim — no edge claim",
+  "guardrails": {
+    "noDBWrite": { "status": "PASS", "note": "All changes are read-only query modifications" },
+    "noExternalAPI": { "status": "PASS", "note": "No HTTP calls added" },
+    "noLLMCall": { "status": "PASS", "note": "No LLM integration added" },
+    "noStrategyMutation": { "status": "PASS", "note": "Regime thresholds and scoring weights unchanged" },
+    "noRegimeLogicMutation": { "status": "PASS", "note": "detectRegime() judgment logic not modified, only date gate added" },
+    "noPerformanceClaim": { "status": "PASS", "note": "No ROI / win_rate / profit fields added" },
+    "noEdgeClaim": { "status": "PASS", "note": "No edge / outperform / guaranteed terms in new fields" },
+    "noBuySellSignal": { "status": "PASS", "note": "No buy/sell/signal/recommendation fields in new output" },
+    "noAutoTrading": { "status": "PASS", "note": "No auto trading integration" },
+    "noH001H012": { "status": "PASS", "note": "No H001-H012 hypothesis references in new fields" },
+    "backwardCompatibility": { "status": "PASS", "note": "asOf is optional — all callers without asOf unchanged" },
+    "p001Regression": { "status": "PASS", "note": "83 P0-01 tests pass" },
+    "p002aRegression": { "status": "PASS", "note": "41 P0-02A tests pass" },
+    "p003Regression": { "status": "PASS", "note": "476 total tests pass" }
+  },
+  "forbiddenTermsChecked": [
+    "buy", "sell", "signal", "roi", "win_rate", "alpha (new fields only)", "edge",
+    "profit", "recommendation", "outperform", "guaranteed", "auto trading",
+    "H001", "H002", "H003", "H004", "H005", "H006", "H007", "H008", "H009", "H010", "H011", "H012"
+  ],
+  "forbiddenTermsFoundInNewFields": "NONE"
+}

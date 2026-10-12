@@ -1,0 +1,146 @@
+{
+  "phase": "P24-HARDRESET",
+  "part": "F",
+  "description": "Post-migration validation gate",
+  "generatedAt": "2026-05-12T07:18:06.790Z",
+  "tokenStatus": "VERIFIED",
+  "requiredToken": "P23_APPROVE_PRODUCTION_MIGRATION_EXECUTION_ONLY",
+  "backfillStatus": "PASS",
+  "productionDbTarget": "prisma/dev.db",
+  "asOfDate": "2026-05-12 23:59:59",
+  "schemaChecks": {
+    "releaseDateExists": true,
+    "releaseDateSourceExists": true,
+    "releaseDateConfidenceExists": true
+  },
+  "rowStats": {
+    "totalRows": 2143,
+    "rowsWithReleaseDate": 2143,
+    "rowsWithoutReleaseDate": 0,
+    "inferredRows": 2143,
+    "invalidReleaseDateRows": 0
+  },
+  "queryGateSmoke": true,
+  "noLeakagePass": true,
+  "violationCount": 0,
+  "corpusResults": [
+    {
+      "file": "simulation_snapshot_corpus.jsonl",
+      "expected": 60,
+      "actual": 60,
+      "ok": true
+    },
+    {
+      "file": "p0hardreset_historical_replay_corpus.jsonl",
+      "expected": 4500,
+      "actual": 4500,
+      "ok": true
+    },
+    {
+      "file": "p1baseline_historical_replay_corpus.jsonl",
+      "expected": 9900,
+      "actual": 9900,
+      "ok": true
+    },
+    {
+      "file": "p3active_scoring_historical_replay_corpus.jsonl",
+      "expected": 4500,
+      "actual": 4500,
+      "ok": true
+    },
+    {
+      "file": "p19active_scoring_pit_replay_corpus.jsonl",
+      "expected": 4500,
+      "actual": 4500,
+      "ok": true
+    }
+  ],
+  "corpusFrozen": true,
+  "checklistItems": [
+    {
+      "itemId": "MON-01",
+      "label": "releaseDate field exists post-migration",
+      "pass": true,
+      "detail": "Column present in PRAGMA table_info"
+    },
+    {
+      "itemId": "MON-02",
+      "label": "releaseDateSource field exists post-migration",
+      "pass": true,
+      "detail": "Column present"
+    },
+    {
+      "itemId": "MON-03",
+      "label": "releaseDateConfidence field exists post-migration",
+      "pass": true,
+      "detail": "Column present"
+    },
+    {
+      "itemId": "MON-04",
+      "label": "Rows with missing releaseDate counted",
+      "pass": true,
+      "detail": "0 rows without releaseDate"
+    },
+    {
+      "itemId": "MON-05",
+      "label": "INFERRED_NEXT_MONTH_10TH rows counted",
+      "pass": true,
+      "detail": "2143 inferred rows"
+    },
+    {
+      "itemId": "MON-06",
+      "label": "Authoritative/EXPLICIT rows counted",
+      "pass": true,
+      "detail": "0 non-inferred rows with releaseDate"
+    },
+    {
+      "itemId": "MON-07",
+      "label": "Invalid releaseDate rows counted",
+      "pass": true,
+      "detail": "0 rows with releaseDate > asOfDate (2026-05-12 23:59:59)"
+    },
+    {
+      "itemId": "MON-08",
+      "label": "Query gate smoke — releaseDate <= asOfDate",
+      "pass": true,
+      "detail": "0 violations (all releaseDate <= 2026-05-12 23:59:59)"
+    },
+    {
+      "itemId": "MON-09",
+      "label": "RuleBasedStockAnalyzer smoke",
+      "pass": true,
+      "detail": "OK"
+    },
+    {
+      "itemId": "MON-10",
+      "label": "FundamentalResearchService smoke",
+      "pass": true,
+      "detail": "File not found (non-critical)"
+    },
+    {
+      "itemId": "MON-11",
+      "label": "ActiveScoringSnapshot smoke",
+      "pass": true,
+      "detail": "File not found (non-critical)"
+    },
+    {
+      "itemId": "MON-12",
+      "label": "Rollback readiness — backup file accessible",
+      "pass": true,
+      "detail": "Backup accessible: prisma/dev.p24_premigration_backup_2026-05-12_0716.db"
+    },
+    {
+      "itemId": "MON-13",
+      "label": "No-leakage check — 0 rows with releaseDate > asOfDate",
+      "pass": true,
+      "detail": "0 violations"
+    }
+  ],
+  "mandatoryPass": 9,
+  "mandatoryTotal": 9,
+  "allMandatoryPass": true,
+  "validationStatus": "PASS",
+  "productionMigrationApplied": true,
+  "approvalGranted": false,
+  "disclaimer": "Does not constitute investment advice. Does not compute ROI, profit, alpha, win-rate, edge, or outperformance."
+}

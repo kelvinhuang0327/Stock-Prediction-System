@@ -1,0 +1,99 @@
+{
+  "version": "1.0",
+  "description": "Machine-readable research program backlog. Each entry represents a structured deep-research item. The planner reads this alongside backlog.md and can use focus_keys to compose v2 multi-focus tasks.",
+  "updated_at": "2026-04-24T00:00:00Z",
+  "items": [
+    {
+      "id": "cold_regime_3focus",
+      "priority": 1,
+      "status": "queued",
+      "trigger": "COLD_REGIME",
+      "title": "Cold-Phase Recovery — 3-Focus Deep Research",
+      "objective": "Investigate cold-phase patterns across three structured focuses: cold-phase strategy variants, hybrid entry timing, and distribution bias exploitation.",
+      "focus_keys": ["cold_phase", "hybrid_entry", "distribution_bias"],
+      "signal_state": "COLD_REGIME",
+      "blocked_by": null,
+      "target_outputs": [
+        "cold_phase_strategy_report.json",
+        "cold_phase_backtest_table.json",
+        "hybrid_entry_strategy_report.json",
+        "hybrid_backtest_table.json",
+        "distribution_bias_report.json",
+        "distribution_backtest_table.json"
+      ],
+      "statistical_requirements": [
+        "perm_p < 0.05 on cold-phase edge vs baseline",
+        "Monte Carlo 5th-percentile drawdown < 20%",
+        "McNemar test on hybrid vs cold-phase entry classification",
+        "chi-squared p < 0.05 for distribution bias claim"
+      ],
+      "expected_duration_hours": 8,
+      "replacement_if_failed": "cold_regime_baseline_only",
+      "notes": "Triggered when COLD_REGIME confidence >= 0.6. Covers C/D/H focus areas from external research protocol."
+    },
+    {
+      "id": "cold_regime_baseline_only",
+      "priority": 2,
+      "status": "queued",
+      "trigger": "COLD_REGIME",
+      "title": "Cold-Phase Baseline Recovery (Single Focus Fallback)",
+      "objective": "When 3-focus research fails or is blocked, fall back to baseline cold-phase strategy generation and validation.",
+      "focus_keys": ["cold_phase"],
+      "signal_state": "COLD_REGIME",
+      "blocked_by": null,
+      "target_outputs": [
+        "cold_phase_strategy_report.json",
+        "cold_phase_backtest_table.json"
+      ],
+      "statistical_requirements": [
+        "perm_p < 0.05 on cold-phase edge vs baseline"
+      ],
+      "expected_duration_hours": 4,
+      "replacement_if_failed": null,
+      "notes": "Fallback item. Only activate if cold_regime_3focus repeatedly fails."
+    },
+    {
+      "id": "saturated_3focus",
+      "priority": 3,
+      "status": "queued",
+      "trigger": "SIGNAL_SATURATED",
+      "title": "Signal Saturation — 3-Focus Analysis",
+      "objective": "Analyze SIGNAL_SATURATED state across signal quality filtering, shadow strategy promotion, and execution policy tightening.",
+      "focus_keys": ["signal_quality", "shadow_strategy", "saturation_meta"],
+      "signal_state": "SIGNAL_SATURATED",
+      "blocked_by": null,
+      "target_outputs": [
+        "signal_quality_filter_report.json",
+        "signal_quality_backtest_table.json",
+        "shadow_strategy_candidates.json",
+        "shadow_tracking_report.json",
+        "saturation_meta_review.json",
+        "policy_update_proposal.json"
+      ],
+      "statistical_requirements": [
+        "perm_p < 0.05 on filtered vs unfiltered edge",
+        "Shadow strategy drawdown at 5th Monte Carlo percentile < 15%",
+        "McNemar test on policy-tightened entry classification"
+      ],
+      "expected_duration_hours": 8,
+      "replacement_if_failed": null,
+      "notes": "Triggered when SIGNAL_SATURATED confidence >= 0.6."
+    },
+    {
+      "id": "orchestrator_stability",
+      "priority": 10,
+      "status": "queued",
+      "trigger": "BACKLOG",
+      "title": "Orchestrator Stability Audit",
+      "objective": "Audit the orchestrator planner/worker loop for stale task handling, cooldown accuracy, and gate regression coverage.",
+      "focus_keys": ["reliability"],
+      "signal_state": null,
+      "blocked_by": null,
+      "target_outputs": ["orchestrator_audit_report.json"],
+      "statistical_requirements": [],
+      "expected_duration_hours": 4,
+      "replacement_if_failed": null,
+      "notes": "Operational backlog item. Not regime-triggered."
+    }
+  ]
+}

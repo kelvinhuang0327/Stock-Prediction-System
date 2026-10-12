@@ -1,0 +1,33 @@
+{
+  "verification_id": "T09_PRISMA_CLIENT_VERIFICATION",
+  "verification_date": "2026-05-06",
+  "generated_at": "2026-05-06T15:09:18.366429",
+  "schema_has_market_regime_result": true,
+  "sqlite_table_exists": true,
+  "prisma_generate_executed": true,
+  "prisma_generate_exit_code": 0,
+  "prisma_generate_output": "Generated Prisma Client (v5.22.0) in 238ms",
+  "typescript_references_after_generate": 422,
+  "prisma_market_regime_result_available": true,
+  "latest_query_field_selection": [
+    "date",
+    "regimeLabel",
+    "confidence",
+    "taiexClose",
+    "source",
+    "version"
+  ],
+  "query_order_by": "date DESC",
+  "query_take": 1,
+  "sample_query_result": {
+    "date": "2026-05-06",
+    "regimeLabel": "BULL",
+    "confidence": 1.0,
+    "taiexClose": 41138.85,
+    "source": "P4_03_MARKET_REGIME_CLASSIFIER",
+    "version": "p4_03b_v1"
+  },
+  "no_schema_migration_performed": true,
+  "no_db_write_performed": true,
+  "verdict": "PASS"
+}

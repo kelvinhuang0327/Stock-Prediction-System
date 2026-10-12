@@ -1,0 +1,36 @@
+{
+  "phase": "P36",
+  "scanTarget": "src/lib/onlineValidation/p36/",
+  "scanResult": "CLEAN",
+  "timestamp": "2026-05-15T00:00:00.000Z",
+  "pattern": "ROI|win-rate|win rate|profit|outperform|beat the market|guaranteed|買進|賣出|買入|buy|sell|hold",
+  "findings": [
+    {
+      "file": "MonthlyRevenueControlledConsumerReadiness.ts",
+      "line": 12,
+      "text": "No profit, return, win-rate, or investment performance claims are made.",
+      "classification": "BENIGN — disclaimer clause"
+    },
+    {
+      "file": "MonthlyRevenueControlledConsumerReadiness.ts",
+      "lines": [98, 107, 108, 109, 111],
+      "text": "profitLoss, buy, sell, hold, profit",
+      "classification": "BENIGN — FUTURE_LOOKING_FIELDS prohibition array entries"
+    },
+    {
+      "file": "MonthlyRevenueControlledConsumerContract.ts",
+      "line": 13,
+      "text": "No profit, return, win-rate, or investment performance claims are made.",
+      "classification": "BENIGN — disclaimer clause"
+    },
+    {
+      "file": "MonthlyRevenueControlledConsumerContract.ts",
+      "lines": [25, 29, 81, 82, 83, 88, 89, 191, 192, 193, 198],
+      "text": "profit, guaranteed-return, buy, sell, hold, profitLoss",
+      "classification": "BENIGN — FORBIDDEN_CONSUMER_OUTPUT_FIELDS array entries + disclaimer prohibition list"
+    }
+  ],
+  "investmentClaimsFound": false,
+  "verdict": "CLEAN — all occurrences are in prohibition/disclaimer clauses. No affirmative investment claims detected.",
+  "entersAlphaScore": false
+}

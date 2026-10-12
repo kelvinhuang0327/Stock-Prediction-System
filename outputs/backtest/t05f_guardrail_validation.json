@@ -1,0 +1,105 @@
+{
+  "task": "T-05F_WALK_FORWARD_OBSERVABILITY_RUNNER",
+  "guardrailVersion": "1.0.0",
+  "date": "2026-05-07",
+  "safetyLabels": [
+    "T-05F",
+    "dry-run only",
+    "safe-run only",
+    "no DB write",
+    "no external API",
+    "no LLM call",
+    "no production overwrite",
+    "no strategy mutation",
+    "no performance claim",
+    "no edge claim"
+  ],
+  "overallStatus": "PASS",
+  "forbiddenTermsChecked": [
+    "buy", "sell", "signal", "roi", "win_rate", "alpha",
+    "edge", "profit", "recommendation", "outperform",
+    "H001", "H002", "H003", "H004", "H005", "H006",
+    "H007", "H008", "H009", "H010", "H011", "H012"
+  ],
+  "checks": [
+    {
+      "name": "dryRunEnabled",
+      "status": "PASS",
+      "note": "dryRun is locked to true in buildWalkForwardRunConfig(). runWalkForwardObservability() throws if false."
+    },
+    {
+      "name": "safeRunEnabled",
+      "status": "PASS",
+      "note": "safeRun is locked to true in buildWalkForwardRunConfig(). runWalkForwardObservability() throws if false."
+    },
+    {
+      "name": "noDbWrite",
+      "status": "PASS",
+      "note": "Runner uses read-only injectable clients. No .create(), .upsert(), .update(), .delete() calls. Source inspection verified."
+    },
+    {
+      "name": "noExternalApiCall",
+      "status": "PASS",
+      "note": "No fetch(), axios., or http(s):// calls in WalkForwardObservabilityRunner.ts. Source inspection verified."
+    },
+    {
+      "name": "noLlmCall",
+      "status": "PASS",
+      "note": "No openai/anthropic/langchain imports. Fully deterministic. Source inspection verified."
+    },
+    {
+      "name": "noStrategyMutation",
+      "status": "PASS",
+      "note": "Runner reads regime context and candidate snapshots as read-only. Does not modify any strategy output."
+    },
+    {
+      "name": "noProductionOverwrite",
+      "status": "PASS",
+      "note": "artifactPlan restricted to outputs/backtest and outputs/system_readiness paths only."
+    },
+    {
+      "name": "noForbiddenFieldsAsClaims",
+      "status": "PASS",
+      "note": "Forbidden terms absent from all output field names, summaries, and conclusions. Test 14a/14b/14c verified."
+    },
+    {
+      "name": "noPerformanceMetricComputation",
+      "status": "PASS",
+      "note": "No forward returns, drawdowns, win-rate, or ROI computations. observabilitySummary fields are coverage counts only."
+    },
+    {
+      "name": "sourceDateLeRebalanceDateEnforced",
+      "status": "PASS",
+      "note": "T-05E CandidateDataAdapter enforces sourceDate <= rebalanceDate. INVALID_FUTURE_DATE status flags violations. Test 11a/11b verified."
+    },
+    {
+      "name": "tradingCalendarInjected",
+      "status": "PASS",
+      "note": "T-05D TaiwanTradingCalendar always used for trading date generation. calendarBasis: TAIWAN_TRADING_CALENDAR."
+    },
+    {
+      "name": "regimeContextReadOnly",
+      "status": "PASS",
+      "note": "T-05C RegimeContextLoader provides read-only Map<string, PersistedRegimeContext>. No regime writes."
+    },
+    {
+      "name": "candidateSnapshotsReadOnly",
+      "status": "PASS",
+      "note": "T-05E CandidateDataAdapter provides read-only PIT-safe CandidateSnapshot[]. No snapshot writes."
+    },
+    {
+      "name": "noHardcodedTodayCap",
+      "status": "PASS",
+      "note": "buildWalkForwardRunConfig() uses resolveCurrentDate(). Source inspection: no hardcoded YYYY-MM-DD dates in non-comment lines. Test 2f verified."
+    },
+    {
+      "name": "artifactDirRestriction",
+      "status": "PASS",
+      "note": "All artifact paths start with outputs/backtest or outputs/system_readiness. Test 13a/13b verified."
+    }
+  ],
+  "passCount": 15,
+  "warnCount": 0,
+  "failCount": 0,
+  "observabilityNote": "Guardrail validation for T-05F WalkForward Observability Runner. All checks PASS. Not a strategy validation."
+}

@@ -1,0 +1,32 @@
+{
+  "auditId": "p26f4-operator-source-packet-v2-smoke",
+  "generatedAt": "2026-05-13T14:15:00.344021+00:00",
+  "dropzoneScan": {
+    "candidateSourceFiles": 0,
+    "classification": "P26F3_5_SOURCE_NOT_PROVIDED",
+    "SOURCE_MANIFEST_TEMPLATE_excluded": true,
+    "reason": "TEMPLATE in filename matches scanner exclusion pattern"
+  },
+  "invariance": {
+    "prismaDevDb_sha256": "a5cf277182c161dfe97ba05f9b81528d6c8e477dd5ac0bec6810ffbb8711c6f8",
+    "prismaDevDb_unchanged": true,
+    "corpusLineCounts": {
+      "simulation_snapshot_corpus_jsonl": 60,
+      "p0hardreset_historical_replay_corpus_jsonl": 4500,
+      "p1baseline_historical_replay_corpus_jsonl": 9900,
+      "p3active_scoring_historical_replay_corpus_jsonl": 4500,
+      "p19active_scoring_pit_replay_corpus_jsonl": 4500
+    },
+    "corpusUnchanged": true,
+    "scoringFilesUnchanged": true
+  },
+  "testResults": {
+    "testSuites": 93,
+    "testsPassed": 2856,
+    "testsFailed": 0,
+    "classification": "ALL_PASS"
+  },
+  "smokeStatus": "PASS",
+  "classification": "P26F4_OPERATOR_SOURCE_PACKET_V2_SMOKE_PASS",
+  "disclaimer": "Observability only. No investment recommendations."
+}

@@ -1,0 +1,53 @@
+{
+  "contractName": "PIT-safe Feature Availability Registry Contract v1",
+  "contractVersion": "p29a-registry-contract-v1",
+  "generatedAt": "2026-05-23T00:00:00Z",
+  "phase": "P29A-HARDRESET",
+  "paperDesignOnly": true,
+  "noProductionScoringImpact": true,
+  "disclaimer": "Paper design. Not investment advice. Not a performance claim.",
+  "purpose": "Define a machine-readable contract for all feature sources in the prediction system, describing their PIT-safety status, availability gates, scoring participation, and known limitations.",
+  "registryVersion": "v1",
+  "sourceStatusEnum": [
+    "AVAILABLE_PIT_SAFE",
+    "AVAILABLE_NEEDS_VALIDATION",
+    "REPAIRED_BUT_SOURCE_GATED",
+    "WAITING_FOR_OPERATOR_SOURCE",
+    "HIGH_RISK_SOURCE_ABSENT",
+    "RENDERER_ONLY",
+    "NOT_ALLOWED_FOR_SCORING",
+    "UNKNOWN_NEEDS_AUDIT"
+  ],
+  "entrySchema": {
+    "sourceName": "string — unique source identifier",
+    "sourceFamily": "string — 'price_and_technicals' | 'fundamental' | 'chip_and_flow' | 'market_context' | 'event_and_news'",
+    "sourceStatus": "SourceStatusEnum",
+    "gateField": "string | null — DB field used for PIT filtering",
+    "pitDateField": "string | null — canonical date comparison field for asOfDate gate",
+    "pitRule": "string — human-readable rule describing the PIT gate",
+    "coverageWindow": "string — time range of available data",
+    "freshnessRule": "string — how to determine if source data is stale",
+    "entersAlphaScore": "boolean — true if source contributes to alphaScore calculation",
+    "signalFusionWeightStock": "number | null — weight in SignalFusionEngine for stock type",
+    "signalFusionWeightETF": "number | null — weight in SignalFusionEngine for ETF type",
+    "entersRendererOnly": "boolean — true if source appears in renderer/reason context but not alphaScore",
+    "requiredForCorpusExpansion": "boolean — whether source availability gates corpus expansion",
+    "knownLimitations": "string[]",
+    "allowedWhenMissing": "string — how the system behaves when source is absent",
+    "fallbackBehavior": "string — fallback logic when source is unavailable",
+    "forbiddenBehavior": "string — what must NOT happen when source is missing or not PIT-safe",
+    "evidenceArtifacts": "string[] — reference artifacts for this entry's status"
+  },
+  "registryRules": [
+    "R1: Any source with entersAlphaScore=true MUST have a verified PIT gate (gateField != null and pitRule documented).",
+    "R2: Any source with sourceStatus=HIGH_RISK_SOURCE_ABSENT MUST have entersAlphaScore=false.",
+    "R3: Any source with sourceStatus=NOT_ALLOWED_FOR_SCORING MUST have entersAlphaScore=false.",
+    "R4: NewsEvent and FinancialReport must NOT enter alphaScore until their sourceStatus transitions to AVAILABLE_PIT_SAFE.",
+    "R5: MonthlyRevenue remains source-gated (REPAIRED_BUT_SOURCE_GATED) until P26F4 import is completed.",
+    "R6: Registry is paper design only — no production scoring path may import this registry file.",
+    "R7: A source with entersRendererOnly=true still requires PIT safety if its rendered text could expose future data.",
+    "R8: forbiddenBehavior must be explicitly documented for every source.",
+    "R9: ingestedAt, createdAt, updatedAt, periodEndDate, fiscalQuarter are NEVER valid PIT gate fields.",
+    "R10: P26F4 import approval token must remain required; registry does not grant import permission."
+  ]
+}

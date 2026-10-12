@@ -1,0 +1,23 @@
+{
+  "phase": "P29A",
+  "part": "G - Tests",
+  "generatedAt": "2026-05-23T00:00:00Z",
+  "runs": [
+    {
+      "command": "npx jest src/lib/onlineValidation/__tests__/p29a_pit_feature_availability_registry.test.ts --no-coverage",
+      "result": "PASS",
+      "testsPassed": 16,
+      "testsFailed": 0,
+      "suitesPassed": 1
+    },
+    {
+      "command": "npx jest src/lib/onlineValidation/__tests__ --no-coverage",
+      "result": "PASS",
+      "testsPassed": 3027,
+      "testsFailed": 0,
+      "suitesPassed": 101,
+      "note": "Up from 3011 in P28E (+16 new P29A registry tests)"
+    }
+  ],
+  "verdict": "ALL_P29A_TARGETED_AND_REGRESSION_TESTS_PASS"
+}

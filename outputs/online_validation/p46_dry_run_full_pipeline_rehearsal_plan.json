@@ -1,0 +1,40 @@
+{
+  "phase": "P46",
+  "description": "Paper Simulation Dry-run Full Pipeline Rehearsal",
+  "authorizationPhrase": "YES design paper simulation dry-run full pipeline rehearsal for P46",
+  "frameworkStatus": "EXECUTION_LIFECYCLE_RUNNER_FULL_PIPELINE_REHEARSAL_READY",
+  "version": "p46-paper-simulation-dry-run-lifecycle-runner-full-pipeline-rehearsal-v1",
+  "reportVersion": "p46-paper-simulation-dry-run-lifecycle-runner-full-pipeline-rehearsal-report-v1",
+  "fullPipelineRehearsalFlow": [
+    "RehearsalResult (P45: runDryRunIntegrationRehearsal)",
+    "RehearsalReport (P45: buildRehearsalReport)",
+    "FullPipelineRehearsalResult (P46: runDryRunFullPipelineRehearsal)"
+  ],
+  "fullPipelineRehearsalStepsTotal": 2,
+  "rehearsalStepsTotal": 2,
+  "pipelineStepsTotal": 5,
+  "governance": {
+    "dryRunOnly": true,
+    "paperOnly": true,
+    "noActualMetrics": true,
+    "entersAlphaScore": false,
+    "noAlphaScore": true,
+    "noPnL": true,
+    "noROI": true,
+    "noWinRate": true,
+    "noRealExecution": true,
+    "executedAt": null,
+    "stubResult": "DRY_RUN_STUB_ONLY"
+  },
+  "idScheme": {
+    "fullPipelineRehearsalId": "p46-full-pipeline-rehearsal-{runId}-{fullPipelineRehearsalStartedAt}",
+    "fullPipelineRehearsalReportId": "p46-full-pipeline-rehearsal-report-{fullPipelineRehearsalId}-{fullPipelineRehearsalReportGeneratedAt}"
+  },
+  "upstreamChain": {
+    "P43": "runDryRunLifecycle → PaperSimulationDryRunRunnerResult",
+    "P44": "runDryRunIntegration → PaperSimulationDryRunIntegrationResult",
+    "P45": "runDryRunIntegrationRehearsal → PaperSimulationDryRunIntegrationRehearsalResult",
+    "P46": "runDryRunFullPipelineRehearsal → PaperSimulationDryRunFullPipelineRehearsalResult"
+  },
+  "generatedAt": "2024-01-17T10:00:00.000Z"
+}

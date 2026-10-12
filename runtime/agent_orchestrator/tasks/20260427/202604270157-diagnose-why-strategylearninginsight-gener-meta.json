@@ -1,0 +1,21 @@
+{
+  "version": "1.0",
+  "task_id": 172,
+  "slug": "diagnose-why-strategylearninginsight-gener",
+  "status": "PENDING_REVIEW",
+  "gate_verdict": "PASS",
+  "planner_provider": "codex",
+  "worker_provider": "copilot-daemon",
+  "created_at": "2026-04-27T01:57:05.157Z",
+  "updated_at": "2026-04-27T02:02:33.711Z",
+  "last_output_at": "2026-04-27T02:02:33.711Z",
+  "latest_progress_summary": "Auto-committed 2 file(s) (sha: bbd7001). Awaiting CTO review.",
+  "planner_context": {
+    "taskType": "optimization_system_health",
+    "game": null,
+    "regimeState": "OPTIMIZATION",
+    "dedupeKey": "system_health__no_learning_insight",
+    "confidenceScore": null,
+    "regimeTaskType": "system_health"
+  }
+}

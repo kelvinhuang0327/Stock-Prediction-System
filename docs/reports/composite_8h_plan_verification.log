@@ -1,0 +1,105 @@
+=== CASE 1: all domains sourced from miner ===
+dedupeKey: composite_8h_plan__2026-04-24
+objective: 8-Hour Multi-Domain Optimization Sprint (系統 / 功能 / 模擬 / 實戰 / 自我學習)
+acceptance_tests count: 18
+scope files: [
+  'src/lib/system_health/',
+  'docs/reports/',
+  'src/lib/test_coverage/',
+  'src/lib/ui_ux/',
+  'src/lib/wiki_docs/',
+  'src/lib/price_analysis_quality/',
+  'src/lib/lifecycle/',
+  'src/lib/trading_learning/',
+  'src/lib/execution_layer/',
+  'src/lib/learning_layer/'
+]
+phase headers:
+  ### Phase 1: 系統優化 (System Optimization)
+  ### Phase 2: 功能優化 (Feature & UX Optimization)
+  ### Phase 3: 模擬優化 (Simulation Pipeline Optimization)
+  ### Phase 4: 實戰操作優化 (Real-Trading Execution Optimization)
+  ### Phase 5: 系統自我學習優化 (Self-Learning Loop Optimization)
+
+--- first 1500 chars of prompt ---
+# 8-Hour Multi-Domain Optimization Sprint (系統 / 功能 / 模擬 / 實戰 / 自我學習)
+
+**Est Duration:** 8h | **Risk:** MEDIUM | **Composite:** 5 domains (5 miner-sourced, 0 fallback)
+
+## Objective
+在 8 小時內完成橫跨 5 個優化面向的整合性 sprint，確保系統健康、功能體驗、模擬品質、實戰執行、以及自我學習迴路皆有可驗證的推進。
+
+## How to Execute
+1. 按照 Phase 1 → Phase 5 的順序逐段實作；每段都要留下 artifact（report / log / diff）作為驗收憑據。
+2. 每個 phase 完成後，在 `completed.md` 內以對應的 `[domain] criterion` tag 更新進度。
+3. 若某一 phase 受到資料或權限阻擋，**不要跳過**，而是在該 phase 的驗收條件下記錄具體 blocker 作為 evidence。
+4. 所有 reports 統一落在 `docs/reports/` 下，檔名需包含日期與 domain key。
+
+## Phases
+### Phase 1: 系統優化 (System Optimization)
+
+**Problem 1 — system_health.** Synthetic system_health problem: stale quotes.
+
+Evidence: `metric A = bad`; `metric B stale`
+
+**Problem 2 — test_coverage.** Synthetic test_coverage problem: low coverage.
+
+Evidence: `metric A = bad`; `metric B stale`
+
+**Suggested Files:**
+- `src/lib/system_health/`
+- `docs/reports/`
+- `src/lib/test_coverage/`
+
+**Acceptance Criteria:**
+- [ ] [system] Diagnose stale quotes
+- [ ] [system] Produce report under docs/reports/system_health__stale_quotes.md
+- [ ] [system] Diagnose low coverage
+- [ ] [system] Produce report under docs/reports/test_coverage__low.md
+
+**Forbidden Actions:**
+- ⛔ Do not mutate system_health baseline records
+- ⛔ Do not mutate test_coverage baseline records
+
+### Phase 2: 功能優化 (Feature & UX Optimization)
+
+**Problem 1 — ui_ux.** Synthetic ui_ux problem: missing empty state.
+
+Evidence: `metric A = bad`; `metric B stale`
+
+**Problem 2 — wiki
+
+--- last 800 chars of prompt ---
+y — if blocked, document the blocker as acceptance evidence
+- Do not mutate system_health baseline records
+- Do not mutate test_coverage baseline records
+- Do not mutate ui_ux baseline records
+- Do not mutate wiki_docs baseline records
+- Do not mutate price_analysis_quality baseline records
+- Do not mutate lifecycle baseline records
+- Do not mutate trading_learning baseline records
+- Do not mutate execution_layer baseline records
+- Do not mutate learning_layer baseline records
+
+## System Constraints
+- Do not modify protected paths from the project profile
+- Every acceptance criterion must be testable and verifiable with an artifact path
+- Each phase must produce at least one file/diff/log as evidence
+- If time runs short, deliver fewer phases **completely** rather than all phases partially
+
+
+=== CASE 2: no miner candidates (all fallback) ===
+acceptance_tests count: 20
+fallback buckets: 5 / 5
+phase headers:
+  ### Phase 1: 系統優化 (System Optimization)
+  ### Phase 2: 功能優化 (Feature & UX Optimization)
+  ### Phase 3: 模擬優化 (Simulation Pipeline Optimization)
+  ### Phase 4: 實戰操作優化 (Real-Trading Execution Optimization)
+  ### Phase 5: 系統自我學習優化 (Self-Learning Loop Optimization)
+
+INVARIANT: every domain tag present in acceptance_tests → OK
+INVARIANT: fallback path still covers all 5 domains       → OK
+INVARIANT: expected_duration_hours === 8                  → OK
+INVARIANT: regimeState === OPTIMIZATION                   → OK
+INVARIANT: taskType === optimization_composite_8h         → OK

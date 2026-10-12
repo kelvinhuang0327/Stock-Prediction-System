@@ -1,0 +1,376 @@
+{
+  "auditType": "P2_PREDICTION_LAYER_SPOTCHECK",
+  "auditDate": "2026-05-11",
+  "auditMode": "LIMITED_NON_DISCRIMINATIVE_FIELDS",
+  "classification": "P2_SPOTCHECK_LIMITED_BY_MISSING_SCORE_FIELDS",
+  "p0TotalRows": 4500,
+  "p1TotalRows": 9900,
+  "p0HorizonStats": {
+    "5": {
+      "horizonDays": 5,
+      "totalRows": 1500,
+      "covered": 1500,
+      "missing": 0,
+      "pending": 0,
+      "missingRatio": 0,
+      "pendingRatio": 0,
+      "coverageRatio": 1,
+      "count": 1500,
+      "mean": 0.923,
+      "median": 0.2586,
+      "min": -28.8136,
+      "max": 56.2952,
+      "stddev": 6.1509
+    },
+    "20": {
+      "horizonDays": 20,
+      "totalRows": 1500,
+      "covered": 1486,
+      "missing": 14,
+      "pending": 0,
+      "missingRatio": 0.0093,
+      "pendingRatio": 0,
+      "coverageRatio": 0.9907,
+      "count": 1486,
+      "mean": 4.5893,
+      "median": 1.6153,
+      "min": -27.521,
+      "max": 75.5306,
+      "stddev": 12.2628
+    },
+    "60": {
+      "horizonDays": 60,
+      "totalRows": 1500,
+      "covered": 1218,
+      "missing": 282,
+      "pending": 0,
+      "missingRatio": 0.188,
+      "pendingRatio": 0,
+      "coverageRatio": 0.812,
+      "count": 1218,
+      "mean": 15.0948,
+      "median": 9.0626,
+      "min": -35.8718,
+      "max": 144.6889,
+      "stddev": 23.6993
+    }
+  },
+  "p0BucketStats": null,
+  "p0ScoreDeciles": null,
+  "p1BaselineStats": {
+    "BUY_AND_HOLD_ALL|5": {
+      "baselineType": "BUY_AND_HOLD_ALL",
+      "horizonDays": 5,
+      "totalRows": 1500,
+      "covered": 1500,
+      "missing": 0,
+      "coverageRatio": 1,
+      "count": 1500,
+      "mean": 0.923,
+      "median": 0.2586,
+      "min": -28.8136,
+      "max": 56.2952,
+      "stddev": 6.1509
+    },
+    "BUY_AND_HOLD_ALL|20": {
+      "baselineType": "BUY_AND_HOLD_ALL",
+      "horizonDays": 20,
+      "totalRows": 1500,
+      "covered": 1486,
+      "missing": 14,
+      "coverageRatio": 0.9907,
+      "count": 1486,
+      "mean": 4.5893,
+      "median": 1.6153,
+      "min": -27.521,
+      "max": 75.5306,
+      "stddev": 12.2628
+    },
+    "BUY_AND_HOLD_ALL|60": {
+      "baselineType": "BUY_AND_HOLD_ALL",
+      "horizonDays": 60,
+      "totalRows": 1500,
+      "covered": 1218,
+      "missing": 282,
+      "coverageRatio": 0.812,
+      "count": 1218,
+      "mean": 15.0948,
+      "median": 9.0626,
+      "min": -35.8718,
+      "max": 144.6889,
+      "stddev": 23.6993
+    },
+    "TOP_N_EQUAL_WEIGHT|5": {
+      "baselineType": "TOP_N_EQUAL_WEIGHT",
+      "horizonDays": 5,
+      "totalRows": 600,
+      "covered": 600,
+      "missing": 0,
+      "coverageRatio": 1,
+      "count": 600,
+      "mean": 0.6883,
+      "median": 0.3889,
+      "min": -28.8136,
+      "max": 27.6178,
+      "stddev": 4.9315
+    },
+    "TOP_N_EQUAL_WEIGHT|20": {
+      "baselineType": "TOP_N_EQUAL_WEIGHT",
+      "horizonDays": 20,
+      "totalRows": 600,
+      "covered": 595,
+      "missing": 5,
+      "coverageRatio": 0.9917,
+      "count": 595,
+      "mean": 3.0339,
+      "median": 1.1559,
+      "min": -27.521,
+      "max": 56.1936,
+      "stddev": 9.7062
+    },
+    "TOP_N_EQUAL_WEIGHT|60": {
+      "baselineType": "TOP_N_EQUAL_WEIGHT",
+      "horizonDays": 60,
+      "totalRows": 600,
+      "covered": 495,
+      "missing": 105,
+      "coverageRatio": 0.825,
+      "count": 495,
+      "mean": 8.7251,
+      "median": 4.0293,
+      "min": -35.8718,
+      "max": 144.6889,
+      "stddev": 22.1441
+    },
+    "RANDOM_N_DETERMINISTIC|5": {
+      "baselineType": "RANDOM_N_DETERMINISTIC",
+      "horizonDays": 5,
+      "totalRows": 600,
+      "covered": 600,
+      "missing": 0,
+      "coverageRatio": 1,
+      "count": 600,
+      "mean": 0.9352,
+      "median": 0,
+      "min": -23.3577,
+      "max": 56.2952,
+      "stddev": 6.4709
+    },
+    "RANDOM_N_DETERMINISTIC|20": {
+      "baselineType": "RANDOM_N_DETERMINISTIC",
+      "horizonDays": 20,
+      "totalRows": 600,
+      "covered": 593,
+      "missing": 7,
+      "coverageRatio": 0.9883,
+      "count": 593,
+      "mean": 4.6686,
+      "median": 1.5152,
+      "min": -23.1395,
+      "max": 75.5306,
+      "stddev": 12.2142
+    },
+    "RANDOM_N_DETERMINISTIC|60": {
+      "baselineType": "RANDOM_N_DETERMINISTIC",
+      "horizonDays": 60,
+      "totalRows": 600,
+      "covered": 484,
+      "missing": 116,
+      "coverageRatio": 0.8067,
+      "count": 484,
+      "mean": 14.3091,
+      "median": 7.8847,
+      "min": -34.5312,
+      "max": 128.9217,
+      "stddev": 22.3629
+    },
+    "STOCKQUOTE_COVERAGE_TOP_N|5": {
+      "baselineType": "STOCKQUOTE_COVERAGE_TOP_N",
+      "horizonDays": 5,
+      "totalRows": 600,
+      "covered": 600,
+      "missing": 0,
+      "coverageRatio": 1,
+      "count": 600,
+      "mean": 1.3596,
+      "median": 0.8277,
+      "min": -28.8136,
+      "max": 56.2952,
+      "stddev": 6.4175
+    },
+    "STOCKQUOTE_COVERAGE_TOP_N|20": {
+      "baselineType": "STOCKQUOTE_COVERAGE_TOP_N",
+      "horizonDays": 20,
+      "totalRows": 600,
+      "covered": 599,
+      "missing": 1,
+      "coverageRatio": 0.9983,
+      "count": 599,
+      "mean": 6.8809,
+      "median": 3.4224,
+      "min": -27.521,
+      "max": 56.1936,
+      "stddev": 12.4354
+    },
+    "STOCKQUOTE_COVERAGE_TOP_N|60": {
+      "baselineType": "STOCKQUOTE_COVERAGE_TOP_N",
+      "horizonDays": 60,
+      "totalRows": 600,
+      "covered": 559,
+      "missing": 41,
+      "coverageRatio": 0.9317,
+      "count": 559,
+      "mean": 22.3198,
+      "median": 19.5337,
+      "min": -35.8718,
+      "max": 144.6889,
+      "stddev": 26.5849
+    }
+  },
+  "comparisonByHorizon": {
+    "5": {
+      "horizonDays": 5,
+      "p0": {
+        "mean": 0.923,
+        "median": 0.2586,
+        "coverageRatio": 1,
+        "count": 1500
+      },
+      "baselines": {
+        "BUY_AND_HOLD_ALL": {
+          "mean": 0.923,
+          "median": 0.2586,
+          "coverageRatio": 1,
+          "count": 1500
+        },
+        "RANDOM_N_DETERMINISTIC": {
+          "mean": 0.9352,
+          "median": 0,
+          "coverageRatio": 1,
+          "count": 600
+        },
+        "STOCKQUOTE_COVERAGE_TOP_N": {
+          "mean": 1.3596,
+          "median": 0.8277,
+          "coverageRatio": 1,
+          "count": 600
+        },
+        "TOP_N_EQUAL_WEIGHT": {
+          "mean": 0.6883,
+          "median": 0.3889,
+          "coverageRatio": 1,
+          "count": 600
+        }
+      }
+    },
+    "20": {
+      "horizonDays": 20,
+      "p0": {
+        "mean": 4.5893,
+        "median": 1.6153,
+        "coverageRatio": 0.9907,
+        "count": 1500
+      },
+      "baselines": {
+        "BUY_AND_HOLD_ALL": {
+          "mean": 4.5893,
+          "median": 1.6153,
+          "coverageRatio": 0.9907,
+          "count": 1500
+        },
+        "RANDOM_N_DETERMINISTIC": {
+          "mean": 4.6686,
+          "median": 1.5152,
+          "coverageRatio": 0.9883,
+          "count": 600
+        },
+        "STOCKQUOTE_COVERAGE_TOP_N": {
+          "mean": 6.8809,
+          "median": 3.4224,
+          "coverageRatio": 0.9983,
+          "count": 600
+        },
+        "TOP_N_EQUAL_WEIGHT": {
+          "mean": 3.0339,
+          "median": 1.1559,
+          "coverageRatio": 0.9917,
+          "count": 600
+        }
+      }
+    },
+    "60": {
+      "horizonDays": 60,
+      "p0": {
+        "mean": 15.0948,
+        "median": 9.0626,
+        "coverageRatio": 0.812,
+        "count": 1500
+      },
+      "baselines": {
+        "BUY_AND_HOLD_ALL": {
+          "mean": 15.0948,
+          "median": 9.0626,
+          "coverageRatio": 0.812,
+          "count": 1500
+        },
+        "RANDOM_N_DETERMINISTIC": {
+          "mean": 14.3091,
+          "median": 7.8847,
+          "coverageRatio": 0.8067,
+          "count": 600
+        },
+        "STOCKQUOTE_COVERAGE_TOP_N": {
+          "mean": 22.3198,
+          "median": 19.5337,
+          "coverageRatio": 0.9317,
+          "count": 600
+        },
+        "TOP_N_EQUAL_WEIGHT": {
+          "mean": 8.7251,
+          "median": 4.0293,
+          "coverageRatio": 0.825,
+          "count": 600
+        }
+      }
+    }
+  },
+  "confusionMatrix": {
+    "5": {
+      "horizonDays": 5,
+      "NEGATIVE": 688,
+      "FLAT": 178,
+      "POSITIVE": 634,
+      "MISSING": 0,
+      "total": 1500,
+      "negativeRatio": 0.4587,
+      "flatRatio": 0.1187,
+      "positiveRatio": 0.4227,
+      "missingRatio": 0
+    },
+    "20": {
+      "horizonDays": 20,
+      "NEGATIVE": 575,
+      "FLAT": 105,
+      "POSITIVE": 806,
+      "MISSING": 14,
+      "total": 1500,
+      "negativeRatio": 0.3833,
+      "flatRatio": 0.07,
+      "positiveRatio": 0.5373,
+      "missingRatio": 0.0093
+    },
+    "60": {
+      "horizonDays": 60,
+      "NEGATIVE": 341,
+      "FLAT": 29,
+      "POSITIVE": 848,
+      "MISSING": 282,
+      "total": 1500,
+      "negativeRatio": 0.2273,
+      "flatRatio": 0.0193,
+      "positiveRatio": 0.5653,
+      "missingRatio": 0.188
+    }
+  },
+  "observabilityNote": "All results are descriptive statistics only. Not investment advice. No ROI, alpha, win-rate, or outperformance claims."
+}

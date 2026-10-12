@@ -1,0 +1,4505 @@
+{
+  "version": "1.0",
+  "runs": [
+    {
+      "runId": "worker-1777975212098",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T10:00:11.994Z",
+      "finishedAt": "2026-05-05T10:00:12.098Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777971610548",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T09:00:10.456Z",
+      "finishedAt": "2026-05-05T09:00:10.548Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777968071434",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T08:01:08.950Z",
+      "finishedAt": "2026-05-05T08:01:11.434Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777964407758",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T07:00:07.679Z",
+      "finishedAt": "2026-05-05T07:00:07.758Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777960807953",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T06:00:07.774Z",
+      "finishedAt": "2026-05-05T06:00:07.953Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777957207675",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T05:00:07.571Z",
+      "finishedAt": "2026-05-05T05:00:07.675Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777953613781",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T04:00:13.705Z",
+      "finishedAt": "2026-05-05T04:00:13.781Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777953472251",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T03:57:52.251Z",
+      "finishedAt": "2026-05-05T03:57:52.251Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777953019229",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T03:50:19.166Z",
+      "finishedAt": "2026-05-05T03:50:19.229Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777952870779",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T03:47:50.701Z",
+      "finishedAt": "2026-05-05T03:47:50.779Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777952411343",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T03:40:11.273Z",
+      "finishedAt": "2026-05-05T03:40:11.343Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777952269363",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T03:37:49.292Z",
+      "finishedAt": "2026-05-05T03:37:49.363Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777951809764",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T03:30:09.673Z",
+      "finishedAt": "2026-05-05T03:30:09.764Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777951667717",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T03:27:47.644Z",
+      "finishedAt": "2026-05-05T03:27:47.717Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777951208412",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T03:20:08.290Z",
+      "finishedAt": "2026-05-05T03:20:08.412Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777951066294",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T03:17:46.227Z",
+      "finishedAt": "2026-05-05T03:17:46.294Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777950692040",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T03:11:31.946Z",
+      "finishedAt": "2026-05-05T03:11:32.040Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777950629554",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T03:10:28.859Z",
+      "finishedAt": "2026-05-05T03:10:29.554Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777950629211",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T03:10:28.308Z",
+      "finishedAt": "2026-05-05T03:10:29.211Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777950606402",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T03:10:06.333Z",
+      "finishedAt": "2026-05-05T03:10:06.402Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777950598758",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T03:09:58.585Z",
+      "finishedAt": "2026-05-05T03:09:58.758Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777950561715",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T03:09:21.629Z",
+      "finishedAt": "2026-05-05T03:09:21.715Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777950498413",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T03:08:18.308Z",
+      "finishedAt": "2026-05-05T03:08:18.413Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777950464927",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T03:07:44.865Z",
+      "finishedAt": "2026-05-05T03:07:44.927Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777950460600",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T03:07:40.522Z",
+      "finishedAt": "2026-05-05T03:07:40.600Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777950436115",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T03:07:15.938Z",
+      "finishedAt": "2026-05-05T03:07:16.115Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777950373834",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T03:06:13.757Z",
+      "finishedAt": "2026-05-05T03:06:13.834Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777950311753",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T03:05:11.691Z",
+      "finishedAt": "2026-05-05T03:05:11.753Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777950248687",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T03:04:08.611Z",
+      "finishedAt": "2026-05-05T03:04:08.687Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777950186793",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T03:03:06.713Z",
+      "finishedAt": "2026-05-05T03:03:06.793Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777950124841",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T03:02:04.753Z",
+      "finishedAt": "2026-05-05T03:02:04.841Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777950062550",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T03:01:02.475Z",
+      "finishedAt": "2026-05-05T03:01:02.550Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777950006579",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T03:00:06.528Z",
+      "finishedAt": "2026-05-05T03:00:06.579Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777950004460",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T03:00:04.398Z",
+      "finishedAt": "2026-05-05T03:00:04.460Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777950000832",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T03:00:00.766Z",
+      "finishedAt": "2026-05-05T03:00:00.832Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777950000813",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T03:00:00.746Z",
+      "finishedAt": "2026-05-05T03:00:00.813Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777949996565",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:59:56.488Z",
+      "finishedAt": "2026-05-05T02:59:56.565Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777949938798",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:58:58.659Z",
+      "finishedAt": "2026-05-05T02:58:58.798Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777949876586",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:57:56.524Z",
+      "finishedAt": "2026-05-05T02:57:56.586Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777949876580",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:57:56.508Z",
+      "finishedAt": "2026-05-05T02:57:56.580Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777949863060",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T02:57:42.998Z",
+      "finishedAt": "2026-05-05T02:57:43.060Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777949858847",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:57:38.745Z",
+      "finishedAt": "2026-05-05T02:57:38.847Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777949814813",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:56:54.560Z",
+      "finishedAt": "2026-05-05T02:56:54.813Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777949752260",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:55:52.172Z",
+      "finishedAt": "2026-05-05T02:55:52.260Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777949690008",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:54:49.914Z",
+      "finishedAt": "2026-05-05T02:54:50.008Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777949627712",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:53:47.644Z",
+      "finishedAt": "2026-05-05T02:53:47.712Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777949627707",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:53:47.632Z",
+      "finishedAt": "2026-05-05T02:53:47.707Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777949565655",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:52:45.604Z",
+      "finishedAt": "2026-05-05T02:52:45.655Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777949503815",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:51:43.753Z",
+      "finishedAt": "2026-05-05T02:51:43.815Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777949442018",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:50:41.907Z",
+      "finishedAt": "2026-05-05T02:50:42.018Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777949402417",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T02:50:02.308Z",
+      "finishedAt": "2026-05-05T02:50:02.417Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777949394426",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:49:54.343Z",
+      "finishedAt": "2026-05-05T02:49:54.426Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777949379917",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:49:39.798Z",
+      "finishedAt": "2026-05-05T02:49:39.917Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777949317647",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:48:37.593Z",
+      "finishedAt": "2026-05-05T02:48:37.647Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777949317643",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:48:37.583Z",
+      "finishedAt": "2026-05-05T02:48:37.643Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777949261504",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T02:47:41.450Z",
+      "finishedAt": "2026-05-05T02:47:41.504Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777949257013",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:47:36.958Z",
+      "finishedAt": "2026-05-05T02:47:37.013Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777949254685",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:47:34.632Z",
+      "finishedAt": "2026-05-05T02:47:34.685Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777949254677",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:47:34.618Z",
+      "finishedAt": "2026-05-05T02:47:34.677Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777949192781",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:46:32.712Z",
+      "finishedAt": "2026-05-05T02:46:32.781Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777949130606",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:45:30.533Z",
+      "finishedAt": "2026-05-05T02:45:30.606Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777949068652",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:44:28.590Z",
+      "finishedAt": "2026-05-05T02:44:28.652Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777949006745",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:43:26.639Z",
+      "finishedAt": "2026-05-05T02:43:26.745Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777948943866",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:42:23.760Z",
+      "finishedAt": "2026-05-05T02:42:23.866Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777948882007",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:41:21.897Z",
+      "finishedAt": "2026-05-05T02:41:22.007Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777948818390",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:40:18.312Z",
+      "finishedAt": "2026-05-05T02:40:18.390Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777948800716",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T02:40:00.646Z",
+      "finishedAt": "2026-05-05T02:40:00.716Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777948792863",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:39:52.786Z",
+      "finishedAt": "2026-05-05T02:39:52.863Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777948756587",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:39:16.396Z",
+      "finishedAt": "2026-05-05T02:39:16.587Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777948693993",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:38:13.892Z",
+      "finishedAt": "2026-05-05T02:38:13.993Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777948660115",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T02:37:40.050Z",
+      "finishedAt": "2026-05-05T02:37:40.115Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777948655618",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:37:35.346Z",
+      "finishedAt": "2026-05-05T02:37:35.618Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777948631600",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:37:11.292Z",
+      "finishedAt": "2026-05-05T02:37:11.600Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777948631565",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:37:11.230Z",
+      "finishedAt": "2026-05-05T02:37:11.565Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777948551630",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:35:51.361Z",
+      "finishedAt": "2026-05-05T02:35:51.630Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777948483702",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:34:43.615Z",
+      "finishedAt": "2026-05-05T02:34:43.702Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777948421688",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:33:41.599Z",
+      "finishedAt": "2026-05-05T02:33:41.688Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777948359699",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:32:39.627Z",
+      "finishedAt": "2026-05-05T02:32:39.699Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777948297714",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:31:37.608Z",
+      "finishedAt": "2026-05-05T02:31:37.714Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777948235724",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:30:35.645Z",
+      "finishedAt": "2026-05-05T02:30:35.724Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777948199124",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T02:29:59.048Z",
+      "finishedAt": "2026-05-05T02:29:59.124Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777948191351",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:29:51.280Z",
+      "finishedAt": "2026-05-05T02:29:51.351Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777948173734",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:29:33.668Z",
+      "finishedAt": "2026-05-05T02:29:33.734Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777948111904",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:28:31.820Z",
+      "finishedAt": "2026-05-05T02:28:31.904Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777948056090",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T02:27:36.019Z",
+      "finishedAt": "2026-05-05T02:27:36.090Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777948050128",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:27:30.077Z",
+      "finishedAt": "2026-05-05T02:27:30.128Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777948050120",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:27:30.064Z",
+      "finishedAt": "2026-05-05T02:27:30.120Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777948049074",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:27:28.946Z",
+      "finishedAt": "2026-05-05T02:27:29.074Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777947988497",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:26:28.407Z",
+      "finishedAt": "2026-05-05T02:26:28.497Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777947926413",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:25:26.308Z",
+      "finishedAt": "2026-05-05T02:25:26.413Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777947864453",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:24:24.398Z",
+      "finishedAt": "2026-05-05T02:24:24.453Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777947802439",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:23:22.329Z",
+      "finishedAt": "2026-05-05T02:23:22.439Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777947740699",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:22:20.501Z",
+      "finishedAt": "2026-05-05T02:22:20.699Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777947678806",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:21:18.732Z",
+      "finishedAt": "2026-05-05T02:21:18.806Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777947617160",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:20:17.079Z",
+      "finishedAt": "2026-05-05T02:20:17.160Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777947597393",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T02:19:57.339Z",
+      "finishedAt": "2026-05-05T02:19:57.393Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777947589944",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:19:49.889Z",
+      "finishedAt": "2026-05-05T02:19:49.945Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777947555487",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:19:15.412Z",
+      "finishedAt": "2026-05-05T02:19:15.487Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777947493724",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:18:13.647Z",
+      "finishedAt": "2026-05-05T02:18:13.724Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777947454470",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T02:17:34.401Z",
+      "finishedAt": "2026-05-05T02:17:34.470Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777947447362",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:17:27.290Z",
+      "finishedAt": "2026-05-05T02:17:27.362Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777947432117",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:17:12.062Z",
+      "finishedAt": "2026-05-05T02:17:12.117Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777947370331",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:16:10.204Z",
+      "finishedAt": "2026-05-05T02:16:10.331Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777947308351",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:15:08.264Z",
+      "finishedAt": "2026-05-05T02:15:08.351Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777947246294",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:14:06.215Z",
+      "finishedAt": "2026-05-05T02:14:06.294Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777947184274",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:13:04.200Z",
+      "finishedAt": "2026-05-05T02:13:04.274Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777947122242",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:12:02.153Z",
+      "finishedAt": "2026-05-05T02:12:02.242Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777947060552",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:11:00.482Z",
+      "finishedAt": "2026-05-05T02:11:00.552Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777946998857",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:09:58.806Z",
+      "finishedAt": "2026-05-05T02:09:58.857Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777946998849",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:09:58.797Z",
+      "finishedAt": "2026-05-05T02:09:58.849Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777946996137",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T02:09:55.880Z",
+      "finishedAt": "2026-05-05T02:09:56.137Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777946988771",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:09:48.717Z",
+      "finishedAt": "2026-05-05T02:09:48.771Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777946937334",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:08:57.259Z",
+      "finishedAt": "2026-05-05T02:08:57.334Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777946875660",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:07:55.586Z",
+      "finishedAt": "2026-05-05T02:07:55.660Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777946853112",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T02:07:33.049Z",
+      "finishedAt": "2026-05-05T02:07:33.112Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777946845935",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:07:25.856Z",
+      "finishedAt": "2026-05-05T02:07:25.935Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777946813990",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:06:53.915Z",
+      "finishedAt": "2026-05-05T02:06:53.990Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777946752228",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:05:52.156Z",
+      "finishedAt": "2026-05-05T02:05:52.228Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777946690560",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:04:50.505Z",
+      "finishedAt": "2026-05-05T02:04:50.560Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777946628876",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:03:48.807Z",
+      "finishedAt": "2026-05-05T02:03:48.876Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777946567189",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:02:47.088Z",
+      "finishedAt": "2026-05-05T02:02:47.189Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777946505353",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:01:45.281Z",
+      "finishedAt": "2026-05-05T02:01:45.353Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777946443572",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:00:43.466Z",
+      "finishedAt": "2026-05-05T02:00:43.572Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777946405813",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T02:00:05.722Z",
+      "finishedAt": "2026-05-05T02:00:05.813Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777946394441",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T01:59:54.382Z",
+      "finishedAt": "2026-05-05T01:59:54.441Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777946387317",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:59:47.262Z",
+      "finishedAt": "2026-05-05T01:59:47.317Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777946381649",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:59:41.573Z",
+      "finishedAt": "2026-05-05T01:59:41.649Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777946319984",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:58:39.903Z",
+      "finishedAt": "2026-05-05T01:58:39.984Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777946258343",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:57:38.277Z",
+      "finishedAt": "2026-05-05T01:57:38.343Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777946251708",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T01:57:31.654Z",
+      "finishedAt": "2026-05-05T01:57:31.708Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777946244451",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:57:24.364Z",
+      "finishedAt": "2026-05-05T01:57:24.451Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777946196718",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:56:36.648Z",
+      "finishedAt": "2026-05-05T01:56:36.718Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777946134589",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:55:34.505Z",
+      "finishedAt": "2026-05-05T01:55:34.589Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777946072932",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:54:32.873Z",
+      "finishedAt": "2026-05-05T01:54:32.932Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777946011150",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:53:31.085Z",
+      "finishedAt": "2026-05-05T01:53:31.150Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777945949281",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:52:29.223Z",
+      "finishedAt": "2026-05-05T01:52:29.281Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777945887658",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:51:27.607Z",
+      "finishedAt": "2026-05-05T01:51:27.658Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777945826068",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:50:26.002Z",
+      "finishedAt": "2026-05-05T01:50:26.068Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777945826048",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:50:25.968Z",
+      "finishedAt": "2026-05-05T01:50:26.048Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777945792967",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T01:49:52.897Z",
+      "finishedAt": "2026-05-05T01:49:52.967Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777945786078",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:49:46.010Z",
+      "finishedAt": "2026-05-05T01:49:46.078Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777945758293",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:49:18.196Z",
+      "finishedAt": "2026-05-05T01:49:18.293Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777945696493",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:48:16.399Z",
+      "finishedAt": "2026-05-05T01:48:16.493Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777945650264",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T01:47:30.196Z",
+      "finishedAt": "2026-05-05T01:47:30.264Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777945642953",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:47:22.893Z",
+      "finishedAt": "2026-05-05T01:47:22.953Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777945634426",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:47:14.298Z",
+      "finishedAt": "2026-05-05T01:47:14.426Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777945634410",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:47:14.214Z",
+      "finishedAt": "2026-05-05T01:47:14.410Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777945571624",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:46:11.522Z",
+      "finishedAt": "2026-05-05T01:46:11.624Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777945509868",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:45:09.751Z",
+      "finishedAt": "2026-05-05T01:45:09.868Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777945448063",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:44:07.958Z",
+      "finishedAt": "2026-05-05T01:44:08.063Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777945386244",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:43:06.147Z",
+      "finishedAt": "2026-05-05T01:43:06.244Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777945324118",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:42:03.982Z",
+      "finishedAt": "2026-05-05T01:42:04.118Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777945262138",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:41:02.032Z",
+      "finishedAt": "2026-05-05T01:41:02.138Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777945199732",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:39:59.652Z",
+      "finishedAt": "2026-05-05T01:39:59.732Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777945191317",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T01:39:51.253Z",
+      "finishedAt": "2026-05-05T01:39:51.317Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777945184703",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:39:44.615Z",
+      "finishedAt": "2026-05-05T01:39:44.703Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777945138068",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:38:57.963Z",
+      "finishedAt": "2026-05-05T01:38:58.068Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777945076123",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:37:56.049Z",
+      "finishedAt": "2026-05-05T01:37:56.123Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777945048719",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T01:37:28.653Z",
+      "finishedAt": "2026-05-05T01:37:28.719Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777945041433",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:37:21.351Z",
+      "finishedAt": "2026-05-05T01:37:21.433Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777945014337",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:36:54.217Z",
+      "finishedAt": "2026-05-05T01:36:54.337Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777945014290",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:36:54.200Z",
+      "finishedAt": "2026-05-05T01:36:54.290Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777944952520",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:35:52.417Z",
+      "finishedAt": "2026-05-05T01:35:52.520Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777944890699",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:34:50.629Z",
+      "finishedAt": "2026-05-05T01:34:50.699Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777944828926",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:33:48.850Z",
+      "finishedAt": "2026-05-05T01:33:48.926Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777944767270",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:32:47.196Z",
+      "finishedAt": "2026-05-05T01:32:47.270Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777944705580",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:31:45.507Z",
+      "finishedAt": "2026-05-05T01:31:45.580Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777944643877",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:30:43.805Z",
+      "finishedAt": "2026-05-05T01:30:43.877Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777944589795",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T01:29:49.744Z",
+      "finishedAt": "2026-05-05T01:29:49.795Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777944583179",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:29:43.128Z",
+      "finishedAt": "2026-05-05T01:29:43.179Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777944582270",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:29:42.191Z",
+      "finishedAt": "2026-05-05T01:29:42.270Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777944520656",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:28:40.601Z",
+      "finishedAt": "2026-05-05T01:28:40.656Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777944520637",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:28:40.562Z",
+      "finishedAt": "2026-05-05T01:28:40.637Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777944459141",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:27:39.070Z",
+      "finishedAt": "2026-05-05T01:27:39.141Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777944447310",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T01:27:27.259Z",
+      "finishedAt": "2026-05-05T01:27:27.310Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777944440075",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:27:20.019Z",
+      "finishedAt": "2026-05-05T01:27:20.075Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777944397723",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:26:37.651Z",
+      "finishedAt": "2026-05-05T01:26:37.723Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777944336183",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:25:36.111Z",
+      "finishedAt": "2026-05-05T01:25:36.183Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777944274634",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:24:34.562Z",
+      "finishedAt": "2026-05-05T01:24:34.634Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777944213091",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:23:33.019Z",
+      "finishedAt": "2026-05-05T01:23:33.091Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777944151486",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:22:31.431Z",
+      "finishedAt": "2026-05-05T01:22:31.486Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777944089975",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:21:29.922Z",
+      "finishedAt": "2026-05-05T01:21:29.975Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777944028477",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:20:28.405Z",
+      "finishedAt": "2026-05-05T01:20:28.477Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777943988531",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T01:19:48.481Z",
+      "finishedAt": "2026-05-05T01:19:48.531Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777943981842",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:19:41.792Z",
+      "finishedAt": "2026-05-05T01:19:41.842Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777943966920",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:19:26.868Z",
+      "finishedAt": "2026-05-05T01:19:26.920Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777943905423",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:18:25.370Z",
+      "finishedAt": "2026-05-05T01:18:25.423Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777943846035",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T01:17:25.985Z",
+      "finishedAt": "2026-05-05T01:17:26.035Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777943844055",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:17:23.962Z",
+      "finishedAt": "2026-05-05T01:17:24.055Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777943838876",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:17:18.825Z",
+      "finishedAt": "2026-05-05T01:17:18.876Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777943782503",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:16:22.450Z",
+      "finishedAt": "2026-05-05T01:16:22.503Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777943720981",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:15:20.926Z",
+      "finishedAt": "2026-05-05T01:15:20.981Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777943659487",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:14:19.438Z",
+      "finishedAt": "2026-05-05T01:14:19.487Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777943659480",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:14:19.410Z",
+      "finishedAt": "2026-05-05T01:14:19.480Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777943598094",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:13:18.021Z",
+      "finishedAt": "2026-05-05T01:13:18.094Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777943536439",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:12:16.368Z",
+      "finishedAt": "2026-05-05T01:12:16.439Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777943475045",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:11:14.971Z",
+      "finishedAt": "2026-05-05T01:11:15.045Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777943413503",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:10:13.432Z",
+      "finishedAt": "2026-05-05T01:10:13.503Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777943387378",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T01:09:47.326Z",
+      "finishedAt": "2026-05-05T01:09:47.378Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777943380798",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:09:40.749Z",
+      "finishedAt": "2026-05-05T01:09:40.798Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777943352028",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:09:11.958Z",
+      "finishedAt": "2026-05-05T01:09:12.028Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777943290515",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:08:10.442Z",
+      "finishedAt": "2026-05-05T01:08:10.515Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777943244883",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T01:07:24.833Z",
+      "finishedAt": "2026-05-05T01:07:24.883Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777943237838",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:07:17.787Z",
+      "finishedAt": "2026-05-05T01:07:17.838Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777943228992",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:07:08.931Z",
+      "finishedAt": "2026-05-05T01:07:08.992Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777943167383",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:06:07.315Z",
+      "finishedAt": "2026-05-05T01:06:07.383Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777943105870",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:05:05.813Z",
+      "finishedAt": "2026-05-05T01:05:05.870Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777943044340",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:04:04.278Z",
+      "finishedAt": "2026-05-05T01:04:04.340Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777942982819",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:03:02.769Z",
+      "finishedAt": "2026-05-05T01:03:02.819Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777942921315",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:02:01.252Z",
+      "finishedAt": "2026-05-05T01:02:01.315Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777942859830",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:00:59.777Z",
+      "finishedAt": "2026-05-05T01:00:59.830Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777942859793",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:00:59.721Z",
+      "finishedAt": "2026-05-05T01:00:59.793Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777942805908",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T01:00:05.856Z",
+      "finishedAt": "2026-05-05T01:00:05.908Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777942798360",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:59:58.290Z",
+      "finishedAt": "2026-05-05T00:59:58.360Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777942785974",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T00:59:45.924Z",
+      "finishedAt": "2026-05-05T00:59:45.974Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777942779610",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:59:39.559Z",
+      "finishedAt": "2026-05-05T00:59:39.610Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777942736840",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:58:56.791Z",
+      "finishedAt": "2026-05-05T00:58:56.840Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777942675397",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:57:55.336Z",
+      "finishedAt": "2026-05-05T00:57:55.397Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777942643574",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T00:57:23.524Z",
+      "finishedAt": "2026-05-05T00:57:23.574Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777942636627",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:57:16.577Z",
+      "finishedAt": "2026-05-05T00:57:16.627Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777942613870",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:56:53.801Z",
+      "finishedAt": "2026-05-05T00:56:53.870Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777942552365",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:55:52.315Z",
+      "finishedAt": "2026-05-05T00:55:52.365Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777942552355",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:55:52.285Z",
+      "finishedAt": "2026-05-05T00:55:52.355Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777942490906",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:54:50.836Z",
+      "finishedAt": "2026-05-05T00:54:50.906Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777942429434",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:53:49.380Z",
+      "finishedAt": "2026-05-05T00:53:49.434Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777942429395",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:53:49.322Z",
+      "finishedAt": "2026-05-05T00:53:49.395Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777942368026",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:52:47.976Z",
+      "finishedAt": "2026-05-05T00:52:48.026Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777942368009",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:52:47.956Z",
+      "finishedAt": "2026-05-05T00:52:48.009Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777942306556",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:51:46.505Z",
+      "finishedAt": "2026-05-05T00:51:46.556Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777942306510",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:51:46.435Z",
+      "finishedAt": "2026-05-05T00:51:46.510Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777942245065",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:50:45.015Z",
+      "finishedAt": "2026-05-05T00:50:45.065Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777942245057",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:50:45.000Z",
+      "finishedAt": "2026-05-05T00:50:45.057Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777942184683",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T00:49:44.633Z",
+      "finishedAt": "2026-05-05T00:49:44.683Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777942183553",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:49:43.489Z",
+      "finishedAt": "2026-05-05T00:49:43.553Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777942178398",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:49:38.347Z",
+      "finishedAt": "2026-05-05T00:49:38.398Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777942122026",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:48:41.954Z",
+      "finishedAt": "2026-05-05T00:48:42.026Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777942060472",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:47:40.400Z",
+      "finishedAt": "2026-05-05T00:47:40.472Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777942042318",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T00:47:22.268Z",
+      "finishedAt": "2026-05-05T00:47:22.318Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777942035442",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:47:15.392Z",
+      "finishedAt": "2026-05-05T00:47:15.442Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777941998913",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:46:38.841Z",
+      "finishedAt": "2026-05-05T00:46:38.913Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777941937321",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:45:37.268Z",
+      "finishedAt": "2026-05-05T00:45:37.321Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777941875822",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:44:35.740Z",
+      "finishedAt": "2026-05-05T00:44:35.822Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777941814274",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:43:34.199Z",
+      "finishedAt": "2026-05-05T00:43:34.274Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777941752747",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:42:32.697Z",
+      "finishedAt": "2026-05-05T00:42:32.747Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777941752742",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:42:32.673Z",
+      "finishedAt": "2026-05-05T00:42:32.742Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777941691268",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:41:31.190Z",
+      "finishedAt": "2026-05-05T00:41:31.268Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777941629718",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:40:29.633Z",
+      "finishedAt": "2026-05-05T00:40:29.718Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777941583359",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T00:39:43.311Z",
+      "finishedAt": "2026-05-05T00:39:43.359Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777941577200",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:39:37.152Z",
+      "finishedAt": "2026-05-05T00:39:37.200Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777941568100",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:39:28.026Z",
+      "finishedAt": "2026-05-05T00:39:28.100Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777941506598",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:38:26.547Z",
+      "finishedAt": "2026-05-05T00:38:26.598Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777941445089",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:37:25.033Z",
+      "finishedAt": "2026-05-05T00:37:25.089Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777941441031",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T00:37:20.982Z",
+      "finishedAt": "2026-05-05T00:37:21.031Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777941434232",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:37:14.181Z",
+      "finishedAt": "2026-05-05T00:37:14.232Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777941383593",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:36:23.518Z",
+      "finishedAt": "2026-05-05T00:36:23.593Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777941322044",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:35:21.994Z",
+      "finishedAt": "2026-05-05T00:35:22.044Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777941322035",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:35:21.978Z",
+      "finishedAt": "2026-05-05T00:35:22.035Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777941260531",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:34:20.456Z",
+      "finishedAt": "2026-05-05T00:34:20.531Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777941198958",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:33:18.891Z",
+      "finishedAt": "2026-05-05T00:33:18.959Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777941137396",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:32:17.322Z",
+      "finishedAt": "2026-05-05T00:32:17.396Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777941075827",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:31:15.758Z",
+      "finishedAt": "2026-05-05T00:31:15.827Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777941014303",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:30:14.236Z",
+      "finishedAt": "2026-05-05T00:30:14.303Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777940982075",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T00:29:42.025Z",
+      "finishedAt": "2026-05-05T00:29:42.075Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777940975943",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:29:35.892Z",
+      "finishedAt": "2026-05-05T00:29:35.943Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777940952763",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:29:12.675Z",
+      "finishedAt": "2026-05-05T00:29:12.763Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777940891192",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:28:11.120Z",
+      "finishedAt": "2026-05-05T00:28:11.192Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777940839734",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T00:27:19.684Z",
+      "finishedAt": "2026-05-05T00:27:19.734Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777940833019",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:27:12.968Z",
+      "finishedAt": "2026-05-05T00:27:13.019Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777940829455",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:27:09.395Z",
+      "finishedAt": "2026-05-05T00:27:09.455Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777940767926",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:26:07.861Z",
+      "finishedAt": "2026-05-05T00:26:07.926Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777940706401",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:25:06.330Z",
+      "finishedAt": "2026-05-05T00:25:06.401Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777940644867",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:24:04.795Z",
+      "finishedAt": "2026-05-05T00:24:04.867Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777940583475",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:23:03.422Z",
+      "finishedAt": "2026-05-05T00:23:03.475Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777940583442",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:23:03.370Z",
+      "finishedAt": "2026-05-05T00:23:03.442Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777940522035",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:22:01.975Z",
+      "finishedAt": "2026-05-05T00:22:02.035Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777940460558",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:21:00.506Z",
+      "finishedAt": "2026-05-05T00:21:00.558Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777940460519",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:21:00.441Z",
+      "finishedAt": "2026-05-05T00:21:00.519Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777940399091",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:19:59.042Z",
+      "finishedAt": "2026-05-05T00:19:59.091Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777940398988",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:19:58.911Z",
+      "finishedAt": "2026-05-05T00:19:58.988Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777940380800",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T00:19:40.743Z",
+      "finishedAt": "2026-05-05T00:19:40.800Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777940374735",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:19:34.684Z",
+      "finishedAt": "2026-05-05T00:19:34.735Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777940337628",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:18:57.579Z",
+      "finishedAt": "2026-05-05T00:18:57.628Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777940337621",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:18:57.549Z",
+      "finishedAt": "2026-05-05T00:18:57.621Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777940276135",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:17:56.079Z",
+      "finishedAt": "2026-05-05T00:17:56.135Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777940238440",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T00:17:18.389Z",
+      "finishedAt": "2026-05-05T00:17:18.440Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777940231816",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:17:11.766Z",
+      "finishedAt": "2026-05-05T00:17:11.816Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777940214642",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:16:54.584Z",
+      "finishedAt": "2026-05-05T00:16:54.642Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777940153104",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:15:53.033Z",
+      "finishedAt": "2026-05-05T00:15:53.104Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777940091564",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:14:51.493Z",
+      "finishedAt": "2026-05-05T00:14:51.564Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777940029975",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:13:49.923Z",
+      "finishedAt": "2026-05-05T00:13:49.975Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777939968511",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:12:48.459Z",
+      "finishedAt": "2026-05-05T00:12:48.511Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777939968470",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:12:48.411Z",
+      "finishedAt": "2026-05-05T00:12:48.470Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777939907085",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:11:47.016Z",
+      "finishedAt": "2026-05-05T00:11:47.085Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777939845556",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:10:45.504Z",
+      "finishedAt": "2026-05-05T00:10:45.556Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777939784058",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:09:44.004Z",
+      "finishedAt": "2026-05-05T00:09:44.058Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777939779453",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T00:09:39.403Z",
+      "finishedAt": "2026-05-05T00:09:39.453Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777939773494",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:09:33.443Z",
+      "finishedAt": "2026-05-05T00:09:33.494Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777939722542",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:08:42.471Z",
+      "finishedAt": "2026-05-05T00:08:42.542Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777939660970",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:07:40.916Z",
+      "finishedAt": "2026-05-05T00:07:40.970Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777939637120",
+      "tickType": "planner",
+      "startedAt": "2026-05-05T00:07:17.071Z",
+      "finishedAt": "2026-05-05T00:07:17.120Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777939630568",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:07:10.517Z",
+      "finishedAt": "2026-05-05T00:07:10.568Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777939599535",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:06:39.463Z",
+      "finishedAt": "2026-05-05T00:06:39.535Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777939538015",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:05:37.955Z",
+      "finishedAt": "2026-05-05T00:05:38.015Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777939476502",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:04:36.453Z",
+      "finishedAt": "2026-05-05T00:04:36.502Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777939415098",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:03:35.049Z",
+      "finishedAt": "2026-05-05T00:03:35.098Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777939353605",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:02:33.530Z",
+      "finishedAt": "2026-05-05T00:02:33.605Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777939292077",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:01:32.006Z",
+      "finishedAt": "2026-05-05T00:01:32.077Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777939230559",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:00:30.487Z",
+      "finishedAt": "2026-05-05T00:00:30.559Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777939205460",
+      "tickType": "worker",
+      "startedAt": "2026-05-05T00:00:05.411Z",
+      "finishedAt": "2026-05-05T00:00:05.460Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777939178180",
+      "tickType": "planner",
+      "startedAt": "2026-05-04T23:59:38.129Z",
+      "finishedAt": "2026-05-04T23:59:38.180Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777939172303",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:59:32.252Z",
+      "finishedAt": "2026-05-04T23:59:32.303Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777939169034",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:59:28.983Z",
+      "finishedAt": "2026-05-04T23:59:29.034Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777939169017",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:59:28.959Z",
+      "finishedAt": "2026-05-04T23:59:29.017Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777939107600",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:58:27.549Z",
+      "finishedAt": "2026-05-04T23:58:27.600Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777939046099",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:57:25.967Z",
+      "finishedAt": "2026-05-04T23:57:26.099Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777939035848",
+      "tickType": "planner",
+      "startedAt": "2026-05-04T23:57:15.797Z",
+      "finishedAt": "2026-05-04T23:57:15.848Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777939029379",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:57:09.330Z",
+      "finishedAt": "2026-05-04T23:57:09.379Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777938984501",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:56:24.431Z",
+      "finishedAt": "2026-05-04T23:56:24.501Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777938922957",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:55:22.908Z",
+      "finishedAt": "2026-05-04T23:55:22.957Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777938922947",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:55:22.895Z",
+      "finishedAt": "2026-05-04T23:55:22.947Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777938861636",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:54:21.583Z",
+      "finishedAt": "2026-05-04T23:54:21.636Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777938861611",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:54:21.551Z",
+      "finishedAt": "2026-05-04T23:54:21.611Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777938800131",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:53:20.059Z",
+      "finishedAt": "2026-05-04T23:53:20.131Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777938738578",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:52:18.524Z",
+      "finishedAt": "2026-05-04T23:52:18.578Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777938677055",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:51:17.005Z",
+      "finishedAt": "2026-05-04T23:51:17.055Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777938615546",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:50:15.477Z",
+      "finishedAt": "2026-05-04T23:50:15.546Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777938576919",
+      "tickType": "planner",
+      "startedAt": "2026-05-04T23:49:36.868Z",
+      "finishedAt": "2026-05-04T23:49:36.919Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777938571128",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:49:31.078Z",
+      "finishedAt": "2026-05-04T23:49:31.128Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777938553936",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:49:13.864Z",
+      "finishedAt": "2026-05-04T23:49:13.936Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777938492397",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:48:12.325Z",
+      "finishedAt": "2026-05-04T23:48:12.397Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777938434577",
+      "tickType": "planner",
+      "startedAt": "2026-05-04T23:47:14.527Z",
+      "finishedAt": "2026-05-04T23:47:14.577Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777938430968",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:47:10.919Z",
+      "finishedAt": "2026-05-04T23:47:10.968Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777938428197",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:47:08.138Z",
+      "finishedAt": "2026-05-04T23:47:08.197Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777938369603",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:46:09.552Z",
+      "finishedAt": "2026-05-04T23:46:09.603Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777938369590",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:46:09.520Z",
+      "finishedAt": "2026-05-04T23:46:09.590Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777938308143",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:45:08.065Z",
+      "finishedAt": "2026-05-04T23:45:08.143Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777938246623",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:44:06.569Z",
+      "finishedAt": "2026-05-04T23:44:06.623Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777938185141",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:43:05.093Z",
+      "finishedAt": "2026-05-04T23:43:05.141Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777938123667",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:42:03.616Z",
+      "finishedAt": "2026-05-04T23:42:03.667Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777938123623",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:42:03.564Z",
+      "finishedAt": "2026-05-04T23:42:03.623Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777938062273",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:41:02.225Z",
+      "finishedAt": "2026-05-04T23:41:02.273Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777938062268",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:41:02.217Z",
+      "finishedAt": "2026-05-04T23:41:02.268Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777938000770",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:40:00.695Z",
+      "finishedAt": "2026-05-04T23:40:00.770Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777937975660",
+      "tickType": "planner",
+      "startedAt": "2026-05-04T23:39:35.610Z",
+      "finishedAt": "2026-05-04T23:39:35.660Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777937969939",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:39:29.890Z",
+      "finishedAt": "2026-05-04T23:39:29.939Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777937939232",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:38:59.178Z",
+      "finishedAt": "2026-05-04T23:38:59.232Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777937877739",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:37:57.685Z",
+      "finishedAt": "2026-05-04T23:37:57.739Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777937833308",
+      "tickType": "planner",
+      "startedAt": "2026-05-04T23:37:13.258Z",
+      "finishedAt": "2026-05-04T23:37:13.308Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777937826866",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:37:06.815Z",
+      "finishedAt": "2026-05-04T23:37:06.866Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777937816180",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:36:56.130Z",
+      "finishedAt": "2026-05-04T23:36:56.180Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777937754677",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:35:54.592Z",
+      "finishedAt": "2026-05-04T23:35:54.677Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777937693107",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:34:53.033Z",
+      "finishedAt": "2026-05-04T23:34:53.107Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777937631577",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:33:51.506Z",
+      "finishedAt": "2026-05-04T23:33:51.577Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777937570031",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:32:49.946Z",
+      "finishedAt": "2026-05-04T23:32:50.031Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777937508464",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:31:48.395Z",
+      "finishedAt": "2026-05-04T23:31:48.464Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777937446924",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:30:46.847Z",
+      "finishedAt": "2026-05-04T23:30:46.924Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777937385385",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:29:45.329Z",
+      "finishedAt": "2026-05-04T23:29:45.385Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777937374375",
+      "tickType": "planner",
+      "startedAt": "2026-05-04T23:29:34.325Z",
+      "finishedAt": "2026-05-04T23:29:34.375Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777937368771",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:29:28.721Z",
+      "finishedAt": "2026-05-04T23:29:28.771Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777937323892",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:28:43.820Z",
+      "finishedAt": "2026-05-04T23:28:43.892Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777937262364",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:27:42.291Z",
+      "finishedAt": "2026-05-04T23:27:42.364Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777937232029",
+      "tickType": "planner",
+      "startedAt": "2026-05-04T23:27:11.978Z",
+      "finishedAt": "2026-05-04T23:27:12.029Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777937225673",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:27:05.624Z",
+      "finishedAt": "2026-05-04T23:27:05.673Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777937200792",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:26:40.722Z",
+      "finishedAt": "2026-05-04T23:26:40.792Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777937139250",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:25:39.197Z",
+      "finishedAt": "2026-05-04T23:25:39.250Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777937077764",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:24:37.693Z",
+      "finishedAt": "2026-05-04T23:24:37.764Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777937016289",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:23:36.237Z",
+      "finishedAt": "2026-05-04T23:23:36.289Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777937016273",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:23:36.202Z",
+      "finishedAt": "2026-05-04T23:23:36.273Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777936954759",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:22:34.688Z",
+      "finishedAt": "2026-05-04T23:22:34.759Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777936893227",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:21:33.176Z",
+      "finishedAt": "2026-05-04T23:21:33.227Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777936831727",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:20:31.644Z",
+      "finishedAt": "2026-05-04T23:20:31.727Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777936773108",
+      "tickType": "planner",
+      "startedAt": "2026-05-04T23:19:33.057Z",
+      "finishedAt": "2026-05-04T23:19:33.108Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777936770061",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:19:30.007Z",
+      "finishedAt": "2026-05-04T23:19:30.061Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777936770055",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:19:29.994Z",
+      "finishedAt": "2026-05-04T23:19:30.055Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777936767594",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:19:27.544Z",
+      "finishedAt": "2026-05-04T23:19:27.594Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777936708551",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:18:28.481Z",
+      "finishedAt": "2026-05-04T23:18:28.551Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777936647018",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:17:26.945Z",
+      "finishedAt": "2026-05-04T23:17:27.018Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777936630766",
+      "tickType": "planner",
+      "startedAt": "2026-05-04T23:17:10.717Z",
+      "finishedAt": "2026-05-04T23:17:10.766Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777936624483",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:17:04.433Z",
+      "finishedAt": "2026-05-04T23:17:04.483Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777936585472",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:16:25.401Z",
+      "finishedAt": "2026-05-04T23:16:25.472Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777936524122",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:15:24.071Z",
+      "finishedAt": "2026-05-04T23:15:24.122Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777936524107",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:15:24.045Z",
+      "finishedAt": "2026-05-04T23:15:24.107Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777936462610",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:14:22.549Z",
+      "finishedAt": "2026-05-04T23:14:22.610Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777936401086",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:13:21.016Z",
+      "finishedAt": "2026-05-04T23:13:21.086Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777936339550",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:12:19.498Z",
+      "finishedAt": "2026-05-04T23:12:19.550Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777936278042",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:11:17.971Z",
+      "finishedAt": "2026-05-04T23:11:18.042Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777936216542",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:10:16.489Z",
+      "finishedAt": "2026-05-04T23:10:16.542Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777936216521",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:10:16.461Z",
+      "finishedAt": "2026-05-04T23:10:16.521Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777936171825",
+      "tickType": "planner",
+      "startedAt": "2026-05-04T23:09:31.776Z",
+      "finishedAt": "2026-05-04T23:09:31.825Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777936166407",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:09:26.356Z",
+      "finishedAt": "2026-05-04T23:09:26.407Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777936155011",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:09:14.933Z",
+      "finishedAt": "2026-05-04T23:09:15.011Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777936093463",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:08:13.391Z",
+      "finishedAt": "2026-05-04T23:08:13.463Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777936031950",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:07:11.904Z",
+      "finishedAt": "2026-05-04T23:07:11.950Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777936029487",
+      "tickType": "planner",
+      "startedAt": "2026-05-04T23:07:09.439Z",
+      "finishedAt": "2026-05-04T23:07:09.487Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777936023316",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:07:03.258Z",
+      "finishedAt": "2026-05-04T23:07:03.316Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777935970433",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:06:10.374Z",
+      "finishedAt": "2026-05-04T23:06:10.433Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777935908908",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:05:08.837Z",
+      "finishedAt": "2026-05-04T23:05:08.908Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777935847351",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:04:07.300Z",
+      "finishedAt": "2026-05-04T23:04:07.351Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777935785829",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:03:05.773Z",
+      "finishedAt": "2026-05-04T23:03:05.829Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777935724288",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:02:04.231Z",
+      "finishedAt": "2026-05-04T23:02:04.288Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777935662801",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:01:02.749Z",
+      "finishedAt": "2026-05-04T23:01:02.801Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777935662779",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:01:02.719Z",
+      "finishedAt": "2026-05-04T23:01:02.779Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777935605747",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:00:05.697Z",
+      "finishedAt": "2026-05-04T23:00:05.747Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777935601267",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T23:00:01.207Z",
+      "finishedAt": "2026-05-04T23:00:01.267Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777935570561",
+      "tickType": "planner",
+      "startedAt": "2026-05-04T22:59:30.511Z",
+      "finishedAt": "2026-05-04T22:59:30.561Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777935565238",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:59:25.188Z",
+      "finishedAt": "2026-05-04T22:59:25.238Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777935539748",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:58:59.699Z",
+      "finishedAt": "2026-05-04T22:58:59.748Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777935478275",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:57:58.216Z",
+      "finishedAt": "2026-05-04T22:57:58.275Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777935428214",
+      "tickType": "planner",
+      "startedAt": "2026-05-04T22:57:08.164Z",
+      "finishedAt": "2026-05-04T22:57:08.214Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777935422108",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:57:02.057Z",
+      "finishedAt": "2026-05-04T22:57:02.108Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777935416786",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:56:56.733Z",
+      "finishedAt": "2026-05-04T22:56:56.786Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777935355276",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:55:55.216Z",
+      "finishedAt": "2026-05-04T22:55:55.276Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777935293782",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:54:53.735Z",
+      "finishedAt": "2026-05-04T22:54:53.782Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777935293775",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:54:53.719Z",
+      "finishedAt": "2026-05-04T22:54:53.775Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777935232278",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:53:52.220Z",
+      "finishedAt": "2026-05-04T22:53:52.278Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777935170910",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:52:50.854Z",
+      "finishedAt": "2026-05-04T22:52:50.910Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777935109410",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:51:49.355Z",
+      "finishedAt": "2026-05-04T22:51:49.410Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777935047888",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:50:47.840Z",
+      "finishedAt": "2026-05-04T22:50:47.888Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777934986395",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:49:46.326Z",
+      "finishedAt": "2026-05-04T22:49:46.395Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777934969300",
+      "tickType": "planner",
+      "startedAt": "2026-05-04T22:49:29.249Z",
+      "finishedAt": "2026-05-04T22:49:29.300Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777934964049",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:49:23.999Z",
+      "finishedAt": "2026-05-04T22:49:24.049Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777934924846",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:48:44.786Z",
+      "finishedAt": "2026-05-04T22:48:44.846Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777934863323",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:47:43.276Z",
+      "finishedAt": "2026-05-04T22:47:43.323Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777934826949",
+      "tickType": "planner",
+      "startedAt": "2026-05-04T22:47:06.898Z",
+      "finishedAt": "2026-05-04T22:47:06.949Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777934820917",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:47:00.863Z",
+      "finishedAt": "2026-05-04T22:47:00.917Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777934801823",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:46:41.766Z",
+      "finishedAt": "2026-05-04T22:46:41.823Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777934740105",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:45:40.054Z",
+      "finishedAt": "2026-05-04T22:45:40.105Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777934678570",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:44:38.512Z",
+      "finishedAt": "2026-05-04T22:44:38.570Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777934617044",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:43:36.996Z",
+      "finishedAt": "2026-05-04T22:43:37.044Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777934555532",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:42:35.472Z",
+      "finishedAt": "2026-05-04T22:42:35.532Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777934494043",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:41:33.985Z",
+      "finishedAt": "2026-05-04T22:41:34.043Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777934432508",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:40:32.455Z",
+      "finishedAt": "2026-05-04T22:40:32.508Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777934371006",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:39:30.951Z",
+      "finishedAt": "2026-05-04T22:39:31.006Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777934368043",
+      "tickType": "planner",
+      "startedAt": "2026-05-04T22:39:27.993Z",
+      "finishedAt": "2026-05-04T22:39:28.043Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777934362861",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:39:22.811Z",
+      "finishedAt": "2026-05-04T22:39:22.861Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777934309508",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:38:29.457Z",
+      "finishedAt": "2026-05-04T22:38:29.508Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777934309500",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:38:29.440Z",
+      "finishedAt": "2026-05-04T22:38:29.500Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777934247988",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:37:27.929Z",
+      "finishedAt": "2026-05-04T22:37:27.988Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777934225684",
+      "tickType": "planner",
+      "startedAt": "2026-05-04T22:37:05.635Z",
+      "finishedAt": "2026-05-04T22:37:05.684Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777934219718",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:36:59.668Z",
+      "finishedAt": "2026-05-04T22:36:59.718Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777934186482",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:36:26.433Z",
+      "finishedAt": "2026-05-04T22:36:26.482Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777934124931",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:35:24.874Z",
+      "finishedAt": "2026-05-04T22:35:24.931Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777934063366",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:34:23.310Z",
+      "finishedAt": "2026-05-04T22:34:23.366Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777934001820",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:33:21.744Z",
+      "finishedAt": "2026-05-04T22:33:21.820Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777933940292",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:32:20.215Z",
+      "finishedAt": "2026-05-04T22:32:20.292Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777933878698",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:31:18.626Z",
+      "finishedAt": "2026-05-04T22:31:18.698Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777933817128",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:30:17.054Z",
+      "finishedAt": "2026-05-04T22:30:17.128Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777933766772",
+      "tickType": "planner",
+      "startedAt": "2026-05-04T22:29:26.721Z",
+      "finishedAt": "2026-05-04T22:29:26.772Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777933761662",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:29:21.612Z",
+      "finishedAt": "2026-05-04T22:29:21.662Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777933755574",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:29:15.501Z",
+      "finishedAt": "2026-05-04T22:29:15.574Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777933693972",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:28:13.909Z",
+      "finishedAt": "2026-05-04T22:28:13.972Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777933632420",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:27:12.356Z",
+      "finishedAt": "2026-05-04T22:27:12.420Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777933624400",
+      "tickType": "planner",
+      "startedAt": "2026-05-04T22:27:04.346Z",
+      "finishedAt": "2026-05-04T22:27:04.400Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777933618539",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:26:58.490Z",
+      "finishedAt": "2026-05-04T22:26:58.539Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777933570911",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:26:10.841Z",
+      "finishedAt": "2026-05-04T22:26:10.911Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777933509364",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:25:09.308Z",
+      "finishedAt": "2026-05-04T22:25:09.364Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777933447862",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:24:07.792Z",
+      "finishedAt": "2026-05-04T22:24:07.862Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777933386355",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:23:06.286Z",
+      "finishedAt": "2026-05-04T22:23:06.355Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777933324289",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:22:04.235Z",
+      "finishedAt": "2026-05-04T22:22:04.289Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777933262788",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:21:02.717Z",
+      "finishedAt": "2026-05-04T22:21:02.788Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777933201309",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:20:01.258Z",
+      "finishedAt": "2026-05-04T22:20:01.310Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777933201270",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:20:01.197Z",
+      "finishedAt": "2026-05-04T22:20:01.270Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777933165527",
+      "tickType": "planner",
+      "startedAt": "2026-05-04T22:19:25.476Z",
+      "finishedAt": "2026-05-04T22:19:25.527Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777933160474",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:19:20.424Z",
+      "finishedAt": "2026-05-04T22:19:20.474Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777933139871",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:18:59.814Z",
+      "finishedAt": "2026-05-04T22:18:59.871Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777933078393",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:17:58.338Z",
+      "finishedAt": "2026-05-04T22:17:58.393Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777933023127",
+      "tickType": "planner",
+      "startedAt": "2026-05-04T22:17:03.078Z",
+      "finishedAt": "2026-05-04T22:17:03.127Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777933017343",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:16:57.293Z",
+      "finishedAt": "2026-05-04T22:16:57.343Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777933016882",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:16:56.810Z",
+      "finishedAt": "2026-05-04T22:16:56.882Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777932955177",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:15:55.103Z",
+      "finishedAt": "2026-05-04T22:15:55.177Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777932893650",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:14:53.583Z",
+      "finishedAt": "2026-05-04T22:14:53.650Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777932832150",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:13:52.092Z",
+      "finishedAt": "2026-05-04T22:13:52.150Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777932770647",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:12:50.576Z",
+      "finishedAt": "2026-05-04T22:12:50.647Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777932709039",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:11:48.988Z",
+      "finishedAt": "2026-05-04T22:11:49.039Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777932647553",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:10:47.501Z",
+      "finishedAt": "2026-05-04T22:10:47.553Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777932586122",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:09:46.052Z",
+      "finishedAt": "2026-05-04T22:09:46.122Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777932564278",
+      "tickType": "planner",
+      "startedAt": "2026-05-04T22:09:24.228Z",
+      "finishedAt": "2026-05-04T22:09:24.278Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777932559315",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:09:19.266Z",
+      "finishedAt": "2026-05-04T22:09:19.315Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777932524494",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:08:44.421Z",
+      "finishedAt": "2026-05-04T22:08:44.494Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777932462917",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:07:42.853Z",
+      "finishedAt": "2026-05-04T22:07:42.917Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777932421886",
+      "tickType": "planner",
+      "startedAt": "2026-05-04T22:07:01.836Z",
+      "finishedAt": "2026-05-04T22:07:01.886Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777932415757",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:06:55.709Z",
+      "finishedAt": "2026-05-04T22:06:55.757Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777932401383",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:06:41.313Z",
+      "finishedAt": "2026-05-04T22:06:41.383Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777932339768",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:05:39.699Z",
+      "finishedAt": "2026-05-04T22:05:39.768Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777932278143",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:04:38.071Z",
+      "finishedAt": "2026-05-04T22:04:38.143Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777932216594",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:03:36.523Z",
+      "finishedAt": "2026-05-04T22:03:36.594Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777932155057",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:02:34.984Z",
+      "finishedAt": "2026-05-04T22:02:35.057Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777932093523",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:01:33.472Z",
+      "finishedAt": "2026-05-04T22:01:33.523Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777932032115",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:00:32.068Z",
+      "finishedAt": "2026-05-04T22:00:32.115Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777932032027",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:00:31.949Z",
+      "finishedAt": "2026-05-04T22:00:32.027Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777932005918",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T22:00:05.869Z",
+      "finishedAt": "2026-05-04T22:00:05.918Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777931970520",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T21:59:30.470Z",
+      "finishedAt": "2026-05-04T21:59:30.520Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777931963006",
+      "tickType": "planner",
+      "startedAt": "2026-05-04T21:59:22.956Z",
+      "finishedAt": "2026-05-04T21:59:23.006Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777931958130",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T21:59:18.079Z",
+      "finishedAt": "2026-05-04T21:59:18.130Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777931909022",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T21:58:28.971Z",
+      "finishedAt": "2026-05-04T21:58:29.022Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777931909017",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T21:58:28.963Z",
+      "finishedAt": "2026-05-04T21:58:29.017Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777931847486",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T21:57:27.412Z",
+      "finishedAt": "2026-05-04T21:57:27.486Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "planner-1777931820610",
+      "tickType": "planner",
+      "startedAt": "2026-05-04T21:57:00.559Z",
+      "finishedAt": "2026-05-04T21:57:00.610Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777931814570",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T21:56:54.520Z",
+      "finishedAt": "2026-05-04T21:56:54.571Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    },
+    {
+      "runId": "worker-1777931785966",
+      "tickType": "worker",
+      "startedAt": "2026-05-04T21:56:25.911Z",
+      "finishedAt": "2026-05-04T21:56:25.966Z",
+      "status": "skipped",
+      "reason": "SCHEDULER_DISABLED — skip execution",
+      "taskId": null
+    }
+  ]
+}

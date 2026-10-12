@@ -1,0 +1,91 @@
+{
+  "phase": "P28E",
+  "part": "D - Closure Criteria Evaluation",
+  "generatedAt": "2026-05-22T00:00:00Z",
+  "criteria": [
+    {
+      "id": "C1",
+      "name": "P28A 9 cases audited",
+      "evidence": "outputs/online_validation/p28a_underoutput_classification.json + p28a_scoring_underoutput_audit_final_report.md (commit 1cf0252)",
+      "result": "PASS"
+    },
+    {
+      "id": "C2",
+      "name": "P28B repair plan ready",
+      "evidence": "outputs/online_validation/p28b_reason_template_repair_spec.json + p28b_reason_template_coverage_final_report.md (commit 0ca055b); 2 families + 4 template rules",
+      "result": "PASS"
+    },
+    {
+      "id": "C3",
+      "name": "P28C renderer-only repair complete",
+      "evidence": "commit 73ce251; renderer bumped to p26a-corpus-renderer-v2; p28c_renderer_only_repair_final_report.md",
+      "result": "PASS"
+    },
+    {
+      "id": "C4",
+      "name": "P28D integrated validation complete",
+      "evidence": "commit 6801e0e; p28d_post_renderer_validation_final_report.md; 9-case all ENRICHED; backward compat PASS",
+      "result": "PASS"
+    },
+    {
+      "id": "C5",
+      "name": "P3 / P19 corpus sweep zero render errors",
+      "evidence": "p28d_p3_p19_renderer_regression_sweep.json: p3 errors=0, p19 errors=0",
+      "result": "PASS"
+    },
+    {
+      "id": "C6",
+      "name": "No scoring file changes across P28A-P28D",
+      "evidence": "P28D invariance: RuleBasedStockAnalyzer.ts / SignalFusionEngine.ts / ActiveScoringSnapshotBuilder.ts sha256 unchanged",
+      "result": "PASS"
+    },
+    {
+      "id": "C7",
+      "name": "No DB writes across P28A-P28D",
+      "evidence": "P28D invariance: prisma/dev.db sha256 unchanged",
+      "result": "PASS"
+    },
+    {
+      "id": "C8",
+      "name": "No corpus changes across P28A-P28D",
+      "evidence": "P28D invariance: 5 corpus line counts and sha256 (where measured) unchanged",
+      "result": "PASS"
+    },
+    {
+      "id": "C9",
+      "name": "Forbidden claims clean",
+      "evidence": "p28d_post_renderer_validation_forbidden_claims_scan.json + earlier P28C/B/A scans",
+      "result": "PASS"
+    },
+    {
+      "id": "C10",
+      "name": "P28E residual scan: no blocking F8/F9/F10 residual",
+      "evidence": "p28e_residual_underoutput_distribution_scan.json: F8=0, F9=0, F10=0; F7=558 is informational (P3/P19 missingSources=[MonthlyRevenue] by design)",
+      "result": "PASS"
+    },
+    {
+      "id": "C11",
+      "name": "API / display backward compatibility (no breaking changes)",
+      "evidence": "p28d_api_display_backward_compatibility_audit.json verdict=BACKWARD_COMPATIBLE; additive fields only",
+      "result": "PASS"
+    },
+    {
+      "id": "C12",
+      "name": "P26F4 remains correctly blocked by missing operator source",
+      "evidence": "Drop-zone candidateSourceFiles=0; freeze marker unchanged",
+      "result": "PASS"
+    }
+  ],
+  "criteriaResultCounts": {
+    "PASS": 12,
+    "FAIL": 0,
+    "PARTIAL": 0
+  },
+  "residualMonitoring": {
+    "F7_dataAvailability_informational": 558,
+    "interpretation": "P3/P19 corpora pre-date MonthlyRevenue PIT repair; every row's missingSources is [MonthlyRevenue]. Renderer correctly does not invent a coverage note. This is by-design behavior, not a residual underoutput.",
+    "actionItem": "Tracked as informational note in closure marker. Will naturally clear once expanded corpora include rows post-MonthlyRevenue availability."
+  },
+  "closureDecision": "READY_TO_CLOSE_REASON_UNDEROUTPUT_TRACK",
+  "rationale": "All 12 closure criteria PASS. Zero blocking residual. F7 is by-design informational only and is documented in the closure marker for residual monitoring."
+}

@@ -1,0 +1,58 @@
+{
+  "task": "T-05 Readiness Decision",
+  "generated_at": "2026-05-06T14:03:00+08:00",
+  "decisions": {
+    "1_skeleton_complete": {
+      "answer": "YES",
+      "evidence": "build-portfolio-walk-forward-skeleton.py runs, produces 120 records, all assertions pass"
+    },
+    "2_can_enter_smoke_test": {
+      "answer": "YES",
+      "evidence": "Sample produced, all guardrails pass, PIT-safe"
+    },
+    "3_blocked_by_p4_04": {
+      "answer": "PARTIAL - feature expansion pending but skeleton runs with 16 P4_03_READY features"
+    },
+    "4_need_chip_revenue_financial": {
+      "answer": "NO for skeleton; YES for richer evaluation in future rounds"
+    },
+    "5_can_connect_daily_report": {
+      "answer": "YES - regime label/confidence per asof_date is available"
+    },
+    "6_can_connect_p4_03_classifier": {
+      "answer": "YES - regime logic inlined, outputs match P4-03 contract"
+    },
+    "7_needs_schema_migration": {
+      "answer": "NO for skeleton; YES if MarketRegimeResult table added in P4-04"
+    },
+    "8_pit_leakage_risk": {
+      "answer": "LOW - all queries enforce date <= asof_date; no look-ahead found"
+    },
+    "9_retired_hypothesis_leakage_risk": {
+      "answer": "LOW - H001-H012 files exist but are not referenced in T-05 skeleton"
+    },
+    "10_next_round_priority": "P4-04 data feature expansion (chip/revenue/financial when >= 500 trading days)"
+  },
+  "next_round_recommendations": {
+    "P0_immediate": [
+      "Verify daily report can consume t05_walk_forward_sample.json",
+      "Confirm T-01 (scheduler) and T-02 (freshness guard) can trigger daily regime update"
+    ],
+    "P1_next": [
+      "P4-04: Begin chip backfill when InstitutionalChip reaches 500 trading days",
+      "Add MarketRegimeResult DB table (schema proposal in p4_03_market_regime_schema_proposal.md)",
+      "Connect portfolio walk-forward output to Daily Ops Report v1"
+    ],
+    "P2_deferred": [
+      "Revenue feature integration (requires 12+ months of data)",
+      "Financial feature integration (requires quarterly data alignment)",
+      "Replace deterministic_alphabetical_mock with evidence-based selection"
+    ],
+    "do_not_continue": [
+      "Do NOT design H013+ hypotheses in this session",
+      "Do NOT compute ROI or win-rate",
+      "Do NOT use future TAIEX dates",
+      "Do NOT claim portfolio edge from skeleton results"
+    ]
+  }
+}

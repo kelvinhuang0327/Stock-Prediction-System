@@ -1,0 +1,21 @@
+{
+  "phase": "P31",
+  "capturedAt": "2026-05-21T00:00:00.000Z",
+  "p31NewTests": "64/64 PASS",
+  "p30Regression": "49/49 PASS",
+  "p29lRegression": "96/96 PASS",
+  "p29kRegression": "68/68 PASS",
+  "fullSuite": "3697/3701 PASS (4 pre-existing failures, 0 P31 regressions)",
+  "preExistingFailures": [
+    "p29d_dropzone_scaffold.test.ts",
+    "p26a_batch_pipeline_wiring.test.ts",
+    "p26a_renderer_fix.test.ts",
+    "p27_waiting_state_policy_guard.test.ts"
+  ],
+  "forbiddenDiff": "BENIGN (prisma/dev.db and llm_usage.jsonl are pre-existing working tree changes, not caused by P31)",
+  "newFilesCreated": [
+    "src/lib/onlineValidation/p31/MonthlyRevenueDryRunContract.ts",
+    "src/lib/onlineValidation/p31/MonthlyRevenueSourcePresentDryRunGate.ts",
+    "src/lib/onlineValidation/__tests__/p31_monthly_revenue_source_present_dry_run.test.ts"
+  ]
+}

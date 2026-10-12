@@ -1,0 +1,38 @@
+{
+  "run_id": "STOCK_H003_VOLUME_BREAKOUT-2026-05-05",
+  "hypothesis_id": "STOCK_H003_VOLUME_BREAKOUT",
+  "pipeline_version": "P3-05",
+  "run_ts": "2026-05-05T05:55:28.572369+00:00",
+  "source_artifact_sha256": {
+    "stock_hypothesis_registry.json": "7d77c971bacb0dc796c3ac8850e4c2f541bb13fd21ebc57d45ad77864cc5a64a",
+    "run_stock_validation.py": "7e55ff1a28c8d3d07e381cc91f6722c618bba16edbe36ecdb0905473b1f5060a"
+  },
+  "gate_result_sha256": "975170285e047f33c9e648a38b675cf7938389b969ef9a9393a19d21d26de536",
+  "gate_statuses": {
+    "G01": "PASS",
+    "G02": "PASS",
+    "G03": "FAIL",
+    "G04": "FAIL",
+    "G05": "PASS",
+    "G06": "WARN",
+    "G07": "WARN",
+    "G08": "PASS",
+    "G09": "BLOCKED",
+    "G10": "BLOCKED"
+  },
+  "final_status": "rejected",
+  "safety_confirmations": {
+    "no_db_write": true,
+    "no_production_write": true,
+    "no_strategy_added": true,
+    "not_trading_advice": true,
+    "dry_run": true,
+    "synthetic_data_only": true
+  },
+  "windows_tested": [
+    150,
+    500,
+    1500
+  ],
+  "n_permutations": 50
+}

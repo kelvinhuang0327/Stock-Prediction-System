@@ -1,0 +1,96 @@
+{
+  "phase": "P34",
+  "capturedAt": "2026-05-21T00:00:00.000Z",
+  "source": "NewsEvent",
+  "mode": "source-present-dry-run",
+  "conformsTo": "p32prep_report_spec_v0_dry_run_sample",
+  "paperOnly": true,
+  "dryRun": true,
+  "entersAlphaScore": false,
+  "notInvestmentRecommendation": true,
+  "noBuySellActionSemantics": true,
+
+  "pitGateField": "publishedAt",
+  "pitPolicy": "RECORDED_FROM_SOURCE",
+
+  "sampleCount": 5,
+  "samplingStrategy": "stratified: 1 official, 1 secondary, 1 oldest, 1 most-recent, 1 mainstream-non-yahoo",
+
+  "sample": [
+    {
+      "id": "cmmwl9czh0013ocb863dwalul",
+      "title": "總統接見美國半導體產業協會訪團 盼強化臺美合作 成為 AI 時代最值得信賴且具韌性的領航者",
+      "source": "president.gov.tw",
+      "trustLevel": "official",
+      "publishedAt": 1772439865000,
+      "publishedAtDate": "2026-04-29 (approx)",
+      "ingestedAt": 1773871447805,
+      "pitEligible": true,
+      "blockedReason": null,
+      "dryRunTrace": "publishedAt=1772439865000 present. trustLevel=official. source=president.gov.tw. pitGate=PASS. pitPolicy=RECORDED_FROM_SOURCE."
+    },
+    {
+      "id": "cmmwl9czw001nocb81i2g0jw9",
+      "title": "台股盤後｜台積電登天價與內資作帳共舞科技股領軍突破28,800點 1229",
+      "source": "sinotrade.com.tw",
+      "trustLevel": "secondary",
+      "publishedAt": 1766995200000,
+      "publishedAtDate": "2025-12-29 (approx, oldest event)",
+      "ingestedAt": 1773871447820,
+      "pitEligible": true,
+      "blockedReason": null,
+      "dryRunTrace": "publishedAt=1766995200000 present. trustLevel=secondary. source=sinotrade.com.tw. pitGate=PASS. pitPolicy=RECORDED_FROM_SOURCE. Note: ingestedAt=2026-03-15 — historical import gap expected, publishedAt is the PIT gate (not ingestedAt)."
+    },
+    {
+      "id": "cmmwl9czl0018ocb8ieh17ubr",
+      "title": "矽光子、量子前瞻技術",
+      "source": "moea.gov.tw",
+      "trustLevel": "official",
+      "publishedAt": 1770710400000,
+      "publishedAtDate": "2026-04-10 (approx)",
+      "ingestedAt": 1773871447809,
+      "pitEligible": true,
+      "blockedReason": null,
+      "dryRunTrace": "publishedAt=1770710400000 present. trustLevel=official. source=moea.gov.tw. pitGate=PASS. pitPolicy=RECORDED_FROM_SOURCE."
+    },
+    {
+      "id": "cmoshlqcy00ka3ruiky5k80a9",
+      "title": "華邦電法說》「記憶體產能緊得不得了！」 2分析師齊看多：股價有戲",
+      "source": "Yahoo 台股新聞 RSS",
+      "trustLevel": "mainstream",
+      "publishedAt": 1777976893000,
+      "publishedAtDate": "2026-05-05 (approx, most recent event)",
+      "ingestedAt": 1777977006515,
+      "pitEligible": true,
+      "blockedReason": null,
+      "dryRunTrace": "publishedAt=1777976893000 present. trustLevel=mainstream. source=Yahoo 台股新聞 RSS. pitGate=PASS. pitPolicy=RECORDED_FROM_SOURCE. ingestedAt-publishedAt gap=113515ms (normal near-realtime ingestion)."
+    },
+    {
+      "id": "cmmwl9czu001jocb8ix8s3og4",
+      "title": "不和台積電硬拚！BBC揭印度半導體「繞道突圍」真正盤算 改搶3領域",
+      "source": "自由財經",
+      "trustLevel": "secondary",
+      "publishedAt": 1769587200000,
+      "publishedAtDate": "2026-01-28 (approx)",
+      "ingestedAt": 1773871447818,
+      "pitEligible": true,
+      "blockedReason": null,
+      "dryRunTrace": "publishedAt=1769587200000 present. trustLevel=secondary. source=自由財經. pitGate=PASS. pitPolicy=RECORDED_FROM_SOURCE."
+    }
+  ],
+
+  "sampleGovernanceCheck": {
+    "allRowsHavePublishedAt": true,
+    "allRowsPitEligible": true,
+    "blockedRowsInSample": 0,
+    "anyBuySellHoldSemantics": false,
+    "anyInvestmentRecommendation": false,
+    "anyAlphaScoreField": false,
+    "anyPredictionQualityField": false
+  },
+
+  "dryRunStatus": "READY",
+  "overallClassification": "NEWS_EVENT_SOURCE_PRESENT_DRY_RUN_SAMPLE_READY",
+
+  "disclaimer": "Dry-run sample only. For structural governance audit purposes. Does not constitute investment advice. No buy/sell/hold signals. No profit, ROI, win-rate, or investment performance claims. entersAlphaScore = false. ALWAYS."
+}

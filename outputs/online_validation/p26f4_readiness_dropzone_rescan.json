@@ -1,0 +1,27 @@
+{
+  "auditId": "p26f4-readiness-dropzone-rescan",
+  "generatedAt": "2026-05-13T14:01:06.108142+00:00",
+  "dropzonePath": "data/manual/monthly-revenue/p26f3-2-dropzone/",
+  "dropzoneContents": [
+    ".gitkeep",
+    "EXPECTED_FILENAMES.md",
+    "EXPECTED_SCHEMA.json",
+    "README.md",
+    "TEMPLATE_DO_NOT_IMPORT_monthly_revenue.csv"
+  ],
+  "candidateSourceFiles": 0,
+  "acceptedRows": 0,
+  "matchedRows": 0,
+  "note": "Drop-zone contains only scaffold files (README, TEMPLATE, SCHEMA, EXPECTED_FILENAMES). No real TWSE/MOPS source files present.",
+  "routeDecision": "WAITING_FOR_OPERATOR_SOURCE",
+  "nextSteps": [
+    "Operator must obtain real TWSE/MOPS monthly revenue CSV files for months: 2025-09, 2025-10, 2025-11, 2025-12, 2026-01",
+    "Place files in drop-zone: data/manual/monthly-revenue/p26f3-2-dropzone/",
+    "Re-run: node scripts/run-p26f3-5-dropzone-conditional-scan.js",
+    "Dry-run gate will execute automatically when files are present",
+    "Provide approval token P26F4_APPROVE_HISTORICAL_MONTHLY_REVENUE_IMPORT_ONLY to authorize DB import"
+  ],
+  "operatorHandoffPacket": "docs/manual-data/monthly-revenue/P26F3_5_OPERATOR_HANDOFF_PACKET.md",
+  "classification": "P26F4_WAITING_FOR_OPERATOR_SOURCE",
+  "disclaimer": "Observability audit only. No investment recommendations. No ROI/buy/sell/alpha/edge/profit claims."
+}

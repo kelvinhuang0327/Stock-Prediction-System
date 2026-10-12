@@ -1,0 +1,21 @@
+{
+  "version": "1.0",
+  "task_id": 174,
+  "slug": "8-hour-multi-domain-optimization-sprint",
+  "status": "FAILED_RATE_LIMIT",
+  "gate_verdict": "PROVIDER_RATE_LIMITED",
+  "planner_provider": "codex",
+  "worker_provider": "copilot-daemon",
+  "created_at": "2026-05-01T15:34:08.966Z",
+  "updated_at": "2026-05-01T15:38:03.022Z",
+  "last_output_at": "2026-05-01T15:38:03.022Z",
+  "latest_progress_summary": "額度限制：copilot-daemon 遇到 rate limit。✗ Read shell output Waiting up to 1 second for command output",
+  "planner_context": {
+    "taskType": "optimization_composite_8h",
+    "game": null,
+    "regimeState": "OPTIMIZATION",
+    "dedupeKey": "composite_8h_plan__2026-05-01",
+    "confidenceScore": null,
+    "regimeTaskType": "composite_8h_plan"
+  }
+}

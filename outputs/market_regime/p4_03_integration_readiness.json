@@ -1,0 +1,30 @@
+{
+  "task": "P4-03 Integration Readiness",
+  "generated_at": "2026-05-06",
+  "classifier_status": "OPERATIONAL",
+  "daily_report_ready": true,
+  "daily_report_notes": "regime_label/confidence per date, no DB write needed",
+  "walk_forward_ready": true,
+  "walk_forward_notes": "PIT-safe per asof_date, regime context annotation supported",
+  "p4_04_ready": false,
+  "p4_04_notes": "Blocked - chip/revenue/financial features insufficient per P4-02",
+  "db_write_required": false,
+  "db_write_notes": "On-demand computation sufficient for now",
+  "pit_leakage_risk": false,
+  "pit_leakage_notes": "All rolling uses date <= asof_date, no forward-fill",
+  "missing_date_risk": true,
+  "missing_date_notes": "TAIEX max=2026-05-05, StockQuote max=2026-05-18 - 13-day gap",
+  "data_backfill_needed": true,
+  "data_backfill_notes": "TAIEX needs refresh to 2026-05-18",
+  "next_round_recommendation": "T-05 walk-forward redesign with regime context OR TAIEX backfill first",
+  "deferred_features": [
+    "chip features: need 500 trading days, currently 236 - PROTOTYPE_ONLY",
+    "revenue features: need 12 months, currently 2 - INSUFFICIENT_HISTORY",
+    "financial features: ROE/debt_ratio schema incomplete",
+    "P4-04 ML training: BLOCKED until above features reach production-ready status"
+  ],
+  "pit_safe": true,
+  "production_write": false,
+  "buy_sell_signal": false,
+  "backtest": false
+}

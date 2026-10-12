@@ -1,0 +1,103 @@
+{
+  "task": "T-05 Guardrail Validation",
+  "generated_at": "2026-05-06T14:02:00+08:00",
+  "overall_result": "PASS",
+  "total_checks": 18,
+  "passed": 18,
+  "failed": 0,
+  "checks": [
+    {
+      "check": "no_h001_h012_in_output",
+      "result": "PASS",
+      "notes": "Searched all record fields"
+    },
+    {
+      "check": "no_buy_field",
+      "result": "PASS",
+      "notes": "Field not present in any record"
+    },
+    {
+      "check": "no_sell_field",
+      "result": "PASS",
+      "notes": "Field not present in any record"
+    },
+    {
+      "check": "no_signal_field",
+      "result": "PASS",
+      "notes": "Field not present in any record"
+    },
+    {
+      "check": "no_roi_field",
+      "result": "PASS",
+      "notes": "Field not present in any record"
+    },
+    {
+      "check": "no_win_rate_field",
+      "result": "PASS",
+      "notes": "Field not present in any record"
+    },
+    {
+      "check": "no_production_write",
+      "result": "PASS",
+      "notes": "Script is read-only; no DB mutations"
+    },
+    {
+      "check": "no_future_dates",
+      "result": "PASS",
+      "notes": "All asof_date <= 2026-05-06"
+    },
+    {
+      "check": "portfolio_size_lte_10",
+      "result": "PASS",
+      "notes": "Max found = 10"
+    },
+    {
+      "check": "sample_days_lte_120",
+      "result": "PASS",
+      "notes": "Actual = 120"
+    },
+    {
+      "check": "every_row_has_regime_context",
+      "result": "PASS",
+      "notes": "All 120 records have regime_label + regime_confidence"
+    },
+    {
+      "check": "every_row_has_pit_safety_flags",
+      "result": "PASS",
+      "notes": "All 120 records have pit_safety_flags array"
+    },
+    {
+      "check": "every_row_has_forbidden_logic_flags",
+      "result": "PASS",
+      "notes": "All 120 records have forbidden_logic_flags object"
+    },
+    {
+      "check": "all_forbidden_flags_are_false",
+      "result": "PASS",
+      "notes": "All 6 flags = false in all records"
+    },
+    {
+      "check": "chip_features_not_production",
+      "result": "PASS",
+      "notes": "No chip features used; only deterministic alphabetical mock"
+    },
+    {
+      "check": "revenue_features_not_production",
+      "result": "PASS",
+      "notes": "No revenue features used"
+    },
+    {
+      "check": "financial_features_not_production",
+      "result": "PASS",
+      "notes": "No financial features used"
+    },
+    {
+      "check": "json_artifacts_parseable",
+      "result": "PASS",
+      "notes": "All 5 JSON files parse successfully"
+    }
+  ],
+  "h001_h012_note": "H001-H012 files EXIST in codebase (ExperimentRegistry.ts, WalkForwardResult rows) but T-05 script does NOT use them. Risk = LOW (isolated Python skeleton).",
+  "sample_file": "outputs/walk_forward/t05_walk_forward_sample.json",
+  "sample_records_checked": 120
+}

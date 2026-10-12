@@ -1,0 +1,861 @@
+{
+  "phase": "P9",
+  "title": "Baseline Consolidation \u2014 Commit Readiness Inventory",
+  "generated_at": "2026-05-23T08:36:30Z",
+  "head": "261cd369db68f100e7d609b85dbd8af86094249d",
+  "branch": "main",
+  "test_results": {
+    "onlineValidation_suites": 127,
+    "onlineValidation_tests": 4846,
+    "research_simulation_suites": 8,
+    "research_simulation_tests": 275,
+    "total_tests": 5121,
+    "total_failures": 0,
+    "db_sha": "a5cf277182c161dfe97ba05f9b81528d6c8e477dd5ac0bec6810ffbb8711c6f8",
+    "db_sha_check": "DB_SHA_OK",
+    "context_lock_scan": "CLEAN",
+    "forbidden_claims_scan": "CLEAN"
+  },
+  "verdict": "P9_BASELINE_CONSOLIDATION_PARTIAL_USER_DECISION_REQUIRED",
+  "counts": {
+    "SAFE_TO_COMMIT": 97,
+    "USER_DECISION": 3,
+    "MUST_NOT_COMMIT": 19,
+    "total": 119
+  },
+  "files": [
+    {
+      "file": "logs/launchd/backend.stderr.log",
+      "phase": "runtime",
+      "tier": "MUST_NOT_COMMIT",
+      "reason": "runtime log",
+      "git_status": "M"
+    },
+    {
+      "file": "logs/launchd/backend.stdout.log",
+      "phase": "runtime",
+      "tier": "MUST_NOT_COMMIT",
+      "reason": "runtime log",
+      "git_status": "M"
+    },
+    {
+      "file": "logs/launchd/main-service.stderr.log",
+      "phase": "runtime",
+      "tier": "MUST_NOT_COMMIT",
+      "reason": "runtime log",
+      "git_status": "M"
+    },
+    {
+      "file": "logs/launchd/main-service.stdout.log",
+      "phase": "runtime",
+      "tier": "MUST_NOT_COMMIT",
+      "reason": "runtime log",
+      "git_status": "M"
+    },
+    {
+      "file": "logs/launchd/planner-tick.stderr.log",
+      "phase": "runtime",
+      "tier": "MUST_NOT_COMMIT",
+      "reason": "runtime log",
+      "git_status": "M"
+    },
+    {
+      "file": "logs/launchd/planner-tick.stdout.log",
+      "phase": "runtime",
+      "tier": "MUST_NOT_COMMIT",
+      "reason": "runtime log",
+      "git_status": "M"
+    },
+    {
+      "file": "logs/launchd/start_all.log",
+      "phase": "runtime",
+      "tier": "MUST_NOT_COMMIT",
+      "reason": "runtime log",
+      "git_status": "M"
+    },
+    {
+      "file": "logs/launchd/stop_all.log",
+      "phase": "runtime",
+      "tier": "MUST_NOT_COMMIT",
+      "reason": "runtime log",
+      "git_status": "M"
+    },
+    {
+      "file": "logs/launchd/worker-tick.stderr.log",
+      "phase": "runtime",
+      "tier": "MUST_NOT_COMMIT",
+      "reason": "runtime log",
+      "git_status": "M"
+    },
+    {
+      "file": "logs/launchd/worker-tick.stdout.log",
+      "phase": "runtime",
+      "tier": "MUST_NOT_COMMIT",
+      "reason": "runtime log",
+      "git_status": "M"
+    },
+    {
+      "file": "runtime/agent_orchestrator/pids/backend.pid",
+      "phase": "runtime",
+      "tier": "MUST_NOT_COMMIT",
+      "reason": "runtime PID file",
+      "git_status": "M"
+    },
+    {
+      "file": "outputs/online_validation/p28c_renderer_only_repair_9case_before_after.json",
+      "phase": "P28",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "pre-existing validation artifact modified during P28",
+      "git_status": "M"
+    },
+    {
+      "file": "outputs/online_validation/p28d_9case_integrated_review_validation.json",
+      "phase": "P28",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "pre-existing validation artifact modified during P28",
+      "git_status": "M"
+    },
+    {
+      "file": "outputs/online_validation/p28d_p3_p19_renderer_regression_sweep.json",
+      "phase": "P28",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "pre-existing validation artifact modified during P28",
+      "git_status": "M"
+    },
+    {
+      "file": "00-Plan/roadmap/roadmap.md",
+      "phase": "roadmap",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "roadmap with P1\u2013P9 overlays appended",
+      "git_status": "M"
+    },
+    {
+      "file": "00-Plan/roadmap/CTO-Analysis.md",
+      "phase": "roadmap",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "pre-existing planning modification",
+      "git_status": "M"
+    },
+    {
+      "file": "src/lib/onlineValidation/__tests__/p26a_batch_pipeline_wiring.test.ts",
+      "phase": "P8",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P8 SHA repair \u2014 dev.db hash updated from P29C era to canonical",
+      "git_status": "M"
+    },
+    {
+      "file": "src/lib/onlineValidation/__tests__/p26a_renderer_fix.test.ts",
+      "phase": "P8",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P8 SHA repair \u2014 dev.db hash updated from P29C era to canonical",
+      "git_status": "M"
+    },
+    {
+      "file": "src/lib/onlineValidation/__tests__/p27_waiting_state_policy_guard.test.ts",
+      "phase": "P8",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P8 SHA repair \u2014 dev.db hash updated from P29C era to canonical",
+      "git_status": "M"
+    },
+    {
+      "file": "00-Plan/roadmap/active_task.md",
+      "phase": "roadmap",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "active task tracking document",
+      "git_status": "??"
+    },
+    {
+      "file": "00-Plan/roadmap/CEO-Decision.md",
+      "phase": "roadmap",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "CTO/CEO decision log",
+      "git_status": "??"
+    },
+    {
+      "file": "00-StockPlan/20260514/cto_analysis_20260514.md",
+      "phase": "stock-plan",
+      "tier": "USER_DECISION",
+      "reason": "daily stock plan \u2014 commit only if user intends to track",
+      "git_status": "??"
+    },
+    {
+      "file": "00-StockPlan/20260515/20260515.md",
+      "phase": "stock-plan",
+      "tier": "USER_DECISION",
+      "reason": "daily stock plan \u2014 commit only if user intends to track",
+      "git_status": "??"
+    },
+    {
+      "file": "00-StockPlan/20260515/cto_analysis_20260515.md",
+      "phase": "stock-plan",
+      "tier": "USER_DECISION",
+      "reason": "daily stock plan \u2014 commit only if user intends to track",
+      "git_status": "??"
+    },
+    {
+      "file": "data/manual/financial-report/p29b-dropzone/EXPECTED_FILENAMES.md",
+      "phase": "data",
+      "tier": "MUST_NOT_COMMIT",
+      "reason": "data/ governance exclusion",
+      "git_status": "??"
+    },
+    {
+      "file": "data/manual/financial-report/p29b-dropzone/EXPECTED_SCHEMA.json",
+      "phase": "data",
+      "tier": "MUST_NOT_COMMIT",
+      "reason": "data/ governance exclusion",
+      "git_status": "??"
+    },
+    {
+      "file": "data/manual/financial-report/p29b-dropzone/SOURCE_MANIFEST_TEMPLATE.json",
+      "phase": "data",
+      "tier": "MUST_NOT_COMMIT",
+      "reason": "data/ governance exclusion",
+      "git_status": "??"
+    },
+    {
+      "file": "data/manual/financial-report/p29b-dropzone/TEMPLATE_DO_NOT_IMPORT_financial_report_sample.csv",
+      "phase": "data",
+      "tier": "MUST_NOT_COMMIT",
+      "reason": "data/ governance exclusion \u2014 DO_NOT_IMPORT template",
+      "git_status": "??"
+    },
+    {
+      "file": "data/manual/news-event/p29b-dropzone/EXPECTED_FILENAMES.md",
+      "phase": "data",
+      "tier": "MUST_NOT_COMMIT",
+      "reason": "data/ governance exclusion",
+      "git_status": "??"
+    },
+    {
+      "file": "data/manual/news-event/p29b-dropzone/EXPECTED_SCHEMA.json",
+      "phase": "data",
+      "tier": "MUST_NOT_COMMIT",
+      "reason": "data/ governance exclusion",
+      "git_status": "??"
+    },
+    {
+      "file": "data/manual/news-event/p29b-dropzone/SOURCE_MANIFEST_TEMPLATE.json",
+      "phase": "data",
+      "tier": "MUST_NOT_COMMIT",
+      "reason": "data/ governance exclusion",
+      "git_status": "??"
+    },
+    {
+      "file": "data/manual/news-event/p29b-dropzone/TEMPLATE_DO_NOT_IMPORT_news_event_sample.csv",
+      "phase": "data",
+      "tier": "MUST_NOT_COMMIT",
+      "reason": "data/ governance exclusion \u2014 DO_NOT_IMPORT template",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p1_axis_a_controlled_research_snapshot_final_report.md",
+      "phase": "P1",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P1 Axis A final report",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p2_p49_manifest_final_report.md",
+      "phase": "P2",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P2 manifest final report",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p27_overnight_deep_audit_preflight.json",
+      "phase": "P27",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P27 audit preflight artifact",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p29g_preflight_final_report.md",
+      "phase": "P29G",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P29G preflight report",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p29g_preflight_forbidden_claims_scan.json",
+      "phase": "P29G",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P29G forbidden claims scan",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p29g_preflight_forbidden_claims_scan.md",
+      "phase": "P29G",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P29G forbidden claims scan (md)",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p29g_preflight_git_ancestry_audit.json",
+      "phase": "P29G",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P29G git ancestry audit",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p29g_preflight_git_ancestry_audit.md",
+      "phase": "P29G",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P29G git ancestry audit (md)",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p29g_preflight_invariance_baseline.json",
+      "phase": "P29G",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P29G invariance baseline",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p29g_preflight_invariance_baseline.md",
+      "phase": "P29G",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P29G invariance baseline (md)",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p29g_preflight_scaffold_inventory.json",
+      "phase": "P29G",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P29G scaffold inventory",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p29g_preflight_scaffold_inventory.md",
+      "phase": "P29G",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P29G scaffold inventory (md)",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p29g_preflight_test_baseline.json",
+      "phase": "P29G",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P29G test baseline",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p29g_preflight_test_baseline.md",
+      "phase": "P29G",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P29G test baseline (md)",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p3_closure_final_report.md",
+      "phase": "P3",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P3 closure final report",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p3_untracked_artifact_disposition_final_report.md",
+      "phase": "P3",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P3 disposition final report",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p32_final_report.md",
+      "phase": "P32",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P32 monthly revenue final report",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p32_forbidden_claims_scan.json",
+      "phase": "P32",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P32 forbidden claims scan",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p32_monthly_revenue_dry_run_sample.json",
+      "phase": "P32",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P32 dry-run sample",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p32_monthly_revenue_dry_run_sample.md",
+      "phase": "P32",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P32 dry-run sample (md)",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p32_monthly_revenue_source_present_dry_run.json",
+      "phase": "P32",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P32 source-present dry-run",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p32_monthly_revenue_source_present_dry_run.md",
+      "phase": "P32",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P32 source-present dry-run (md)",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p32_monthly_revenue_spec_conformance.json",
+      "phase": "P32",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P32 spec conformance",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p32_monthly_revenue_spec_conformance.md",
+      "phase": "P32",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P32 spec conformance (md)",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p32prep_artifact_inventory.json",
+      "phase": "P32",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P32prep artifact inventory",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p32prep_artifact_inventory.md",
+      "phase": "P32",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P32prep artifact inventory (md)",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p32prep_final_report.md",
+      "phase": "P32",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P32prep final report",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p32prep_golden_fixture_candidates.json",
+      "phase": "P32",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P32prep golden fixture candidates",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p32prep_golden_fixture_candidates.md",
+      "phase": "P32",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P32prep golden fixture candidates (md)",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p32prep_report_spec_v0_dry_run_sample.json",
+      "phase": "P32",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P32prep spec v0 dry-run",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p32prep_report_spec_v0_dry_run_sample.md",
+      "phase": "P32",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P32prep spec v0 dry-run (md)",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p32prep_report_spec_v0_pit_audit.json",
+      "phase": "P32",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P32prep spec v0 pit audit",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p32prep_report_spec_v0_pit_audit.md",
+      "phase": "P32",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P32prep spec v0 pit audit (md)",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p32prep_report_spec_v0_source_gate.json",
+      "phase": "P32",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P32prep spec v0 source gate",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p32prep_report_spec_v0_source_gate.md",
+      "phase": "P32",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P32prep spec v0 source gate (md)",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p33_final_report.md",
+      "phase": "P33",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P33 news-event final report",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p33_financial_report_source_present_scan.json",
+      "phase": "P33",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P33 financial source-present scan",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p33_financial_report_source_present_scan.md",
+      "phase": "P33",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P33 financial source-present scan (md)",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p33_forbidden_claims_scan.json",
+      "phase": "P33",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P33 forbidden claims scan",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p33_news_event_source_present_scan.json",
+      "phase": "P33",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P33 news-event source-present scan",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p33_news_event_source_present_scan.md",
+      "phase": "P33",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P33 news-event source-present scan (md)",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p33_source_present_gate_summary.json",
+      "phase": "P33",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P33 source-present gate summary",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p33_source_present_gate_summary.md",
+      "phase": "P33",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P33 source-present gate summary (md)",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p33_spec_conformance.json",
+      "phase": "P33",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P33 spec conformance",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p33_spec_conformance.md",
+      "phase": "P33",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P33 spec conformance (md)",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p34_final_report.md",
+      "phase": "P34",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P34 final report",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p34_forbidden_claims_scan.json",
+      "phase": "P34",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P34 forbidden claims scan",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p34_news_event_dry_run_sample.json",
+      "phase": "P34",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P34 news-event dry-run sample",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p34_news_event_dry_run_sample.md",
+      "phase": "P34",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P34 news-event dry-run sample (md)",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p34_news_event_pit_audit.json",
+      "phase": "P34",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P34 news-event pit audit",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p34_news_event_pit_audit.md",
+      "phase": "P34",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P34 news-event pit audit (md)",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p34_news_event_source_present_dry_run.json",
+      "phase": "P34",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P34 news-event source-present dry-run",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p34_news_event_source_present_dry_run.md",
+      "phase": "P34",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P34 news-event source-present dry-run (md)",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p34_spec_conformance.json",
+      "phase": "P34",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P34 spec conformance",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p34_spec_conformance.md",
+      "phase": "P34",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P34 spec conformance (md)",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p35_realign_decision_matrix.md",
+      "phase": "P35",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P35 realign decision matrix",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p35_realign_final_report.md",
+      "phase": "P35",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P35 realign final report",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p35_realign_next_implementation_p0.md",
+      "phase": "P35",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P35 realign next impl plan",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p35_realign_untracked_disposition_plan.json",
+      "phase": "P35",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P35 realign disposition plan",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p35_realign_untracked_disposition_plan.md",
+      "phase": "P35",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P35 realign disposition plan (md)",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p4_axis_b_fixture_validation_readiness.md",
+      "phase": "P4",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P4 Axis B fixture validation readiness",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p4_fixture_validation_final_report.md",
+      "phase": "P4",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P4 fixture validation final report",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p49_ledger_context_lock_scan.json",
+      "phase": "P49",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P49 ledger context-lock scan",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p49_ledger_context_lock_scan.md",
+      "phase": "P49",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P49 ledger context-lock scan (md)",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p49_ledger_final_report.md",
+      "phase": "P49",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P49 ledger final report",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p49_ledger_full_suite_baseline.json",
+      "phase": "P49",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P49 ledger full-suite baseline",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p49_ledger_full_suite_baseline.md",
+      "phase": "P49",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P49 ledger full-suite baseline (md)",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p49_ledger_known_failures.json",
+      "phase": "P49",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P49 ledger known failures",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p49_ledger_known_failures.md",
+      "phase": "P49",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P49 ledger known failures (md)",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p49_manifest_p39_p48.json",
+      "phase": "P49",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P49 manifest p39\u2013p48",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p49_manifest_p39_p48.md",
+      "phase": "P49",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P49 manifest p39\u2013p48 (md)",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p5_axis_a_research_snapshot_extension_final_report.md",
+      "phase": "P5",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P5 Axis A extension final report",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p6_axis_b_fixture_result_contract_final_report.md",
+      "phase": "P6",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P6 Axis B fixture result contract final report",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p7_axis_a_research_coverage_determinism_final_report.md",
+      "phase": "P7",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P7 Axis A coverage determinism final report",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/p8_known_failure_repair_final_report.md",
+      "phase": "P8",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P8 known-failure repair final report",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/untracked_artifact_disposition_plan.json",
+      "phase": "P3",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P3 disposition plan",
+      "git_status": "??"
+    },
+    {
+      "file": "outputs/online_validation/untracked_artifact_disposition_plan.md",
+      "phase": "P3",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P3 disposition plan (md)",
+      "git_status": "??"
+    },
+    {
+      "file": "scripts/generate_artifacts.py",
+      "phase": "scripts",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "utility artifact-generation script",
+      "git_status": "??"
+    },
+    {
+      "file": "scripts/p28c_9case_validation.js",
+      "phase": "scripts",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P28C 9-case validation script",
+      "git_status": "??"
+    },
+    {
+      "file": "scripts/verify_p34.py",
+      "phase": "scripts",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P34 verification script",
+      "git_status": "??"
+    },
+    {
+      "file": "src/lib/onlineValidation/__tests__/p29d_dropzone_scaffold.test.ts",
+      "phase": "P8",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P8 SHA repair \u2014 new file, dev.db hash canonical",
+      "git_status": "??"
+    },
+    {
+      "file": "src/lib/research/ControlledResearchSnapshot.ts",
+      "phase": "P1",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P1 Axis A: controlled research snapshot type",
+      "git_status": "??"
+    },
+    {
+      "file": "src/lib/research/ControlledResearchSnapshotBuilder.ts",
+      "phase": "P1",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P1 Axis A: controlled research snapshot builder",
+      "git_status": "??"
+    },
+    {
+      "file": "src/lib/research/__tests__/controlled_research_snapshot.test.ts",
+      "phase": "P1",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P1/P5 Axis A: 46-case controlled research snapshot test",
+      "git_status": "??"
+    },
+    {
+      "file": "src/lib/research/__tests__/p7_research_coverage_determinism.test.ts",
+      "phase": "P7",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P7 Axis A: 25-case research coverage determinism test",
+      "git_status": "??"
+    },
+    {
+      "file": "src/lib/simulation/__tests__/p4_golden_fixture_validation.test.ts",
+      "phase": "P4",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P4 Axis B: 25-case golden fixture validation test",
+      "git_status": "??"
+    },
+    {
+      "file": "src/lib/simulation/__tests__/p6_fixture_result_contract_extension.test.ts",
+      "phase": "P6",
+      "tier": "SAFE_TO_COMMIT",
+      "reason": "P6 Axis B: 25-case fixture result contract test",
+      "git_status": "??"
+    }
+  ]
+}

@@ -1,0 +1,195 @@
+{
+  "contract_id": "T08_MARKET_REGIME_RESULT_SCHEMA_CONTRACT",
+  "contract_date": "2026-05-06",
+  "generated_at": "2026-05-06T14:44:28.822240",
+  "model_name": "MarketRegimeResult",
+  "table_name": "MarketRegimeResult",
+  "fields": [
+    {
+      "name": "id",
+      "type": "String",
+      "prisma_type": "String @id @default(cuid())",
+      "nullable": false,
+      "description": "CUID primary key"
+    },
+    {
+      "name": "date",
+      "type": "String",
+      "prisma_type": "String",
+      "nullable": false,
+      "description": "ISO YYYY-MM-DD asof date"
+    },
+    {
+      "name": "regimeLabel",
+      "type": "String",
+      "prisma_type": "String",
+      "nullable": false,
+      "description": "Enum: BULL, BEAR, SIDEWAYS, HIGH_VOLATILITY, LOW_CONFIDENCE"
+    },
+    {
+      "name": "confidence",
+      "type": "Float",
+      "prisma_type": "Float",
+      "nullable": false,
+      "description": "0.0 to 1.0"
+    },
+    {
+      "name": "taiexClose",
+      "type": "Float",
+      "prisma_type": "Float?",
+      "nullable": true,
+      "description": "TAIEX closing price"
+    },
+    {
+      "name": "taiexMa50",
+      "type": "Float",
+      "prisma_type": "Float?",
+      "nullable": true,
+      "description": "50-day MA"
+    },
+    {
+      "name": "taiexMa200",
+      "type": "Float",
+      "prisma_type": "Float?",
+      "nullable": true,
+      "description": "200-day MA"
+    },
+    {
+      "name": "taiexReturn1d",
+      "type": "Float",
+      "prisma_type": "Float?",
+      "nullable": true,
+      "description": "1-day return"
+    },
+    {
+      "name": "taiexReturn20d",
+      "type": "Float",
+      "prisma_type": "Float?",
+      "nullable": true,
+      "description": "20-day return"
+    },
+    {
+      "name": "taiexVolatility20d",
+      "type": "Float",
+      "prisma_type": "Float?",
+      "nullable": true,
+      "description": "20-day volatility"
+    },
+    {
+      "name": "marketBreadthProxy",
+      "type": "Float",
+      "prisma_type": "Float?",
+      "nullable": true,
+      "description": "Market breadth proxy"
+    },
+    {
+      "name": "evidenceJson",
+      "type": "String",
+      "prisma_type": "String?",
+      "nullable": true,
+      "description": "JSON array of evidence flags"
+    },
+    {
+      "name": "missingFeaturesJson",
+      "type": "String",
+      "prisma_type": "String?",
+      "nullable": true,
+      "description": "JSON array of missing features"
+    },
+    {
+      "name": "pitSafetyJson",
+      "type": "String",
+      "prisma_type": "String?",
+      "nullable": true,
+      "description": "JSON array of PIT safety flags"
+    },
+    {
+      "name": "source",
+      "type": "String",
+      "prisma_type": "String",
+      "nullable": false,
+      "description": "Fixed: P4_03_MARKET_REGIME_CLASSIFIER"
+    },
+    {
+      "name": "version",
+      "type": "String",
+      "prisma_type": "String",
+      "nullable": false,
+      "description": "Fixed: p4_03b_v1"
+    },
+    {
+      "name": "createdAt",
+      "type": "DateTime",
+      "prisma_type": "DateTime @default(now())",
+      "nullable": false,
+      "description": "Creation timestamp"
+    },
+    {
+      "name": "updatedAt",
+      "type": "DateTime",
+      "prisma_type": "DateTime @updatedAt",
+      "nullable": false,
+      "description": "Last update timestamp"
+    }
+  ],
+  "unique_constraints": [
+    {
+      "fields": [
+        "date",
+        "source",
+        "version"
+      ],
+      "name": "unique_date_source_version"
+    }
+  ],
+  "indexes": [
+    {
+      "fields": [
+        "date"
+      ]
+    },
+    {
+      "fields": [
+        "regimeLabel"
+      ]
+    },
+    {
+      "fields": [
+        "source"
+      ]
+    },
+    {
+      "fields": [
+        "version"
+      ]
+    }
+  ],
+  "allowed_regime_labels": [
+    "BULL",
+    "BEAR",
+    "SIDEWAYS",
+    "HIGH_VOLATILITY",
+    "LOW_CONFIDENCE"
+  ],
+  "fixed_source": "P4_03_MARKET_REGIME_CLASSIFIER",
+  "fixed_version": "p4_03b_v1",
+  "safety_contract": {
+    "forbidden_fields": [
+      "buy",
+      "sell",
+      "signal",
+      "roi",
+      "win_rate",
+      "alpha",
+      "edge",
+      "profit",
+      "recommendation",
+      "outperform"
+    ],
+    "no_h001_h012_reference": true,
+    "no_strategy_threshold": true,
+    "no_forward_return": true,
+    "no_future_date": true,
+    "no_portfolio_performance": true
+  }
+}

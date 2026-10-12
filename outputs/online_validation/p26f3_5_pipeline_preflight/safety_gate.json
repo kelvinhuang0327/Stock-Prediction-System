@@ -1,0 +1,34 @@
+{
+  "stage": "safetyGate",
+  "isSyntheticPreflight": true,
+  "checks": [
+    {
+      "check": "NO_FORBIDDEN_FIELDS",
+      "violations": 0,
+      "pass": true
+    },
+    {
+      "check": "SYNTHETIC_NOT_IN_PRODUCTION_DROPZONE",
+      "syntheticFiles": [],
+      "pass": true
+    },
+    {
+      "check": "DB_WRITE_BLOCKED",
+      "dbWriteAllowed": false,
+      "pass": true
+    },
+    {
+      "check": "CORPUS_WRITE_BLOCKED",
+      "corpusWriteAllowed": false,
+      "pass": true
+    },
+    {
+      "check": "RELEASE_DATE_SOURCE_LABELED",
+      "inferredCount": 125,
+      "totalRows": 125,
+      "pass": true
+    }
+  ],
+  "status": "PASS",
+  "pass": true
+}

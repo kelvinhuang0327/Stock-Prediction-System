@@ -1,0 +1,414 @@
+{
+  "phase": "P56",
+  "classification": "P56_AXIS_A_V1_REAL_DATA_INTEGRATION_DESIGN_READY",
+  "date": "2026-05-26",
+  "authorization": "CEO Decision 2026-05-25 P4 — Axis A v1 real-data integration design",
+  "designOnly": true,
+  "noCodeModified": true,
+  "noDbModified": true,
+  "noDataImported": true,
+  "noScoringModified": true,
+  "noInvestmentAdvice": true,
+  "axis": "Axis A",
+  "purpose": "Design how the Axis A v0 scaffold pipeline can connect to trusted real Taiwan stock data sources in a future implementation round. No src/, tests/, DB, data/, scripts/, or migration files are modified in P56.",
+  "governanceInvariants": {
+    "paperOnly": true,
+    "dryRunOnly": true,
+    "entersAlphaScore": false,
+    "noActualMetrics": true,
+    "noRealExecution": true,
+    "notInvestmentAdvice": true
+  },
+  "axisAV0ChainSummary": {
+    "stages": [
+      { "phase": "P42", "name": "SnapshotReader", "description": "ControlledResearchSnapshot → SnapshotReadout (eligibleSources, blockedSources, auditOnlySources, notAssessedSources)" },
+      { "phase": "P43", "name": "SnapshotFormatter", "description": "SnapshotReadout → formatted display strings" },
+      { "phase": "P44", "name": "SnapshotEmitter", "description": "Formatted readout → emitted lines" },
+      { "phase": "P45", "name": "SnapshotLogWriter", "description": "Emitted lines → SnapshotLogRecord (19 fields, governance-gated)" },
+      { "phase": "P46", "name": "SnapshotLogCollector", "description": "SnapshotLogRecord[] → frozen collector; getAll() returns readonly array" },
+      { "phase": "P47", "name": "Pipeline E2E Integration", "description": "End-to-end integration test coverage" },
+      { "phase": "P48", "name": "SnapshotBatchRunner", "description": "Batch multiple symbols → SnapshotBatchReport" },
+      { "phase": "P49", "name": "SnapshotLogExporter", "description": "Collector → SnapshotLogExport (exporterVersion, exportedAt, totalRecords, records, symbols, statuses, governanceSummary)" },
+      { "phase": "P50", "name": "SnapshotExportFilter", "description": "SnapshotLogExport → filtered subset by status / symbol" },
+      { "phase": "P51", "name": "SnapshotExportSerializer", "description": "SnapshotLogExport → SnapshotExportSerializedEnvelope (schemaVersion, payload, serializedAt)" },
+      { "phase": "P52", "name": "SnapshotExportDiff", "description": "diffSnapshotLogExports(before, after) → SnapshotExportDiffReport (added, removed, unchanged, counts, diffedAt)" }
+    ],
+    "v0GapIdentified": "All stages are in-memory scaffold only. ControlledResearchSnapshot inputs are caller-supplied stubs. No real DB source data flows through any stage.",
+    "v1DesignGoal": "Connect the v0 chain entry point (ControlledResearchSnapshot) to actual source adapters that read from trusted, PIT-safe Prisma models. The chain stages P43–P52 remain unchanged. Only the input construction layer changes."
+  },
+  "eligibleDesignCandidates": [
+    {
+      "source": "Quote",
+      "prismaModel": "StockQuote",
+      "candidateState": "ELIGIBLE_DESIGN_CANDIDATE",
+      "pitGate": "date field (YYYY-MM-DD string, immutable after trading day closes)",
+      "pitGateStatus": "PRESENT_IN_SCHEMA — no migration required",
+      "pitGatePrecision": "DAY_BOUNDARY",
+      "pitDescription": "StockQuote.date represents the trading date. Records are immutable once the exchange closes. Reading with 'WHERE date <= asOfDate ORDER BY date DESC LIMIT 1' is PIT-safe for the given asOfDate.",
+      "allowedInputFields": [
+        "stockId",
+        "date",
+        "close",
+        "open",
+        "high",
+        "low",
+        "volume",
+        "change",
+        "transactions",
+        "tradeValue"
+      ],
+      "forbiddenAdaptations": [
+        "Deriving targetPrice from close",
+        "Computing return or ROI from close values",
+        "Producing a buy/sell signal from price change",
+        "Using close as a prediction anchor"
+      ],
+      "designNotes": "StockQuote is the cleanest PIT source. 'date' string (YYYY-MM-DD) maps directly to asOfDate. Adapter should return null when no record exists at or before asOfDate — not an error, just absent data."
+    },
+    {
+      "source": "Regime",
+      "prismaModel": "MarketRegimeResult",
+      "candidateState": "ELIGIBLE_DESIGN_CANDIDATE",
+      "pitGate": "date field (YYYY-MM-DD string) with pitSafetyJson metadata",
+      "pitGateStatus": "PRESENT_IN_SCHEMA — pitSafetyJson field already exists for PIT audit trail",
+      "pitGatePrecision": "DAY_BOUNDARY",
+      "pitDescription": "MarketRegimeResult.date is the regime computation date. MarketRegimeResult.pitSafetyJson is an existing nullable JSON field for PIT audit context. Reading with 'WHERE date <= asOfDate' is PIT-safe. The source and version fields enable adapter versioning.",
+      "allowedInputFields": [
+        "date",
+        "regimeLabel",
+        "confidence",
+        "pitSafetyJson",
+        "source",
+        "version"
+      ],
+      "forbiddenAdaptations": [
+        "Deriving market prediction from regimeLabel",
+        "Using regimeLabel as a buy/sell signal",
+        "Combining confidence with alphaScore",
+        "Claiming regime predicts future returns"
+      ],
+      "designNotes": "MarketRegimeResult is PIT-safe with existing pitSafetyJson audit field. regimeLabel ('Bull'/'Bear'/'Sideways'/'Unknown') and confidence are descriptive only — they describe the current market state, not a prediction."
+    },
+    {
+      "source": "MonthlyRevenue",
+      "prismaModel": "MonthlyRevenue",
+      "candidateState": "ELIGIBLE_WITH_LOW_CONFIDENCE_WARNING",
+      "pitGate": "releaseDate field (DateTime?, nullable, P17 PIT gate)",
+      "pitGateStatus": "PRESENT_IN_SCHEMA — releaseDate is nullable (no migration required), releaseDateSource and releaseDateConfidence present",
+      "pitGatePrecision": "DAY_BOUNDARY_WITH_CONFIDENCE_CAVEAT",
+      "pitDescription": "MonthlyRevenue.releaseDate is the date revenue was publicly released. releaseDateSource can be 'INFERRED_NEXT_MONTH_10TH' (estimated) or 'EXPLICIT' (confirmed). releaseDateConfidence ('LOW_TO_MEDIUM' or 'HIGH') controls eligibility tier. When releaseDate IS NULL, source must be treated as BLOCKED — do not fall back to (year, month) boundary.",
+      "allowedInputFields": [
+        "year",
+        "month",
+        "revenue",
+        "yoyGrowth",
+        "momGrowth",
+        "releaseDate",
+        "releaseDateSource",
+        "releaseDateConfidence"
+      ],
+      "eligibilityRules": [
+        "releaseDate IS NOT NULL AND releaseDate <= asOfDate → SourceInputState ELIGIBLE",
+        "releaseDate IS NULL → SourceInputState BLOCKED (no PIT metadata)",
+        "releaseDateConfidence = 'LOW_TO_MEDIUM' AND releaseDateSource = 'INFERRED_NEXT_MONTH_10TH' → flag LOW_CONFIDENCE_PIT_INFERRED in audit output",
+        "releaseDateConfidence = 'HIGH' AND releaseDateSource = 'EXPLICIT' → no additional caveat"
+      ],
+      "forbiddenAdaptations": [
+        "Comparing revenue to targetPrice or outcomePrice",
+        "Using yoyGrowth as a return estimate",
+        "Using revenue to derive expected profit",
+        "Treating releaseDateConfidence='LOW_TO_MEDIUM' as a trading signal"
+      ],
+      "designNotes": "MonthlyRevenue is the only eligible-with-caveat candidate. The inferred releaseDate (INFERRED_NEXT_MONTH_10TH) is a reasonable approximation for Taiwan TWSE monthly reporting deadline but must be surfaced as a caveat in all audit artifacts. Adapter must not suppress the LOW_CONFIDENCE_PIT_INFERRED flag."
+    }
+  ],
+  "blockedSources": [
+    {
+      "source": "FinancialReport",
+      "prismaModel": "FinancialReport",
+      "candidateState": "BLOCKED_PENDING_PIT_METADATA",
+      "blockerType": "MISSING_RELEASE_DATE_COLUMN",
+      "blockerDetail": "FinancialReport model has no releaseDate, filingDate, or announceDate field. Using (year, quarter) boundary as a PIT gate is NOT acceptable — financial reports can be filed weeks to months after quarter end. CEO P6 identifies this as requiring a DB migration ('YES apply FinancialReport releaseDate migration to dev DB').",
+      "authorizationRequired": "YES apply FinancialReport releaseDate migration to dev DB",
+      "unblockPath": "1. Add releaseDate DateTime? to FinancialReport model. 2. Run migration. 3. Backfill releaseDate for historical records from TWSE/MOPS announcement dates. 4. Upgrade releaseDateConfidence field. 5. Revisit eligibility.",
+      "designNotes": "FinancialReport is a high-value fundamental source. The PIT gap is a known limitation — eps, netIncome, grossMargin cannot be queried safely without a public announcement date. This is NOT a data quality issue; it is a schema governance issue. No workarounds permitted."
+    },
+    {
+      "source": "Chip",
+      "prismaModel": "InstitutionalChip",
+      "candidateState": "BLOCKED_PENDING_AVAILABLE_AT_AND_PROD_LOGS",
+      "blockerType": "NULLABLE_AVAILABLE_AT_PLUS_MISSING_PROD_LOG_EVIDENCE",
+      "blockerDetail": "InstitutionalChip.availableAt (P30 PIT gate) is nullable (DateTime?). The P30 design assumes T+0 data is available at ~17:30 TWN (09:30 UTC). This assumption has NOT been validated against production logs. CEO P8/P9: availableAt migration apply blocked by authorization; production log acquisition is an external dependency ('CHIP_LAG_CONFIRMED' not yet granted).",
+      "authorizationRequired": "YES apply Chip availableAt migration to dev DB",
+      "productionEvidenceRequired": "CHIP_LAG_CONFIRMED — production sync logs must confirm actual T86 availability time vs assumed 17:30 TWN",
+      "unblockPath": "1. Apply availableAt migration to dev DB. 2. Acquire production sync logs. 3. Confirm T86 lag empirically. 4. Upgrade availableAt precision to NOT NULL with confirmed constraint. 5. Revisit eligibility.",
+      "designNotes": "foreignBuy, trustBuy, dealerBuy, totalBuy, holders400, holders1000 are high-value institutional flow indicators. The PIT gap (nullable availableAt) is real and consequential — lag assumptions affect whether chip data can be considered available at asOfDate."
+    }
+  ],
+  "auditOnlySources": [
+    {
+      "source": "NewsEvent",
+      "prismaModel": "NewsEvent",
+      "candidateState": "AUDIT_ONLY_OR_BLOCKED_PENDING_QUALITY",
+      "pitGate": "publishedAt (DateTime, NOT NULL — non-nullable in schema)",
+      "pitGateStatus": "PRESENT_IN_SCHEMA — publishedAt is non-nullable, PIT gate mechanically available",
+      "qualityBlocker": "CEO P7 — NewsEvent source-present is NOT equivalent to quality-ready. trustLevel field values ('official'|'mainstream'|'secondary'|'unknown') exist but a quality/symbol-linkage audit has not been completed. relatedSymbols is stored as a JSON string — symbol linkage accuracy is not validated.",
+      "auditOnlyReason": "NewsEvent can be read and surfaced in audit artifacts to show 'news events available as of asOfDate for symbol X'. It must NOT feed simulation eligibility or SourceInputState=ELIGIBLE until trustLevel filtering logic and symbol-linkage accuracy are established.",
+      "allowedAuditFields": [
+        "publishedAt",
+        "trustLevel",
+        "source",
+        "title",
+        "relatedSymbols"
+      ],
+      "forbiddenAdaptations": [
+        "Using news sentiment as a buy/sell signal",
+        "Deriving prediction from title",
+        "Treating trustLevel='official' as an eligibility override",
+        "Any NLP-based score or probability from summary"
+      ],
+      "designNotes": "NewsEvent qualifies as AUDIT_ONLY in the current design. It can appear in the SnapshotReadout auditOnlySources list. CEO P7 newsEvent quality audit is a prerequisite for upgrading to ELIGIBLE."
+    }
+  ],
+  "allowedInputFieldsUniversal": [
+    "symbol (stockId → normalized symbol string)",
+    "asOfDate (YYYY-MM-DD, PIT boundary — must equal or precede all source record dates)",
+    "snapshotVersion",
+    "generatedAt"
+  ],
+  "forbiddenFields": [
+    "recommendation",
+    "action",
+    "buy",
+    "sell",
+    "hold",
+    "targetPrice",
+    "ROI",
+    "PnL",
+    "winRate",
+    "edge",
+    "alphaScore",
+    "score",
+    "forecast",
+    "expectedReturn",
+    "benchmark",
+    "optimizer",
+    "backtest",
+    "outcomePrice",
+    "returnPct",
+    "profit",
+    "optimizerScore",
+    "edgeScore"
+  ],
+  "v1InputContractDesign": {
+    "description": "Axis A v1 input layer: ControlledResearchSnapshot continues to be the entry point. v1 adds a SourceAdapterLayer that converts real Prisma DB records into typed SourceInputFact structs, which are then assembled into a ControlledResearchSnapshot by a ResearchSnapshotInputBuilder.",
+    "newConceptsToDesign": [
+      {
+        "concept": "SourceInputFact<T>",
+        "description": "Typed, PIT-validated wrapper around a single source record. Carries: sourceType, asOfDate, pitGateField, pitGateValue, pitGateStatus, data: T. Never carries forbidden fields.",
+        "proposedLocation": "src/lib/research/snapshot/v1/SourceInputFact.ts (NOT created in P56)"
+      },
+      {
+        "concept": "SourceAdapterContract<TInput, TFact>",
+        "description": "Interface defining how to transform a raw Prisma model row (TInput) into a SourceInputFact<TFact>. Per-source: QuoteAdapter, RegimeAdapter, MonthlyRevenueAdapter. Adapter returns null when no PIT-safe record exists.",
+        "proposedLocation": "src/lib/research/snapshot/v1/adapters/ (NOT created in P56)"
+      },
+      {
+        "concept": "ResearchSnapshotInputBuilder",
+        "description": "Assembles a ControlledResearchSnapshot from a set of SourceInputFact values returned by the adapters. Sets SourceInputState per source based on adapter result: non-null fact → ELIGIBLE (or ELIGIBLE_WITH_CAVEAT for MonthlyRevenue LOW_CONFIDENCE), null fact → BLOCKED, audit-only → AUDIT_ONLY.",
+        "proposedLocation": "src/lib/research/snapshot/v1/ResearchSnapshotInputBuilder.ts (NOT created in P56)"
+      },
+      {
+        "concept": "QuoteAdapterInput",
+        "description": "Typed subset of StockQuote fields allowed into the adapter: { stockId, date, close, open, high, low, volume, change, transactions, tradeValue }. No scoring fields.",
+        "proposedLocation": "src/lib/research/snapshot/v1/adapters/QuoteAdapter.ts (NOT created in P56)"
+      },
+      {
+        "concept": "RegimeAdapterInput",
+        "description": "Typed subset of MarketRegimeResult fields allowed: { date, regimeLabel, confidence, pitSafetyJson, source, version }. No prediction fields.",
+        "proposedLocation": "src/lib/research/snapshot/v1/adapters/RegimeAdapter.ts (NOT created in P56)"
+      },
+      {
+        "concept": "MonthlyRevenueAdapterInput",
+        "description": "Typed subset of MonthlyRevenue fields allowed: { year, month, revenue, yoyGrowth, momGrowth, releaseDate, releaseDateSource, releaseDateConfidence }. Adapter must check releaseDate IS NOT NULL and releaseDate <= asOfDate before returning ELIGIBLE fact.",
+        "proposedLocation": "src/lib/research/snapshot/v1/adapters/MonthlyRevenueAdapter.ts (NOT created in P56)"
+      }
+    ]
+  },
+  "futureImplementationCandidates": [
+    {
+      "file": "src/lib/research/snapshot/v1/SourceInputFact.ts",
+      "role": "Core type: SourceInputFact<T> wrapper with PIT metadata",
+      "implementationPhase": "P57_AXIS_A_V1_SOURCE_ADAPTER_CONTRACT_STUB"
+    },
+    {
+      "file": "src/lib/research/snapshot/v1/adapters/QuoteAdapter.ts",
+      "role": "Pure function: QuoteAdapterInput → SourceInputFact<QuoteFactData> | null",
+      "implementationPhase": "P57_AXIS_A_V1_SOURCE_ADAPTER_CONTRACT_STUB"
+    },
+    {
+      "file": "src/lib/research/snapshot/v1/adapters/RegimeAdapter.ts",
+      "role": "Pure function: RegimeAdapterInput → SourceInputFact<RegimeFactData> | null",
+      "implementationPhase": "P57_AXIS_A_V1_SOURCE_ADAPTER_CONTRACT_STUB"
+    },
+    {
+      "file": "src/lib/research/snapshot/v1/adapters/MonthlyRevenueAdapter.ts",
+      "role": "Pure function: MonthlyRevenueAdapterInput → SourceInputFact<MonthlyRevenueFactData> | null, with LOW_CONFIDENCE_PIT_INFERRED flag",
+      "implementationPhase": "P57_AXIS_A_V1_SOURCE_ADAPTER_CONTRACT_STUB"
+    },
+    {
+      "file": "src/lib/research/snapshot/v1/ResearchSnapshotInputBuilder.ts",
+      "role": "Assembles ControlledResearchSnapshot from SourceInputFact values; sets SourceInputState per source",
+      "implementationPhase": "P58_AXIS_A_V1_SNAPSHOT_INPUT_BUILDER"
+    },
+    {
+      "file": "src/lib/research/snapshot/v1/index.ts",
+      "role": "Re-exports all v1 types and functions",
+      "implementationPhase": "P57_AXIS_A_V1_SOURCE_ADAPTER_CONTRACT_STUB"
+    },
+    {
+      "file": "src/lib/research/__tests__/p57_axis_a_v1_source_adapter_contract.test.ts",
+      "role": "Tests for SourceInputFact + all three adapter stubs",
+      "implementationPhase": "P57_AXIS_A_V1_SOURCE_ADAPTER_CONTRACT_STUB"
+    },
+    {
+      "file": "src/lib/research/__tests__/p58_axis_a_v1_snapshot_input_builder.test.ts",
+      "role": "Tests for ResearchSnapshotInputBuilder: null-fact → BLOCKED, non-null → ELIGIBLE, LOW_CONFIDENCE flag propagation",
+      "implementationPhase": "P58_AXIS_A_V1_SNAPSHOT_INPUT_BUILDER"
+    }
+  ],
+  "requiredFutureTests": [
+    {
+      "group": "T57.1",
+      "description": "SourceInputFact type: shape validation, PIT field presence, no forbidden fields",
+      "phase": "P57"
+    },
+    {
+      "group": "T57.2",
+      "description": "QuoteAdapter: PIT-safe record → ELIGIBLE fact; asOfDate after record date → ELIGIBLE; no record → null; forbidden fields absent",
+      "phase": "P57"
+    },
+    {
+      "group": "T57.3",
+      "description": "QuoteAdapter: future asOfDate → null; PIT boundary enforced",
+      "phase": "P57"
+    },
+    {
+      "group": "T57.4",
+      "description": "RegimeAdapter: valid record → ELIGIBLE fact; regimeLabel descriptive only; confidence numeric; pitSafetyJson passthrough; no forbidden fields",
+      "phase": "P57"
+    },
+    {
+      "group": "T57.5",
+      "description": "RegimeAdapter: no record for asOfDate → null",
+      "phase": "P57"
+    },
+    {
+      "group": "T57.6",
+      "description": "MonthlyRevenueAdapter: releaseDate IS NOT NULL AND <= asOfDate → ELIGIBLE fact",
+      "phase": "P57"
+    },
+    {
+      "group": "T57.7",
+      "description": "MonthlyRevenueAdapter: releaseDate IS NULL → null (BLOCKED, not ELIGIBLE)",
+      "phase": "P57"
+    },
+    {
+      "group": "T57.8",
+      "description": "MonthlyRevenueAdapter: releaseDate IS NOT NULL but > asOfDate → null (future release, PIT violation)",
+      "phase": "P57"
+    },
+    {
+      "group": "T57.9",
+      "description": "MonthlyRevenueAdapter: releaseDateConfidence=LOW_TO_MEDIUM → LOW_CONFIDENCE_PIT_INFERRED flag present in returned fact",
+      "phase": "P57"
+    },
+    {
+      "group": "T57.10",
+      "description": "All adapters: input non-mutation; output frozen; JSON-serializable; no DB/network/FS imports in adapter modules",
+      "phase": "P57"
+    },
+    {
+      "group": "T57.11",
+      "description": "All adapters: forbidden field scan (20 fields: recommendation, action, buy, sell, hold, targetPrice, ROI, PnL, winRate, edge, alphaScore, score, forecast, expectedReturn, benchmark, optimizer, backtest, outcomePrice, returnPct, profit)",
+      "phase": "P57"
+    },
+    {
+      "group": "T58.1",
+      "description": "ResearchSnapshotInputBuilder: all adapters return non-null → all sources ELIGIBLE; researchReadinessStatus=SNAPSHOT_READY",
+      "phase": "P58"
+    },
+    {
+      "group": "T58.2",
+      "description": "ResearchSnapshotInputBuilder: one adapter returns null → that source BLOCKED; status=SNAPSHOT_PARTIAL",
+      "phase": "P58"
+    },
+    {
+      "group": "T58.3",
+      "description": "ResearchSnapshotInputBuilder: all adapters return null → all sources BLOCKED; status=SNAPSHOT_BLOCKED",
+      "phase": "P58"
+    },
+    {
+      "group": "T58.4",
+      "description": "ResearchSnapshotInputBuilder: MonthlyRevenue LOW_CONFIDENCE fact → ELIGIBLE with caveat flag in SnapshotReadout; caveat visible in audit output",
+      "phase": "P58"
+    },
+    {
+      "group": "T58.5",
+      "description": "ResearchSnapshotInputBuilder: governance invariants always set (entersAlphaScore=false, paperOnly=true, dryRunOnly=true, notInvestmentAdvice=true) regardless of source states",
+      "phase": "P58"
+    },
+    {
+      "group": "T58.6",
+      "description": "ResearchSnapshotInputBuilder: no forbidden fields in output ControlledResearchSnapshot",
+      "phase": "P58"
+    }
+  ],
+  "authorizationGates": [
+    {
+      "gate": "FINANCIAL_REPORT_RELEASE_DATE_MIGRATION",
+      "authorizationPhrase": "YES apply FinancialReport releaseDate migration to dev DB",
+      "blockedItem": "FinancialReport source adapter design and implementation",
+      "blockedBy": "CEO P6 — missing releaseDate column in FinancialReport schema; migration not authorized",
+      "consequence": "FinancialReport remains BLOCKED_PENDING_PIT_METADATA until migration is applied and releaseDate backfill is completed"
+    },
+    {
+      "gate": "CHIP_AVAILABLE_AT_MIGRATION",
+      "authorizationPhrase": "YES apply Chip availableAt migration to dev DB",
+      "blockedItem": "InstitutionalChip source adapter design and implementation",
+      "blockedBy": "CEO P8 — availableAt is nullable; migration not authorized; production lag not empirically confirmed",
+      "consequence": "InstitutionalChip remains BLOCKED_PENDING_AVAILABLE_AT_AND_PROD_LOGS until migration + CHIP_LAG_CONFIRMED"
+    },
+    {
+      "gate": "CHIP_LAG_CONFIRMED",
+      "authorizationPhrase": "CHIP_LAG_CONFIRMED (external — production sync logs)",
+      "blockedItem": "InstitutionalChip lag assumption validation",
+      "blockedBy": "CEO P9 — T86 actual availability time vs assumed 17:30 TWN not confirmed by production evidence",
+      "consequence": "Even after availableAt migration, ChipAdapter must not be marked ELIGIBLE until production log evidence confirms lag"
+    },
+    {
+      "gate": "NEWS_EVENT_QUALITY_AUDIT",
+      "authorizationPhrase": "YES begin NewsEvent quality and symbol-linkage audit",
+      "blockedItem": "NewsEvent upgrade from AUDIT_ONLY to ELIGIBLE",
+      "blockedBy": "CEO P7 — trustLevel filtering policy and symbol-linkage accuracy not established",
+      "consequence": "NewsEvent remains AUDIT_ONLY until quality audit (CEO P7) completes and trustLevel policy is documented"
+    }
+  ],
+  "pitSafetyPrinciples": [
+    "PRINCIPLE 1: No source record may feed a SnapshotReadout unless its PIT gate field value is <= asOfDate. Greater-than asOfDate = future data = PIT violation.",
+    "PRINCIPLE 2: NULL PIT gate field = BLOCKED. Never infer a PIT boundary from record creation time (createdAt) alone.",
+    "PRINCIPLE 3: Adapter returns null → builder assigns BLOCKED, never a default or fallback ELIGIBLE.",
+    "PRINCIPLE 4: LOW_CONFIDENCE PIT inference must be surfaced in the audit artifact, never silently accepted as ELIGIBLE-equivalent.",
+    "PRINCIPLE 5: Adapter modules must have zero DB/network/FS imports — they transform input structs, they do not query. The query layer is the caller's responsibility.",
+    "PRINCIPLE 6: All adapter output types must pass the forbidden-fields scan (20 fields) as a test invariant."
+  ],
+  "axisAV1ChainDesign": {
+    "v0EntryPoint": "ControlledResearchSnapshot (caller-supplied, stub values)",
+    "v1EntryPoint": "SourceAdapterLayer → ResearchSnapshotInputBuilder → ControlledResearchSnapshot (DB-sourced, PIT-validated)",
+    "v1ChainContinuation": "ControlledResearchSnapshot → [P42-P52 chain unchanged] → SnapshotExportDiffReport",
+    "principle": "The v0 chain stages (P43–P52) remain completely unchanged. Only the construction of the ControlledResearchSnapshot at the chain entry point changes in v1."
+  },
+  "nextRecommendedPhase": "P57_AXIS_A_V1_SOURCE_ADAPTER_CONTRACT_STUB",
+  "nextPhaseDescription": "Implement SourceInputFact<T> type and three source adapter stubs (QuoteAdapter, RegimeAdapter, MonthlyRevenueAdapter) as pure TypeScript functions in src/lib/research/snapshot/v1/. Pure in-memory, no DB, no Prisma calls in adapter layer. ≥16 tests per CTO contract. Adapter stubs accept typed input structs and return SourceInputFact or null.",
+  "axisBalanceNote": "Current Axis A:B ratio after P52-P55 = ~12:4. P56 is design-only (no Axis A src round). Before P57 implementation, assess whether another Axis B round is needed to maintain anti-axis-monopoly balance per CEO Decision 2026-05-25."
+}

@@ -1,0 +1,128 @@
+{
+  "_meta": {
+    "version": "P3-10",
+    "generated_at": "2026-05-05T09:45:00Z",
+    "source_diagnostics": "outputs/stock_diagnostics/hypothesis_failure_diagnostics.json",
+    "pipeline_stage": "refinement_planning",
+    "safety_confirmations": {
+      "no_production_write": true,
+      "no_validation_run": true,
+      "no_auto_promotion": true,
+      "no_new_hypothesis_added_to_production": true,
+      "diagnostics_only": true
+    }
+  },
+  "refinement_decisions": [
+    {
+      "hypothesis_id": "STOCK_H001_20D_MOMENTUM",
+      "decision": "RETIRE",
+      "failure_reason": "NEGATIVE_ROI",
+      "avg_roi": -0.4779,
+      "avg_sharpe": -0.6816,
+      "total_signals": 3000,
+      "rationale": "Consistently negative ROI across all 5 symbols and both windows. Signal count is high (3000) confirming the strategy fires frequently but loses money reliably. Classic momentum in Taiwan market (ETF + large cap stocks) shows anti-momentum behaviour in this data period. No refinement path identified.",
+      "data_snooping_risk": "LOW — decision is based on universal failure, not cherry-picked windows",
+      "v3_eligible": false,
+      "allowed_action": "Mark status=retired in registry on next registry maintenance cycle"
+    },
+    {
+      "hypothesis_id": "STOCK_H002_RSI_REVERSION",
+      "decision": "OBSERVE",
+      "failure_reason": "NEGATIVE_ROI",
+      "avg_roi": -0.3266,
+      "avg_sharpe": -0.5338,
+      "total_signals": 1688,
+      "rationale": "Overall negative ROI, but symbol 2317 showed locally positive ROI (+0.379). This asymmetry warrants observation rather than immediate retirement. However, symbol-specific positive results carry HIGH data snooping risk — must not be used to drive threshold tuning.",
+      "data_snooping_risk": "HIGH — positive result on single symbol (2317) may be noise; must not drive refinement",
+      "v3_eligible": true,
+      "v3_scope": "exploratory_observation_only",
+      "allowed_action": "Create H012 as symbol-specific probe with promotion_allowed=false"
+    },
+    {
+      "hypothesis_id": "STOCK_H003_VOLUME_BREAKOUT",
+      "decision": "RETIRE_OR_HOLD",
+      "failure_reason": "DATA_INSUFFICIENT",
+      "avg_roi": 0.2672,
+      "avg_sharpe": 2.6061,
+      "total_signals": 168,
+      "rationale": "DATA_INSUFFICIENT due to low OOS sample count in 150d window. However positive avg_roi (+0.267) and very high avg_sharpe (2.61) on OK windows is notable. Low signal count (168 across 5 symbols) is the structural problem. Cannot refine without more symbols or a longer data history. Hold until universe expands.",
+      "data_snooping_risk": "MEDIUM — small sample (OK windows only) inflates Sharpe; n_oos may be too small for statistical trust",
+      "v3_eligible": false,
+      "allowed_action": "Hold — re-evaluate when symbol universe expands to 10+ symbols"
+    },
+    {
+      "hypothesis_id": "STOCK_H004_MOM_VOL_CONFIRM",
+      "decision": "REFINE",
+      "failure_reason": "DATA_INSUFFICIENT",
+      "avg_roi": -0.0575,
+      "avg_sharpe": -0.3676,
+      "total_signals": 103,
+      "rationale": "volume_zscore_20d > 1.0 fires on only ~16% of trading days in a normal distribution. For ETFs with stable volume, this threshold is structurally too strict. The momentum component (return_20d > 0) is sound. Refinement: lower volume threshold to > 0.5 sigma to increase signal count while maintaining volume confirmation intent.",
+      "data_snooping_risk": "LOW-MEDIUM — threshold relaxation is pre-specified in P3-09 diagnostics, not derived post-hoc from results",
+      "v3_eligible": true,
+      "v3_scope": "threshold_relaxation",
+      "allowed_action": "Create H010 with volume_zscore_20d > 0.5",
+      "threshold_relaxation": true
+    },
+    {
+      "hypothesis_id": "STOCK_H005_PULLBACK_UPTREND",
+      "decision": "REFINE",
+      "failure_reason": "MIXED_WEAK_SIGNAL",
+      "avg_roi": 0.1317,
+      "avg_sharpe": 0.6027,
+      "total_signals": 182,
+      "rationale": "Only hypothesis with positive avg_ROI (+0.132) and positive Sharpe (+0.60) across valid windows. Failure is attributed to insufficient statistical power (permutation p-value not reaching 0.05 due to small OOS sample). P3-09 recommendation: extend hold period from 5d to 10d to allow mean-reversion to fully manifest. This is a pre-specified, theory-driven refinement.",
+      "data_snooping_risk": "LOW — hold period extension is a pre-specified theory-driven change, not parameter search",
+      "v3_eligible": true,
+      "v3_scope": "parameter_change",
+      "allowed_action": "Create H009 with hold_days=10",
+      "threshold_relaxation": false
+    },
+    {
+      "hypothesis_id": "STOCK_H006_LOW_VOL_BREAKOUT",
+      "decision": "REFINE",
+      "failure_reason": "DATA_INSUFFICIENT",
+      "avg_roi": 1.1644,
+      "avg_sharpe": 6.5158,
+      "total_signals": 48,
+      "rationale": "Extremely low signal count (48 across all symbols/windows) because volatility_20d <= p25 AND close > max(high[-20:]) almost never co-occur. The dual filter is structurally over-restrictive. Refinement: relax breakout condition from strict new-high to near-high (>= 0.98 × 20d high) to capture near-breakout patterns. Note: very high Sharpe on small sample is not trustworthy.",
+      "data_snooping_risk": "MEDIUM — high Sharpe on n=48 signals is unreliable; relaxation motivated by structural analysis not by chasing metrics",
+      "v3_eligible": true,
+      "v3_scope": "threshold_relaxation",
+      "allowed_action": "Create H011 with close >= 0.98 * max(high[-20:])",
+      "threshold_relaxation": true
+    },
+    {
+      "hypothesis_id": "STOCK_H007_RELATIVE_STRENGTH",
+      "decision": "REQUIRES_UNIVERSE_FIX",
+      "failure_reason": "DATA_INSUFFICIENT",
+      "avg_roi": 0.0,
+      "avg_sharpe": 0.0,
+      "total_signals": 0,
+      "rationale": "Structural impossibility: computing universe_median_return_20d requires all symbols to be loaded simultaneously on the same date. Current single-symbol validation pipeline cannot supply this. Not a hypothesis flaw — it is a pipeline architecture gap. Cannot refine until validation framework supports multi-symbol universe computation.",
+      "data_snooping_risk": "NONE — no results exist to snoop",
+      "v3_eligible": false,
+      "allowed_action": "Block from v3 until multi-symbol pipeline is implemented (P3-11 or later)"
+    },
+    {
+      "hypothesis_id": "STOCK_H008_ETF_DEF_MOMENTUM",
+      "decision": "REQUIRES_ETF_UNIVERSE",
+      "failure_reason": "DATA_INSUFFICIENT",
+      "avg_roi": -0.0331,
+      "avg_sharpe": -0.1553,
+      "total_signals": 391,
+      "rationale": "is_etf flag filters to ETF-only, which excludes 2317, 2330, 2454 (stocks) entirely. The universe currently has only 1 ETF (0055) with sufficient data. With n=1 ETF, no BH-FDR correction is meaningful. Strategy is valid in concept but requires at least 3-5 ETF symbols. Hold until ETF universe expands.",
+      "data_snooping_risk": "LOW — structural data gap, not a tuning issue",
+      "v3_eligible": false,
+      "allowed_action": "Hold — re-evaluate when ETF universe has 3+ symbols"
+    }
+  ],
+  "refinement_risk_summary": {
+    "data_snooping_risk_level": "CONTROLLED",
+    "pre_specified_changes": ["H009 hold_days=10", "H010 volume_zscore>0.5", "H011 near-breakout 0.98x"],
+    "post_hoc_derived_changes": ["H012 symbol-specific — exploratory only"],
+    "max_v3_candidates": 4,
+    "promotion_eligible_count": 3,
+    "observation_only_count": 1
+  }
+}

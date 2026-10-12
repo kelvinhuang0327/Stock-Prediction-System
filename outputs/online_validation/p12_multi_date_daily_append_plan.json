@@ -1,0 +1,107 @@
+{
+  "planVersion": "multi-date-daily-append-plan-v0",
+  "planRunId": "p12-multi-date-daily-append-plan-20260511-001",
+  "asOfDateCount": 5,
+  "expectedSnapshotCount": 30,
+  "dates": [
+    {
+      "asOfDate": "2026-05-18",
+      "reviewDate": "2026-07-07",
+      "simulationRunId": "p12-daily-real-market-simulation-20260518-001",
+      "expectedSnapshotCount": 6,
+      "tradingDayStatus": {
+        "isKnownTradingDay": true,
+        "calendarVersion": "twse-static-2024-2026-v1",
+        "note": "2026-05-18 is a known TWSE trading day"
+      },
+      "appendAllowed": true,
+      "validationMessages": [
+        "PASS: daily append plan item validated"
+      ]
+    },
+    {
+      "asOfDate": "2026-05-19",
+      "reviewDate": "2026-07-08",
+      "simulationRunId": "p12-daily-real-market-simulation-20260519-001",
+      "expectedSnapshotCount": 6,
+      "tradingDayStatus": {
+        "isKnownTradingDay": true,
+        "calendarVersion": "twse-static-2024-2026-v1",
+        "note": "2026-05-19 is a known TWSE trading day"
+      },
+      "appendAllowed": true,
+      "validationMessages": [
+        "PASS: daily append plan item validated"
+      ]
+    },
+    {
+      "asOfDate": "2026-05-20",
+      "reviewDate": "2026-07-09",
+      "simulationRunId": "p12-daily-real-market-simulation-20260520-001",
+      "expectedSnapshotCount": 6,
+      "tradingDayStatus": {
+        "isKnownTradingDay": true,
+        "calendarVersion": "twse-static-2024-2026-v1",
+        "note": "2026-05-20 is a known TWSE trading day"
+      },
+      "appendAllowed": true,
+      "validationMessages": [
+        "PASS: daily append plan item validated"
+      ]
+    },
+    {
+      "asOfDate": "2026-05-21",
+      "reviewDate": "2026-07-10",
+      "simulationRunId": "p12-daily-real-market-simulation-20260521-001",
+      "expectedSnapshotCount": 6,
+      "tradingDayStatus": {
+        "isKnownTradingDay": true,
+        "calendarVersion": "twse-static-2024-2026-v1",
+        "note": "2026-05-21 is a known TWSE trading day"
+      },
+      "appendAllowed": true,
+      "validationMessages": [
+        "PASS: daily append plan item validated"
+      ]
+    },
+    {
+      "asOfDate": "2026-05-22",
+      "reviewDate": "2026-07-13",
+      "simulationRunId": "p12-daily-real-market-simulation-20260522-001",
+      "expectedSnapshotCount": 6,
+      "tradingDayStatus": {
+        "isKnownTradingDay": true,
+        "calendarVersion": "twse-static-2024-2026-v1",
+        "note": "2026-05-22 is a known TWSE trading day"
+      },
+      "appendAllowed": true,
+      "validationMessages": [
+        "PASS: daily append plan item validated"
+      ]
+    }
+  ],
+  "symbols": [
+    "2330",
+    "2454"
+  ],
+  "horizons": [
+    "5D",
+    "20D",
+    "60D"
+  ],
+  "sourceMode": "EXISTING_LOCAL_DATA_ONLY",
+  "guardrails": {
+    "noProductionWrite": true,
+    "noDbWrite": true,
+    "noExternalApi": true,
+    "noLlm": true,
+    "noOptimizerWrite": true,
+    "noAutoTrading": true,
+    "noPerformanceClaim": true,
+    "observabilityOnly": true
+  },
+  "validationStatus": "PASS",
+  "validationMessages": [
+    "PASS: multi-date daily append plan validated"
+  ]
+}

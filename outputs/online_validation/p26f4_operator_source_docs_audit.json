@@ -1,0 +1,44 @@
+{
+  "auditId": "p26f4-operator-source-docs-audit",
+  "generatedAt": "2026-05-13T14:08:56.379182+00:00",
+  "findings": {
+    "targetMonthsClear": true,
+    "targetMonths": [
+      "2025-09",
+      "2025-10",
+      "2025-11",
+      "2025-12",
+      "2026-01"
+    ],
+    "filenameRuleClear": true,
+    "filenameConvention": "twse_monthly_revenue_YYYY_MM.csv",
+    "schemaClear": true,
+    "requiredFields": [
+      "stockId/symbol",
+      "year",
+      "month",
+      "revenue",
+      "releaseDate",
+      "sourceName",
+      "sourceFileName"
+    ],
+    "releaseDateRuleClear": true,
+    "sourceAuthenticityRequirementClear": true,
+    "approvalTokenUsageClear": true,
+    "approvalToken": "P26F4_APPROVE_HISTORICAL_MONTHLY_REVENUE_IMPORT_ONLY",
+    "potentialMisunderstandings": [
+      "Operator may not know .json files are also accepted (not just .csv)",
+      "Operator may not fill in sourceUrl or sha256 per file",
+      "Operator may not know SOURCE_MANIFEST_TEMPLATE.json is available for attestation",
+      "Operator may confuse dry-run PASS timing with when to provide token"
+    ],
+    "gapsAddressedInV2": [
+      "SOURCE_MANIFEST_TEMPLATE.json for operator attestation",
+      "Explicit file QA checklist with checkbox format",
+      "Agent controlled import runbook with rollback procedure",
+      "Next-round prompt artifact for when source arrives"
+    ]
+  },
+  "classification": "P26F4_DOCS_AUDIT_COMPLETE",
+  "disclaimer": "Observability audit only. No investment recommendations."
+}

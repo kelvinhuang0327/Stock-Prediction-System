@@ -1,0 +1,18 @@
+{
+  "planning_phase": "P197",
+  "baseline_hash": "5fc47a54957b7b095958ac50796d7474908a50dd",
+  "total_problems": 341,
+  "total_errors": 129,
+  "total_warnings": 212,
+  "candidates": [
+    "src/lib/onlineValidation/__tests__/p13_coverage_recovery_planner.test.ts",
+    "src/lib/onlineValidation/__tests__/p14_backfill_quality_impact_preview.test.ts",
+    "src/lib/onlineValidation/__tests__/p15_backfill_manual_review_package.test.ts",
+    "src/lib/onlineValidation/__tests__/p26f2_release_date_rule_contract_utils.test.ts",
+    "src/lib/onlineValidation/__tests__/p26f_monthly_revenue_mapping_contract_utils.test.ts",
+    "src/lib/onlineValidation/__tests__/p8_corpus_trend_stability.test.ts",
+    "src/lib/onlineValidation/__tests__/p9_corpus_quality_gate.test.ts",
+    "src/lib/strategies/__tests__/AssetDoublingStrategy.test.ts"
+  ],
+  "validation_commands": "npx jest src/lib/onlineValidation/__tests__/p13_coverage_recovery_planner.test.ts src/lib/onlineValidation/__tests__/p14_backfill_quality_impact_preview.test.ts src/lib/onlineValidation/__tests__/p15_backfill_manual_review_package.test.ts src/lib/onlineValidation/__tests__/p26f2_release_date_rule_contract_utils.test.ts src/lib/onlineValidation/__tests__/p26f_monthly_revenue_mapping_contract_utils.test.ts src/lib/onlineValidation/__tests__/p8_corpus_trend_stability.test.ts src/lib/onlineValidation/__tests__/p9_corpus_quality_gate.test.ts src/lib/strategies/__tests__/AssetDoublingStrategy.test.ts --no-coverage"
+}

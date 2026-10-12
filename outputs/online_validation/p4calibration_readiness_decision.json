@@ -1,0 +1,160 @@
+{
+  "auditVersion": "p4hardreset-readiness-v1",
+  "runDate": "2026-05-11",
+  "classification": "P4_FULL_CALIBRATION_AUDIT_COMPLETE",
+  "passed": 29,
+  "failed": 0,
+  "total": 29,
+  "gates": [
+    {
+      "name": "PREFLIGHT_PASS",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "P3_LINES_OK",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "P1_LINES_OK",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "SYMBOLS_OK",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "DECILE_UNIQUE_SCORES_HZ5",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "DECILE_UNIQUE_SCORES_HZ20",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "DECILE_UNIQUE_SCORES_HZ60",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "DECILE_SPREAD_HZ5",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "DECILE_SPREAD_HZ20",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "DECILE_SPREAD_HZ60",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "NO_UNKNOWN_BUCKETS",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "CRITICAL_BUCKETS_PRESENT",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "BUCKET_VARIETY_HZ5",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "BUCKET_VARIETY_HZ20",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "BUCKET_VARIETY_HZ60",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "WALKTHROUGH_MIN_CASES_30",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "WALKTHROUGH_HZ5_MIN_12",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "WALKTHROUGH_HZ20_MIN_12",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "WALKTHROUGH_HZ60_MIN_12",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "WALKTHROUGH_SCENARIO_HIGH_SCORE_NEGATIVE",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "WALKTHROUGH_SCENARIO_LOW_SCORE_POSITIVE",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "WALKTHROUGH_SCENARIO_HIGH_SCORE_POSITIVE",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "WALKTHROUGH_SCENARIO_NEUTRAL_OR_INSUFFICIENT",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "WALKTHROUGH_SCENARIO_COMPLETENESS_COMPLETE",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "WALKTHROUGH_SCENARIO_COMPLETENESS_PARTIAL",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "USABLE_RATIO_GE_50PCT",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "BASELINE_COMPARISON_HZ5",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "BASELINE_COMPARISON_HZ20",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "BASELINE_COMPARISON_HZ60",
+      "ok": true,
+      "detail": "PASS"
+    }
+  ],
+  "issues": [],
+  "auditRef": "p4calibration_full_audit.json",
+  "walkthroughRef": "p4calibration_walkthrough_cases.json",
+  "durationMs": 6,
+  "note": "Not investment advice. Not a trading system."
+}

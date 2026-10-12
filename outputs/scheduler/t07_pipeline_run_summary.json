@@ -1,0 +1,235 @@
+{
+  "pipeline_name": "dailyRegimeAwareReportPipeline",
+  "run_date": "2026-05-06",
+  "generated_at": "2026-05-06T14:49:29.685688",
+  "mode": "dry-run",
+  "total_stages": 9,
+  "stages_passed": 8,
+  "stages_failed": 0,
+  "stages_degraded": 0,
+  "gap_detected": true,
+  "freshness_status": "GAP_DETECTED",
+  "daily_report_status": "GENERATED",
+  "has_do_not_interpret_as": true,
+  "guardrail_checks": {
+    "outputs/daily_report/t06_daily_report_section.json": {
+      "parse_ok": true,
+      "forbidden_violations": []
+    },
+    "outputs/daily_report/t06_daily_ops_report.json": {
+      "parse_ok": true,
+      "forbidden_violations": []
+    },
+    "outputs/market_regime/p4_03b_market_regime_sample.json": {
+      "parse_ok": true,
+      "forbidden_violations": []
+    },
+    "outputs/walk_forward/t05_walk_forward_sample.json": {
+      "parse_ok": true,
+      "forbidden_violations": []
+    },
+    "do_not_interpret_as": true
+  },
+  "artifact_validation": {
+    "outputs/market_regime/p4_03b_market_regime_sample.json": {
+      "exists": true,
+      "parse_ok": true
+    },
+    "outputs/walk_forward/t05_walk_forward_sample.json": {
+      "exists": true,
+      "parse_ok": true
+    },
+    "outputs/daily_report/t06_daily_report_section.json": {
+      "exists": true,
+      "parse_ok": true
+    },
+    "outputs/daily_report/t06_daily_report_section.md": {
+      "exists": true,
+      "parse_ok": true
+    },
+    "outputs/daily_report/t06_daily_ops_report.json": {
+      "exists": true,
+      "parse_ok": true
+    },
+    "outputs/daily_report/t06_daily_ops_report.md": {
+      "exists": true,
+      "parse_ok": true
+    }
+  },
+  "artifacts_generated": [
+    "outputs/market_regime/p4_03b_market_regime_sample.json",
+    "outputs/walk_forward/t05_walk_forward_sample.json",
+    "outputs/daily_report/t06_daily_report_section.json",
+    "outputs/daily_report/t06_daily_report_section.md",
+    "outputs/daily_report/t06_daily_ops_report.json",
+    "outputs/daily_report/t06_daily_ops_report.md"
+  ],
+  "artifacts_missing": [],
+  "json_parse_results": {
+    "outputs/market_regime/p4_03b_market_regime_sample.json": true,
+    "outputs/walk_forward/t05_walk_forward_sample.json": true,
+    "outputs/daily_report/t06_daily_report_section.json": true,
+    "outputs/daily_report/t06_daily_ops_report.json": true
+  },
+  "stage_results": [
+    {
+      "stage_name": "freshness_check",
+      "status": "PASS",
+      "command": "python3 scripts/backfill-taiex-gap.py --dry-run",
+      "started_at": "2026-05-06T14:49:28.377776",
+      "ended_at": "2026-05-06T14:49:29.145399",
+      "duration_ms": 767,
+      "exit_code": 0,
+      "stdout_tail": " current max date: 2026-05-06\nTAIEX current row count: 767\nStockQuote max date: 2026-05-18\nWARN: gap_end 2026-05-18 is in the future. Capping to today 2026-05-06.\nTarget gap: 2026-05-07 to 2026-05-06\n\nFetching from TWSE FMTQIK...\n  TWSE 2026/03: fetched 22 rows\n  TWSE 2026/04: fetched 20 rows\n  TWSE 2026/05: fetched 3 rows\n\nPlanned inserts: 0\n\nAlready in DB (no action): []\nWeekday dates not in TWSE response (likely holiday/not yet published): []\n\nNo new rows to insert.\n\nResult: NO_ACTION_NEEDED\n",
+      "stderr_tail": "",
+      "output_files_exist": {},
+      "json_parse_status": "N/A",
+      "guardrail_status": "PASS",
+      "writes_db": false,
+      "calls_external_api": false
+    },
+    {
+      "stage_name": "taiex_backfill_if_needed",
+      "status": "SKIPPED",
+      "command": "SKIPPED (dry-run mode)",
+      "started_at": "2026-05-06T14:49:29.145469",
+      "ended_at": "2026-05-06T14:49:29.145469",
+      "duration_ms": 0,
+      "exit_code": 0,
+      "stdout_tail": "SKIPPED: dry-run mode",
+      "stderr_tail": "",
+      "output_files_exist": {},
+      "json_parse_status": "N/A",
+      "guardrail_status": "SKIPPED",
+      "writes_db": true,
+      "calls_external_api": true
+    },
+    {
+      "stage_name": "market_regime_classifier",
+      "status": "PASS",
+      "command": "python3 scripts/build-market-regime-classifier.py --output outputs/market_regime/p4_03b_market_regime_sample.json",
+      "started_at": "2026-05-06T14:49:29.145480",
+      "ended_at": "2026-05-06T14:49:29.390138",
+      "duration_ms": 244,
+      "exit_code": 0,
+      "stdout_tail": "3 Market Regime Classifier ===\nDB: prisma/dev.db\nTAIEX rows loaded: 767\nProcessing 300 trading days: 2025-01-15 to 2026-05-06\nBreadth data available for 291 of 300 dates\n\nValidation: PASS \u2014 all regime_labels valid, confidence in [0,1]\n\nRegime distribution:\n  BEAR: 4 days (1.3%)\n  BULL: 126 days (42.0%)\n  HIGH_VOLATILITY: 63 days (21.0%)\n  SIDEWAYS: 107 days (35.7%)\n\nLatest: 2026-05-06 \u2192 BULL (confidence=1.0)\n\nOutput written to: outputs/market_regime/p4_03b_market_regime_sample.json\nRecords: 300\n",
+      "stderr_tail": "",
+      "output_files_exist": {
+        "outputs/market_regime/p4_03b_market_regime_sample.json": true
+      },
+      "json_parse_status": "PASS",
+      "guardrail_status": "PASS",
+      "writes_db": false,
+      "calls_external_api": false
+    },
+    {
+      "stage_name": "market_regime_persistence",
+      "status": "PASS",
+      "command": "python3 scripts/persist-market-regime-results.py --input outputs/market_regime/p4_03b_market_regime_sample.json --dry-run",
+      "started_at": "2026-05-06T14:49:29.393266",
+      "ended_at": "2026-05-06T14:49:29.491491",
+      "duration_ms": 98,
+      "exit_code": 0,
+      "stdout_tail": "=== T-08 Persistence Script ===\nInput: outputs/market_regime/p4_03b_market_regime_sample.json\nMode: DRY-RUN\nDB: prisma/dev.db\nLoaded 300 records\nPlanned inserts: 0\nPlanned updates: 300\n\nDRY-RUN COMPLETE: status=PASS\nReport: outputs/market_regime/t08_persistence_dry_run_report.json\n",
+      "stderr_tail": "",
+      "output_files_exist": {
+        "outputs/market_regime/t08_persistence_dry_run_report.json": true
+      },
+      "json_parse_status": "PASS",
+      "guardrail_status": "PASS",
+      "writes_db": false,
+      "calls_external_api": false
+    },
+    {
+      "stage_name": "portfolio_walk_forward_skeleton",
+      "status": "PASS",
+      "command": "python3 scripts/build-portfolio-walk-forward-skeleton.py --output outputs/walk_forward/t05_walk_forward_sample.json",
+      "started_at": "2026-05-06T14:49:29.491828",
+      "ended_at": "2026-05-06T14:49:29.608913",
+      "duration_ms": 117,
+      "exit_code": 0,
+      "stdout_tail": " Processed 101/120 dates... latest: 2026-04-08 regime=HIGH_VOLATILITY candidates=8\n[T-05] Processed 120/120 dates... latest: 2026-05-06 regime=BULL candidates=0\n\n[T-05] Summary:\n  total_asof_dates: 120\n  regime_distribution: {'BULL': 71, 'SIDEWAYS': 9, 'HIGH_VOLATILITY': 40}\n  average_portfolio_size: 8.87\n  low_confidence_days: 0\n  missing_regime_days: 0\n  dates_with_data_quality_flags: 9\n  dates_with_forbidden_logic_flags: 0\n\n[T-05] Written to: outputs/walk_forward/t05_walk_forward_sample.json\n",
+      "stderr_tail": "",
+      "output_files_exist": {
+        "outputs/walk_forward/t05_walk_forward_sample.json": true
+      },
+      "json_parse_status": "PASS",
+      "guardrail_status": "PASS",
+      "writes_db": false,
+      "calls_external_api": false
+    },
+    {
+      "stage_name": "daily_report_builder",
+      "status": "PASS",
+      "command": "python3 scripts/build-daily-regime-walkforward-report.py --output-json outputs/daily_report/t06_daily_report_section.json --output-md outputs/daily_report/t06_daily_report_section.md",
+      "started_at": "2026-05-06T14:49:29.610769",
+      "ended_at": "2026-05-06T14:49:29.674187",
+      "duration_ms": 63,
+      "exit_code": 0,
+      "stdout_tail": "y Regime + Walk-Forward Report Builder\n[T-06] Mode: OUTPUT\n\n[T-06] Loaded walk-forward sample: 120 records\n[T-06] Loaded regime sample: 300 records\n[T-06] Guardrail: PASS\n\n[T-06] Section summary:\n  latest_regime: BULL (conf=1.0)\n  walk_forward_days: 120\n  guardrail_status: PASS\n  pit_safety_status: SAFE\n  forbidden_logic_status: CLEAN\n\n[T-06] Section JSON written to: outputs/daily_report/t06_daily_report_section.json\n[T-06] Section MD written to: outputs/daily_report/t06_daily_report_section.md\n",
+      "stderr_tail": "",
+      "output_files_exist": {
+        "outputs/daily_report/t06_daily_report_section.json": true,
+        "outputs/daily_report/t06_daily_report_section.md": true,
+        "outputs/daily_report/t06_daily_ops_report.json": true,
+        "outputs/daily_report/t06_daily_ops_report.md": true
+      },
+      "json_parse_status": "PASS",
+      "guardrail_status": "PASS",
+      "writes_db": false,
+      "calls_external_api": false
+    },
+    {
+      "stage_name": "guardrail_validation",
+      "status": "PASS",
+      "command": "internal guardrail check",
+      "started_at": "2026-05-06T14:49:29.680160",
+      "ended_at": "2026-05-06T14:49:29.680160",
+      "duration_ms": 0,
+      "exit_code": 0,
+      "stdout_tail": "",
+      "stderr_tail": "",
+      "output_files_exist": {},
+      "json_parse_status": "PASS",
+      "guardrail_status": "PASS",
+      "writes_db": false,
+      "calls_external_api": false
+    },
+    {
+      "stage_name": "artifact_validation",
+      "status": "PASS",
+      "command": "internal artifact check",
+      "started_at": "2026-05-06T14:49:29.685662",
+      "ended_at": "2026-05-06T14:49:29.685662",
+      "duration_ms": 0,
+      "exit_code": 0,
+      "stdout_tail": "",
+      "stderr_tail": "",
+      "output_files_exist": {},
+      "json_parse_status": "PASS",
+      "guardrail_status": "PASS",
+      "writes_db": false,
+      "calls_external_api": false
+    },
+    {
+      "stage_name": "readiness_decision",
+      "status": "PASS",
+      "command": "pipeline summary generation",
+      "started_at": "2026-05-06T14:49:29.685680",
+      "ended_at": "2026-05-06T14:49:29.685680",
+      "duration_ms": 0,
+      "exit_code": 0,
+      "stdout_tail": "final_status=PASS",
+      "stderr_tail": "",
+      "output_files_exist": {
+        "outputs/scheduler/t07_pipeline_run_summary.json": true,
+        "outputs/scheduler/t07_pipeline_run_summary.md": true
+      },
+      "json_parse_status": "N/A",
+      "guardrail_status": "PASS",
+      "writes_db": false,
+      "calls_external_api": false
+    }
+  ],
+  "final_pipeline_status": "PASS"
+}

@@ -1,0 +1,93 @@
+{
+  "task": "T-05F_WALK_FORWARD_OBSERVABILITY_RUNNER",
+  "runMode": "DRY_RUN_OBSERVABILITY_ONLY",
+  "date": "2026-05-07",
+  "safetyLabels": [
+    "T-05F",
+    "WalkForward Observability Runner",
+    "dry-run only",
+    "safe-run only",
+    "no DB write",
+    "no external API",
+    "no LLM call",
+    "no production overwrite",
+    "no strategy mutation",
+    "no performance claim",
+    "no edge claim"
+  ],
+  "observabilityNote": "Dry-run observability run. No strategy conclusions. No performance claims. No edge claims. Not investment advice.",
+  "runConfig": {
+    "taskName": "T-05F_WALK_FORWARD_OBSERVABILITY_RUNNER",
+    "lookbackDays": 500,
+    "currentDate": "resolved via resolveCurrentDate()",
+    "dryRun": true,
+    "safeRun": true,
+    "artifactOutputDir": "outputs/backtest",
+    "observabilityNote": "Dry-run observability config only. No strategy. No performance. No production write."
+  },
+  "pipelineSteps": [
+    {
+      "step": 1,
+      "module": "T-05D TaiwanTradingCalendar",
+      "function": "buildTaiwanTradingCalendar()",
+      "output": "trading dates + calendar coverage summary",
+      "writesDB": false,
+      "externalAPI": false
+    },
+    {
+      "step": 2,
+      "module": "T-05C RegimeContextLoader",
+      "function": "loadRegimeContextMap()",
+      "output": "Map<string, PersistedRegimeContext> — read-only",
+      "writesDB": false,
+      "externalAPI": false
+    },
+    {
+      "step": 3,
+      "module": "T-05E CandidateDataAdapter",
+      "function": "loadCandidateSnapshotsForDate()",
+      "output": "PIT-safe CandidateSnapshot[] — read-only",
+      "writesDB": false,
+      "externalAPI": false
+    },
+    {
+      "step": 4,
+      "module": "T-05B WalkForwardEngine",
+      "function": "buildWalkForwardSkeleton()",
+      "output": "WalkForwardSkeletonOutput — observability only",
+      "writesDB": false,
+      "externalAPI": false
+    },
+    {
+      "step": 5,
+      "module": "T-05F summarizer",
+      "function": "summarizeWalkForwardObservabilityRun()",
+      "output": "WalkForwardObservabilitySummary — no performance fields",
+      "writesDB": false,
+      "externalAPI": false
+    }
+  ],
+  "coverageFields": {
+    "tradingDayCount": "from T-05D calendar",
+    "rebalanceCount": "from T-05B skeleton summary",
+    "recordsWithRegimeContext": "from T-05B skeleton summary",
+    "recordsMissingRegimeContext": "from T-05B skeleton summary",
+    "candidateSnapshotCount": "from injected CandidateSnapshot[]",
+    "candidateMissingCount": "status === MISSING",
+    "candidateStaleCount": "status === STALE",
+    "candidateFutureDataCount": "status === INVALID_FUTURE_DATE (PIT violation flag)",
+    "guardrailPassCount": "from validateWalkForwardRunGuardrails()",
+    "guardrailWarnCount": "from validateWalkForwardRunGuardrails()",
+    "guardrailFailCount": "from validateWalkForwardRunGuardrails()"
+  },
+  "readinessStatusLogic": {
+    "BLOCKED": "guardrails overallStatus === FAIL",
+    "WARN": "guardrails overallStatus === WARN OR calendarSummary.status === FAIL OR regimeCoverageSummary.status === FAIL",
+    "READY": "all guardrails PASS, calendar PASS, regime coverage not FAIL"
+  },
+  "testResults": {
+    "t05f_only": "53/53 PASS",
+    "t05b_through_t05f": "242/242 PASS",
+    "fullRegression": "331/331 PASS (12 suites)"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "version": "2.0",
+  "objective": "Add integration tests for critical scheduler and lifecycle flows",
+  "background": "E2E tests missing for critical flows: scheduler, lifecycle, learning, signal, sync. These paths have no automated regression protection.",
+  "trigger_reason": "OPTIMIZATION_MINER@source=test_coverage&score=48",
+  "scope": [
+    "e2e/",
+    "tests/",
+    "jest.config.js"
+  ],
+  "constraints": [
+    "Do not make tests depend on live market data",
+    "Do not require a running broker or live trading session",
+    "Do not modify trading thresholds or strategy parameters",
+    "Do not require live broker connection"
+  ],
+  "acceptance_tests": [
+    "Integration tests written for: scheduler, lifecycle, learning",
+    "Tests use a test DB or mocks — no production data dependency",
+    "All new tests pass in CI",
+    "Tests documented in README with run instructions"
+  ],
+  "required_outputs": [
+    "Integration tests written for: scheduler, lifecycle, learning",
+    "Tests use a test DB or mocks — no production data dependency",
+    "All new tests pass in CI",
+    "Tests documented in README with run instructions"
+  ],
+  "forbidden_changes": [
+    "Do not make tests depend on live market data",
+    "Do not require a running broker or live trading session"
+  ],
+  "handoff_questions": [
+    "Did you verify each acceptance criterion with evidence?",
+    "Were any forbidden actions performed?",
+    "What artifacts were produced?"
+  ],
+  "expected_duration_hours": 7,
+  "target_files": [
+    "e2e/",
+    "tests/",
+    "jest.config.js"
+  ]
+}

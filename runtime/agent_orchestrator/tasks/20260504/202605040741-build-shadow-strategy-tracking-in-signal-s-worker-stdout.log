@@ -1,0 +1,13 @@
+[orchestrator-worker] task_id=174 provider=copilot-daemon
+[orchestrator-worker] prompt_path=/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260504/202605040741-build-shadow-strategy-tracking-in-signal-s-prompt.md
+[orchestrator-worker] contract_path=/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260504/202605040741-build-shadow-strategy-tracking-in-signal-s-contract.json
+CHANGED_FILES_JSON: ["logs/launchd/backend.stderr.log","logs/launchd/backend.stdout.log","logs/launchd/main-service.stderr.log","logs/launchd/main-service.stdout.log","logs/launchd/planner-tick.stdout.log","logs/launchd/start_all.log","logs/launchd/stop_all.log","logs/launchd/worker-tick.stdout.log","prisma/dev.db-shm","prisma/dev.db-wal","runtime/agent_orchestrator/llm_execution_events.jsonl","runtime/agent_orchestrator/llm_execution_policy_state.json","runtime/agent_orchestrator/pids/backend.pid","runtime/agent_orchestrator/runs.json","runtime/agent_orchestrator/scheduler_state.json","runtime/agent_orchestrator/task_index.json","src/lib/agent-orchestrator/types.ts","src/lib/agent-orchestrator/workerTick.ts"]
+
+Error: No authentication information found.
+
+Copilot can be authenticated with GitHub using an OAuth Token or a Fine-Grained Personal Access Token.
+
+To authenticate, you can use any of the following methods:
+  • Start 'copilot' and run the '/login' command
+  • Set the COPILOT_GITHUB_TOKEN, GH_TOKEN, or GITHUB_TOKEN environment variable
+  • Run 'gh auth login' to authenticate with the GitHub CLI

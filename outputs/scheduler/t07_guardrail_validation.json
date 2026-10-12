@@ -1,0 +1,81 @@
+{
+  "guardrail_id": "T07_GUARDRAIL_VALIDATION",
+  "validation_date": "2026-05-06",
+  "generated_at": "2026-05-06T14:33:15.352872",
+  "checks": {
+    "pipeline_runner_exists": {
+      "pass": true,
+      "evidence": "scripts/run-daily-regime-aware-pipeline.py"
+    },
+    "pipeline_dry_run_pass": {
+      "pass": true,
+      "evidence": "final_pipeline_status=PASS"
+    },
+    "pipeline_apply_pass": {
+      "pass": true,
+      "evidence": "apply mode ran, taiex backfill completed, all stages PASS"
+    },
+    "required_artifacts_exist": {
+      "pass": true,
+      "evidence": {
+        "outputs/scheduler/t07_pipeline_run_summary.json": true,
+        "outputs/daily_report/t06_daily_report_section.json": true,
+        "outputs/daily_report/t06_daily_ops_report.json": true,
+        "outputs/market_regime/p4_03b_market_regime_sample.json": true,
+        "outputs/walk_forward/t05_walk_forward_sample.json": true
+      }
+    },
+    "json_artifacts_parse": {
+      "pass": true,
+      "evidence": {
+        "outputs/scheduler/t07_pipeline_run_summary.json": true,
+        "outputs/daily_report/t06_daily_report_section.json": true,
+        "outputs/daily_report/t06_daily_ops_report.json": true,
+        "outputs/market_regime/p4_03b_market_regime_sample.json": true,
+        "outputs/walk_forward/t05_walk_forward_sample.json": true
+      }
+    },
+    "no_h001_h012": {
+      "pass": true,
+      "evidence": "NONE_FOUND"
+    },
+    "no_forbidden_buy_sell": {
+      "pass": true,
+      "evidence": {
+        "outputs/scheduler/t07_pipeline_run_summary.json": [],
+        "outputs/daily_report/t06_daily_report_section.json": [],
+        "outputs/daily_report/t06_daily_ops_report.json": [],
+        "outputs/market_regime/p4_03b_market_regime_sample.json": [],
+        "outputs/walk_forward/t05_walk_forward_sample.json": []
+      }
+    },
+    "no_production_db_write": {
+      "pass": true,
+      "evidence": "Pipeline script uses subprocess; only backfill-taiex-gap.py --apply writes MarketIndex (local dev.db only)"
+    },
+    "no_stockquote_mutation": {
+      "pass": true,
+      "evidence": "backfill-taiex-gap.py writes only MarketIndex. StockQuote not touched."
+    },
+    "no_strategy_behavior_mutation": {
+      "pass": true,
+      "evidence": "No StrategySignal, SimulatedTrade, or StrategyProposal writes."
+    },
+    "external_api_only_taiex": {
+      "pass": true,
+      "evidence": "Only taiex_backfill_if_needed stage (stage 2) calls external TWSE API."
+    },
+    "do_not_interpret_as_present": {
+      "pass": true,
+      "evidence": "ops_report.do_not_interpret_as=True"
+    },
+    "report_date_valid": {
+      "pass": true,
+      "evidence": "report_date=2026-05-06"
+    }
+  },
+  "total_checks": 13,
+  "checks_passed": 13,
+  "checks_failed": 0,
+  "overall_status": "PASS"
+}

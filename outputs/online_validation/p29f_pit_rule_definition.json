@@ -1,0 +1,43 @@
+{
+  "phase": "P29F-HARDRESET",
+  "task": "PIT Rule Definition",
+  "generatedAt": "2026-05-20T00:00:00Z",
+
+  "pitRules": {
+    "Quote": {
+      "checkList": [
+        "Price fields must only use data with date <= asOfDate",
+        "No future close / next close used as input feature",
+        "No label-like fields (returnPct, outcomePrice, realizedReturnClass) in feature set",
+        "asOf parameter must be passed from simulation/scoring caller",
+        "Technical indicators (MA, RSI, MACD, momentum) computed only from PIT-gated data",
+        "Date format must be consistent between storage and gate comparison"
+      ],
+      "gateImplementation": "date: { lte: asOfDb } where asOfDb = asOf.replace(/-/g, '') (YYYYMMDD)",
+      "criticalCheck": "DATE_FORMAT_CONSISTENCY: sync stores ISO, gate uses YYYYMMDD — mismatch may make gate ineffective for same-year future records"
+    },
+    "Regime": {
+      "checkList": [
+        "Regime must be determined only from TAIEX data with date <= asOf",
+        "Rolling window (MA50, MA200, 20d momentum, 60d volatility) must not include future rows",
+        "detectRegime(asOf) must use ISO asOf directly with ISO stored dates",
+        "detectRegimeForPeriod is backtest-only — must not be used in simulation scoring path",
+        "Market regime label (Bull/Bear/Sideways) derived from backward-looking factors only"
+      ],
+      "gateImplementation": "date: { lte: asOf } where asOf is ISO YYYY-MM-DD (ISO-ISO comparison correct)",
+      "criticalCheck": "FORMAT_CONSISTENCY: MarketIndex.date appears to be ISO (from sync), detectRegime uses ISO asOf directly — CORRECT"
+    },
+    "Chip": {
+      "checkList": [
+        "InstitutionalChip data must only use date <= asOfDate",
+        "Chip strength calculated from last 10 records (orderBy date desc) — all backward",
+        "Fields used (totalBuy, foreignBuy, trustBuy) are net flow — no forward-looking component",
+        "Publication lag: chip for T published at ~6pm T — same-day inclusion is industry standard for end-of-day scoring",
+        "Schema comment 'YYYYMMDD' must be corrected to 'ISO' to match actual storage",
+        "Date format must be consistent (same issue as Quote)"
+      ],
+      "gateImplementation": "date: { lte: asOfDb } where asOfDb = asOf.replace(/-/g, '') (YYYYMMDD)",
+      "criticalCheck": "DATE_FORMAT_CONSISTENCY: sync stores ISO (confirmed in syncInstitutionalChip), gate uses YYYYMMDD — same mismatch as Quote"
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "reportId": "p29f-repair-preflight",
+  "generatedAt": "2026-05-21T00:00:00Z",
+  "headCommit": "0165d79",
+  "headMessage": "P29F: Audit Quote Regime Chip PIT validation",
+  "preflightPassed": true,
+  "baselineHashes": {
+    "RuleBasedStockAnalyzer.ts": {
+      "path": "src/lib/analysis/RuleBasedStockAnalyzer.ts",
+      "preRepairSha256": "bc3716cc8e74be304f2e262aac586a61760bb59d6c95e82a575c38e03ea7373d",
+      "note": "Bug confirmed: asOfDb = asOf.replace(/-/g,'') produces YYYYMMDD, but StockQuote/InstitutionalChip store ISO dates"
+    },
+    "SignalFusionEngine.ts": {
+      "path": "src/lib/alpha/SignalFusionEngine.ts",
+      "sha256": "b8ce3fa3ae63fd7edf6b6067dd8ccea63c02741454b93792e87bfbc1e95d2bf4",
+      "invariant": true,
+      "note": "Must NOT change — alpha score formula locked"
+    },
+    "ActiveScoringSnapshotBuilder.ts": {
+      "path": "src/lib/onlineValidation/ActiveScoringSnapshotBuilder.ts",
+      "sha256": "063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d",
+      "invariant": true,
+      "note": "Must NOT change — snapshot builder locked"
+    },
+    "schema.prisma": {
+      "path": "prisma/schema.prisma",
+      "preRepairSha256": "6dbf58b9d67c2d6e56f3b1d1d70e00e2c8d14413cd4e67c90e7ab3f7285e40ab",
+      "note": "Comment-only fix: YYYYMMDD → ISO (YYYY-MM-DD) for InstitutionalChip.date"
+    },
+    "prisma/dev.db": {
+      "path": "prisma/dev.db",
+      "sha256": "9c24c697f7980c910802e37faecdf05d0d821db097358cda1ad6c5085af99ba6",
+      "invariant": "runtime-WAL-only",
+      "note": "Not a P29F-Repair mutation target; WAL changes expected at runtime"
+    }
+  },
+  "p29fFinalClassificationAtHead": {
+    "Quote": "PIT_UNVERIFIED_NEEDS_REPAIR",
+    "Regime": "PIT_SAFE_VERIFIED",
+    "Chip": "PIT_UNVERIFIED_NEEDS_REPAIR",
+    "trustRootBlockerRemains": true,
+    "overallClassification": "P29F_QUOTE_REGIME_CHIP_PIT_AUDIT_RISK_FOUND_NEEDS_REPAIR"
+  },
+  "repairScope": {
+    "allowedFiles": [
+      "src/lib/analysis/RuleBasedStockAnalyzer.ts",
+      "prisma/schema.prisma",
+      "src/lib/onlineValidation/p29f/quoteRegimeChipPitAudit.ts",
+      "src/lib/onlineValidation/__tests__/p29f_quote_regime_chip_pit_audit.test.ts",
+      "src/lib/onlineValidation/__tests__/p29f_repair_quote_chip_pit_date.test.ts",
+      "outputs/online_validation/p29f_repair_*.json",
+      "outputs/online_validation/p29f_repair_*.md",
+      "outputs/online_validation/p29_next_prompt_after_p29f_repair.md"
+    ],
+    "forbiddenFiles": [
+      "src/lib/alpha/SignalFusionEngine.ts",
+      "src/lib/onlineValidation/ActiveScoringSnapshotBuilder.ts",
+      "src/lib/scoring/*",
+      "src/lib/optimizer/*",
+      "outputs/corpus/*"
+    ]
+  },
+  "repairStrategy": "Strategy A — remove YYYYMMDD conversion; use normalizePitDateToIso(asOf) helper; all Prisma PIT queries use ISO asOfIso",
+  "testBaseline": {
+    "onlineValidationSuites": 106,
+    "onlineValidationTests": 3181,
+    "allPassAtHead": true
+  }
+}

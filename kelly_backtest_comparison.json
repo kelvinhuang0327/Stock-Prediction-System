@@ -1,0 +1,19 @@
+{
+  "period": {
+    "start": "2025-07-01",
+    "end": "2026-01-14"
+  },
+  "fixed": {
+    "total_trades": 11,
+    "win_rate": 0.45454545454545453,
+    "avg_pnl": 0.03685914885460422,
+    "total_return_pct": 14.3484
+  },
+  "kelly": {
+    "total_trades": 11,
+    "win_rate": 0.45454545454545453,
+    "avg_pnl": 0.03685914885460422,
+    "total_return_pct": 14.260619999999971
+  },
+  "winner": "fixed"
+}

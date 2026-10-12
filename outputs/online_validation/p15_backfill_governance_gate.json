@@ -1,0 +1,60 @@
+{
+  "governanceGateVersion": "outcome-backfill-governance-gate-v0",
+  "governanceRunId": "p15-backfill-governance-20260511-001",
+  "generatedAt": "2026-05-11T09:15:00.000Z",
+  "inputSummary": {
+    "candidateCount": 3,
+    "rehearsalItemCount": 3,
+    "blockedToReadyCount": 3,
+    "currentCorpusLineCount": 60,
+    "currentQualityStatus": "BLOCKED",
+    "projectedQualityStatus": "BLOCKED",
+    "projectedCoverageRatio": 0.2833333333333333,
+    "previewOnly": true
+  },
+  "gateChecks": {
+    "hasCandidates": true,
+    "hasRehearsalItems": true,
+    "hasBlockedToReadyTransition": true,
+    "corpusUnchanged": true,
+    "qualityImpactIsPreviewOnly": true,
+    "requiresManualApproval": true,
+    "noProductionWrite": true,
+    "noCorpusWrite": true,
+    "noOptimizerWrite": true,
+    "noPerformanceClaim": true,
+    "noTradingSignal": true
+  },
+  "gateStatus": "READY_FOR_MANUAL_REVIEW",
+  "decision": "ALLOW_MANUAL_REVIEW_ONLY",
+  "approvalBoundary": {
+    "manualApprovalRequired": true,
+    "automaticPromotionAllowed": false,
+    "productionBackfillAllowed": false,
+    "corpusWriteAllowed": false,
+    "optimizerAllowed": false,
+    "allowedNextStep": "MANUAL_REVIEW_ONLY"
+  },
+  "writePathPolicy": {
+    "productionDbWriteAllowed": false,
+    "corpusJsonlWriteAllowed": false,
+    "predictionRowWriteAllowed": false,
+    "strategySignalWriteAllowed": false,
+    "artifactOnly": true
+  },
+  "riskFlags": [
+    "CURRENT_QUALITY_STATUS_BLOCKED",
+    "PROJECTED_QUALITY_BLOCKED",
+    "BLOCKED_TO_READY_TRANSITIONS_PRESENT",
+    "PREVIEW_ONLY_IMPACT",
+    "MANUAL_REVIEW_REQUIRED"
+  ],
+  "requiredNextApprovals": [
+    "CTO_MANUAL_REVIEW",
+    "DATA_GOVERNANCE_REVIEW"
+  ],
+  "validationStatus": "PASS",
+  "validationMessages": [
+    "PASS: outcome backfill governance gate safety contracts verified"
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "sourceName": "MonthlyRevenue",
+  "consumerMode": "controlled-feature-consumer-readiness",
+  "rowCount": 5,
+  "consumerReadyRows": 4,
+  "warningRows": 4,
+  "blockedRows": 1,
+  "blockedBreakdown": {
+    "CONSUMER_BLOCKED_MISSING_METADATA": 1,
+    "CONSUMER_BLOCKED_PIT_VIOLATION": 0,
+    "CONSUMER_BLOCKED_FORBIDDEN_FIELD": 0
+  },
+  "confidenceDistribution": {
+    "HIGH": 0,
+    "MEDIUM": 0,
+    "LOW": 4
+  },
+  "readinessConclusion": "4 of 5 rows are consumer-ready (with LOW confidence warning). 1 row blocked due to missing release metadata. The LOW confidence distribution is expected: all MonthlyRevenue rows use INFERRED_NEXT_MONTH_10TH policy. Downstream consumers must treat results as structural audit data only — not as investment signals.",
+  "overallClassification": "CONSUMER_BATCH_BLOCKED",
+  "entersAlphaScore": false,
+  "dryRunOnly": true,
+  "paperOnly": true,
+  "noBuySellActionSemantics": true,
+  "version": "p36-monthly-revenue-controlled-consumer-contract-v1",
+  "disclaimer": "Controlled feature consumer contract only. Does not constitute investment advice. No profit, return, win-rate, edge, or investment performance claims are made. MonthlyRevenue entersAlphaScore = false. ALWAYS. Results must not be used as buy/sell/hold signals or investment recommendations. This contract prohibits: buy, sell, hold, ROI, win-rate, edge, profit, outperform, guaranteed-return, expected-return, investment-recommendation, targetPrice, outcomePrice.",
+  "rows": [
+    {
+      "symbol": "2330",
+      "revenueMonth": "2026-02",
+      "classification": "CONSUMER_READY_WITH_LOW_CONFIDENCE_WARNING",
+      "consumerReady": true,
+      "confidenceTier": "LOW",
+      "revenueAvailable": true,
+      "releaseMetadataComplete": true,
+      "pitBoundaryRespected": true,
+      "forbiddenFieldViolations": [],
+      "auditNotes": ["releaseDateConfidence=LOW (INFERRED_NEXT_MONTH_10TH): treat as audit-only tier"],
+      "entersAlphaScore": false,
+      "paperOnly": true,
+      "dryRunOnly": true
+    },
+    {
+      "symbol": "2317",
+      "revenueMonth": "2026-02",
+      "classification": "CONSUMER_READY_WITH_LOW_CONFIDENCE_WARNING",
+      "consumerReady": true,
+      "confidenceTier": "LOW",
+      "revenueAvailable": true,
+      "releaseMetadataComplete": true,
+      "pitBoundaryRespected": true,
+      "forbiddenFieldViolations": [],
+      "auditNotes": ["releaseDateConfidence=LOW (INFERRED_NEXT_MONTH_10TH): treat as audit-only tier"],
+      "entersAlphaScore": false,
+      "paperOnly": true,
+      "dryRunOnly": true
+    },
+    {
+      "symbol": "2454",
+      "revenueMonth": "2026-02",
+      "classification": "CONSUMER_READY_WITH_LOW_CONFIDENCE_WARNING",
+      "consumerReady": true,
+      "confidenceTier": "LOW",
+      "revenueAvailable": true,
+      "releaseMetadataComplete": true,
+      "pitBoundaryRespected": true,
+      "forbiddenFieldViolations": [],
+      "auditNotes": ["releaseDateConfidence=LOW (INFERRED_NEXT_MONTH_10TH): treat as audit-only tier"],
+      "entersAlphaScore": false,
+      "paperOnly": true,
+      "dryRunOnly": true
+    },
+    {
+      "symbol": "2412",
+      "revenueMonth": "2026-02",
+      "classification": "CONSUMER_READY_WITH_LOW_CONFIDENCE_WARNING",
+      "consumerReady": true,
+      "confidenceTier": "LOW",
+      "revenueAvailable": true,
+      "releaseMetadataComplete": true,
+      "pitBoundaryRespected": true,
+      "forbiddenFieldViolations": [],
+      "auditNotes": ["releaseDateConfidence=LOW (INFERRED_NEXT_MONTH_10TH): treat as audit-only tier"],
+      "entersAlphaScore": false,
+      "paperOnly": true,
+      "dryRunOnly": true
+    },
+    {
+      "symbol": "2308",
+      "revenueMonth": "2026-02",
+      "classification": "CONSUMER_BLOCKED_MISSING_METADATA",
+      "consumerReady": false,
+      "confidenceTier": "LOW",
+      "revenueAvailable": true,
+      "releaseMetadataComplete": false,
+      "pitBoundaryRespected": null,
+      "forbiddenFieldViolations": [],
+      "auditNotes": ["releaseDate is null — blocked: missing release metadata"],
+      "entersAlphaScore": false,
+      "paperOnly": true,
+      "dryRunOnly": true
+    }
+  ]
+}

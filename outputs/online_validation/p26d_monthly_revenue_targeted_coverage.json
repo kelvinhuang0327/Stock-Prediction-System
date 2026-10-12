@@ -1,0 +1,41 @@
+{
+  "phase": "P26D-HARDRESET",
+  "generatedAt": "2026-05-13",
+  "asOfDate": "2026-05-13",
+  "corpusScanResult": {
+    "totalRows": 0,
+    "description": "P3/P19 corpus rows with monthlyRevenueContext or revenueContext field",
+    "note": "These are scoring corpus rows. MonthlyRevenue context is not present in P3/P19."
+  },
+  "syntheticTestData": {
+    "totalRows": 5,
+    "availableRows": 3,
+    "futureRows": 1,
+    "invalidRows": 1,
+    "withReasonContext": 3,
+    "withFactorEvidence": 2,
+    "coverageRatio": 0.6,
+    "description": "Synthetic test data for coverage validation."
+  },
+  "coverageDimensions": {
+    "monthlyRevenueAvailableAsOf": {
+      "checked": true,
+      "gate": "releaseDate <= asOfDate",
+      "readOnly": true
+    },
+    "monthlyRevenueReasonContextPresent": {
+      "checked": true,
+      "presentCount": 3,
+      "readOnly": true
+    },
+    "monthlyRevenueFactorEvidencePresent": {
+      "checked": true,
+      "presentCount": 2,
+      "readOnly": true
+    }
+  },
+  "noOutcomeFieldsUsed": true,
+  "contextReadOnly": true,
+  "entersAlphaScore": false,
+  "disclaimer": "No investment recommendations. No ROI/win-rate/profit/outperform/buy/sell claims."
+}

@@ -1,0 +1,56 @@
+{
+  "phase": "P26B-HARDRESET",
+  "part": "PART_G_SCORING_INVARIANCE_CHECK",
+  "generatedAt": "2026-05-13",
+  "p3RowsChecked": 4500,
+  "p19RowsChecked": 4500,
+  "totalRowsChecked": 9000,
+  "mismatchedAlphaScoreCount": 0,
+  "mismatchedBucketCount": 0,
+  "nullAlphaScoreCount": 0,
+  "eventNewsContextEntersAlphaScore": false,
+  "hasEventNewsInScoreSnapshot": false,
+  "baselineScoringFilesUnchanged": true,
+  "baselineResults": {
+    "src/lib/onlineValidation/ActiveScoringSnapshotBuilder.ts": {
+      "status": "MATCH",
+      "expected": "063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d",
+      "actual": "063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d"
+    },
+    "src/lib/analysis/RuleBasedStockAnalyzer.ts": {
+      "status": "MATCH",
+      "expected": "bc3716cc8e74be304f2e262aac586a61760bb59d6c95e82a575c38e03ea7373d",
+      "actual": "bc3716cc8e74be304f2e262aac586a61760bb59d6c95e82a575c38e03ea7373d"
+    },
+    "src/lib/alpha/SignalFusionEngine.ts": {
+      "status": "MATCH",
+      "expected": "b8ce3fa3ae63fd7edf6b6067dd8ccea63c02741454b93792e87bfbc1e95d2bf4",
+      "actual": "b8ce3fa3ae63fd7edf6b6067dd8ccea63c02741454b93792e87bfbc1e95d2bf4"
+    },
+    "src/lib/onlineValidation/P26AReasonFactorEnrichmentUtils.ts": {
+      "status": "MATCH",
+      "expected": "b1d8323b399b3bde012aacb8b50a9bed1a0a91eb4f88724b5cc1fa1d89ba46ef",
+      "actual": "b1d8323b399b3bde012aacb8b50a9bed1a0a91eb4f88724b5cc1fa1d89ba46ef"
+    },
+    "src/lib/onlineValidation/P12FeatureContractV1Utils.ts": {
+      "status": "MATCH",
+      "expected": "eed17a32458b255ae04525b6bb3ad6bf3585199282f77271e79898a9fce5f2a3",
+      "actual": "eed17a32458b255ae04525b6bb3ad6bf3585199282f77271e79898a9fce5f2a3"
+    }
+  },
+  "p26bNewFiles": {
+    "src/lib/onlineValidation/P26BEventNewsPitContractUtils.ts": "9885020023ce5e44aa9554ecaa8edaed990a429d9700d363f568f98fecde6d62",
+    "src/lib/onlineValidation/P26BEventNewsPitAdapterUtils.ts": "d918c97e0848aa7db72afd71a497b1409c7ae3049662738e8704c2c1ea8a7ba2"
+  },
+  "proofOfIsolation": [
+    "P26BEventNewsPitAdapterUtils.ts imports no scoring module",
+    "P26BEventNewsPitContractUtils.ts imports no scoring module",
+    "ActiveScoringSnapshotBuilder.ts sha256 unchanged",
+    "RuleBasedStockAnalyzer.ts sha256 unchanged",
+    "SignalFusionEngine.ts sha256 unchanged",
+    "eventNewsContext not present in P3/P19 scoreSnapshot field set"
+  ],
+  "invarianceStatus": "PASS",
+  "verdict": "SCORING_INVARIANCE_CONFIRMED",
+  "disclaimer": "No investment recommendations. No ROI/win-rate/profit/outperform/buy/sell claims."
+}

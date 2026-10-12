@@ -1,0 +1,53 @@
+{
+  "contract_id": "T09_API_CONTRACT",
+  "contract_date": "2026-05-06",
+  "generated_at": "2026-05-06T15:09:18.366429",
+  "endpoint": "GET /api/daily-report/regime",
+  "implementation_file": "src/app/api/daily-report/regime/route.ts",
+  "router": "Next.js App Router",
+  "response_ok": {
+    "status": "ok",
+    "reportDate": "2026-05-06",
+    "regime": {
+      "date": "string (YYYY-MM-DD)",
+      "regimeLabel": "BULL | BEAR | SIDEWAYS | HIGH_VOLATILITY | LOW_CONFIDENCE",
+      "confidence": "number [0,1]",
+      "taiexClose": "number | null",
+      "source": "string",
+      "version": "string",
+      "freshnessStatus": "FRESH | STALE | MISSING | FUTURE_DATE_ERROR",
+      "freshnessLagDays": "number",
+      "warning": "string | null"
+    },
+    "guardrails": {
+      "notTradingRecommendation": true,
+      "notBuySellSignal": true,
+      "notPerformanceEvidence": true
+    }
+  },
+  "response_missing": {
+    "status": "missing",
+    "reportDate": "2026-05-06",
+    "regime": null,
+    "guardrails": {
+      "notTradingRecommendation": true,
+      "notBuySellSignal": true,
+      "notPerformanceEvidence": true
+    }
+  },
+  "forbidden_response_fields": [
+    "buy",
+    "sell",
+    "signal",
+    "roi",
+    "win_rate",
+    "alpha",
+    "edge",
+    "profit",
+    "recommendation",
+    "outperform"
+  ],
+  "no_db_write": true,
+  "no_external_api": true,
+  "verdict": "PASS"
+}

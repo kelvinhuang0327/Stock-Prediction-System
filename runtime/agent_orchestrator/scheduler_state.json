@@ -1,0 +1,15 @@
+{
+  "version": "1.0",
+  "schedulerEnabled": false,
+  "plannerProvider": "local-planner",
+  "workerProvider": "copilot-daemon",
+  "providerCooldowns": {},
+  "scheduleMinutes": 10,
+  "nextPlannerRunAt": null,
+  "nextWorkerRunAt": "2026-05-05T10:10:12.100Z",
+  "lastPlannerRunAt": null,
+  "lastWorkerRunAt": "2026-05-05T10:00:12.100Z",
+  "updatedAt": "2026-05-05T10:00:12.100Z",
+  "workerCopilotModel": "gpt-5-mini",
+  "laneHeartbeats": {}
+}

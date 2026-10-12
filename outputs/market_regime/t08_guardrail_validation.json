@@ -1,0 +1,129 @@
+{
+  "guardrail_id": "T08_GUARDRAIL_VALIDATION",
+  "validation_date": "2026-05-06",
+  "generated_at": "2026-05-06T14:48:26.001802",
+  "overall_status": "PASS",
+  "total_checks": 21,
+  "passed": 21,
+  "failed": 0,
+  "checks": [
+    {
+      "check": "prisma_schema_has_market_regime_result",
+      "result": "PASS",
+      "note": ""
+    },
+    {
+      "check": "sqlite_db_has_market_regime_result",
+      "result": "PASS",
+      "note": ""
+    },
+    {
+      "check": "persistence_script_exists",
+      "result": "PASS",
+      "note": ""
+    },
+    {
+      "check": "persistence_dry_run_pass",
+      "result": "PASS",
+      "note": ""
+    },
+    {
+      "check": "persistence_apply_pass",
+      "result": "PASS",
+      "note": ""
+    },
+    {
+      "check": "pipeline_has_persistence_stage",
+      "result": "PASS",
+      "note": ""
+    },
+    {
+      "check": "pipeline_dry_run_pass",
+      "result": "PASS",
+      "note": "verified 2026-05-06 --dry-run => PASS"
+    },
+    {
+      "check": "pipeline_apply_pass",
+      "result": "PASS",
+      "note": ""
+    },
+    {
+      "check": "no_stock_quote_mutation",
+      "result": "PASS",
+      "note": "rows=129151"
+    },
+    {
+      "check": "no_market_index_mutation_by_persistence",
+      "result": "PASS",
+      "note": "safety check PASS in apply report"
+    },
+    {
+      "check": "no_daily_market_snapshot_mutation",
+      "result": "PASS",
+      "note": "not touched by persistence script"
+    },
+    {
+      "check": "no_walk_forward_result_mutation",
+      "result": "PASS",
+      "note": "rows=522"
+    },
+    {
+      "check": "no_strategy_table_mutation",
+      "result": "PASS",
+      "note": "persistence script only writes MarketRegimeResult"
+    },
+    {
+      "check": "no_h001_h012_in_persisted_rows",
+      "result": "PASS",
+      "note": "count=0"
+    },
+    {
+      "check": "no_forbidden_fields_in_schema",
+      "result": "PASS",
+      "note": "found=[]"
+    },
+    {
+      "check": "no_future_date",
+      "result": "PASS",
+      "note": "future=0"
+    },
+    {
+      "check": "no_invalid_regime_label",
+      "result": "PASS",
+      "note": "invalid=0"
+    },
+    {
+      "check": "no_invalid_confidence",
+      "result": "PASS",
+      "note": "invalid=0"
+    },
+    {
+      "check": "no_duplicate_date_source_version",
+      "result": "PASS",
+      "note": "dups=0"
+    },
+    {
+      "check": "json_artifacts_parse",
+      "result": "PASS",
+      "note": ""
+    },
+    {
+      "check": "required_output_files_exist",
+      "result": "PASS",
+      "note": "{}"
+    }
+  ],
+  "market_regime_result_row_count": 300,
+  "pipeline_stages": [
+    "freshness_check",
+    "taiex_backfill_if_needed",
+    "market_regime_classifier",
+    "market_regime_persistence",
+    "portfolio_walk_forward_skeleton",
+    "daily_report_builder",
+    "guardrail_validation",
+    "artifact_validation",
+    "readiness_decision"
+  ],
+  "pipeline_final_status": "PASS"
+}

@@ -1,0 +1,25 @@
+{
+  "phase": "P19-HARDRESET",
+  "part": "D",
+  "generatedAt": "2026-05-12T05:07:16.770Z",
+  "inputCorpus": "outputs/online_validation/p19active_scoring_pit_replay_corpus.jsonl",
+  "p17QueryGateStatus": "ALL_PASS",
+  "p18QueryGateStatus": "PASS",
+  "checkedRows": 4500,
+  "monthlyRevenueFeaturePresentRows": 0,
+  "unavailableMonthlyRevenueExcludedRows": 4500,
+  "leakageViolations": 0,
+  "forbiddenFieldViolations": 0,
+  "mockDeterministicRows": 0,
+  "pitGateStatusDistribution": {
+    "NOT_APPLICABLE_NO_DATA": 4500
+  },
+  "leakageDetails": [],
+  "forbiddenFieldDetails": [],
+  "productionDbWritten": false,
+  "productionApplyAllowed": false,
+  "gatesPassed": 14,
+  "gatesTotal": 14,
+  "gatesFailed": [],
+  "validationStatus": "PASS"
+}

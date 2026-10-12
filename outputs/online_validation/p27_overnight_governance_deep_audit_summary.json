@@ -1,0 +1,43 @@
+{
+  "auditId": "p27-overnight-governance-deep-audit-summary",
+  "generatedAt": "2026-05-13T15:22:05.052209+00:00",
+  "totalFilesScanned": 1124,
+  "artifactsByType": {
+    "final_report": 43,
+    "preflight": 109,
+    "report": 319,
+    "scan_result": 6,
+    "smoke": 23,
+    "invariance": 40,
+    "forbidden_claims": 16,
+    "registry": 2,
+    "index": 8,
+    "next_prompt": 3,
+    "corpus": 13,
+    "unknown": 542
+  },
+  "canonicalArtifactsCount": 18,
+  "historicalArtifactsCount": 8,
+  "missingPairsCount": 50,
+  "stalePromptsCount": 0,
+  "contradictionsCount": 0,
+  "blockerCount": 0,
+  "warningCount": 1,
+  "testsMatrix": {
+    "total": 2885,
+    "passed": 2885,
+    "failed": 0,
+    "status": "PASS"
+  },
+  "invarianceStatus": "PASS",
+  "forbiddenClaimsStatus": "CLEAN",
+  "sourceStatus": {
+    "candidateSourceFiles": 0,
+    "classification": "WAITING_FOR_OPERATOR_SOURCE",
+    "importBlocked": true,
+    "corpusExpansionBlocked": true,
+    "optimizerBlocked": true
+  },
+  "nextRecommendedTask": "P27_REPORT_NAMING_AUDIT or P27_FORBIDDEN_CLAIMS_SCANNER_CONSOLIDATION",
+  "disclaimer": "Observability only. No investment recommendations."
+}

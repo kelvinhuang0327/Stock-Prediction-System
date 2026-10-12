@@ -1,0 +1,16 @@
+{
+  "phase": "P29C", "part": "G - Gate Matrix", "generatedAt": "2026-05-25T00:00:00Z", "paperDesignOnly": true,
+  "gates": [
+    {"id":"G1","gateName":"P29A Registry Gate","status":"PASS","passCriteria":"PIT registry v1 exists with 6 sources classified","currentStatus":"PASS","nextAction":"Maintain"},
+    {"id":"G2","gateName":"P29B Source Risk Gate","status":"PASS","passCriteria":"FinancialReport/NewsEvent remain HIGH_RISK_SOURCE_ABSENT; entersAlphaScore=false","currentStatus":"PASS","nextAction":"Maintain until source files provided"},
+    {"id":"G3","gateName":"P26F4 MonthlyRevenue Source Gate","status":"BLOCKED","passCriteria":"MonthlyRevenue historical source files present in drop-zone + manifest + dry-run PASS","currentStatus":"WAITING_FOR_OPERATOR_SOURCE","nextAction":"Operator must provide 2025-09 to 2026-01 TWSE/MOPS CSV files"},
+    {"id":"G4","gateName":"Corpus Expansion Gate","status":"BLOCKED","passCriteria":"P26F4 import done + feature coverage threshold + outcome isolation","currentStatus":"BLOCKED (depends on G3)","nextAction":"Cannot proceed until G3 unblocked"},
+    {"id":"G5","gateName":"Outcome Isolation Gate","status":"PASS","passCriteria":"No outcome fields in scoring snapshots (P28D confirmed 0 leakage across 572 rows)","currentStatus":"PASS","nextAction":"Re-verify on any new corpus entries"},
+    {"id":"G6","gateName":"Leakage Scan Gate","status":"PASS","passCriteria":"grep scan finds no outcome fields in scoring artifacts","currentStatus":"PASS","nextAction":"Run on any new backtest output artifacts"},
+    {"id":"G7","gateName":"Paper-only Mode Gate","status":"PASS","passCriteria":"All simulation outputs labeled mode=paper_only; no production write","currentStatus":"PASS","nextAction":"Maintain"},
+    {"id":"G8","gateName":"Forbidden Claims Gate","status":"PASS","passCriteria":"No ROI/win-rate/alpha/edge/profit/buy/sell claims in outputs","currentStatus":"PASS","nextAction":"Run on each new artifact"},
+    {"id":"G9","gateName":"No Optimizer Gate","status":"PASS","passCriteria":"No optimizer script execution; optimizer blocked","currentStatus":"PASS","nextAction":"Maintain until G3+G4+anti-overfit gates pass"},
+    {"id":"G10","gateName":"Final CTO Approval Gate","status":"NOT_YET_REQUIRED","passCriteria":"Explicit CTO approval token per promoted mode","currentStatus":"NOT_REQUIRED in P29C","nextAction":"Required for PAPER_ONLY_SIMULATION mode promotion"}
+  ],
+  "disclaimer": "Paper design only. Not investment advice."
+}

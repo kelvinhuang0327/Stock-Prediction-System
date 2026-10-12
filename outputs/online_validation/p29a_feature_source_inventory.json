@@ -1,0 +1,190 @@
+{
+  "phase": "P29A",
+  "part": "B - Feature Source Inventory",
+  "generatedAt": "2026-05-23T00:00:00Z",
+  "inventoryMethod": "code-read + artifact cross-reference",
+  "sources": [
+    {
+      "sourceName": "StockQuote",
+      "sourceFamily": "price_and_technicals",
+      "currentStatus": "ACTIVE_IN_SCORING",
+      "knownFields": ["date (YYYYMMDD)", "close", "high", "low", "open", "volume", "turnover"],
+      "derivedIndicators": ["MA5/10/20/60", "RSI(14)", "MACD", "Bollinger Bands", "momentum 20d"],
+      "suspectedOwnerModule": "src/lib/analysis/RuleBasedStockAnalyzer.ts + src/lib/data/AsOfDataGate.ts",
+      "usedInScoring": true,
+      "usedInRenderer": true,
+      "requiresPITGate": true,
+      "pitGateImplemented": true,
+      "pitGateField": "date",
+      "pitGateRule": "WHERE date <= asOfDate (YYYYMMDD lexicographic comparison)",
+      "signalFusionWeight_stock": 0.35,
+      "signalFusionWeight_ETF": 0.50,
+      "knownLimitations": ["Minimum 20 days required for MA20; <20 days triggers missingSources"],
+      "evidenceFiles": [
+        "src/lib/analysis/RuleBasedStockAnalyzer.ts",
+        "src/lib/data/AsOfDataGate.ts",
+        "outputs/online_validation/p12pit_feature_contract_v1.json"
+      ]
+    },
+    {
+      "sourceName": "MarketRegime",
+      "sourceFamily": "market_context",
+      "currentStatus": "ACTIVE_IN_SCORING",
+      "knownFields": ["regime (Bull/Bear/Neutral/Unknown)", "confidence (0-100)", "derivedFrom TAIEX quotes"],
+      "suspectedOwnerModule": "src/lib/market/MarketRegimeEngine.ts",
+      "usedInScoring": true,
+      "usedInRenderer": true,
+      "requiresPITGate": true,
+      "pitGateImplemented": true,
+      "pitGateField": "asOf param (TAIEX quotes up to asOfDate only)",
+      "pitGateRule": "detectRegime(asOf) uses only TAIEX stock quotes with date <= asOfDate",
+      "signalFusionWeight_stock": 0.15,
+      "signalFusionWeight_ETF": 0.25,
+      "knownLimitations": [
+        "Unknown regime still provides partial score credit in SignalFusionEngine (5 pts vs 20 pts for known)",
+        "Regime confidence is proxy for stability; no walk-forward calibration yet"
+      ],
+      "evidenceFiles": [
+        "src/lib/alpha/SignalFusionEngine.ts",
+        "outputs/online_validation/p12pit_feature_contract_v1.json"
+      ]
+    },
+    {
+      "sourceName": "InstitutionalChip",
+      "sourceFamily": "chip_and_flow",
+      "currentStatus": "ACTIVE_IN_SCORING",
+      "knownFields": ["date (YYYYMMDD)", "stockId", "foreignNet", "investTrustNet", "dealerNet"],
+      "derivedMetrics": ["net 10-day institutional flow", "foreign net buy/sell direction"],
+      "suspectedOwnerModule": "src/lib/analysis/RuleBasedStockAnalyzer.ts",
+      "usedInScoring": true,
+      "usedInRenderer": true,
+      "requiresPITGate": true,
+      "pitGateImplemented": true,
+      "pitGateField": "date",
+      "pitGateRule": "WHERE date <= asOfDate (YYYYMMDD string comparison)",
+      "signalFusionWeight_stock": 0.25,
+      "signalFusionWeight_ETF": 0.25,
+      "knownLimitations": [
+        "Missing chip data sets missingSources=[InstitutionalChip] and chipScore=0 with weight redistribution",
+        "Only the net-10d aggregation is used; individual daily entries not exposed in factorSnapshot"
+      ],
+      "evidenceFiles": [
+        "src/lib/analysis/RuleBasedStockAnalyzer.ts",
+        "outputs/online_validation/p12pit_feature_contract_v1.json"
+      ]
+    },
+    {
+      "sourceName": "MonthlyRevenue",
+      "sourceFamily": "fundamental",
+      "currentStatus": "REPAIRED_BUT_HISTORICAL_SOURCE_GATED",
+      "knownFields": ["stockId", "year (int)", "month (int)", "revenue (bigint)", "releaseDate (DateTime)", "releaseDateSource", "releaseDateConfidence"],
+      "derivedMetrics": ["revenueYoY (requires 13+ months)"],
+      "suspectedOwnerModule": "src/lib/analysis/RuleBasedStockAnalyzer.ts + src/lib/onlineValidation/MonthlyRevenueAvailability.ts",
+      "usedInScoring": true,
+      "usedInRenderer": true,
+      "requiresPITGate": true,
+      "pitGateImplemented": true,
+      "pitGateField": "releaseDate",
+      "pitGateRule": "WHERE releaseDate <= asOfDate. Inferred as INFERRED_NEXT_MONTH_10TH when releaseDate is null and allowInferredReleaseDate=true.",
+      "signalFusionWeight_stock": 0.25,
+      "signalFusionWeight_ETF": 0.0,
+      "dbRowCount": 2143,
+      "dbMonthsAvailable": ["2026-02", "2026-03"],
+      "historicalGap": "2025-09 to 2026-01 official TWSE/MOPS CSV not yet acquired",
+      "repairHistory": "P17/P24/P25: releaseDate column added, migrated, backfilled 2143 rows as INFERRED_NEXT_MONTH_10TH",
+      "knownLimitations": [
+        "Historical source gap: 2025-09 to 2026-01 revenue data missing → all P3/P19 corpus rows have missingSources=[MonthlyRevenue]",
+        "P26F4 still WAITING_FOR_OPERATOR_SOURCE",
+        "YoY computation requires >= 13 months; most rows currently insufficient"
+      ],
+      "evidenceFiles": [
+        "src/lib/onlineValidation/MonthlyRevenueAvailability.ts",
+        "outputs/online_validation/p12pit_feature_contract_v1.json",
+        "outputs/online_validation/p24production_backfill_gate.json",
+        "outputs/online_validation/p25post_migration_observability_final_report.md"
+      ]
+    },
+    {
+      "sourceName": "FinancialReport",
+      "sourceFamily": "fundamental",
+      "currentStatus": "NOT_IN_SCORING_NO_PIT_GATE",
+      "knownFields": ["stockId", "year", "quarter", "revenue", "netIncome", "eps", "filingDate (manual)"],
+      "suspectedOwnerModule": "src/lib/fundamental/FinancialReportSync.ts (sync only, not scoring)",
+      "usedInScoring": false,
+      "usedInRenderer": false,
+      "requiresPITGate": true,
+      "pitGateImplemented": false,
+      "pitGateField": null,
+      "pitGateNote": "Would require filingDate or availabilityDate <= asOfDate (NOT periodEndDate or fiscalQuarter)",
+      "signalFusionWeight_stock": 0,
+      "signalFusionWeight_ETF": 0,
+      "knownLimitations": [
+        "No availability-date governance in current schema",
+        "P26C drafted availabilityDate contract v0 but not implemented",
+        "No production integration; real source is manual TWSE"
+      ],
+      "evidenceFiles": [
+        "src/lib/fundamental/FinancialReportSync.ts",
+        "outputs/online_validation/p26c_financial_report_availability_contract_v0.json",
+        "outputs/online_validation/p12pit_feature_contract_v1.json"
+      ]
+    },
+    {
+      "sourceName": "NewsEvent",
+      "sourceFamily": "event_and_news",
+      "currentStatus": "NOT_IN_SCORING_READ_ONLY_METADATA",
+      "knownFields": ["publishedAt (DateTime)", "ingestedAt (DateTime, NOT for PIT)", "title", "symbol", "source"],
+      "suspectedOwnerModule": "src/lib/events/EventIngestionService.ts",
+      "usedInScoring": false,
+      "usedInRenderer": false,
+      "requiresPITGate": true,
+      "pitGateImplemented": false,
+      "pitGateField": "publishedAt",
+      "pitGateNote": "publishedAt <= asOfDate. ingestedAt must NOT be used as PIT gate. P26B drafted PIT contract v0.",
+      "signalFusionWeight_stock": 0,
+      "signalFusionWeight_ETF": 0,
+      "p26bContract": "p26b-event-news-pit-contract-v0 (pitStatus=READ_ONLY_METADATA_ONLY)",
+      "knownLimitations": [
+        "Mock events currently mixed with RSS events in live path",
+        "publishedAt may default to ingest time when not available from source",
+        "No real source with verified PIT-safe publishedAt tracking"
+      ],
+      "evidenceFiles": [
+        "src/lib/events/EventIngestionService.ts",
+        "outputs/online_validation/p26b_event_news_pit_contract_v0.json",
+        "outputs/online_validation/p12pit_feature_contract_v1.json"
+      ]
+    },
+    {
+      "sourceName": "Volume_Liquidity",
+      "sourceFamily": "price_and_technicals",
+      "currentStatus": "ACTIVE_IN_SCORING_AS_SUBFEATURE",
+      "note": "Derived from StockQuote (volume field). Gated by the same StockQuote PIT gate. Factored into technicalScore via '量能變化' factor in factorSnapshot.",
+      "pitGateField": "date (inherits from StockQuote)",
+      "usedInScoring": true,
+      "pitGateImplemented": true
+    },
+    {
+      "sourceName": "Momentum_Volatility",
+      "sourceFamily": "price_and_technicals",
+      "currentStatus": "ACTIVE_IN_SCORING_AS_SUBFEATURE",
+      "note": "Derived from StockQuote (price series). Gated by the same StockQuote PIT gate. '近 20 日動能' in factorSnapshot.",
+      "pitGateField": "date (inherits from StockQuote)",
+      "usedInScoring": true,
+      "pitGateImplemented": true
+    }
+  ],
+  "discoverySourcesSearched": [
+    "src/lib/analysis/RuleBasedStockAnalyzer.ts",
+    "src/lib/alpha/SignalFusionEngine.ts",
+    "src/lib/data/AsOfDataGate.ts",
+    "src/lib/data/DataSourceContract.ts",
+    "src/lib/events/EventIngestionService.ts",
+    "src/lib/onlineValidation/MonthlyRevenueAvailability.ts",
+    "outputs/online_validation/p12pit_feature_contract_v1.json",
+    "outputs/online_validation/p26b_event_news_pit_contract_v0.json",
+    "outputs/online_validation/p26c_financial_report_availability_contract_v0.json",
+    "prisma/schema.prisma"
+  ],
+  "disclaimer": "Inventory only. Not investment advice."
+}

@@ -1,0 +1,259 @@
+{
+  "fixturePlanId": "p28b-reason-template-fixture-plan",
+  "generatedAt": "2026-05-19T00:00:00.000Z",
+  "phase": "P28B-REASON-TEMPLATE-COVERAGE-HARDRESET",
+  "testFile": "src/lib/onlineValidation/__tests__/p28b_reason_template_coverage_plan.test.ts",
+  "totalTestCases": 10,
+
+  "fixtures": [
+    {
+      "fixtureId": "FX-01",
+      "name": "no_triggered_factor_single_token",
+      "description": "Single-token reasonSnapshot with factorSnapshot absent — should produce FALLBACK_EMPTY outcome",
+      "input": {
+        "reasonSnapshot": "技術偏多",
+        "factorSnapshot": [],
+        "scoreSnapshot": { "technicalScore": 0, "chipScore": 0, "momentumScore": 0, "revenueScore": 0 },
+        "usedSources": ["Technical"],
+        "missingSources": ["MonthlyRevenue"],
+        "alphaScore": 63,
+        "researchBucket": "NEUTRAL",
+        "asOfDate": "2025-12-19"
+      },
+      "expectedOutcome": "FALLBACK_EMPTY",
+      "expectedAlphaScoreUnchanged": true,
+      "expectedBucketUnchanged": true
+    },
+    {
+      "fixtureId": "FX-02",
+      "name": "no_triggered_factor_with_factor_snapshot",
+      "description": "Single-token reasonSnapshot with factorSnapshot present (10 items) — should produce ENRICHED outcome with context note",
+      "input": {
+        "reasonSnapshot": "技術偏多",
+        "factorSnapshot": [
+          "MA 趨勢：多頭排列（5MA > 10MA > 20MA）",
+          "RSI(14)：52.3（中性區間）",
+          "MACD：多方動能（MACD > Signal）",
+          "近 20 日動能：+3.2%",
+          "布林通道：中軌上方",
+          "法人買超：外資淨買入 1200 張",
+          "投信動向：淨買入 300 張",
+          "成交量：近 5 日均量 112%",
+          "市場情境：大盤多頭",
+          "月營收：資料暫缺"
+        ],
+        "scoreSnapshot": { "technicalScore": 68, "chipScore": 55, "momentumScore": 60, "revenueScore": 0 },
+        "usedSources": ["Technical", "Chip"],
+        "missingSources": ["MonthlyRevenue"],
+        "alphaScore": 68,
+        "researchBucket": "NEUTRAL",
+        "asOfDate": "2025-12-15"
+      },
+      "expectedOutcome": "ENRICHED",
+      "expectedRenderedReasonContains": ["多頭排列", "MACD", "外資"],
+      "expectedAlphaScoreUnchanged": true,
+      "expectedBucketUnchanged": true,
+      "expectedFactorCountGte": 3
+    },
+    {
+      "fixtureId": "FX-03",
+      "name": "missing_monthly_revenue",
+      "description": "Snapshot with MonthlyRevenue in missingSources — rendered reason should include revenue missing note",
+      "input": {
+        "reasonSnapshot": "技術偏多",
+        "factorSnapshot": [
+          "MA 趨勢：多頭排列（5MA > 10MA > 20MA）",
+          "RSI(14)：52.3（中性區間）"
+        ],
+        "scoreSnapshot": { "technicalScore": 68, "chipScore": 55, "momentumScore": 60, "revenueScore": 0 },
+        "usedSources": ["Technical"],
+        "missingSources": ["MonthlyRevenue"],
+        "alphaScore": 68,
+        "researchBucket": "NEUTRAL",
+        "asOfDate": "2025-12-15"
+      },
+      "expectedOutcome": "ENRICHED",
+      "expectedRenderedReasonContains": ["月營收", "暫缺"],
+      "expectedAlphaScoreUnchanged": true,
+      "expectedBucketUnchanged": true
+    },
+    {
+      "fixtureId": "FX-04",
+      "name": "factor_snapshot_empty_fallback",
+      "description": "Single-token reasonSnapshot and empty factorSnapshot with missing revenue — should produce FALLBACK_EMPTY with data note",
+      "input": {
+        "reasonSnapshot": "法人買超",
+        "factorSnapshot": [],
+        "scoreSnapshot": { "technicalScore": 0, "chipScore": 0, "momentumScore": 0, "revenueScore": 0 },
+        "usedSources": [],
+        "missingSources": ["MonthlyRevenue", "Technical"],
+        "alphaScore": 45,
+        "researchBucket": "NEUTRAL",
+        "asOfDate": "2025-11-12"
+      },
+      "expectedOutcome": "FALLBACK_EMPTY",
+      "expectedAlphaScoreUnchanged": true,
+      "expectedBucketUnchanged": true
+    },
+    {
+      "fixtureId": "FX-05",
+      "name": "multiple_factor_families",
+      "description": "Snapshot with technical + chip + momentum factors — all three families should appear in rendered reason",
+      "input": {
+        "reasonSnapshot": "技術偏多",
+        "factorSnapshot": [
+          "MA 趨勢：多頭排列（5MA > 10MA > 20MA）",
+          "MACD：多方動能（MACD > Signal）",
+          "法人買超：外資淨買入 1200 張",
+          "近 20 日動能：+3.2%"
+        ],
+        "scoreSnapshot": { "technicalScore": 68, "chipScore": 55, "momentumScore": 60, "revenueScore": 0 },
+        "usedSources": ["Technical", "Chip"],
+        "missingSources": ["MonthlyRevenue"],
+        "alphaScore": 68,
+        "researchBucket": "NEUTRAL",
+        "asOfDate": "2025-12-15"
+      },
+      "expectedOutcome": "ENRICHED",
+      "expectedRenderedReasonContains": ["MA", "MACD", "外資"],
+      "expectedFactorCountGte": 3,
+      "expectedAlphaScoreUnchanged": true,
+      "expectedBucketUnchanged": true
+    },
+    {
+      "fixtureId": "FX-06",
+      "name": "alpha_score_unchanged",
+      "description": "After rendering, the output alphaScoreUnchanged field must be true",
+      "input": {
+        "reasonSnapshot": "技術偏多",
+        "factorSnapshot": ["MA 趨勢：多頭排列"],
+        "scoreSnapshot": { "technicalScore": 68, "chipScore": 0, "momentumScore": 0, "revenueScore": 0 },
+        "alphaScore": 68,
+        "researchBucket": "NEUTRAL",
+        "asOfDate": "2025-12-15"
+      },
+      "expectedAlphaScoreUnchanged": true,
+      "expectedBucketUnchanged": true,
+      "testAssertion": "result.alphaScoreUnchanged === true"
+    },
+    {
+      "fixtureId": "FX-07",
+      "name": "bucket_unchanged",
+      "description": "After rendering, the output bucketUnchanged field must be true",
+      "input": {
+        "reasonSnapshot": "技術偏多",
+        "factorSnapshot": ["MA 趨勢：多頭排列"],
+        "scoreSnapshot": { "technicalScore": 68, "chipScore": 0, "momentumScore": 0, "revenueScore": 0 },
+        "alphaScore": 68,
+        "researchBucket": "NEUTRAL",
+        "asOfDate": "2025-12-15"
+      },
+      "expectedAlphaScoreUnchanged": true,
+      "expectedBucketUnchanged": true,
+      "testAssertion": "result.bucketUnchanged === true"
+    },
+    {
+      "fixtureId": "FX-08",
+      "name": "no_outcome_fields_in_rendered_text",
+      "description": "renderedReason text must not contain 'alphaScore', 'bucket', 'outcome', 'score' keywords",
+      "input": {
+        "reasonSnapshot": "技術偏多",
+        "factorSnapshot": ["MA 趨勢：多頭排列（5MA > 10MA > 20MA）", "MACD：多方動能"],
+        "scoreSnapshot": { "technicalScore": 68, "chipScore": 55, "momentumScore": 60, "revenueScore": 0 },
+        "alphaScore": 68,
+        "researchBucket": "NEUTRAL",
+        "asOfDate": "2025-12-15"
+      },
+      "expectedRenderedReasonNotContains": ["alphaScore", "bucket", "outcome", "scoring formula"],
+      "expectedAlphaScoreUnchanged": true,
+      "expectedBucketUnchanged": true
+    },
+    {
+      "fixtureId": "FX-09",
+      "name": "forbidden_claims_clean",
+      "description": "renderedReason text must not contain forbidden investment recommendation language",
+      "input": {
+        "reasonSnapshot": "技術偏多",
+        "factorSnapshot": ["MA 趨勢：多頭排列（5MA > 10MA > 20MA）", "MACD：多方動能"],
+        "scoreSnapshot": { "technicalScore": 68, "chipScore": 55, "momentumScore": 60, "revenueScore": 0 },
+        "alphaScore": 68,
+        "researchBucket": "NEUTRAL",
+        "asOfDate": "2025-12-15"
+      },
+      "forbiddenClaimsRegex": "ROI|win-rate|win rate|alpha(?!Score)|edge|profit|outperform|beat|買入|賣出|guaranteed|investment recommendation|投資建議",
+      "expectedForbiddenClaimsCount": 0,
+      "expectedAlphaScoreUnchanged": true,
+      "expectedBucketUnchanged": true
+    },
+    {
+      "fixtureId": "FX-10",
+      "name": "deterministic_output",
+      "description": "Calling renderer twice with same input produces identical output",
+      "input": {
+        "reasonSnapshot": "技術偏多",
+        "factorSnapshot": ["MA 趨勢：多頭排列（5MA > 10MA > 20MA）", "MACD：多方動能", "法人買超：外資淨買入 1200 張"],
+        "scoreSnapshot": { "technicalScore": 68, "chipScore": 55, "momentumScore": 60, "revenueScore": 0 },
+        "alphaScore": 68,
+        "researchBucket": "NEUTRAL",
+        "asOfDate": "2025-12-15"
+      },
+      "testAssertion": "result1.renderedReason === result2.renderedReason",
+      "expectedAlphaScoreUnchanged": true,
+      "expectedBucketUnchanged": true
+    }
+  ],
+
+  "mixedSignalFixtures": [
+    {
+      "fixtureId": "FX-MS-01",
+      "name": "mixed_signal_ma_bearish_macd_bullish",
+      "description": "MA 空頭排列 + MACD 多方動能 → mixed-signal template (covers 00891 cases)",
+      "input": {
+        "reasonSnapshot": "技術偏多",
+        "factorSnapshot": [
+          "MA 趨勢：空頭排列（5MA < 10MA < 20MA）",
+          "MACD：多方動能（MACD > Signal）",
+          "RSI(14)：48.5（中性區間）",
+          "法人買超：外資淨賣出 800 張",
+          "近 20 日動能：-1.2%"
+        ],
+        "scoreSnapshot": { "technicalScore": 63, "chipScore": 45, "momentumScore": 55, "revenueScore": 0 },
+        "usedSources": ["Technical", "Chip"],
+        "missingSources": ["MonthlyRevenue"],
+        "alphaScore": 63,
+        "researchBucket": "NEUTRAL",
+        "asOfDate": "2025-11-12"
+      },
+      "expectedOutcome": "ENRICHED",
+      "expectedRenderedReasonContains": ["分歧", "MACD", "MA"],
+      "expectedRenderedReasonNotContains": ["買入", "賣出", "guaranteed"],
+      "expectedAlphaScoreUnchanged": true,
+      "expectedBucketUnchanged": true
+    }
+  ],
+
+  "scoreSnapshotZeroFixtures": [
+    {
+      "fixtureId": "FX-SZ-01",
+      "name": "ma_bullish_zero_tech_score_infers_direction",
+      "description": "MA 多頭排列 with technicalScore=0 → inferDirectionFromMATrend produces '偏多' not '偏空'",
+      "input": {
+        "maFactorText": "MA 趨勢：多頭排列（5MA > 10MA > 20MA）",
+        "technicalScore": 0
+      },
+      "expectedInferredDirection": "偏多",
+      "testFunction": "inferDirectionFromMATrend"
+    },
+    {
+      "fixtureId": "FX-SZ-02",
+      "name": "ma_bearish_zero_tech_score_infers_direction",
+      "description": "MA 空頭排列 with technicalScore=0 → inferDirectionFromMATrend produces '偏空'",
+      "input": {
+        "maFactorText": "MA 趨勢：空頭排列（5MA < 10MA < 20MA）",
+        "technicalScore": 0
+      },
+      "expectedInferredDirection": "偏空",
+      "testFunction": "inferDirectionFromMATrend"
+    }
+  ]
+}

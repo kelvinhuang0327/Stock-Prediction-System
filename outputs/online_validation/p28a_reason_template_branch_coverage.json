@@ -1,0 +1,33 @@
+{
+  "coverageMapId": "p28a-reason-template-branch-coverage",
+  "generatedAt": "2026-05-15T03:35:50.487Z",
+  "statistics": {
+    "totalFactors": 3,
+    "coveredFactors": 0,
+    "uncoveredFactors": 3,
+    "totalReasonBranches": 0,
+    "deadBranches": 0,
+    "coveragePercentage": "0.00"
+  },
+  "factors": {
+    "all": [
+      "MACD",
+      "RSI",
+      "technicalScore"
+    ],
+    "fromRuleBasedStockAnalyzer": [
+      "MACD",
+      "RSI",
+      "technicalScore"
+    ],
+    "fromSignalFusionEngine": [],
+    "uncovered": [
+      "MACD",
+      "RSI",
+      "technicalScore"
+    ]
+  },
+  "reasonBranches": [],
+  "deadBranches": [],
+  "disclaimer": "Observability only. No investment recommendations."
+}

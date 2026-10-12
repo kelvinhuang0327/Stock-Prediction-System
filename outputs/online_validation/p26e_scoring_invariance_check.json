@@ -1,0 +1,40 @@
+{
+  "phase": "P26E-HARDRESET",
+  "date": "2026-05-13",
+  "totalRows": 9000,
+  "p3Rows": 4500,
+  "p19Rows": 4500,
+  "rowsWithAlphaScore": 0,
+  "mismatchedAlphaScoreCount": 0,
+  "mismatchedBucketCount": 0,
+  "scoringPathSha256Unchanged": true,
+  "scoringFileSha256": {
+    "ActiveScoringSnapshotBuilder.ts": "063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d",
+    "RuleBasedStockAnalyzer.ts": "bc3716cc8e74be304f2e262aac586a61760bb59d6c95e82a575c38e03ea7373d",
+    "SignalFusionEngine.ts": "b8ce3fa3ae63fd7edf6b6067dd8ccea63c02741454b93792e87bfbc1e95d2bf4"
+  },
+  "frozenSha256": {
+    "ActiveScoringSnapshotBuilder.ts": "063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d",
+    "RuleBasedStockAnalyzer.ts": "bc3716cc8e74be304f2e262aac586a61760bb59d6c95e82a575c38e03ea7373d",
+    "SignalFusionEngine.ts": "b8ce3fa3ae63fd7edf6b6067dd8ccea63c02741454b93792e87bfbc1e95d2bf4"
+  },
+  "sha256Details": {
+    "ActiveScoringSnapshotBuilder.ts": {
+      "actual": "063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d",
+      "frozen": "063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d",
+      "matches": true
+    },
+    "RuleBasedStockAnalyzer.ts": {
+      "actual": "bc3716cc8e74be304f2e262aac586a61760bb59d6c95e82a575c38e03ea7373d",
+      "frozen": "bc3716cc8e74be304f2e262aac586a61760bb59d6c95e82a575c38e03ea7373d",
+      "matches": true
+    },
+    "SignalFusionEngine.ts": {
+      "actual": "b8ce3fa3ae63fd7edf6b6067dd8ccea63c02741454b93792e87bfbc1e95d2bf4",
+      "frozen": "b8ce3fa3ae63fd7edf6b6067dd8ccea63c02741454b93792e87bfbc1e95d2bf4",
+      "matches": true
+    }
+  },
+  "readOnlyContextsEnterAlphaScore": false,
+  "status": "SCORING_INVARIANCE_PASS"
+}

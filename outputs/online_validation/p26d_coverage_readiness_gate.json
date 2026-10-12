@@ -1,0 +1,21 @@
+{
+  "phase": "P26D-HARDRESET",
+  "generatedAt": "2026-05-13",
+  "artifactsLoaded": {
+    "monthlyRevCoverage": true,
+    "readOnlyCtxCoverage": true,
+    "replayCovComparison": true,
+    "scoringInvariance": true
+  },
+  "allArtifactsLoaded": true,
+  "scoringInvariancePass": true,
+  "monthlyRevenueCorpusRows": 0,
+  "monthlyRevenueHasCorpusEvidence": false,
+  "sourceMappingRequired": true,
+  "newsEventFixtureOnly": true,
+  "financialReportFixtureOnly": true,
+  "readinessForP26E": "partial",
+  "readinessReason": "MonthlyRevenue context has no corpus evidence in P3/P19 (0 rows). Fixture-only contexts present. Source mapping required before full corpus expansion.",
+  "classification": "COVERAGE_PARTIAL_NEEDS_SOURCE_MAPPING",
+  "disclaimer": "No investment recommendations. No ROI/win-rate/profit/outperform/buy/sell claims."
+}

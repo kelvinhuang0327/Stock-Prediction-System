@@ -1,0 +1,46 @@
+{
+  "phase": "P19-HARDRESET",
+  "part": "C",
+  "pitReplayRunId": "p19-pit-replay-2026-05-12",
+  "pitReplayRunDate": "2026-05-12",
+  "generatedAt": "2026-05-12T05:06:00.026Z",
+  "sourceCorpus": "outputs/online_validation/p3active_scoring_historical_replay_corpus.jsonl",
+  "outputCorpus": "outputs/online_validation/p19active_scoring_pit_replay_corpus.jsonl",
+  "totalRows": 4500,
+  "uniqueSymbols": 25,
+  "uniqueAsOfDates": 60,
+  "horizonDistribution": {
+    "5": 1500,
+    "20": 1500,
+    "60": 1500
+  },
+  "scoringCompletenessStatusDistribution": {
+    "COMPLETE": 3099,
+    "PARTIAL": 1401
+  },
+  "researchBucketDistribution": {
+    "LowPriority": 1158,
+    "Watch": 462,
+    "Neutral": 1401,
+    "Strong": 1479
+  },
+  "monthlyRevenuePitGateStatusDistribution": {
+    "NOT_APPLICABLE_NO_DATA": 4500
+  },
+  "completeAndPartialRatio": 100,
+  "stockQuoteCloseCoverage": 100,
+  "mockDeterministicCount": 0,
+  "pitSafetyViolations": 0,
+  "productionApplyAllowed": false,
+  "productionDbWritten": false,
+  "frozenCorpusLineCounts": {
+    "simulation_snapshot_corpus.jsonl": 60,
+    "p0hardreset_historical_replay_corpus.jsonl": 4500,
+    "p1baseline_historical_replay_corpus.jsonl": 9900,
+    "p3active_scoring_historical_replay_corpus.jsonl": 4500
+  },
+  "validationStatus": "PASS",
+  "gatesPassed": 21,
+  "gatesTotal": 21,
+  "gatesFailed": []
+}

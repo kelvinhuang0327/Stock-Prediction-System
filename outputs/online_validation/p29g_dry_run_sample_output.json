@@ -1,0 +1,93 @@
+{
+  "output": {
+    "runId": "p29g-dry-run-p29g-fixture-v1-2026-01-15-p29g-dry-run-candidate-001",
+    "asOfDate": "2026-01-15",
+    "simulationMode": "paper_only",
+    "contractVersion": "p29g-dry-run-runner-v1",
+    "candidateId": "p29g-dry-run-candidate-001",
+    "sourceFeatureSet": "p29a-pit-registry-v1",
+    "sourceFeaturePitStatus": "AVAILABLE_NEEDS_VALIDATION",
+    "inputSnapshotRef": "p29g://input/p29g-dry-run-p29g-fixture-v1-2026-01-15-p29g-dry-run-candidate-001",
+    "outputRef": "p29g://output/p29g-dry-run-p29g-fixture-v1-2026-01-15-p29g-dry-run-candidate-001",
+    "leakageGateStatus": "NOT_EVALUATED_SCAFFOLD_ONLY",
+    "scoringMutation": false,
+    "corpusMutation": false,
+    "optimizerExecuted": false,
+    "realBacktestExecuted": false,
+    "generatedAt": "2026-05-20T07:55:42.923Z",
+    "warnings": [
+      "PAPER ONLY: No real simulation performed.",
+      "PAPER ONLY: No production DB read or write.",
+      "PAPER ONLY: No corpus mutation.",
+      "PAPER ONLY: No scoring / alphaScore / bucket mutation.",
+      "PAPER ONLY: No optimizer executed.",
+      "PAPER ONLY: No real backtest executed.",
+      "FinancialReport remains HIGH_RISK_SOURCE_ABSENT — entersAlphaScore=false.",
+      "NewsEvent remains HIGH_RISK_SOURCE_ABSENT — entersAlphaScore=false.",
+      "Quote/Regime/Chip are PIT_SAFE_VERIFIED for scaffold representation only — next hard gate is PIT Validation Audit (Axis A)."
+    ],
+    "notInvestmentRecommendation": true,
+    "scaffoldNotes": [
+      "dryRun=true (enforced by P29G)",
+      "paperOnly=true (enforced by P29G)",
+      "p29gContractVersion=p29g-dry-run-runner-v1",
+      "seed=p29g-fixture-v1",
+      "Next hard gate: Quote/Regime/Chip PIT Validation Audit (Axis A)",
+      "P29G authorizes dry-run only. Promotion requires CTO approval token per P29C."
+    ],
+    "p29gContractVersion": "p29g-dry-run-runner-v1",
+    "sourceClassifications": [
+      {
+        "sourceName": "Quote",
+        "status": "PIT_SAFE_VERIFIED",
+        "entersAlphaScore": false,
+        "reason": "Quote PIT audit completed in P29F-Repair. PIT_SAFE_VERIFIED for scaffold representation only."
+      },
+      {
+        "sourceName": "Regime",
+        "status": "PIT_SAFE_VERIFIED",
+        "entersAlphaScore": false,
+        "reason": "Regime PIT audit completed in P29F-Repair. PIT_SAFE_VERIFIED for scaffold representation only."
+      },
+      {
+        "sourceName": "Chip",
+        "status": "PIT_SAFE_VERIFIED",
+        "entersAlphaScore": false,
+        "reason": "Chip PIT audit completed in P29F-Repair. PIT_SAFE_VERIFIED for scaffold representation only."
+      },
+      {
+        "sourceName": "MonthlyRevenue",
+        "status": "STRUCTURAL_PLACEHOLDER_ONLY",
+        "entersAlphaScore": false,
+        "reason": "MonthlyRevenue awaiting operator source arrival (P26F4). REPAIRED_BUT_SOURCE_GATED."
+      },
+      {
+        "sourceName": "FinancialReport",
+        "status": "HIGH_RISK_SOURCE_ABSENT",
+        "entersAlphaScore": false,
+        "reason": "FinancialReport source is absent. Source-gated per P29B. filingDate PIT path unverified. MUST NOT enter alphaScore."
+      },
+      {
+        "sourceName": "NewsEvent",
+        "status": "HIGH_RISK_SOURCE_ABSENT",
+        "entersAlphaScore": false,
+        "reason": "NewsEvent source is absent. Source-gated per P29B. publishedAt vs ingestedAt PIT separation unverified. MUST NOT enter alphaScore."
+      }
+    ],
+    "alphaScoreGatingViolations": [],
+    "inputValidationErrors": [],
+    "governanceCheckPassed": true
+  },
+  "leakageGate": {
+    "status": "NOT_EVALUATED_SCAFFOLD_ONLY",
+    "passed": true,
+    "violations": [],
+    "checkedAt": "2026-05-20T07:55:42.924Z",
+    "scaffoldNote": "SCAFFOLD ONLY: PIT validation for Quote/Regime/Chip is the NEXT hard gate (Quote/Regime/Chip PIT Validation Audit). FinancialReport/NewsEvent remain HIGH_RISK_SOURCE_ABSENT and must not enter alphaScore."
+  },
+  "dryRun": true,
+  "paperOnly": true,
+  "scaffoldOnly": true,
+  "p29gContractVersion": "p29g-dry-run-runner-v1",
+  "generatedAt": "2026-05-20T07:55:42.923Z"
+}

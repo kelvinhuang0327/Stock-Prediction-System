@@ -1,0 +1,68 @@
+{
+  "pipeline": "P3-12",
+  "run_ts": "2026-05-05T10:30:38.683221+00:00",
+  "as_of_date": "2026-05-01",
+  "symbols_analyzed": 30,
+  "condition_attribution": {
+    "STOCK_H009_PULLBACK_10D_HOLD": {
+      "close_gt_ma60": 0.479,
+      "return_5d_lt_0": 0.4919,
+      "return_20d_gt_0": 0.4863,
+      "all_conditions": 0.1158
+    },
+    "STOCK_H010_MOM_MODERATE_VOLUME": {
+      "return_20d_gt_0": 0.4953,
+      "volume_zscore_gt_0p5": 0.2411,
+      "all_conditions": 0.1375
+    },
+    "STOCK_H011_NEAR_BREAKOUT_LOW_VOL": {
+      "volatility_low_p25": 0.2689,
+      "close_near_breakout_0p98": 0.2119,
+      "all_conditions": 0.082
+    },
+    "STOCK_H012_RSI_REVERSION_PROBE": {
+      "symbol_in_scope": 0.0333,
+      "all_conditions": 0.0179,
+      "rsi_oversold_lt30": 0.2352,
+      "rsi_overbought_gt70": 0.3027
+    }
+  },
+  "candidate_summaries": [
+    {
+      "candidate_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "total_signal_count": 1850,
+      "avg_signal_rate": 0.1305,
+      "symbols_with_any_signal": 60,
+      "windows_data_insufficient": 31,
+      "total_windows": 60,
+      "likely_failure_mode": "DATA_TOO_SHORT"
+    },
+    {
+      "candidate_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+      "total_signal_count": 2584,
+      "avg_signal_rate": 0.1521,
+      "symbols_with_any_signal": 60,
+      "windows_data_insufficient": 22,
+      "total_windows": 60,
+      "likely_failure_mode": "SIGNAL_NOISY"
+    },
+    {
+      "candidate_id": "STOCK_H011_NEAR_BREAKOUT_LOW_VOL",
+      "total_signal_count": 1308,
+      "avg_signal_rate": 0.0719,
+      "symbols_with_any_signal": 51,
+      "windows_data_insufficient": 47,
+      "total_windows": 60,
+      "likely_failure_mode": "DATA_TOO_SHORT"
+    },
+    {
+      "candidate_id": "STOCK_H012_RSI_REVERSION_PROBE",
+      "total_signal_count": 340,
+      "avg_signal_rate": 0.5459,
+      "symbols_with_any_signal": 2,
+      "windows_data_insufficient": 58,
+      "total_windows": 60,
+      "likely_failure_mode": "DATA_TOO_SHORT"
+    }
+  ]
+}

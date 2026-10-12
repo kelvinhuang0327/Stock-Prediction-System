@@ -1,0 +1,22 @@
+{
+  "totalWindows": 6,
+  "byStatus": {
+    "DUE_FOR_BACKFILL": 4,
+    "NOT_DUE": 2
+  },
+  "byHorizon": {
+    "5D": 2,
+    "20D": 2,
+    "60D": 2
+  },
+  "dueCount": 4,
+  "notDueCount": 2,
+  "blockedCount": 0,
+  "overdueCount": 4,
+  "symbolsDue": [
+    "2330",
+    "2454"
+  ],
+  "earliestDueDate": "2026-05-18",
+  "latestDueDate": "2026-06-08"
+}

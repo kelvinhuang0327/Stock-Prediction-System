@@ -1,0 +1,43 @@
+{
+  "phase": "P31",
+  "capturedAt": "2026-05-21T00:00:00.000Z",
+  "artifactChain": [
+    {
+      "phase": "P29K",
+      "description": "MonthlyRevenue releaseDate sync repair + INFERRED_NEXT_MONTH_10TH policy",
+      "keyOutcome": "syncService.ts repaired to write releaseDate on every upsert. Policy: releaseDateSource=INFERRED_NEXT_MONTH_10TH, releaseDateConfidence=LOW. TWSE API confirmed to never provide explicit releaseDate — conservative fallback is the only option.",
+      "nullRowsAfter": 0,
+      "entersAlphaScore": false
+    },
+    {
+      "phase": "P29L",
+      "description": "MonthlyRevenue historical NULL backfill plan + Chip availableAt migration readiness",
+      "keyOutcome": "Backfill script created (dryRun=true by default). DB query confirmed 0 NULL rows — backfill is a no-op. All 2143 rows already have releaseDate from P29K sync repair.",
+      "nullRowsAfter": 0,
+      "entersAlphaScore": false
+    },
+    {
+      "phase": "P30",
+      "description": "Chip availableAt schema migration readiness + MonthlyRevenue backfill apply gate",
+      "keyOutcome": "Chip schema migration SQL artifact created (not applied). Backfill dry-run confirmed 0 NULL rows. 100% coverage verified. MonthlyRevenue source-present dry-run gate readiness confirmed.",
+      "nullRowsAfter": 0,
+      "coveragePct": 100,
+      "entersAlphaScore": false
+    },
+    {
+      "phase": "P31",
+      "description": "MonthlyRevenue source-present dry-run gate — formal contract and scan",
+      "keyOutcome": "MonthlyRevenueDryRunContract + MonthlyRevenueSourcePresentDryRunGate modules created. DB scan confirms 2143/2143 rows READY. 0 blocked rows. overallClassification=MONTHLY_REVENUE_DRY_RUN_READY.",
+      "totalRows": 2143,
+      "readyRows": 2143,
+      "blockedRows": 0,
+      "overallClassification": "MONTHLY_REVENUE_DRY_RUN_READY",
+      "entersAlphaScore": false
+    }
+  ],
+  "policyInEffect": "INFERRED_NEXT_MONTH_10TH",
+  "releaseDateSource": "INFERRED_NEXT_MONTH_10TH",
+  "releaseDateConfidence": "LOW",
+  "entersAlphaScore": false,
+  "disclaimer": "Structural audit chain only. Does not constitute investment advice. MonthlyRevenue entersAlphaScore = false ALWAYS. Results must not be used as buy/sell/hold signals."
+}

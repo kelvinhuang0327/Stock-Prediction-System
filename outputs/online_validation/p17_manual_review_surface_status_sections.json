@@ -1,0 +1,45 @@
+[
+  {
+    "sectionId": "status_overview",
+    "title": "Manual Review Status",
+    "items": [
+      {
+        "id": "workflow_status",
+        "label": "Workflow Status",
+        "value": "READY_FOR_MANUAL_REVIEW",
+        "status": "OK"
+      },
+      {
+        "id": "review_status",
+        "label": "Review Status",
+        "value": "READY_FOR_HUMAN_REVIEW",
+        "status": "OK"
+      },
+      {
+        "id": "gate_status",
+        "label": "Gate Status",
+        "value": "READY_FOR_MANUAL_REVIEW",
+        "status": "OK"
+      },
+      {
+        "id": "decision",
+        "label": "Decision",
+        "value": "ALLOW_MANUAL_REVIEW_ONLY",
+        "status": "OK"
+      },
+      {
+        "id": "corpus_unchanged",
+        "label": "Corpus Unchanged",
+        "value": true,
+        "status": "OK"
+      },
+      {
+        "id": "review_only",
+        "label": "Review Only Indicator",
+        "value": true,
+        "status": "OK",
+        "note": "Manual review only, not approval complete."
+      }
+    ]
+  }
+]

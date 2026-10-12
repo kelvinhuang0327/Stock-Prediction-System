@@ -1,0 +1,324 @@
+{
+  "program": "Stock Prediction System",
+  "task": "P4-01S — Evidence-First Data Foundation & Phase 1 Readiness Audit",
+  "workstream": "C — Industry/Sector/ETF Mapping Audit",
+  "generated_at": "2026-05-06T10:00:00Z",
+  "evidence_method": "Direct SQLite queries on prisma/dev.db + TWSE TPEX industry code reference",
+  "mapping_status": "PARTIAL — industry code → name mapping built from TWSE standard; sector grouping and ETF heuristic derived",
+  "stock_universe": {
+    "total_stocks": 1358,
+    "with_industry_code": 1084,
+    "without_industry_code": 274,
+    "coverage_pct": 79.8
+  },
+  "industry_code_mapping": {
+    "01": {
+      "name_zh": "水泥工業",
+      "name_en": "Cement",
+      "sector_group": "Materials",
+      "stock_count": null,
+      "market_index_name": "水泥類指數",
+      "market_index_exists": true
+    },
+    "02": {
+      "name_zh": "食品工業",
+      "name_en": "Food",
+      "sector_group": "Consumer Staples",
+      "stock_count": 25,
+      "market_index_name": "食品類指數",
+      "market_index_exists": true
+    },
+    "03": {
+      "name_zh": "塑膠工業",
+      "name_en": "Plastics",
+      "sector_group": "Materials",
+      "stock_count": 21,
+      "market_index_name": "塑膠類指數",
+      "market_index_exists": true
+    },
+    "04": {
+      "name_zh": "紡織纖維",
+      "name_en": "Textiles",
+      "sector_group": "Consumer Discretionary",
+      "stock_count": 42,
+      "market_index_name": "紡織纖維類指數",
+      "market_index_exists": true
+    },
+    "05": {
+      "name_zh": "電機機械",
+      "name_en": "Electrical Machinery",
+      "sector_group": "Industrials",
+      "stock_count": 50,
+      "market_index_name": "電機機械類指數",
+      "market_index_exists": true
+    },
+    "06": {
+      "name_zh": "電器電纜",
+      "name_en": "Electrical Cable",
+      "sector_group": "Industrials",
+      "stock_count": null,
+      "market_index_name": "電器電纜類指數",
+      "market_index_exists": true
+    },
+    "08": {
+      "name_zh": "化學工業",
+      "name_en": "Chemicals",
+      "sector_group": "Materials",
+      "stock_count": null,
+      "market_index_name": "化學類指數",
+      "market_index_exists": true
+    },
+    "09": {
+      "name_zh": "生技醫療業",
+      "name_en": "Biotech/Medical",
+      "sector_group": "Health Care",
+      "stock_count": null,
+      "market_index_name": "生技醫療類指數",
+      "market_index_exists": true
+    },
+    "10": {
+      "name_zh": "鋼鐵工業",
+      "name_en": "Steel",
+      "sector_group": "Materials",
+      "stock_count": 31,
+      "market_index_name": "鋼鐵類指數",
+      "market_index_exists": true
+    },
+    "11": {
+      "name_zh": "橡膠工業",
+      "name_en": "Rubber",
+      "sector_group": "Materials",
+      "stock_count": null,
+      "market_index_name": "橡膠類指數",
+      "market_index_exists": true
+    },
+    "12": {
+      "name_zh": "汽車工業",
+      "name_en": "Automotive",
+      "sector_group": "Consumer Discretionary",
+      "stock_count": 43,
+      "market_index_name": "汽車類指數",
+      "market_index_exists": true
+    },
+    "14": {
+      "name_zh": "電子工業",
+      "name_en": "Electronics (General)",
+      "sector_group": "Information Technology",
+      "stock_count": 55,
+      "market_index_name": "電子工業類指數",
+      "market_index_exists": true
+    },
+    "15": {
+      "name_zh": "建材營造",
+      "name_en": "Construction",
+      "sector_group": "Real Estate",
+      "stock_count": 27,
+      "market_index_name": "建材營造類指數",
+      "market_index_exists": true
+    },
+    "16": {
+      "name_zh": "航運業",
+      "name_en": "Shipping/Transport",
+      "sector_group": "Industrials",
+      "stock_count": null,
+      "market_index_name": "航運類指數",
+      "market_index_exists": true
+    },
+    "17": {
+      "name_zh": "觀光事業",
+      "name_en": "Tourism/Hospitality",
+      "sector_group": "Consumer Discretionary",
+      "stock_count": 32,
+      "market_index_name": "觀光餐旅類指數",
+      "market_index_exists": true
+    },
+    "18": {
+      "name_zh": "金融保險",
+      "name_en": "Financial / Insurance",
+      "sector_group": "Financials",
+      "stock_count": null,
+      "market_index_name": "金融保險類指數",
+      "market_index_exists": true
+    },
+    "20": {
+      "name_zh": "其他業",
+      "name_en": "Other Industries",
+      "sector_group": "Other",
+      "stock_count": 51,
+      "market_index_name": "其他類指數",
+      "market_index_exists": true
+    },
+    "21": {
+      "name_zh": "化學生技醫療業",
+      "name_en": "Chemical / Biotech / Medical",
+      "sector_group": "Health Care",
+      "stock_count": 28,
+      "market_index_name": "化學生技醫療類指數",
+      "market_index_exists": true
+    },
+    "22": {
+      "name_zh": "半導體業",
+      "name_en": "Semiconductors",
+      "sector_group": "Information Technology",
+      "stock_count": 58,
+      "market_index_name": "半導體類指數",
+      "market_index_exists": true
+    },
+    "23": {
+      "name_zh": "電腦及週邊設備業",
+      "name_en": "Computer / Peripherals",
+      "sector_group": "Information Technology",
+      "stock_count": null,
+      "market_index_name": "電腦及週邊設備類指數",
+      "market_index_exists": true
+    },
+    "24": {
+      "name_zh": "光電業",
+      "name_en": "Optoelectronics",
+      "sector_group": "Information Technology",
+      "stock_count": 94,
+      "market_index_name": "光電類指數",
+      "market_index_exists": true
+    },
+    "25": {
+      "name_zh": "通信網路業",
+      "name_en": "Communications / Networking",
+      "sector_group": "Communication Services",
+      "stock_count": 64,
+      "market_index_name": "通信網路類指數",
+      "market_index_exists": true
+    },
+    "26": {
+      "name_zh": "電子零組件業",
+      "name_en": "Electronic Components",
+      "sector_group": "Information Technology",
+      "stock_count": 68,
+      "market_index_name": "電子零組件類指數",
+      "market_index_exists": true
+    },
+    "27": {
+      "name_zh": "電子通路業",
+      "name_en": "Electronics Distribution",
+      "sector_group": "Information Technology",
+      "stock_count": 45,
+      "market_index_name": "電子通路類指數",
+      "market_index_exists": true
+    },
+    "28": {
+      "name_zh": "資訊服務業",
+      "name_en": "IT Services / Software",
+      "sector_group": "Information Technology",
+      "stock_count": 104,
+      "market_index_name": "資訊服務類指數",
+      "market_index_exists": true
+    },
+    "29": {
+      "name_zh": "其他電子業",
+      "name_en": "Other Electronics",
+      "sector_group": "Information Technology",
+      "stock_count": 21,
+      "market_index_name": "其他電子類指數",
+      "market_index_exists": true
+    },
+    "30": {
+      "name_zh": "油電燃氣業",
+      "name_en": "Oil / Gas / Utilities",
+      "sector_group": "Utilities",
+      "stock_count": null,
+      "market_index_name": "油電燃氣類指數",
+      "market_index_exists": true
+    },
+    "31": {
+      "name_zh": "綠能環保",
+      "name_en": "Green Energy / Environment",
+      "sector_group": "Utilities",
+      "stock_count": 46,
+      "market_index_name": "綠能環保類指數",
+      "market_index_exists": true
+    },
+    "35": {
+      "name_zh": "運動休閒",
+      "name_en": "Sports / Leisure",
+      "sector_group": "Consumer Discretionary",
+      "stock_count": 25,
+      "market_index_name": "運動休閒類指數",
+      "market_index_exists": true
+    },
+    "36": {
+      "name_zh": "居家生活",
+      "name_en": "Home Life / Lifestyle",
+      "sector_group": "Consumer Discretionary",
+      "stock_count": null,
+      "market_index_name": "居家生活類指數",
+      "market_index_exists": true
+    },
+    "37": {
+      "name_zh": "數位雲端",
+      "name_en": "Digital Cloud",
+      "sector_group": "Information Technology",
+      "stock_count": null,
+      "market_index_name": "數位雲端類指數",
+      "market_index_exists": true
+    },
+    "38": {
+      "name_zh": "創新板",
+      "name_en": "Innovation Board",
+      "sector_group": "Other",
+      "stock_count": null,
+      "market_index_name": "臺灣創新板指數",
+      "market_index_exists": true
+    },
+    "91": {
+      "name_zh": "上櫃其他",
+      "name_en": "OTC Other",
+      "sector_group": "Other",
+      "stock_count": null,
+      "market_index_name": null,
+      "market_index_exists": false,
+      "note": "Upper OTC market general category — exact code needs TPEX reference verification"
+    }
+  },
+  "sector_group_summary": {
+    "Information Technology": ["14", "22", "23", "24", "25", "26", "27", "28", "29", "37"],
+    "Materials": ["01", "03", "08", "10", "11"],
+    "Industrials": ["05", "06", "16"],
+    "Consumer Discretionary": ["04", "12", "17", "35", "36"],
+    "Consumer Staples": ["02"],
+    "Health Care": ["09", "21"],
+    "Financials": ["18"],
+    "Real Estate": ["15"],
+    "Communication Services": ["25"],
+    "Utilities": ["30", "31"],
+    "Other": ["20", "38", "91"]
+  },
+  "etf_classification": {
+    "method": "SYMBOL_HEURISTIC",
+    "heuristic": "Symbols starting with '00' are likely ETFs (e.g. 0050, 0056, 00878). Symbols 4-digit starting with other digits are individual stocks.",
+    "etf_flag_in_schema": false,
+    "note": "No ETF/stock flag exists in Stock table schema. Must derive from symbol pattern at query time.",
+    "known_etf_prefixes": ["00"]
+  },
+  "listed_otc_classification": {
+    "listed_otc_flag_in_schema": false,
+    "evidence": "No market (listed/OTC) field found in Stock table. Stock.industry codes in range 01-38 are primarily TWSE-listed; code 91 may indicate OTC. Cannot reliably separate without additional data source.",
+    "partial_heuristic": "OTC stocks tend to have industry code 91 or certain symbol patterns. Full separation requires TPEX stock list cross-reference."
+  },
+  "unknowns_and_gaps": [
+    "Stock counts not verified for codes 01, 06, 08, 09, 11, 16, 18, 23, 30, 36, 37, 38, 91 — requires direct query per code",
+    "Code 91 exact meaning requires TPEX reference verification",
+    "274 stocks have NULL industry code — cannot be classified",
+    "ETF classification relies on symbol heuristic only — no schema flag",
+    "Listed vs OTC separation not reliable without TPEX cross-reference",
+    "MarketIndex sector-to-industry-code mapping built from name pattern matching — not from official TWSE crosswalk table"
+  ],
+  "market_index_sector_alignment": {
+    "status": "PARTIAL",
+    "method": "Name pattern matching — Chinese index name → industry code",
+    "confirmed_mappings": 28,
+    "unconfirmed": 5,
+    "gaps": [
+      "Mapping is string-based, not from official TWSE sector-index crosswalk",
+      "Some codes (91, 38, 20) have no clear MarketIndex counterpart"
+    ]
+  }
+}

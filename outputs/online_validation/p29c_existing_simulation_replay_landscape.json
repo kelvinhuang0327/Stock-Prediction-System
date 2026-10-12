@@ -1,0 +1,146 @@
+{
+  "phase": "P29C",
+  "part": "B - Existing Simulation / Replay Landscape",
+  "generatedAt": "2026-05-25T00:00:00Z",
+  "scanMethod": "codebase search + artifact inspection",
+  "modules": [
+    {
+      "path": "src/lib/backtest/BacktestRunner.ts",
+      "role": "Core backtest execution engine — runs trades against historical price series",
+      "usesFrozenCorpus": false,
+      "containsOutcomeFields": true,
+      "pitRisk": "MEDIUM — uses date-based price queries; needs explicit PIT gate verification",
+      "currentStatus": "EXISTS_NOT_FORMALLY_CONTRACTED",
+      "safeToReference": true,
+      "forbiddenForScoring": false,
+      "notes": "Provides BacktestConfig / TradeResult interfaces. Not currently wired to active scoring corpus."
+    },
+    {
+      "path": "src/lib/backtest/WalkForwardEngine.ts",
+      "role": "Walk-forward validation: splits history into train/test windows, computes hitRate / stability",
+      "usesFrozenCorpus": false,
+      "containsOutcomeFields": true,
+      "pitRisk": "MEDIUM — must verify that test windows use only data from before test period end",
+      "currentStatus": "EXISTS_NOT_FORMALLY_CONTRACTED",
+      "safeToReference": true,
+      "forbiddenForScoring": false,
+      "notes": "WalkForwardResult has excessReturn / hitRate. Not contaminating scoring input."
+    },
+    {
+      "path": "src/lib/backtest/WalkForwardObservabilityRunner.ts",
+      "role": "Runs walk-forward with observability output",
+      "usesFrozenCorpus": false,
+      "containsOutcomeFields": true,
+      "pitRisk": "LOW-MEDIUM",
+      "currentStatus": "EXISTS_NOT_FORMALLY_CONTRACTED",
+      "safeToReference": true,
+      "forbiddenForScoring": false,
+      "notes": "Observability artifact only."
+    },
+    {
+      "path": "src/lib/onlineValidation/PitSafeLedgerReplayEngine.ts",
+      "role": "PIT-safe ledger replay — replays portfolio decisions using historical data with strict asOf gating",
+      "usesFrozenCorpus": true,
+      "containsOutcomeFields": false,
+      "pitRisk": "LOW — explicitly PIT-safe by design",
+      "currentStatus": "EXISTS_PIT_SAFE",
+      "safeToReference": true,
+      "forbiddenForScoring": false,
+      "notes": "Key replay engine with PIT gate already enforced."
+    },
+    {
+      "path": "src/lib/onlineValidation/RealPriceOutcomeResolver.ts",
+      "role": "Resolves entry price (PIT-safe: date <= asOfDate) and outcome price (date <= outcomeDate) for horizon evaluation",
+      "usesFrozenCorpus": false,
+      "containsOutcomeFields": true,
+      "pitRisk": "LOW — explicitly separates entry (PIT-safe) from outcome (post-asOf)",
+      "currentStatus": "EXISTS_OUTCOME_ISOLATED",
+      "safeToReference": true,
+      "forbiddenForScoring": true,
+      "notes": "outcomePrice / returnPctByHorizon / realizedReturnClass are outcome-only. Must never feed back into scoring input."
+    },
+    {
+      "path": "src/lib/onlineValidation/SimulationSnapshotCorpusAccumulator.ts",
+      "role": "Accumulates simulation snapshots into the simulation corpus",
+      "usesFrozenCorpus": true,
+      "containsOutcomeFields": false,
+      "pitRisk": "LOW",
+      "currentStatus": "EXISTS_CORPUS_FROZEN",
+      "safeToReference": true,
+      "forbiddenForScoring": false,
+      "notes": "simulation_snapshot_corpus.jsonl: 60 entries, 2 symbols (2330, 2317 or similar), 10 dates, qualityStatus=BLOCKED."
+    },
+    {
+      "path": "src/lib/onlineValidation/ReplaySimulationSnapshotEngine.ts",
+      "role": "Builds replay simulation snapshots for the simulation corpus",
+      "usesFrozenCorpus": true,
+      "containsOutcomeFields": false,
+      "pitRisk": "LOW",
+      "currentStatus": "EXISTS_NOT_FORMALLY_CONTRACTED",
+      "safeToReference": true,
+      "forbiddenForScoring": false
+    },
+    {
+      "path": "src/lib/onlineValidation/ReplaySimulationSnapshotAggregator.ts",
+      "role": "Aggregates replay simulation results",
+      "usesFrozenCorpus": true,
+      "containsOutcomeFields": false,
+      "pitRisk": "LOW",
+      "currentStatus": "EXISTS_NOT_FORMALLY_CONTRACTED",
+      "safeToReference": true,
+      "forbiddenForScoring": false
+    },
+    {
+      "path": "src/lib/onlineValidation/LedgerReplayDatasetBuilder.ts",
+      "role": "Builds ledger replay datasets from shadow prediction log",
+      "usesFrozenCorpus": false,
+      "containsOutcomeFields": false,
+      "pitRisk": "LOW",
+      "currentStatus": "EXISTS_NOT_FORMALLY_CONTRACTED",
+      "safeToReference": true,
+      "forbiddenForScoring": false
+    },
+    {
+      "path": "src/lib/onlineValidation/OutcomeBackfillCandidateSelector.ts",
+      "role": "Selects candidates for outcome backfill (shadow log entries ready for outcome resolution)",
+      "usesFrozenCorpus": false,
+      "containsOutcomeFields": true,
+      "pitRisk": "LOW — outcome is post-asOf by design",
+      "currentStatus": "EXISTS_OUTCOME_ISOLATED",
+      "safeToReference": true,
+      "forbiddenForScoring": true,
+      "notes": "Outcome data flows OUT of here, not into scoring."
+    },
+    {
+      "path": "src/lib/autonomous/SimulationExecutionEngine.ts",
+      "role": "Autonomous simulation engine with wall-clock override and future-quote leakage prevention",
+      "usesFrozenCorpus": false,
+      "containsOutcomeFields": false,
+      "pitRisk": "MEDIUM — has simulationDate override; leakage guard exists but not formally audited",
+      "currentStatus": "EXISTS_AUTONOMOUS_PATH",
+      "safeToReference": false,
+      "forbiddenForScoring": false,
+      "notes": "Part of autonomous path which has known timezone/double-execution issues (P27 audit flagged). Do not use in P29C paper contract directly."
+    },
+    {
+      "path": "outputs/online_validation/simulation_snapshot_corpus.jsonl",
+      "role": "Frozen simulation corpus — 60 entries, 2 symbols, 10 asOfDates",
+      "usesFrozenCorpus": true,
+      "containsOutcomeFields": false,
+      "pitRisk": "LOW",
+      "currentStatus": "FROZEN_BLOCKED",
+      "safeToReference": true,
+      "forbiddenForScoring": false,
+      "notes": "qualityStatus field absent from rows; corpusVersion=sim-corpus-v0; labeled BLOCKED in roadmap (coverageRatio 0.2333)."
+    }
+  ],
+  "knownGaps": [
+    "No unified simulation contract document exists yet (P29C creates it)",
+    "BacktestRunner is not wired to PIT feature registry",
+    "WalkForwardEngine test windows not verified against PIT registry",
+    "SimulationExecutionEngine has autonomous-path risks (timezone, double execution)",
+    "simulation_snapshot_corpus has only 2 symbols — not optimizer-ready",
+    "No outcome isolation contract exists (P29C creates it)"
+  ],
+  "disclaimer": "Landscape review only. Not investment advice."
+}

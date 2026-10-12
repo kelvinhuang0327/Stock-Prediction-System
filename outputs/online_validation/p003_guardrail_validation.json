@@ -1,0 +1,38 @@
+{
+  "task": "P0-03",
+  "title": "Guardrail Validation",
+  "date": "2026-05-07",
+  "classification": "research_tool_only",
+  "noAutoTrading": true,
+  "noEdgeClaim": true,
+  "noPerformanceClaim": true,
+  "noDBWrite": true,
+  "noExternalAPI": true,
+  "noLLMCall": true,
+  "noStrategyMutation": true,
+  "guardrails": [
+    { "check": "no DB write in any P0-03 code path", "result": "PASS" },
+    { "check": "no external API call in P0-03 code paths", "result": "PASS" },
+    { "check": "no LLM call in P0-03 code paths", "result": "PASS" },
+    { "check": "no strategy weight mutation", "result": "PASS" },
+    { "check": "no StrategySignal write", "result": "PASS" },
+    { "check": "no Prediction write", "result": "PASS" },
+    { "check": "asOf params backward-compatible (optional)", "result": "PASS" },
+    { "check": "T-03 / T-04 / T-09 / T-10 / T-12 regression preserved", "result": "PASS" },
+    { "check": "P0-01 / P0-02A regression preserved", "result": "PASS" },
+    { "check": "history route future rows excluded or documented", "result": "PASS" },
+    { "check": "backtest route date <= asOfDate for stockQuote", "result": "PASS" },
+    { "check": "validate route date <= asOfDate for stockQuote", "result": "PASS" },
+    { "check": "ops route includes asOfReadiness block", "result": "PASS" },
+    { "check": "InstitutionalChip date <= asOfDate", "result": "PASS" },
+    { "check": "MarketIndex via MarketRegimeEngine", "result": "AUDIT_ONLY" },
+    { "check": "20 suites / 476 tests PASS in full regression", "result": "PASS" },
+    {
+      "check": "forbiddenTermsChecked",
+      "forbiddenTermsChecked": ["buy","sell","signal","roi","win_rate","alpha","edge","profit","recommendation","outperform","guaranteed","auto trading","H001","H002","H003","H004","H005","H006","H007","H008","H009","H010","H011","H012"],
+      "result": "PASS",
+      "note": "None of the above appear as new artifact field names or conclusion statements in P0-03 artifacts"
+    }
+  ],
+  "overallGuardrailStatus": "PASS"
+}

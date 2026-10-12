@@ -1,0 +1,51 @@
+{
+  "readiness_id": "T08_READINESS_DECISION",
+  "decision_date": "2026-05-06",
+  "generated_at": "2026-05-06T14:49:08.011690",
+  "t08_status": "COMPLETE",
+  "final_classification": "T08_MARKET_REGIME_RESULT_PERSISTENCE_COMPLETE",
+  "decisions": {
+    "market_regime_result_schema_complete": true,
+    "db_table_created": true,
+    "persistence_dry_run_pass": true,
+    "persistence_apply_pass": true,
+    "t07_pipeline_has_persistence_stage": true,
+    "pipeline_apply_pass": true,
+    "can_enter_p4_04_formal_validation": true,
+    "can_connect_typescript_daily_report_engine": true,
+    "needs_scheduler_lane_integration": false,
+    "has_pit_leakage_risk": false,
+    "has_h001_h012_leakage_risk": false,
+    "has_buy_sell_signal_leakage_risk": false
+  },
+  "evidence": {
+    "mrr_row_count": 300,
+    "mrr_max_date": "2026-05-06",
+    "pipeline_stages": 9,
+    "guardrail_result": "21/21 PASS",
+    "schema_migration": "npx prisma db push (additive, exit 0)",
+    "forbidden_fields_in_schema": 0,
+    "h001_h012_in_rows": 0,
+    "duplicate_records": 0
+  },
+  "next_steps": {
+    "P0_Immediate": [
+      "P4-04: Formal MarketRegime Validation walk-forward consistency across BULL/BEAR/SIDEWAYS/HIGH_VOLATILITY (PIT-safe, rule-only, no ROI claims)"
+    ],
+    "P1_Next": [
+      "T-09: TypeScript DailyReportEngine integration via Prisma Client in Next.js API route",
+      "T-10: Scheduler lane integration market_regime_persistence as Python subprocess lane"
+    ],
+    "P2_Deferred": [
+      "Production deployment gating review",
+      "MarketRegimeResult archival policy (retention window)",
+      "Data freshness alerts for MarketRegimeResult staleness"
+    ],
+    "Do_Not_Continue": [
+      "H001-H012 revival or any hypothesis-based strategy validation",
+      "ROI / win-rate / alpha computation from regime labels",
+      "Regime-as-edge claims without formal P4-04 validation",
+      "Production DB writes without gating review"
+    ]
+  }
+}

@@ -1,0 +1,166 @@
+{
+  "timestamp": "2026-01-21T14:40:05.557906",
+  "total_simulations": 10,
+  "top_discoveries": [
+    {
+      "params": {
+        "ma_period": 20,
+        "revenue_yoy_threshold": 42.30626961075367,
+        "volatility_threshold": 2.4875632671158003,
+        "stop_loss": 0.147,
+        "take_profit": 0.396,
+        "time_stop": 22
+      },
+      "metrics": {
+        "total_return": 12.04528500000001,
+        "win_rate": 0.8,
+        "sharpe": 0,
+        "trades": 5
+      }
+    },
+    {
+      "params": {
+        "ma_period": 20,
+        "revenue_yoy_threshold": 38.964531182379304,
+        "volatility_threshold": 3.332723607177214,
+        "stop_loss": 0.068,
+        "take_profit": 0.29,
+        "time_stop": 23
+      },
+      "metrics": {
+        "total_return": 8.804255000000005,
+        "win_rate": 0.8,
+        "sharpe": 0,
+        "trades": 5
+      }
+    },
+    {
+      "params": {
+        "ma_period": 10,
+        "revenue_yoy_threshold": 10.643977129900257,
+        "volatility_threshold": 3.3150166261179193,
+        "stop_loss": 0.056,
+        "take_profit": 0.232,
+        "time_stop": 48
+      },
+      "metrics": {
+        "total_return": -4.848222999999998,
+        "win_rate": 0.25,
+        "sharpe": 0,
+        "trades": 4
+      }
+    },
+    {
+      "params": {
+        "ma_period": 20,
+        "revenue_yoy_threshold": 41.02206569309125,
+        "volatility_threshold": 3.7752632397362564,
+        "stop_loss": 0.113,
+        "take_profit": 0.196,
+        "time_stop": 39
+      },
+      "metrics": {
+        "total_return": -6.1952479999999985,
+        "win_rate": 0.3333333333333333,
+        "sharpe": 0,
+        "trades": 3
+      }
+    },
+    {
+      "params": {
+        "ma_period": 20,
+        "revenue_yoy_threshold": 15.9482002342531,
+        "volatility_threshold": 4.4368374094958565,
+        "stop_loss": 0.113,
+        "take_profit": 0.209,
+        "time_stop": 56
+      },
+      "metrics": {
+        "total_return": -6.403747999999998,
+        "win_rate": 0.3333333333333333,
+        "sharpe": 0,
+        "trades": 3
+      }
+    },
+    {
+      "params": {
+        "ma_period": 10,
+        "revenue_yoy_threshold": 43.335768768545655,
+        "volatility_threshold": 4.046711879088331,
+        "stop_loss": 0.064,
+        "take_profit": 0.463,
+        "time_stop": 57
+      },
+      "metrics": {
+        "total_return": -7.334553000000003,
+        "win_rate": 0.0,
+        "sharpe": 0,
+        "trades": 2
+      }
+    },
+    {
+      "params": {
+        "ma_period": 5,
+        "revenue_yoy_threshold": 41.961739040126744,
+        "volatility_threshold": 3.737347289732308,
+        "stop_loss": 0.07,
+        "take_profit": 0.43,
+        "time_stop": 35
+      },
+      "metrics": {
+        "total_return": -7.334553000000003,
+        "win_rate": 0.0,
+        "sharpe": 0,
+        "trades": 2
+      }
+    },
+    {
+      "params": {
+        "ma_period": 5,
+        "revenue_yoy_threshold": 35.89428603995691,
+        "volatility_threshold": 3.5850590270627998,
+        "stop_loss": 0.083,
+        "take_profit": 0.325,
+        "time_stop": 53
+      },
+      "metrics": {
+        "total_return": -7.612553000000003,
+        "win_rate": 0.0,
+        "sharpe": 0,
+        "trades": 2
+      }
+    },
+    {
+      "params": {
+        "ma_period": 10,
+        "revenue_yoy_threshold": 20.919792743872794,
+        "volatility_threshold": 4.050282068406563,
+        "stop_loss": 0.131,
+        "take_profit": 0.261,
+        "time_stop": 31
+      },
+      "metrics": {
+        "total_return": -8.622758000000008,
+        "win_rate": 0.4,
+        "sharpe": 0,
+        "trades": 5
+      }
+    },
+    {
+      "params": {
+        "ma_period": 10,
+        "revenue_yoy_threshold": 49.276441961535916,
+        "volatility_threshold": 2.5891513482562205,
+        "stop_loss": 0.089,
+        "take_profit": 0.247,
+        "time_stop": 29
+      },
+      "metrics": {
+        "total_return": -9.78094800000001,
+        "win_rate": 0.4,
+        "sharpe": 0,
+        "trades": 5
+      }
+    }
+  ]
+}

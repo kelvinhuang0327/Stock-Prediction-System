@@ -1,0 +1,104 @@
+{
+  "auditId": "p26-phase-chain-registry",
+  "generatedAt": "2026-05-13T14:27:40.891875+00:00",
+  "phases": [
+    {
+      "phase": "P26A-RENDERER-FIX",
+      "commit": "3411614",
+      "finalClassification": "P26A_RENDERER_FIX_COMPLETE",
+      "sourceDependency": "none",
+      "status": "COMPLETE",
+      "testsResult": "PASS"
+    },
+    {
+      "phase": "P26A-RENDERER-INTEGRATION",
+      "commit": "a0145fa",
+      "finalClassification": "P26A_RENDERER_INTEGRATION_COMPLETE",
+      "sourceDependency": "none",
+      "status": "COMPLETE",
+      "testsResult": "PASS"
+    },
+    {
+      "phase": "P26A-BATCH-PIPELINE-WIRING",
+      "commit": "ba39187",
+      "finalClassification": "P26A_BATCH_PIPELINE_WIRING_COMPLETE",
+      "sourceDependency": "none",
+      "status": "COMPLETE",
+      "testsResult": "22/22 PASS"
+    },
+    {
+      "phase": "P26F4-READINESS-RECHECK",
+      "commit": "12dcb27",
+      "finalClassification": "P26F4_WAITING_FOR_OPERATOR_SOURCE",
+      "sourceDependency": "TWSE/MOPS MonthlyRevenue (required, not yet provided)",
+      "status": "BLOCKED_BY_OPERATOR_SOURCE",
+      "testsResult": "2856/2856 PASS"
+    },
+    {
+      "phase": "P26F4-OPERATOR-SOURCE-PACKET-V2",
+      "commit": "c0f4713",
+      "finalClassification": "P26F4_OPERATOR_SOURCE_PACKET_V2_READY_WAITING_FOR_SOURCE",
+      "sourceDependency": "TWSE/MOPS MonthlyRevenue (required, not yet provided)",
+      "status": "WAITING_FOR_OPERATOR",
+      "testsResult": "2856/2856 PASS"
+    },
+    {
+      "phase": "P26F4-SOURCE-PRESENT-GATE",
+      "commit": "59fe20a",
+      "finalClassification": "P26F4_WAITING_FOR_OPERATOR_SOURCE",
+      "sourceDependency": "TWSE/MOPS MonthlyRevenue (required, not yet provided)",
+      "status": "WAITING_FOR_OPERATOR",
+      "testsResult": "2856/2856 PASS"
+    },
+    {
+      "phase": "P28A-SCORING-UNDEROUTPUT-AUDIT",
+      "commit": "1cf0252",
+      "finalClassification": "P28A_SCORING_UNDEROUTPUT_AUDIT_COMPLETE",
+      "sourceDependency": "none",
+      "status": "COMPLETE",
+      "testsResult": "2885/2885 PASS"
+    },
+    {
+      "phase": "P28B-REASON-TEMPLATE-COVERAGE-PLAN",
+      "commit": "0ca055b",
+      "finalClassification": "P28B_REASON_TEMPLATE_COVERAGE_PLAN_READY",
+      "sourceDependency": "none",
+      "status": "COMPLETE",
+      "testsResult": "plan-only phase"
+    },
+    {
+      "phase": "P28C-RENDERER-ONLY-REPAIR",
+      "commit": "73ce251",
+      "finalClassification": "P28C_RENDERER_ONLY_REPAIR_COMPLETE",
+      "sourceDependency": "none",
+      "status": "COMPLETE",
+      "testsResult": "2976/2976 PASS",
+      "rendererVersionBump": "p26a-corpus-renderer-v1 -> p26a-corpus-renderer-v2"
+    },
+    {
+      "phase": "P28D-POST-RENDERER-VALIDATION",
+      "commit": "6801e0e",
+      "finalClassification": "P28D_POST_RENDERER_VALIDATION_COMPLETE",
+      "sourceDependency": "none",
+      "status": "COMPLETE",
+      "testsResult": "2997/2997 PASS"
+    },
+    {
+      "phase": "P28E-REASON-UNDEROUTPUT-CLOSURE",
+      "commit": "(this commit)",
+      "finalClassification": "P28E_REASON_UNDEROUTPUT_TRACK_CLOSED",
+      "sourceDependency": "none",
+      "status": "COMPLETE",
+      "testsResult": "see p28e_reason_underoutput_closure_tests.json"
+    }
+  ],
+  "chains": {
+    "P26A": "COMPLETE",
+    "P26F4_import": "BLOCKED_BY_OPERATOR_SOURCE",
+    "corpusExpansion": "NOT_ALLOWED_YET",
+    "optimizer": "NOT_ALLOWED_YET",
+    "P28_reason_underoutput_track": "CLOSED",
+    "nextAxisARound": "P29-A PIT-safe Feature Availability Registry v1 (paper design, CEO Route D mandate)"
+  },
+  "disclaimer": "Observability only. No investment recommendations."
+}

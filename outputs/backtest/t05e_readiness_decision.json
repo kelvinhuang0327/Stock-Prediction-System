@@ -1,0 +1,45 @@
+{
+  "task": "T-05E",
+  "title": "Readiness Decision — PIT-safe Candidate Data Adapter",
+  "generatedAt": "2026-05-07T00:00:00.000Z",
+  "safetyLabels": [
+    "T-05E",
+    "PIT-safe candidate data adapter",
+    "read-only candidate snapshots",
+    "sourceDate <= rebalanceDate",
+    "no future data",
+    "no DB write",
+    "no external API",
+    "no LLM call",
+    "no strategy mutation",
+    "no performance claim",
+    "no edge claim",
+    "no H001-H012"
+  ],
+  "readinessDecision": "READY",
+  "classification": "T05E_PIT_SAFE_CANDIDATE_DATA_ADAPTER_COMPLETE",
+  "testsResult": {
+    "t05eIndependent": "51/51 PASS",
+    "fullRegression": "11 suites / 278 tests PASS"
+  },
+  "guardrailResult": "15/15 PASS",
+  "completedItems": [
+    "CandidateDataAdapter.ts created with 5 required exports",
+    "normalizeCandidateSnapshotDateKey: YYYY-MM-DD, timezone-stable, throws on invalid",
+    "mapStockDataToCandidateSnapshot: observability-only, no forbidden terms",
+    "validateCandidateSnapshotFreshness: PASS/WARN/FAIL with PIT enforcement",
+    "validateCandidateSnapshotCoverage: coverage summary with PASS/WARN/FAIL",
+    "loadCandidateSnapshotsForDate: async, PIT-safe, injectable mock client, graceful fallback",
+    "WalkForwardEngine minimally updated: candidateSnapshots config + candidateSource output",
+    "T-05B/C/D regression fully preserved",
+    "9 output artifacts generated and verified"
+  ],
+  "pendingItems": [
+    "Real DB backfill required for production candidate coverage",
+    "Full PIT audit beyond sourceDate filter",
+    "T-05F WalkForward Observability Runner (next)",
+    "Formal backtest metrics remain prohibited until T-06+"
+  ],
+  "nextRecommendedTask": "T-05F — WalkForward Observability Runner",
+  "observabilityNote": "Adapter readiness confirmed. No strategy conclusions. No performance claims. No edge claims."
+}

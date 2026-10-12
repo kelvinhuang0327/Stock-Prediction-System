@@ -1,0 +1,58 @@
+{
+  "hypothesis_id": "STOCK_H004_MOM_VOL_CONFIRM",
+  "symbol": "2330",
+  "as_of_date": "2026-05-01",
+  "status": "REJECTED",
+  "gate_statuses": {
+    "G01": "FAIL",
+    "G02": "PASS",
+    "G03": "FAIL",
+    "G04": "WARN",
+    "G05": "WARN",
+    "G06": "WARN",
+    "G07": "WARN",
+    "G08": "PASS",
+    "G09": "BLOCKED",
+    "G10": "BLOCKED"
+  },
+  "window_results": [
+    {
+      "status": "DATA_INSUFFICIENT",
+      "window_days": 150,
+      "error": "insufficient_oos",
+      "n_oos": 3,
+      "symbol": "2330",
+      "hypothesis_id": "STOCK_H004_MOM_VOL_CONFIRM",
+      "pit_passed": true,
+      "pit_leakage": false,
+      "raw_p_value": 1.0,
+      "bh_fdr_q_value": 1.0,
+      "bh_fdr_pass": false
+    },
+    {
+      "status": "OK",
+      "window_days": 500,
+      "actual_rows": 500,
+      "n_signals": 53,
+      "n_oos": 11,
+      "mean_return": 0.008717,
+      "std_return": 0.043581,
+      "sharpe_annualized": 1.42,
+      "roi_annualized": 0.439332,
+      "win_rate": 0.8182,
+      "edge_pp": 31.82,
+      "tx_cost_bps": 10,
+      "p_value": 0.1,
+      "n_permutations": 10,
+      "one_tailed": true,
+      "symbol": "2330",
+      "hypothesis_id": "STOCK_H004_MOM_VOL_CONFIRM",
+      "pit_passed": true,
+      "pit_leakage": false,
+      "raw_p_value": 0.1,
+      "bh_fdr_q_value": 1.0,
+      "bh_fdr_pass": false
+    }
+  ],
+  "run_ts": "2026-05-05T09:41:38.658247+00:00"
+}

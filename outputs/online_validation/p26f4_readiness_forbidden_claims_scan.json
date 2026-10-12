@@ -1,0 +1,30 @@
+{
+  "auditId": "p26f4-readiness-forbidden-claims-scan",
+  "generatedAt": "2026-05-13T14:01:21.688823+00:00",
+  "filesScanned": [
+    "outputs/online_validation/p26f4_readiness_recheck_preflight.json",
+    "outputs/online_validation/p26f4_readiness_dropzone_rescan.json",
+    "outputs/online_validation/p26f4_readiness_approval_token_check.json",
+    "outputs/online_validation/p26f4_readiness_invariance.json",
+    "docs/manual-data/monthly-revenue/P26F3_5_OPERATOR_HANDOFF_PACKET.md"
+  ],
+  "patterns": [
+    "ROI",
+    "win-rate",
+    "win rate",
+    "alpha(?!Score)",
+    "edge",
+    "profit",
+    "outperform",
+    "beat",
+    "buy",
+    "sell",
+    "guaranteed",
+    "investment recommendation"
+  ],
+  "hitsFound": 0,
+  "status": "CLEAN",
+  "note": "No forbidden investment claims detected. alphaScore field name is allowed.",
+  "classification": "P26F4_FORBIDDEN_CLAIMS_CLEAN",
+  "disclaimer": "No investment recommendations. No ROI/buy/sell/alpha(non-field)/edge/profit claims."
+}

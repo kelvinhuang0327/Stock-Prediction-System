@@ -1,0 +1,75 @@
+{
+  "program": "Stock Prediction System",
+  "task": "P4-02P0 — Date Normalization & MarketIndex Freshness Repair",
+  "workstream": "C — MarketIndex Freshness Repair",
+  "generated_at": "2026-05-06T11:00:00Z",
+  "evidence_method": "Direct SQLite queries + TWSE FMTQIK public API calls",
+  "repair_actions": [
+    {
+      "action": "date_normalization",
+      "script": "scripts/normalize-dates.py --apply",
+      "tables_affected": ["StockQuote", "MarketIndex", "StockMetrics"],
+      "result": "APPLIED",
+      "rows_deduped": 2682,
+      "rows_converted": 0,
+      "note": "All 2682 ROC-format rows (date='1150327') were duplicates of existing ISO rows for 2026-03-27; deduplicated via unique constraint enforcement"
+    },
+    {
+      "action": "taiex_refresh",
+      "script": "custom urllib-based sync using TWSE FMTQIK endpoint",
+      "api_url_pattern": "https://www.twse.com.tw/rwd/zh/afterTrading/FMTQIK?date=YYYYMM01&response=json",
+      "api_type": "TWSE public free API (afterTrading endpoint)",
+      "result": "APPLIED",
+      "months_fetched": ["2026-03", "2026-04", "2026-05"],
+      "rows_inserted": 32,
+      "previous_taiex_max": "2026-03-17",
+      "new_taiex_max": "2026-05-05",
+      "note": "2026-05 returned only 2026-05-04 and 2026-05-05; subsequent dates not yet available from TWSE (market data lag)"
+    }
+  ],
+  "before_state": {
+    "taiex_count": 734,
+    "taiex_max_date": "2026-03-17",
+    "marketindex_roc_rows": 267,
+    "stockquote_roc_rows": 1346,
+    "stockmetrics_roc_rows": 1069
+  },
+  "after_state": {
+    "taiex_count": 766,
+    "taiex_max_date": "2026-05-05",
+    "taiex_distinct_trading_days": 766,
+    "marketindex_roc_rows": 0,
+    "stockquote_roc_rows": 0,
+    "stockmetrics_roc_rows": 0,
+    "marketindex_iso_ratio_pct": 100.0,
+    "stockquote_iso_ratio_pct": 100.0,
+    "stockmetrics_iso_ratio_pct": 100.0
+  },
+  "taiex_readiness": {
+    "available": true,
+    "count": 766,
+    "min_date": "2017-12-01",
+    "max_date": "2026-05-05",
+    "freshness_gap_days": 1,
+    "fresh": true,
+    "sufficient_for_500d_window": true,
+    "sufficient_for_200d_window": true,
+    "p4_03_regime_classifier_ready": true
+  },
+  "alignment_readiness": {
+    "stockquote_marketindex_join_safe": true,
+    "overlapping_trading_dates": 727,
+    "taiex_dates_not_in_stockquote": 39,
+    "stockquote_dates_not_in_taiex": 76,
+    "note": "76 StockQuote dates not in TAIEX are recent dates where sector indices are available but TAIEX not yet fully synced — gap closed significantly from 102 to 76"
+  },
+  "anomalies_not_fixed": [
+    {
+      "table": "StockQuote",
+      "issue": "1970-12-04 epoch date — affects ETF rows (00400A, 00401A, 0050, etc.)",
+      "count_estimate": 10,
+      "action": "NOT_FIXED — pre-existing data quality issue unrelated to ROC date format; requires separate investigation",
+      "risk": "LOW — affects only a small set of ETF rows with anomalous historical date; does not affect ISO ratio"
+    }
+  ]
+}

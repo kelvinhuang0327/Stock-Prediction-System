@@ -1,0 +1,131 @@
+{
+  "_meta": {
+    "registry_version": "2.0",
+    "domain": "STOCK",
+    "created_at": "2026-05-05T00:00:00Z",
+    "description": "Stock domain hypothesis registry v2 — second-generation signals with richer feature sets (P3-08). All hypotheses require GBGF G01-G10 validation and human review before any production consideration.",
+    "parent_registry": "stock_hypothesis_registry.json",
+    "v1_outcome": "H001-H003 all REJECTED on real data (BH-FDR pass: 0/30). No edge found with simple momentum/RSI/volume signals.",
+    "guardrails": [
+      "NOT a trading recommendation",
+      "All validation requires GBGF G01-G10 gates",
+      "Human review required before any promotion past T2",
+      "Production write is blocked by G09/G10",
+      "BH-FDR correction applied globally across all tests",
+      "Strict point-in-time guard (R01-R04) enforced"
+    ]
+  },
+  "hypotheses": [
+    {
+      "hypothesis_id": "STOCK_H004_MOM_VOL_CONFIRM",
+      "description": "Momentum + Volume Confirmation: buy when 20d return > 0 AND volume z-score > 1 (above average volume supports the move). Avoids pure price momentum by requiring institutional-grade volume confirmation.",
+      "feature_set": [
+        "return_20d",
+        "volume_zscore_20d"
+      ],
+      "expected_signal": "20d momentum with above-average volume (z>1) predicts positive next-5d return; volume filters out weak momentum signals",
+      "entry_rule": "return_20d > 0 AND volume_zscore_20d > 1.0",
+      "exit_rule": "Hold 5 trading days",
+      "prediction_target": "next_5d_return_direction",
+      "lookback_days": 20,
+      "forward_days": 5,
+      "transaction_cost_bps": 10,
+      "risk_note": "Volume z-score can spike on bad news (sell-off). Signal may be contaminated by down-volume days if directional filter is weak.",
+      "status": "registered",
+      "registered_at": "2026-05-05T00:00:00Z",
+      "family": "momentum_volume",
+      "human_review_required": true,
+      "is_etf_only": false,
+      "requires_universe": false
+    },
+    {
+      "hypothesis_id": "STOCK_H005_PULLBACK_UPTREND",
+      "description": "Pullback in Uptrend: buy when close > MA60 (long-term uptrend) AND 5d return < 0 (short-term pullback) AND 20d return > 0 (medium-term trend intact). Tests whether dip-buying in confirmed uptrends has positive expectancy.",
+      "feature_set": [
+        "return_5d",
+        "return_20d",
+        "ma60"
+      ],
+      "expected_signal": "Short-term pullback within a longer uptrend reverts positively over next 5d",
+      "entry_rule": "close > ma60 AND return_5d < 0 AND return_20d > 0",
+      "exit_rule": "Hold 5 trading days",
+      "prediction_target": "next_5d_return_direction",
+      "lookback_days": 60,
+      "forward_days": 5,
+      "transaction_cost_bps": 10,
+      "risk_note": "Trend filters (MA60) lag by definition. In sustained downtrends the signal fires late. Close > MA60 is a lagging not predictive condition.",
+      "status": "registered",
+      "registered_at": "2026-05-05T00:00:00Z",
+      "family": "trend_following_reversion",
+      "human_review_required": true,
+      "is_etf_only": false,
+      "requires_universe": false
+    },
+    {
+      "hypothesis_id": "STOCK_H006_LOW_VOL_BREAKOUT",
+      "description": "Low Volatility Breakout: buy when 20d realized volatility is in the bottom 25th percentile of its historical distribution AND close breaks above the 20d high. Tests volatility contraction-then-expansion (squeeze breakout) pattern.",
+      "feature_set": [
+        "volatility_20d",
+        "breakout_20d_high"
+      ],
+      "expected_signal": "Breakout after volatility squeeze (low vol followed by new high) predicts sustained directional move",
+      "entry_rule": "volatility_20d <= rolling_p25(volatility_20d) AND close > max(high[-20:])",
+      "exit_rule": "Hold 5 trading days",
+      "prediction_target": "next_5d_return_direction",
+      "lookback_days": 20,
+      "forward_days": 5,
+      "transaction_cost_bps": 12,
+      "risk_note": "Percentile is computed rolling (PIT-safe) but requires sufficient history. Signal fires rarely, limiting sample size. False breakouts in choppy markets.",
+      "status": "registered",
+      "registered_at": "2026-05-05T00:00:00Z",
+      "family": "volatility_breakout",
+      "human_review_required": true,
+      "is_etf_only": false,
+      "requires_universe": false
+    },
+    {
+      "hypothesis_id": "STOCK_H007_RELATIVE_STRENGTH",
+      "description": "Relative Strength vs Universe: buy when the symbol's 20d return exceeds the median 20d return of all symbols in the validation universe. Tests whether relative outperformance persists over the next 5 trading days.",
+      "feature_set": [
+        "return_20d",
+        "universe_relative_strength"
+      ],
+      "expected_signal": "Symbols outperforming the universe median continue to outperform over next 5d (momentum relative to peers)",
+      "entry_rule": "return_20d > universe_median_return_20d",
+      "exit_rule": "Hold 5 trading days",
+      "prediction_target": "next_5d_return_direction",
+      "lookback_days": 20,
+      "forward_days": 5,
+      "transaction_cost_bps": 10,
+      "risk_note": "Universe median is computed only from symbols present in the current batch (not the full market). Survivorship bias in symbol selection. Universe composition affects signal.",
+      "status": "registered",
+      "registered_at": "2026-05-05T00:00:00Z",
+      "family": "relative_momentum",
+      "human_review_required": true,
+      "is_etf_only": false,
+      "requires_universe": true
+    },
+    {
+      "hypothesis_id": "STOCK_H008_ETF_DEF_MOMENTUM",
+      "description": "ETF Defensive Momentum: buy ETF when 20d return > 0 (positive trend) AND 20d max drawdown > -5% (low drawdown / defensive). Tests whether low-drawdown uptrending ETFs outperform over next 5d. ETF-only to test systematic, diversified instruments.",
+      "feature_set": [
+        "return_20d",
+        "drawdown_20d"
+      ],
+      "expected_signal": "ETFs with positive momentum and low drawdown continue upward over next 5d (defensive momentum in diversified instruments)",
+      "entry_rule": "is_etf AND return_20d > 0 AND drawdown_20d > -0.05",
+      "exit_rule": "Hold 5 trading days",
+      "prediction_target": "next_5d_return_direction",
+      "lookback_days": 20,
+      "forward_days": 5,
+      "transaction_cost_bps": 5,
+      "risk_note": "ETF universe is small (Taiwan: ~20-50 ETFs with sufficient history). Low drawdown filter may only fire in bull markets, creating survivorship-like selection.",
+      "status": "registered",
+      "registered_at": "2026-05-05T00:00:00Z",
+      "family": "etf_momentum",
+      "human_review_required": true,
+      "is_etf_only": true,
+      "requires_universe": false
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "phase": "P38",
+  "capturedAt": "2026-05-15T00:00:00.000Z",
+  "mode": "test-baseline",
+  "paperOnly": true,
+  "dryRunOnly": true,
+  "entersAlphaScore": false,
+  "notInvestmentRecommendation": true,
+
+  "testFile": "src/lib/onlineValidation/__tests__/p38_simulation_input_readiness_mapping.test.ts",
+  "sourceFiles": [
+    "src/lib/onlineValidation/p38/SimulationInputReadinessTypes.ts",
+    "src/lib/onlineValidation/p38/SimulationInputReadinessMapper.ts"
+  ],
+
+  "runResult": {
+    "testSuites": 1,
+    "total": 55,
+    "passed": 55,
+    "failed": 0,
+    "skipped": 0,
+    "status": "PASS"
+  },
+
+  "groups": [
+    { "group": "1", "name": "MonthlyRevenue mapping", "tests": 8, "passed": 8 },
+    { "group": "2", "name": "NewsEvent mapping", "tests": 6, "passed": 6 },
+    { "group": "3", "name": "FinancialReport mapping", "tests": 5, "passed": 5 },
+    { "group": "4", "name": "Chip mapping", "tests": 5, "passed": 5 },
+    { "group": "5", "name": "Quote and Regime mapping", "tests": 6, "passed": 6 },
+    { "group": "6", "name": "buildSimulationInputReadinessMatrix", "tests": 6, "passed": 6 },
+    { "group": "7", "name": "summarizeSimulationInputReadinessMatrix", "tests": 4, "passed": 4 },
+    { "group": "8", "name": "Forbidden semantics enforcement", "tests": 5, "passed": 5 },
+    { "group": "9", "name": "Isolation and governance", "tests": 5, "passed": 5 },
+    { "group": "10", "name": "Field integrity and forbidden field scan", "tests": 5, "passed": 5 }
+  ],
+
+  "regressionSuites": {
+    "p37_monthly_revenue_consumer_integration_surface": { "total": 60, "passed": 60 },
+    "p36_monthly_revenue_controlled_consumer_readiness": { "total": 114, "passed": 114 },
+    "p31_monthly_revenue_source_present_dry_run": { "total": 174, "passed": 174 }
+  },
+
+  "forbiddenDiff": "CLEAN_NO_FORBIDDEN_SOURCE_EDITS",
+  "forbiddenClaimsScan": "CLEAN",
+
+  "classification": "P38_TEST_BASELINE_PASS"
+}

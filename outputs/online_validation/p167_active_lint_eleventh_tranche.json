@@ -1,0 +1,15 @@
+{
+  "tranche": 11,
+  "files_modified": 5,
+  "issues_resolved": 5,
+  "before_count": 536,
+  "after_count": 531,
+  "status": "PASS",
+  "files": [
+    "src/app/api/data/sync/route.ts",
+    "src/app/api/strategy/candidates/route.ts",
+    "src/app/api/sync/status/route.ts",
+    "src/app/api/twse/[...path]/__tests__/route.test.ts",
+    "src/app/api/watchlist/[id]/route.ts"
+  ]
+}

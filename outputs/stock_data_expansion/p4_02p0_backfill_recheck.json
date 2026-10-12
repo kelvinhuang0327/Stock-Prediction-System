@@ -1,0 +1,96 @@
+{
+  "program": "Stock Prediction System",
+  "task": "P4-02P0 — Backfill Recheck After Repair",
+  "generated_at": "2026-05-06T11:30:00Z",
+  "evidence_method": "Direct SQLite queries on prisma/dev.db post-normalization",
+  "data_sources": {
+    "StockQuote": {
+      "status": "READY",
+      "rows": 129151,
+      "iso_ratio_pct": 100.0,
+      "min_date": "2021-05-16",
+      "max_date": "2026-05-18",
+      "distinct_symbols": 217,
+      "symbols_ge500_rows": 185,
+      "symbols_ge200_rows": 206,
+      "anomalies": "~10 ETF rows with 1970-12-04 epoch date (pre-existing, not new)",
+      "backfill_needed": false,
+      "p4_02_blocker": false,
+      "notes": "Date format 100% ISO after normalization; 185 symbols with ≥500 trading days"
+    },
+    "MarketIndex": {
+      "status": "READY",
+      "rows": 2665,
+      "iso_ratio_pct": 100.0,
+      "taiex_count": 766,
+      "taiex_min_date": "2017-12-01",
+      "taiex_max_date": "2026-05-05",
+      "taiex_freshness_gap_days": 1,
+      "sector_indices_count": 21,
+      "backfill_needed": false,
+      "p4_03_blocker": false,
+      "notes": "100% ISO after normalization; TAIEX refreshed +32 rows; 766 distinct trading days exceeds 500d requirement"
+    },
+    "InstitutionalChip": {
+      "status": "PARTIAL — BACKFILL REQUIRED FOR P4-04",
+      "rows": 291068,
+      "iso_ratio_pct": 100.0,
+      "min_date": "2025-05-02",
+      "max_date": "2026-05-05",
+      "distinct_trading_days": 236,
+      "backfill_needed": true,
+      "target_trading_days": 500,
+      "gap_trading_days": 264,
+      "p4_04_blocker": true,
+      "backfill_script": "scripts/bulk-history-sync.py --phase chip",
+      "backfill_status": "SCRIPT_EXISTS_BUT_NEEDS_FIX (requires twstock module unavailable in current Python env)",
+      "notes": "Only 236 trading days (~1 year). P4-04 needs ≥500 days of chip data. Backfill blocked by missing twstock module."
+    },
+    "MonthlyRevenue": {
+      "status": "PARTIAL — ONLY 2026 DATA",
+      "rows": 2143,
+      "year_range": "2026 only",
+      "backfill_needed": true,
+      "schema_note": "Uses year/month integer columns — NOT a date string; excluded from date normalization (correct behavior)",
+      "p4_04_blocker": true,
+      "notes": "Only 1 year of revenue data. P4-04 fundamental analysis requires historical revenue trends."
+    },
+    "FinancialReport": {
+      "status": "PARTIAL — ONLY 2025 DATA",
+      "rows": 957,
+      "year_range": "2025 only",
+      "backfill_needed": true,
+      "schema_note": "Uses year/quarter integer columns — NOT a date string; excluded from date normalization (correct behavior)",
+      "p4_04_blocker": true,
+      "notes": "Only 2025 financial data. Historical P&L / balance sheet needed for P4-04."
+    },
+    "IndustrySectorMapping": {
+      "status": "PARTIAL — HEURISTIC ONLY",
+      "method": "TWSE numeric code 01–38, 91 → Chinese name → GICS-like sector group",
+      "industry_codes_mapped": 33,
+      "cross_table_join": "industry_code column in Stock table links to MarketIndex sector name via string pattern",
+      "official_crosswalk": false,
+      "p4_03_blocker": false,
+      "notes": "Sufficient for basic sector grouping in regime classifier. Not official TWSE crosswalk table."
+    }
+  },
+  "readiness_verdicts": {
+    "p4_02_can_proceed": true,
+    "p4_02_reason": "StockQuote 100% ISO, 185 symbols ≥500 days, MarketIndex JOIN safe",
+    "p4_03_can_proceed": true,
+    "p4_03_reason": "TAIEX 766 days (>500), freshness gap 1 day, all dates ISO, JOIN safe with StockQuote",
+    "p4_04_can_proceed": false,
+    "p4_04_blockers": [
+      "InstitutionalChip only 236 trading days (need ≥500) — backfill requires twstock module fix",
+      "MonthlyRevenue only 2026 — needs historical backfill",
+      "FinancialReport only 2025 — needs historical backfill",
+      "T-05 walk-forward must be redesigned as portfolio-level (H001-H012 retired)"
+    ]
+  },
+  "remaining_p0_blockers": [],
+  "p1_action_items": [
+    "Fix bulk-history-sync.py environment (twstock or alternative) for InstitutionalChip backfill",
+    "Backfill MonthlyRevenue for 2020–2025",
+    "Backfill FinancialReport for 2020–2024"
+  ]
+}
