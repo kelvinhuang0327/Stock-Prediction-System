@@ -1,0 +1,77 @@
+{
+  "planVersion": "backfill-scheduler-v0",
+  "reviewDate": "2026-06-30",
+  "candidateCount": 6,
+  "scheduledCount": 4,
+  "skippedCount": 2,
+  "blockedCount": 0,
+  "scheduledItems": [
+    {
+      "scheduleKey": "BACKFILL_SCHEDULE|2026-05-11|2330|MVP_CORE|p2-ledger-accumulation-20260511-001|5D",
+      "windowKey": "OUTCOME_WINDOW|2026-05-11|2330|MVP_CORE|p2-ledger-accumulation-20260511-001|5D",
+      "symbol": "2330",
+      "horizonLabel": "5D",
+      "targetTradingDate": "2026-05-18",
+      "reviewDate": "2026-06-30",
+      "action": "OUTCOME_WRITEBACK_ARTIFACT_ONLY",
+      "dryRun": true,
+      "productionWriteAllowed": false,
+      "reason": "DUE_FOR_BACKFILL: targetTradingDate=2026-05-18 <= reviewDate=2026-06-30"
+    },
+    {
+      "scheduleKey": "BACKFILL_SCHEDULE|2026-05-11|2330|MVP_CORE|p2-ledger-accumulation-20260511-001|20D",
+      "windowKey": "OUTCOME_WINDOW|2026-05-11|2330|MVP_CORE|p2-ledger-accumulation-20260511-001|20D",
+      "symbol": "2330",
+      "horizonLabel": "20D",
+      "targetTradingDate": "2026-06-08",
+      "reviewDate": "2026-06-30",
+      "action": "OUTCOME_WRITEBACK_ARTIFACT_ONLY",
+      "dryRun": true,
+      "productionWriteAllowed": false,
+      "reason": "DUE_FOR_BACKFILL: targetTradingDate=2026-06-08 <= reviewDate=2026-06-30"
+    },
+    {
+      "scheduleKey": "BACKFILL_SCHEDULE|2026-05-11|2454|MVP_CORE|p2-ledger-accumulation-20260511-001|5D",
+      "windowKey": "OUTCOME_WINDOW|2026-05-11|2454|MVP_CORE|p2-ledger-accumulation-20260511-001|5D",
+      "symbol": "2454",
+      "horizonLabel": "5D",
+      "targetTradingDate": "2026-05-18",
+      "reviewDate": "2026-06-30",
+      "action": "OUTCOME_WRITEBACK_ARTIFACT_ONLY",
+      "dryRun": true,
+      "productionWriteAllowed": false,
+      "reason": "DUE_FOR_BACKFILL: targetTradingDate=2026-05-18 <= reviewDate=2026-06-30"
+    },
+    {
+      "scheduleKey": "BACKFILL_SCHEDULE|2026-05-11|2454|MVP_CORE|p2-ledger-accumulation-20260511-001|20D",
+      "windowKey": "OUTCOME_WINDOW|2026-05-11|2454|MVP_CORE|p2-ledger-accumulation-20260511-001|20D",
+      "symbol": "2454",
+      "horizonLabel": "20D",
+      "targetTradingDate": "2026-06-08",
+      "reviewDate": "2026-06-30",
+      "action": "OUTCOME_WRITEBACK_ARTIFACT_ONLY",
+      "dryRun": true,
+      "productionWriteAllowed": false,
+      "reason": "DUE_FOR_BACKFILL: targetTradingDate=2026-06-08 <= reviewDate=2026-06-30"
+    }
+  ],
+  "skippedItems": [
+    {
+      "windowKey": "OUTCOME_WINDOW|2026-05-11|2330|MVP_CORE|p2-ledger-accumulation-20260511-001|60D",
+      "symbol": "2330",
+      "horizonLabel": "60D",
+      "windowStatus": "NOT_DUE",
+      "reason": "NOT_DUE: targetTradingDate=2026-08-04 > reviewDate=2026-06-30"
+    },
+    {
+      "windowKey": "OUTCOME_WINDOW|2026-05-11|2454|MVP_CORE|p2-ledger-accumulation-20260511-001|60D",
+      "symbol": "2454",
+      "horizonLabel": "60D",
+      "windowStatus": "NOT_DUE",
+      "reason": "NOT_DUE: targetTradingDate=2026-08-04 > reviewDate=2026-06-30"
+    }
+  ],
+  "blockedItems": [],
+  "validationStatus": "PASS",
+  "validationMessages": []
+}

@@ -1,0 +1,78 @@
+{
+  "preflightReviewId": "p15-migration-approval-preflight-review-v0",
+  "phase": "P15",
+  "reviewDate": "2026-05-12",
+  "status": "PASS",
+  "disclaimer": "This review does not constitute investment advice. Does not compute ROI, profit, alpha, win-rate, edge, or outperformance. All review is governance-only. No production DB was written.",
+
+  "p14ArtifactsPresent": {
+    "p14monthly_revenue_approval_preflight_json": true,
+    "p14monthly_revenue_migration_draft_json": true,
+    "p14monthly_revenue_migration_draft_md": true,
+    "p14monthly_revenue_rollback_draft_md": true,
+    "p14monthly_revenue_query_gate_proposal_json": true,
+    "p14monthly_revenue_query_gate_proposal_md": true,
+    "p14monthly_revenue_fixture_dry_run_json": true,
+    "p14monthly_revenue_final_report_md": true,
+    "allPresent": true
+  },
+
+  "p13ArtifactsPresent": {
+    "p13monthly_revenue_source_audit_json": true,
+    "p13monthly_revenue_migration_plan_json": true,
+    "p13monthly_revenue_pit_gate_validation_json": true,
+    "p13monthly_revenue_final_report_md": true,
+    "allPresent": true
+  },
+
+  "p14KeyValues": {
+    "approvalStatus": "NOT_APPROVED",
+    "productionApplyAllowed": false,
+    "productionDbWritten": false,
+    "preflightStatus": "PASS",
+    "finalClassification": "P14_MONTHLY_REVENUE_AWAITING_SCHEMA_MIGRATION_APPROVAL",
+    "migrationDraftSafetyStatus": "SAFE_DRY_RUN_ONLY",
+    "rollbackDraftExists": true,
+    "fixtureDryRunStatus": "PASS",
+    "fixturePassed": 11,
+    "fixtureTotal": 11,
+    "queryGateProposalCount": 3,
+    "queryGateRulesCount": 7,
+    "forbiddenClaims": 0
+  },
+
+  "p13KeyValues": {
+    "planId": "p13-monthly-revenue-migration-plan-v0",
+    "overallRisk": "HIGH",
+    "pitGateValidationStatus": "PASS",
+    "pitGatePassed": 35,
+    "pitGateTotal": 35,
+    "writesProductionDb": false
+  },
+
+  "frozenCorpusCheck": {
+    "simulation_snapshot_corpus_jsonl": { "expected": 60, "actual": 60, "ok": true },
+    "p0hardreset_historical_replay_corpus_jsonl": { "expected": 4500, "actual": 4500, "ok": true },
+    "p1baseline_historical_replay_corpus_jsonl": { "expected": 9900, "actual": 9900, "ok": true },
+    "p3active_scoring_historical_replay_corpus_jsonl": { "expected": 4500, "actual": 4500, "ok": true },
+    "allFrozen": true
+  },
+
+  "preflightGates": [
+    { "gate": "p14_approval_preflight_exists", "pass": true },
+    { "gate": "p14_migration_draft_exists", "pass": true },
+    { "gate": "p14_rollback_draft_exists", "pass": true },
+    { "gate": "p14_query_gate_proposal_exists", "pass": true },
+    { "gate": "p14_fixture_dry_run_exists", "pass": true },
+    { "gate": "p13_artifacts_exist", "pass": true },
+    { "gate": "production_apply_allowed_false", "pass": true },
+    { "gate": "production_db_written_false", "pass": true },
+    { "gate": "fixture_dry_run_pass", "pass": true },
+    { "gate": "frozen_corpus_unchanged", "pass": true }
+  ],
+
+  "allGatesPass": true,
+  "finalPreflightStatus": "PASS",
+  "readyForApprovalReview": true,
+  "productionDbWritten": false
+}

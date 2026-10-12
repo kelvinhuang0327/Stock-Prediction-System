@@ -1,0 +1,92 @@
+{
+  "phase": "P29F-HARDRESET",
+  "task": "Static Audit Results",
+  "generatedAt": "2026-05-20T00:00:00Z",
+  "auditMode": "SOURCE_CODE_STATIC_ANALYSIS",
+
+  "suspiciousFieldScan": {
+    "patterns": ["future", "next", "forward", "outcome", "return", "realized", "after", "post", "target", "label", "returnPct", "horizonReturn", "outcomePrice", "outcomeClose", "forecastReturn"],
+    "QuoteFields": {
+      "scanned": ["close", "open", "high", "low", "volume", "tradeValue", "change", "transactions", "date"],
+      "suspiciousFound": [],
+      "verdict": "CLEAN"
+    },
+    "RegimeFields": {
+      "scanned": ["date", "value", "change", "changePercent", "name"],
+      "suspiciousFound": [],
+      "verdict": "CLEAN"
+    },
+    "ChipFields": {
+      "scanned": ["date", "foreignBuy", "trustBuy", "dealerBuy", "totalBuy", "holders400", "holders1000"],
+      "suspiciousFound": [],
+      "verdict": "CLEAN"
+    }
+  },
+
+  "dateUsageScan": {
+    "Quote": {
+      "gateField": "date",
+      "gateComparison": "lte: asOfDb (YYYYMMDD converted from asOf ISO)",
+      "storedFormat": "ISO (YYYY-MM-DD) — inferred from parseTwseDateToIso in getDailyStocks",
+      "formatMismatch": true,
+      "mismatchRisk": "MEDIUM_HIGH",
+      "mismatchDetail": "ISO '2026-xx-xx' always < YYYYMMDD '2026xxxx' (ASCII '-'=45 < '0'=48). Same-year future records NOT excluded by gate.",
+      "crossYearFiltering": "CORRECT (cross-year works: '2027-...' > '2026...' due to digit comparison)",
+      "sameYearFiltering": "BROKEN (same-year future dates pass through)"
+    },
+    "Regime": {
+      "gateField": "date",
+      "gateComparison": "lte: asOf (ISO direct)",
+      "storedFormat": "ISO (YYYY-MM-DD) — confirmed from syncMarketIndices via openapiDate",
+      "formatMismatch": false,
+      "mismatchRisk": "LOW",
+      "mismatchDetail": "None — ISO-ISO comparison is lexicographically correct",
+      "sameYearFiltering": "CORRECT"
+    },
+    "Chip": {
+      "gateField": "date",
+      "gateComparison": "lte: asOfDb (YYYYMMDD converted from asOf ISO)",
+      "storedFormat": "ISO (YYYY-MM-DD) — CONFIRMED in syncInstitutionalChip: 'date: isoDate'",
+      "formatMismatch": true,
+      "mismatchRisk": "MEDIUM",
+      "mismatchDetail": "Schema says YYYYMMDD but sync stores ISO. Same mismatch as Quote.",
+      "sameYearFiltering": "BROKEN (same issue as Quote)"
+    }
+  },
+
+  "rollingWindowAudit": {
+    "Quote_MA20": "prices.slice(-20) — backward only ✓",
+    "Quote_MA60": "prices.slice(-60) — backward only ✓",
+    "Quote_RSI14": "closes[last 15+] — backward only ✓",
+    "Quote_MACD": "EMA12, EMA26 — backward only ✓",
+    "Quote_Momentum20d": "closes[last-21] to closes[last] — backward only ✓",
+    "Regime_MA50": "prices.slice(-50) from PIT-gated rows — backward only ✓",
+    "Regime_MA200": "prices.slice(-200) from PIT-gated rows — backward only ✓",
+    "Regime_Momentum20d": "prices[last-21] from PIT-gated rows — backward only ✓",
+    "Regime_Volatility20d": "returns from recent20 = prices.slice(-21) — backward only ✓",
+    "Chip_Last10": "chips.slice(0, 10) from orderBy: date desc — last 10 up to asOf ✓"
+  },
+
+  "callerChainAudit": {
+    "Quote": {
+      "ActiveScoringSnapshotBuilder → analyzeStock(asOf)": "PASS — asOf passed correctly",
+      "SignalFusionEngine.fuseSignals(symbol, regime, asOf)": "PASS — asOf passed correctly",
+      "POST /api/strategy/analyze → analyzeStock(symbol)": "NO_ASOF — expected for live use",
+      "GET /api/stocks/[id]/analysis → analyzeStock(id, date)": "PASS — date param optional, passes if provided"
+    },
+    "Regime": {
+      "SignalFusionEngine.fuseSignals → detectRegime(asOf)": "PASS — asOf passed correctly",
+      "SignalFusionEngine.fuseBatch → detectRegime(asOf)": "PASS — asOf passed at batch level",
+      "DailyAlertEngine → detectRegime()": "NO_ASOF — expected for live use",
+      "RelevanceInsightsService → detectRegime()": "NO_ASOF — expected for live use",
+      "Backtest → detectRegimeForPeriod(start, end)": "BACKTEST_ONLY — not scoring path"
+    }
+  },
+
+  "overallStaticAuditVerdict": {
+    "suspiciousFields": "CLEAN — no future/label/outcome fields in any source",
+    "dateFormatConsistency": "INCONSISTENT for Quote and Chip — needs repair",
+    "rollingWindows": "SAFE — all backward-looking",
+    "callerChain": "SAFE — asOf propagated correctly in simulation path"
+  }
+}

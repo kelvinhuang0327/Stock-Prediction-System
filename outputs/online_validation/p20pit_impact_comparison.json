@@ -1,0 +1,114 @@
+{
+  "phase": "P20-HARDRESET",
+  "part": "C",
+  "generatedAt": "2026-05-12T05:22:20.976Z",
+  "preCorpus": "outputs/online_validation/p3active_scoring_historical_replay_corpus.jsonl",
+  "postCorpus": "outputs/online_validation/p19active_scoring_pit_replay_corpus.jsonl",
+  "pitGuardSource": "outputs/online_validation/p19monthly_revenue_pit_guard_validation.json",
+  "productionApplyAllowed": false,
+  "productionDbWritten": false,
+  "corpusShapeComparison": {
+    "p3LineCount": 4500,
+    "p19LineCount": 4500,
+    "totalUniqueKeys": 4500,
+    "alignedRowCount": 4500,
+    "missingPreRowCount": 0,
+    "missingPostRowCount": 0,
+    "p3SymbolCount": 25,
+    "p19SymbolCount": 25,
+    "symbolCountMatch": true,
+    "p3AsOfDateCount": 60,
+    "p19AsOfDateCount": 60,
+    "dateCountMatch": true,
+    "p3HorizonDistribution": {
+      "5": 1500,
+      "20": 1500,
+      "60": 1500
+    },
+    "p19HorizonDistribution": {
+      "5": 1500,
+      "20": 1500,
+      "60": 1500
+    },
+    "horizonDistributionMatch": true,
+    "shapeCompatible": true
+  },
+  "scoringCompletenessImpact": {
+    "p3Distribution": {
+      "COMPLETE": 3099,
+      "PARTIAL": 1401,
+      "EMPTY": 0
+    },
+    "p19Distribution": {
+      "COMPLETE": 3099,
+      "PARTIAL": 1401,
+      "EMPTY": 0
+    },
+    "changedCount": 0,
+    "degradedCount": 0,
+    "improvedCount": 0,
+    "sameCount": 4500,
+    "degradedRatio": "0.0000",
+    "observationNote": "Completeness reflects data source availability at scoring time, not realized returns."
+  },
+  "bucketImpact": {
+    "p3Distribution": {
+      "LowPriority": 1158,
+      "Watch": 462,
+      "Neutral": 1401,
+      "Strong": 1479
+    },
+    "p19Distribution": {
+      "LowPriority": 1158,
+      "Watch": 462,
+      "Neutral": 1401,
+      "Strong": 1479
+    },
+    "bucketChangedCount": 0,
+    "bucketChangedRatio": "0.0000",
+    "bucketTransitionMatrix": {},
+    "distributionMatch": true
+  },
+  "scoreImpact": {
+    "scoreSourceUsed": "activeScoringSnapshot.alphaScore",
+    "nonZeroPreAlphaCount": 4500,
+    "nonZeroPostAlphaCount": 4500,
+    "scoreChangedCount": 0,
+    "scoreChangedRatio": "0.0000",
+    "deltaRange": "N/A",
+    "observationNote": "alphaScore is a composite scoring index. Not a return, not a prediction, not a performance metric."
+  },
+  "snapshotImpact": {
+    "signalChangedCount": 0,
+    "reasonChangedCount": 0,
+    "factorChangedCount": 0,
+    "monthlyRevenueExcludedCount": 4500,
+    "monthlyRevenueExcludedRatio": "1.0000"
+  },
+  "pitGuardImpact": {
+    "monthlyRevenuePitGateStatusDistribution": {
+      "NOT_APPLICABLE_NO_DATA": 4500
+    },
+    "pitGateValidationStatus": "PASS",
+    "leakageViolationsFromP19": 0,
+    "forbiddenFieldViolationsFromP19": 0,
+    "p17QueryGateStatus": "ALL_PASS",
+    "p18QueryGateStatus": "PASS",
+    "unavailableMonthlyRevenueExcludedRows": 4500,
+    "observationNote": "NOT_APPLICABLE_NO_DATA means MonthlyRevenue was already absent from scoring data — no gate rejection occurred."
+  },
+  "classificationCounts": {
+    "MONTHLY_REVENUE_EXCLUDED": 4500
+  },
+  "noChangeCount": 0,
+  "readinessConclusion": {
+    "shapeCompatible": true,
+    "pitValidationPass": true,
+    "leakageViolations": true,
+    "forbiddenFieldViolations": true,
+    "scoringCompletenessNotSeverellyDegraded": true,
+    "changedCasesDocumented": true,
+    "readyForP21ApprovalReview": true,
+    "note": "This conclusion assesses readiness for approval review only. It does not approve production migration."
+  }
+}

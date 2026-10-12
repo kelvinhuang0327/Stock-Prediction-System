@@ -1,0 +1,37 @@
+{
+  "version": "1.0",
+  "publishedDedupeKeys": {
+    "system_health__stale_quotes": "2026-04-24T03:20:59.010Z",
+    "system_health__stale_chips": "2026-04-24T03:53:07.267Z",
+    "system_health__stuck_trades": "2026-04-24T03:54:08.830Z",
+    "code_quality__large_files": "2026-04-24T03:55:46.295Z",
+    "code_quality__legacy_python_scripts": "2026-04-24T03:56:03.874Z",
+    "composite_8h_plan__2026-04-24": "2026-04-24T22:54:20.976Z",
+    "composite_8h_plan__2026-04-25": "2026-04-25T00:54:41.003Z",
+    "price_analysis_quality__data_audit": "2026-04-25T01:02:36.187Z",
+    "price_analysis_quality__mfe_mae_audit": "2026-04-25T01:12:35.774Z",
+    "price_analysis_quality__setup_classification_audit": "2026-04-25T01:14:42.045Z",
+    "price_analysis_quality__sector_context_audit": "2026-04-25T01:22:37.300Z",
+    "ui_ux__missing_loading_error_states": "2026-04-25T01:24:45.702Z",
+    "composite_8h_plan__2026-04-26": "2026-04-26T00:02:52.355Z",
+    "test_coverage__orchestrator_gaps": "2026-04-26T00:04:56.320Z",
+    "test_coverage__missing_e2e_flows": "2026-04-26T00:12:54.196Z",
+    "ui_ux__no_actionable_output": "2026-04-26T00:14:57.926Z",
+    "wiki_docs__user_guide_drift": "2026-04-26T00:22:55.839Z",
+    "lifecycle__no_closes": "2026-04-26T02:43:19.469Z",
+    "composite_8h_plan__2026-04-27": "2026-04-27T01:06:50.577Z",
+    "system_health__no_learning_insight": "2026-04-27T01:57:05.156Z",
+    "execution_layer__trigger_skew": "2026-04-27T01:59:51.113Z",
+    "composite_8h_plan__2026-04-30": "2026-04-30T08:55:13.644Z",
+    "system_health__job_failures": "2026-04-30T10:23:10.785Z",
+    "wiki_docs__stale_markdown": "2026-04-30T10:26:22.458Z",
+    "composite_8h_plan__2026-05-04": "2026-05-04T08:17:45.333Z"
+  },
+  "dailyQuota": {
+    "date": "2026-05-04",
+    "highRisk": 0,
+    "mediumRisk": 0,
+    "lowRisk": 0
+  },
+  "lastRunAt": "2026-05-04T08:17:45.333Z"
+}

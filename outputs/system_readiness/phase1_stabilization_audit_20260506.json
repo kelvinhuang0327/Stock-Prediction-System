@@ -1,0 +1,121 @@
+{
+  "program": "Stock Prediction System",
+  "task": "P4-01S — Evidence-First Data Foundation & Phase 1 Readiness Audit",
+  "workstream": "E — Phase 1 Stabilization Readiness Audit",
+  "generated_at": "2026-05-06T10:00:00Z",
+  "audit_date": "2026-05-06",
+  "evidence_method": "Direct source file inspection + SQLite DB schema analysis + test file review",
+  "overall_phase1_status": "PARTIAL — T-01 and T-02 are PARTIAL; T-03 and T-04 are DONE; T-05 is DEPRECATED_OR_NEEDS_REDESIGN",
+  "tasks": {
+    "T-01": {
+      "title": "Lane-based scheduler + heartbeat",
+      "status": "PARTIAL",
+      "summary": "4-layer scheduler exists and is functional. However it uses 'layer' terminology not 'lane', and there is no explicit heartbeat mechanism (periodic liveness ping, dead-letter detection, or watchdog).",
+      "evidence_found": [
+        "src/lib/training/TrainingScheduler.ts — implements 4 layers: INTRADAY_MONITOR (every 30min), DAILY_CYCLE, NIGHTLY_OPT, WEEKLY_DEEP",
+        "src/lib/training/TrainingSchedulerTypes.ts — type definitions for SchedulerLayer, LayerConfig",
+        "JobRunLog table: 315 total runs, 269 success, 34 skipped, 10 failed, 2 running across 22 distinct job names",
+        "JobRunLog has startedAt + completedAt fields — partial observability"
+      ],
+      "missing": [
+        "No explicit heartbeat mechanism (liveness ping to monitoring endpoint)",
+        "No dead-letter detection for stuck 'running' jobs (2 jobs stuck in 'running' state in DB)",
+        "No watchdog that restarts failed layers",
+        "Roadmap calls for 'lane' isolation — current architecture uses shared layer queue without lane boundaries"
+      ],
+      "roadmap_success_criteria": "Scheduler runs daily without manual intervention; heartbeat visible in Daily Ops Report",
+      "success_criteria_met": false,
+      "gap_analysis": "Heartbeat and watchdog components missing. 2 stuck 'running' jobs in DB indicates absence of dead-job cleanup."
+    },
+    "T-02": {
+      "title": "Unified freshness guard + dataCoverage write",
+      "status": "PARTIAL",
+      "summary": "freshnessState() function exists in AutonomousDataLayer.ts. dataCoverage writes occur in the stocks detail route. However, there is no unified FreshnessGuard class, no centralized freshness registry, and no automatic stale-data blocking.",
+      "evidence_found": [
+        "src/lib/autonomous/AutonomousDataLayer.ts — freshnessState() function, 149 lines",
+        "src/app/api/stocks/[id]/detail/route.ts — dataCoverage writes when data fetched",
+        "DataCoverage table exists in schema with fields: stockId, source, lastUpdated, tradingDaysAvailable"
+      ],
+      "missing": [
+        "No single FreshnessGuard class or module",
+        "No centralized registry that gates data access when coverage < threshold",
+        "No automatic P4 guard that blocks analysis when InstitutionalChip < 500 trading days",
+        "No freshness alarm / alert to Daily Ops Report when source goes stale",
+        "freshnessState() is per-stock, not system-wide"
+      ],
+      "roadmap_success_criteria": "Freshness guard gates all data reads; stale data raises alert in Daily Ops Report; dataCoverage written after every sync",
+      "success_criteria_met": false,
+      "gap_analysis": "dataCoverage writes exist per-stock. But no system-wide freshness gate or automatic stale alert."
+    },
+    "T-03": {
+      "title": "Daily Ops Report v1",
+      "status": "DONE",
+      "summary": "Daily Ops Report fully implemented with backend engine, API route, and frontend page. Evidence of functional report pipeline.",
+      "evidence_found": [
+        "src/app/api/report/daily/route.ts — GET endpoint for daily report",
+        "src/lib/report/DailyReportEngine.ts — report generation engine",
+        "src/app/report/daily/page.tsx — frontend page for Daily Ops Report",
+        "SyncLog table: 91 MarketIndices calls, 89 DailyQuotes, 61 RealRevenue, 61 StockMetrics, 58 BasicInfo — shows active sync history"
+      ],
+      "missing": [
+        "Heartbeat status missing from report (T-01 dependency)",
+        "Fresh data warnings not surfaced (T-02 dependency)"
+      ],
+      "roadmap_success_criteria": "Daily Ops Report renders in browser with sync status, freshness state, and scheduler health",
+      "success_criteria_met": true,
+      "gap_analysis": "Core functionality DONE. Dependent features (heartbeat, freshness alarm) awaiting T-01/T-02 completion."
+    },
+    "T-04": {
+      "title": "LLM hard-off / safe-run + missing-taskId alert",
+      "status": "DONE",
+      "summary": "LLM execution policy fully implemented with hard-off / safe-run modes and missing-taskId alert. Evidence in source and test files.",
+      "evidence_found": [
+        "src/lib/agent-orchestrator/llmExecutionPolicy.ts — LlmExecutionMode = 'safe-run' | 'hard-off' type + enforcement logic",
+        "src/app/components/LlmAuditPanel.tsx — UI panel showing current LLM mode",
+        "src/lib/agent-orchestrator/__tests__/taskAttribution.test.ts — COPILOT_MISSING_TASK_ID alert test case",
+        "181/181 tests passing as of P3-14 handover (20260505.md)"
+      ],
+      "missing": [],
+      "roadmap_success_criteria": "LLM calls blocked in hard-off mode; missing taskId raises COPILOT_MISSING_TASK_ID alert; mode visible in UI",
+      "success_criteria_met": true,
+      "gap_analysis": "No gaps found. All three criteria met."
+    },
+    "T-05": {
+      "title": "Walk-forward backtest skeleton",
+      "status": "DEPRECATED_OR_NEEDS_REDESIGN",
+      "summary": "A single-symbol rule-only walk-forward implementation exists with 522 rows of results for H001-H012. However, H001-H012 were retired/archived in P3-14. The existing WalkForwardResult schema and data are no longer valid for active signals. CTO recommendation is to DEPRECATE and redesign as portfolio walk-forward (P4-04).",
+      "evidence_found": [
+        "WalkForwardResult table: 522 rows",
+        "WalkForwardResult covers signals: chip_accumulation, regime_shift, risk_cluster, strong_alpha, theme_diffusing, topic_surging",
+        "All above signals correspond to H001-H012 retired hypotheses",
+        "outputs/stock_research_program/walk_forward_results.json confirms H001-H012 walk-forward data",
+        "cto_analysis_20260506.md: CTO classified rule-only B-08 walk-forward as DEPRECATE in CTO component audit"
+      ],
+      "missing": [
+        "Portfolio walk-forward engine (multi-symbol cross-sectional)",
+        "No existing skeleton for P4-04 format: rolling window, portfolio construction, aggregate metric output",
+        "WalkForwardResult schema too narrow for portfolio-level validation (single-stock focus)"
+      ],
+      "roadmap_success_criteria": "Walk-forward skeleton runs 500d in-sample + 200d OOS for rule-based signals on full universe",
+      "success_criteria_met": false,
+      "redesign_recommendation": "Deprecate existing single-symbol WalkForwardResult data. Redesign in P4-04 as portfolio walk-forward with cross-sectional basket construction, regime conditioning via T-03 classifier outputs, and portfolio-level metrics (Sharpe, max drawdown, hit rate, turnover). H001-H012 results can be archived but should not be reused.",
+      "deprecation_action": "Mark WalkForwardResult rows as deprecated via a migration; or move to archive table before P4-04 begins."
+    }
+  },
+  "overall_readiness_matrix": {
+    "T-01_lane_scheduler_heartbeat": "PARTIAL",
+    "T-02_freshness_guard_dataCoverage": "PARTIAL",
+    "T-03_daily_ops_report": "DONE",
+    "T-04_llm_hardoff_safeguard": "DONE",
+    "T-05_walk_forward_skeleton": "DEPRECATED_OR_NEEDS_REDESIGN"
+  },
+  "blocking_for_p4": [
+    "T-01 PARTIAL: No heartbeat means scheduler failures are silent — increases ops risk during P4 data backfills",
+    "T-02 PARTIAL: No freshness gate means P4-02/03/04 analyses could run on stale data without warning",
+    "T-05 DEPRECATED: Must redesign before P4-04 portfolio backtester can be built"
+  ],
+  "non_blocking_but_notable": [
+    "T-03 DONE: Daily Ops Report ready but incomplete without T-01 heartbeat and T-02 freshness alarm",
+    "T-04 DONE: LLM governance is solid — reduces risk during P4 automation"
+  ]
+}

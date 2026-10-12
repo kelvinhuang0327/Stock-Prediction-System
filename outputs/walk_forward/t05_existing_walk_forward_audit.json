@@ -1,0 +1,148 @@
+{
+  "task": "T-05 Existing Walk-Forward Audit",
+  "generated_at": "2026-05-06T13:52:38+08:00",
+  "existing_files_found": [
+    {
+      "file": "src/lib/signals/WalkForwardValidator.ts",
+      "type": "TypeScript",
+      "purpose": "Per-signal walk-forward split validator (L3+ Research Overlay)",
+      "h001_h012_related": false,
+      "reusable": "UTILITY_REFERENCE_ONLY",
+      "notes": "Pure research module. evaluateSignalEffectiveness() is called inside. NOT a portfolio evaluator. No ROI output."
+    },
+    {
+      "file": "src/app/api/signals/walkforward/route.ts",
+      "type": "TypeScript API",
+      "purpose": "REST endpoint for signal walk-forward. Returns WalkForwardResult[]",
+      "h001_h012_related": false,
+      "reusable": "DO_NOT_USE",
+      "notes": "Calls SignalHistoryBuilder which depends on SignalType enum tied to old signal system"
+    },
+    {
+      "file": "src/lib/research/ExperimentRegistry.ts",
+      "type": "TypeScript",
+      "purpose": "Research experiment registration and H001-H012 tracking",
+      "h001_h012_related": true,
+      "reusable": "DO_NOT_USE",
+      "notes": "Directly references retired hypothesis IDs. MUST NOT be used in T-05."
+    },
+    {
+      "file": "src/lib/research/ExperimentRunner.ts",
+      "type": "TypeScript",
+      "purpose": "Experiment execution engine for H001-H012",
+      "h001_h012_related": true,
+      "reusable": "DO_NOT_USE",
+      "notes": "Retired with H001-H012. MUST NOT be used."
+    },
+    {
+      "file": "src/lib/research/ResearchCoverageEngine.ts",
+      "type": "TypeScript",
+      "purpose": "Coverage tracking for hypothesis experiments",
+      "h001_h012_related": true,
+      "reusable": "DO_NOT_USE",
+      "notes": "Part of retired H001-H012 system."
+    },
+    {
+      "file": "scripts/run_stock_validation.py",
+      "type": "Python",
+      "purpose": "H001-H012 stock hypothesis batch validation",
+      "h001_h012_related": true,
+      "reusable": "DO_NOT_USE",
+      "notes": "References H001-H012 logic. Retired."
+    },
+    {
+      "file": "scripts/run_stock_real_batch_validation.py",
+      "type": "Python",
+      "purpose": "Real batch validation for retired hypotheses",
+      "h001_h012_related": true,
+      "reusable": "DO_NOT_USE",
+      "notes": "Retired with H001-H012."
+    },
+    {
+      "file": "scripts/run_stock_expanded_universe_validation.py",
+      "type": "Python",
+      "purpose": "Expanded universe validation for H001-H012",
+      "h001_h012_related": true,
+      "reusable": "DO_NOT_USE",
+      "notes": "Retired."
+    },
+    {
+      "file": "src/lib/backtest/AntiDeceptionValidator.ts",
+      "type": "TypeScript",
+      "purpose": "Anti-lookahead validation for research backtests",
+      "h001_h012_related": false,
+      "reusable": "REFERENCE_ONLY",
+      "notes": "Good PIT guardrail reference. Logic pattern reusable conceptually but TS-only."
+    },
+    {
+      "file": "scripts/build-market-regime-classifier.py",
+      "type": "Python",
+      "purpose": "P4-03 PIT-safe regime classifier (this session)",
+      "h001_h012_related": false,
+      "reusable": "YES_IMPORT_PATTERN",
+      "notes": "Direct SQLite access pattern. PIT-safe rolling. Regime label output. Reuse pattern."
+    },
+    {
+      "file": "scripts/build-p4-feature-foundation.py",
+      "type": "Python",
+      "purpose": "P4-02 PIT-safe feature foundation builder",
+      "h001_h012_related": false,
+      "reusable": "YES_IMPORT_PATTERN",
+      "notes": "StockQuote/MarketIndex join pattern. Reuse SQLite access pattern."
+    },
+    {
+      "file": "prisma/dev.db WalkForwardResult table",
+      "type": "SQLite",
+      "purpose": "Stores per-signal walk-forward results for H001-H012 era",
+      "h001_h012_related": true,
+      "reusable": "DO_NOT_USE_AS_TARGET",
+      "notes": "522 rows from Apr 2026. signalType/window/consistencyLabel schema. Not portfolio-based. DO NOT write to this in T-05."
+    }
+  ],
+  "existing_modules_summary": {
+    "walk_forward_type": "Per-signal (2-half split), NOT portfolio-level",
+    "walk_forward_db_rows": 522,
+    "walk_forward_date_range": "2026-04-15 to 2026-04-30",
+    "portfolio_level_logic": "NONE FOUND",
+    "regime_integration": "NONE in existing walk-forward",
+    "pit_safety": "Partial (WalkForwardValidator has split-by-date pattern; no regime PIT check)"
+  },
+  "h001_h012_usage_found": true,
+  "h001_h012_files": [
+    "src/lib/research/ExperimentRegistry.ts",
+    "src/lib/research/ExperimentRunner.ts",
+    "src/lib/research/ResearchCoverageEngine.ts",
+    "scripts/run_stock_validation.py",
+    "scripts/run_stock_real_batch_validation.py",
+    "scripts/run_stock_expanded_universe_validation.py",
+    "tests/test_stock_hypothesis_diagnostics.py",
+    "tests/test_stock_hypothesis_refinement_plan.py",
+    "tests/test_stock_hypothesis_v2_validation.py"
+  ],
+  "retired_logic_risk": "HIGH - multiple TypeScript modules still reference H001-H012 experiment IDs and signal types. These are production TypeScript files; they must not be invoked in T-05 Python skeleton.",
+  "strategy_validation_risk": "MEDIUM - WalkForwardValidator.ts evaluates signal effectiveness (hitRate, excessReturn). T-05 skeleton must NOT compute these.",
+  "production_signal_risk": "LOW for Python scripts - high for TS API routes which actively serve data",
+  "reusable_components": [
+    "SQLite direct read pattern from build-market-regime-classifier.py",
+    "PIT-safe date window pattern from build-p4-feature-foundation.py",
+    "Regime label/confidence output from build-market-regime-classifier.py"
+  ],
+  "must_not_reuse": [
+    "ExperimentRegistry.ts",
+    "ExperimentRunner.ts",
+    "WalkForwardValidator.ts evaluateSignalEffectiveness()",
+    "Any H001-H012 hypothesis IDs",
+    "WalkForwardResult table as write target",
+    "SignalHistoryBuilder"
+  ],
+  "components_requiring_guard": [
+    "WalkForwardResult table (DO NOT WRITE in T-05)",
+    "AntiDeceptionValidator.ts (reference pattern only)"
+  ],
+  "pit_safety_concerns": [
+    "Existing WalkForwardValidator splits by date but uses full-period excessReturn calculation",
+    "ExperimentRunner may use full-period data for hypothesis evaluation",
+    "T-05 must strictly enforce date <= asof_date for all feature queries"
+  ],
+  "decision": "CREATE_NEW_PYTHON_SKELETON - no existing portfolio walk-forward; new script needed"
+}

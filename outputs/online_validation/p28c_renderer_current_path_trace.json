@@ -1,0 +1,90 @@
+{
+  "classification": "P28C_RENDERER_CURRENT_PATH_TRACE",
+  "phase": "P28C-PART-B",
+  "rendererCallChain": [
+    {
+      "step": 1,
+      "file": "P26ACorpusRowAdapter.ts",
+      "function": "corpusRowToWalkthroughCaseInput(row)",
+      "description": "Maps corpus row → WalkthroughCaseInput. Passes factorSnapshot, usedSources, missingSources but NOT scoreSnapshot from activeScoringSnapshot.",
+      "bug": "scoreSnapshot is NOT passed through — root of zeros issue"
+    },
+    {
+      "step": 2,
+      "file": "P5WalkthroughReviewUtils.ts",
+      "function": "reviewCase(caseRow, caseIndex)",
+      "description": "Calls renderReasonFromCorpusSnapshot with minimalSnapshot. Constructs minimalSnapshot with scoreSnapshot hardcoded to all zeros.",
+      "bug": "scoreSnapshot: { technicalScore: 0, chipScore: 0, momentumScore: 0, revenueScore: 0 } — ignores real scores"
+    },
+    {
+      "step": 3,
+      "file": "P26ACorpusReasonRenderer.ts",
+      "function": "renderReasonFromCorpusSnapshot(snapshot)",
+      "description": "Detects single-token reasonSnapshot, calls enrichReasonFromExistingFactors(snapshot)",
+      "bug": "No mixed-signal aggregation template for MA 偏空 + MACD 多方 contradiction"
+    },
+    {
+      "step": 4,
+      "file": "P26AReasonFactorEnrichmentUtils.ts",
+      "function": "enrichReasonFromExistingFactors(snapshot)",
+      "description": "Builds multi-factor reason string. Uses snapshot.scoreSnapshot.technicalScore for direction label.",
+      "bug": "When technicalScore=0 (hardcoded by reviewCase), direction label = '中性' regardless of MA signals. No inferDirectionFromMATrend() fallback."
+    }
+  ],
+  "scoreSnapshotFields": {
+    "ActiveScoringSnapshot.scoreSnapshot": {
+      "type": "ActiveScoreSnapshot",
+      "fields": ["researchScore", "confidenceScore", "technicalScore", "chipScore", "fundamentalScore", "marketAdjustment"]
+    },
+    "minimalSnapshot.scoreSnapshot_current": {
+      "technicalScore": 0,
+      "chipScore": 0,
+      "momentumScore": 0,
+      "revenueScore": 0,
+      "note": "HARDCODED ZEROS — root cause of scoreSnapshot_zero_label bug"
+    },
+    "sampleCorpusScoreSnapshot_00891": {
+      "researchScore": null,
+      "technicalScore": 75,
+      "chipScore": 50,
+      "note": "Real techScore=75 → should produce label '偏多' not '中性'"
+    }
+  },
+  "exampleCase_00891": {
+    "symbol": "00891",
+    "reasonSnapshot": "技術偏多",
+    "alphaScore": 63,
+    "techScore": 75,
+    "factors": [
+      "MA 趨勢: 空頭排列 (MA20(16.05) < MA60(16.58))",
+      "RSI(14): 54.92 (中性健康區間)",
+      "MACD: 0.12 (MACD > 0，多方動能)",
+      "近 20 日動能: 6.38% (近 20 日漲跌幅 正)"
+    ],
+    "mixedSignalDetected": "MA 空頭排列 + MACD 多方動能 (contradictory)",
+    "currentRenderedReason": "技術面中性 (WRONG: techScore=0 hardcoded)",
+    "expectedRenderedReason": "技術面偏多 + MA/MACD 混合信號注記"
+  },
+  "plannedRepairs": {
+    "TR-01": {
+      "file": "P5WalkthroughReviewUtils.ts",
+      "change": "Add scoreSnapshot? to WalkthroughCaseInput; use caseRow.scoreSnapshot in minimalSnapshot"
+    },
+    "TR-02": {
+      "file": "P26ACorpusRowAdapter.ts",
+      "change": "Pass activeScoringSnapshot.scoreSnapshot as scoreSnapshot in WalkthroughCaseInput"
+    },
+    "TR-03": {
+      "file": "P26AReasonFactorEnrichmentUtils.ts",
+      "change": "Add inferDirectionFromMATrend() fallback when technicalScore=0"
+    },
+    "TR-04": {
+      "file": "P26ACorpusReasonRenderer.ts",
+      "change": "Add detectMixedSignal() + mixed-signal annotation in reason text"
+    },
+    "TR-05": {
+      "file": "P26ACorpusReasonRenderer.ts",
+      "change": "Bump CORPUS_REASON_RENDERER_VERSION to p26a-corpus-renderer-v2"
+    }
+  }
+}

@@ -1,0 +1,445 @@
+{
+  "contractVersion": "p12-pit-feature-contract-v0",
+  "generatedAt": "2026-05-12T00:00:00.000Z",
+  "disclaimer": "PIT feature contract v0. No investment recommendations. No scoring changes. Observability and guardrail scaffolding only.",
+  "featureSourceContracts": [
+    {
+      "sourceName": "StockQuote",
+      "dateField": "date",
+      "asOfRule": "WHERE date <= asOfDate (YYYYMMDD lexicographic). Entry price: date == asOfDate. Scoring features: date <= asOfDate only. No future quotes permitted.",
+      "pitRiskLevel": "LOW",
+      "repairNeeded": false,
+      "_meta": {
+        "currentlyUsedInScoring": true,
+        "currentlyCapturedInSnapshot": true,
+        "notes": "Correctly gated. analyzeStock(symbol, asOf) caps all queries to date <= asOf. String lexicographic comparison is valid for YYYYMMDD. closePriceAtPrediction is entry price on asOfDate. outcomeClose in outcomeSnapshot is captured AFTER prediction and is NOT part of the scoring snapshot — it is a separate write-back field."
+      }
+    },
+    {
+      "sourceName": "InstitutionalChip",
+      "dateField": "date",
+      "asOfRule": "WHERE date <= asOfDate. orderBy date DESC, take recent N rows.",
+      "pitRiskLevel": "LOW",
+      "repairNeeded": false,
+      "_meta": {
+        "currentlyUsedInScoring": true,
+        "currentlyCapturedInSnapshot": true,
+        "notes": "Correctly gated by date <= asOf. Requires minimum 5 rows for chip score contribution. Chip tags (法人買超/法人賣超) appear in signalSnapshot and reasonSnapshot when chipStrength >= 65 or <= 35."
+      }
+    },
+    {
+      "sourceName": "MonthlyRevenue",
+      "dateField": "year + month (composite)",
+      "asOfRule": "WHERE (year < asOfYear) OR (year == asOfYear AND month <= asOfMonth). No releaseDate field in schema — uses reporting period (year, month) as proxy.",
+      "pitRiskLevel": "HIGH",
+      "repairNeeded": true,
+      "repairDescription": "Add releaseDate (DateTime) field to MonthlyRevenue prisma schema. Gate queries to releaseDate <= asOfDate. Taiwan monthly revenue is released on the 10th of the following month — the current year+month composite gate may include unreleased data.",
+      "_meta": {
+        "currentlyUsedInScoring": true,
+        "currentlyCapturedInSnapshot": true,
+        "notes": "CRITICAL PIT RISK: MonthlyRevenue uses reporting period (year, month) as the date gate, NOT a releaseDate. In Taiwan, monthly revenue is released on the 10th of the following month. Using month-end as the cutoff may include data that was NOT yet publicly available on asOfDate if asOfDate < 10th of (month+1). No releaseDate field exists in the prisma schema. This is a known PIT leakage risk that must be documented in the contract. Repair requires adding a releaseDate field to the schema — out of scope for P12."
+      }
+    },
+    {
+      "sourceName": "FinancialReport",
+      "dateField": "year + quarter (composite)",
+      "asOfRule": "Not currently used in RuleBasedStockAnalyzer scoring formula. Exists in schema but not queried for alphaScore/researchBucket computation.",
+      "pitRiskLevel": "MEDIUM",
+      "repairNeeded": true,
+      "repairDescription": "Not currently used in scoring. If activated: add availabilityDate (DateTime) field (released 45-60 days after quarter end) and gate by availabilityDate <= asOfDate.",
+      "_meta": {
+        "currentlyUsedInScoring": false,
+        "currentlyCapturedInSnapshot": false,
+        "notes": "FinancialReport exists in prisma schema but is NOT currently used by RuleBasedStockAnalyzer or SignalFusionEngine for scoring. If added in future: requires availabilityDate field (Taiwan quarterly reports released 45–60 days after quarter end). Currently MEDIUM risk because it is not active, but HIGH risk if added without availabilityDate gate."
+      }
+    },
+    {
+      "sourceName": "NewsEvent",
+      "dateField": "publishedAt",
+      "asOfRule": "WHERE publishedAt <= asOfDate. Must NOT use ingestedAt as PIT gate. ingestedAt reflects DB write time which may lag publishedAt.",
+      "pitRiskLevel": "HIGH",
+      "repairNeeded": true,
+      "repairDescription": "Not currently used in scoring. If activated: gate by publishedAt <= asOfDate. Never use ingestedAt. Validate relatedSymbols JSON parse.",
+      "_meta": {
+        "currentlyUsedInScoring": false,
+        "currentlyCapturedInSnapshot": false,
+        "notes": "NewsEvent exists in schema and has RSSNewsAdapter for ingestion. NOT currently consumed by RuleBasedStockAnalyzer or SignalFusionEngine scoring. If added in future: must gate by publishedAt <= asOfDate. Must NOT use ingestedAt (DB write time). relatedSymbols must be validated as parseable JSON string array."
+      }
+    },
+    {
+      "sourceName": "TechnicalIndicators",
+      "dateField": "Inherits from StockQuote.date <= asOfDate",
+      "asOfRule": "All technical indicator windows (MA, momentum, etc.) must use only stockQuote rows with date <= asOfDate. Rolling window must not cross the asOfDate boundary.",
+      "pitRiskLevel": "LOW",
+      "repairNeeded": false,
+      "_meta": {
+        "currentlyUsedInScoring": true,
+        "currentlyCapturedInSnapshot": true,
+        "notes": "Derived from StockQuote which is correctly gated. Risk is LOW as long as StockQuote gate is maintained. Captured in scoreSnapshot.technicalScore and factorSnapshot (Technical factor descriptions)."
+      }
+    },
+    {
+      "sourceName": "MarketRegime",
+      "dateField": "asOf parameter passed from SignalFusionEngine",
+      "asOfRule": "detectRegime(asOf) must use data <= asOf. Regime classification must not use future market data.",
+      "pitRiskLevel": "MEDIUM",
+      "repairNeeded": false,
+      "_meta": {
+        "currentlyUsedInScoring": true,
+        "currentlyCapturedInSnapshot": false,
+        "notes": "Used in SignalFusionEngine for market adjustment. detectRegime is called with asOf. Not explicitly captured in activeScoringSnapshot fields — market adjustment is reflected in scoreSnapshot.marketAdjustment. MEDIUM risk: regime detection data sourcing needs verification."
+      }
+    },
+    {
+      "sourceName": "ActiveScoringSnapshot",
+      "dateField": "asOfDate",
+      "asOfRule": "pitGateDate MUST equal asOfDate. All scoring data capped at asOfDate.",
+      "pitRiskLevel": "LOW",
+      "repairNeeded": false,
+      "forbiddenSnapshotFields": [
+        "outcomePrice",
+        "returnPct",
+        "realizedReturnClass",
+        "futurePrice",
+        "baselineResult",
+        "outcomeClose",
+        "horizonReturnPct"
+      ],
+      "_meta": {
+        "currentlyUsedInScoring": true,
+        "currentlyCapturedInSnapshot": true,
+        "notes": "FORBIDDEN FIELDS in activeScoringSnapshot: outcomePrice, returnPct, realizedReturnClass, baseline comparison results, any future price or future feature. These are write-back fields that exist at corpus row level (outcomeSnapshot) but must NOT appear inside activeScoringSnapshot itself."
+      }
+    },
+    {
+      "sourceName": "ReasonSignalFactorSnapshot",
+      "dateField": "Inherits asOfDate from activeScoringSnapshot",
+      "asOfRule": "Same as activeScoringSnapshot. Reason/signal/factor text must be derived from data available on asOfDate only.",
+      "pitRiskLevel": "LOW",
+      "repairNeeded": false,
+      "forbiddenSnapshotFields": [
+        "outcomePrice",
+        "returnPct",
+        "realizedReturnClass",
+        "futurePrice",
+        "baselineResult",
+        "outcomeClose",
+        "horizonReturnPct"
+      ],
+      "_meta": {
+        "currentlyUsedInScoring": false,
+        "currentlyCapturedInSnapshot": true,
+        "notes": "FORBIDDEN in reasonSnapshot/signalSnapshot/factorSnapshot: outcomePrice, returnPct, realizedReturnClass, baseline comparison, future price/factor. P8-PREFLIGHT found 24 generic cases: TEMPLATE_TOO_GENERIC=9, SCORING_ENGINE_UNDEROUTPUT=9, FACTOR_EXPLANATION_MISSING=4, SNAPSHOT_CAPTURE_MISSING=2."
+      }
+    },
+    {
+      "sourceName": "BucketContract",
+      "dateField": "N/A — design contract, not time-series data",
+      "asOfRule": "N/A — bucket mapping is stateless with respect to asOfDate",
+      "pitRiskLevel": "LOW",
+      "repairNeeded": false,
+      "_meta": {
+        "currentlyUsedInScoring": true,
+        "currentlyCapturedInSnapshot": true,
+        "notes": "P6-LITE final verdict: BY_DESIGN_BOUNDARY. Watch bucket accepts score=[21,29] as signal-qualified boundary cases. This is a design decision, not a schema bug. Bucket contract is frozen and should not be modified without a new P6 diagnosis cycle."
+      }
+    },
+    {
+      "sourceName": "TwseTradingCalendar",
+      "dateField": "tradingDate",
+      "asOfRule": "outcomeDate must be computed forward from asOfDate using only trading calendar — no market data involved in date arithmetic. Trading calendar data itself has no PIT leakage risk.",
+      "pitRiskLevel": "LOW",
+      "repairNeeded": false,
+      "_meta": {
+        "currentlyUsedInScoring": false,
+        "currentlyCapturedInSnapshot": true,
+        "notes": "Used for outcomeDate computation in corpus builder. outcomeDate is AFTER asOfDate — this is intentional for outcome tracking. The trading calendar itself does not introduce data leakage as it is a static artifact."
+      }
+    }
+  ],
+  "pitSafetyRequirements": [
+    {
+      "requirementId": "PIT-001",
+      "description": "All time-series feature sources must gate queries to date <= asOfDate. No future data may influence scoring features.",
+      "scope": [
+        "StockQuote",
+        "InstitutionalChip",
+        "MonthlyRevenue",
+        "FinancialReport",
+        "NewsEvent"
+      ],
+      "enforcement": "HARD"
+    },
+    {
+      "requirementId": "PIT-002",
+      "description": "pitGateDate must equal asOfDate in every activeScoringSnapshot. Divergence is a PIT violation.",
+      "scope": [
+        "ActiveScoringSnapshot"
+      ],
+      "enforcement": "HARD"
+    },
+    {
+      "requirementId": "PIT-003",
+      "description": "MonthlyRevenue: Uses year+month composite gate (no releaseDate). Approved as interim until releaseDate field is added to schema. Recognized HIGH risk.",
+      "scope": [
+        "MonthlyRevenue"
+      ],
+      "enforcement": "SOFT"
+    },
+    {
+      "requirementId": "PIT-004",
+      "description": "Forbidden snapshot fields must never appear inside activeScoringSnapshot: outcomePrice, returnPct, realizedReturnClass, futurePrice, baselineResult, outcomeClose.",
+      "scope": [
+        "ActiveScoringSnapshot",
+        "ReasonSignalFactorSnapshot"
+      ],
+      "enforcement": "HARD"
+    },
+    {
+      "requirementId": "PIT-005",
+      "description": "NewsEvent: If added to scoring, must gate by publishedAt <= asOfDate. Must NOT use ingestedAt (DB write time) as PIT gate.",
+      "scope": [
+        "NewsEvent"
+      ],
+      "enforcement": "SOFT"
+    },
+    {
+      "requirementId": "PIT-006",
+      "description": "FinancialReport: Not currently active. If activated, must add availabilityDate field (released 45-60 days after quarter end in Taiwan) before use.",
+      "scope": [
+        "FinancialReport"
+      ],
+      "enforcement": "SOFT"
+    },
+    {
+      "requirementId": "PIT-007",
+      "description": "priceSource must never be mock-deterministic in any active scoring corpus row. The priceSource=mock-deterministic flag signals that the price used is artificial and not historically real.",
+      "scope": [
+        "StockQuote"
+      ],
+      "enforcement": "HARD"
+    }
+  ],
+  "snapshotCaptureRequirements": [
+    {
+      "fieldName": "asOfDate",
+      "required": true,
+      "description": "YYYY-MM-DD date for which scoring was performed. PIT gate anchor."
+    },
+    {
+      "fieldName": "pitGateDate",
+      "required": true,
+      "description": "Must equal asOfDate. Explicit PIT gate confirmation."
+    },
+    {
+      "fieldName": "scoringMode",
+      "required": true,
+      "description": "Scoring engine mode (e.g., RULE_BASED_ANALYZER)."
+    },
+    {
+      "fieldName": "scoringEngineSource",
+      "required": true,
+      "description": "Name of scoring engine class (e.g., RuleBasedStockAnalyzer)."
+    },
+    {
+      "fieldName": "researchBucket",
+      "required": true,
+      "description": "Canonical bucket label (Strong/Watch/Neutral/LowPriority/InsufficientData)."
+    },
+    {
+      "fieldName": "alphaScore",
+      "required": true,
+      "description": "Composite score 0–100."
+    },
+    {
+      "fieldName": "scoreSnapshot",
+      "required": true,
+      "description": "Breakdown scores: researchScore, technicalScore, chipScore, fundamentalScore, marketAdjustment."
+    },
+    {
+      "fieldName": "signalSnapshot",
+      "required": true,
+      "description": "Array of factor names contributing to the score."
+    },
+    {
+      "fieldName": "factorSnapshot",
+      "required": true,
+      "description": "Array of factor descriptions (name: value (note))."
+    },
+    {
+      "fieldName": "reasonSnapshot",
+      "required": true,
+      "description": "Single reason text from scoring engine (e.g., 技術偏多). Must not contain forbidden claims."
+    },
+    {
+      "fieldName": "scoringCompletenessStatus",
+      "required": true,
+      "description": "COMPLETE, PARTIAL, or EMPTY."
+    },
+    {
+      "fieldName": "outcomePrice",
+      "required": false,
+      "forbiddenValues": [
+        "*"
+      ],
+      "description": "FORBIDDEN in activeScoringSnapshot. Belongs only in outcomeSnapshot."
+    },
+    {
+      "fieldName": "returnPct",
+      "required": false,
+      "forbiddenValues": [
+        "*"
+      ],
+      "description": "FORBIDDEN in activeScoringSnapshot. Belongs only in outcomeSnapshot."
+    },
+    {
+      "fieldName": "realizedReturnClass",
+      "required": false,
+      "forbiddenValues": [
+        "*"
+      ],
+      "description": "FORBIDDEN in activeScoringSnapshot. Belongs only in outcomeSnapshot."
+    }
+  ],
+  "repairPriorities": [
+    {
+      "priority": "P0",
+      "sourceName": "MonthlyRevenue",
+      "repairAction": "Add releaseDate (DateTime) field to MonthlyRevenue schema. Gate queries to releaseDate <= asOfDate instead of month <= asOfMonth.",
+      "rationale": "Currently gated by reporting period not announcement date. Taiwan monthly revenue released on 10th of following month — gap causes PIT leakage risk."
+    },
+    {
+      "priority": "P1",
+      "sourceName": "ReasonSignalFactorSnapshot",
+      "repairAction": "P8-PREFLIGHT found 24 generic reason cases. Fix RuleBasedStockAnalyzer.buildReason() to produce richer tokens and factor explanations. Repair tracked in P8-PREFLIGHT output.",
+      "rationale": "24 cases classified as TEMPLATE_TOO_GENERIC or SCORING_ENGINE_UNDEROUTPUT. Root cause: buildReason() produces single tokens only."
+    },
+    {
+      "priority": "P2",
+      "sourceName": "FinancialReport",
+      "repairAction": "Add availabilityDate (DateTime) field to FinancialReport schema before activating in scoring pipeline.",
+      "rationale": "Not currently used but lacks PIT gate field. If added without availabilityDate, will introduce HIGH risk leakage (quarterly reports released 45–60 days after period end)."
+    }
+  ],
+  "nonGoals": [
+    "This contract does NOT modify scoring formulas, scoring weights, or bucket thresholds.",
+    "This contract does NOT modify any corpus files (simulation, p0, p1, p3).",
+    "This contract does NOT add new investment claims, performance predictions, or strategy recommendations.",
+    "This contract does NOT modify ManualReview modules.",
+    "This contract does NOT change production database schema — schema repairs are flagged as future work (P0/P1 priority).",
+    "This contract does NOT produce ROI figures, win rates, alpha calculations, profit estimates, or performance guarantees."
+  ],
+  "bucketContractRef": {
+    "contractSource": "p6lite_bucket_contract_freeze.json",
+    "verdict": "BY_DESIGN_BOUNDARY",
+    "canonicalBucketLabels": [
+      {
+        "label": "Strong",
+        "aliases": [
+          "Strong Candidate",
+          "偏多",
+          "StrongBull"
+        ],
+        "canonicalScoreBand": {
+          "low": 60,
+          "high": 100
+        },
+        "description": "High composite score, all major signal dimensions aligned positively."
+      },
+      {
+        "label": "Watch",
+        "aliases": [
+          "Watch Candidate",
+          "觀察",
+          "留意"
+        ],
+        "canonicalScoreBand": {
+          "low": 40,
+          "high": 70
+        },
+        "observedBoundaryBehavior": {
+          "acceptedScoreRange": {
+            "min": 20,
+            "max": 39
+          },
+          "condition": "Signal-qualified Watch assignment: individual technical signals (e.g. 技術偏空 in universe-tracked stock) may trigger Watch bucket independently of composite score. Observed in 5 cases with scores [21,29].",
+          "evidenceSource": "P5 walkthrough review — 5 INCONSISTENT cases, all Watch + score ≤ 39",
+          "freezeDecision": "BY_DESIGN_BOUNDARY: This boundary behavior is accepted as-is. The score band documentation (40-70) will be updated to note signal-override cases."
+        }
+      },
+      {
+        "label": "Neutral",
+        "aliases": [
+          "中性"
+        ],
+        "canonicalScoreBand": {
+          "low": 30,
+          "high": 59
+        },
+        "description": "Mixed signals. Composite score in mid-range. No strong directional bias."
+      },
+      {
+        "label": "LowPriority",
+        "aliases": [
+          "Low Priority",
+          "低優先",
+          "偏空",
+          "WeakBear"
+        ],
+        "canonicalScoreBand": {
+          "low": 0,
+          "high": 39
+        },
+        "description": "Low composite score, mostly negative signals. Not prioritized."
+      },
+      {
+        "label": "InsufficientData",
+        "aliases": [
+          "Insufficient Data",
+          "N/A",
+          "NA",
+          "None"
+        ],
+        "canonicalScoreBand": null,
+        "description": "Score or bucket could not be determined due to missing data."
+      }
+    ],
+    "nonGoals": [
+      "This contract does NOT define investment rules or recommendations.",
+      "This contract does NOT establish performance thresholds or return expectations.",
+      "This contract does NOT modify scoring formulas, alphaScore, or recommendationBucket logic.",
+      "This contract does NOT apply to simulation_snapshot_corpus or P0/P1/P3/P4 corpora.",
+      "This contract is for schema documentation and normalization consistency only.",
+      "Future score re-calibration remains out of scope for P6-LITE."
+    ]
+  },
+  "p8SignalReasonRef": {
+    "diagnosisSource": "p8preflight_signal_reason_diagnosis.json",
+    "totalCases": 24,
+    "categoryCounts": {
+      "undefined": 24
+    }
+  },
+  "summary": {
+    "totalSources": 11,
+    "byRiskLevel": {
+      "LOW": 7,
+      "MEDIUM": 2,
+      "HIGH": 2
+    },
+    "highRiskSources": [
+      "MonthlyRevenue",
+      "NewsEvent"
+    ],
+    "repairNeededSources": [
+      "MonthlyRevenue",
+      "FinancialReport",
+      "NewsEvent"
+    ],
+    "repairPriorityP0": 1,
+    "repairPriorityP1": 1,
+    "requirementCount": 7,
+    "snapshotCaptureRuleCount": 14,
+    "verdict": "CONTRACT_PARTIAL"
+  }
+}

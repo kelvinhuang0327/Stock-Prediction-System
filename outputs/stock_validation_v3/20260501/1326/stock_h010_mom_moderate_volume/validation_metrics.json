@@ -1,0 +1,18 @@
+{
+  "hypothesis_id": "STOCK_H010_MOM_MODERATE_VOLUME",
+  "symbol": "1326",
+  "as_of_date": "2026-05-01",
+  "windows_tested": [
+    150,
+    500
+  ],
+  "windows_ok": [
+    150,
+    500
+  ],
+  "avg_sharpe_annualized": -4.429,
+  "avg_roi_annualized": -2.243,
+  "bh_fdr_pass_count": 0,
+  "status": "REJECTED",
+  "run_ts": "2026-05-05T09:56:40.900665+00:00"
+}

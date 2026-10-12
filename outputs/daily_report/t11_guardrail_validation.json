@@ -1,0 +1,126 @@
+{
+  "task": "T-11 Freshness Alert for MarketRegimeResult",
+  "validated_date": "2026-05-06",
+  "guardrail_version": "t11_v1",
+  "total_guardrails": 18,
+  "passed": 18,
+  "failed": 0,
+  "results": [
+    {
+      "id": "G01",
+      "check": "computeFreshnessAlert() exists and is exported",
+      "status": "PASS",
+      "evidence": "src/lib/marketRegimeResult.ts exports computeFreshnessAlert at line 82"
+    },
+    {
+      "id": "G02",
+      "check": "FRESH alert level covered in tests",
+      "status": "PASS",
+      "evidence": "t11_freshness_alert.test.ts: lag=0 and lag=3 both return FRESH"
+    },
+    {
+      "id": "G03",
+      "check": "STALE alert level covered in tests",
+      "status": "PASS",
+      "evidence": "t11_freshness_alert.test.ts: lag=4 and lag=7 both return STALE"
+    },
+    {
+      "id": "G04",
+      "check": "CRITICAL_STALE alert level covered in tests",
+      "status": "PASS",
+      "evidence": "t11_freshness_alert.test.ts: lag=8 returns CRITICAL_STALE"
+    },
+    {
+      "id": "G05",
+      "check": "MISSING alert level covered in tests",
+      "status": "PASS",
+      "evidence": "t11_freshness_alert.test.ts: isAvailable=false returns MISSING"
+    },
+    {
+      "id": "G06",
+      "check": "FUTURE_DATE_ERROR alert level covered in tests",
+      "status": "PASS",
+      "evidence": "t11_freshness_alert.test.ts: freshnessStatus=FUTURE_DATE_ERROR returns FUTURE_DATE_ERROR"
+    },
+    {
+      "id": "G07",
+      "check": "API response includes freshnessAlert field",
+      "status": "PASS",
+      "evidence": "route.ts: freshnessAlert included in ok, missing, and error response branches"
+    },
+    {
+      "id": "G08",
+      "check": "T-09 API fields preserved (status, reportDate, regime, guardrails)",
+      "status": "PASS",
+      "evidence": "route.ts: all original T-09 fields retained; 10 T-09 tests still PASS"
+    },
+    {
+      "id": "G09",
+      "check": "guardrails preserved in all response branches",
+      "status": "PASS",
+      "evidence": "route.ts: GUARDRAILS constant included in ok, missing, and error responses"
+    },
+    {
+      "id": "G10",
+      "check": "no DB write",
+      "status": "PASS",
+      "evidence": "computeFreshnessAlert() is pure function; route.ts only reads via getLatestMarketRegimeContext"
+    },
+    {
+      "id": "G11",
+      "check": "no external API call",
+      "status": "PASS",
+      "evidence": "No fetch/axios/http calls in marketRegimeResult.ts or route.ts"
+    },
+    {
+      "id": "G12",
+      "check": "no strategy validation",
+      "status": "PASS",
+      "evidence": "No strategy, hypothesis, or scoring logic added"
+    },
+    {
+      "id": "G13",
+      "check": "no buy/sell/signal fields",
+      "status": "PASS",
+      "evidence": "FreshnessAlert interface has no forbidden fields; API tests verify no forbidden fields in response"
+    },
+    {
+      "id": "G14",
+      "check": "no ROI/win_rate fields",
+      "status": "PASS",
+      "evidence": "No roi or win_rate in any T-11 code or output"
+    },
+    {
+      "id": "G15",
+      "check": "no alpha/edge/profit/recommendation/outperform fields",
+      "status": "PASS",
+      "evidence": "No such fields in T-11 code or outputs"
+    },
+    {
+      "id": "G16",
+      "check": "no H001-H012 references",
+      "status": "PASS",
+      "evidence": "t11_freshness_alert.test.ts and t11_freshness_alert_api.test.ts both verify no H001-H012 in response"
+    },
+    {
+      "id": "G17",
+      "check": "Jest tests PASS",
+      "status": "PASS",
+      "evidence": "40/40 tests pass across T-09 + T-11 test suites (combined run)"
+    },
+    {
+      "id": "G18",
+      "check": "all required output files exist",
+      "status": "PASS",
+      "evidence": "11/11 required files created: marketRegimeResult.ts, route.ts, 2 test files, 7 artifact files"
+    }
+  ],
+  "jest_results": {
+    "t09_service_tests": "10/10 PASS",
+    "t09_api_tests": "10/10 PASS",
+    "t11_unit_tests": "12/12 PASS",
+    "t11_api_tests": "8/8 PASS",
+    "combined_total": "40/40 PASS"
+  },
+  "summary": "All 18 guardrails PASS. T-11 freshness alert is complete and regression-free."
+}

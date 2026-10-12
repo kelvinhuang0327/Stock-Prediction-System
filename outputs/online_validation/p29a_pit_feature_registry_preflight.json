@@ -1,0 +1,37 @@
+{
+  "phase": "P29A",
+  "taskName": "P29A-HARDRESET: PIT-safe Feature Availability Registry v1 Paper Design",
+  "generatedAt": "2026-05-23T00:00:00Z",
+  "gitHead": "455c86a",
+  "gitHeadSubject": "P28E: Close reason underoutput renderer repair track + pre-commit P29-A axis-A continuation",
+  "p28eArtifacts": {
+    "p28e_reason_underoutput_closure_final_report.md": "OK",
+    "p28_reason_underoutput_closure_marker.json": "OK",
+    "p28_next_prompt_after_reason_underoutput_closure.md": "OK",
+    "p28e_closure_criteria_evaluation.json": "OK",
+    "p28e_residual_underoutput_distribution_scan.json": "OK",
+    "ARTIFACT_INDEX.md": "OK",
+    "PHASE_INDEX.md": "OK",
+    "p26_phase_chain_registry.json": "OK"
+  },
+  "p28eArtifactCompleteness": "COMPLETE",
+  "baseline": {
+    "db": { "path": "prisma/dev.db", "sha256": "a5cf277182c161dfe97ba05f9b81528d6c8e477dd5ac0bec6810ffbb8711c6f8" },
+    "corpus": {
+      "simulation_snapshot_corpus.jsonl": { "lines": 60, "sha256": "6a668ba2196fba05aa96304262f3eff154fc797612a5adf878ed4794af2fe18e" },
+      "p0hardreset_historical_replay_corpus.jsonl": { "lines": 4500, "sha256": "f231e3b768cec2250a1c792751f7ec61bc307aa3281cbcc6b454c0fd81f51189" },
+      "p1baseline_historical_replay_corpus.jsonl": { "lines": 9900, "sha256": "66f62cb2a2b8e9a04f414a033dece8408ac68764c44130102ad6994a9399bded" },
+      "p3active_scoring_historical_replay_corpus.jsonl": { "lines": 4500, "sha256": "e8b4e1a9f255e3a96af13925176559538ed0fdca7793d7030bb7164c71101712" },
+      "p19active_scoring_pit_replay_corpus.jsonl": { "lines": 4499, "sha256": "da92963f0d0f596cdd8673d63e3a19c6a70ca92e23a31b1029595ce913c90a94" }
+    },
+    "scoringFiles": {
+      "src/lib/analysis/RuleBasedStockAnalyzer.ts": "bc3716cc8e74be304f2e262aac586a61760bb59d6c95e82a575c38e03ea7373d",
+      "src/lib/alpha/SignalFusionEngine.ts": "b8ce3fa3ae63fd7edf6b6067dd8ccea63c02741454b93792e87bfbc1e95d2bf4",
+      "src/lib/onlineValidation/ActiveScoringSnapshotBuilder.ts": "063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d"
+    }
+  },
+  "ceoRouteD": "Confirmed — P29A is axis-A continuation mandated by CEO Route D after P28E closure.",
+  "forbiddenNextRound": ["P27_REPORT_NAMING_AUDIT", "P27_FORBIDDEN_CLAIMS_SCANNER_CONSOLIDATION", "P27_PHASE_REGISTRY_CONSISTENCY"],
+  "p26f4State": "WAITING_FOR_OPERATOR_SOURCE",
+  "preflightStatus": "PASS"
+}

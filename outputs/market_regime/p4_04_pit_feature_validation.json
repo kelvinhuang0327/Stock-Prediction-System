@@ -1,0 +1,43 @@
+{
+  "validation_id": "P4_04_PIT_FEATURE_VALIDATION",
+  "validation_date": "2026-05-06",
+  "generated_at": "2026-05-06T14:58:03.508851",
+  "total_records": 300,
+  "all_dates_lte_cap": true,
+  "max_date": "2026-05-06",
+  "future_date_count": 0,
+  "all_records_have_pit_json": true,
+  "all_pit_json_parseable": true,
+  "pit_safety_flags_confirmed": {
+    "no_future_fill": 300,
+    "no_chip_revenue_financial_features": 300,
+    "no_buy_sell_signal": 300,
+    "all_rolling_calculations_use_date_lte_asof": 300
+  },
+  "actual_future_fill_violations": 0,
+  "actual_chip_revenue_violations": 0,
+  "missing_taiex_close": 0,
+  "missing_taiex_ma50": 0,
+  "missing_taiex_ma200": 0,
+  "missing_market_breadth_proxy_count": 2,
+  "market_index_join": {
+    "matched": 300,
+    "missing": 0
+  },
+  "stock_quote_join": {
+    "matched": 291,
+    "missing": 9,
+    "note": "9 dates have no StockQuote rows -- calendar gaps expected"
+  },
+  "source_consistent": true,
+  "version_consistent": true,
+  "pit_safety_answers": {
+    "has_future_date": false,
+    "has_future_fill_evidence": false,
+    "uses_chip_revenue_financial": false,
+    "has_h001_h012_references": false,
+    "has_strategy_signal_leakage": false,
+    "has_roi_winrate_edge_leakage": false
+  },
+  "verdict": "PASS"
+}

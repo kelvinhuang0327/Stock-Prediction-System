@@ -1,0 +1,175 @@
+{
+  "writerVersion": "p0combined-v1",
+  "writeMode": "DRY_RUN_ARTIFACT_ONLY",
+  "dryRunOnly": true,
+  "config": {
+    "asOfDate": "2026-05-11",
+    "runId": "p0combined-20260511-001",
+    "maxCandidates": 5,
+    "universeTier": "MVP_CORE",
+    "dryRun": true,
+    "writeMode": "DRY_RUN_ARTIFACT_ONLY",
+    "sourceDateBasis": {
+      "sourceDate": "2026-05-09",
+      "sourceType": "stockQuote",
+      "missingDataFlags": []
+    }
+  },
+  "summary": {
+    "asOfDate": "2026-05-11",
+    "runId": "p0combined-20260511-001",
+    "candidateCount": 2,
+    "writtenLineCount": 2,
+    "duplicateCount": 0,
+    "failedValidationCount": 0,
+    "warningCount": 0,
+    "dryRunOnly": true,
+    "readinessStatus": "READY"
+  },
+  "validationResult": {
+    "status": "PASS",
+    "batchStatus": "PASS",
+    "duplicateKeyStatus": "PASS",
+    "sourceDateBasisStatus": "PASS",
+    "forbiddenFieldStatus": "PASS",
+    "targetHorizonsStatus": "PASS",
+    "messages": []
+  },
+  "batch": {
+    "batchVersion": "p002b-v1",
+    "taskName": "P0-COMBINED",
+    "runId": "p0combined-20260511-001",
+    "asOfDate": "2026-05-11",
+    "generatedAt": "2026-05-11T03:18:18.729Z",
+    "runMode": "DRY_RUN",
+    "universeTier": "MVP_CORE",
+    "entryCount": 2,
+    "entries": [
+      {
+        "logVersion": "p002b-v1",
+        "taskName": "P0-COMBINED",
+        "runId": "p0combined-20260511-001",
+        "asOfDate": "2026-05-11",
+        "generatedAt": "2026-05-11T03:18:18.729Z",
+        "universeTier": "MVP_CORE",
+        "symbol": "2330",
+        "stockName": "Taiwan Semiconductor Manufacturing",
+        "researchBucket": "Strong",
+        "scoreSnapshot": {
+          "researchScore": 74.2,
+          "confidenceScore": 68,
+          "technicalScore": 78,
+          "chipScore": 72,
+          "fundamentalScore": 82,
+          "marketAdjustment": 4
+        },
+        "confidenceSnapshot": 68,
+        "factorSnapshot": [
+          "price momentum above 60-day average",
+          "institutional concentration improving"
+        ],
+        "riskSnapshot": [
+          "sector concentration"
+        ],
+        "limitationSnapshot": [
+          "limited forward visibility"
+        ],
+        "dataCoverageSnapshot": {
+          "coverage": "full",
+          "usedSources": [
+            "stockQuote",
+            "institutionalChip",
+            "financialReport"
+          ],
+          "missingSources": []
+        },
+        "sourceDateBasis": {
+          "sourceDate": "2026-05-09",
+          "sourceType": "stockQuote",
+          "missingDataFlags": []
+        },
+        "targetHorizons": [
+          {
+            "horizonLabel": "5D",
+            "outcomeStatus": "PENDING",
+            "outcomeWriteBackAllowed": false
+          },
+          {
+            "horizonLabel": "20D",
+            "outcomeStatus": "PENDING",
+            "outcomeWriteBackAllowed": false
+          }
+        ],
+        "validationStatus": "PASS",
+        "validationMessages": [],
+        "guardrailStatus": "PASS",
+        "duplicateKey": "2026-05-11|2330|MVP_CORE|p0combined-20260511-001",
+        "writeMode": "DRY_RUN"
+      },
+      {
+        "logVersion": "p002b-v1",
+        "taskName": "P0-COMBINED",
+        "runId": "p0combined-20260511-001",
+        "asOfDate": "2026-05-11",
+        "generatedAt": "2026-05-11T03:18:18.729Z",
+        "universeTier": "MVP_CORE",
+        "symbol": "2454",
+        "stockName": "MediaTek",
+        "researchBucket": "Strong",
+        "scoreSnapshot": {
+          "researchScore": 68.5,
+          "confidenceScore": 62,
+          "technicalScore": 70,
+          "chipScore": 65,
+          "fundamentalScore": 76,
+          "marketAdjustment": 3
+        },
+        "confidenceSnapshot": 62,
+        "factorSnapshot": [
+          "technical structure improving",
+          "chip flow neutral to positive"
+        ],
+        "riskSnapshot": [
+          "competitive pressure"
+        ],
+        "limitationSnapshot": [
+          "chip data T+1 lag"
+        ],
+        "dataCoverageSnapshot": {
+          "coverage": "full",
+          "usedSources": [
+            "stockQuote",
+            "institutionalChip"
+          ],
+          "missingSources": [
+            "monthlyRevenue"
+          ]
+        },
+        "sourceDateBasis": {
+          "sourceDate": "2026-05-09",
+          "sourceType": "stockQuote",
+          "missingDataFlags": []
+        },
+        "targetHorizons": [
+          {
+            "horizonLabel": "5D",
+            "outcomeStatus": "PENDING",
+            "outcomeWriteBackAllowed": false
+          },
+          {
+            "horizonLabel": "20D",
+            "outcomeStatus": "PENDING",
+            "outcomeWriteBackAllowed": false
+          }
+        ],
+        "validationStatus": "PASS",
+        "validationMessages": [],
+        "guardrailStatus": "PASS",
+        "duplicateKey": "2026-05-11|2454|MVP_CORE|p0combined-20260511-001",
+        "writeMode": "DRY_RUN"
+      }
+    ],
+    "batchValidationStatus": "PASS",
+    "batchValidationMessages": []
+  }
+}

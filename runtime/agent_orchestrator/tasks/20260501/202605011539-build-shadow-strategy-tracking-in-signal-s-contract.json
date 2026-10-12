@@ -1,0 +1,148 @@
+{
+  "version": "2.0",
+  "objective": "Build shadow strategy tracking in SIGNAL_SATURATED state, conduct signal quality analysis, and perform saturation meta-review with three validated candidate variants and promotion criteria.",
+  "scope": [
+    "Phase 1: Read background context, snapshot current strategy state, and document existing edge / sharpe / drawdown for each focus area before proposing any changes.",
+    "Phase 2: For each focus area, generate at least 1 distinct strategy variant with explicit entry, exit, sizing, and risk-control hypothesis. Combined total must be ≥ 3 variants.",
+    "Phase 3: Run backtest batches at 150 / 500 / 1500 observations for every strategy variant. Record edge, sharpe, drawdown, win rate per focus in a comparable table.",
+    "Phase 4: Execute Monte Carlo simulation (≥ 1000 runs per strategy) and perform parameter sensitivity analysis per focus. Identify robust vs fragile settings.",
+    "Phase 5: Cross-focus synthesis — compare all variants (per focus and across focuses) against the existing baseline, rank quantitatively, and issue a final recommendation with rollout conditions."
+  ],
+  "constraints": [
+    "Do not modify protected paths from project profile.",
+    "Do not claim completion without machine-readable quantitative evidence.",
+    "Every statistical conclusion must cite the corresponding backtest or Monte Carlo evidence.",
+    "If blocked by runtime or permissions, finalize with clear failure evidence rather than narrative-only output.",
+    "Statistical gate required: perm_p < 0.05 on filtered vs unfiltered signal quality edge.",
+    "Statistical gate required: Shadow strategy promotion gate: drawdown at 5th Monte Carlo percentile < 15%.",
+    "Statistical gate required: McNemar test on policy-tightened entry classification."
+  ],
+  "acceptance_tests": [
+    "Each defined focus produces at least 1 strategy variant; combined total is ≥ 3 variants with explicit rules and assumptions.",
+    "The task includes backtest evidence for 150 / 500 / 1500 windows and reports edge / sharpe / drawdown for each strategy.",
+    "The task includes Monte Carlo results with at least 1000 runs per strategy plus parameter optimization findings.",
+    "The task compares all variants against the existing strategy and ends with a final recommendation.",
+    "Cross-focus synthesis section identifies the best overall recommendation across all focus areas."
+  ],
+  "required_outputs": [
+    "strategy_candidates_3_plus",
+    "backtest_report_150_500_1500",
+    "monte_carlo_report_1000_plus",
+    "comparison_matrix_vs_existing",
+    "final_recommendation",
+    "completed_markdown",
+    "task_result_json",
+    "changed_files_list",
+    "signal_quality_filter_report.json",
+    "signal_quality_backtest_table.json",
+    "shadow_strategy_candidates.json",
+    "shadow_tracking_report.json",
+    "saturation_meta_review.json",
+    "policy_update_proposal.json",
+    "phase_execution_plan"
+  ],
+  "forbidden_changes": [
+    ".env",
+    "dev.db",
+    "prisma/migrations/",
+    "deploy/",
+    "archive/"
+  ],
+  "planner_context": {
+    "taskType": "shadow_strategy_tracking",
+    "game": null,
+    "regimeState": "SIGNAL_SATURATED",
+    "dedupeKey": "shadow_strategy_tracking|GLOBAL|SIGNAL_SATURATED",
+    "confidenceScore": 0.43333333333333335,
+    "regimeTaskType": "shadow_strategy_tracking"
+  },
+  "handoff_questions": [
+    "Which recommended strategy (and focus) should move to the next validation cycle and why?",
+    "Which risk factors or weak assumptions still require a follow-up task?",
+    "Which focus area showed the weakest signal and should be deprioritised?"
+  ],
+  "background": "The signal classifier detected SIGNAL_SATURATED with 43% confidence. No setups are penalized; saturation may be driven by over-trading or market regime shift. This task covers three concurrent focuses: signal quality filtering, shadow strategy tracking, and saturation meta-review.",
+  "trigger_reason": "SIGNAL_SATURATED@confidence=0.43@reason=winRateDelta=0.00% — plateau detected (threshold 3.0%)",
+  "system_state": {
+    "signal_state": "SIGNAL_SATURATED",
+    "confidence_score": 0.43333333333333335,
+    "win_rate": 0.6981132075471698,
+    "win_rate_delta": 0,
+    "penalized_setups": 0,
+    "data_coverage": "limited",
+    "captured_at": "2026-05-01T15:39:46.798Z"
+  },
+  "focuses": [
+    {
+      "key": "signal_quality",
+      "title": "Signal Quality & Noise Filtering",
+      "hypothesis": "SIGNAL_SATURATED state contains extractable high-quality sub-signals that survive noise filtering; isolating them improves per-trade edge.",
+      "required_steps": [
+        "Identify the top 3 setup types by trade frequency in the saturated window.",
+        "Apply noise filters (volume gate, spread filter, time-of-day restriction) to each setup type.",
+        "Backtest filtered variants at 150 / 500 / 1500 observations and compare against unfiltered.",
+        "Run Monte Carlo (≥ 1000 runs) on the best-filtered variant."
+      ],
+      "target_outputs": [
+        "signal_quality_filter_report.json",
+        "signal_quality_backtest_table.json"
+      ],
+      "statistical_tests": [
+        "perm_p < 0.05 on filtered vs unfiltered edge",
+        "Sharpe improvement ≥ 0.1 after filtering"
+      ]
+    },
+    {
+      "key": "shadow_strategy",
+      "title": "Shadow Strategy Tracking & Promotion",
+      "hypothesis": "Running shadow strategies in parallel during saturation allows identification of candidates ready for promotion to production without live capital risk.",
+      "required_steps": [
+        "Design shadow strategy tracking framework: define tracking period, performance gate, and promotion criteria.",
+        "Select ≥ 2 candidate strategies for shadow tracking with explicit promotion thresholds.",
+        "Backtest each shadow candidate at 150 / 500 / 1500 observations.",
+        "Define a promotion decision rule: minimum edge, sharpe, drawdown, and observation count."
+      ],
+      "target_outputs": [
+        "shadow_strategy_candidates.json",
+        "shadow_tracking_report.json"
+      ],
+      "statistical_tests": [
+        "Promoted strategy must show perm_p < 0.05 vs random baseline",
+        "Drawdown at 5th Monte Carlo percentile < 15%"
+      ]
+    },
+    {
+      "key": "saturation_meta",
+      "title": "Saturation Meta-Review & Policy Update",
+      "hypothesis": "Persistent SIGNAL_SATURATED state signals that current execution policy is over-trading; reducing position frequency and tightening quality gates will improve risk-adjusted returns.",
+      "required_steps": [
+        "Compute position frequency per unit time in the current saturated period vs historical normal periods.",
+        "Identify which acceptance criteria or execution policy thresholds allowed low-quality entries.",
+        "Propose updated quality gate thresholds with quantitative justification.",
+        "Backtest a policy-tightened variant at 150 / 500 / 1500 observations."
+      ],
+      "target_outputs": [
+        "saturation_meta_review.json",
+        "policy_update_proposal.json"
+      ],
+      "statistical_tests": [
+        "McNemar test on rejected vs accepted entries under new policy",
+        "chi-squared on position timing distribution"
+      ]
+    }
+  ],
+  "expected_duration_hours": 8,
+  "target_files": [
+    "signal_quality_filter_report.json",
+    "signal_quality_backtest_table.json",
+    "shadow_strategy_candidates.json",
+    "shadow_tracking_report.json",
+    "saturation_meta_review.json",
+    "policy_update_proposal.json"
+  ],
+  "statistical_requirements": [
+    "perm_p < 0.05 on filtered vs unfiltered signal quality edge",
+    "Shadow strategy promotion gate: drawdown at 5th Monte Carlo percentile < 15%",
+    "McNemar test on policy-tightened entry classification"
+  ]
+}

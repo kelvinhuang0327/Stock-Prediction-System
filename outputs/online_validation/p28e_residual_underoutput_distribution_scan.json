@@ -1,0 +1,126 @@
+{
+  "phase": "P28E",
+  "part": "C - Residual Underoutput Distribution Scan (compressed)",
+  "generatedAt": "2026-05-16T07:04:28.373Z",
+  "rendererVersion": "p26a-corpus-renderer-v2",
+  "sampleStep": 16,
+  "f9LengthThreshold": 12,
+  "notes": {
+    "f1_to_f6_coverage": "Already covered by P28D regression sweep (p28d_p3_p19_renderer_regression_sweep.json). Not re-scanned in P28E.",
+    "f7_interpretation": "F7 is informational. P3/P19 corpora have missingSources=[MonthlyRevenue] on every row by design (P3/P19 predate the MonthlyRevenue PIT repair). Renderer correctly does not invent a coverage note. F7 is not a blocking residual.",
+    "f8_interpretation": "F8 measures mixed-signal detection coverage. Renderer v2 (P28C) added detectMixedSignal + buildMixedSignalNote. F8>0 would mean v2 missed cases.",
+    "f9_interpretation": "F9 measures degenerate short output that did not declare FALLBACK_EMPTY. F9>0 would mean output should have been longer or marked fallback.",
+    "f10_interpretation": "F10 measures template coverage gap: factors present but rendered text has no factor keyword."
+  },
+  "perCorpus": {
+    "p3": {
+      "corpus": "p3active_scoring_historical_replay_corpus.jsonl",
+      "parsedLineCount": 4500,
+      "sampledCount": 282,
+      "sampleStep": 16,
+      "familyCounts": {
+        "F7_dataAvailabilityNoteMissing_withMonthlyRevenueMissingSource": 279,
+        "F8_mixedSignalWithoutNote": 0,
+        "F9_shortOutputNotFallbackEmpty": 0,
+        "F10_factorTriggeredButRenderedHasNoFactorKeyword": 0
+      },
+      "sampleExamples": {
+        "F7": [
+          {
+            "symbol": "0055",
+            "asOfDate": "2026-02-11",
+            "outcome": "ENRICHED",
+            "renderedTextHead": "技術面偏空，多頭排列（MA20(28.82），RSI 37.29，MACD -0.01 / 法人中性（外資 -2,459 / 投信 0） / 波動率 1.2% "
+          },
+          {
+            "symbol": "00738U",
+            "asOfDate": "2026-02-11",
+            "outcome": "ENRICHED",
+            "renderedTextHead": "技術面偏多，多頭排列（MA20(40.86），RSI 57.58，MACD 0.91 / 法人中性（外資 413,401 / 投信 0） / 波動率 9.4%"
+          },
+          {
+            "symbol": "00712",
+            "asOfDate": "2026-01-28",
+            "outcome": "ENRICHED",
+            "renderedTextHead": "技術面偏空，空頭排列（MA20(8.98），RSI 35.46，MACD -0.33 / 法人中性（外資 61,157,425 / 投信 0） / 波動率 6."
+          },
+          {
+            "symbol": "1560",
+            "asOfDate": "2026-01-28",
+            "outcome": "ENRICHED",
+            "renderedTextHead": "技術面偏多，多頭排列（MA20(474.65），RSI 43.04，MACD 9.15 / 法人偏多買超（外資 2,998,108 / 投信 0） / 波動率 "
+          },
+          {
+            "symbol": "6415",
+            "asOfDate": "2026-01-28",
+            "outcome": "ENRICHED",
+            "renderedTextHead": "技術面偏多，多頭排列（MA20(267.08），RSI 53.98，MACD 4.54 / 法人偏多買超（外資 4,697,903 / 投信 0） / 波動率 "
+          }
+        ],
+        "F8": [],
+        "F9": [],
+        "F10": []
+      }
+    },
+    "p19": {
+      "corpus": "p19active_scoring_pit_replay_corpus.jsonl",
+      "parsedLineCount": 4500,
+      "sampledCount": 282,
+      "sampleStep": 16,
+      "familyCounts": {
+        "F7_dataAvailabilityNoteMissing_withMonthlyRevenueMissingSource": 279,
+        "F8_mixedSignalWithoutNote": 0,
+        "F9_shortOutputNotFallbackEmpty": 0,
+        "F10_factorTriggeredButRenderedHasNoFactorKeyword": 0
+      },
+      "sampleExamples": {
+        "F7": [
+          {
+            "symbol": "0055",
+            "asOfDate": "2026-02-11",
+            "outcome": "ENRICHED",
+            "renderedTextHead": "技術面偏空，多頭排列（MA20(28.82），RSI 37.29，MACD -0.01 / 法人中性（外資 -2,459 / 投信 0） / 波動率 1.2% "
+          },
+          {
+            "symbol": "00738U",
+            "asOfDate": "2026-02-11",
+            "outcome": "ENRICHED",
+            "renderedTextHead": "技術面偏多，多頭排列（MA20(40.86），RSI 57.58，MACD 0.91 / 法人中性（外資 413,401 / 投信 0） / 波動率 9.4%"
+          },
+          {
+            "symbol": "00712",
+            "asOfDate": "2026-01-28",
+            "outcome": "ENRICHED",
+            "renderedTextHead": "技術面偏空，空頭排列（MA20(8.98），RSI 35.46，MACD -0.33 / 法人中性（外資 61,157,425 / 投信 0） / 波動率 6."
+          },
+          {
+            "symbol": "1560",
+            "asOfDate": "2026-01-28",
+            "outcome": "ENRICHED",
+            "renderedTextHead": "技術面偏多，多頭排列（MA20(474.65），RSI 43.04，MACD 9.15 / 法人偏多買超（外資 2,998,108 / 投信 0） / 波動率 "
+          },
+          {
+            "symbol": "6415",
+            "asOfDate": "2026-01-28",
+            "outcome": "ENRICHED",
+            "renderedTextHead": "技術面偏多，多頭排列（MA20(267.08），RSI 53.98，MACD 4.54 / 法人偏多買超（外資 4,697,903 / 投信 0） / 波動率 "
+          }
+        ],
+        "F8": [],
+        "F9": [],
+        "F10": []
+      }
+    }
+  },
+  "aggregate": {
+    "F7": 558,
+    "F8": 0,
+    "F9": 0,
+    "F10": 0
+  },
+  "blockingResidualCount": 0,
+  "closureStatus": "NO_BLOCKING_RESIDUAL_UNDEROUTPUT",
+  "productionWritten": false,
+  "dbWritten": false,
+  "corpusWritten": false
+}

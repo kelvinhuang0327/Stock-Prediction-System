@@ -1,0 +1,114 @@
+{
+  "executorVersion": "multi-date-daily-append-executor-v0",
+  "planRunId": "p12-multi-date-daily-append-plan-20260511-001",
+  "corpusPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/outputs/online_validation/simulation_snapshot_corpus.jsonl",
+  "dryRun": true,
+  "append": true,
+  "stopOnFirstFailure": true,
+  "requestedDateCount": 5,
+  "expectedSnapshotCountPerDate": 6,
+  "expectedTotalSnapshotCount": 30,
+  "successfulDateCount": 5,
+  "blockedDateCount": 0,
+  "failedDateCount": 0,
+  "totalIncomingSnapshots": 30,
+  "totalAppendedSnapshots": 30,
+  "beforeCorpusCount": 30,
+  "afterCorpusCount": 60,
+  "beforeUniqueAsOfDateCount": 5,
+  "afterUniqueAsOfDateCount": 10,
+  "dateResults": [
+    {
+      "asOfDate": "2026-05-18",
+      "reviewDate": "2026-07-07",
+      "simulationRunId": "p12-daily-real-market-simulation-20260518-001",
+      "previewStatus": "PASS",
+      "appendStatus": "APPENDED",
+      "incomingCount": 6,
+      "appendedCount": 6,
+      "duplicateKeyCount": 0,
+      "validationMessages": [
+        "PASS: daily real-market snapshot seed validated",
+        "PASS: append preview passed — no duplicates, no forbidden claims",
+        "PASS: corpus append validation passed",
+        "Appended 6 entries to /Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/outputs/online_validation/simulation_snapshot_corpus.jsonl"
+      ]
+    },
+    {
+      "asOfDate": "2026-05-19",
+      "reviewDate": "2026-07-08",
+      "simulationRunId": "p12-daily-real-market-simulation-20260519-001",
+      "previewStatus": "PASS",
+      "appendStatus": "APPENDED",
+      "incomingCount": 6,
+      "appendedCount": 6,
+      "duplicateKeyCount": 0,
+      "validationMessages": [
+        "PASS: daily real-market snapshot seed validated",
+        "PASS: append preview passed — no duplicates, no forbidden claims",
+        "PASS: corpus append validation passed",
+        "Appended 6 entries to /Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/outputs/online_validation/simulation_snapshot_corpus.jsonl"
+      ]
+    },
+    {
+      "asOfDate": "2026-05-20",
+      "reviewDate": "2026-07-09",
+      "simulationRunId": "p12-daily-real-market-simulation-20260520-001",
+      "previewStatus": "PASS",
+      "appendStatus": "APPENDED",
+      "incomingCount": 6,
+      "appendedCount": 6,
+      "duplicateKeyCount": 0,
+      "validationMessages": [
+        "PASS: daily real-market snapshot seed validated",
+        "PASS: append preview passed — no duplicates, no forbidden claims",
+        "PASS: corpus append validation passed",
+        "Appended 6 entries to /Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/outputs/online_validation/simulation_snapshot_corpus.jsonl"
+      ]
+    },
+    {
+      "asOfDate": "2026-05-21",
+      "reviewDate": "2026-07-10",
+      "simulationRunId": "p12-daily-real-market-simulation-20260521-001",
+      "previewStatus": "PASS",
+      "appendStatus": "APPENDED",
+      "incomingCount": 6,
+      "appendedCount": 6,
+      "duplicateKeyCount": 0,
+      "validationMessages": [
+        "PASS: daily real-market snapshot seed validated",
+        "PASS: append preview passed — no duplicates, no forbidden claims",
+        "PASS: corpus append validation passed",
+        "Appended 6 entries to /Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/outputs/online_validation/simulation_snapshot_corpus.jsonl"
+      ]
+    },
+    {
+      "asOfDate": "2026-05-22",
+      "reviewDate": "2026-07-13",
+      "simulationRunId": "p12-daily-real-market-simulation-20260522-001",
+      "previewStatus": "PASS",
+      "appendStatus": "APPENDED",
+      "incomingCount": 6,
+      "appendedCount": 6,
+      "duplicateKeyCount": 0,
+      "validationMessages": [
+        "PASS: daily real-market snapshot seed validated",
+        "PASS: append preview passed — no duplicates, no forbidden claims",
+        "PASS: corpus append validation passed",
+        "Appended 6 entries to /Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/outputs/online_validation/simulation_snapshot_corpus.jsonl"
+      ]
+    }
+  ],
+  "guardrails": {
+    "noProductionWrite": true,
+    "noDbWrite": true,
+    "noExternalApi": true,
+    "noLlm": true,
+    "noOptimizerWrite": true,
+    "noAutoTrading": true,
+    "noPerformanceClaim": true,
+    "observabilityOnly": true
+  },
+  "validationStatus": "PASS",
+  "validationMessages": []
+}

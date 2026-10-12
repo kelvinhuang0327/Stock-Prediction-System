@@ -1,0 +1,95 @@
+{
+  "phase": "P33",
+  "capturedAt": "2026-05-21T00:00:00.000Z",
+  "mode": "source-present-gate-summary",
+  "paperOnly": true,
+  "dryRun": true,
+  "entersAlphaScore": false,
+  "notInvestmentRecommendation": true,
+  "noBuySellActionSemantics": true,
+
+  "sources": [
+    {
+      "source": "FinancialReport",
+      "scanArtifact": "outputs/online_validation/p33_financial_report_source_present_scan.json",
+      "queryStatus": "QUERYABLE",
+      "totalRows": 957,
+      "readyRows": 0,
+      "blockedRows": 957,
+      "pitGateField": null,
+      "pitPolicy": null,
+      "pitConfidence": null,
+      "pitGateCoverage": {
+        "releaseDate": "MISSING",
+        "releaseDateSource": "MISSING",
+        "releaseDateConfidence": "MISSING"
+      },
+      "dryRunEligible": false,
+      "blockReason": "MISSING_PIT_METADATA_FIELDS",
+      "blockDetail": "Schema has no releaseDate field. No PIT-safe release date metadata exists. createdAt is ingestion timestamp only. year/quarter identifies period but not public availability datetime.",
+      "recommendedNextStep": "Add releaseDate, releaseDateSource, releaseDateConfidence columns via authorized schema migration. Authorization required: 'YES apply FinancialReport releaseDate migration to dev DB'",
+      "overallClassification": "FINANCIAL_REPORT_SOURCE_PRESENT_BLOCKED"
+    },
+    {
+      "source": "NewsEvent",
+      "scanArtifact": "outputs/online_validation/p33_news_event_source_present_scan.json",
+      "queryStatus": "QUERYABLE",
+      "totalRows": 1018,
+      "readyRows": 1018,
+      "blockedRows": 0,
+      "pitGateField": "publishedAt",
+      "pitPolicy": "RECORDED_FROM_SOURCE",
+      "pitConfidence": "RECORDED",
+      "pitGateCoverage": {
+        "publishedAt": { "count": 1018, "pct": 100 },
+        "source": { "count": 1018, "pct": 100 },
+        "trustLevel": { "count": 1018, "pct": 100 }
+      },
+      "dryRunEligible": true,
+      "blockReason": null,
+      "companionFieldGapNote": "releaseDateSource and releaseDateConfidence companion fields absent, but source and trustLevel columns cover equivalent roles. publishedAt is RECORDED not INFERRED — confidence is inherently stronger than MonthlyRevenue's LOW policy.",
+      "recommendedNextStep": "Proceed to P34: NewsEvent source-present dry-run sample output. Use publishedAt as PIT gate field. paperOnly=true, dryRun=true, entersAlphaScore=false.",
+      "overallClassification": "NEWS_EVENT_SOURCE_PRESENT_DRY_RUN_ELIGIBLE"
+    }
+  ],
+
+  "comparison": {
+    "bothEligible": false,
+    "financialReportEligible": false,
+    "newsEventEligible": true,
+    "partialGate": true,
+    "summary": "FinancialReport is BLOCKED due to missing PIT metadata fields. NewsEvent is ELIGIBLE with 100% publishedAt/source/trustLevel coverage. Source-present dry-run gate is achievable for NewsEvent only at this time."
+  },
+
+  "pitConfidenceComparison": {
+    "MonthlyRevenue_P32": {
+      "pitGateField": "releaseDate",
+      "policy": "INFERRED_NEXT_MONTH_10TH",
+      "confidence": "LOW"
+    },
+    "FinancialReport_P33": {
+      "pitGateField": "MISSING",
+      "policy": null,
+      "confidence": "BLOCKED"
+    },
+    "NewsEvent_P33": {
+      "pitGateField": "publishedAt",
+      "policy": "RECORDED_FROM_SOURCE",
+      "confidence": "RECORDED",
+      "comparativeNote": "RECORDED > INFERRED (MonthlyRevenue LOW). NewsEvent has stronger PIT confidence."
+    }
+  },
+
+  "overallGateResult": "PARTIAL",
+  "overallClassification": "P33_NEWS_ONLY_SOURCE_PRESENT_GATE_READY",
+
+  "nextP0Routing": {
+    "newsEvent": "P34 — NewsEvent source-present dry-run sample output. publishedAt as PIT gate. paperOnly=true, dryRun=true, entersAlphaScore=false.",
+    "financialReport": "Blocked — requires authorized schema migration before proceeding. When ready: 'YES apply FinancialReport releaseDate migration to dev DB'",
+    "p31AExternalBenchmark": "Remains P2, non-blocking",
+    "p30BChipMigration": "Requires exact phrase: 'YES apply Chip availableAt migration to dev DB'",
+    "optimizerRealBacktestGui": "Deferred"
+  },
+
+  "disclaimer": "Structural audit contract only. Does not constitute investment advice. No profit, return, or investment performance claims are made. entersAlphaScore = false for all sources. ALWAYS. Results must not be used as buy/sell/hold signals or investment recommendations."
+}

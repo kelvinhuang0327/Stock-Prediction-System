@@ -1,0 +1,30 @@
+{
+  "task": "P4-03b Integration Readiness Recheck",
+  "generated_at": "2026-05-06",
+  "taiex_aligned_to_stockquote_max": false,
+  "taiex_aligned_to_today": true,
+  "taiex_max_after_backfill": "2026-05-06",
+  "stockquote_max": "2026-05-18",
+  "remaining_gap_reason": "FUTURE_DATA_NOT_YET_PUBLISHED",
+  "daily_report_ready_for_today": true,
+  "daily_report_notes": "Regime for 2026-05-06 = BULL (confidence=1.0). Daily Report can use this.",
+  "walk_forward_ready": true,
+  "walk_forward_notes": "Regime available for all historical trading days up to 2026-05-06. Walk-forward can use PIT-safe regime context.",
+  "p4_04_ready": false,
+  "p4_04_notes": "Blocked - chip/revenue/financial features insufficient per P4-02",
+  "further_backfill_needed": false,
+  "further_backfill_notes": "No further backfill possible for 2026-05-07 to 2026-05-18 until those dates arrive",
+  "pit_leakage_risk": false,
+  "pit_leakage_notes": "All rolling uses date <= asof_date, no forward-fill",
+  "duplicate_risk": false,
+  "non_iso_risk": false,
+  "schema_change_needed": false,
+  "next_round_recommendation": "T-05 walk-forward redesign using regime context (H001-H012 deprecated)",
+  "deferred_features": [
+    "chip features: need 500 trading days, currently 236 - PROTOTYPE_ONLY",
+    "revenue features: need 12 months, currently 2 - INSUFFICIENT_HISTORY",
+    "financial features: ROE/debt_ratio schema incomplete",
+    "P4-04 ML training: BLOCKED",
+    "TAIEX for 2026-05-07 to 2026-05-18: FUTURE data, cannot backfill until dates arrive"
+  ]
+}

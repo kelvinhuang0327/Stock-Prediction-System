@@ -1,0 +1,74 @@
+{
+  "readiness_id": "T07_READINESS_DECISION",
+  "decision_date": "2026-05-06",
+  "generated_at": "2026-05-06T14:34:38.312708",
+  "questions": {
+    "daily_regime_aware_pipeline_complete": {
+      "answer": true,
+      "evidence": "run-daily-regime-aware-pipeline.py created, all 3 run modes PASS"
+    },
+    "pipeline_dry_run_pass": {
+      "answer": true,
+      "evidence": "PASS 8/8 stages"
+    },
+    "pipeline_apply_safe": {
+      "answer": true,
+      "evidence": "Only MarketIndex written (local dev.db). No StockQuote mutation."
+    },
+    "hooked_into_existing_scheduler": {
+      "answer": false,
+      "evidence": "Option 2 chosen: standalone Python pipeline. TypeScript scheduler not modified."
+    },
+    "integration_proposal_exists": {
+      "answer": true,
+      "evidence": "outputs/scheduler/t07_scheduler_integration_proposal.md"
+    },
+    "typescript_dailyreportengine_integration_needed": {
+      "answer": false,
+      "evidence": "Python pipeline is standalone. Integration can be done in Phase 2."
+    },
+    "db_schema_migration_needed": {
+      "answer": false,
+      "evidence": "No new tables needed. MarketRegimeResult table remains optional for P4-04."
+    },
+    "pit_leakage_risk": {
+      "answer": false,
+      "evidence": "asof_date filtering enforced. No future data used."
+    },
+    "h001_h012_leakage_risk": {
+      "answer": false,
+      "evidence": "No H001-H012 references. Guardrail confirmed zero violations."
+    },
+    "buy_sell_signal_leakage_risk": {
+      "answer": false,
+      "evidence": "Forbidden field check confirmed zero violations."
+    },
+    "p4_04_still_blocked": {
+      "answer": true,
+      "evidence": "P4-04 requires MarketRegimeResult table and statistical validation. T-07 provides scaffold but P4-04 needs more work."
+    }
+  },
+  "next_round_recommendations": {
+    "P0_immediate": [
+      "Verify MarketIndex rows backfilled correctly in apply mode",
+      "Confirm daily pipeline can be cron-triggered via shell"
+    ],
+    "P1_next": [
+      "T-08: MarketRegimeResult DB table creation to persist daily regime classifications",
+      "T-09: T-01 Lane-based scheduler TypeScript integration - add regime_report lane",
+      "T-10: Unified freshness guard consolidation for TAIEX and StockQuote"
+    ],
+    "P2_deferred": [
+      "TypeScript DailyReportEngine integration to surface P4-03 regime in /api/report/daily",
+      "P4-04 Market Regime Classifier statistical validation",
+      "Walk-forward portfolio candidate upgrade beyond alphabetical mock"
+    ],
+    "do_not_continue": [
+      "H013+ hypothesis design",
+      "Strategy validation or ROI backtest",
+      "Any modification to existing TypeScript scheduler lane config"
+    ]
+  },
+  "t07_completion_status": "COMPLETE",
+  "final_classification": "T07_DAILY_REGIME_AWARE_PIPELINE_SCHEDULER_INTEGRATION_COMPLETE"
+}

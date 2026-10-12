@@ -1,0 +1,70 @@
+{
+  "phase": "P38",
+  "task": "Simulation Input Readiness Mapping for Controlled Sources",
+  "capturedAt": "2026-05-15T00:00:00.000Z",
+  "preflightStatus": "PASS",
+  "paperOnly": true,
+  "dryRunOnly": true,
+  "entersAlphaScore": false,
+  "notInvestmentRecommendation": true,
+  "noBuySellActionSemantics": true,
+
+  "git": {
+    "repository": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System",
+    "branch": "main",
+    "head": "8002cfef646459ba850673a7ab38fd8334ded17e",
+    "headShort": "8002cfe",
+    "headMessage": "P37: Add MonthlyRevenue controlled consumer integration surface",
+    "cleanForP38": true
+  },
+
+  "dirtyFilesClassification": {
+    "prisma/dev.db": "RUNTIME_DRIFT_NOT_STAGED",
+    "prisma/dev.db-shm": "RUNTIME_DRIFT_NOT_STAGED",
+    "prisma/dev.db-wal": "RUNTIME_DRIFT_NOT_STAGED",
+    "runtime/agent_orchestrator/llm_usage.jsonl": "LLM_USAGE_LOG_NOT_STAGED",
+    "logs/launchd/*": "RUNTIME_LOG_NOISE_NOT_STAGED",
+    "00-Plan/roadmap/CEO-Decision.md": "UNTRACKED_OTHER_WORKSTREAM_NOT_P38",
+    "00-Plan/roadmap/active_task.md": "UNTRACKED_OTHER_WORKSTREAM_NOT_P38",
+    "verdict": "NO_STAGED_FILES_P38_CLEAN"
+  },
+
+  "priorPhaseStatus": {
+    "P37": "COMPLETE — commit 8002cfe. MonthlyRevenue consumer integration surface. 60/60 tests.",
+    "P36": "COMPLETE — MonthlyRevenue controlled consumer readiness. 114/114 tests.",
+    "P35": "COMPLETE — Realign + decision matrix. Designated P0 = MonthlyRevenue Feature Consumer.",
+    "P34": "COMPLETE — NewsEvent source-present dry-run. 1018/1018 rows READY.",
+    "P33": "COMPLETE — Source-present gate summary. FinancialReport=0/957 (MISSING_PIT_METADATA).",
+    "P31": "COMPLETE — MonthlyRevenue source-present dry-run. 2143/2143 rows."
+  },
+
+  "allowedP38Paths": [
+    "src/lib/onlineValidation/p38/**/*",
+    "src/lib/onlineValidation/__tests__/p38_*.test.ts",
+    "outputs/online_validation/p38_*",
+    "00-Plan/roadmap/roadmap.md (overlay only)",
+    "00-Plan/roadmap/CTO-Analysis.md (append only)"
+  ],
+
+  "forbiddenPaths": [
+    "prisma/**",
+    "src/lib/scoring/**",
+    "src/lib/analysis/RuleBasedStockAnalyzer.ts",
+    "src/lib/alpha/SignalFusionEngine.ts",
+    "src/lib/onlineValidation/ActiveScoringSnapshotBuilder.ts",
+    "src/lib/market/MarketRegimeEngine.ts",
+    "src/lib/services/syncService.ts",
+    "*.jsonl corpus",
+    "branch_policy.md"
+  ],
+
+  "governanceInvariants": {
+    "entersAlphaScore": false,
+    "paperOnly": true,
+    "dryRunOnly": true,
+    "notInvestmentRecommendation": true,
+    "noBuySellActionSemantics": true
+  },
+
+  "classification": "P38_PREFLIGHT_PASS"
+}

@@ -1,0 +1,34 @@
+{
+  "auditId": "p26f4-waiting-for-operator-source",
+  "generatedAt": "2026-05-13T14:02:56.807996+00:00",
+  "dropzonePath": "data/manual/monthly-revenue/p26f3-2-dropzone/",
+  "candidateSourceFiles": 0,
+  "operatorHandoffPacket": "docs/manual-data/monthly-revenue/P26F3_5_OPERATOR_HANDOFF_PACKET.md",
+  "requiredMonths": [
+    "2025-09",
+    "2025-10",
+    "2025-11",
+    "2025-12",
+    "2026-01"
+  ],
+  "expectedFilenames": [
+    "twse_monthly_revenue_2025_09.csv",
+    "twse_monthly_revenue_2025_10.csv",
+    "twse_monthly_revenue_2025_11.csv",
+    "twse_monthly_revenue_2025_12.csv",
+    "twse_monthly_revenue_2026_01.csv"
+  ],
+  "operatorNextSteps": [
+    "1. Obtain real TWSE/MOPS monthly revenue CSV files for 2025-09 through 2026-01",
+    "2. Place files in drop-zone: data/manual/monthly-revenue/p26f3-2-dropzone/",
+    "3. Re-run drop-zone scan: node scripts/run-p26f3-5-dropzone-conditional-scan.js",
+    "4. Dry-run gate will execute automatically when files are present (no token needed for dry-run)",
+    "5. Review dry-run gate output: outputs/online_validation/p26f4_readiness_dry_run_gate.json",
+    "6. Provide approval token P26F4_APPROVE_HISTORICAL_MONTHLY_REVENUE_IMPORT_ONLY to authorize DB import"
+  ],
+  "requiredToken": "P26F4_APPROVE_HISTORICAL_MONTHLY_REVENUE_IMPORT_ONLY",
+  "dbWriteBlocked": true,
+  "blockReason": "No source files found in drop-zone. candidateSourceFiles=0.",
+  "classification": "P26F4_WAITING_FOR_OPERATOR_SOURCE",
+  "disclaimer": "No DB write. No synthetic fixture. No auto-download. Observability audit only."
+}

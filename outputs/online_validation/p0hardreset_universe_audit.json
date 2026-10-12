@@ -1,0 +1,707 @@
+{
+  "generatedAt": "2026-05-11T11:38:14.601Z",
+  "auditVersion": "p0hardreset-audit-v1",
+  "stockQuoteAudit": {
+    "totalRows": 129151,
+    "distinctSymbols": 1357,
+    "dateRange": {
+      "min": "1970-12-04",
+      "max": "2026-05-18"
+    },
+    "top30ByDays": [
+      {
+        "symbol": "0055",
+        "days": 746,
+        "from": "1970-12-04",
+        "to": "2026-05-18"
+      },
+      {
+        "symbol": "00712",
+        "days": 740,
+        "from": "1970-12-04",
+        "to": "2026-05-18"
+      },
+      {
+        "symbol": "00903",
+        "days": 740,
+        "from": "1970-12-04",
+        "to": "2026-05-18"
+      },
+      {
+        "symbol": "00891",
+        "days": 723,
+        "from": "1970-12-04",
+        "to": "2026-05-18"
+      },
+      {
+        "symbol": "00830",
+        "days": 660,
+        "from": "1970-12-04",
+        "to": "2026-05-18"
+      },
+      {
+        "symbol": "00738U",
+        "days": 598,
+        "from": "1970-12-04",
+        "to": "2026-05-18"
+      },
+      {
+        "symbol": "1326",
+        "days": 522,
+        "from": "1970-12-04",
+        "to": "2026-05-18"
+      },
+      {
+        "symbol": "1560",
+        "days": 521,
+        "from": "1970-12-04",
+        "to": "2026-05-18"
+      },
+      {
+        "symbol": "1802",
+        "days": 521,
+        "from": "1970-12-04",
+        "to": "2026-05-18"
+      },
+      {
+        "symbol": "2330",
+        "days": 520,
+        "from": "1970-12-04",
+        "to": "2026-05-18"
+      },
+      {
+        "symbol": "2454",
+        "days": 520,
+        "from": "1970-12-04",
+        "to": "2026-05-18"
+      },
+      {
+        "symbol": "2317",
+        "days": 519,
+        "from": "1970-12-04",
+        "to": "2026-05-18"
+      },
+      {
+        "symbol": "6415",
+        "days": 504,
+        "from": "1970-12-04",
+        "to": "2026-05-18"
+      },
+      {
+        "symbol": "1210",
+        "days": 503,
+        "from": "1970-12-04",
+        "to": "2026-05-18"
+      },
+      {
+        "symbol": "1308",
+        "days": 503,
+        "from": "1970-12-04",
+        "to": "2026-05-18"
+      },
+      {
+        "symbol": "1314",
+        "days": 503,
+        "from": "1970-12-04",
+        "to": "2026-05-18"
+      },
+      {
+        "symbol": "1319",
+        "days": 503,
+        "from": "1970-12-04",
+        "to": "2026-05-18"
+      },
+      {
+        "symbol": "1402",
+        "days": 503,
+        "from": "1970-12-04",
+        "to": "2026-05-18"
+      },
+      {
+        "symbol": "1434",
+        "days": 503,
+        "from": "1970-12-04",
+        "to": "2026-05-18"
+      },
+      {
+        "symbol": "1513",
+        "days": 503,
+        "from": "1970-12-04",
+        "to": "2026-05-18"
+      },
+      {
+        "symbol": "1536",
+        "days": 503,
+        "from": "1970-12-04",
+        "to": "2026-05-18"
+      },
+      {
+        "symbol": "1598",
+        "days": 503,
+        "from": "1970-12-04",
+        "to": "2026-05-18"
+      },
+      {
+        "symbol": "1605",
+        "days": 503,
+        "from": "1970-12-04",
+        "to": "2026-05-18"
+      },
+      {
+        "symbol": "1710",
+        "days": 503,
+        "from": "1970-12-04",
+        "to": "2026-05-18"
+      },
+      {
+        "symbol": "1717",
+        "days": 503,
+        "from": "1970-12-04",
+        "to": "2026-05-18"
+      },
+      {
+        "symbol": "1789",
+        "days": 503,
+        "from": "1970-12-04",
+        "to": "2026-05-18"
+      },
+      {
+        "symbol": "1795",
+        "days": 503,
+        "from": "1970-12-04",
+        "to": "2026-05-18"
+      },
+      {
+        "symbol": "1903",
+        "days": 503,
+        "from": "1970-12-04",
+        "to": "2026-05-18"
+      },
+      {
+        "symbol": "1904",
+        "days": 503,
+        "from": "1970-12-04",
+        "to": "2026-05-18"
+      },
+      {
+        "symbol": "1907",
+        "days": 503,
+        "from": "1970-12-04",
+        "to": "2026-05-18"
+      }
+    ]
+  },
+  "institutionalChipAudit": {
+    "distinctSymbols": 1358
+  },
+  "universeResult": {
+    "criteriaDescription": "stockQuote >= 180 days AND institutionalChip >= 120 days AND overlap >= 150 calendar days",
+    "universeCount": 247,
+    "passThreshold": 20,
+    "pass": true,
+    "universe": [
+      {
+        "symbol": "0055",
+        "quoteDays": 746,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "00712",
+        "quoteDays": 740,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "00903",
+        "quoteDays": 740,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "00891",
+        "quoteDays": 723,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "00830",
+        "quoteDays": 660,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "00738U",
+        "quoteDays": 598,
+        "chipDays": 162,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "1326",
+        "quoteDays": 522,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "1560",
+        "quoteDays": 521,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "1802",
+        "quoteDays": 521,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "2330",
+        "quoteDays": 520,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "2454",
+        "quoteDays": 520,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "2317",
+        "quoteDays": 519,
+        "chipDays": 235,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "6415",
+        "quoteDays": 504,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "1210",
+        "quoteDays": 503,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "1308",
+        "quoteDays": 503,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "1314",
+        "quoteDays": 503,
+        "chipDays": 235,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "1319",
+        "quoteDays": 503,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "1402",
+        "quoteDays": 503,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "1434",
+        "quoteDays": 503,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "1513",
+        "quoteDays": 503,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "1536",
+        "quoteDays": 503,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "1598",
+        "quoteDays": 503,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "1605",
+        "quoteDays": 503,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "1710",
+        "quoteDays": 503,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "1717",
+        "quoteDays": 503,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "1789",
+        "quoteDays": 503,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "1795",
+        "quoteDays": 503,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "1903",
+        "quoteDays": 503,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "1904",
+        "quoteDays": 503,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "1907",
+        "quoteDays": 503,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "2006",
+        "quoteDays": 503,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "2015",
+        "quoteDays": 503,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "2027",
+        "quoteDays": 503,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "2105",
+        "quoteDays": 503,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "2206",
+        "quoteDays": 503,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "2231",
+        "quoteDays": 503,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "2308",
+        "quoteDays": 503,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "2312",
+        "quoteDays": 503,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "2323",
+        "quoteDays": 503,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "2360",
+        "quoteDays": 503,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "2367",
+        "quoteDays": 503,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "2368",
+        "quoteDays": 503,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "2376",
+        "quoteDays": 503,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "2383",
+        "quoteDays": 503,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "2385",
+        "quoteDays": 503,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "2393",
+        "quoteDays": 503,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "2404",
+        "quoteDays": 503,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "2439",
+        "quoteDays": 503,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "2441",
+        "quoteDays": 503,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      },
+      {
+        "symbol": "2455",
+        "quoteDays": 503,
+        "chipDays": 236,
+        "overlapDays": 369,
+        "quoteStart": "1970-12-04",
+        "quoteEnd": "2026-05-18",
+        "chipStart": "2025-05-02",
+        "chipEnd": "2026-05-05"
+      }
+    ]
+  },
+  "overallPass": true,
+  "failReason": null
+}

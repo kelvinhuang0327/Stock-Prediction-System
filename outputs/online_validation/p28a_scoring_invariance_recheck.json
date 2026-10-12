@@ -1,0 +1,46 @@
+{
+  "invarianceRecheckId": "p28a-scoring-invariance-recheck",
+  "generatedAt": "2026-05-15T03:37:37.138Z",
+  "p27BaselineReference": "p27-overnight-invariance-recheck",
+  "corpusStatus": {
+    "p3": {
+      "rowCount": 4500,
+      "validRowCount": 4500,
+      "integrityOk": true
+    },
+    "p19": {
+      "rowCount": 4500,
+      "validRowCount": 4500,
+      "integrityOk": true
+    },
+    "combined": {
+      "totalRowCount": 9000,
+      "totalValidRowCount": 9000,
+      "totalMismatchCount": 0,
+      "status": "PASS"
+    }
+  },
+  "samplingVerification": {
+    "p3Sample": [
+      {
+        "symbol": "0055",
+        "asOfDate": "2026-02-11",
+        "horizon": 5,
+        "alphaScore": 42,
+        "bucket": "Avoid"
+      }
+    ],
+    "p19Sample": [
+      {
+        "symbol": "0055",
+        "asOfDate": "2026-02-11",
+        "horizon": 5,
+        "alphaScore": 42,
+        "bucket": "Avoid"
+      }
+    ]
+  },
+  "overallStatus": "PASS",
+  "classification": "P28A_SCORING_INVARIANCE_VERIFIED",
+  "disclaimer": "Observability only. No investment recommendations."
+}

@@ -1,0 +1,53 @@
+{
+  "phase": "P17-HARDRESET",
+  "task": "MonthlyRevenue releaseDate Prisma Schema Patch + Query Gate Code Patch — Pre-flight",
+  "date": "2026-05-12",
+  "disclaimer": "Does not constitute investment advice. Does not compute ROI, profit, alpha, win-rate, edge, or outperformance. Governance / patch only. No production DB writes.",
+  "approvalToken": "P17_APPROVE_SCHEMA_AND_QUERY_GATE_PATCH_ONLY",
+  "tokenPresent": true,
+  "tokenValid": true,
+  "productionApplyAllowed": false,
+  "p16Artifacts": {
+    "p16monthly_revenue_final_report.md": "PRESENT",
+    "p16monthly_revenue_dry_run_preflight.json": "PRESENT",
+    "p16monthly_revenue_fixture_migration_dry_run.json": "PRESENT",
+    "p16monthly_revenue_backfill_dry_run.json": "PRESENT",
+    "p16monthly_revenue_query_gate_dry_run.json": "PRESENT"
+  },
+  "p16Conclusions": {
+    "preflightStatus": "PASS",
+    "migrationDryRun": "PASS",
+    "backfillDryRun": "PASS",
+    "queryGateDryRun": "PASS",
+    "productionApplyAllowed": false,
+    "dryRunOnly": true,
+    "productionDbWritten": false
+  },
+  "p14p15Artifacts": {
+    "p14monthly_revenue_migration_draft.json": "PRESENT",
+    "p14monthly_revenue_query_gate_proposal.json": "PRESENT",
+    "p15migration_approval_decision.json": "PRESENT"
+  },
+  "frozenCorpus": {
+    "simulation_snapshot_corpus.jsonl": 60,
+    "p0hardreset_historical_replay_corpus.jsonl": 4500,
+    "p1baseline_historical_replay_corpus.jsonl": 9900,
+    "p3active_scoring_historical_replay_corpus.jsonl": 4500
+  },
+  "prismaSchemaStatus": {
+    "provider": "sqlite",
+    "monthlyRevenueModel": "PRESENT",
+    "releaseDateField": "MISSING — will be added this round",
+    "releaseDateSourceField": "MISSING — will be added this round",
+    "releaseDateConfidenceField": "MISSING — will be added this round"
+  },
+  "preflightStatus": "PASS",
+  "readyForPatch": true,
+  "patchScope": [
+    "prisma/schema.prisma — add releaseDate/releaseDateSource/releaseDateConfidence to MonthlyRevenue",
+    "src/lib/fundamentals/StockFundamentalSnapshot.ts — update MonthlyRevenueLike interface",
+    "src/lib/analysis/RuleBasedStockAnalyzer.ts — add releaseDate PIT gate to MonthlyRevenue query",
+    "src/lib/fundamentals/FundamentalResearchService.ts — add releaseDate PIT gate",
+    "src/lib/onlineValidation/MonthlyRevenueAvailability.ts — new helper"
+  ]
+}

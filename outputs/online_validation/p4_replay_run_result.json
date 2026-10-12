@@ -1,0 +1,427 @@
+{
+  "replayEngineVersion": "pit-safe-replay-engine-v0",
+  "replayRunId": "p4-ledger-replay-20260511-001",
+  "reviewDate": "2026-06-30",
+  "mode": "ELIGIBILITY_AUDIT",
+  "dryRun": true,
+  "inputRecordCount": 6,
+  "replayEligibleCount": 3,
+  "replayBlockedCount": 3,
+  "replayRecords": [
+    {
+      "replayDatasetVersion": "replay-dataset-v0",
+      "replayRunId": "p4-ledger-replay-20260511-001",
+      "replayKey": "REPLAY_DATASET|2026-05-11|2330|MVP_CORE|p2-ledger-accumulation-20260511-001|5D",
+      "originalRunId": "p2-ledger-accumulation-20260511-001",
+      "originalAsOfDate": "2026-05-11",
+      "symbol": "2330",
+      "stockName": "Taiwan Semiconductor Manufacturing",
+      "universeTier": "MVP_CORE",
+      "horizonLabel": "5D",
+      "horizonDays": 5,
+      "targetTradingDate": "2026-05-18",
+      "reviewDate": "2026-06-30",
+      "windowStatus": "DUE_FOR_BACKFILL",
+      "outcomeStatus": "READY_FOR_REVIEW",
+      "researchBucket": "Strong",
+      "scoreSnapshot": {
+        "researchScore": 74.2,
+        "confidenceScore": 68,
+        "technicalScore": 78,
+        "chipScore": 72,
+        "fundamentalScore": 82,
+        "marketAdjustment": 4
+      },
+      "confidenceSnapshot": 68,
+      "factorSnapshot": [
+        "price momentum above 60-day average",
+        "institutional concentration improving"
+      ],
+      "riskSnapshot": [
+        "sector concentration"
+      ],
+      "limitationSnapshot": [
+        "limited forward visibility"
+      ],
+      "dataCoverageSnapshot": {
+        "coverage": "full",
+        "usedSources": [
+          "stockQuote",
+          "institutionalChip",
+          "financialReport"
+        ],
+        "missingSources": []
+      },
+      "sourceDateBasis": {
+        "sourceDate": "2026-05-09",
+        "sourceType": "stockQuote",
+        "missingDataFlags": []
+      },
+      "outcomeSnapshot": {
+        "closePriceAtPrediction": null,
+        "closePriceAtOutcome": 1000,
+        "returnPct": null,
+        "priceSource": "mock-deterministic",
+        "outcomeAvailable": true
+      },
+      "pitSafeStatus": "PIT_SAFE",
+      "replayEligible": true,
+      "replayBlockedReason": "NONE",
+      "productionWriteAllowed": false,
+      "simulationWriteAllowed": false,
+      "validationMessages": []
+    },
+    {
+      "replayDatasetVersion": "replay-dataset-v0",
+      "replayRunId": "p4-ledger-replay-20260511-001",
+      "replayKey": "REPLAY_DATASET|2026-05-11|2330|MVP_CORE|p2-ledger-accumulation-20260511-001|20D",
+      "originalRunId": "p2-ledger-accumulation-20260511-001",
+      "originalAsOfDate": "2026-05-11",
+      "symbol": "2330",
+      "stockName": "Taiwan Semiconductor Manufacturing",
+      "universeTier": "MVP_CORE",
+      "horizonLabel": "20D",
+      "horizonDays": 20,
+      "targetTradingDate": "2026-06-08",
+      "reviewDate": "2026-06-30",
+      "windowStatus": "DUE_FOR_BACKFILL",
+      "outcomeStatus": "READY_FOR_REVIEW",
+      "researchBucket": "Strong",
+      "scoreSnapshot": {
+        "researchScore": 74.2,
+        "confidenceScore": 68,
+        "technicalScore": 78,
+        "chipScore": 72,
+        "fundamentalScore": 82,
+        "marketAdjustment": 4
+      },
+      "confidenceSnapshot": 68,
+      "factorSnapshot": [
+        "price momentum above 60-day average",
+        "institutional concentration improving"
+      ],
+      "riskSnapshot": [
+        "sector concentration"
+      ],
+      "limitationSnapshot": [
+        "limited forward visibility"
+      ],
+      "dataCoverageSnapshot": {
+        "coverage": "full",
+        "usedSources": [
+          "stockQuote",
+          "institutionalChip",
+          "financialReport"
+        ],
+        "missingSources": []
+      },
+      "sourceDateBasis": {
+        "sourceDate": "2026-05-09",
+        "sourceType": "stockQuote",
+        "missingDataFlags": []
+      },
+      "outcomeSnapshot": {
+        "closePriceAtPrediction": null,
+        "closePriceAtOutcome": 1020,
+        "returnPct": null,
+        "priceSource": "mock-deterministic",
+        "outcomeAvailable": true
+      },
+      "pitSafeStatus": "PIT_SAFE",
+      "replayEligible": true,
+      "replayBlockedReason": "NONE",
+      "productionWriteAllowed": false,
+      "simulationWriteAllowed": false,
+      "validationMessages": []
+    },
+    {
+      "replayDatasetVersion": "replay-dataset-v0",
+      "replayRunId": "p4-ledger-replay-20260511-001",
+      "replayKey": "REPLAY_DATASET|2026-05-11|2330|MVP_CORE|p2-ledger-accumulation-20260511-001|60D",
+      "originalRunId": "p2-ledger-accumulation-20260511-001",
+      "originalAsOfDate": "2026-05-11",
+      "symbol": "2330",
+      "stockName": "Taiwan Semiconductor Manufacturing",
+      "universeTier": "MVP_CORE",
+      "horizonLabel": "60D",
+      "horizonDays": 60,
+      "targetTradingDate": "2026-08-04",
+      "reviewDate": "2026-06-30",
+      "windowStatus": "NOT_DUE",
+      "outcomeStatus": "NOT_DUE",
+      "researchBucket": "Strong",
+      "scoreSnapshot": {
+        "researchScore": 74.2,
+        "confidenceScore": 68,
+        "technicalScore": 78,
+        "chipScore": 72,
+        "fundamentalScore": 82,
+        "marketAdjustment": 4
+      },
+      "confidenceSnapshot": 68,
+      "factorSnapshot": [
+        "price momentum above 60-day average",
+        "institutional concentration improving"
+      ],
+      "riskSnapshot": [
+        "sector concentration"
+      ],
+      "limitationSnapshot": [
+        "limited forward visibility"
+      ],
+      "dataCoverageSnapshot": {
+        "coverage": "full",
+        "usedSources": [
+          "stockQuote",
+          "institutionalChip",
+          "financialReport"
+        ],
+        "missingSources": []
+      },
+      "sourceDateBasis": {
+        "sourceDate": "2026-05-09",
+        "sourceType": "stockQuote",
+        "missingDataFlags": []
+      },
+      "outcomeSnapshot": {
+        "closePriceAtPrediction": null,
+        "closePriceAtOutcome": null,
+        "returnPct": null,
+        "priceSource": null,
+        "outcomeAvailable": false
+      },
+      "pitSafeStatus": "PIT_SAFE",
+      "replayEligible": false,
+      "replayBlockedReason": "WINDOW_NOT_DUE",
+      "productionWriteAllowed": false,
+      "simulationWriteAllowed": false,
+      "validationMessages": [
+        "WARN: reviewDate=2026-06-30 < targetTradingDate=2026-08-04"
+      ]
+    },
+    {
+      "replayDatasetVersion": "replay-dataset-v0",
+      "replayRunId": "p4-ledger-replay-20260511-001",
+      "replayKey": "REPLAY_DATASET|2026-05-11|2454|MVP_CORE|p2-ledger-accumulation-20260511-001|5D",
+      "originalRunId": "p2-ledger-accumulation-20260511-001",
+      "originalAsOfDate": "2026-05-11",
+      "symbol": "2454",
+      "stockName": "MediaTek",
+      "universeTier": "MVP_CORE",
+      "horizonLabel": "5D",
+      "horizonDays": 5,
+      "targetTradingDate": "2026-05-18",
+      "reviewDate": "2026-06-30",
+      "windowStatus": "DUE_FOR_BACKFILL",
+      "outcomeStatus": "READY_FOR_REVIEW",
+      "researchBucket": "Strong",
+      "scoreSnapshot": {
+        "researchScore": 68.5,
+        "confidenceScore": 62,
+        "technicalScore": 70,
+        "chipScore": 65,
+        "fundamentalScore": 76,
+        "marketAdjustment": 3
+      },
+      "confidenceSnapshot": 62,
+      "factorSnapshot": [
+        "technical structure improving",
+        "chip flow neutral to positive"
+      ],
+      "riskSnapshot": [
+        "competitive pressure"
+      ],
+      "limitationSnapshot": [
+        "chip data T+1 lag"
+      ],
+      "dataCoverageSnapshot": {
+        "coverage": "full",
+        "usedSources": [
+          "stockQuote",
+          "institutionalChip"
+        ],
+        "missingSources": [
+          "monthlyRevenue"
+        ]
+      },
+      "sourceDateBasis": {
+        "sourceDate": "2026-05-09",
+        "sourceType": "stockQuote",
+        "missingDataFlags": []
+      },
+      "outcomeSnapshot": {
+        "closePriceAtPrediction": null,
+        "closePriceAtOutcome": 1500,
+        "returnPct": null,
+        "priceSource": "mock-deterministic",
+        "outcomeAvailable": true
+      },
+      "pitSafeStatus": "PIT_SAFE",
+      "replayEligible": true,
+      "replayBlockedReason": "NONE",
+      "productionWriteAllowed": false,
+      "simulationWriteAllowed": false,
+      "validationMessages": []
+    },
+    {
+      "replayDatasetVersion": "replay-dataset-v0",
+      "replayRunId": "p4-ledger-replay-20260511-001",
+      "replayKey": "REPLAY_DATASET|2026-05-11|2454|MVP_CORE|p2-ledger-accumulation-20260511-001|20D",
+      "originalRunId": "p2-ledger-accumulation-20260511-001",
+      "originalAsOfDate": "2026-05-11",
+      "symbol": "2454",
+      "stockName": "MediaTek",
+      "universeTier": "MVP_CORE",
+      "horizonLabel": "20D",
+      "horizonDays": 20,
+      "targetTradingDate": "2026-06-08",
+      "reviewDate": "2026-06-30",
+      "windowStatus": "DUE_FOR_BACKFILL",
+      "outcomeStatus": "MISSING_PRICE",
+      "researchBucket": "Strong",
+      "scoreSnapshot": {
+        "researchScore": 68.5,
+        "confidenceScore": 62,
+        "technicalScore": 70,
+        "chipScore": 65,
+        "fundamentalScore": 76,
+        "marketAdjustment": 3
+      },
+      "confidenceSnapshot": 62,
+      "factorSnapshot": [
+        "technical structure improving",
+        "chip flow neutral to positive"
+      ],
+      "riskSnapshot": [
+        "competitive pressure"
+      ],
+      "limitationSnapshot": [
+        "chip data T+1 lag"
+      ],
+      "dataCoverageSnapshot": {
+        "coverage": "full",
+        "usedSources": [
+          "stockQuote",
+          "institutionalChip"
+        ],
+        "missingSources": [
+          "monthlyRevenue"
+        ]
+      },
+      "sourceDateBasis": {
+        "sourceDate": "2026-05-09",
+        "sourceType": "stockQuote",
+        "missingDataFlags": []
+      },
+      "outcomeSnapshot": {
+        "closePriceAtPrediction": null,
+        "closePriceAtOutcome": null,
+        "returnPct": null,
+        "priceSource": null,
+        "outcomeAvailable": false
+      },
+      "pitSafeStatus": "PIT_SAFE",
+      "replayEligible": false,
+      "replayBlockedReason": "OUTCOME_MISSING",
+      "productionWriteAllowed": false,
+      "simulationWriteAllowed": false,
+      "validationMessages": [
+        "WARN: outcomeStatus=MISSING_PRICE for 2454|20D|2026-05-11"
+      ]
+    },
+    {
+      "replayDatasetVersion": "replay-dataset-v0",
+      "replayRunId": "p4-ledger-replay-20260511-001",
+      "replayKey": "REPLAY_DATASET|2026-05-11|2454|MVP_CORE|p2-ledger-accumulation-20260511-001|60D",
+      "originalRunId": "p2-ledger-accumulation-20260511-001",
+      "originalAsOfDate": "2026-05-11",
+      "symbol": "2454",
+      "stockName": "MediaTek",
+      "universeTier": "MVP_CORE",
+      "horizonLabel": "60D",
+      "horizonDays": 60,
+      "targetTradingDate": "2026-08-04",
+      "reviewDate": "2026-06-30",
+      "windowStatus": "NOT_DUE",
+      "outcomeStatus": "NOT_DUE",
+      "researchBucket": "Strong",
+      "scoreSnapshot": {
+        "researchScore": 68.5,
+        "confidenceScore": 62,
+        "technicalScore": 70,
+        "chipScore": 65,
+        "fundamentalScore": 76,
+        "marketAdjustment": 3
+      },
+      "confidenceSnapshot": 62,
+      "factorSnapshot": [
+        "technical structure improving",
+        "chip flow neutral to positive"
+      ],
+      "riskSnapshot": [
+        "competitive pressure"
+      ],
+      "limitationSnapshot": [
+        "chip data T+1 lag"
+      ],
+      "dataCoverageSnapshot": {
+        "coverage": "full",
+        "usedSources": [
+          "stockQuote",
+          "institutionalChip"
+        ],
+        "missingSources": [
+          "monthlyRevenue"
+        ]
+      },
+      "sourceDateBasis": {
+        "sourceDate": "2026-05-09",
+        "sourceType": "stockQuote",
+        "missingDataFlags": []
+      },
+      "outcomeSnapshot": {
+        "closePriceAtPrediction": null,
+        "closePriceAtOutcome": null,
+        "returnPct": null,
+        "priceSource": null,
+        "outcomeAvailable": false
+      },
+      "pitSafeStatus": "PIT_SAFE",
+      "replayEligible": false,
+      "replayBlockedReason": "WINDOW_NOT_DUE",
+      "productionWriteAllowed": false,
+      "simulationWriteAllowed": false,
+      "validationMessages": [
+        "WARN: reviewDate=2026-06-30 < targetTradingDate=2026-08-04"
+      ]
+    }
+  ],
+  "auditSummary": {
+    "inputRecordCount": 6,
+    "replayEligibleCount": 3,
+    "replayBlockedCount": 3,
+    "byBlockedReason": {
+      "WINDOW_NOT_DUE": 2,
+      "OUTCOME_MISSING": 1
+    },
+    "missingOutcomeCount": 1,
+    "notDueCount": 2,
+    "pitViolationCount": 0,
+    "byHorizon": {
+      "5D": 2,
+      "20D": 2,
+      "60D": 2
+    },
+    "byWindowStatus": {
+      "DUE_FOR_BACKFILL": 4,
+      "NOT_DUE": 2
+    }
+  },
+  "productionWriteAllowed": false,
+  "simulationWriteAllowed": false,
+  "validationStatus": "PASS",
+  "validationMessages": [
+    "P4 ELIGIBILITY_AUDIT: eligible=3 blocked=3",
+    "missingOutcome=1 notDue=2 pitViolation=0"
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "taskName": "P0-02B",
+  "taskTitle": "Shadow Prediction Log Contract",
+  "date": "2026-05-07",
+  "logVersion": "p002b-v1",
+  "writeMode": "DRY_RUN",
+  "contractStatus": "COMPLETE",
+  "guardrailCompliant": true,
+  "observabilityOnly": true,
+  "noProductionWrite": true,
+  "noDBWrite": true,
+  "noExternalAPI": true,
+  "noLLMCall": true,
+  "noStrategyMutation": true,
+  "noPerformanceClaim": true,
+  "noEdgeClaim": true,
+  "schema": {
+    "logVersion": "string — p002b-v1",
+    "taskName": "string — P0-02B",
+    "runId": "string — caller-provided run identifier",
+    "asOfDate": "string — YYYY-MM-DD, as-of gate date",
+    "generatedAt": "string — ISO datetime",
+    "universeTier": "string — e.g. MVP_CORE",
+    "symbol": "string — stock ticker",
+    "stockName": "string — display name",
+    "researchBucket": "string — Strong | Watch | Neutral | LowPriority | InsufficientData (sanitized from recommendationBucket)",
+    "scoreSnapshot": {
+      "researchScore": "number — sanitized from alphaScore; research ranking only, not a performance claim",
+      "confidenceScore": "number",
+      "technicalScore": "number",
+      "chipScore": "number",
+      "fundamentalScore": "number",
+      "marketAdjustment": "number"
+    },
+    "confidenceSnapshot": "number",
+    "factorSnapshot": "string[]",
+    "riskSnapshot": "string[]",
+    "limitationSnapshot": "string[]",
+    "dataCoverageSnapshot": {
+      "coverage": "full | limited | insufficient | unknown",
+      "usedSources": "string[]",
+      "missingSources": "string[]"
+    },
+    "sourceDateBasis": {
+      "sourceDate": "string — YYYY-MM-DD; must be <= asOfDate",
+      "sourceType": "string",
+      "missingDataFlags": "string[]"
+    },
+    "targetHorizons": [
+      {
+        "horizonLabel": "5D | 20D | 60D",
+        "outcomeStatus": "PENDING — always PENDING in dry-run contract",
+        "outcomeWriteBackAllowed": false
+      }
+    ],
+    "validationStatus": "PASS | WARN | FAIL",
+    "validationMessages": "string[]",
+    "guardrailStatus": "PASS | WARN | FAIL",
+    "duplicateKey": "string — deterministic: asOfDate|symbol|universeTier|runId",
+    "writeMode": "DRY_RUN | APPEND_ONLY_CONTRACT"
+  },
+  "sanitizationRules": {
+    "alphaScore": "renamed to researchScore",
+    "recommendationBucket": "renamed to researchBucket",
+    "forbiddenFieldsRemoved": ["buy", "sell", "roi", "win_rate", "alpha", "edge", "profit", "outperform", "guaranteed", "expected_return", "predicted_return", "expected_profit", "predicted_profit", "H001", "H002", "H003", "H004", "H005", "H006", "H007", "H008", "H009", "H010", "H011", "H012"]
+  },
+  "duplicateKeyRule": "asOfDate|symbol|universeTier|runId — deterministic, collision returns WARN",
+  "targetHorizonContract": {
+    "allowedHorizons": ["5D", "20D", "60D"],
+    "outcomeStatus": "PENDING (always)",
+    "outcomeWriteBackAllowed": false,
+    "forbiddenFields": ["expectedReturn", "predictedReturn", "winRate", "expectedProfit"]
+  },
+  "prevTasks": ["P0-01", "P0-02A", "P0-03", "P0-04"]
+}

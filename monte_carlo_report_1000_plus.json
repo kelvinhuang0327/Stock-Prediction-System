@@ -1,0 +1,22 @@
+{
+  "production_baseline": {
+    "n_runs": 1000,
+    "5th_percentile_drawdown_pct": -53.120359605570314,
+    "median_drawdown_pct": -33.20513218330473
+  },
+  "cold_phase_variant": {
+    "n_runs": 1000,
+    "5th_percentile_drawdown_pct": -40.618165226882894,
+    "median_drawdown_pct": -26.059086950553723
+  },
+  "hybrid_entry_variant": {
+    "n_runs": 1000,
+    "5th_percentile_drawdown_pct": -51.194301355113716,
+    "median_drawdown_pct": -32.96175838225036
+  },
+  "distribution_bias_variant": {
+    "n_runs": 1000,
+    "5th_percentile_drawdown_pct": -38.4160248020513,
+    "median_drawdown_pct": -24.789938969352328
+  }
+}

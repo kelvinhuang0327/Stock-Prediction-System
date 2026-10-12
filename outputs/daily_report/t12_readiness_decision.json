@@ -1,0 +1,69 @@
+{
+  "task": "T-12 DailyReportEngine Deeper Integration",
+  "decision_date": "2026-05-06",
+  "decision": "READY",
+  "readiness_answers": {
+    "Q01_daily_report_engine_deeper_integration_complete": true,
+    "Q02_persisted_MarketRegimeResult_as_primary_source": true,
+    "Q03_live_detectRegime_as_fallback_diagnostic": true,
+    "Q04_freshnessAlert_in_daily_report_context": true,
+    "Q05_api_report_daily_outputs_regimeContext": true,
+    "Q06_t09_t11_api_contract_preserved": true,
+    "Q07_db_write": false,
+    "Q08_external_api_call": false,
+    "Q09_h001_h012_leakage": false,
+    "Q10_buy_sell_signal_leakage": false,
+    "Q11_roi_win_rate_edge_leakage": false,
+    "Q12_p0_blocker_remaining": false
+  },
+  "evidence": {
+    "DailyReportEngine_modified": "src/lib/report/DailyReportEngine.ts",
+    "new_interface": "RegimeContextSummary added to DailyReportEngine.ts",
+    "new_function": "buildRegimeContextSummary() added to DailyReportEngine.ts",
+    "import_added": "getLatestMarketRegimeContext, computeFreshnessAlert from @/lib/marketRegimeResult",
+    "api_route_unchanged": "src/app/api/report/daily/route.ts unchanged — regimeContext included automatically",
+    "jest_pass": "54/54 tests PASS (T-09: 20, T-11: 20, T-12: 14)",
+    "guardrails_pass": "20/20 PASS"
+  },
+  "next_round_recommendations": {
+    "P0_Immediate": [
+      {
+        "task": "T-03",
+        "title": "Daily Ops Report v1",
+        "description": "Build the structured daily ops report surface that combines: (1) marketSummary.regimeContext from T-12, (2) freshnessAlert from T-11, (3) walk-forward skeleton summary from T-10, (4) data coverage status. Expose as /api/ops/daily or integrate into /api/report/daily response. This is the natural next step now that all three context providers are in place."
+      }
+    ],
+    "P1_Next": [
+      {
+        "task": "T-02b",
+        "title": "Unified Freshness Guard + dataCoverage Write",
+        "description": "Wire freshnessAlert.requiresAction into the scheduler/pipeline as a blocking guard. When regimeContext.freshnessAlert.requiresAction is true, emit alert to log / ops channel. Depends on T-12 for regimeContext to be available from DailyReportEngine."
+      },
+      {
+        "task": "T-01b",
+        "title": "Lane-based Scheduler Heartbeat",
+        "description": "Extend the scheduler with periodic heartbeat that checks freshnessAlert levels across MarketRegimeResult, StockQuote, and MarketIndex. Surface in ops report."
+      }
+    ],
+    "P2_Deferred": [
+      {
+        "task": "T-12b",
+        "title": "Replace DEFAULT_CURRENT_DATE hardcoded with dynamic date",
+        "description": "DEFAULT_CURRENT_DATE = '2026-05-06' is hardcoded. Replace with dynamic date source (e.g., server time or configurable env var) for production readiness."
+      },
+      {
+        "task": "T-05b",
+        "title": "Portfolio Walk-Forward at Scale",
+        "description": "Run T-10 enriched walk-forward skeleton at production scale (full date range) and integrate regime context outputs into DailyReportEngine."
+      }
+    ],
+    "Do_Not_Continue": [
+      "H013+ design",
+      "Strategy validation",
+      "ML model training",
+      "ROI / win-rate calculation",
+      "External data API calls",
+      "Production DB writes"
+    ]
+  }
+}

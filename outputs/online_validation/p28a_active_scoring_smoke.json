@@ -1,0 +1,36 @@
+{
+  "smokeRegressionId": "p28a-active-scoring-smoke",
+  "generatedAt": "2026-05-15T03:42:48.830Z",
+  "sampleSize": 5,
+  "uniqueSymbols": 25,
+  "uniqueDates": 5,
+  "smokeTests": {
+    "forbiddenClaimsCount": 0,
+    "forbiddenClaims": [],
+    "outcomeLeakageCount": 0,
+    "outcomeLeakage": [],
+    "alphaScoreBucketValidation": {
+      "status": "PASS",
+      "validRows": 5
+    }
+  },
+  "sampleRows": [
+    {
+      "symbol": "0055",
+      "asOfDate": "2026-02-11",
+      "alphaScore": 42,
+      "bucket": "Avoid",
+      "reason": "技術偏空"
+    },
+    {
+      "symbol": "0055",
+      "asOfDate": "2026-02-11",
+      "alphaScore": 42,
+      "bucket": "Avoid",
+      "reason": "技術偏空"
+    }
+  ],
+  "overallStatus": "PASS",
+  "classification": "P28A_ACTIVE_SCORING_SMOKE_PASS",
+  "disclaimer": "Observability only. No investment recommendations."
+}

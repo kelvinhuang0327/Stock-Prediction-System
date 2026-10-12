@@ -1,0 +1,117 @@
+{
+  "task": "T-12b",
+  "title": "Hardcoded Date Audit",
+  "date": "2026-05-06",
+  "findings": {
+    "runtime_hardcoded_dates": [
+      {
+        "file": "src/lib/marketRegimeResult.ts",
+        "line": 61,
+        "original": "export const DEFAULT_CURRENT_DATE = '2026-05-06'",
+        "classification": "RUNTIME_HARDCODED",
+        "action": "REMOVED — replaced with resolveCurrentDate() from @/lib/time/currentDate",
+        "status": "RESOLVED"
+      },
+      {
+        "file": "src/app/api/daily-report/regime/route.ts",
+        "line": 14,
+        "original": "const REPORT_DATE = '2026-05-06'",
+        "classification": "RUNTIME_HARDCODED",
+        "action": "REMOVED — replaced with resolveCurrentDate(?date param)",
+        "status": "RESOLVED"
+      },
+      {
+        "file": "src/lib/report/OpsReportEngine.ts",
+        "line": 19,
+        "original": "import { ..., DEFAULT_CURRENT_DATE } from '@/lib/marketRegimeResult'",
+        "classification": "RUNTIME_HARDCODED",
+        "action": "REMOVED — import updated; resolveCurrentDate imported from @/lib/time/currentDate",
+        "status": "RESOLVED"
+      },
+      {
+        "file": "src/lib/report/OpsReportEngine.ts",
+        "line": 186,
+        "original": "buildDailyOpsReport(currentDate = DEFAULT_CURRENT_DATE)",
+        "classification": "RUNTIME_HARDCODED",
+        "action": "REMOVED — signature changed to currentDate?: string; resolveCurrentDate() called at top of function",
+        "status": "RESOLVED"
+      }
+    ],
+    "test_fixtures_preserved": [
+      {
+        "file": "src/lib/__tests__/t09_market_regime_service.test.ts",
+        "usage": "getLatestMarketRegimeContext('2026-05-06') — explicit arg",
+        "classification": "TEST_FIXTURE",
+        "action": "PRESERVED — explicit arg still works with updated optional signature"
+      },
+      {
+        "file": "src/lib/__tests__/t11_freshness_alert.test.ts",
+        "usage": "computeFreshnessAlert(ctx, '2026-05-06') — explicit arg",
+        "classification": "TEST_FIXTURE",
+        "action": "PRESERVED — no change needed"
+      },
+      {
+        "file": "src/lib/report/__tests__/t03_ops_report_engine.test.ts",
+        "usage": "buildDailyOpsReport('2026-05-06') — explicit arg",
+        "classification": "TEST_FIXTURE",
+        "action": "PRESERVED — no change needed"
+      },
+      {
+        "file": "src/app/api/daily-report/regime/__tests__/t09_market_regime_api.test.ts",
+        "usage": "body.reportDate === '2026-05-06' — depended on hardcoded REPORT_DATE",
+        "classification": "TEST_FIXTURE_UPDATED",
+        "action": "UPDATED — added jest.mock('@/lib/time/currentDate') returning '2026-05-06'"
+      },
+      {
+        "file": "src/app/api/daily-report/regime/__tests__/t11_freshness_alert_api.test.ts",
+        "usage": "toHaveProperty('reportDate') — value-agnostic check",
+        "classification": "TEST_FIXTURE_UPDATED",
+        "action": "UPDATED — added jest.mock('@/lib/time/currentDate') for consistency"
+      },
+      {
+        "file": "src/app/api/report/ops/__tests__/t03_ops_report_api.test.ts",
+        "usage": "buildDailyOpsReport fully mocked — date value not asserted",
+        "classification": "TEST_FIXTURE_UPDATED",
+        "action": "UPDATED — added jest.mock('@/lib/time/currentDate') for route import isolation"
+      }
+    ],
+    "functions_supporting_date_injection": [
+      {
+        "function": "getLatestMarketRegimeContext(currentDate?: string)",
+        "file": "src/lib/marketRegimeResult.ts",
+        "status": "UPDATED — optional param, resolveCurrentDate() inside"
+      },
+      {
+        "function": "computeFreshnessAlert(context, currentDate?: string)",
+        "file": "src/lib/marketRegimeResult.ts",
+        "status": "UPDATED — optional param, resolveCurrentDate() inside"
+      },
+      {
+        "function": "buildDailyOpsReport(currentDate?: string)",
+        "file": "src/lib/report/OpsReportEngine.ts",
+        "status": "UPDATED — optional param, resolveCurrentDate() at top"
+      }
+    ],
+    "api_routes_updated": [
+      {
+        "route": "GET /api/daily-report/regime",
+        "file": "src/app/api/daily-report/regime/route.ts",
+        "change": "Supports ?date=YYYY-MM-DD query param. Falls back to resolveCurrentDate() (system date)."
+      },
+      {
+        "route": "GET /api/report/ops",
+        "file": "src/app/api/report/ops/route.ts",
+        "change": "Supports ?date=YYYY-MM-DD query param. Falls back to resolveCurrentDate() (system date)."
+      }
+    ]
+  },
+  "answers": {
+    "runtime_code_still_has_hardcoded_date": false,
+    "test_code_can_preserve_fixed_date": true,
+    "date_provider_needed": true,
+    "date_provider_created": "src/lib/time/currentDate.ts",
+    "api_contract_changed": "Minor — GET() now optionally accepts NextRequest for ?date= param; backward-compatible",
+    "db_migration_needed": false,
+    "timezone_risk": "Low — getCurrentDateISO() uses UTC via toISOString(). Server UTC timezone is the source of truth."
+  }
+}

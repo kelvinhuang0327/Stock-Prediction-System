@@ -1,0 +1,23 @@
+{
+  "task": "P26A-RENDERER-INTEGRATION-HARDRESET PART G",
+  "dbUnchanged": true,
+  "prismaDevDb": "a5cf277182c161dfe97ba05f9b81528d6c8e477dd5ac0bec6810ffbb8711c6f8",
+  "corpusUnchanged": {
+    "simulation_snapshot": true,
+    "p0hardreset": true,
+    "p1baseline": true,
+    "p3active": true,
+    "p19active": true
+  },
+  "scoringFilesUnchanged": {
+    "RuleBasedStockAnalyzer": true,
+    "SignalFusionEngine": true,
+    "ActiveScoringSnapshotBuilder": true
+  },
+  "scoringInvariance9Cases": {
+    "mismatchedAlphaScoreCount": 0,
+    "mismatchedBucketCount": 0,
+    "source": "from p26a_renderer_fix_invariance.json (renderer does not change scores)"
+  },
+  "allInvariantsPass": true
+}

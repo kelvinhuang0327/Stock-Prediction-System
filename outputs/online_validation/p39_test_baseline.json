@@ -1,0 +1,60 @@
+{
+  "phase": "P39",
+  "description": "Paper Simulation Input Contract for Eligible Sources",
+  "testRunAt": "2026-05-21T00:00:00.000Z",
+  "runner": "Jest",
+  "testFile": "src/lib/onlineValidation/__tests__/p39_paper_simulation_input_contract.test.ts",
+  "result": {
+    "total": 77,
+    "passed": 77,
+    "failed": 0,
+    "skipped": 0
+  },
+  "groups": [
+    { "group": "1 — Bundle governance invariants", "tests": 8, "passed": 8 },
+    { "group": "2 — Mode and version", "tests": 5, "passed": 5 },
+    { "group": "3 — MonthlyRevenue is eligible", "tests": 5, "passed": 5 },
+    { "group": "4 — Quote is eligible", "tests": 5, "passed": 5 },
+    { "group": "5 — Regime is eligible", "tests": 4, "passed": 4 },
+    { "group": "6 — Blocked sources are explicitly blocked", "tests": 8, "passed": 8 },
+    { "group": "7 — Validator accepts valid bundle", "tests": 4, "passed": 4 },
+    { "group": "8 — Validator rejects invalid bundles", "tests": 10, "passed": 10 },
+    { "group": "9 — buildPaperSimulationInputBundle from P38 entries", "tests": 5, "passed": 5 },
+    { "group": "10 — Default bundle structure", "tests": 7, "passed": 7 },
+    { "group": "11 — Forbidden fields and uses constants", "tests": 10, "passed": 10 },
+    { "group": "12 — Isolation and governance", "tests": 6, "passed": 6 }
+  ],
+  "regressionSuites": [
+    {
+      "file": "p38_simulation_input_readiness_mapping.test.ts",
+      "total": 55,
+      "passed": 55,
+      "failed": 0
+    },
+    {
+      "file": "p37_monthly_revenue_consumer_integration_surface.test.ts",
+      "total": 60,
+      "passed": 60,
+      "failed": 0
+    },
+    {
+      "file": "p36_monthly_revenue_controlled_consumer_readiness.test.ts",
+      "total": 50,
+      "passed": 50,
+      "failed": 0
+    }
+  ],
+  "regressionTotal": 165,
+  "regressionPassed": 165,
+  "fullSuite": {
+    "total": 3943,
+    "passed": 3939,
+    "failed": 4,
+    "failureNote": "4 pre-existing failures in p27_waiting_state_policy_guard.test.ts (DB hash drift, unrelated to P39)"
+  },
+  "entersAlphaScore": false,
+  "paperOnly": true,
+  "dryRunOnly": true,
+  "noInvestmentAdvice": true,
+  "classification": "P39_PAPER_SIMULATION_INPUT_CONTRACT_READY"
+}

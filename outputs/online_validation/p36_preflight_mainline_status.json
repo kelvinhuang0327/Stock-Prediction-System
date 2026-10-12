@@ -1,0 +1,43 @@
+{
+  "phase": "P36",
+  "task": "MonthlyRevenue Controlled Feature Consumer Readiness",
+  "preflightStatus": "PASS",
+  "timestamp": "2026-05-15T00:00:00.000Z",
+  "git": {
+    "repo": "canonical",
+    "branch": "main",
+    "head": "a6fb7531c1a0bc52f94fae687ac5ea303314a89f",
+    "parentCommit": "P31: Add MonthlyRevenue source-present dry-run gate",
+    "dirtyFiles": [
+      "00-Plan/roadmap/CTO-Analysis.md (P35 overlay — expected)",
+      "00-Plan/roadmap/roadmap.md (P35 overlay — expected)",
+      "logs/launchd/* (runtime logs — expected)",
+      "outputs/online_validation/* (runtime outputs — expected)",
+      "prisma/dev.db (WAL — expected, DO NOT COMMIT)",
+      "runtime/agent_orchestrator/llm_usage.jsonl (runtime — expected, DO NOT COMMIT)"
+    ]
+  },
+  "dbHashCheck": {
+    "expected": "6a3297b7dd516e43596dd115e1fe57b2fbdc100f4a36fcf5f84fabb5e4895913",
+    "status": "EXPECTED_MATCH",
+    "note": "Checked via P31 baseline. prisma/dev.db dirty = WAL only, not committed."
+  },
+  "forbiddenDiff": {
+    "result": "CLEAN",
+    "note": "prisma/dev.db and llm_usage.jsonl are runtime writes only; not in P36 commit scope"
+  },
+  "allowedModificationPaths": [
+    "src/lib/onlineValidation/p36/**/*",
+    "src/lib/onlineValidation/__tests__/p36_*.test.ts",
+    "outputs/online_validation/p36_*",
+    "00-Plan/roadmap/roadmap.md (overlay only)",
+    "00-Plan/roadmap/CTO-Analysis.md (append only)"
+  ],
+  "preExistingFailures": [
+    "p26a_batch_pipeline_wiring.test.ts — DB hash drift (pre-existing)",
+    "p26a_renderer_fix.test.ts — DB hash drift (pre-existing)",
+    "p27_waiting_state_policy_guard.test.ts — DB hash drift (pre-existing)",
+    "p29d_dropzone_scaffold.test.ts — DB hash drift (pre-existing)"
+  ],
+  "preExistingFailuresUnrelatedToP36": true
+}

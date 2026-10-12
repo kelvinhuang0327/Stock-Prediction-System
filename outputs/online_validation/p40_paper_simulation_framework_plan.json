@@ -1,0 +1,65 @@
+{
+  "phase": "P40",
+  "task": "Paper Simulation Framework Design Gate",
+  "generatedAt": "2026-05-21T00:00:00.000Z",
+  "version": "p40-paper-simulation-framework-design-gate-v1",
+  "frameworkStatus": "FRAMEWORK_READY",
+  "executionStatus": "EXECUTION_BLOCKED_PENDING_AUTH",
+  "frameworkMode": "design-only",
+  "noExecution": true,
+  "acceptedInputBundleId": {
+    "mode": "paper-simulation-input-contract",
+    "version": "p39-paper-simulation-input-contract-v1",
+    "sourcePhase": "P39"
+  },
+  "eligibleSources": ["MonthlyRevenue", "Quote", "Regime"],
+  "blockedSources": ["NewsEvent", "FinancialReport", "Chip"],
+  "allowedNextStep": "P41: Design paper simulation execution dry-run (requires explicit authorization: 'YES design paper simulation execution dry-run for P41')",
+  "requiredAuthorizationForExecution": "YES design paper simulation execution dry-run for P41",
+  "forbiddenOutputs": [
+    "prediction",
+    "recommendation",
+    "signal",
+    "buy",
+    "sell",
+    "hold",
+    "pnl",
+    "profit",
+    "returnPct",
+    "winRate",
+    "ROI",
+    "outcomePrice",
+    "targetPrice",
+    "optimizerScore",
+    "backtestResult",
+    "edgeScore",
+    "expectedReturn",
+    "alphaScore"
+  ],
+  "governanceFlags": {
+    "paperOnly": true,
+    "dryRunOnly": true,
+    "entersAlphaScore": false,
+    "noExecution": true,
+    "noInvestmentAdvice": true,
+    "noBuySellActionSemantics": true,
+    "notSimulationExecution": true,
+    "notOptimizer": true,
+    "notRealBacktest": true
+  },
+  "validationSummary": "Framework design gate complete. 3 eligible source(s): [MonthlyRevenue, Quote, Regime]. 3 blocked source(s): [NewsEvent, FinancialReport, Chip]. Execution is blocked pending explicit P41 authorization. No simulation was executed. No performance metrics produced.",
+  "disclaimer": "DISCLAIMER: This paper simulation framework design gate does not constitute investment advice, a recommendation, or a signal to buy, sell, or hold any security. entersAlphaScore = false. paperOnly = true. dryRunOnly = true. noExecution = true. No profit, return, win-rate, edge, PnL, or investment performance claims are made. This framework defines design boundaries only — it does not execute simulations, optimizers, or real backtests. Execution requires explicit P41 authorization: 'YES design paper simulation execution dry-run for P41'.",
+  "frameworkBoundaryFiles": {
+    "types": "src/lib/onlineValidation/p40/PaperSimulationFrameworkTypes.ts",
+    "boundary": "src/lib/onlineValidation/p40/PaperSimulationFrameworkBoundary.ts",
+    "tests": "src/lib/onlineValidation/__tests__/p40_paper_simulation_framework_design_gate.test.ts"
+  },
+  "frameworkLifecycle": [
+    "INPUT_CONTRACT_READY (P39 ✅)",
+    "FRAMEWORK_READY (P40 ✅ current)",
+    "EXECUTION_BLOCKED_PENDING_AUTH (P40 current state)",
+    "EXECUTION_NOT_IMPLEMENTED (to be addressed in P41)",
+    "EXECUTION_FORBIDDEN (fallback if authorization is revoked)"
+  ],
+  "classification": "P40_PAPER_SIMULATION_FRAMEWORK_DESIGN_READY"
+}

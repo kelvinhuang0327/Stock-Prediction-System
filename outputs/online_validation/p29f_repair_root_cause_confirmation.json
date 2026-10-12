@@ -1,0 +1,36 @@
+{
+  "reportId": "p29f-repair-root-cause-confirmation",
+  "generatedAt": "2026-05-21T00:00:00Z",
+  "confirmed": true,
+  "rootCause": {
+    "id": "RC-01",
+    "title": "YYYYMMDD vs ISO string comparison in Prisma PIT gate",
+    "file": "src/lib/analysis/RuleBasedStockAnalyzer.ts",
+    "lineRef": "L59 (pre-repair)",
+    "buggyCode": "const asOfDb = asOf ? asOf.replace(/-/g, '') : null;",
+    "buggyQuery": "date: { lte: asOfDb }  // asOfDb = '20260520', stored date = '2026-05-20'",
+    "mechanism": "SQLite text comparison: '2026-05-21' <= '20260520' → TRUE because ASCII '-' (45) < '0' (48). All same-year future ISO records incorrectly pass the PIT gate.",
+    "proof": "T12 in p29f_repair_quote_chip_pit_date.test.ts: '2026-05-21' <= '20260520' evaluates to true in JS string comparison, confirming the semantic error.",
+    "affectedSources": ["StockQuote", "InstitutionalChip"],
+    "unaffectedSources": ["MarketRegime"],
+    "whyRegimeUnaffected": "MarketRegimeEngine.ts uses date: { lte: asOf } directly with ISO asOf — no YYYYMMDD conversion applied",
+    "storageConfirmation": {
+      "StockQuote.date": "ISO (YYYY-MM-DD) via parseTwseDateToIso in syncService.ts",
+      "InstitutionalChip.date": "ISO (YYYY-MM-DD) via const isoDate = ... in syncService.ts:L395",
+      "dbSample": "Latest StockQuote date observed: 2026-05-18; Latest InstitutionalChip date: 2026-05-05"
+    }
+  },
+  "fix": {
+    "id": "FIX-01",
+    "strategy": "Strategy A — remove YYYYMMDD conversion; normalize to ISO",
+    "helperAdded": "normalizePitDateToIso(input: string): string",
+    "helperBehavior": "ISO input → passthrough; YYYYMMDD input → convert to ISO; invalid → throw",
+    "queryFix": "date: { lte: asOfIso }  // asOfIso = '2026-05-20' (ISO), stored date = '2026-05-20' → correct",
+    "revenueQueryFix": "asOfMonth derived from asOfIso.slice(5, 7) instead of asOfDb.slice(4, 6) — both yield same result for ISO input",
+    "schemaCommentFix": "prisma/schema.prisma: InstitutionalChip.date comment updated from '// YYYYMMDD' to '// ISO (YYYY-MM-DD)'"
+  },
+  "falsePositiveRiskEliminated": {
+    "oldBehavior": "asOf='2026-05-20', future record date='2026-05-21': '2026-05-21' <= '20260520' = TRUE → future record incorrectly included",
+    "newBehavior": "asOf='2026-05-20', future record date='2026-05-21': '2026-05-21' <= '2026-05-20' = FALSE → future record correctly excluded"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "generated_at": "2026-04-30T10:35:54.752746Z",
+  "strategies": {
+    "cold_phase_variant": {
+      "entry": "Breakout above 20-day high + volume spike",
+      "exit": "stop_loss 7% / take_profit 20% / time_stop 20 days",
+      "sizing": "Half-Kelly adaptive (5-30% cap) or fixed 20% capital per position",
+      "risk_control": "survivorship filtering + strict stop loss",
+      "hypothesis": "Cold phase variant increases mean edge vs baseline by exploiting mean reversion after volatility compression"
+    }
+  },
+  "permutation_test_edge_vs_baseline_p": 0.0001999600079984003,
+  "statistical_gate_pass": true
+}

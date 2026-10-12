@@ -1,0 +1,135 @@
+{
+  "contractName": "Backtest / Simulation Contract v1",
+  "contractVersion": "p29c-backtest-simulation-contract-v1",
+  "generatedAt": "2026-05-25T00:00:00Z",
+  "phase": "P29C-HARDRESET",
+  "paperDesignOnly": true,
+  "noProductionBacktest": true,
+  "noOptimizer": true,
+  "disclaimer": "Paper design. Not investment advice. No performance claims.",
+
+  "purpose": {
+    "description": "Define the data contract, PIT constraints, input/output isolation, evaluation modes, and forbidden behaviors for any future backtest / simulation work in Stock Prediction System.",
+    "axis": "Axis B — Strategy Simulation and Optimization",
+    "currentMode": "PAPER_DESIGN_ONLY",
+    "activationConditions": [
+      "MonthlyRevenue source imported (P26F4 complete)",
+      "Corpus expansion gate passed (P26E/P29E)",
+      "Feature availability registry v1 sources verified (P29A)",
+      "CTO approval token provided for each promoted mode"
+    ]
+  },
+
+  "inputContract": {
+    "required": [
+      { "field": "asOfDate", "type": "string (YYYY-MM-DD)", "pitRule": "All feature queries must use data with release/trade date <= asOfDate" },
+      { "field": "symbol", "type": "string", "note": "Taiwan stock symbol from universe lock" },
+      { "field": "alphaScore", "type": "number (0-100)", "note": "From RuleBasedStockAnalyzer; must not be influenced by outcome data" },
+      { "field": "recommendationBucket", "type": "string", "note": "From SignalFusionEngine; must not be influenced by outcome data" },
+      { "field": "horizon", "type": "number (trading days)", "note": "5D / 20D / 60D as defined in universe lock" }
+    ],
+    "optional": [
+      { "field": "featureAvailabilitySnapshot", "type": "object", "note": "From P29A PIT registry; lists source status per feature at asOfDate" },
+      { "field": "sourceTrace", "type": "string[]", "note": "usedSources / missingSources from active scoring snapshot" },
+      { "field": "renderedReason", "type": "string", "note": "From P26A/P28C renderer; observability only, not scoring input" }
+    ],
+    "forbidden": [
+      { "field": "outcomePrice", "reason": "Future outcome — violates PIT safety" },
+      { "field": "returnPct", "reason": "Future outcome — violates PIT safety" },
+      { "field": "realizedReturnClass", "reason": "Future outcome label — violates PIT safety" },
+      { "field": "futurePriceMovement", "reason": "Look-ahead contamination" },
+      { "field": "postAsOfNewsEvent", "reason": "News published after asOfDate — PIT violation" },
+      { "field": "analystRevision", "reason": "Post-hoc data often embeds future information" }
+    ]
+  },
+
+  "outcomeContract": {
+    "description": "Outcome fields are joined AFTER the input scoring snapshot is frozen. They are evaluation-only and must never flow back into scoring input.",
+    "fields": [
+      { "field": "outcomeJoinDate", "type": "string (YYYY-MM-DD)", "note": "Date at which outcome was resolved" },
+      { "field": "outcomePrice", "type": "float", "note": "Closing price at asOfDate + horizonDays" },
+      { "field": "returnPct", "type": "float", "note": "Percent return from entry to outcome" },
+      { "field": "realizedReturnClass", "type": "string (UP_STRONG / UP / NEUTRAL / DOWN / DOWN_STRONG)", "note": "Discretized return for calibration analysis" },
+      { "field": "holdingWindow", "type": "string", "note": "Human-readable horizon label (e.g., '5D', '20D')" }
+    ],
+    "joinTiming": "Outcome fields must only be joined AFTER: (1) scoring snapshot is frozen, (2) asOfDate feature snapshot is sealed, (3) PIT registry gate is passed",
+    "forbidden": [
+      "Outcome fields must NEVER appear in ActiveScoringSnapshot",
+      "Outcome fields must NEVER appear in factorSnapshot",
+      "Outcome fields must NEVER appear in scoreSnapshot",
+      "Outcome fields must NEVER be used as input to alphaScore calculation",
+      "Outcome fields must NEVER enter renderer input"
+    ]
+  },
+
+  "pitSafetyRules": [
+    "All features queried with date/releaseDate/publishedAt <= asOfDate strictly",
+    "No inference of outcome from feature data (no using future prices as proxies)",
+    "Outcome join must be temporally separate from feature snapshot construction",
+    "MonthlyRevenue: releaseDate <= asOfDate (P17/P24/P25 repaired gate)",
+    "FinancialReport: filingDate <= asOfDate (not yet implemented; must not be used until AVAILABLE_PIT_SAFE)",
+    "NewsEvent: publishedAt <= asOfDate (not yet verified; must not be used until AVAILABLE_PIT_SAFE)",
+    "StockQuote: date <= asOfDate (AsOfDataGate.buildWhereClause)",
+    "InstitutionalChip: date <= asOfDate",
+    "MarketRegime: detectRegime(asOf) uses TAIEX quotes up to asOfDate only"
+  ],
+
+  "evaluationModes": [
+    {
+      "mode": "OBSERVABILITY_ONLY",
+      "description": "Read existing corpus / scoring artifacts for analysis without modifying them",
+      "allowed": true,
+      "requiresToken": false,
+      "note": "Current mode for all P28/P29 work"
+    },
+    {
+      "mode": "PAPER_ONLY_SIMULATION",
+      "description": "Run simulation pipeline with frozen corpus; no production corpus write; no optimizer",
+      "allowed": true,
+      "requiresToken": true,
+      "tokenRequired": "P29C_APPROVE_PAPER_SIMULATION_ONLY",
+      "prerequisites": ["corpus expansion gate passed", "feature PIT registry updated", "no HIGH_RISK source in alphaScore"]
+    },
+    {
+      "mode": "CORPUS_EXPANSION",
+      "description": "Expand simulation corpus with new asOfDate / symbol entries",
+      "allowed": false,
+      "blockedReason": "Blocked until P26F4 MonthlyRevenue import + post-import coverage preview PASS",
+      "requiresToken": true,
+      "tokenRequired": "P29C_APPROVE_CORPUS_EXPANSION"
+    },
+    {
+      "mode": "OPTIMIZER",
+      "description": "Parameter search over strategy configuration",
+      "allowed": false,
+      "blockedReason": "Blocked until corpus expansion, outcome coverage, train/test split, and anti-overfit gates all pass",
+      "requiresToken": true,
+      "tokenRequired": "P29C_APPROVE_OPTIMIZER_EXPLORATION"
+    },
+    {
+      "mode": "PRODUCTION_TRADING",
+      "description": "Automated trade execution based on simulation results",
+      "allowed": false,
+      "blockedReason": "PERMANENTLY BLOCKED — this system is research-only",
+      "requiresToken": "NEVER_ALLOWED"
+    }
+  ],
+
+  "requiredGates": [
+    "Feature availability gate: all input features must have pitStatus != HIGH_RISK_SOURCE_ABSENT",
+    "Outcome isolation gate: outcomePrice / returnPct / realizedReturnClass must not appear in scoring input",
+    "Corpus immutability gate: frozen corpus sha256 must not change",
+    "Leakage scan: all simulation output artifacts scanned for outcome-in-feature contamination",
+    "Forbidden claims scan: no ROI / win-rate / alpha / edge / profit / guaranteed claims",
+    "No DB write gate: dev.db sha256 unchanged throughout"
+  ],
+
+  "forbiddenBehavior": [
+    "Must NOT execute optimizer in P29C or without explicit optimizer approval token",
+    "Must NOT promote simulation results to production scoring",
+    "Must NOT generate investment recommendations, buy/sell signals, or trading instructions",
+    "Must NOT modify alphaScore or recommendationBucket based on simulation results",
+    "Must NOT use outcome fields as scoring inputs",
+    "Must NOT run backtest with HIGH_RISK_SOURCE_ABSENT source as active scoring feature"
+  ]
+}

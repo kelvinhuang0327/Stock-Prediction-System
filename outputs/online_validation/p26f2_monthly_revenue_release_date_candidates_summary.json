@@ -1,0 +1,20 @@
+{
+  "phase": "P26F2-HARDRESET",
+  "date": "2026-05-13",
+  "totalRows": 2143,
+  "nullReleaseDateRows": 2143,
+  "populatedReleaseDateRows": 0,
+  "candidateGeneratedRows": 2143,
+  "invalidYearMonthRows": 0,
+  "needsManualReviewRows": 2143,
+  "allDryRunOnly": true,
+  "allProductionWriteDisabled": true,
+  "noOutcomeFields": true,
+  "dbWriteDetected": false,
+  "dbRowCountAfter": 2143,
+  "candidateDateDistribution": {
+    "2026-03-10": 1070,
+    "2026-04-10": 1073
+  },
+  "status": "DRY_RUN_CANDIDATES_BUILT"
+}

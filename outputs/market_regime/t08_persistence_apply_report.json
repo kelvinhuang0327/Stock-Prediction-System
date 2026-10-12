@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "mode": "apply",
+  "input_file": "outputs/market_regime/p4_03b_market_regime_sample.json",
+  "record_count": 300,
+  "validation_errors": [],
+  "planned_inserts": 0,
+  "planned_updates": 300,
+  "actual_inserts": 0,
+  "actual_updates": 300,
+  "market_regime_result_row_count_after": 300,
+  "safety_check": {
+    "stock_quote_before": 129151,
+    "market_index_before": 2666,
+    "walk_forward_result_before": 522
+  },
+  "source": "P4_03_MARKET_REGIME_CLASSIFIER",
+  "version": "p4_03b_v1",
+  "generated_at": "2026-05-06T14:47:40.255638"
+}

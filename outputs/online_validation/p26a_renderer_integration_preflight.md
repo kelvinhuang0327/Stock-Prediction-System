@@ -1,0 +1,34 @@
+# P26A-RENDERER-INTEGRATION- Pre-flight ReportHARDRESET 
+
+**Date:** 2026-05-14
+**Task:** P26A Renderer Integration into P5/API Display Path
+
+## Artifacts Check
+
+| Artifact | Status |
+|---|---|
+| P26ACorpusReasonRenderer.ts | OK |
+| p26a_renderer_fix.test.ts | OK |
+| p26a_renderer_fix_final_report.md | OK |
+| p26a_renderer_fix_9case_before_after.json | OK |
+| p26a_renderer_fix_invariance.json | OK |
+| p26a_scoring_underoutput_9case_audit.json | OK |
+| p26f4_or_p26a_followup_final_report.md | OK |
+
+## Baselines
+
+| Item | Value |
+|---|---|
+| prisma/dev.db SHA256 | a5cf277182c161dfe97ba05f9b81528d6c8e477dd5ac0bec6810ffbb8711c6f8 |
+| simulation_snapshot_corpus.jsonl | 60 |
+| p0hardreset corpus | 4500 |
+| p1baseline corpus | 9900 |
+| p3active corpus | 4500 |
+| p19active corpus | 4500 |
+| RuleBasedStockAnalyzer.ts | bc3716cc8e74be304f2e262aac586a61760bb59d6c95e82a575c38e03ea7373d |
+| SignalFusionEngine.ts | b8ce3fa3ae63fd7edf6b6067dd8ccea63c02741454b93792e87bfbc1e95d2bf4 |
+| ActiveScoringSnapshotBuilder.ts | 063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d |
+
+## Classification
+
+`P26A_RENDERER_INTEGRATION_PREFLIGHT_ All artifacts present, all baselines recorded.PASS` 

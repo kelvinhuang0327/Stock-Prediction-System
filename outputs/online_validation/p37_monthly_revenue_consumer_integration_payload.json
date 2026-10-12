@@ -1,0 +1,77 @@
+{
+  "sourceName": "MonthlyRevenue",
+  "surfaceMode": "controlled-consumer-integration",
+  "generatedAt": "2026-05-21T00:00:00.000Z",
+  "dryRunOnly": true,
+  "paperOnly": true,
+  "entersAlphaScore": false,
+  "notInvestmentRecommendation": true,
+  "noBuySellActionSemantics": true,
+  "rowCount": 3,
+  "consumerReadyRows": 2,
+  "warningRows": 1,
+  "blockedRows": 0,
+  "confidenceDistribution": {
+    "HIGH": 1,
+    "MEDIUM": 1,
+    "LOW": 1
+  },
+  "readinessClassifications": [
+    "CONSUMER_READY",
+    "CONSUMER_READY",
+    "CONSUMER_READY_WITH_LOW_CONFIDENCE_WARNING"
+  ],
+  "auditNotes": [
+    "P37: controlled-consumer-integration surface",
+    "All entersAlphaScore values confirmed false",
+    "All rows PIT-boundary-respected",
+    "3 rows processed: 2 READY, 1 WARNING, 0 BLOCKED"
+  ],
+  "sourceTrace": "p37-sample-payload",
+  "rows": [
+    {
+      "symbol": "2330",
+      "revenueMonth": "2025-01",
+      "classification": "CONSUMER_READY",
+      "consumerReady": true,
+      "confidenceTier": "HIGH",
+      "revenueAvailable": true,
+      "releaseMetadataComplete": true,
+      "pitBoundaryRespected": true,
+      "auditNotes": ["confidence=RECORDED_FROM_SOURCE", "HIGH tier"],
+      "entersAlphaScore": false,
+      "paperOnly": true,
+      "dryRunOnly": true
+    },
+    {
+      "symbol": "2317",
+      "revenueMonth": "2025-01",
+      "classification": "CONSUMER_READY",
+      "consumerReady": true,
+      "confidenceTier": "MEDIUM",
+      "revenueAvailable": true,
+      "releaseMetadataComplete": true,
+      "pitBoundaryRespected": true,
+      "auditNotes": ["confidence=INFERRED_FROM_POLICY", "MEDIUM tier"],
+      "entersAlphaScore": false,
+      "paperOnly": true,
+      "dryRunOnly": true
+    },
+    {
+      "symbol": "2454",
+      "revenueMonth": "2025-01",
+      "classification": "CONSUMER_READY_WITH_LOW_CONFIDENCE_WARNING",
+      "consumerReady": false,
+      "confidenceTier": "LOW",
+      "revenueAvailable": true,
+      "releaseMetadataComplete": true,
+      "pitBoundaryRespected": true,
+      "auditNotes": ["confidence=INFERRED_NEXT_MONTH_10TH", "LOW tier — warning issued"],
+      "entersAlphaScore": false,
+      "paperOnly": true,
+      "dryRunOnly": true
+    }
+  ],
+  "version": "p37-monthly-revenue-consumer-integration-surface-v1",
+  "disclaimer": "DISCLAIMER: This integration surface payload does not constitute investment advice, a recommendation, or a signal to buy, sell, or hold any security. entersAlphaScore = false. paperOnly = true. dryRunOnly = true. No profit, return, win-rate, edge, or investment performance claims are made. For structural audit and readiness classification purposes only."
+}

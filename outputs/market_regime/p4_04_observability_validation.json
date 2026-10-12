@@ -1,0 +1,28 @@
+{
+  "validation_id": "P4_04_OBSERVABILITY_VALIDATION",
+  "validation_date": "2026-05-06",
+  "generated_at": "2026-05-06T14:58:03.508851",
+  "t07_pipeline_latest_run_status": "PASS",
+  "t07_pipeline_total_stages": 9,
+  "pipeline_has_persistence_stage": true,
+  "t08_persistence_apply_status": "PASS",
+  "t08_guardrail_status": "PASS",
+  "t08_guardrail_score": "21/21",
+  "daily_ops_report_exists": true,
+  "daily_report_latest_regime": {
+    "date": "2026-05-06",
+    "label": "BULL",
+    "confidence": 1.0
+  },
+  "mrr_latest_regime": {
+    "date": "2026-05-06",
+    "label": "BULL",
+    "confidence": 1.0
+  },
+  "daily_report_mrr_consistent": true,
+  "needs_typescript_daily_report_engine": true,
+  "needs_scheduler_lane_integration": false,
+  "needs_freshness_alert": true,
+  "typescript_integration_blockers": "None",
+  "verdict": "PASS"
+}

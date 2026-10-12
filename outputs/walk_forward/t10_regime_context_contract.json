@@ -1,0 +1,92 @@
+{
+  "task": "T-10 Regime Context Contract",
+  "generated_at": "2026-05-06T15:00:00+08:00",
+  "field_name": "regimeContext",
+  "added_to": "each record in walk-forward output when --regime-context flag is set",
+  "schema": {
+    "asofDate": {
+      "type": "string",
+      "format": "YYYY-MM-DD"
+    },
+    "regimeDate": {
+      "type": "string|null",
+      "description": "Always <= asofDate"
+    },
+    "regimeLabel": {
+      "type": "string",
+      "enum": [
+        "BULL",
+        "BEAR",
+        "SIDEWAYS",
+        "HIGH_VOLATILITY",
+        "LOW_CONFIDENCE"
+      ]
+    },
+    "confidence": {
+      "type": "number|null"
+    },
+    "freshnessStatus": {
+      "type": "string",
+      "enum": [
+        "FRESH",
+        "STALE",
+        "MISSING",
+        "FUTURE_DATE_ERROR"
+      ]
+    },
+    "freshnessLagDays": {
+      "type": "integer|null"
+    },
+    "source": {
+      "type": "string|null"
+    },
+    "version": {
+      "type": "string|null"
+    },
+    "isAvailable": {
+      "type": "boolean"
+    },
+    "warning": {
+      "type": "string|null"
+    }
+  },
+  "example_available": {
+    "asofDate": "2026-05-06",
+    "regimeDate": "2026-05-06",
+    "regimeLabel": "BULL",
+    "confidence": 1.0,
+    "freshnessStatus": "FRESH",
+    "freshnessLagDays": 0,
+    "source": "P4_03_MARKET_REGIME_CLASSIFIER",
+    "version": "p4_03b_v1",
+    "isAvailable": true,
+    "warning": null
+  },
+  "example_missing": {
+    "asofDate": "YYYY-MM-DD",
+    "regimeDate": null,
+    "regimeLabel": "LOW_CONFIDENCE",
+    "confidence": 0,
+    "freshnessStatus": "MISSING",
+    "freshnessLagDays": null,
+    "source": null,
+    "version": null,
+    "isAvailable": false,
+    "warning": "No persisted MarketRegimeResult found for asof_date or prior date"
+  },
+  "pit_safety_rules": [
+    "Only rows WHERE date <= asof_date are queried",
+    "ORDER BY date DESC LIMIT 1",
+    "If regimeDate > asofDate: FUTURE_DATE_ERROR guardrail triggered",
+    "No future regime data is ever used"
+  ],
+  "forbidden_usage_rules": [
+    "regimeContext MUST NOT change candidate_symbols",
+    "regimeContext MUST NOT change portfolio_size",
+    "regimeContext MUST NOT change placeholder_metrics",
+    "regimeContext MUST NOT generate buy/sell/signal",
+    "regimeContext MUST NOT compute ROI/win_rate/alpha/edge/profit",
+    "regimeContext is read-only context annotation only"
+  ],
+  "sql_lookup": "SELECT date, regimeLabel, confidence, taiexClose, source, version FROM MarketRegimeResult WHERE date <= ? ORDER BY date DESC LIMIT 1"
+}

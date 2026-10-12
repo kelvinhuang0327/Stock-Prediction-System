@@ -1,0 +1,35 @@
+{
+  "phase": "P37 Phase 6 — Test Baseline",
+  "timestamp": "2026-05-21T00:00:00.000Z",
+  "p37Tests": {
+    "file": "src/lib/onlineValidation/__tests__/p37_monthly_revenue_consumer_integration_surface.test.ts",
+    "total": 60,
+    "passed": 60,
+    "failed": 0,
+    "groups": {
+      "1_integration_payload_governance_invariants": { "count": 10, "pass": 10 },
+      "2_payload_validation_forbidden_fields": { "count": 10, "pass": 10 },
+      "3_adapter_consumer_readiness_classifications": { "count": 8, "pass": 8 },
+      "4_adapter_counts_only_mode": { "count": 4, "pass": 4 },
+      "5_adapter_blocked_cases": { "count": 8, "pass": 8 },
+      "6_payload_builder_and_summarizer": { "count": 5, "pass": 5 },
+      "7_batch_adapter": { "count": 5, "pass": 5 },
+      "8_field_list_integrity": { "count": 5, "pass": 5 },
+      "9_isolation_no_db_prisma_scoring": { "count": 5, "pass": 5 }
+    }
+  },
+  "regressionSuites": {
+    "p36": { "total": 50, "passed": 50, "failed": 0 },
+    "p31": { "total": 27, "passed": 27, "failed": 0 },
+    "p29k": { "total": 50, "passed": 50, "failed": 0 },
+    "p29l": { "total": 50, "passed": 50, "failed": 0 },
+    "p30": { "total": 150, "passed": 150, "failed": 0 }
+  },
+  "fullOnlineValidation": {
+    "total": 3811,
+    "passed": 3807,
+    "failed": 4,
+    "note": "4 pre-existing DB hash drift failures in p27_waiting_state_policy_guard.test.ts — unrelated to P37"
+  },
+  "forbiddenDiff": "CLEAN — prisma/dev.db and llm_usage.jsonl not staged"
+}

@@ -1,0 +1,163 @@
+{
+  "auditVersion": "p4hardreset-preflight-v1",
+  "classification": "P4_PREFLIGHT_PASS",
+  "runDate": "2026-05-11",
+  "passed": 24,
+  "failed": 0,
+  "total": 24,
+  "gates": [
+    {
+      "name": "FILE_EXISTS:p3active_scoring_historical_replay_corpus.jsonl",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "FILE_EXISTS:p3active_scoring_field_inspection.json",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "FILE_EXISTS:p3active_scoring_final_report.md",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "FILE_EXISTS:p1baseline_historical_replay_corpus.jsonl",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "FILE_EXISTS:simulation_snapshot_corpus.jsonl",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "FILE_EXISTS:p0hardreset_historical_replay_corpus.jsonl",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "P1_SUMMARY_OR_COMPARISON_EXISTS",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "P3_MIN_LINES_4500",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "P3_MIN_SYMBOLS_25",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "P3_MIN_ASOFDATES_60",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "P3_NO_MOCK_DETERMINISTIC",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "P3_COMPLETENESS_STATUS_PRESENT_ALL",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "P3_COMPLETE_OR_PARTIAL_POSITIVE",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "P3_EMPTY_RATIO_NOT_100PCT",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "P3_NON_ZERO_SCORES_EXIST",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "P3_BUCKET_NOT_ALL_NEUTRAL",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "P3_PIT_VIOLATIONS_ZERO",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "P1_MIN_LINES_9900",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "P1_MIN_BASELINE_TYPES_4",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "P1_NO_MOCK_DETERMINISTIC",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "FROZEN_FROZEN_LINES_60",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "FROZEN_P0_LINES_4500",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "FROZEN_P1_LINES_9900",
+      "ok": true,
+      "detail": "PASS"
+    },
+    {
+      "name": "FROZEN_P3_LINES_4500",
+      "ok": true,
+      "detail": "PASS"
+    }
+  ],
+  "p3Stats": {
+    "lines": 4500,
+    "uniqueSymbols": 25,
+    "uniqueAsOfDates": 60,
+    "COMPLETE": 3099,
+    "PARTIAL": 1401,
+    "EMPTY": 0,
+    "usableRatio": "1.0000",
+    "nonZeroScore": 4500,
+    "uniqueBuckets": [
+      "LowPriority",
+      "Watch",
+      "Neutral",
+      "Strong"
+    ],
+    "bucketDistribution": {
+      "LowPriority": 1158,
+      "Watch": 462,
+      "Neutral": 1401,
+      "Strong": 1479
+    },
+    "pitViolations": 0
+  },
+  "p1Stats": {
+    "lines": 9900,
+    "baselineTypes": [
+      "BUY_AND_HOLD_ALL",
+      "TOP_N_EQUAL_WEIGHT",
+      "RANDOM_N_DETERMINISTIC",
+      "STOCKQUOTE_COVERAGE_TOP_N"
+    ]
+  },
+  "durationMs": 173
+}

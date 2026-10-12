@@ -1,0 +1,53 @@
+{
+  "phase": "P29F-HARDRESET",
+  "task": "PIT Audit Tests",
+  "generatedAt": "2026-05-20T00:00:00Z",
+
+  "testFile": "src/lib/onlineValidation/__tests__/p29f_quote_regime_chip_pit_audit.test.ts",
+
+  "p29fTestResult": {
+    "status": "PASS",
+    "suites": 1,
+    "tests": 73,
+    "passed": 73,
+    "failed": 0,
+    "skipped": 0
+  },
+
+  "testGroups": [
+    { "id": "T01", "name": "audit module exists", "tests": 4, "status": "PASS" },
+    { "id": "T02", "name": "quote source is discovered", "tests": 4, "status": "PASS" },
+    { "id": "T03", "name": "regime source is discovered", "tests": 4, "status": "PASS" },
+    { "id": "T04", "name": "chip source is discovered", "tests": 4, "status": "PASS" },
+    { "id": "T05", "name": "each source has PIT rule", "tests": 4, "status": "PASS" },
+    { "id": "T06", "name": "each source has classification", "tests": 3, "status": "PASS" },
+    { "id": "T07", "name": "classification only uses allowed enum", "tests": 4, "status": "PASS" },
+    { "id": "T08", "name": "source entering alphaScore cannot be unclassified", "tests": 4, "status": "PASS" },
+    { "id": "T09", "name": "suspicious future-like fields detected", "tests": 7, "status": "PASS" },
+    { "id": "T10", "name": "suspicious target/label-like fields detected", "tests": 4, "status": "PASS" },
+    { "id": "T11", "name": "date gate ambiguity flagged", "tests": 6, "status": "PASS" },
+    { "id": "T12", "name": "FinancialReport remains entersAlphaScore=false", "tests": 2, "status": "PASS" },
+    { "id": "T13", "name": "NewsEvent remains entersAlphaScore=false", "tests": 2, "status": "PASS" },
+    { "id": "T14", "name": "P29E simulation scaffold remains paper-only", "tests": 4, "status": "PASS" },
+    { "id": "T15", "name": "no production scoring imports in audit module", "tests": 3, "status": "PASS" },
+    { "id": "T16", "name": "no optimizer imports in audit module", "tests": 1, "status": "PASS" },
+    { "id": "T17", "name": "no DB write path in audit module", "tests": 1, "status": "PASS" },
+    { "id": "T18", "name": "no corpus mutation in audit module", "tests": 1, "status": "PASS" },
+    { "id": "T19", "name": "no P27/scanner consolidation in audit module", "tests": 1, "status": "PASS" },
+    { "id": "T20", "name": "next prompt blocks optimizer until PIT resolved", "tests": 3, "status": "PASS" },
+    { "id": "EXTRA", "name": "buildP29FAuditSummary structure", "tests": 7, "status": "PASS" }
+  ],
+
+  "fullSuiteResult": {
+    "totalSuites": 289,
+    "passed": 273,
+    "failed": 16,
+    "failedNote": "pre-existing failures only (same 16 as P29E, unchanged)",
+    "totalTests": 5023,
+    "testsPassed": 4976,
+    "testsFailed": 47,
+    "p29fAdded": { "suites": 1, "tests": 73 }
+  },
+
+  "overallStatus": "PASS"
+}

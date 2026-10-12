@@ -1,0 +1,12 @@
+{
+  "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+  "base_hypothesis_id": "STOCK_H005_PULLBACK_UPTREND",
+  "symbol": "0055",
+  "as_of_date": "2026-05-01",
+  "db_source": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/prisma/dev.db",
+  "pit_enforced": true,
+  "random_split_used": false,
+  "time_based_split": true,
+  "pipeline_version": "P3-11",
+  "run_ts": "2026-05-05T09:56:40.900665+00:00"
+}

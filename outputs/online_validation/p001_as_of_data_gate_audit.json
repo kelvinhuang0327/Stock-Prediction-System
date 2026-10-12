@@ -1,0 +1,94 @@
+{
+  "task": "P0-01",
+  "taskName": "As-of Data Gate / Future-Date Quarantine / MVP Universe Lock",
+  "artifactType": "as_of_data_gate_audit",
+  "date": "2026-05-07",
+  "safetyLabels": [
+    "P0-01",
+    "as-of data gate",
+    "future-date quarantine",
+    "MVP universe lock",
+    "research tool only",
+    "no auto trading",
+    "no precision prediction claim",
+    "no DB write",
+    "no external API",
+    "no LLM call",
+    "no strategy mutation",
+    "no performance claim",
+    "no edge claim"
+  ],
+  "dbSchemaAudit": {
+    "stockQuote": {
+      "dateField": "date",
+      "dateFormat": "YYYYMMDD string",
+      "futureDateObserved": "2026-05-18 rows detected (today is 2026-05-07)",
+      "asOfGateRequired": true
+    },
+    "marketIndex": {
+      "dateField": "date",
+      "dateFormat": "YYYYMMDD string",
+      "futureDateObserved": "2026-05-18 rows detected",
+      "asOfGateRequired": true
+    },
+    "institutionalChip": {
+      "dateField": "date",
+      "dateFormat": "YYYYMMDD string",
+      "futureDateObserved": "needs verification",
+      "asOfGateRequired": true
+    },
+    "newsEvent": {
+      "dateField": "date",
+      "dateFormat": "ISO or string",
+      "asOfGateRequired": true
+    },
+    "monthlyRevenue": {
+      "note": "Uses year + month integers, no direct date string field",
+      "asOfGateRequired": "partial — filter by year/month"
+    },
+    "financialReport": {
+      "note": "Uses year + quarter integers, no direct date string field",
+      "asOfGateRequired": "partial — filter by year/quarter"
+    }
+  },
+  "apiAudit": {
+    "strategyScreen": {
+      "path": "src/app/api/strategy/screen",
+      "queriesStockQuote": true,
+      "queriesMarketIndex": true,
+      "queriesInstitutionalChip": true,
+      "hasAsOfGate": false,
+      "p001Action": "add asOfDate query param; pass to queries"
+    },
+    "stockDetail": {
+      "path": "src/app/api/stocks/[id]/detail",
+      "queriesStockQuote": true,
+      "queriesInstitutionalChip": true,
+      "hasAsOfGate": false,
+      "p001Action": "add asOfDate param; apply buildAsOfWhereClause"
+    },
+    "stockHistory": {
+      "path": "src/app/api/stocks/[id]/history",
+      "usesExternalApi": true,
+      "note": "Calls twseApi.getHistorySeries() — external API, cannot add as-of gate in P0-01",
+      "p001Action": "document as P0-02 scope"
+    },
+    "backtest": {
+      "path": "src/app/api/stocks/backtest",
+      "note": "Complex range — P0-02 scope",
+      "p001Action": "create audit artifact only"
+    },
+    "dataQuality": {
+      "path": "src/lib/data/DataQualityChecker.ts",
+      "hasPartialAsOf": true,
+      "note": "One query already has asOf lte guard; others need update"
+    }
+  },
+  "modulesCreated": [
+    "src/lib/data/AsOfDataGate.ts",
+    "src/lib/data/MvpUniverseLock.ts",
+    "src/lib/data/__tests__/p001_as_of_data_gate.test.ts",
+    "src/lib/data/__tests__/p001_mvp_universe_lock.test.ts"
+  ],
+  "observabilityNote": "Audit of existing system for as-of date gate readiness. Research tool only. Not investment advice."
+}

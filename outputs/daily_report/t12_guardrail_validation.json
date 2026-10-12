@@ -1,0 +1,139 @@
+{
+  "task": "T-12 DailyReportEngine Deeper Integration",
+  "validated_date": "2026-05-06",
+  "guardrail_version": "t12_v1",
+  "total_guardrails": 20,
+  "passed": 20,
+  "failed": 0,
+  "results": [
+    {
+      "id": "G01",
+      "check": "DailyReportEngine uses persisted regime context (getLatestMarketRegimeContext)",
+      "status": "PASS",
+      "evidence": "DailyReportEngine.ts: getLatestMarketRegimeContext imported and called in generateDailyReport() Promise.all"
+    },
+    {
+      "id": "G02",
+      "check": "freshnessAlert included in daily report regimeContext",
+      "status": "PASS",
+      "evidence": "RegimeContextSummary.freshnessAlert computed via computeFreshnessAlert() in buildRegimeContextSummary()"
+    },
+    {
+      "id": "G03",
+      "check": "live detectRegime() used only as diagnostic/fallback for existing fields",
+      "status": "PASS",
+      "evidence": "detectRegime() retained for regime/regimeConfidence backward compat; persisted is primary for regimeContext"
+    },
+    {
+      "id": "G04",
+      "check": "regimeContext.source = PERSISTED_MARKET_REGIME_RESULT when data available",
+      "status": "PASS",
+      "evidence": "t12 test: regimeContext.source === 'PERSISTED_MARKET_REGIME_RESULT' PASS"
+    },
+    {
+      "id": "G05",
+      "check": "fallback to UNAVAILABLE when persisted context missing",
+      "status": "PASS",
+      "evidence": "t12 test: missing context → source='UNAVAILABLE', fallbackUsed=true PASS"
+    },
+    {
+      "id": "G06",
+      "check": "no DB write",
+      "status": "PASS",
+      "evidence": "buildRegimeContextSummary() is pure function; DailyReportEngine only reads via prisma and getLatestMarketRegimeContext"
+    },
+    {
+      "id": "G07",
+      "check": "no external API call",
+      "status": "PASS",
+      "evidence": "No fetch/axios/http calls in new T-12 code paths"
+    },
+    {
+      "id": "G08",
+      "check": "no strategy validation",
+      "status": "PASS",
+      "evidence": "regimeContext is observation-only; no candidate scoring or screening logic changed"
+    },
+    {
+      "id": "G09",
+      "check": "no buy/sell/signal fields",
+      "status": "PASS",
+      "evidence": "RegimeContextSummary interface has no forbidden fields; t12 test verifies no forbidden keys"
+    },
+    {
+      "id": "G10",
+      "check": "no ROI/win_rate fields",
+      "status": "PASS",
+      "evidence": "No roi or win_rate in RegimeContextSummary or new code"
+    },
+    {
+      "id": "G11",
+      "check": "no alpha/edge/profit/recommendation/outperform fields",
+      "status": "PASS",
+      "evidence": "No such fields in T-12 additions"
+    },
+    {
+      "id": "G12",
+      "check": "no H001-H012 references",
+      "status": "PASS",
+      "evidence": "t12 test: JSON.stringify(regimeContext) contains no H001-H012 strings PASS"
+    },
+    {
+      "id": "G13",
+      "check": "T-09 tests PASS",
+      "status": "PASS",
+      "evidence": "10/10 T-09 service tests, 10/10 T-09 API tests PASS in combined run"
+    },
+    {
+      "id": "G14",
+      "check": "T-11 tests PASS",
+      "status": "PASS",
+      "evidence": "12/12 T-11 unit tests, 8/8 T-11 API tests PASS in combined run"
+    },
+    {
+      "id": "G15",
+      "check": "T-12 tests PASS",
+      "status": "PASS",
+      "evidence": "14/14 T-12 integration tests PASS"
+    },
+    {
+      "id": "G16",
+      "check": "existing live regime fields preserved (regime, regimeConfidence, summary)",
+      "status": "PASS",
+      "evidence": "t12 test: report.marketSummary.regime==='Bull', regimeConfidence===80 PASS"
+    },
+    {
+      "id": "G17",
+      "check": "DailyReport interface backward compatible (optional regimeContext only)",
+      "status": "PASS",
+      "evidence": "regimeContext?: RegimeContextSummary is optional — existing consumers unaffected"
+    },
+    {
+      "id": "G18",
+      "check": "no MarketRegimeResult schema modification",
+      "status": "PASS",
+      "evidence": "prisma/schema.prisma not modified; only reads from existing table"
+    },
+    {
+      "id": "G19",
+      "check": "all JSON artifacts parse",
+      "status": "PASS",
+      "evidence": "python3 -m json.tool validates all 4 T-12 JSON files"
+    },
+    {
+      "id": "G20",
+      "check": "all required output files exist",
+      "status": "PASS",
+      "evidence": "13/13 required files created: DailyReportEngine.ts, test file, 11 artifact files"
+    }
+  ],
+  "jest_results": {
+    "t09_service_tests": "10/10 PASS",
+    "t09_api_tests": "10/10 PASS",
+    "t11_unit_tests": "12/12 PASS",
+    "t11_api_tests": "8/8 PASS",
+    "t12_integration_tests": "14/14 PASS",
+    "combined_total": "54/54 PASS"
+  },
+  "summary": "All 20 guardrails PASS. T-12 DailyReportEngine deeper integration is complete. 54/54 tests pass across T-09, T-11, and T-12."
+}

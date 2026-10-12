@@ -1,0 +1,59 @@
+{
+  "phase": "P24-HARDRESET",
+  "part": "E",
+  "description": "Production backfill gate",
+  "generatedAt": "2026-05-12T07:18:00.085Z",
+  "tokenStatus": "VERIFIED",
+  "requiredToken": "P23_APPROVE_PRODUCTION_MIGRATION_EXECUTION_ONLY",
+  "migrationStatus": "PASS",
+  "productionDbTarget": "prisma/dev.db",
+  "backfillRule": "releaseDate = 10th day of the month following the revenue month",
+  "releaseDateSource": "INFERRED_NEXT_MONTH_10TH",
+  "releaseDateConfidence": "LOW_TO_MEDIUM",
+  "skipExplicitReleaseDates": true,
+  "rowsScanned": 2143,
+  "rowsBackfilled": 2143,
+  "rowsSkipped": 0,
+  "invalidRows": 0,
+  "preMigrationNullCount": 2143,
+  "postBackfillNullCount": 0,
+  "sampleBackfilledRows": [
+    {
+      "stockId": "1101",
+      "year": 2026,
+      "month": 2,
+      "releaseDate": "\"2026-03-10 00:00:00.000\""
+    },
+    {
+      "stockId": "1102",
+      "year": 2026,
+      "month": 2,
+      "releaseDate": "\"2026-03-10 00:00:00.000\""
+    },
+    {
+      "stockId": "1103",
+      "year": 2026,
+      "month": 2,
+      "releaseDate": "\"2026-03-10 00:00:00.000\""
+    },
+    {
+      "stockId": "1104",
+      "year": 2026,
+      "month": 2,
+      "releaseDate": "\"2026-03-10 00:00:00.000\""
+    },
+    {
+      "stockId": "1108",
+      "year": 2026,
+      "month": 2,
+      "releaseDate": "\"2026-03-10 00:00:00.000\""
+    }
+  ],
+  "releaseDateSourceDistribution": {
+    "INFERRED_NEXT_MONTH_10TH": 2143
+  },
+  "backfillStatus": "PASS",
+  "productionMigrationApplied": true,
+  "approvalGranted": false,
+  "disclaimer": "Does not constitute investment advice. Does not compute ROI, profit, alpha, win-rate, edge, or outperformance."
+}

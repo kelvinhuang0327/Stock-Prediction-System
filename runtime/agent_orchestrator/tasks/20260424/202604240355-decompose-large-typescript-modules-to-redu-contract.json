@@ -1,0 +1,52 @@
+{
+  "version": "2.0",
+  "objective": "Decompose large TypeScript modules to reduce cognitive load",
+  "background": "19 TypeScript files in src/lib/ exceed 500 lines. Large files increase maintenance burden, reduce testability, and obscure coupling.",
+  "trigger_reason": "OPTIMIZATION_MINER@source=code_quality&score=47",
+  "scope": [
+    "src/lib/agent-orchestrator/optimizationMiner.ts",
+    "src/lib/agent-orchestrator/providers.ts",
+    "src/lib/autonomous/SimulationExecutionEngine.ts",
+    "src/lib/relevance/RelevanceInsightsService.ts",
+    "src/lib/technicalIndicators.ts",
+    "src/lib/report/DailyReportEngine.ts"
+  ],
+  "constraints": [
+    "Do not change public API signatures",
+    "Do not remove existing test coverage",
+    "Do not refactor files not in the identified list",
+    "Do not modify trading thresholds or strategy parameters",
+    "Do not require live broker connection"
+  ],
+  "acceptance_tests": [
+    "Each identified file decomposed into focused sub-modules (< 400 lines each)",
+    "All imports updated and TypeScript compiles with zero errors after decomposition",
+    "Test coverage maintained or improved",
+    "New file boundaries documented with a header comment explaining the split rationale"
+  ],
+  "required_outputs": [
+    "Each identified file decomposed into focused sub-modules (< 400 lines each)",
+    "All imports updated and TypeScript compiles with zero errors after decomposition",
+    "Test coverage maintained or improved",
+    "New file boundaries documented with a header comment explaining the split rationale"
+  ],
+  "forbidden_changes": [
+    "Do not change public API signatures",
+    "Do not remove existing test coverage",
+    "Do not refactor files not in the identified list"
+  ],
+  "handoff_questions": [
+    "Did you verify each acceptance criterion with evidence?",
+    "Were any forbidden actions performed?",
+    "What artifacts were produced?"
+  ],
+  "expected_duration_hours": 6,
+  "target_files": [
+    "src/lib/agent-orchestrator/optimizationMiner.ts",
+    "src/lib/agent-orchestrator/providers.ts",
+    "src/lib/autonomous/SimulationExecutionEngine.ts",
+    "src/lib/relevance/RelevanceInsightsService.ts",
+    "src/lib/technicalIndicators.ts",
+    "src/lib/report/DailyReportEngine.ts"
+  ]
+}

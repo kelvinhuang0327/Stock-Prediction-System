@@ -1,0 +1,79 @@
+{
+  "phase": "P28E",
+  "part": "I - Forbidden Claims Scan",
+  "generatedAt": "2026-05-22T00:00:00Z",
+  "classification": "P28E_FORBIDDEN_CLAIMS_CLEAN",
+  "regex": "ROI|win-rate|win rate|alpha(?!Score)|edge|profit|outperform|beat|buy|sell|guaranteed|investment recommendation|買進|賣出|買入",
+  "scopeScanned": [
+    "outputs/online_validation/p28e_*",
+    "outputs/online_validation/p28_reason_underoutput_*",
+    "outputs/online_validation/p28_next_prompt_after_reason_underoutput_closure.md",
+    "outputs/online_validation/ARTIFACT_INDEX.json",
+    "outputs/online_validation/ARTIFACT_INDEX.md",
+    "outputs/online_validation/PHASE_INDEX.md",
+    "outputs/online_validation/p26_phase_chain_registry.json",
+    "src/lib/onlineValidation/__tests__/p28e_reason_underoutput_closure.test.ts",
+    "scripts/run-p28e-residual-underoutput-distribution-scan.ts"
+  ],
+  "rawHits": [
+    {
+      "file": "outputs/online_validation/p28e_reason_underoutput_closure_invariance.json",
+      "line": 23,
+      "match": "src/lib/alpha/SignalFusionEngine.ts",
+      "allowed": true,
+      "allowedReason": "file path with 'alpha' folder name; reference to scoring file location, not investment claim"
+    },
+    {
+      "file": "outputs/online_validation/p28e_reason_underoutput_closure_preflight.json",
+      "line": 61,
+      "match": "src/lib/alpha/SignalFusionEngine.ts",
+      "allowed": true,
+      "allowedReason": "file path"
+    },
+    {
+      "file": "outputs/online_validation/PHASE_INDEX.md",
+      "line": 58,
+      "match": "Observability only. No investment recommendations.",
+      "allowed": true,
+      "allowedReason": "disclaimer"
+    },
+    {
+      "file": "outputs/online_validation/ARTIFACT_INDEX.md",
+      "line": 114,
+      "match": "Observability only. This system does not provide investment recommendations.",
+      "allowed": true,
+      "allowedReason": "disclaimer"
+    },
+    {
+      "file": "outputs/online_validation/ARTIFACT_INDEX.json",
+      "line": 93,
+      "match": "Observability only. No investment recommendations.",
+      "allowed": true,
+      "allowedReason": "disclaimer"
+    },
+    {
+      "file": "outputs/online_validation/p26_phase_chain_registry.json",
+      "line": 103,
+      "match": "Observability only. No investment recommendations.",
+      "allowed": true,
+      "allowedReason": "disclaimer"
+    },
+    {
+      "file": "outputs/online_validation/p28_next_prompt_after_reason_underoutput_closure.md",
+      "line": 101,
+      "match": "ROI / win-rate / alpha / edge / profit / outperform / buy / sell / guaranteed",
+      "allowed": true,
+      "allowedReason": "explicit forbidden-list in prohibition section (the prompt enumerates what is forbidden; not a claim itself)"
+    },
+    {
+      "file": "outputs/online_validation/p28_next_prompt_after_reason_underoutput_closure.md",
+      "line": 137,
+      "match": "No investment advice. No ROI / alpha / edge / win-rate / profit / outperform / buy / sell claims.",
+      "allowed": true,
+      "allowedReason": "disclaimer"
+    }
+  ],
+  "trueViolationCount": 0,
+  "allHitsAllowed": true,
+  "verdict": "CLEAN"
+}

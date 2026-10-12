@@ -1,0 +1,56 @@
+{
+  "phase": "P29F-HARDRESET",
+  "task": "Source Discovery",
+  "generatedAt": "2026-05-20T00:00:00Z",
+
+  "sources": {
+    "Quote": {
+      "sourceName": "Quote",
+      "dbTable": "StockQuote",
+      "schemaDateComment": "String // 交易日期 (YYYYMMDD or string format from API)",
+      "loaderPath": "src/lib/analysis/RuleBasedStockAnalyzer.ts",
+      "loaderFunction": "analyzeStock(symbol, asOf?)",
+      "syncPath": "src/lib/services/syncService.ts → syncDailyQuotes()",
+      "syncDateSource": "src/lib/api/twseApi.ts → getDailyStocks() → parseTwseDateToIso(item.Date)",
+      "registryStatus": "AVAILABLE_NEEDS_VALIDATION",
+      "entersAlphaScore": true,
+      "alphaScoreDependency": "technicalScore, momentumScore → overallScore → alphaScore",
+      "dateFieldCandidates": ["date (YYYYMMDD or ISO)"],
+      "sourceTimestampCandidates": ["date field"],
+      "knownRisk": "Date format inconsistency: sync stores ISO, gate uses YYYYMMDD conversion",
+      "downstreamDependency": "RuleBasedStockAnalyzer.calculateTechnical, calculateMomentum, calculateRisk"
+    },
+    "Regime": {
+      "sourceName": "Regime",
+      "dbTable": "MarketIndex",
+      "schemaDateComment": "String // Date string",
+      "loaderPath": "src/lib/market/MarketRegimeEngine.ts",
+      "loaderFunction": "detectRegime(asOf?), detectRegimeForPeriod(startDate, endDate)",
+      "syncPath": "src/lib/services/syncService.ts → syncMarketIndices()",
+      "syncDateSource": "snapshot.date from getLatestMarketSnapshot() → openapiDate (ISO from getDailyStocks)",
+      "registryStatus": "AVAILABLE_NEEDS_VALIDATION",
+      "entersAlphaScore": true,
+      "alphaScoreDependency": "regime context → adjustedScore in SignalFusionEngine",
+      "dateFieldCandidates": ["date (ISO format — confirmed by sync)"],
+      "sourceTimestampCandidates": ["date field"],
+      "knownRisk": "detectRegimeForPeriod uses full period return (backtest only, not scoring)",
+      "downstreamDependency": "SignalFusionEngine.fuseSignals → regimeContext → adjustedScore"
+    },
+    "Chip": {
+      "sourceName": "Chip",
+      "dbTable": "InstitutionalChip",
+      "schemaDateComment": "String // YYYYMMDD (comment wrong — actually ISO per sync)",
+      "loaderPath": "src/lib/analysis/RuleBasedStockAnalyzer.ts",
+      "loaderFunction": "analyzeStock(symbol, asOf?) → calculateChipStrength(chips)",
+      "syncPath": "src/lib/services/syncService.ts → syncInstitutionalChip(dateStr?)",
+      "syncDateSource": "isoDate derived from targetDate (YYYYMMDD → ISO conversion in sync)",
+      "registryStatus": "AVAILABLE_NEEDS_VALIDATION",
+      "entersAlphaScore": true,
+      "alphaScoreDependency": "chipStrength → chipScore → overallScore → alphaScore",
+      "dateFieldCandidates": ["date (ISO format — confirmed by sync code)"],
+      "sourceTimestampCandidates": ["date field"],
+      "knownRisk": "Schema comment says YYYYMMDD but sync stores ISO (same PIT gate issue as Quote)",
+      "downstreamDependency": "RuleBasedStockAnalyzer.calculateChipStrength → chipStrength → alphaScore"
+    }
+  }
+}

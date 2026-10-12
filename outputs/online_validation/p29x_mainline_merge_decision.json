@@ -1,0 +1,25 @@
+{
+  "phase": "P29X",
+  "capturedAt": "2026-05-20T00:00:00.000Z",
+  "decision": "NO_MERGE_REQUIRED",
+  "reason": "Current branch is main. main HEAD is 676266d (P29G commit). main already contains both P29H and P29G.",
+  "mainHead": "676266d4d57254863fdcbdb21d4beed50c7b32ba",
+  "p29gAncestorCheck": {
+    "commit": "676266d",
+    "isAncestorOfMain": true,
+    "isMainHead": true
+  },
+  "p29hAncestorCheck": {
+    "commit": "53cbdd2",
+    "isAncestorOfMain": true
+  },
+  "mainAheadOfOrigin": 175,
+  "forbiddenActions": {
+    "rebasePublicMain": false,
+    "forcePush": false,
+    "cherryPickP29D": false,
+    "cherryPickP29E": false,
+    "commitRuntimeDirtyFiles": false
+  },
+  "mergePerformed": false
+}

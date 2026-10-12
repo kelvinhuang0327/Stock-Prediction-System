@@ -1,0 +1,38 @@
+{
+  "phase": "P29B", "part": "G - Registry Update Proposal",
+  "generatedAt": "2026-05-24T00:00:00Z", "paperDesignOnly": true,
+  "proposedUpdates": [
+    {
+      "sourceName": "FinancialReport",
+      "currentStatus": "HIGH_RISK_SOURCE_ABSENT",
+      "proposedImmediateStatus": "HIGH_RISK_SOURCE_ABSENT (unchanged — no source yet)",
+      "futureStatus_onSourcePresent": "SOURCE_PRESENT_AWAITING_VALIDATION",
+      "futureStatus_onValidatorPass": "AVAILABLE_NEEDS_VALIDATION",
+      "futureStatus_onFormalAudit": "AVAILABLE_PIT_SAFE",
+      "entersAlphaScore": false,
+      "entersAlphaScore_whenReady": false,
+      "entersRendererOnly_whenReady": true,
+      "requiredForCorpusExpansion": false,
+      "approvalTokenRequired": "P29B_APPROVE_FINANCIAL_REPORT_DRY_RUN_ONLY",
+      "blockers": ["no filingDate in DB schema", "no source files in drop-zone", "no manifest"],
+      "note": "Registry entry remains unchanged until operator provides source files AND validator dry-run passes"
+    },
+    {
+      "sourceName": "NewsEvent",
+      "currentStatus": "HIGH_RISK_SOURCE_ABSENT",
+      "proposedImmediateStatus": "HIGH_RISK_SOURCE_ABSENT (unchanged — publishedAt reliability unaudited)",
+      "futureStatus_onSourcePresent": "SOURCE_PRESENT_AWAITING_VALIDATION",
+      "futureStatus_onValidatorPass": "AVAILABLE_NEEDS_VALIDATION",
+      "futureStatus_onFormalAudit": "AVAILABLE_PIT_SAFE",
+      "entersAlphaScore": false,
+      "entersAlphaScore_whenReady": false,
+      "entersRendererOnly_whenReady": true,
+      "requiredForCorpusExpansion": false,
+      "approvalTokenRequired": "P29B_APPROVE_NEWS_EVENT_DRY_RUN_ONLY",
+      "blockers": ["publishedAt vs ingestedAt audit not done", "mock/real event separation not done", "no verified-official source files in drop-zone"],
+      "note": "Registry entry remains unchanged until audit confirms publishedAt reliability AND official source files provided"
+    }
+  ],
+  "noImmediateChange": true,
+  "disclaimer": "Proposal only. No production registry change made in P29B. Not investment advice."
+}

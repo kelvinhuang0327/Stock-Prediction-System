@@ -1,0 +1,147 @@
+{
+  "phase": "P18-HARDRESET",
+  "task": "MonthlyRevenue fixture DB query gate validation",
+  "date": "2026-05-12",
+  "validationStatus": "PASS",
+  "passCount": 22,
+  "failCount": 0,
+  "total": 22,
+  "gates": [
+    {
+      "label": "QG-SG1: Fixture DB exists",
+      "status": "PASS"
+    },
+    {
+      "label": "QG-SG2: Fixture has backfilled rows",
+      "status": "PASS"
+    },
+    {
+      "label": "QG-S1-setup: s1 has releaseDate=2024-02-10",
+      "status": "PASS"
+    },
+    {
+      "label": "QG-S1a: asOf=2024-02-09 => unavailable",
+      "status": "PASS"
+    },
+    {
+      "label": "QG-S1b: asOf=2024-02-10 => available",
+      "status": "PASS"
+    },
+    {
+      "label": "QG-S1c: asOf=2024-02-11 => available",
+      "status": "PASS"
+    },
+    {
+      "label": "QG-S2-setup: s2 has releaseDate=2025-01-10",
+      "status": "PASS"
+    },
+    {
+      "label": "QG-S2a: asOf=2025-01-09 => unavailable",
+      "status": "PASS"
+    },
+    {
+      "label": "QG-S2b: asOf=2025-01-10 => available",
+      "status": "PASS"
+    },
+    {
+      "label": "QG-S3-setup: s3 has explicit releaseDate=2024-04-15, source=EXPLICIT",
+      "status": "PASS"
+    },
+    {
+      "label": "QG-S3a: explicit releaseDate used as-is",
+      "status": "PASS"
+    },
+    {
+      "label": "QG-S3b: before explicit => unavailable",
+      "status": "PASS"
+    },
+    {
+      "label": "QG-S4a: null releaseDate + allowInferred=false => unavailable",
+      "status": "PASS"
+    },
+    {
+      "label": "QG-S4b: filterAvailable excludes null-releaseDate rows",
+      "status": "PASS"
+    },
+    {
+      "label": "QG-S5: No rows available as of 2024-01-01 (before all releases)",
+      "status": "PASS"
+    },
+    {
+      "label": "QG-S6: Multiple rows available as of 2025-02-01",
+      "status": "PASS"
+    },
+    {
+      "label": "QG-S7: P17 query gate validation artifact exists",
+      "status": "PASS"
+    },
+    {
+      "label": "QG-S7a: P17 validation status is ALL_PASS",
+      "status": "PASS"
+    },
+    {
+      "label": "QG-S7b: P17 productionApplyAllowed=false",
+      "status": "PASS"
+    },
+    {
+      "label": "QG-S8: No forbidden outcome fields in fixture DB rows",
+      "status": "PASS"
+    },
+    {
+      "label": "QG-Safety: productionDbWritten=false",
+      "status": "PASS"
+    },
+    {
+      "label": "QG-Safety: productionApplyAllowed=false",
+      "status": "PASS"
+    }
+  ],
+  "fixtureDbPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/outputs/online_validation/fixture_db/p18_monthly_revenue_fixture.sqlite",
+  "productionApplyAllowed": false,
+  "dryRunOnly": true,
+  "productionDbWritten": false,
+  "fixtureRowCount": 6,
+  "queryGateScenarios": [
+    {
+      "id": "S1",
+      "desc": "2024-01 before/on/after releaseDate=2024-02-10",
+      "tested": true
+    },
+    {
+      "id": "S2",
+      "desc": "2024-12 before/on releaseDate=2025-01-10",
+      "tested": true
+    },
+    {
+      "id": "S3",
+      "desc": "explicit releaseDate preserved and used",
+      "tested": true
+    },
+    {
+      "id": "S4",
+      "desc": "allowInferredReleaseDate=false → unavailable",
+      "tested": true
+    },
+    {
+      "id": "S5",
+      "desc": "no rows available before 2024-01-01",
+      "tested": true
+    },
+    {
+      "id": "S6",
+      "desc": "multiple rows available after 2025-02-01",
+      "tested": true
+    },
+    {
+      "id": "S7",
+      "desc": "P17 query gate proposal consistency",
+      "tested": true
+    },
+    {
+      "id": "S8",
+      "desc": "no forbidden outcome fields in DB",
+      "tested": true
+    }
+  ],
+  "disclaimer": "Does not constitute investment advice. Does not compute ROI, profit, alpha, win-rate, edge, or outperformance."
+}

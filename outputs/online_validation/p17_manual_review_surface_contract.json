@@ -1,0 +1,336 @@
+{
+  "surfaceContractVersion": "manual-review-surface-contract-v0",
+  "surfaceRunId": "p17-manual-review-surface-20260511-001",
+  "generatedAt": "2026-05-11T10:20:00.000Z",
+  "sourceArtifacts": {
+    "workflowBindingVersion": "manual-review-workflow-binding-v0",
+    "workflowBindingRunId": "p16-manual-review-workflow-binding-20260511-001",
+    "actionSchemaVersion": "manual-review-action-schema-v0",
+    "actionSchemaRunId": "p16-manual-review-action-schema-20260511-001",
+    "statusCardsPresent": true
+  },
+  "surfaceStatus": "READY_FOR_MANUAL_REVIEW_SURFACE",
+  "pageTitle": "Manual Review Surface",
+  "pageSubtitle": "Review-only UI surface for artifact inspection and follow-up.",
+  "statusSections": [
+    {
+      "sectionId": "status_overview",
+      "title": "Manual Review Status",
+      "items": [
+        {
+          "id": "workflow_status",
+          "label": "Workflow Status",
+          "value": "READY_FOR_MANUAL_REVIEW",
+          "status": "OK"
+        },
+        {
+          "id": "review_status",
+          "label": "Review Status",
+          "value": "READY_FOR_HUMAN_REVIEW",
+          "status": "OK"
+        },
+        {
+          "id": "gate_status",
+          "label": "Gate Status",
+          "value": "READY_FOR_MANUAL_REVIEW",
+          "status": "OK"
+        },
+        {
+          "id": "decision",
+          "label": "Decision",
+          "value": "ALLOW_MANUAL_REVIEW_ONLY",
+          "status": "OK"
+        },
+        {
+          "id": "corpus_unchanged",
+          "label": "Corpus Unchanged",
+          "value": true,
+          "status": "OK"
+        },
+        {
+          "id": "review_only",
+          "label": "Review Only Indicator",
+          "value": true,
+          "status": "OK",
+          "note": "Manual review only, not approval complete."
+        }
+      ]
+    }
+  ],
+  "actionSections": [
+    {
+      "sectionId": "actions_enabled",
+      "title": "Enabled Review Actions",
+      "items": [
+        {
+          "id": "REVIEW_REHEARSAL_ARTIFACT",
+          "label": "Review Rehearsal Artifact",
+          "value": true,
+          "status": "OK",
+          "note": "Inspect the artifact-only rehearsal package.",
+          "enabled": true,
+          "requiresHuman": true,
+          "writePathEffect": "NONE",
+          "productionWriteAllowed": false,
+          "corpusWriteAllowed": false,
+          "optimizerAllowed": false
+        },
+        {
+          "id": "REVIEW_WRITE_PATH_POLICY",
+          "label": "Review Write Path Policy",
+          "value": true,
+          "status": "OK",
+          "note": "Inspect the locked write-path contract.",
+          "enabled": true,
+          "requiresHuman": true,
+          "writePathEffect": "NONE",
+          "productionWriteAllowed": false,
+          "corpusWriteAllowed": false,
+          "optimizerAllowed": false
+        },
+        {
+          "id": "REVIEW_QUALITY_IMPACT_PREVIEW",
+          "label": "Review Quality Impact Preview",
+          "value": true,
+          "status": "OK",
+          "note": "Inspect the preview-only coverage impact.",
+          "enabled": true,
+          "requiresHuman": true,
+          "writePathEffect": "NONE",
+          "productionWriteAllowed": false,
+          "corpusWriteAllowed": false,
+          "optimizerAllowed": false
+        },
+        {
+          "id": "REQUEST_MORE_DATA",
+          "label": "Request More Data",
+          "value": true,
+          "status": "OK",
+          "note": "Ask for more data accumulation before proceeding.",
+          "enabled": true,
+          "requiresHuman": true,
+          "writePathEffect": "NONE",
+          "productionWriteAllowed": false,
+          "corpusWriteAllowed": false,
+          "optimizerAllowed": false
+        },
+        {
+          "id": "ACKNOWLEDGE_DATA_LIMITED",
+          "label": "Acknowledge Data Limited",
+          "value": true,
+          "status": "OK",
+          "note": "Acknowledge that the workflow is data limited.",
+          "enabled": true,
+          "requiresHuman": true,
+          "writePathEffect": "NONE",
+          "productionWriteAllowed": false,
+          "corpusWriteAllowed": false,
+          "optimizerAllowed": false
+        }
+      ]
+    }
+  ],
+  "warningSections": [
+    {
+      "sectionId": "warnings",
+      "title": "Warnings",
+      "items": [
+        {
+          "id": "warn_not_approval",
+          "label": "Manual Review Is Not Approval Complete",
+          "value": true,
+          "status": "WARN",
+          "note": "Manual review remains a review-only state."
+        },
+        {
+          "id": "warn_no_production",
+          "label": "No Production Execution",
+          "value": false,
+          "status": "WARN",
+          "note": "Production execution is disabled."
+        },
+        {
+          "id": "warn_no_corpus_write",
+          "label": "No Corpus Write",
+          "value": false,
+          "status": "WARN",
+          "note": "Corpus write is disabled."
+        },
+        {
+          "id": "warn_no_optimizer",
+          "label": "No Optimizer Trigger",
+          "value": false,
+          "status": "WARN",
+          "note": "Optimizer trigger is disabled."
+        },
+        {
+          "id": "warn_preview_only",
+          "label": "Projected Coverage Is Preview-Only",
+          "value": true,
+          "status": "WARN",
+          "note": "Coverage preview is not a performance claim."
+        }
+      ]
+    }
+  ],
+  "guardrailSections": [
+    {
+      "sectionId": "guardrails",
+      "title": "Guardrails",
+      "items": [
+        {
+          "id": "guard_manual_required",
+          "label": "Manual Approval Required",
+          "value": true,
+          "status": "OK"
+        },
+        {
+          "id": "guard_auto_promotion",
+          "label": "Automatic Promotion Allowed",
+          "value": false,
+          "status": "OK"
+        },
+        {
+          "id": "guard_production_backfill",
+          "label": "Production Backfill Allowed",
+          "value": false,
+          "status": "OK"
+        },
+        {
+          "id": "guard_corpus_write",
+          "label": "Corpus Write Allowed",
+          "value": false,
+          "status": "OK"
+        },
+        {
+          "id": "guard_optimizer",
+          "label": "Optimizer Allowed",
+          "value": false,
+          "status": "OK"
+        },
+        {
+          "id": "guard_allowed_next_step",
+          "label": "Allowed Next Step",
+          "value": "MANUAL_REVIEW_ONLY",
+          "status": "OK"
+        },
+        {
+          "id": "guard_production_db",
+          "label": "Production DB Write Allowed",
+          "value": false,
+          "status": "OK"
+        },
+        {
+          "id": "guard_prediction_row",
+          "label": "Prediction Row Write Allowed",
+          "value": false,
+          "status": "OK"
+        }
+      ]
+    }
+  ],
+  "disabledActionSections": [
+    {
+      "sectionId": "actions_disabled",
+      "title": "Disabled Actions",
+      "items": [
+        {
+          "id": "APPROVE_PRODUCTION_BACKFILL",
+          "label": "Approve Production Backfill",
+          "value": false,
+          "status": "BLOCKED",
+          "note": "Disabled in this phase.",
+          "enabled": false,
+          "requiresHuman": true,
+          "writePathEffect": "NONE",
+          "productionWriteAllowed": false,
+          "corpusWriteAllowed": false,
+          "optimizerAllowed": false
+        },
+        {
+          "id": "APPROVE_CORPUS_WRITE",
+          "label": "Approve Corpus Write",
+          "value": false,
+          "status": "BLOCKED",
+          "note": "Disabled in this phase.",
+          "enabled": false,
+          "requiresHuman": true,
+          "writePathEffect": "NONE",
+          "productionWriteAllowed": false,
+          "corpusWriteAllowed": false,
+          "optimizerAllowed": false
+        },
+        {
+          "id": "APPROVE_OPTIMIZER",
+          "label": "Approve Optimizer",
+          "value": false,
+          "status": "BLOCKED",
+          "note": "Disabled in this phase.",
+          "enabled": false,
+          "requiresHuman": true,
+          "writePathEffect": "NONE",
+          "productionWriteAllowed": false,
+          "corpusWriteAllowed": false,
+          "optimizerAllowed": false
+        },
+        {
+          "id": "APPROVE_TRADING_ACTION",
+          "label": "Approve Trading Action",
+          "value": false,
+          "status": "BLOCKED",
+          "note": "Disabled in this phase.",
+          "enabled": false,
+          "requiresHuman": true,
+          "writePathEffect": "NONE",
+          "productionWriteAllowed": false,
+          "corpusWriteAllowed": false,
+          "optimizerAllowed": false
+        },
+        {
+          "id": "AUTO_PROMOTE",
+          "label": "Auto Promote",
+          "value": false,
+          "status": "BLOCKED",
+          "note": "Disabled in this phase.",
+          "enabled": false,
+          "requiresHuman": true,
+          "writePathEffect": "NONE",
+          "productionWriteAllowed": false,
+          "corpusWriteAllowed": false,
+          "optimizerAllowed": false
+        }
+      ]
+    }
+  ],
+  "auditSections": [
+    {
+      "sectionId": "audit_source",
+      "title": "Source Artifacts",
+      "items": [
+        {
+          "id": "audit_workflow_binding",
+          "label": "Workflow Binding Version",
+          "value": "manual-review-workflow-binding-v0",
+          "status": "OK"
+        },
+        {
+          "id": "audit_action_schema",
+          "label": "Action Schema Version",
+          "value": "manual-review-action-schema-v0",
+          "status": "OK"
+        },
+        {
+          "id": "audit_surface_only",
+          "label": "Surface Only",
+          "value": true,
+          "status": "OK",
+          "note": "Display only. No approval complete."
+        }
+      ]
+    }
+  ],
+  "validationStatus": "PASS",
+  "validationMessages": [
+    "PASS: manual review surface contract safety contracts verified"
+  ]
+}

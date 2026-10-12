@@ -1,0 +1,256 @@
+{
+  "traceId": "p28b-reason-renderer-path-trace",
+  "generatedAt": "2026-05-19T00:00:00.000Z",
+  "phase": "P28B-REASON-TEMPLATE-COVERAGE-HARDRESET",
+  "description": "6-layer architecture trace of reason template/renderer path. Identifies which layers are safe to repair and which are forbidden.",
+
+  "repairTargetNotInScoringPath": true,
+  "repairTargetConfirmed": "read-time renderer + serialization path (layers 4-6 only)",
+
+  "layers": {
+    "layer1_scoringPath": {
+      "name": "Scoring Path",
+      "description": "Computes alphaScore, bucket, scoreSnapshot from raw price/chip/revenue data. FORBIDDEN to modify.",
+      "files": [
+        "src/lib/analysis/RuleBasedStockAnalyzer.ts",
+        "src/lib/alpha/SignalFusionEngine.ts"
+      ],
+      "outputFields": [
+        "overallScore (→ alphaScore)",
+        "recommendation (→ researchBucket)",
+        "technicalScore",
+        "chipScore",
+        "momentumScore",
+        "revenueScore"
+      ],
+      "safeToModify": false,
+      "modificationForbiddenReason": "Scoring formula change would violate P28B invariance constraint. P28A confirmed scoring is CORRECT.",
+      "sha256": {
+        "RuleBasedStockAnalyzer.ts": "bc3716cc8e74be304f2e262aac586a61760bb59d6c95e82a575c38e03ea7373d",
+        "SignalFusionEngine.ts": "b8ce3fa3ae63fd7edf6b6067dd8ccea63c02741454b93792e87bfbc1e95d2bf4"
+      }
+    },
+
+    "layer2_snapshotBuildPath": {
+      "name": "Snapshot Build Path",
+      "description": "Assembles ActiveScoringSnapshot from scoring results + factor data. Stores factorSnapshot, reasonSnapshot, scoreSnapshot. FORBIDDEN to modify alphaScore/bucket computation.",
+      "files": [
+        "src/lib/onlineValidation/ActiveScoringSnapshotBuilder.ts"
+      ],
+      "outputFields": [
+        "alphaScore (read-only after build)",
+        "researchBucket (read-only after build)",
+        "scoreSnapshot { technicalScore, chipScore, momentumScore, revenueScore }",
+        "factorSnapshot (array of factor strings)",
+        "reasonSnapshot (may be single-token for pre-P26A snapshots)",
+        "signalSnapshot",
+        "usedSources",
+        "missingSources"
+      ],
+      "safeToModify": false,
+      "modificationForbiddenReason": "alphaScore/bucket calculation is forbidden. However, additive non-scoring fields (e.g., new reason output fields) could be considered in P28C.",
+      "sha256": {
+        "ActiveScoringSnapshotBuilder.ts": "063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d"
+      }
+    },
+
+    "layer3_factorSnapshotPath": {
+      "name": "Factor Snapshot Path",
+      "description": "Builds and enriches factorSnapshot evidence from corpus rows. Read-only in P28B context.",
+      "files": [
+        "src/lib/onlineValidation/P26AReasonFactorEnrichmentUtils.ts",
+        "src/lib/onlineValidation/P26ACorpusRowAdapter.ts"
+      ],
+      "keyFunctions": [
+        "buildFactorEvidenceBlock(snapshot) → FactorEvidence",
+        "enrichReasonFromExistingFactors(snapshot) → string",
+        "corpusRowToWalkthroughCaseInput(row) → WalkthroughCaseInput"
+      ],
+      "identifiedGaps": [
+        {
+          "gapId": "G3-1",
+          "description": "WalkthroughCaseInput does not carry scoreSnapshot from activeScoringSnapshot",
+          "affectedField": "scoreSnapshot in WalkthroughCaseInput",
+          "impact": "P5WalkthroughReviewUtils.minimalSnapshot.scoreSnapshot hardcoded to all zeros",
+          "safeToFix": true,
+          "fixType": "additive field passthrough — does not change scoring"
+        },
+        {
+          "gapId": "G3-2",
+          "description": "enrichReasonFromExistingFactors derives direction label from scoreSnapshot.technicalScore which is 0 when not passed through",
+          "affectedField": "techLabel in enrichReasonFromExistingFactors",
+          "impact": "Cases with MA 多頭排列 get label '技術面偏空' instead of '技術面偏多'",
+          "safeToFix": true,
+          "fixType": "fallback direction inference from factorSnapshot MA trend text — renderer-only change"
+        }
+      ],
+      "safeToModify": "PARTIAL — additive enrichment functions only, no scoring change"
+    },
+
+    "layer4_reasonSnapshotSerializationPath": {
+      "name": "Reason Snapshot Serialization Path",
+      "description": "The corpus stores reasonSnapshot as flat string. For pre-P26A rows, this is a single generic token (e.g. '技術偏多'). The corpus is FROZEN — no writes allowed.",
+      "storageLocation": [
+        "outputs/online_validation/p3active_scoring_historical_replay_corpus.jsonl",
+        "outputs/online_validation/p19active_scoring_pit_replay_corpus.jsonl"
+      ],
+      "storedFields": [
+        "activeScoringSnapshot.reasonSnapshot (single-token for 9 cases)",
+        "activeScoringSnapshot.factorSnapshot (10 items for all 9 cases)",
+        "activeScoringSnapshot.scoreSnapshot (has actual scores in corpus, but NOT passed to WalkthroughCaseInput)"
+      ],
+      "identifiedGaps": [
+        {
+          "gapId": "G4-1",
+          "description": "activeScoringSnapshot.scoreSnapshot is in the corpus but NOT extracted by P26ACorpusRowAdapter",
+          "affectedField": "scoreSnapshot in corpus row",
+          "impact": "Renderer cannot use actual technicalScore/chipScore for direction labels",
+          "safeToFix": true,
+          "fixType": "pass scoreSnapshot through adapter → WalkthroughCaseInput → minimalSnapshot"
+        }
+      ],
+      "safeToModify": false,
+      "modificationForbiddenReason": "Corpus files are FROZEN. No writes allowed. Read-only access only."
+    },
+
+    "layer5_readTimeRendererPath": {
+      "name": "Read-Time Renderer Path",
+      "description": "At read/display time, P26ACorpusReasonRenderer enriches single-token reasonSnapshot using factorSnapshot. This is the PRIMARY repair target.",
+      "files": [
+        "src/lib/onlineValidation/P26ACorpusReasonRenderer.ts"
+      ],
+      "keyFunctions": [
+        "renderReasonFromCorpusSnapshot(snapshot) → RenderedReason",
+        "isSingleTokenGenericReason(text) → boolean",
+        "buildDataCoverageNote(usedSources, missingSources, asOfDate) → string",
+        "countRenderedFactors(text) → number"
+      ],
+      "currentOutcomes": {
+        "ENRICHED": "Single-token + factorSnapshot present → replaces with multi-factor text",
+        "ALREADY_RICH": "Already has multi-factor content → pass-through",
+        "FALLBACK_EMPTY": "factorSnapshot empty → return original single-token",
+        "FALLBACK_NO_SNAPSHOT": "No snapshot at all"
+      },
+      "identifiedGaps": [
+        {
+          "gapId": "G5-1",
+          "description": "renderReasonFromCorpusSnapshot relies on enrichReasonFromExistingFactors which uses scoreSnapshot.technicalScore=0 → wrong direction labels",
+          "affectedField": "renderedText direction label",
+          "impact": "ENRICHED outcome fires but label is inverted (偏空 instead of 偏多)",
+          "safeToFix": true,
+          "fixType": "renderer-only — infer direction from MA trend string in factorSnapshot"
+        },
+        {
+          "gapId": "G5-2",
+          "description": "No template for mixed-signal case (MA 空頭排列 + MACD 多方動能)",
+          "affectedField": "renderedText for mixed-signal cases",
+          "impact": "Renderer produces fragmented output without unified summary for 00891 cases",
+          "safeToFix": true,
+          "fixType": "add mixed-signal template branch in renderer"
+        },
+        {
+          "gapId": "G5-3",
+          "description": "No explicit NO_TRIGGERED_FACTOR explanation template in renderer",
+          "affectedField": "renderedText for NO_TRIGGERED_FACTOR cases",
+          "impact": "When factorSnapshotCount=10 but no factors met threshold, renderer should explain context neutrally",
+          "safeToFix": true,
+          "fixType": "add NO_TRIGGERED_FACTOR context note in renderer output"
+        }
+      ],
+      "safeToModify": true,
+      "modificationConstraints": [
+        "Must not change alphaScore",
+        "Must not change bucket",
+        "Must not add new factors not in ALLOWED_FACTOR_SET",
+        "Must remain deterministic (same input → same output)",
+        "Must not make buy/sell/ROI claims",
+        "Must not write to DB or corpus"
+      ]
+    },
+
+    "layer6_walkthroughDisplayPath": {
+      "name": "Walkthrough / Display Path",
+      "description": "P5WalkthroughReviewUtils constructs minimalSnapshot for renderer and outputs renderedReason to UI. This is where the scoreSnapshot zeros bug originates.",
+      "files": [
+        "src/lib/onlineValidation/P5WalkthroughReviewUtils.ts"
+      ],
+      "keyFunctions": [
+        "reviewWalkthroughCase(caseRow, caseIndex) → CaseReviewResult",
+        "evaluateExplainabilityCompleteness(caseRow) → ExplainabilityScore",
+        "buildLimitationNotes(caseRow) → string"
+      ],
+      "outputFields": [
+        "renderedReason (display only — NOT used for scoring)",
+        "renderedReasonFactorCount",
+        "reasonRendererVersion",
+        "reasonRendererOutcome",
+        "dataAvailabilityNote"
+      ],
+      "identifiedGaps": [
+        {
+          "gapId": "G6-1",
+          "description": "minimalSnapshot.scoreSnapshot = { technicalScore: 0, chipScore: 0, momentumScore: 0, revenueScore: 0 } — always zero, never populated from corpus activeScoringSnapshot.scoreSnapshot",
+          "affectedField": "scoreSnapshot in minimalSnapshot",
+          "impact": "enrichReasonFromExistingFactors gets wrong scores → wrong direction labels in enriched output",
+          "safeToFix": true,
+          "fixType": "pass scoreSnapshot from WalkthroughCaseInput.scoreSnapshot (new optional field) into minimalSnapshot"
+        },
+        {
+          "gapId": "G6-2",
+          "description": "WalkthroughCaseInput type does not declare scoreSnapshot field",
+          "affectedField": "WalkthroughCaseInput interface",
+          "impact": "Cannot pass scoreSnapshot from corpus adapter to renderer without type change",
+          "safeToFix": true,
+          "fixType": "additive optional field — no breaking change"
+        }
+      ],
+      "safeToModify": true,
+      "modificationConstraints": [
+        "Only add optional additive fields to WalkthroughCaseInput",
+        "Do not change existing scoring fields",
+        "Do not change caseId generation",
+        "Do not add buy/sell/ROI output fields"
+      ]
+    }
+  },
+
+  "repairTargetSummary": {
+    "allowedRepairLayers": [3, 5, 6],
+    "forbiddenRepairLayers": [1, 2, 4],
+    "primaryRepairTarget": "layer5_readTimeRendererPath + layer6_walkthroughDisplayPath",
+    "secondaryRepairTarget": "layer3_factorSnapshotPath (additive scoreSnapshot passthrough only)"
+  },
+
+  "safeEntryPoints": [
+    {
+      "file": "src/lib/onlineValidation/P5WalkthroughReviewUtils.ts",
+      "change": "Add optional scoreSnapshot to WalkthroughCaseInput interface; use it in minimalSnapshot construction",
+      "impact": "Renderer gets correct technicalScore/chipScore → correct direction labels"
+    },
+    {
+      "file": "src/lib/onlineValidation/P26ACorpusRowAdapter.ts",
+      "change": "Pass activeScoringSnapshot.scoreSnapshot through to WalkthroughCaseInput.scoreSnapshot",
+      "impact": "Actual corpus scores available to renderer"
+    },
+    {
+      "file": "src/lib/onlineValidation/P26AReasonFactorEnrichmentUtils.ts",
+      "change": "Add inferDirectionFromFactorSnapshot() helper — fallback when scoreSnapshot.technicalScore=0",
+      "impact": "Correct direction label even without scoreSnapshot passthrough"
+    },
+    {
+      "file": "src/lib/onlineValidation/P26ACorpusReasonRenderer.ts",
+      "change": "Add mixed-signal template and NO_TRIGGERED_FACTOR context note",
+      "impact": "9 cases render with proper multi-factor output and context"
+    }
+  ],
+
+  "forbiddenFiles": [
+    "src/lib/analysis/RuleBasedStockAnalyzer.ts",
+    "src/lib/alpha/SignalFusionEngine.ts",
+    "src/lib/onlineValidation/ActiveScoringSnapshotBuilder.ts",
+    "outputs/online_validation/*_corpus.jsonl",
+    "prisma/dev.db"
+  ],
+
+  "disclaimer": "Observability only. No investment recommendations."
+}

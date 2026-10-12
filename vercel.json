@@ -9,6 +9,12 @@
   "env": {
     "NODE_ENV": "production"
   },
+  "crons": [
+    {
+      "path": "/api/cron/daily-sync",
+      "schedule": "0 7 * * 1-5"
+    }
+  ],
   "headers": [
     {
       "source": "/api/(.*)",

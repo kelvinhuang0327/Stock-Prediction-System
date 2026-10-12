@@ -1,0 +1,78 @@
+{
+  "section_name": "regimeAwareWalkForwardSummary",
+  "report_date": "2026-05-06",
+  "generated_at": "2026-05-06T14:12:00+08:00",
+  "latest_regime_date": "2026-05-06",
+  "latest_regime_label": "BULL",
+  "latest_regime_confidence": 1.0,
+  "latest_regime_evidence_flags": [
+    "price_above_ma50",
+    "price_above_ma200",
+    "golden_cross_ma50_above_ma200",
+    "momentum_20d_positive=0.238",
+    "momentum_60d_positive=0.358",
+    "bull_score=11_bear_score=0_max=11",
+    "vol_20d=0.257"
+  ],
+  "latest_walk_forward_date": "2026-05-06",
+  "latest_portfolio_size": 0,
+  "latest_candidate_symbols": [],
+  "latest_walk_forward_data_quality_flags": [
+    "no_stock_data_on_asof_date",
+    "missing_features:14"
+  ],
+  "walk_forward_sample_days": 120,
+  "walk_forward_date_range_start": "2025-10-15",
+  "walk_forward_date_range_end": "2026-05-06",
+  "walk_forward_regime_distribution": {
+    "BULL": 71,
+    "SIDEWAYS": 9,
+    "HIGH_VOLATILITY": 40
+  },
+  "average_portfolio_size": 8.87,
+  "low_confidence_days": 0,
+  "missing_regime_days": 0,
+  "dates_with_data_quality_flags": 9,
+  "guardrail_status": "PASS",
+  "guardrail_passed_checks": 18,
+  "guardrail_failed_checks": 0,
+  "guardrail_total_checks": 18,
+  "pit_safety_status": "SAFE",
+  "pit_safety_flags": [
+    "all_queries_use_date_lte_asof_date",
+    "no_future_taiex_dates",
+    "regime_pit_safe"
+  ],
+  "forbidden_logic_status": "CLEAN",
+  "forbidden_logic_note": "All forbidden_logic_flags are false in all walk-forward records",
+  "deferred_features": {
+    "chip_features": {
+      "status": "DEFERRED",
+      "reason": "InstitutionalChip has ~236 trading days; need 500+ for production",
+      "estimated_readiness": "P4-04 milestone"
+    },
+    "revenue_features": {
+      "status": "DEFERRED",
+      "reason": "Monthly revenue has ~2 months history; need 12+ months",
+      "estimated_readiness": "P4-04+ milestone"
+    },
+    "financial_features": {
+      "status": "DEFERRED",
+      "reason": "Only 1 quarter available; ROE/debt_ratio schema missing",
+      "estimated_readiness": "P4-05+ milestone"
+    }
+  },
+  "readiness_verdict": "SKELETON_COMPLETE",
+  "next_actions": [
+    "Connect regime output to T-01/T-02 daily scheduler",
+    "Add MarketRegimeResult persistent DB table (schema proposal exists)",
+    "Trigger P4-04 when InstitutionalChip reaches 500 trading days",
+    "Connect walk-forward output to TypeScript DailyReportEngine as new section"
+  ],
+  "data_quality_flags": [
+    "no_stock_data_on_asof_date",
+    "missing_features:14"
+  ],
+  "not_a_performance_report": true,
+  "note": "This section is a PIT-safe system readiness and observability artifact only."
+}

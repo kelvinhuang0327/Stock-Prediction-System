@@ -1,0 +1,1455 @@
+{
+  "schemaVersion": 1,
+  "taskId": "P135",
+  "generatedAtUtc": "2026-06-01T02:28:27.549Z",
+  "baseline": {
+    "commit": "a66e424",
+    "lintCommand": "npm run lint > /tmp/p135_lint_full.txt 2>&1 || true",
+    "ciRunId": 26731410459,
+    "ciUrl": "https://github.com/kelvinhuang0327/Stock-Prediction-System/actions/runs/26731410459",
+    "ciConcreteFailures": [
+      {
+        "category": "lint",
+        "job": "lint",
+        "step": "Run ESLint",
+        "status": "failure"
+      },
+      {
+        "category": "test-node",
+        "job": "test-node",
+        "step": "Run Jest tests",
+        "status": "failure",
+        "samples": [
+          "src/lib/jobs/__tests__/RecommendationLifecycleService.test.ts:24 deleteMany on prisma.recommendationHistory undefined",
+          "src/lib/jobs/__tests__/autonomousJobRegistry.twQ1FinancialIngestCheck.test.ts:17 registry entry undefined",
+          "src/lib/autonomous/__tests__/AutonomousDataLayer.test.ts:5 PrismaClientKnownRequestError invalid characters in monthlyRevenue.findFirst"
+        ]
+      }
+    ]
+  },
+  "totals": {
+    "parsedDiagnostics": 5686,
+    "totalProblems": 5686,
+    "errors": 3712,
+    "warnings": 1974,
+    "fixableErrors": 28,
+    "fixableWarnings": 25
+  },
+  "groupings": {
+    "byRule": [
+      {
+        "rule": "@typescript-eslint/no-require-imports",
+        "count": 2428,
+        "errors": 2428,
+        "warnings": 0
+      },
+      {
+        "rule": "@typescript-eslint/no-unused-vars",
+        "count": 1741,
+        "errors": 0,
+        "warnings": 1741
+      },
+      {
+        "rule": "@typescript-eslint/no-explicit-any",
+        "count": 1160,
+        "errors": 1160,
+        "warnings": 0
+      },
+      {
+        "rule": "@typescript-eslint/no-unused-expressions",
+        "count": 176,
+        "errors": 0,
+        "warnings": 176
+      },
+      {
+        "rule": "(none)",
+        "count": 85,
+        "errors": 60,
+        "warnings": 25
+      },
+      {
+        "rule": "prefer-const",
+        "count": 28,
+        "errors": 28,
+        "warnings": 0
+      },
+      {
+        "rule": "react-hooks/exhaustive-deps",
+        "count": 28,
+        "errors": 0,
+        "warnings": 28
+      },
+      {
+        "rule": "react/no-unescaped-entities",
+        "count": 16,
+        "errors": 16,
+        "warnings": 0
+      },
+      {
+        "rule": "@next/next/no-assign-module-variable",
+        "count": 8,
+        "errors": 8,
+        "warnings": 0
+      },
+      {
+        "rule": "@typescript-eslint/ban-ts-comment",
+        "count": 8,
+        "errors": 8,
+        "warnings": 0
+      },
+      {
+        "rule": "@next/next/no-img-element",
+        "count": 4,
+        "errors": 0,
+        "warnings": 4
+      },
+      {
+        "rule": "@typescript-eslint/no-empty-object-type",
+        "count": 4,
+        "errors": 4,
+        "warnings": 0
+      }
+    ],
+    "byDirectory": [
+      {
+        "directory": ".claude/worktrees",
+        "count": 4265
+      },
+      {
+        "directory": "src/lib",
+        "count": 534
+      },
+      {
+        "directory": "src/components",
+        "count": 102
+      },
+      {
+        "directory": "src/app",
+        "count": 43
+      },
+      {
+        "directory": "scripts/validate-p22-artifacts.js",
+        "count": 32
+      },
+      {
+        "directory": "scripts/generate-p14-outcome-backfill-rehearsal-artifacts.js",
+        "count": 17
+      },
+      {
+        "directory": "tests/agent-orchestrator",
+        "count": 15
+      },
+      {
+        "directory": "scripts/run-p23-preflight.js",
+        "count": 12
+      },
+      {
+        "directory": "scripts/generate-p12-multi-date-daily-corpus-append-artifacts.js",
+        "count": 11
+      },
+      {
+        "directory": "scripts/decide-p20-production-migration-readiness.js",
+        "count": 9
+      },
+      {
+        "directory": "scripts/run-p25-active-scoring-smoke-after-migration.js",
+        "count": 9
+      },
+      {
+        "directory": "runtime/tw_self_opt_validation.ts",
+        "count": 8
+      },
+      {
+        "directory": "scripts/build-p5-walkthrough-repair-backlog.js",
+        "count": 8
+      },
+      {
+        "directory": "scripts/generate-p17-manual-review-ui-ops-surface-artifacts.js",
+        "count": 8
+      },
+      {
+        "directory": "scripts/generate-p1baseline-historical-replay-corpus.js",
+        "count": 8
+      },
+      {
+        "directory": "scripts/run-p26a-batch-pipeline-wiring-validation.js",
+        "count": 8
+      },
+      {
+        "directory": "scripts/generate-p13-horizon-maturity-coverage-recovery-artifacts.js",
+        "count": 7
+      },
+      {
+        "directory": "scripts/run-p16-monthly-revenue-query-gate-dry-run.js",
+        "count": 7
+      },
+      {
+        "directory": "scripts/run-p24-production-migration-gate.js",
+        "count": 7
+      },
+      {
+        "directory": "scripts/run-p26c-financial-report-availability-validation.js",
+        "count": 7
+      },
+      {
+        "directory": "scripts/run-p5-walkthrough-review.js",
+        "count": 7
+      },
+      {
+        "directory": "scripts/build-p12-pit-feature-contract-v0.js",
+        "count": 6
+      },
+      {
+        "directory": "scripts/build-p14-monthly-revenue-migration-draft.js",
+        "count": 6
+      },
+      {
+        "directory": "scripts/build-p14-monthly-revenue-query-gate-proposal.js",
+        "count": 6
+      },
+      {
+        "directory": "scripts/build-p15-monthly-revenue-migration-risk-register.js",
+        "count": 6
+      },
+      {
+        "directory": "scripts/decide-p15-monthly-revenue-migration-approval.js",
+        "count": 6
+      },
+      {
+        "directory": "scripts/discover-p12-pit-feature-sources.js",
+        "count": 6
+      },
+      {
+        "directory": "scripts/generate-p15-outcome-backfill-governance-gate-artifacts.js",
+        "count": 6
+      },
+      {
+        "directory": "scripts/run-p14-approval-preflight.js",
+        "count": 6
+      },
+      {
+        "directory": "scripts/run-p15-monthly-revenue-migration-approval-review.js",
+        "count": 6
+      },
+      {
+        "directory": "scripts/run-p16-monthly-revenue-backfill-dry-run.js",
+        "count": 6
+      },
+      {
+        "directory": "scripts/run-p16-monthly-revenue-fixture-migration-dry-run.js",
+        "count": 6
+      },
+      {
+        "directory": "scripts/run-p2-prediction-layer-spotcheck-audit.js",
+        "count": 6
+      },
+      {
+        "directory": "scripts/run-p26f3-2-manual-source-safety-gate.js",
+        "count": 6
+      },
+      {
+        "directory": "scripts/run-p4-full-calibration-audit.js",
+        "count": 6
+      },
+      {
+        "directory": "scripts/run-p6-lite-bucket-schema-diagnosis.js",
+        "count": 6
+      },
+      {
+        "directory": "scripts/run-p8-preflight-signal-reason-diagnosis.js",
+        "count": 6
+      },
+      {
+        "directory": "scripts/validate-p13-monthly-revenue-pit-gate.js",
+        "count": 6
+      },
+      {
+        "directory": "scripts/validate-p14-monthly-revenue-fixture-dry-run.js",
+        "count": 6
+      },
+      {
+        "directory": "scripts/validate-p17-monthly-revenue-query-gate-patch.js",
+        "count": 6
+      },
+      {
+        "directory": "scripts/validate-p25-post-migration-contract.js",
+        "count": 6
+      },
+      {
+        "directory": "scripts/generate-p0hardreset-historical-replay-corpus.js",
+        "count": 5
+      },
+      {
+        "directory": "scripts/generate-p16-manual-review-workflow-binding-artifacts.js",
+        "count": 5
+      },
+      {
+        "directory": "scripts/generate-p3active-scoring-historical-replay-corpus.js",
+        "count": 5
+      },
+      {
+        "directory": "scripts/p1baseline-preflight-audit.js",
+        "count": 5
+      },
+      {
+        "directory": "scripts/p28c_9case_validation.js",
+        "count": 5
+      },
+      {
+        "directory": "scripts/run-p12-preflight-audit.js",
+        "count": 5
+      },
+      {
+        "directory": "scripts/run-p26f2-release-date-dry-run-quality-gate.js",
+        "count": 5
+      },
+      {
+        "directory": "scripts/run-p26f3-5-pipeline-preflight.js",
+        "count": 5
+      },
+      {
+        "directory": "scripts/run-p26f3-historical-source-dry-run-quality-gate.js",
+        "count": 5
+      },
+      {
+        "directory": "scripts/validate-p12-contract-against-p3-corpus.js",
+        "count": 5
+      },
+      {
+        "directory": "scripts/day7-phase4-setup-diagnosis.ts",
+        "count": 4
+      },
+      {
+        "directory": "scripts/generate-p4-ledger-replay-artifacts.js",
+        "count": 4
+      },
+      {
+        "directory": "scripts/generate-p8-third-date-corpus-append-artifacts.js",
+        "count": 4
+      },
+      {
+        "directory": "scripts/generate-p9-fourth-date-corpus-append-artifacts.js",
+        "count": 4
+      },
+      {
+        "directory": "scripts/run-p21-production-migration-approval-review.js",
+        "count": 4
+      },
+      {
+        "directory": "scripts/run-p24-post-migration-validation.js",
+        "count": 4
+      },
+      {
+        "directory": "scripts/run-p24-preflight.js",
+        "count": 4
+      },
+      {
+        "directory": "scripts/run-p24-production-backfill-gate.js",
+        "count": 4
+      },
+      {
+        "directory": "scripts/run-p25-preflight-gate.js",
+        "count": 4
+      },
+      {
+        "directory": "scripts/run-p26a-scoring-underoutput-audit.js",
+        "count": 4
+      },
+      {
+        "directory": "scripts/run-p26b-scoring-invariance-check.js",
+        "count": 4
+      },
+      {
+        "directory": "scripts/run-p26f2-scoring-invariance-check.js",
+        "count": 4
+      },
+      {
+        "directory": "scripts/run-p26f3-2-scoring-invariance-check.js",
+        "count": 4
+      },
+      {
+        "directory": "scripts/run-p26f3-5-dropzone-conditional-scan.js",
+        "count": 4
+      },
+      {
+        "directory": "scripts/run-p28a-scoring-invariance-recheck.js",
+        "count": 4
+      },
+      {
+        "directory": "scripts/validate_setup_classification.js",
+        "count": 4
+      },
+      {
+        "directory": "scripts/_p22-inspect.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/_p22-inspect2.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/_p25-preflight-check.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/audit-p13-monthly-revenue-source.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/backtest-systematic.ts",
+        "count": 3
+      },
+      {
+        "directory": "scripts/build-p22-production-backup-restore-plan.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/daily-briefing.ts",
+        "count": 3
+      },
+      {
+        "directory": "scripts/day6-phase0-1-audit-remediate.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/day7-final-report.ts",
+        "count": 3
+      },
+      {
+        "directory": "scripts/decide-p23-production-implementation-readiness.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/generate_price_data_quality_report.ts",
+        "count": 3
+      },
+      {
+        "directory": "scripts/generate-p19-active-scoring-pit-replay-corpus.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/generate-p3-outcome-window-tracker-artifacts.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/generate-p6-simulation-snapshot-corpus-artifacts.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/generate-p8-corpus-trend-stability-artifacts.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/p0hardreset-part-a-audit.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/run-p13-preflight-audit.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/run-p18-monthly-revenue-fixture-db-backfill.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/run-p18-monthly-revenue-fixture-db-migration.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/run-p18-monthly-revenue-fixture-db-query-gate-validation.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/run-p18-monthly-revenue-fixture-db-rollback.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/run-p21-forbidden-claims-scan.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/run-p23-production-migration-implementation-review.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/run-p24-production-backup-gate.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/run-p24-rollback-readiness-gate.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/run-p25-monthly-revenue-distribution-audit.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/run-p25-monthly-revenue-query-gate-smoke.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/run-p26a-active-scoring-smoke-regression.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/run-p26a-walkthrough-reason-quality-compare.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/run-p26b-event-news-pit-leakage-validation.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/run-p26b-event-news-reason-context-smoke.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/run-p26c-scoring-invariance-check.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/run-p26d-coverage-readiness-gate.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/run-p26d-scoring-invariance-check.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/run-p26e-scoring-invariance-check.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/run-p26f-candidate-corpus-quality-gate.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/run-p26f-monthly-revenue-candidate-corpus-builder.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/run-p26f-monthly-revenue-coverage-delta.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/run-p26f-scoring-invariance-check.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/run-p26f2-monthly-revenue-release-date-dry-run.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/run-p26f3-2-accepted-source-coverage-preview.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/run-p26f3-3-dropzone-inventory.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/run-p26f3-scoring-invariance-check.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/run-p28a-active-scoring-smoke.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/sample-p2-spotcheck-walkthrough-cases.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/sample-p4-calibration-walkthrough-cases.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/validate-agent-profile.js",
+        "count": 3
+      },
+      {
+        "directory": "scripts/validate-p5-artifacts.js",
+        "count": 3
+      },
+      {
+        "directory": "src/hooks",
+        "count": 3
+      },
+      {
+        "directory": "find_gems.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/_p23-commit.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/build-p21-production-migration-risk-register.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/build-p22-production-migration-runbook.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/build-p22-production-monitoring-checklist.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/build-p23-production-execution-approval-request.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/compare-p0hardreset-corpus-to-p1baseline.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/day3-trajectory-check.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/day4-final-stats.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/day4-learning-audit.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/day7-phase0-state-reconstruction.ts",
+        "count": 2
+      },
+      {
+        "directory": "scripts/day7-phase3-learning-recovery.ts",
+        "count": 2
+      },
+      {
+        "directory": "scripts/day8-phase3-5cycles.ts",
+        "count": 2
+      },
+      {
+        "directory": "scripts/decide-p21-production-migration-approval.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/decide-p22-production-migration-plan-readiness.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/generate-p0combined-artifacts.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/generate-p1-outcome-writeback-artifacts.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/generate-p10-dashboard-metrics-contract-artifacts.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/generate-p11-daily-real-market-snapshot-append-dry-run-artifacts.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/generate-p2-shadow-ledger-accumulation-artifacts.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/generate-p26e-aux.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/generate-p26e-contract.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/generate-p5-replay-simulation-snapshot-artifacts.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/generate-p7-corpus-metrics-store-artifacts.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/generate-p7-second-date-corpus-append-artifacts.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/generate-p9-corpus-quality-gate-artifacts.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/inspect-p0-p1-corpus-fields-for-spotcheck.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/inspect-p19-active-scoring-pit-replay-fields.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/inspect-p3active-scoring-corpus-fields.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/p2spotcheck-preflight-audit.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/p3active-scoring-preflight-audit.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/p4calibration-preflight-audit.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/p5walkthrough-preflight-audit.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/rerun-corpus-quality-gate-on-historical-replay.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/run-p14-artifact-validation.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/run-p16-artifact-validation.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/run-p17-artifact-validation.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/run-p20-preflight.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/run-p22-preflight.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/run-p23-artifact-validation.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/run-p24-artifact-validation.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/run-p25-artifact-validation.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/run-p26a-scoring-invariance-check.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/run-p26d-generate-artifacts.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/run-p26d-targeted-replay-coverage-comparison.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/run-p26e-data-coverage-expansion-gate.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/run-p26f-monthly-revenue-pit-leakage-validation.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/run-p26f2-candidate-release-date-coverage-preview.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/run-p26f2-release-date-pit-safety-validation.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/run-p26f3-2-manual-source-validator.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/run-p26f3-historical-source-pit-safety-validation.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/run-p26f3-monthly-revenue-historical-coverage-preview.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/run-p26f3-monthly-revenue-historical-source-dry-run.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/run-p26f3-source-acquisition-plan.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/run-p28a-classify-underoutput-cases.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/run-p28a-extract-underoutput-cases.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/run-p28a-per-case-detailed-audit.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/run-p28a-reason-template-branch-coverage.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/run-rolling-simulation.ts",
+        "count": 2
+      },
+      {
+        "directory": "scripts/sample-p20-pit-impact-changed-cases.js",
+        "count": 2
+      },
+      {
+        "directory": "scripts/test-institutional.ts",
+        "count": 2
+      },
+      {
+        "directory": "scripts/validate_e2e_gate_recovery.ts",
+        "count": 2
+      },
+      {
+        "directory": "scripts/validate-p21-artifacts.js",
+        "count": 2
+      },
+      {
+        "directory": "check_coverage.js",
+        "count": 1
+      },
+      {
+        "directory": "check_sync.js",
+        "count": 1
+      },
+      {
+        "directory": "coverage/lcov-report",
+        "count": 1
+      },
+      {
+        "directory": "find_potential.js",
+        "count": 1
+      },
+      {
+        "directory": "jest.config.js",
+        "count": 1
+      },
+      {
+        "directory": "jest.setup.js",
+        "count": 1
+      },
+      {
+        "directory": "scripts/_p19_artifact_validation.js",
+        "count": 1
+      },
+      {
+        "directory": "scripts/_p19_inspect_p3.js",
+        "count": 1
+      },
+      {
+        "directory": "scripts/_p19_preflight.js",
+        "count": 1
+      },
+      {
+        "directory": "scripts/_p20_inspect_schema.js",
+        "count": 1
+      },
+      {
+        "directory": "scripts/_p21-check-gates.js",
+        "count": 1
+      },
+      {
+        "directory": "scripts/_p21-check-p19.js",
+        "count": 1
+      },
+      {
+        "directory": "scripts/_p21-inspect.js",
+        "count": 1
+      },
+      {
+        "directory": "scripts/_p22-commit.js",
+        "count": 1
+      },
+      {
+        "directory": "scripts/_p22-preflight-check.js",
+        "count": 1
+      },
+      {
+        "directory": "scripts/_p22-stage.js",
+        "count": 1
+      },
+      {
+        "directory": "scripts/_p23-run-cde.js",
+        "count": 1
+      },
+      {
+        "directory": "scripts/_p24-commit.js",
+        "count": 1
+      },
+      {
+        "directory": "scripts/_p24-final-commit.js",
+        "count": 1
+      },
+      {
+        "directory": "scripts/_p24-summary.js",
+        "count": 1
+      },
+      {
+        "directory": "scripts/check-p13-artifacts.js",
+        "count": 1
+      },
+      {
+        "directory": "scripts/check-p15-preflight.js",
+        "count": 1
+      },
+      {
+        "directory": "scripts/day3-baseline.js",
+        "count": 1
+      },
+      {
+        "directory": "scripts/day3-data-check.js",
+        "count": 1
+      },
+      {
+        "directory": "scripts/day3-historical-sim.js",
+        "count": 1
+      },
+      {
+        "directory": "scripts/day3-stock-history.js",
+        "count": 1
+      },
+      {
+        "directory": "scripts/day3-trade-status.js",
+        "count": 1
+      },
+      {
+        "directory": "scripts/day4-chip-backfill.js",
+        "count": 1
+      },
+      {
+        "directory": "scripts/day4-phase0-snapshot.js",
+        "count": 1
+      },
+      {
+        "directory": "scripts/day5-final-snapshot.js",
+        "count": 1
+      },
+      {
+        "directory": "scripts/day5-phase0-snapshot.js",
+        "count": 1
+      },
+      {
+        "directory": "scripts/day5-phase1-contamination-cleanup.js",
+        "count": 1
+      },
+      {
+        "directory": "scripts/day6-phase2-regime-analysis.js",
+        "count": 1
+      },
+      {
+        "directory": "scripts/day9-full-window-sim.ts",
+        "count": 1
+      },
+      {
+        "directory": "scripts/decide-p4-calibration-readiness.js",
+        "count": 1
+      },
+      {
+        "directory": "scripts/generate-self-optimization-kpi-report.ts",
+        "count": 1
+      },
+      {
+        "directory": "scripts/grid-search-optimizer.ts",
+        "count": 1
+      },
+      {
+        "directory": "scripts/orchestrator_codex_usage_report.mjs",
+        "count": 1
+      },
+      {
+        "directory": "scripts/p17-preflight-check.js",
+        "count": 1
+      },
+      {
+        "directory": "scripts/run-autonomous-research.ts",
+        "count": 1
+      },
+      {
+        "directory": "scripts/run-fast-forward-simulation.ts",
+        "count": 1
+      },
+      {
+        "directory": "scripts/run-p15-artifact-validation.js",
+        "count": 1
+      },
+      {
+        "directory": "scripts/run-p20-pre-post-pit-impact-comparison.js",
+        "count": 1
+      },
+      {
+        "directory": "scripts/run-p21-preflight.js",
+        "count": 1
+      },
+      {
+        "directory": "scripts/run-p26c-financial-report-reason-context-smoke.js",
+        "count": 1
+      },
+      {
+        "directory": "scripts/run-p28e-residual-underoutput-distribution-scan.ts",
+        "count": 1
+      },
+      {
+        "directory": "scripts/sync-real-data.ts",
+        "count": 1
+      },
+      {
+        "directory": "scripts/test-ignition.ts",
+        "count": 1
+      },
+      {
+        "directory": "scripts/test-otc.ts",
+        "count": 1
+      },
+      {
+        "directory": "scripts/test-pro-trader-features.ts",
+        "count": 1
+      },
+      {
+        "directory": "scripts/validate-100.ts",
+        "count": 1
+      },
+      {
+        "directory": "scripts/validate-p19-monthly-revenue-pit-guard-in-corpus.js",
+        "count": 1
+      },
+      {
+        "directory": "scripts/validate-p20-artifacts.js",
+        "count": 1
+      },
+      {
+        "directory": "tailwind.config.js",
+        "count": 1
+      },
+      {
+        "directory": "trigger_syncs.js",
+        "count": 1
+      }
+    ],
+    "byFileType": [
+      {
+        "fileType": ".js",
+        "count": 2701
+      },
+      {
+        "fileType": ".ts",
+        "count": 2472
+      },
+      {
+        "fileType": ".tsx",
+        "count": 509
+      },
+      {
+        "fileType": ".mjs",
+        "count": 4
+      }
+    ],
+    "byRiskClass": [
+      {
+        "riskClass": "unsafe_semantic",
+        "count": 3616
+      },
+      {
+        "riskClass": "owner_decision",
+        "count": 2042
+      },
+      {
+        "riskClass": "safe_auto_fix",
+        "count": 28
+      }
+    ]
+  },
+  "topFiles": [
+    {
+      "file": ".claude/worktrees/charming-mclean-870495/scripts/validate-p22-artifacts.js",
+      "count": 32,
+      "errors": 2,
+      "warnings": 30,
+      "rules": [
+        "@typescript-eslint/no-require-imports",
+        "@typescript-eslint/no-unused-expressions"
+      ],
+      "allSafe": false,
+      "testOnly": false
+    },
+    {
+      "file": ".claude/worktrees/infallible-wing-0a171f/scripts/validate-p22-artifacts.js",
+      "count": 32,
+      "errors": 2,
+      "warnings": 30,
+      "rules": [
+        "@typescript-eslint/no-require-imports",
+        "@typescript-eslint/no-unused-expressions"
+      ],
+      "allSafe": false,
+      "testOnly": false
+    },
+    {
+      "file": ".claude/worktrees/youthful-shannon-74a322/scripts/validate-p22-artifacts.js",
+      "count": 32,
+      "errors": 2,
+      "warnings": 30,
+      "rules": [
+        "@typescript-eslint/no-require-imports",
+        "@typescript-eslint/no-unused-expressions"
+      ],
+      "allSafe": false,
+      "testOnly": false
+    },
+    {
+      "file": "scripts/validate-p22-artifacts.js",
+      "count": 32,
+      "errors": 2,
+      "warnings": 30,
+      "rules": [
+        "@typescript-eslint/no-require-imports",
+        "@typescript-eslint/no-unused-expressions"
+      ],
+      "allSafe": false,
+      "testOnly": false
+    },
+    {
+      "file": ".claude/worktrees/charming-mclean-870495/src/components/plan/AssetDoublingPlan.tsx",
+      "count": 18,
+      "errors": 13,
+      "warnings": 5,
+      "rules": [
+        "@typescript-eslint/no-explicit-any",
+        "@typescript-eslint/no-unused-vars",
+        "react-hooks/exhaustive-deps",
+        "react/no-unescaped-entities"
+      ],
+      "allSafe": false,
+      "testOnly": false
+    },
+    {
+      "file": ".claude/worktrees/infallible-wing-0a171f/src/components/plan/AssetDoublingPlan.tsx",
+      "count": 18,
+      "errors": 13,
+      "warnings": 5,
+      "rules": [
+        "@typescript-eslint/no-explicit-any",
+        "@typescript-eslint/no-unused-vars",
+        "react-hooks/exhaustive-deps",
+        "react/no-unescaped-entities"
+      ],
+      "allSafe": false,
+      "testOnly": false
+    },
+    {
+      "file": ".claude/worktrees/youthful-shannon-74a322/src/components/plan/AssetDoublingPlan.tsx",
+      "count": 18,
+      "errors": 13,
+      "warnings": 5,
+      "rules": [
+        "@typescript-eslint/no-explicit-any",
+        "@typescript-eslint/no-unused-vars",
+        "react-hooks/exhaustive-deps",
+        "react/no-unescaped-entities"
+      ],
+      "allSafe": false,
+      "testOnly": false
+    },
+    {
+      "file": "src/components/plan/AssetDoublingPlan.tsx",
+      "count": 18,
+      "errors": 13,
+      "warnings": 5,
+      "rules": [
+        "@typescript-eslint/no-explicit-any",
+        "@typescript-eslint/no-unused-vars",
+        "react-hooks/exhaustive-deps",
+        "react/no-unescaped-entities"
+      ],
+      "allSafe": false,
+      "testOnly": false
+    },
+    {
+      "file": ".claude/worktrees/charming-mclean-870495/scripts/generate-p14-outcome-backfill-rehearsal-artifacts.js",
+      "count": 17,
+      "errors": 12,
+      "warnings": 5,
+      "rules": [
+        "@typescript-eslint/no-require-imports",
+        "@typescript-eslint/no-unused-vars"
+      ],
+      "allSafe": false,
+      "testOnly": false
+    },
+    {
+      "file": ".claude/worktrees/charming-mclean-870495/src/lib/stockService.ts",
+      "count": 17,
+      "errors": 6,
+      "warnings": 11,
+      "rules": [
+        "@typescript-eslint/no-explicit-any",
+        "@typescript-eslint/no-unused-vars"
+      ],
+      "allSafe": false,
+      "testOnly": false
+    },
+    {
+      "file": ".claude/worktrees/infallible-wing-0a171f/scripts/generate-p14-outcome-backfill-rehearsal-artifacts.js",
+      "count": 17,
+      "errors": 12,
+      "warnings": 5,
+      "rules": [
+        "@typescript-eslint/no-require-imports",
+        "@typescript-eslint/no-unused-vars"
+      ],
+      "allSafe": false,
+      "testOnly": false
+    },
+    {
+      "file": ".claude/worktrees/infallible-wing-0a171f/src/lib/stockService.ts",
+      "count": 17,
+      "errors": 6,
+      "warnings": 11,
+      "rules": [
+        "@typescript-eslint/no-explicit-any",
+        "@typescript-eslint/no-unused-vars"
+      ],
+      "allSafe": false,
+      "testOnly": false
+    },
+    {
+      "file": ".claude/worktrees/youthful-shannon-74a322/scripts/generate-p14-outcome-backfill-rehearsal-artifacts.js",
+      "count": 17,
+      "errors": 12,
+      "warnings": 5,
+      "rules": [
+        "@typescript-eslint/no-require-imports",
+        "@typescript-eslint/no-unused-vars"
+      ],
+      "allSafe": false,
+      "testOnly": false
+    },
+    {
+      "file": ".claude/worktrees/youthful-shannon-74a322/src/lib/stockService.ts",
+      "count": 17,
+      "errors": 6,
+      "warnings": 11,
+      "rules": [
+        "@typescript-eslint/no-explicit-any",
+        "@typescript-eslint/no-unused-vars"
+      ],
+      "allSafe": false,
+      "testOnly": false
+    },
+    {
+      "file": "scripts/generate-p14-outcome-backfill-rehearsal-artifacts.js",
+      "count": 17,
+      "errors": 12,
+      "warnings": 5,
+      "rules": [
+        "@typescript-eslint/no-require-imports",
+        "@typescript-eslint/no-unused-vars"
+      ],
+      "allSafe": false,
+      "testOnly": false
+    },
+    {
+      "file": "src/lib/stockService.ts",
+      "count": 17,
+      "errors": 6,
+      "warnings": 11,
+      "rules": [
+        "@typescript-eslint/no-explicit-any",
+        "@typescript-eslint/no-unused-vars"
+      ],
+      "allSafe": false,
+      "testOnly": false
+    },
+    {
+      "file": ".claude/worktrees/charming-mclean-870495/src/lib/onlineValidation/__tests__/p18monthly_revenue_fixture_db_utils.test.ts",
+      "count": 16,
+      "errors": 0,
+      "warnings": 16,
+      "rules": [
+        "@typescript-eslint/no-unused-vars"
+      ],
+      "allSafe": false,
+      "testOnly": true
+    },
+    {
+      "file": ".claude/worktrees/infallible-wing-0a171f/src/lib/onlineValidation/__tests__/p18monthly_revenue_fixture_db_utils.test.ts",
+      "count": 16,
+      "errors": 0,
+      "warnings": 16,
+      "rules": [
+        "@typescript-eslint/no-unused-vars"
+      ],
+      "allSafe": false,
+      "testOnly": true
+    },
+    {
+      "file": ".claude/worktrees/youthful-shannon-74a322/src/lib/onlineValidation/__tests__/p18monthly_revenue_fixture_db_utils.test.ts",
+      "count": 16,
+      "errors": 0,
+      "warnings": 16,
+      "rules": [
+        "@typescript-eslint/no-unused-vars"
+      ],
+      "allSafe": false,
+      "testOnly": true
+    },
+    {
+      "file": "src/lib/onlineValidation/__tests__/p18monthly_revenue_fixture_db_utils.test.ts",
+      "count": 16,
+      "errors": 0,
+      "warnings": 16,
+      "rules": [
+        "@typescript-eslint/no-unused-vars"
+      ],
+      "allSafe": false,
+      "testOnly": true
+    },
+    {
+      "file": ".claude/worktrees/charming-mclean-870495/src/lib/onlineValidation/__tests__/p26f_monthly_revenue_source_mapper_utils.test.ts",
+      "count": 15,
+      "errors": 15,
+      "warnings": 0,
+      "rules": [
+        "@typescript-eslint/no-explicit-any"
+      ],
+      "allSafe": false,
+      "testOnly": true
+    },
+    {
+      "file": ".claude/worktrees/infallible-wing-0a171f/src/lib/onlineValidation/__tests__/p26f_monthly_revenue_source_mapper_utils.test.ts",
+      "count": 15,
+      "errors": 15,
+      "warnings": 0,
+      "rules": [
+        "@typescript-eslint/no-explicit-any"
+      ],
+      "allSafe": false,
+      "testOnly": true
+    },
+    {
+      "file": ".claude/worktrees/youthful-shannon-74a322/src/lib/onlineValidation/__tests__/p26f_monthly_revenue_source_mapper_utils.test.ts",
+      "count": 15,
+      "errors": 15,
+      "warnings": 0,
+      "rules": [
+        "@typescript-eslint/no-explicit-any"
+      ],
+      "allSafe": false,
+      "testOnly": true
+    },
+    {
+      "file": "src/lib/onlineValidation/__tests__/p26f_monthly_revenue_source_mapper_utils.test.ts",
+      "count": 15,
+      "errors": 15,
+      "warnings": 0,
+      "rules": [
+        "@typescript-eslint/no-explicit-any"
+      ],
+      "allSafe": false,
+      "testOnly": true
+    },
+    {
+      "file": ".claude/worktrees/charming-mclean-870495/src/lib/onlineValidation/__tests__/p13monthly_revenue_pit_utils.test.ts",
+      "count": 14,
+      "errors": 14,
+      "warnings": 0,
+      "rules": [
+        "@typescript-eslint/no-explicit-any"
+      ],
+      "allSafe": false,
+      "testOnly": true
+    },
+    {
+      "file": ".claude/worktrees/infallible-wing-0a171f/src/lib/onlineValidation/__tests__/p13monthly_revenue_pit_utils.test.ts",
+      "count": 14,
+      "errors": 14,
+      "warnings": 0,
+      "rules": [
+        "@typescript-eslint/no-explicit-any"
+      ],
+      "allSafe": false,
+      "testOnly": true
+    },
+    {
+      "file": ".claude/worktrees/youthful-shannon-74a322/src/lib/onlineValidation/__tests__/p13monthly_revenue_pit_utils.test.ts",
+      "count": 14,
+      "errors": 14,
+      "warnings": 0,
+      "rules": [
+        "@typescript-eslint/no-explicit-any"
+      ],
+      "allSafe": false,
+      "testOnly": true
+    },
+    {
+      "file": "src/lib/onlineValidation/__tests__/p13monthly_revenue_pit_utils.test.ts",
+      "count": 14,
+      "errors": 14,
+      "warnings": 0,
+      "rules": [
+        "@typescript-eslint/no-explicit-any"
+      ],
+      "allSafe": false,
+      "testOnly": true
+    },
+    {
+      "file": ".claude/worktrees/charming-mclean-870495/scripts/run-p23-preflight.js",
+      "count": 12,
+      "errors": 2,
+      "warnings": 10,
+      "rules": [
+        "@typescript-eslint/no-require-imports",
+        "@typescript-eslint/no-unused-expressions",
+        "@typescript-eslint/no-unused-vars"
+      ],
+      "allSafe": false,
+      "testOnly": false
+    },
+    {
+      "file": ".claude/worktrees/charming-mclean-870495/src/lib/agent-orchestrator/__tests__/tasks.test.ts",
+      "count": 12,
+      "errors": 12,
+      "warnings": 0,
+      "rules": [
+        "@typescript-eslint/no-explicit-any",
+        "@typescript-eslint/no-require-imports"
+      ],
+      "allSafe": false,
+      "testOnly": true
+    }
+  ],
+  "safeTrancheCandidate": {
+    "constraints": {
+      "maxFiles": 10,
+      "maxDiagnostics": 30,
+      "scope": "test-only or report-only, mechanical only"
+    },
+    "status": "none",
+    "files": [],
+    "diagnosticsTotal": 0,
+    "rationale": "No file met all constraints (test-only plus safe_auto_fix-only diagnostics). Dominant rules are semantic or owner-decision."
+  },
+  "classification": "P135_GLOBAL_LINT_BASELINE_CREATED_NO_CODE_CHANGE"
+}

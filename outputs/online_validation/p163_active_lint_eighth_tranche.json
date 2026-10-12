@@ -1,0 +1,46 @@
+{
+  "phase0": {
+    "repo": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System",
+    "branch": "main",
+    "head_start": "8225cb2",
+    "ci_latest_comparable": "26862263439"
+  },
+  "lint_baseline_before": {
+    "problems": 566,
+    "errors": 285,
+    "warnings": 281
+  },
+  "selected_tranche": {
+    "files": [
+      "src/components/analysis/BacktestStats.tsx",
+      "src/components/analysis/HybridPrediction.tsx",
+      "src/components/analysis/SectorRotationMap.tsx",
+      "src/components/analysis/SentimentAnalysis.tsx"
+    ],
+    "error_count": 10,
+    "selected_rules": [
+      "@typescript-eslint/no-explicit-any",
+      "@typescript-eslint/no-unused-vars",
+      "react-hooks/set-state-in-effect"
+    ],
+    "rationale": "Selected 4 components under src/components/analysis/ to clean up remaining type errors, unused variables, and state updates inside effects."
+  },
+  "lint_after": {
+    "problems": 556,
+    "errors": 279,
+    "warnings": 277,
+    "tranche_resolved": true
+  },
+  "db_invariance_regression": {
+    "p26a_renderer_fix": "PASS",
+    "p26a_batch_pipeline_wiring": "PASS",
+    "p29d_dropzone_scaffold": "PASS"
+  },
+  "remaining_failure_matrix": {
+    "db_invariance": "RESOLVED",
+    "active_lint": "ACTIVE_REMAINING (556 problems remaining)",
+    "product_behavior_jest": "ACTIVE"
+  },
+  "classification": "P163_ACTIVE_LINT_TRANCHE_REPAIRED_CI_STILL_RED_PRODUCT_BEHAVIOR_OR_REMAINING_LINT",
+  "p2_browser_review_unlocked": false
+}

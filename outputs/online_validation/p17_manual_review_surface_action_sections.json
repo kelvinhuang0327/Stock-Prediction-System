@@ -1,0 +1,73 @@
+[
+  {
+    "sectionId": "actions_enabled",
+    "title": "Enabled Review Actions",
+    "items": [
+      {
+        "id": "REVIEW_REHEARSAL_ARTIFACT",
+        "label": "Review Rehearsal Artifact",
+        "value": true,
+        "status": "OK",
+        "note": "Inspect the artifact-only rehearsal package.",
+        "enabled": true,
+        "requiresHuman": true,
+        "writePathEffect": "NONE",
+        "productionWriteAllowed": false,
+        "corpusWriteAllowed": false,
+        "optimizerAllowed": false
+      },
+      {
+        "id": "REVIEW_WRITE_PATH_POLICY",
+        "label": "Review Write Path Policy",
+        "value": true,
+        "status": "OK",
+        "note": "Inspect the locked write-path contract.",
+        "enabled": true,
+        "requiresHuman": true,
+        "writePathEffect": "NONE",
+        "productionWriteAllowed": false,
+        "corpusWriteAllowed": false,
+        "optimizerAllowed": false
+      },
+      {
+        "id": "REVIEW_QUALITY_IMPACT_PREVIEW",
+        "label": "Review Quality Impact Preview",
+        "value": true,
+        "status": "OK",
+        "note": "Inspect the preview-only coverage impact.",
+        "enabled": true,
+        "requiresHuman": true,
+        "writePathEffect": "NONE",
+        "productionWriteAllowed": false,
+        "corpusWriteAllowed": false,
+        "optimizerAllowed": false
+      },
+      {
+        "id": "REQUEST_MORE_DATA",
+        "label": "Request More Data",
+        "value": true,
+        "status": "OK",
+        "note": "Ask for more data accumulation before proceeding.",
+        "enabled": true,
+        "requiresHuman": true,
+        "writePathEffect": "NONE",
+        "productionWriteAllowed": false,
+        "corpusWriteAllowed": false,
+        "optimizerAllowed": false
+      },
+      {
+        "id": "ACKNOWLEDGE_DATA_LIMITED",
+        "label": "Acknowledge Data Limited",
+        "value": true,
+        "status": "OK",
+        "note": "Acknowledge that the workflow is data limited.",
+        "enabled": true,
+        "requiresHuman": true,
+        "writePathEffect": "NONE",
+        "productionWriteAllowed": false,
+        "corpusWriteAllowed": false,
+        "optimizerAllowed": false
+      }
+    ]
+  }
+]

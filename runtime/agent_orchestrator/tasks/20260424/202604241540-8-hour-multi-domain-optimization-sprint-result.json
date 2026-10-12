@@ -1,0 +1,25 @@
+{
+  "version": "1.0",
+  "task_id": 141,
+  "status": "REPLAN_REQUIRED",
+  "gate_verdict": "WORKER_RUNTIME_FAILED",
+  "gate_reason": "Task became stale for over 15 minutes.",
+  "duration_seconds": 0,
+  "changed_files": [],
+  "error_markers_hit": [
+    "stale_running_task"
+  ],
+  "missing_required_outputs": [
+    "completed_markdown",
+    "task_result_json"
+  ],
+  "forbidden_change_violations": [],
+  "acceptance_results": [
+    {
+      "name": "Worker output freshness",
+      "passed": false,
+      "evidence": "No output update observed within stale threshold."
+    }
+  ],
+  "next_action": "Planner should replan this task with narrower scope."
+}

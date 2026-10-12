@@ -1,0 +1,21 @@
+{
+  "version": "1.0",
+  "task_id": 174,
+  "slug": "investigate-and-resolve-recurring-schedule",
+  "status": "PENDING_REVIEW",
+  "gate_verdict": "PASS",
+  "planner_provider": "codex",
+  "worker_provider": "copilot-daemon",
+  "created_at": "2026-04-30T10:23:11.040Z",
+  "updated_at": "2026-04-30T10:24:06.064Z",
+  "last_output_at": "2026-04-30T10:24:06.064Z",
+  "latest_progress_summary": "Auto-committed 3 file(s) (sha: 9bd0ca6). Awaiting CTO review.",
+  "planner_context": {
+    "taskType": "optimization_system_health",
+    "game": null,
+    "regimeState": "OPTIMIZATION",
+    "dedupeKey": "system_health__job_failures",
+    "confidenceScore": null,
+    "regimeTaskType": "system_health"
+  }
+}

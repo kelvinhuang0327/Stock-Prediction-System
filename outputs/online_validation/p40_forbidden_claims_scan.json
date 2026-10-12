@@ -1,0 +1,120 @@
+{
+  "phase": "P40",
+  "task": "Paper Simulation Framework Design Gate — Forbidden Claims Scan",
+  "scannedAt": "2026-05-21T00:00:00.000Z",
+  "scannedFiles": [
+    "src/lib/onlineValidation/p40/PaperSimulationFrameworkTypes.ts",
+    "src/lib/onlineValidation/p40/PaperSimulationFrameworkBoundary.ts",
+    "src/lib/onlineValidation/__tests__/p40_paper_simulation_framework_design_gate.test.ts",
+    "outputs/online_validation/p40_paper_simulation_framework_plan.json",
+    "outputs/online_validation/p40_paper_simulation_framework_plan.md",
+    "outputs/online_validation/p40_test_baseline.json",
+    "outputs/online_validation/p40_test_baseline.md",
+    "outputs/online_validation/p40_preflight_mainline_status.json",
+    "outputs/online_validation/p40_preflight_mainline_status.md",
+    "outputs/online_validation/p40_input_artifact_review.json",
+    "outputs/online_validation/p40_input_artifact_review.md"
+  ],
+  "forbiddenTerms": [
+    "buy", "sell", "hold", "ROI", "win-rate", "winRate", "alpha claim",
+    "edge", "profit", "outperform", "investment recommendation", "guaranteed",
+    "expected return", "PnL", "returnPct", "prediction", "recommendation"
+  ],
+  "findings": [
+    {
+      "term": "ROI",
+      "occurrences": [
+        {
+          "file": "src/lib/onlineValidation/p40/PaperSimulationFrameworkTypes.ts",
+          "context": "PAPER_SIMULATION_FRAMEWORK_FORBIDDEN_OUTPUTS: 'ROI'",
+          "classification": "BENIGN_PROHIBITION_REFERENCE",
+          "description": "Listed as a forbidden output — declaring prohibition"
+        },
+        {
+          "file": "src/lib/onlineValidation/p40/PaperSimulationFrameworkBoundary.ts",
+          "context": "comment: No prediction, recommendation, buy/sell/hold, PnL, ROI, win-rate.",
+          "classification": "BENIGN_PROHIBITION_REFERENCE",
+          "description": "Comment declaring what the module does NOT do"
+        },
+        {
+          "file": "src/lib/onlineValidation/__tests__/p40_paper_simulation_framework_design_gate.test.ts",
+          "context": "test('9.6 throws for payload with ROI field')",
+          "classification": "BENIGN_TEST_ASSERTION",
+          "description": "Test verifying ROI is rejected — not an actual ROI claim"
+        }
+      ],
+      "verdict": "CLEAN — all occurrences are prohibition declarations or test assertions"
+    },
+    {
+      "term": "win-rate / winRate",
+      "occurrences": [
+        {
+          "file": "src/lib/onlineValidation/p40/PaperSimulationFrameworkTypes.ts",
+          "context": "PAPER_SIMULATION_FRAMEWORK_FORBIDDEN_OUTPUTS: 'winRate'",
+          "classification": "BENIGN_PROHIBITION_REFERENCE"
+        },
+        {
+          "file": "src/lib/onlineValidation/__tests__/p40_paper_simulation_framework_design_gate.test.ts",
+          "context": "test('9.5 throws for payload with winRate field')",
+          "classification": "BENIGN_TEST_ASSERTION"
+        }
+      ],
+      "verdict": "CLEAN"
+    },
+    {
+      "term": "buy / sell / hold",
+      "occurrences": [
+        {
+          "file": "src/lib/onlineValidation/p40/PaperSimulationFrameworkTypes.ts",
+          "context": "PAPER_SIMULATION_FRAMEWORK_FORBIDDEN_OUTPUTS: 'buy', 'sell', 'hold'",
+          "classification": "BENIGN_PROHIBITION_REFERENCE"
+        },
+        {
+          "file": "src/lib/onlineValidation/__tests__/p40_paper_simulation_framework_design_gate.test.ts",
+          "context": "tests 12.7, 12.8, 12.9 verifying buy/sell/hold are absent from plan",
+          "classification": "BENIGN_TEST_ASSERTION"
+        }
+      ],
+      "verdict": "CLEAN"
+    },
+    {
+      "term": "profit",
+      "occurrences": [
+        {
+          "file": "src/lib/onlineValidation/p40/PaperSimulationFrameworkTypes.ts",
+          "context": "PAPER_SIMULATION_FRAMEWORK_FORBIDDEN_OUTPUTS: 'profit'",
+          "classification": "BENIGN_PROHIBITION_REFERENCE"
+        }
+      ],
+      "verdict": "CLEAN"
+    },
+    {
+      "term": "expected return / investment recommendation / edge",
+      "occurrences": [
+        {
+          "file": "src/lib/onlineValidation/p40/PaperSimulationFrameworkTypes.ts",
+          "context": "PAPER_SIMULATION_FRAMEWORK_FORBIDDEN_USES list items",
+          "classification": "BENIGN_PROHIBITION_REFERENCE"
+        }
+      ],
+      "verdict": "CLEAN"
+    },
+    {
+      "term": "prediction / recommendation / PnL / returnPct",
+      "occurrences": [
+        {
+          "classification": "BENIGN_PROHIBITION_REFERENCE or BENIGN_TEST_ASSERTION",
+          "description": "All occurrences in forbidden output lists, test assertions verifying absence, or comment documentation"
+        }
+      ],
+      "verdict": "CLEAN"
+    }
+  ],
+  "overallVerdict": "CLEAN",
+  "forbiddenClaimsPresent": false,
+  "allOccurrencesBenign": true,
+  "entersAlphaScore": false,
+  "noSimulationExecution": true,
+  "noInvestmentAdvice": true,
+  "classification": "P40_FORBIDDEN_CLAIMS_SCAN_CLEAN"
+}

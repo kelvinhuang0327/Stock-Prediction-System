@@ -1,0 +1,21 @@
+{
+  "version": "1.0",
+  "task_id": 174,
+  "slug": "build-shadow-strategy-tracking-in-signal-s",
+  "status": "PENDING_REVIEW",
+  "gate_verdict": "PASS",
+  "planner_provider": "codex",
+  "worker_provider": "copilot-daemon",
+  "created_at": "2026-05-04T07:41:29.015Z",
+  "updated_at": "2026-05-04T07:41:51.904Z",
+  "last_output_at": "2026-05-04T07:41:51.904Z",
+  "latest_progress_summary": "Auto-committed 4 file(s) (sha: 37959dc). Awaiting CTO review.",
+  "planner_context": {
+    "taskType": "shadow_strategy_tracking",
+    "game": null,
+    "regimeState": "SIGNAL_SATURATED",
+    "dedupeKey": "shadow_strategy_tracking|GLOBAL|SIGNAL_SATURATED",
+    "confidenceScore": 0.43333333333333335,
+    "regimeTaskType": "shadow_strategy_tracking"
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "phase": "P42",
+  "step": "Phase 6 — Test Baseline",
+  "timestamp": "2026-05-21T00:00:00+08:00",
+  "testResults": {
+    "p42Targeted": {
+      "suites": 1,
+      "tests": 98,
+      "passed": 98,
+      "failed": 0,
+      "result": "PASS"
+    },
+    "p41Regression": {
+      "suites": 1,
+      "tests": 97,
+      "passed": 97,
+      "failed": 0,
+      "result": "PASS"
+    },
+    "p40Regression": {
+      "suites": 1,
+      "tests": 118,
+      "passed": 118,
+      "failed": 0,
+      "result": "PASS"
+    },
+    "p39Regression": {
+      "suites": 1,
+      "tests": 77,
+      "passed": 77,
+      "failed": 0,
+      "result": "PASS"
+    },
+    "p38Regression": {
+      "suites": 1,
+      "tests": 55,
+      "passed": 55,
+      "failed": 0,
+      "result": "PASS"
+    }
+  },
+  "testGroups": [
+    "Group 1 — P42 lifecycle governance invariants (10 tests)",
+    "Group 2 — createDryRunLifecycle creates PENDING state (14 tests)",
+    "Group 3 — createDryRunLifecycle rejects invalid P41 results (8 tests)",
+    "Group 4 — transitionLifecycle valid transitions (8 tests)",
+    "Group 5 — transitionLifecycle rejects invalid transitions (8 tests)",
+    "Group 6 — cancelLifecycle (8 tests)",
+    "Group 7 — createDryRunLogEntry creates immutable entries (8 tests)",
+    "Group 8 — appendLogEntry is immutable / pure (8 tests)",
+    "Group 9 — Log entries have no forbidden execution fields (8 tests)",
+    "Group 10 — Constants and version strings (10 tests)",
+    "Group 11 — No forbidden exports (8 tests)"
+  ],
+  "forbiddenClaimsScan": "CLEAN",
+  "noSimulationExecuted": true,
+  "noDBModified": true,
+  "noScoringFormulaModified": true,
+  "noAlphaScoreModified": true
+}

@@ -1,0 +1,2 @@
+Command failed: definitely_missing_worker_command --prompt "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260422/202604221006-task-artifact-prompt.md"
+/bin/sh: definitely_missing_worker_command: command not found

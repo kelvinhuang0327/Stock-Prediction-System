@@ -1,0 +1,21 @@
+{
+  "version": "1.0",
+  "task_id": 144,
+  "slug": "8-hour-multi-domain-optimization-sprint",
+  "status": "REPLAN_REQUIRED",
+  "gate_verdict": "WORKER_RUNTIME_FAILED",
+  "planner_provider": "codex",
+  "worker_provider": "copilot-daemon",
+  "created_at": "2026-04-24T22:42:12.275Z",
+  "updated_at": "2026-04-24T22:42:54.529Z",
+  "last_output_at": "2026-04-24T22:42:54.529Z",
+  "latest_progress_summary": "Worker finished task but gate=WORKER_RUNTIME_FAILED.",
+  "planner_context": {
+    "taskType": "optimization_composite_8h",
+    "game": null,
+    "regimeState": "OPTIMIZATION",
+    "dedupeKey": "composite_8h_plan__2026-04-24",
+    "confidenceScore": null,
+    "regimeTaskType": "composite_8h_plan"
+  }
+}

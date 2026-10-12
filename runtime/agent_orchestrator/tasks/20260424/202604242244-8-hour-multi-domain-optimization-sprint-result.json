@@ -1,0 +1,27 @@
+{
+  "version": "1.0",
+  "task_id": 145,
+  "status": "REPLAN_REQUIRED",
+  "gate_verdict": "WORKER_RUNTIME_FAILED",
+  "gate_reason": "AGENT_ORCHESTRATOR_WORKER_CMD is not configured.",
+  "failure_provider": null,
+  "failure_reason": "runtime_failure",
+  "reset_hint": null,
+  "final_message": "AGENT_ORCHESTRATOR_WORKER_CMD is not configured.",
+  "http_status": null,
+  "duration_seconds": 0,
+  "changed_files": [],
+  "error_markers_hit": [
+    "worker_not_configured"
+  ],
+  "missing_required_outputs": [],
+  "forbidden_change_violations": [],
+  "acceptance_results": [
+    {
+      "name": "External worker command is configured",
+      "passed": false,
+      "evidence": "AGENT_ORCHESTRATOR_WORKER_CMD is missing."
+    }
+  ],
+  "next_action": "Planner must inspect this result and create a replan task."
+}

@@ -1,0 +1,81 @@
+{
+  "task": "T-05C_REGIME_CONTEXT_LOADER",
+  "date": "2026-05-07",
+  "labels": [
+    "T-05C",
+    "read-only loader",
+    "persisted MarketRegimeResult only",
+    "no regime recomputation",
+    "no production write",
+    "no DB write except read query",
+    "no external API",
+    "no LLM call",
+    "no strategy mutation",
+    "no performance claim"
+  ],
+  "loaderContract": {
+    "module": "src/lib/backtest/RegimeContextLoader.ts",
+    "exports": [
+      "loadRegimeContextMap",
+      "normalizeRegimeContextDateKey",
+      "mapMarketRegimeResultToPersistedContext",
+      "validateRegimeContextCoverage",
+      "InvalidDateKeyError",
+      "RegimeResultRow (type)",
+      "PrismaClientLike (interface)",
+      "RegimeContextCoverageSummary (interface)"
+    ],
+    "dbAccess": "READ_ONLY — SELECT via findMany only",
+    "dbWriteGuarantee": "NO_DB_WRITE",
+    "externalApiGuarantee": "NO_EXTERNAL_API",
+    "llmGuarantee": "NO_LLM_CALL",
+    "regimeRecomputeGuarantee": "NO_REGIME_RECOMPUTATION",
+    "injectionPattern": "PrismaClientLike injectable for tests",
+    "returnType": "Map<string, PersistedRegimeContext>"
+  },
+  "normalizeRegimeContextDateKey": {
+    "acceptedInputs": ["Date object", "YYYY-MM-DD string", "ISO string with time component"],
+    "outputFormat": "YYYY-MM-DD",
+    "timezone": "UTC",
+    "deterministic": true,
+    "errorBehavior": "throws InvalidDateKeyError on unrecognized input"
+  },
+  "mapMarketRegimeResultToPersistedContext": {
+    "includedFields": ["date", "regimeLabel", "confidence", "taiexClose", "source", "version"],
+    "excludedFields": [
+      "taiexMa50", "taiexMa200", "taiexReturn1d", "taiexReturn20d",
+      "taiexVolatility20d", "marketBreadthProxy", "evidenceJson",
+      "missingFeaturesJson", "pitSafetyJson", "id", "createdAt", "updatedAt"
+    ],
+    "unknownRegimeLabelBehavior": "normalized to LOW_CONFIDENCE with warning",
+    "nullFieldBehavior": "preserved as null",
+    "outputType": "PersistedRegimeContext (isAvailable: true)"
+  },
+  "loadRegimeContextMap": {
+    "dateRangeFilter": "WHERE date >= startDate AND date <= endDate",
+    "orderBy": "date ASC",
+    "mapKeyFormat": "YYYY-MM-DD (via normalizeRegimeContextDateKey)",
+    "errorBehavior": "returns empty Map on DB error — never throws",
+    "emptyMapMeaning": "explicit unavailable state in WalkForwardEngine"
+  },
+  "validateRegimeContextCoverage": {
+    "expectedDatesMethod": "weekday approximation (Mon-Fri, excludes Sat/Sun)",
+    "thresholds": {
+      "PASS": "coverage >= 90%",
+      "WARN": "coverage 50%-89% or no expected dates",
+      "FAIL": "coverage < 50%"
+    },
+    "outputFields": [
+      "startDate", "endDate", "expectedDateCount", "availableContextCount",
+      "missingContextCount", "coverageRatio", "firstAvailableDate",
+      "lastAvailableDate", "status", "statusNote"
+    ],
+    "forbiddenFieldsAbsent": true
+  },
+  "integrationWithT05B": {
+    "injectInto": "buildWalkForwardSkeleton(config, regimeContextMap)",
+    "expectedEffect": "recordsWithRegimeContext increases from 0 when DB has data",
+    "safetyContractUnchanged": true,
+    "placeholderMetricsRemainsNull": true
+  }
+}

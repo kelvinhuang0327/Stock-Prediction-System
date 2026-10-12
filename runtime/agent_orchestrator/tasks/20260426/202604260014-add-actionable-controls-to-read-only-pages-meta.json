@@ -1,0 +1,21 @@
+{
+  "version": "1.0",
+  "task_id": 168,
+  "slug": "add-actionable-controls-to-read-only-pages",
+  "status": "PENDING_REVIEW",
+  "gate_verdict": "PASS",
+  "planner_provider": "claude",
+  "worker_provider": "copilot-daemon",
+  "created_at": "2026-04-26T00:14:57.930Z",
+  "updated_at": "2026-04-26T00:15:06.553Z",
+  "last_output_at": "2026-04-26T00:15:06.553Z",
+  "latest_progress_summary": "Auto-committed 3 file(s) (sha: e25852f). Awaiting CTO review.",
+  "planner_context": {
+    "taskType": "optimization_ui_ux",
+    "game": null,
+    "regimeState": "OPTIMIZATION",
+    "dedupeKey": "ui_ux__no_actionable_output",
+    "confidenceScore": null,
+    "regimeTaskType": "ui_ux"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "version": "p1-append-only-guard-v0",
+  "runId": "p1-outcome-run-20260511-001",
+  "generatedAt": "2026-05-11T03:57:29.383Z",
+  "ledgerFile": "p1_outcome_writeback_v0.jsonl",
+  "existingEntryCount": 0,
+  "newEntryCount": 4,
+  "duplicateKeys": [],
+  "appendOnlyStatus": "PASS",
+  "messages": [],
+  "guardrail": {
+    "noOverwrite": true,
+    "noDuplicateKey": true,
+    "appendOnly": true
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "phase": "P29F-HARDRESET",
+  "task": "Simulation Dependency Gate",
+  "generatedAt": "2026-05-20T00:00:00Z",
+
+  "gateRules": {
+    "IF_ANY_VIOLATION_CONFIRMED": "Simulation output MUST NOT use that source. Block and report.",
+    "IF_ANY_UNVERIFIED_NEEDS_REPAIR": "Simulation output MUST be tagged 'inputs_unverified'. Trust-root blocker remains.",
+    "IF_ALL_PIT_SAFE_VERIFIED": "Trust-root blocker may be lifted. P29-G Dry-run Expansion may proceed.",
+    "IF_INSUFFICIENT_EVIDENCE": "Blocker maintained. Evidence instrumentation required first."
+  },
+
+  "currentStatus": {
+    "Quote": {
+      "classification": "PIT_UNVERIFIED_NEEDS_REPAIR",
+      "gateDecision": "BLOCKER_REMAINS",
+      "simulationTag": "UNVERIFIED",
+      "reason": "Date format mismatch — gate may be ineffective for same-year future records"
+    },
+    "Regime": {
+      "classification": "PIT_SAFE_VERIFIED",
+      "gateDecision": "PERMITTED",
+      "simulationTag": "VERIFIED",
+      "reason": "ISO-ISO comparison correct. All calculations backward-looking."
+    },
+    "Chip": {
+      "classification": "PIT_UNVERIFIED_NEEDS_REPAIR",
+      "gateDecision": "BLOCKER_REMAINS",
+      "simulationTag": "UNVERIFIED",
+      "reason": "Same date format mismatch as Quote. Schema comment wrong."
+    }
+  },
+
+  "aggregateGateDecision": {
+    "trustRootBlockerRemains": true,
+    "simulationTrustRootStatus": "UNVERIFIED_NEEDS_REPAIR",
+    "simulationExpansionAllowed": false,
+    "optimizerReadinessAllowed": false,
+    "requiredBeforePromotion": [
+      "Quote PIT date format repair and verification",
+      "Chip PIT date format repair and schema comment correction",
+      "Integration tests confirming same-year future record exclusion for Quote and Chip"
+    ],
+    "alreadyVerified": ["Regime (PIT_SAFE_VERIFIED — no repair needed)"]
+  },
+
+  "p29eSimulationScaffoldStatus": {
+    "currentMode": "PAPER_ONLY",
+    "leakageGateStatus": "NOT_EVALUATED_SCAFFOLD_ONLY",
+    "trustRootStatus": "UNVERIFIED_NEEDS_REPAIR",
+    "canPromoteToObservabilityMode": false,
+    "canPromoteToEvaluationMode": false,
+    "blockerReason": "Quote and Chip PIT gates need repair before any simulation output can claim PIT-safe inputs"
+  }
+}

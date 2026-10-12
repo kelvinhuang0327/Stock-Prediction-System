@@ -1,0 +1,107 @@
+{
+  "audit_id": "T04_SCHEDULER_LLM_SAFETY_AUDIT",
+  "generated_at": "2026-05-06",
+  "task": "T-04 LLM Hard-Off / Safe-Run + Missing-TaskId Alert",
+  "scheduler_files_found": [
+    "src/app/api/cron/daily-sync/route.ts",
+    "src/app/api/orchestrator/scheduler/route.ts",
+    "src/app/api/tasks/run/route.ts"
+  ],
+  "orchestrator_files_found": [
+    "src/app/api/orchestrator/tasks/route.ts",
+    "src/app/api/orchestrator/tasks/[taskId]/route.ts",
+    "src/app/api/orchestrator/backlog/route.ts",
+    "src/app/api/orchestrator/providers/route.ts",
+    "src/app/api/orchestrator/runs/route.ts",
+    "src/app/api/orchestrator/run-status/route.ts",
+    "src/app/api/orchestrator/run-now/route.ts",
+    "src/app/api/orchestrator/summary/route.ts",
+    "src/app/api/orchestrator/cto/backlog/route.ts",
+    "src/app/api/orchestrator/cto/backlog/prioritized/route.ts",
+    "src/app/api/orchestrator/cto/backlog/batch/route.ts",
+    "src/app/api/orchestrator/cto/backlog/policy/route.ts",
+    "src/app/api/orchestrator/cto/backlog/aging/route.ts",
+    "src/app/api/orchestrator/llm-audit/today/route.ts",
+    "src/app/api/orchestrator/llm-audit/recent/route.ts",
+    "src/app/api/orchestrator/llm-usage/today/route.ts",
+    "src/app/api/orchestrator/llm-usage/recent/route.ts"
+  ],
+  "cron_routes_found": [
+    "src/app/api/cron/daily-sync/route.ts"
+  ],
+  "llm_external_ai_call_sites": [
+    {
+      "file": "src/lib/agent-orchestrator/llmAuditGuard.ts",
+      "description": "Fail-closed LLM audit log — ATTEMPT/RESULT/BLOCKED events. Existing guard but not integrated with SafetyMode contract."
+    },
+    {
+      "file": "src/lib/agent-orchestrator/llmUsageLogger.ts",
+      "description": "LLM token usage tracking."
+    },
+    {
+      "file": "src/lib/agent-orchestrator/providerCapabilities.ts",
+      "description": "Provider classification (claude, openai, copilot, etc.)."
+    },
+    {
+      "file": "src/app/api/orchestrator/providers/route.ts",
+      "description": "Provider config route."
+    }
+  ],
+  "provider_model_config": {
+    "found": true,
+    "location": "src/lib/agent-orchestrator/providerCapabilities.ts",
+    "known_providers": ["claude", "claude-cli", "codex", "codex-cli", "openai", "copilot", "github-copilot", "copilot-daemon"]
+  },
+  "task_id_usage": {
+    "found": true,
+    "locations": [
+      "src/app/api/orchestrator/tasks/[taskId]/route.ts — URL param",
+      "src/lib/agent-orchestrator/llmAuditGuard.ts — LlmAuditRecord.task_id nullable field",
+      "src/lib/training/TrainingMiner.ts — taskId field"
+    ],
+    "existing_validation": false,
+    "missing_taskid_alert": false
+  },
+  "safe_run_dry_run_handling": {
+    "safe_run_mode_exists": false,
+    "dry_run_exists": true,
+    "locations": [
+      "src/lib/data/DataRetentionService.ts — dryRun: boolean param",
+      "No system-wide safe-run gate before T-04"
+    ]
+  },
+  "job_run_log_sync_log_usage": {
+    "JobRunLog": "not found in schema or code",
+    "SyncLog": "not found — sync results returned as in-memory objects"
+  },
+  "ops_report_referenced": false,
+  "production_db_write_risks": [
+    "daily-sync route calls syncService methods that write to DB",
+    "DataRetentionService deletes rows",
+    "No guard prevented execution without taskId before T-04"
+  ],
+  "external_api_call_risks": [
+    "syncService methods call external TWSE/TPEX/MRL APIs",
+    "No safe-run gate before T-04"
+  ],
+  "reusable_components": [
+    "src/lib/agent-orchestrator/llmAuditGuard.ts — can coexist with SafetyGuard",
+    "CRON_SECRET auth in daily-sync route — good foundation"
+  ],
+  "unsafe_components": [
+    "daily-sync GET handler: no taskId required before T-04",
+    "Orchestrator runs: task_id nullable in audit log — missing alert"
+  ],
+  "answers": {
+    "safe_run_mode_exists": false,
+    "llm_hard_off_guard_exists": false,
+    "task_id_validation_exists": false,
+    "missing_taskid_alert_exists": false,
+    "should_add_standalone_safety_utility": true,
+    "needs_scheduler_route_modification": true,
+    "needs_schema_migration": false,
+    "will_write_db": false
+  },
+  "recommended_implementation_path": "Create src/lib/scheduler/SafetyGuard.ts as pure utility. Integrate evaluateSafetyMode() at the top of the daily-sync GET handler. Block when mode=BLOCKED. Include safety object in all responses. Add tests for all 15 required cases.",
+  "source": "T04_SCHEDULER_LLM_SAFETY_AUDIT"
+}

@@ -1,0 +1,12 @@
+{
+  "data_source": "sqlite:prisma/dev.db:StockQuote",
+  "symbol": "0055",
+  "asOfDate": "2026-05-01",
+  "first_date": "2018-12-18",
+  "last_date": "2026-04-30",
+  "row_count": 743,
+  "max_feature_date": "2026-03-16",
+  "leakage_check_result": "PASS",
+  "pit_violations": [],
+  "window_days": 1500
+}
