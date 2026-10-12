@@ -257,8 +257,8 @@ export class JobAlertService {
     return rows.map(toRecord);
   }
 
-  async listRecentAlerts(days = 7): Promise<JobAlertRecord[]> {
-    const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
+  async listRecentAlerts(days = 7, referenceTime = new Date()): Promise<JobAlertRecord[]> {
+    const cutoff = new Date(referenceTime.getTime() - days * 24 * 60 * 60 * 1000);
     const rows = await prisma.jobAlert.findMany({
       where: { lastDetectedAt: { gte: cutoff } },
       orderBy: [{ lastDetectedAt: 'desc' }, { createdAt: 'desc' }],
@@ -284,8 +284,8 @@ export class JobAlertService {
     return toRecord(row);
   }
 
-  async summarizeAlerts(days = 7): Promise<JobAlertSummary> {
-    const recent = await this.listRecentAlerts(days);
+  async summarizeAlerts(days = 7, referenceTime = new Date()): Promise<JobAlertSummary> {
+    const recent = await this.listRecentAlerts(days, referenceTime);
     const active = recent.filter((row) => row.status === 'active');
     const resolved = recent.filter((row) => row.status === 'resolved');
     const suppressed = recent.filter((row) => row.status === 'suppressed');

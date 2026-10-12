@@ -1,7 +1,15 @@
 import { exec as execCallback } from 'node:child_process';
 import { promisify } from 'node:util';
 import { buildPolicyBlockedWorkerOutput } from './aiModulesService';
+import { writeAuditAttempt, writeAuditBlocked, writeAuditResult } from './llmAuditGuard';
 import { evaluateExecutionPolicy, recordLlmExecution, type LlmCallerContext } from './llmExecutionPolicy';
+import {
+  logProviderBlocked,
+  logProviderExecutionFailure,
+  logProviderExecutionStart,
+  logProviderExecutionSuccess,
+  type ModelPropagationStatus,
+} from './llmUsageLogger';
 import { enforceProviderForRole } from './providerFactory';
 import type { WorkerExecutionInput, WorkerExecutionOutput } from './providers';
 import type { WorkerProvider } from './types';
@@ -31,8 +39,36 @@ export async function executeWorkerProviderCommand({
   parseChangedFiles,
   detectProviderRateLimit,
 }: ExecuteWorkerProviderCommandInput): Promise<WorkerExecutionOutput> {
+  const auditTriggerSource = callerContext === 'manual' ? 'manual_preview' : 'worker_execute';
+  const usageTriggerSource = callerContext === 'manual' ? 'manual' : 'worker-cycle';
+  const desiredModel = input.workerCopilotModel ?? null;
+  const actualModel = desiredModel ? 'provider-managed' : null;
+  const modelPropagationStatus: ModelPropagationStatus = desiredModel ? 'provider-managed' : 'not-configured';
+  const usageInput = {
+    caller: 'ai_service' as const,
+    triggerSource: usageTriggerSource as 'manual' | 'worker-cycle',
+    provider: input.workerProvider,
+    model: desiredModel,
+    taskId: input.taskId,
+    desiredModel,
+    actualModel,
+    modelPropagationStatus,
+  };
+
   const providerGate = enforceProviderForRole('ai_service', input.workerProvider);
   if (!providerGate.allowed) {
+    const blockReason = providerGate.blockReason ?? 'PROVIDER_NOT_IN_ALLOWLIST';
+    writeAuditBlocked({
+      provider: input.workerProvider,
+      usageRole: 'worker',
+      runnerType: 'ai_service',
+      taskId: input.taskId,
+      triggerSource: auditTriggerSource,
+      blockReason,
+      callerFile: 'aiService.ts',
+      callerFunction: 'executeWorkerProviderCommand',
+    });
+    logProviderBlocked({ ...usageInput, skipReason: blockReason });
     return buildPolicyBlockedWorkerOutput(input, 'PROVIDER_NOT_IN_ALLOWLIST');
   }
 
@@ -45,7 +81,38 @@ export async function executeWorkerProviderCommand({
   });
 
   if (!policyDecision.allowed) {
+    const blockReason = policyDecision.skip_reason ?? 'SCHEDULER_DISABLED';
+    writeAuditBlocked({
+      provider: input.workerProvider,
+      usageRole: 'worker',
+      runnerType: 'ai_service',
+      taskId: input.taskId,
+      triggerSource: auditTriggerSource,
+      blockReason,
+      callerFile: 'aiService.ts',
+      callerFunction: 'executeWorkerProviderCommand',
+    });
+    logProviderBlocked({ ...usageInput, skipReason: blockReason });
     return buildPolicyBlockedWorkerOutput(input, policyDecision.skip_reason);
+  }
+
+  const auditAttempt = writeAuditAttempt({
+    runnerType: 'ai_service',
+    usageRole: 'worker',
+    provider: input.workerProvider,
+    model: desiredModel,
+    taskId: input.taskId,
+    desiredModel,
+    actualModel,
+    modelPropagationStatus,
+    triggerSource: auditTriggerSource,
+    callerFile: 'aiService.ts',
+    callerFunction: 'executeWorkerProviderCommand',
+  });
+
+  if (!auditAttempt.written) {
+    logProviderBlocked({ ...usageInput, skipReason: auditAttempt.blockReason });
+    return buildPolicyBlockedWorkerOutput(input, null);
   }
 
   await recordLlmExecution({
@@ -57,6 +124,8 @@ export async function executeWorkerProviderCommand({
   });
 
   const command = interpolateCommand(externalCommand, input);
+  const startedAt = Date.now();
+  logProviderExecutionStart({ ...usageInput, command });
   try {
     const { stdout, stderr } = await exec(command, {
       cwd: process.cwd(),
@@ -68,6 +137,32 @@ export async function executeWorkerProviderCommand({
     const rateLimit = detectProviderRateLimit(workerStdout, input.workerProvider);
 
     if (rateLimit) {
+      const durationMs = Date.now() - startedAt;
+      writeAuditResult({
+        correlationId: auditAttempt.correlationId,
+        provider: input.workerProvider,
+        usageRole: 'worker',
+        runnerType: 'ai_service',
+        taskId: input.taskId,
+        triggerSource: auditTriggerSource,
+        success: false,
+        actualModel,
+        modelPropagationStatus,
+        error: rateLimit.finalMessage,
+        durationMs,
+        rateLimitType: 'provider_rate_limit',
+        rateLimitResetRaw: rateLimit.resetHint,
+        callerFile: 'aiService.ts',
+        callerFunction: 'executeWorkerProviderCommand',
+      });
+      logProviderExecutionFailure({
+        ...usageInput,
+        command,
+        errorCode: 'provider_rate_limit',
+        errorMessage: rateLimit.finalMessage,
+        rateLimit: rateLimit.resetHint,
+        durationMs,
+      });
       return {
         completedMarkdown: [
           '# Worker Completion Summary',
@@ -102,6 +197,23 @@ export async function executeWorkerProviderCommand({
       };
     }
 
+    const durationMs = Date.now() - startedAt;
+    writeAuditResult({
+      correlationId: auditAttempt.correlationId,
+      provider: input.workerProvider,
+      usageRole: 'worker',
+      runnerType: 'ai_service',
+      taskId: input.taskId,
+      triggerSource: auditTriggerSource,
+      success: true,
+      actualModel,
+      modelPropagationStatus,
+      durationMs,
+      callerFile: 'aiService.ts',
+      callerFunction: 'executeWorkerProviderCommand',
+    });
+    logProviderExecutionSuccess({ ...usageInput, command, durationMs });
+
     return {
       completedMarkdown: [
         '# Worker Completion Summary',
@@ -128,6 +240,33 @@ export async function executeWorkerProviderCommand({
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     const rateLimit = detectProviderRateLimit(message, input.workerProvider);
+    const errorMessage = rateLimit?.finalMessage ?? message;
+    const durationMs = Date.now() - startedAt;
+    writeAuditResult({
+      correlationId: auditAttempt.correlationId,
+      provider: input.workerProvider,
+      usageRole: 'worker',
+      runnerType: 'ai_service',
+      taskId: input.taskId,
+      triggerSource: auditTriggerSource,
+      success: false,
+      actualModel,
+      modelPropagationStatus,
+      error: errorMessage,
+      durationMs,
+      rateLimitType: rateLimit ? 'provider_rate_limit' : null,
+      rateLimitResetRaw: rateLimit?.resetHint ?? null,
+      callerFile: 'aiService.ts',
+      callerFunction: 'executeWorkerProviderCommand',
+    });
+    logProviderExecutionFailure({
+      ...usageInput,
+      command,
+      errorCode: rateLimit ? 'provider_rate_limit' : 'worker_runtime_failed',
+      errorMessage,
+      rateLimit: rateLimit?.resetHint ?? null,
+      durationMs,
+    });
     return {
       completedMarkdown: [
         '# Worker Completion Summary',
@@ -137,20 +276,20 @@ export async function executeWorkerProviderCommand({
         '- Execution mode: external command',
         '',
         '## Runtime Failure',
-        rateLimit?.finalMessage ?? message,
+        errorMessage,
       ].join('\n'),
       changedFiles: [],
       acceptanceResults: [
         {
           name: 'Worker command completed',
           passed: false,
-          evidence: rateLimit?.finalMessage ?? message,
+          evidence: errorMessage,
         },
       ],
       workerStdout: message,
       errorMarkersHit: rateLimit ? ['worker_runtime_failed', 'provider_rate_limit'] : ['worker_runtime_failed'],
       runtimeFailed: true,
-      runtimeErrorMessage: rateLimit?.finalMessage ?? message,
+      runtimeErrorMessage: errorMessage,
       failureProvider: input.workerProvider,
       failureReason: rateLimit ? 'rate_limit' : 'runtime_failure',
       resetHint: rateLimit?.resetHint ?? null,

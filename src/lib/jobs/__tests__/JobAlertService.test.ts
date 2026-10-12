@@ -86,7 +86,7 @@ describe('JobAlertService', () => {
     const health = await healthService.evaluate(day1);
     await alertService.syncFromHealthReport(health, day1);
 
-    const summary = await alertService.summarizeAlerts(14);
+    const summary = await alertService.summarizeAlerts(14, day1);
     expect(summary.total).toBeGreaterThan(0);
     expect(summary.active).toBeGreaterThan(0);
     expect(summary.critical + summary.warning + summary.info).toBeGreaterThan(0);

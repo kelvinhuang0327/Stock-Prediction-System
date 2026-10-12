@@ -1,11 +1,14 @@
 import { prisma } from '@/lib/prisma';
+import { getAutonomousJobNames } from '../autonomousJobRegistry';
 import { JobHealthService } from '../JobHealthService';
+
+const managedJobNames = getAutonomousJobNames();
 
 async function cleanup() {
   await prisma.jobRunLog.deleteMany({
     where: {
       jobName: {
-        in: ['autonomous:daily', 'autonomous:monitor', 'autonomous:review', 'autonomous:learning'],
+        in: managedJobNames,
       },
     },
   });
@@ -25,10 +28,10 @@ describe('JobHealthService', () => {
   test('marks never-ran jobs and emits critical alerts', async () => {
     const report = await service.evaluate(new Date('2026-03-31T12:00:00.000Z'));
 
-    expect(report.jobs).toHaveLength(4);
+    expect(report.jobs.map((job) => job.jobName)).toEqual(managedJobNames);
     expect(report.jobs.find((job) => job.jobName === 'autonomous:daily')?.healthStatus).toBe('never-ran');
     expect(report.alerts.some((alert) => alert.jobName === 'autonomous:daily' && alert.severity === 'critical')).toBe(true);
-    expect(report.healthSummary.neverRan).toBe(4);
+    expect(report.healthSummary.neverRan).toBe(managedJobNames.length);
   });
 
   test('detects ok, delayed and failed jobs', async () => {

@@ -2,6 +2,19 @@ import { createHash } from "node:crypto";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 
+import {
+  buildStrategySimulation,
+  type StrategyLabSimulation,
+} from "@/lib/research/StrategyLabSimulationEngine";
+import {
+  buildStrategyLabCalibration,
+  type StrategyLabCalibration,
+} from "@/lib/research/StrategyLabCalibrationEngine";
+import {
+  buildStrategyLabSymbolReliability,
+  type StrategyLabSymbolReliability,
+} from "@/lib/research/StrategyLabSymbolReliabilityEngine";
+
 const RETRAINING_DIR = path.join(process.cwd(), "outputs", "retraining");
 const CSV_PATH = path.join(RETRAINING_DIR, "p194_twstock_ohlcv_export.csv");
 const P194_MANIFEST_PATH = path.join(RETRAINING_DIR, "p194_twstock_ohlcv_export_manifest.json");
@@ -92,6 +105,18 @@ export interface StrategyLabResolvedPrediction {
   correct: boolean;
 }
 
+export interface StrategyLabResolvedSampleProvenance {
+  source: string;
+  validationStatus: "expanded" | "fallback";
+  validationReason: string;
+  fallbackActive: boolean;
+  committedResolvedPairs: number;
+  activeResolvedPairs: number;
+  featureDateRange: { start: string; end: string } | null;
+  targetDateRange: { start: string; end: string } | null;
+  caveat: string;
+}
+
 export interface StrategyLabPredictions {
   status: "present" | "missing";
   path: string;
@@ -103,6 +128,7 @@ export interface StrategyLabPredictions {
   latestBySymbol: StrategyLabOpenPrediction[];
   openPredictions: StrategyLabOpenPrediction[];
   recentResolved: StrategyLabResolvedPrediction[];
+  resolvedSampleProvenance: StrategyLabResolvedSampleProvenance;
   caveat: string;
 }
 
@@ -157,6 +183,9 @@ export interface StrategyLabSnapshot {
   dataExport: StrategyLabDataExport;
   refit: StrategyLabRefitResult;
   predictions: StrategyLabPredictions;
+  simulation?: StrategyLabSimulation;
+  calibration?: StrategyLabCalibration;
+  symbolReliability?: StrategyLabSymbolReliability;
   runHistory: StrategyLabRunHistory;
   protocolComparison: StrategyLabProtocolComparison;
   productStance: {
@@ -191,6 +220,43 @@ interface CsvSummary {
   fetchedAtUtc: string | null;
   source: string | null;
 }
+
+interface OhlcvRow {
+  symbol: string;
+  date: string;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  volume: number;
+}
+
+type FeatureName = "return_5d" | "return_20d" | "volatility_10d" | "volume_ratio_20d" | "intraday_range_pct";
+
+type FeatureVector = Record<FeatureName, number>;
+
+interface LogisticFit {
+  intercept: number;
+  coefficients: Record<FeatureName, number>;
+  means: Record<FeatureName, number>;
+  standardDeviations: Record<FeatureName, number>;
+}
+
+interface ResolvedExpansionResult {
+  rows: StrategyLabResolvedPrediction[];
+  validationStatus: "expanded" | "fallback";
+  reason: string;
+}
+
+const RESOLVED_EXPANSION_FEATURES: FeatureName[] = [
+  "return_5d",
+  "return_20d",
+  "volatility_10d",
+  "volume_ratio_20d",
+  "intraday_range_pct",
+];
+const RESOLVED_EXPANSION_PROBABILITY_TOLERANCE = 1e-7;
+const RESOLVED_EXPANSION_FORWARD_RETURN_TOLERANCE = 1e-8;
 
 async function statIso(filePath: string): Promise<string | null> {
   try {
@@ -242,6 +308,10 @@ function asDirection(value: unknown): PredictedDirection | null {
 
 function round(value: number, digits = 8): number {
   return Number(value.toFixed(digits));
+}
+
+function appendCaveat(caveat: string, addition: string): string {
+  return caveat.includes(addition) ? caveat : `${caveat} ${addition}`;
 }
 
 function metricSet(source: JsonRecord | null): StrategyLabMetricSet {
@@ -493,12 +563,277 @@ function normalizeResolvedPrediction(raw: unknown): StrategyLabResolvedPredictio
   };
 }
 
+function parseOhlcvRows(csvRaw: string): OhlcvRow[] | null {
+  const lines = csvRaw.trim().split(/\r?\n/);
+  const header = lines.shift()?.split(",") ?? [];
+  const indexOf = (column: string) => header.indexOf(column);
+  const symbolIndex = indexOf("symbol");
+  const dateIndex = indexOf("date");
+  const openIndex = indexOf("open");
+  const highIndex = indexOf("high");
+  const lowIndex = indexOf("low");
+  const closeIndex = indexOf("close");
+  const volumeIndex = indexOf("volume");
+
+  if (
+    symbolIndex < 0
+    || dateIndex < 0
+    || openIndex < 0
+    || highIndex < 0
+    || lowIndex < 0
+    || closeIndex < 0
+    || volumeIndex < 0
+  ) {
+    return null;
+  }
+
+  const rows: OhlcvRow[] = [];
+  for (const line of lines) {
+    const fields = line.split(",");
+    const symbol = fields[symbolIndex];
+    const date = fields[dateIndex];
+    const open = Number(fields[openIndex]);
+    const high = Number(fields[highIndex]);
+    const low = Number(fields[lowIndex]);
+    const close = Number(fields[closeIndex]);
+    const volume = Number(fields[volumeIndex]);
+    if (
+      !symbol
+      || !date
+      || !Number.isFinite(open)
+      || !Number.isFinite(high)
+      || !Number.isFinite(low)
+      || !Number.isFinite(close)
+      || !Number.isFinite(volume)
+    ) {
+      return null;
+    }
+    rows.push({ symbol, date, open, high, low, close, volume });
+  }
+
+  return rows;
+}
+
+function asFeatureMap(value: unknown): Record<FeatureName, number> | null {
+  const record = asRecord(value);
+  if (!record) return null;
+  const entries = RESOLVED_EXPANSION_FEATURES.map((feature) => [feature, asNumber(record[feature])] as const);
+  if (entries.some(([, numberValue]) => numberValue === null)) return null;
+  return Object.fromEntries(entries) as Record<FeatureName, number>;
+}
+
+function logisticFitFromMetrics(metrics: JsonRecord | null): LogisticFit | null {
+  const fit = asRecord(metrics?.fit);
+  const coefficientsRecord = asRecord(fit?.standardizedCoefficients);
+  const coefficients = asFeatureMap(coefficientsRecord);
+  const means = asFeatureMap(fit?.trainingFeatureMeans);
+  const standardDeviations = asFeatureMap(fit?.trainingFeatureStandardDeviations);
+  const intercept = asNumber(coefficientsRecord?.intercept);
+  if (!coefficients || !means || !standardDeviations || intercept === null) return null;
+  if (RESOLVED_EXPANSION_FEATURES.some((feature) => standardDeviations[feature] === 0)) return null;
+  return { intercept, coefficients, means, standardDeviations };
+}
+
+function populationStandardDeviation(values: number[]): number {
+  const mean = values.reduce((sum, value) => sum + value, 0) / values.length;
+  const variance = values.reduce((sum, value) => sum + (value - mean) ** 2, 0) / values.length;
+  return Math.sqrt(variance);
+}
+
+function buildFeatures(rows: OhlcvRow[], index: number): FeatureVector | null {
+  const row = rows[index];
+  const close5 = rows[index - 5]?.close;
+  const close20 = rows[index - 20]?.close;
+  if (!row || !close5 || !close20) return null;
+
+  const returns10: number[] = [];
+  for (let cursor = index - 9; cursor <= index; cursor += 1) {
+    const previous = rows[cursor - 1]?.close;
+    const current = rows[cursor]?.close;
+    if (!previous || !current) return null;
+    returns10.push(current / previous - 1);
+  }
+
+  const priorVolumeRows = rows.slice(index - 20, index);
+  const averagePriorVolume = priorVolumeRows.reduce((sum, priorRow) => sum + priorRow.volume, 0) / priorVolumeRows.length;
+  if (!Number.isFinite(averagePriorVolume) || averagePriorVolume === 0 || row.close === 0) return null;
+
+  return {
+    return_5d: row.close / close5 - 1,
+    return_20d: row.close / close20 - 1,
+    volatility_10d: populationStandardDeviation(returns10),
+    volume_ratio_20d: row.volume / averagePriorVolume,
+    intraday_range_pct: (row.high - row.low) / row.close,
+  };
+}
+
+function probabilityFromFit(features: FeatureVector, fit: LogisticFit): number {
+  const logit = RESOLVED_EXPANSION_FEATURES.reduce(
+    (sum, feature) =>
+      sum
+      + ((features[feature] - fit.means[feature]) / fit.standardDeviations[feature])
+      * fit.coefficients[feature],
+    fit.intercept,
+  );
+  return 1 / (1 + Math.exp(-logit));
+}
+
+function groupRowsBySymbol(rows: OhlcvRow[]): Map<string, OhlcvRow[]> {
+  const grouped = new Map<string, OhlcvRow[]>();
+  for (const row of rows) {
+    const symbolRows = grouped.get(row.symbol) ?? [];
+    symbolRows.push(row);
+    grouped.set(row.symbol, symbolRows);
+  }
+  for (const symbolRows of grouped.values()) {
+    symbolRows.sort((left, right) => left.date.localeCompare(right.date));
+  }
+  return grouped;
+}
+
+function deriveExpandedResolvedPredictions(
+  csvRaw: string,
+  metrics: JsonRecord | null,
+  horizonTradingDays: number | null,
+): StrategyLabResolvedPrediction[] | null {
+  const rows = parseOhlcvRows(csvRaw);
+  const fit = logisticFitFromMetrics(metrics);
+  const validationBoundary = asRecord(metrics?.validationBoundary);
+  const trainEndDate = asString(validationBoundary?.trainEndDate);
+  const lookbackTradingRows = asNumber(asRecord(metrics?.features)?.lookbackTradingRows);
+  if (!rows || !fit || !trainEndDate || horizonTradingDays === null || horizonTradingDays <= 0) return null;
+  if (lookbackTradingRows !== 20) return null;
+
+  const derived: StrategyLabResolvedPrediction[] = [];
+  for (const symbolRows of groupRowsBySymbol(rows).values()) {
+    for (let index = lookbackTradingRows; index + horizonTradingDays < symbolRows.length; index += 1) {
+      const featureRow = symbolRows[index];
+      const targetRow = symbolRows[index + horizonTradingDays];
+      if (!featureRow || !targetRow || featureRow.date <= trainEndDate) continue;
+      const features = buildFeatures(symbolRows, index);
+      if (!features) return null;
+      const probabilityUp = round(probabilityFromFit(features, fit));
+      const predictedDirection: PredictedDirection = probabilityUp >= 0.5 ? "up" : "down";
+      const forwardReturn = round(targetRow.close / featureRow.close - 1);
+      const actualDirection: PredictedDirection = forwardReturn > 0 ? "up" : "down";
+      derived.push({
+        symbol: featureRow.symbol,
+        featureDate: featureRow.date,
+        targetDate: targetRow.date,
+        probabilityUp,
+        predictedDirection,
+        actualDirection,
+        forwardReturn,
+        correct: predictedDirection === actualDirection,
+      });
+    }
+  }
+
+  return derived.sort((left, right) =>
+    right.featureDate.localeCompare(left.featureDate)
+    || left.symbol.localeCompare(right.symbol),
+  );
+}
+
+function numericMatches(left: number | null, right: number | null, tolerance: number): boolean {
+  if (left === null || right === null) return left === right;
+  return Math.abs(left - right) <= tolerance;
+}
+
+function validateExpandedResolvedRows(
+  expandedRows: StrategyLabResolvedPrediction[],
+  committedRows: StrategyLabResolvedPrediction[],
+): string | null {
+  if (expandedRows.length <= committedRows.length) {
+    return `expanded resolved sample has ${expandedRows.length} rows, not more than committed ${committedRows.length}`;
+  }
+
+  for (let index = 0; index < committedRows.length; index += 1) {
+    const expanded = expandedRows[index];
+    const committed = committedRows[index];
+    if (!expanded || !committed) return `missing row at committed sample index ${index}`;
+    if (
+      expanded.symbol !== committed.symbol
+      || expanded.featureDate !== committed.featureDate
+      || expanded.targetDate !== committed.targetDate
+      || expanded.predictedDirection !== committed.predictedDirection
+      || expanded.actualDirection !== committed.actualDirection
+      || expanded.correct !== committed.correct
+    ) {
+      return `identity/direction mismatch at committed sample index ${index}`;
+    }
+    if (
+      !numericMatches(
+        expanded.probabilityUp,
+        committed.probabilityUp,
+        RESOLVED_EXPANSION_PROBABILITY_TOLERANCE,
+      )
+    ) {
+      return `probability mismatch at committed sample index ${index}`;
+    }
+    if (
+      !numericMatches(
+        expanded.forwardReturn,
+        committed.forwardReturn,
+        RESOLVED_EXPANSION_FORWARD_RETURN_TOLERANCE,
+      )
+    ) {
+      return `forward return mismatch at committed sample index ${index}`;
+    }
+  }
+
+  return null;
+}
+
+function dateRangeFromRows(
+  rows: StrategyLabResolvedPrediction[],
+  field: "featureDate" | "targetDate",
+): { start: string; end: string } | null {
+  const dates = rows.map((row) => row[field]).filter(Boolean).sort();
+  if (dates.length === 0) return null;
+  return { start: dates[0] ?? "UNKNOWN", end: dates.at(-1) ?? "UNKNOWN" };
+}
+
+export function expandResolvedPredictions(
+  committedRows: StrategyLabResolvedPrediction[],
+  csvRaw: string,
+  metrics: JsonRecord | null,
+  horizonTradingDays: number | null,
+): ResolvedExpansionResult {
+  const expandedRows = deriveExpandedResolvedPredictions(csvRaw, metrics, horizonTradingDays);
+  if (!expandedRows) {
+    return {
+      rows: committedRows,
+      validationStatus: "fallback",
+      reason: "unable to derive expanded rows from tracked CSV/metrics artifacts",
+    };
+  }
+  const validationError = validateExpandedResolvedRows(expandedRows, committedRows);
+  if (validationError) {
+    return {
+      rows: committedRows,
+      validationStatus: "fallback",
+      reason: validationError,
+    };
+  }
+  return {
+    rows: expandedRows,
+    validationStatus: "expanded",
+    reason: "derived rows matched committed recentResolved sample",
+  };
+}
+
 const PREDICTIONS_CAVEAT_FALLBACK = "僅供研究驗證；不是投資建議，不可用於交易。";
+const PREDICTIONS_EXPANSION_FALLBACK_CAVEAT = "Expanded resolved sample validation failed; showing committed recentResolved sample only.";
+const RESOLVED_SAMPLE_SOURCE = "reader-derived from tracked P194 CSV + P193 metrics metadata";
+const RESOLVED_SAMPLE_CAVEAT = "Research-only resolved artifact sample; not investment advice, not a trading signal, and not evidence of future predictive ability.";
 
 async function buildPredictions(): Promise<StrategyLabPredictions> {
-  const [record, mtime] = await Promise.all([
+  const [record, mtime, csvRaw, metrics] = await Promise.all([
     readJson(LATEST_PREDICTIONS_PATH),
     statIso(LATEST_PREDICTIONS_PATH),
+    fs.readFile(CSV_PATH, "utf8").catch(() => null),
+    readJson(P193_METRICS_PATH),
   ]);
 
   if (!record) {
@@ -513,6 +848,17 @@ async function buildPredictions(): Promise<StrategyLabPredictions> {
       latestBySymbol: [],
       openPredictions: [],
       recentResolved: [],
+      resolvedSampleProvenance: {
+        source: RESOLVED_SAMPLE_SOURCE,
+        validationStatus: "fallback",
+        validationReason: "missing latest predictions artifact",
+        fallbackActive: true,
+        committedResolvedPairs: 0,
+        activeResolvedPairs: 0,
+        featureDateRange: null,
+        targetDateRange: null,
+        caveat: RESOLVED_SAMPLE_CAVEAT,
+      },
       caveat: PREDICTIONS_CAVEAT_FALLBACK,
     };
   }
@@ -527,6 +873,20 @@ async function buildPredictions(): Promise<StrategyLabPredictions> {
         .map(normalizeResolvedPrediction)
         .filter((item): item is StrategyLabResolvedPrediction => item !== null)
     : [];
+  const caveat = asString(record.caveat) ?? PREDICTIONS_CAVEAT_FALLBACK;
+  const expansion = typeof csvRaw === "string"
+    ? expandResolvedPredictions(
+        recentResolved,
+        csvRaw,
+        metrics,
+        asNumber(record.horizonTradingDays),
+      )
+    : {
+        rows: recentResolved,
+        validationStatus: "fallback" as const,
+        reason: "missing P194 OHLCV CSV",
+      };
+  const fallbackActive = expansion.validationStatus === "fallback";
 
   return {
     status: "present",
@@ -538,8 +898,21 @@ async function buildPredictions(): Promise<StrategyLabPredictions> {
     modelBeatsBaseline: asBoolean(record.modelBeatsBaseline),
     latestBySymbol: openPredictions.filter((prediction) => prediction.isLatest),
     openPredictions,
-    recentResolved,
-    caveat: asString(record.caveat) ?? PREDICTIONS_CAVEAT_FALLBACK,
+    recentResolved: expansion.rows,
+    resolvedSampleProvenance: {
+      source: RESOLVED_SAMPLE_SOURCE,
+      validationStatus: expansion.validationStatus,
+      validationReason: expansion.reason,
+      fallbackActive,
+      committedResolvedPairs: recentResolved.length,
+      activeResolvedPairs: expansion.rows.length,
+      featureDateRange: dateRangeFromRows(expansion.rows, "featureDate"),
+      targetDateRange: dateRangeFromRows(expansion.rows, "targetDate"),
+      caveat: RESOLVED_SAMPLE_CAVEAT,
+    },
+    caveat: fallbackActive
+      ? appendCaveat(caveat, PREDICTIONS_EXPANSION_FALLBACK_CAVEAT)
+      : caveat,
   };
 }
 
@@ -687,12 +1060,28 @@ export async function readStrategyLabSnapshot(): Promise<StrategyLabSnapshot> {
       }
     : decisionCopy(productDecision);
 
+  const simulation = buildStrategySimulation(predictions.recentResolved);
+  const calibration = buildStrategyLabCalibration(predictions.recentResolved);
+  const symbolReliability = buildStrategyLabSymbolReliability(
+    predictions.recentResolved,
+    predictions.latestBySymbol,
+    simulation.thresholdDrilldown.symbolBreakdown.status === "candidate"
+      ? simulation.thresholdDrilldown.symbolBreakdown.rows.map((row) => ({
+          symbol: row.symbol,
+          tradeCount: row.tradeCount,
+        }))
+      : [],
+  );
+
   return {
     generatedAt: new Date().toISOString(),
     artifactSetStatus,
     dataExport,
     refit,
     predictions,
+    simulation,
+    calibration,
+    symbolReliability,
     runHistory,
     protocolComparison,
     productStance: {

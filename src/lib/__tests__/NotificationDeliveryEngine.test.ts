@@ -278,6 +278,7 @@ describe('NotificationDeliveryEngine — deliverAlerts()', () => {
       });
 
       expect(result.channels).toHaveLength(1);
+      expect(result.alertCount).toBe(1);
       expect(provider.send as jest.Mock).toHaveBeenCalledTimes(1);
       expect(mockLogCreate.mock.calls[0][0].data.alertCount).toBe(1);
     });

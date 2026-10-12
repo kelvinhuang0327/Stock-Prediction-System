@@ -12,15 +12,6 @@ const makeRow = (overrides: Partial<WatchlistRowViewModel> = {}): WatchlistRowVi
   weeklyChange: 2.4,
   volumeChange: 30,
   hasQuoteData: true,
-  fundamentalOverlay: {
-    riskLevel: 'moderate',
-    strengths: [],
-    pressures: [],
-    valuationContext: '估值大致接近同組中位水準。',
-    growthContext: '同組相對位置中性，尚無明確基本面優勢。',
-    summary: '同組相對位置中性，尚無明顯基本面優勢。',
-    limitations: [],
-  },
   analysis: {
     stockId: '2330',
     name: '台積電',
@@ -48,8 +39,21 @@ describe('WatchlistTable fundamental cue', () => {
   test('shows revenue YoY cue when basic fundamental data exists', () => {
     render(
       <WatchlistTable
-        rows={[makeRow()]}
-        totalCount={1}
+        rows={[
+          makeRow(),
+          makeRow({
+            symbol: '2317',
+            name: '鴻海',
+            analysis: {
+              ...makeRow().analysis!,
+              stockId: '2317',
+              name: '鴻海',
+              revenueYoY: 0,
+              eps: 0,
+            },
+          }),
+        ]}
+        totalCount={2}
         searchQuery=""
         sortConfig={{ key: 'symbol', dir: 'asc' }}
         onSearchChange={jest.fn()}
@@ -61,6 +65,33 @@ describe('WatchlistTable fundamental cue', () => {
     );
 
     expect(screen.getByText(/基本面：營收 YoY \+18.5% \/ EPS 8.20/i)).toBeInTheDocument();
+    expect(screen.getByText('基本面：營收 YoY 0.0% / EPS 0.00')).toBeInTheDocument();
+  });
+
+  test('shows revenue cue with explicit EPS-unavailable state', () => {
+    render(
+      <WatchlistTable
+        rows={[
+          makeRow({
+            analysis: {
+              ...makeRow().analysis!,
+              revenueYoY: 18.5,
+              eps: null,
+            } as unknown as NonNullable<WatchlistRowViewModel['analysis']>,
+          }),
+        ]}
+        totalCount={1}
+        searchQuery=""
+        sortConfig={{ key: 'symbol', dir: 'asc' }}
+        onSearchChange={jest.fn()}
+        onSort={jest.fn()}
+        onEditHoldings={jest.fn()}
+        onSetAlert={jest.fn()}
+        onRemove={jest.fn()}
+      />,
+    );
+
+    expect(screen.getByText('基本面：營收 YoY +18.5% / EPS 資料不足')).toBeInTheDocument();
   });
 
   test('shows degraded cue when revenue data is unavailable', () => {
@@ -90,15 +121,16 @@ describe('WatchlistTable fundamental cue', () => {
     expect(screen.getByText('基本面：營收資料不足')).toBeInTheDocument();
   });
 
-  test('shows fundamental overlay badge and summary', () => {
+  test('shows a negative revenue cue alongside the analysis summary', () => {
     render(
       <WatchlistTable
         rows={[
           makeRow({
-            fundamentalOverlay: {
-              ...makeRow().fundamentalOverlay!,
-              riskLevel: 'elevated',
-              summary: '同組成長表現不差，但估值壓力偏高，宜保守看待追價風險。',
+            analysis: {
+              ...makeRow().analysis!,
+              revenueYoY: -6.4,
+              recommendation: '偏空',
+              summary: '營收成長承壓，估值壓力偏高。',
             },
           }),
         ]}
@@ -113,11 +145,11 @@ describe('WatchlistTable fundamental cue', () => {
       />,
     );
 
-    expect(screen.getByText('基本面壓力')).toBeInTheDocument();
+    expect(screen.getByText('基本面：營收 YoY -6.4% / EPS 8.20')).toBeInTheDocument();
     expect(screen.getByText(/估值壓力偏高/)).toBeInTheDocument();
   });
 
-  test('still shows overlay when analysis is unavailable', () => {
+  test('shows an explicit fundamental state when analysis is unavailable', () => {
     render(
       <WatchlistTable
         rows={[
@@ -136,7 +168,7 @@ describe('WatchlistTable fundamental cue', () => {
       />,
     );
 
-    expect(screen.getByText('基本面中性')).toBeInTheDocument();
-    expect(screen.getByText(/同組相對位置中性/)).toBeInTheDocument();
+    expect(screen.getByText('基本面：分析資料不足')).toBeInTheDocument();
+    expect(screen.getByText('分析中...')).toBeInTheDocument();
   });
 });
