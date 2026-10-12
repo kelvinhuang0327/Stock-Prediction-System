@@ -1,0 +1,30 @@
+{
+  "phase": "P30",
+  "capturedAt": "2026-05-20T00:00:00.000Z",
+  "chipAvailableAt": {
+    "schemaReady": true,
+    "migrationArtifactCreated": true,
+    "migrationApplied": false,
+    "writePolicyCreated": true,
+    "lagStatus": "CHIP_LAG_WARN_ASSUMPTION_REQUIRED",
+    "canClaimConfirmed": false,
+    "blockedBy": "prod_logs_not_available"
+  },
+  "monthlyRevenueBackfill": {
+    "dryRunCompleted": true,
+    "totalNullRows": 0,
+    "authorizationReceived": false,
+    "gate": "WAITING_FOR_USER_AUTHORIZATION",
+    "authorizationPhrase": "YES apply MonthlyRevenue releaseDate backfill",
+    "note": "0 null rows found — backfill is a no-op. All 2143 rows already have releaseDate populated."
+  },
+  "tests": {
+    "p30New": "49/49 PASS",
+    "p29lRegression": "96/96 PASS",
+    "p29kjkiRegression": "177/177 PASS",
+    "fullSuite": "3633/3637 PASS (4 pre-existing failures)"
+  },
+  "finalClassification": "P30_CHIP_SCHEMA_READY_BACKFILL_WAITING_FOR_AUTH",
+  "entersAlphaScore": false,
+  "disclaimer": "Structural readiness audit only. Does not constitute investment advice. No profit, return, or investment performance claims. InstitutionalChip.entersAlphaScore = false. Results must not be used as buy/sell/hold signals."
+}

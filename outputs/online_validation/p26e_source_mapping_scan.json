@@ -1,0 +1,68 @@
+{
+  "phase": "P26E-HARDRESET",
+  "date": "2026-05-13",
+  "sources": [
+    {
+      "sourceCategory": "MonthlyRevenue",
+      "sourceState": "REAL_DATA_PRESENT_BUT_NOT_MAPPED",
+      "fixtureFileFound": false,
+      "realSourceCandidates": [
+        "prisma/schema.prisma",
+        "src/lib/data/DataSourceContract.ts",
+        "src/lib/data/DataQualityChecker.ts",
+        "src/lib/data/AsOfDataGate.ts"
+      ],
+      "pitGateField": "releaseDate",
+      "symbolJoinFieldFound": true,
+      "asOfDateCompatibleFieldFound": true,
+      "sourceHashFieldFound": false,
+      "outcomeFieldsDetected": false,
+      "readOnly": true,
+      "notes": "MonthlyRevenue model found in prisma/schema.prisma with releaseDate PIT gate field"
+    },
+    {
+      "sourceCategory": "NewsEvent",
+      "sourceState": "FIXTURE_ONLY",
+      "fixtureFileFound": true,
+      "realSourceCandidates": [],
+      "pitGateField": "publishedAt",
+      "symbolJoinFieldFound": true,
+      "asOfDateCompatibleFieldFound": true,
+      "sourceHashFieldFound": false,
+      "outcomeFieldsDetected": false,
+      "readOnly": true,
+      "notes": "Fixture file p26b_news_events_fixture.json found. No real DB source."
+    },
+    {
+      "sourceCategory": "FinancialReport",
+      "sourceState": "FIXTURE_ONLY",
+      "fixtureFileFound": true,
+      "realSourceCandidates": [],
+      "pitGateField": "availabilityDate",
+      "symbolJoinFieldFound": true,
+      "asOfDateCompatibleFieldFound": true,
+      "sourceHashFieldFound": false,
+      "outcomeFieldsDetected": false,
+      "readOnly": true,
+      "notes": "Fixture file p26c_financial_reports_fixture.json found. No real DB source."
+    }
+  ],
+  "summary": {
+    "totalSources": 3,
+    "fixtureOnlyCount": 2,
+    "realDataPresentCount": 1,
+    "realDataReadyCount": 0,
+    "missingSourceCount": 0,
+    "allReadOnly": true,
+    "anyOutcomeFieldsDetected": false
+  },
+  "outcomeFieldsValidation": {
+    "valid": true,
+    "violations": []
+  },
+  "readOnlyValidation": {
+    "valid": true,
+    "violations": []
+  },
+  "status": "PASS"
+}

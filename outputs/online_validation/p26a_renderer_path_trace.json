@@ -1,0 +1,60 @@
+{
+  "traceId": "P26A-RENDERER-PATH-TRACE",
+  "generatedAt": "2026-05-14T11:00:00.000Z",
+  "factorSnapshotProducers": [
+    {
+      "file": "src/lib/onlineValidation/ActiveScoringSnapshotBuilder.ts",
+      "function": "buildActiveScoringSnapshot",
+      "line": "294-296",
+      "description": "Maps RuleBasedStockAnalyzer.factors to name:value(note) strings"
+    },
+    {
+      "file": "src/lib/analysis/RuleBasedStockAnalyzer.ts",
+      "function": "analyzeStock",
+      "description": "Computes technical/chip/fundamental factors; returns as factors array"
+    }
+  ],
+  "reasonSnapshotProducers": [
+    {
+      "file": "src/lib/onlineValidation/ActiveScoringSnapshotBuilder.ts",
+      "function": "buildActiveScoringSnapshot",
+      "line": "316",
+      "description": "Sets reasonSnapshot = result.reason (raw string from RuleBasedStockAnalyzer)"
+    },
+    {
+      "file": "src/lib/onlineValidation/ActiveScoringSnapshotBuilder.ts",
+      "function": "buildActiveScoringSnapshot",
+      "line": "333-335",
+      "description": "P26A enrichment: if PARTIAL/COMPLETE and factorSnapshot>0, replaces reasonSnapshot with enrichReasonFromExistingFactors output"
+    },
+    {
+      "file": "src/lib/onlineValidation/P26AReasonFactorEnrichmentUtils.ts",
+      "function": "enrichReasonFromExistingFactors",
+      "description": "Pure function: reads factorSnapshot, produces multi-factor reason string"
+    }
+  ],
+  "reasonSnapshotConsumers": [
+    {
+      "file": "src/lib/onlineValidation/P5WalkthroughReviewUtils.ts",
+      "function": "buildWalkthroughReviewEntry",
+      "line": "210, 315-320, 358-363",
+      "description": "Reads caseRow.reasonSnapshot directly for display; flags single-token reasons"
+    },
+    {
+      "file": "src/lib/onlineValidation/P8SignalReasonDiagnosisUtils.ts",
+      "function": "diagnoseCaseRow",
+      "line": "182",
+      "description": "Reads reasonSnapshotSummary for reason quality diagnosis"
+    }
+  ],
+  "rootCause": {
+    "summary": "Corpus was frozen before P26A enrichment was added to ActiveScoringSnapshotBuilder. For new builds, enrichment runs at line 333-335. For frozen corpus, reasonSnapshot still has pre-enrichment single-token values.",
+    "scoringPath": "RuleBasedStockAnalyzer.analyzeStock -> factorSnapshot -> alphaScore (NOT changed by renderer)",
+    "renderingPath": "reasonSnapshot (from corpus) -> P5WalkthroughReviewUtils display -> UNDEROUTPUT when single-token",
+    "minimalFixPoint": "Read-time renderer: P26ACorpusReasonRenderer.renderReasonFromCorpusSnapshot - applies enrichment when reasonSnapshot is single-token AND factorSnapshot is non-empty."
+  },
+  "whyFactorsPresentButReasonSingleToken": "P3 corpus was created during P3-HARDRESET (before P26A). enrichReasonFromExistingFactors call was added in P26A-HARDRESET. Corpus rows built before P26A only have the raw result.reason string. factorSnapshot was always rich from result.factors.",
+  "scoringPathUnchanged": true,
+  "renderingPathFix": "P26ACorpusReasonRenderer.renderReasonFromCorpusSnapshot",
+  "disclaimer": "Does not constitute investment advice."
+}

@@ -1,0 +1,42 @@
+{
+  "phase": "P16-HARDRESET",
+  "task": "MonthlyRevenue releaseDate Schema Migration Dry-Run Preflight",
+  "date": "2026-05-12",
+  "disclaimer": "Does not constitute investment advice. Does not compute ROI, profit, alpha, win-rate, edge, or outperformance. Governance / dry-run only. No production DB writes.",
+  "approvalToken": {
+    "required": "P14_APPROVE_SCHEMA_MIGRATION_DRY_RUN_ONLY",
+    "presentInPrompt": true,
+    "status": "TOKEN_VERIFIED"
+  },
+  "p15ArtifactsCheck": {
+    "p15migration_approval_review.json": "PRESENT",
+    "p15migration_risk_register.json": "PRESENT",
+    "p15migration_approval_decision.json": "PRESENT",
+    "p15migration_approval_final_report.md": "PRESENT"
+  },
+  "p15DecisionVerification": {
+    "classification": "APPROVAL_REVIEW_PASS_READY_FOR_DRY_RUN_IMPLEMENTATION",
+    "approvalGranted": false,
+    "productionApplyAllowed": false,
+    "approvalTokenRequired": "P14_APPROVE_SCHEMA_MIGRATION_DRY_RUN_ONLY",
+    "status": "VERIFIED"
+  },
+  "p14ArtifactsCheck": {
+    "p14monthly_revenue_migration_draft.json": "PRESENT",
+    "p14monthly_revenue_migration_draft.md": "PRESENT",
+    "p14monthly_revenue_rollback_draft.md": "PRESENT",
+    "p14monthly_revenue_query_gate_proposal.json": "PRESENT",
+    "p14monthly_revenue_fixture_dry_run.json": "PRESENT"
+  },
+  "frozenCorpusCheck": {
+    "simulation_snapshot_corpus.jsonl": { "expected": 60, "actual": 60, "status": "FROZEN" },
+    "p0hardreset_historical_replay_corpus.jsonl": { "expected": 4500, "actual": 4500, "status": "FROZEN" },
+    "p1baseline_historical_replay_corpus.jsonl": { "expected": 9900, "actual": 9900, "status": "FROZEN" },
+    "p3active_scoring_historical_replay_corpus.jsonl": { "expected": 4500, "actual": 4500, "status": "FROZEN" }
+  },
+  "allGatesPass": true,
+  "preflightStatus": "PASS",
+  "productionDbWritten": false,
+  "readyForDryRunImplementation": true,
+  "classification": "P16_DRY_RUN_PREFLIGHT_PASS"
+}

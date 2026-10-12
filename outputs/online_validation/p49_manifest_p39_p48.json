@@ -1,0 +1,386 @@
+{
+  "manifestVersion": "p2-p39-p48-manifest-v0",
+  "generatedAt": "2026-05-23T00:00:00.000Z",
+  "documentationType": "GOVERNANCE_DOCUMENTATION_ONLY",
+  "entersAlphaScore": false,
+  "paperOnly": true,
+  "dryRun": true,
+  "notInvestmentRecommendation": true,
+  "noScoringChange": true,
+  "noDbApply": true,
+  "noCorpusChange": true,
+  "noOptimizer": true,
+  "noRealBacktest": true,
+  "noBuySellActionSemantics": true,
+  "noPnlRoiWinRateClaims": true,
+  "disclaimer": "This manifest is governance documentation only. entersAlphaScore=false. Not investment advice. No buy/sell/hold semantics. Paper-only. Dry-run.",
+  "phases": [
+    {
+      "phaseId": "P38",
+      "date": "2026-05-15",
+      "title": "Simulation Input Readiness Mapping for Controlled Sources",
+      "classification": "P38_SIMULATION_INPUT_READINESS_MAPPING_READY",
+      "commit": "d096a5c",
+      "commitMessage": "P38: Add simulation input readiness mapping for controlled sources",
+      "purpose": "Build a source-to-simulation-input readiness mapping classifying MonthlyRevenue, NewsEvent, FinancialReport, Chip, Quote, and Regime. Determine which sources are eligible as paper-only simulation inputs.",
+      "srcFilesProduced": [
+        "src/lib/onlineValidation/p38/SimulationInputReadinessTypes.ts",
+        "src/lib/onlineValidation/p38/SimulationInputReadinessMapper.ts"
+      ],
+      "outputArtifacts": [],
+      "testsReported": "55/55 PASS",
+      "regressionReported": "P37(60) P36(114) P31(174) — all green",
+      "keyInvariantsCarried": {
+        "entersAlphaScore": false,
+        "paperOnly": true,
+        "dryRunOnly": true,
+        "noDbApply": true,
+        "noScoringFormulaChange": true
+      },
+      "eligibilityMatrix": {
+        "MonthlyRevenue": "SIMULATION_INPUT_ELIGIBLE",
+        "Quote": "SIMULATION_INPUT_ELIGIBLE",
+        "Regime": "SIMULATION_INPUT_ELIGIBLE",
+        "NewsEvent": "BLOCKED_QUALITY_EVIDENCE",
+        "FinancialReport": "BLOCKED_PIT_METADATA",
+        "Chip": "BLOCKED_AUTHORIZATION"
+      },
+      "relationshipToP49Ledger": "P38 eligibility matrix is the source-of-truth for P39 contract; P49 ledger baseline includes P38 tests (55/55)",
+      "relationshipToP1AxisA": "P38 mapSourceToSimulationInputReadiness() is called by P1 ControlledResearchSnapshotBuilder to classify each source"
+    },
+    {
+      "phaseId": "P39",
+      "date": "2026-05-21",
+      "title": "Paper Simulation Input Contract for Eligible Sources",
+      "classification": "P39_PAPER_SIMULATION_INPUT_CONTRACT_READY",
+      "commit": "a203853",
+      "commitMessage": "P39: Add paper simulation input contract for eligible sources",
+      "purpose": "Define the full type system and contract for eligible paper simulation inputs (MonthlyRevenue, Quote, Regime). Explicitly blocks ineligible sources. 14 forbidden fields, 8 forbidden uses.",
+      "srcFilesProduced": [
+        "src/lib/onlineValidation/p39/PaperSimulationInputContract.ts",
+        "src/lib/onlineValidation/p39/PaperSimulationInputContractBuilder.ts"
+      ],
+      "outputArtifacts": [],
+      "testsReported": "77/77 PASS (12 groups)",
+      "regressionReported": "P38(55) P37(60) P36(114) — 165/165 green",
+      "keyInvariantsCarried": {
+        "entersAlphaScore": false,
+        "paperOnly": true,
+        "dryRunOnly": true,
+        "noDbApply": true,
+        "noSimulationExecution": true,
+        "noRealBacktest": true,
+        "noOptimizer": true
+      },
+      "eligibleSources": [
+        "MonthlyRevenue",
+        "Quote",
+        "Regime"
+      ],
+      "blockedSources": [
+        "NewsEvent (BLOCKED_QUALITY_EVIDENCE)",
+        "FinancialReport (BLOCKED_PIT_METADATA)",
+        "Chip (BLOCKED_AUTHORIZATION)"
+      ],
+      "relationshipToP49Ledger": "P49 baseline includes P39 (77/77). Contract block list is authoritative for subsequent phases.",
+      "relationshipToP1AxisA": "P39 eligible sources (MR/Quote/Regime) are the same three sources assessed by P1 ControlledResearchSnapshotBuilder"
+    },
+    {
+      "phaseId": "P40",
+      "date": "2026-05-21",
+      "title": "Paper Simulation Framework Design Gate",
+      "classification": "P40_PAPER_SIMULATION_FRAMEWORK_DESIGN_READY",
+      "commit": "68dd283",
+      "commitMessage": "P40: Add paper simulation framework design gate",
+      "purpose": "Establish the paper simulation framework boundary / design gate / skeleton contract. Not simulation execution. Not optimizer. Not real backtest. Not scoring.",
+      "srcFilesProduced": [
+        "src/lib/onlineValidation/p40/PaperSimulationFrameworkTypes.ts",
+        "src/lib/onlineValidation/p40/PaperSimulationFrameworkBoundary.ts"
+      ],
+      "outputArtifacts": [],
+      "testsReported": "118/118 PASS (15 groups)",
+      "regressionReported": "P39(77) P38(55) — green",
+      "keyInvariantsCarried": {
+        "entersAlphaScore": false,
+        "paperOnly": true,
+        "dryRunOnly": true,
+        "noExecution": true,
+        "noInvestmentAdvice": true,
+        "noBuySellActionSemantics": true,
+        "notSimulationExecution": true,
+        "notOptimizer": true,
+        "notRealBacktest": true
+      },
+      "relationshipToP49Ledger": "P49 baseline includes P40 (118/118). Framework boundary is inherited by P41-P46.",
+      "relationshipToP1AxisA": "P40 establishes paper-only framework boundary that governs Axis B; P1 operates on Axis A (research snapshot), independent"
+    },
+    {
+      "phaseId": "P41",
+      "date": "2026-05-21",
+      "title": "Paper Simulation Execution Dry-Run Design",
+      "classification": "P41_PAPER_SIMULATION_DRY_RUN_DESIGN_READY",
+      "commit": "2c0685d",
+      "commitMessage": "P41: Add paper simulation execution dry-run design",
+      "purpose": "Design paper simulation execution dry-run stub interface. NOT real simulation execution. Stub-only — no real metrics, no PnL, no ROI. executedAt=null enforced.",
+      "srcFilesProduced": [
+        "src/lib/onlineValidation/p41/PaperSimulationDryRunContract.ts",
+        "src/lib/onlineValidation/p41/PaperSimulationDryRunRunner.ts"
+      ],
+      "outputArtifacts": [],
+      "testsReported": "97/97 PASS (11 groups)",
+      "regressionReported": "P40(118) P39(77) P38(55) — green",
+      "keyInvariantsCarried": {
+        "entersAlphaScore": false,
+        "paperOnly": true,
+        "dryRunOnly": true,
+        "noActualMetrics": true,
+        "executedAt": "null",
+        "stubResult": "DRY_RUN_STUB_ONLY",
+        "noRealExecution": true
+      },
+      "relationshipToP49Ledger": "P49 baseline includes P41 (97/97). executedAt=null invariant is a P49 ledger boundary check.",
+      "relationshipToP1AxisA": "Independent — P41 is Axis B stub execution; P1 Axis A snapshot is a separate surface"
+    },
+    {
+      "phaseId": "P42",
+      "date": "2026-05-21",
+      "title": "Paper Simulation Dry-run Lifecycle Design",
+      "classification": "P42_PAPER_SIMULATION_DRY_RUN_LIFECYCLE_READY",
+      "commit": "3133956",
+      "commitMessage": "P42: Add paper simulation dry-run lifecycle design",
+      "purpose": "Design paper simulation dry-run lifecycle state machine (PENDING→RUNNING→COMPLETE/CANCELLED) and immutable log. NOT real execution. All states are stub-only.",
+      "srcFilesProduced": [
+        "src/lib/onlineValidation/p42/PaperSimulationDryRunLifecycle.ts",
+        "src/lib/onlineValidation/p42/PaperSimulationDryRunLog.ts"
+      ],
+      "outputArtifacts": [],
+      "testsReported": "98/98 PASS (11 groups)",
+      "regressionReported": "P41(97) P40(118) P39(77) P38(55) — green",
+      "keyInvariantsCarried": {
+        "entersAlphaScore": false,
+        "paperOnly": true,
+        "dryRunOnly": true,
+        "noActualMetrics": true,
+        "executedAt": "null",
+        "stubResult": "DRY_RUN_STUB_ONLY",
+        "noRealExecution": true
+      },
+      "lifecycleStates": [
+        "PENDING",
+        "RUNNING",
+        "COMPLETE",
+        "CANCELLED"
+      ],
+      "terminalStates": [
+        "COMPLETE",
+        "CANCELLED"
+      ],
+      "relationshipToP49Ledger": "P49 baseline includes P42 (98/98). State machine correctness verified by P49 full-suite run.",
+      "relationshipToP1AxisA": "Independent"
+    },
+    {
+      "phaseId": "P43",
+      "date": "2026-05-21",
+      "title": "Paper Simulation Dry-run Lifecycle Runner",
+      "classification": "P43_PAPER_SIMULATION_DRY_RUN_LIFECYCLE_RUNNER_READY",
+      "commit": "3ffab55",
+      "commitMessage": "P43: Add paper simulation dry-run lifecycle runner",
+      "purpose": "Drive a P42 lifecycle through a complete stub-only run (PENDING→RUNNING→COMPLETE). Record 4 log entries. Build immutable RunnerReport. No real execution.",
+      "srcFilesProduced": [
+        "src/lib/onlineValidation/p43/PaperSimulationDryRunLifecycleRunner.ts",
+        "src/lib/onlineValidation/p43/PaperSimulationDryRunRunnerReport.ts"
+      ],
+      "outputArtifacts": [],
+      "testsReported": "98/98 PASS (11 groups)",
+      "regressionReported": "P42(98) P41(97) P40(118) P39(77) P38(55) — green",
+      "keyInvariantsCarried": {
+        "entersAlphaScore": false,
+        "paperOnly": true,
+        "dryRunOnly": true,
+        "noActualMetrics": true,
+        "executedAt": "null",
+        "stubResult": "DRY_RUN_STUB_ONLY",
+        "noRealExecution": true
+      },
+      "lifecycleLogEntries": 4,
+      "runnerFlow": "PENDING → RUNNING → COMPLETE with VALIDATION_PASSED, TRANSITION_COMPLETED x2, BOUNDARY_CHECK_PASSED",
+      "relationshipToP49Ledger": "P49 baseline includes P43 (98/98). Runner log structure verified by P49 full-suite run.",
+      "relationshipToP1AxisA": "Independent"
+    },
+    {
+      "phaseId": "P44",
+      "date": "2026-05-21",
+      "title": "Paper Simulation Dry-run Lifecycle Runner Integration",
+      "classification": "P44_PAPER_SIMULATION_DRY_RUN_LIFECYCLE_RUNNER_INTEGRATION_READY",
+      "commit": "b0335bf",
+      "commitMessage": "P44: Add paper simulation dry-run lifecycle runner integration",
+      "purpose": "End-to-end integration surface that orchestrates the full P39→P43 pipeline in a single function call. 5-step pipeline.",
+      "srcFilesProduced": [
+        "src/lib/onlineValidation/p44/PaperSimulationDryRunIntegration.ts",
+        "src/lib/onlineValidation/p44/PaperSimulationDryRunIntegrationReport.ts"
+      ],
+      "outputArtifacts": [],
+      "testsReported": "98/98 PASS (11 groups)",
+      "regressionReported": "P38(55) P39(77) P40(118) P41(97) P42(98) P43(98) — all green",
+      "keyInvariantsCarried": {
+        "entersAlphaScore": false,
+        "paperOnly": true,
+        "dryRunOnly": true,
+        "noActualMetrics": true,
+        "executedAt": "null",
+        "noRealExecution": true,
+        "pipelineStepsTotal": 5
+      },
+      "pipelineSteps": [
+        "createPaperSimulationFrameworkPlan (P40)",
+        "runPaperSimulationDryRun (P41)",
+        "createDryRunLifecycle (P42)",
+        "runDryRunLifecycle (P43)",
+        "buildRunnerReport (P43)"
+      ],
+      "authGateCommit": "3ffab55 (P44-AUTH-GATE: Waiting for authorization)",
+      "relationshipToP49Ledger": "P49 baseline includes P44 (98/98). Integration-level governance verified.",
+      "relationshipToP1AxisA": "Independent"
+    },
+    {
+      "phaseId": "P45",
+      "date": "2026-05-21",
+      "title": "Paper Simulation Dry-run Integration Rehearsal",
+      "classification": "P45_PAPER_SIMULATION_DRY_RUN_INTEGRATION_REHEARSAL_READY",
+      "commit": "2e30a5d",
+      "commitMessage": "P45: Add paper simulation dry-run integration rehearsal",
+      "purpose": "Meta-layer over P44: rehearses the full integration pipeline by running runDryRunIntegration (P44) and buildIntegrationReport (P44) as 2 discrete rehearsal steps.",
+      "srcFilesProduced": [
+        "src/lib/onlineValidation/p45/ (rehearsal module)"
+      ],
+      "outputArtifacts": [],
+      "testsReported": "98/98 PASS (11 groups)",
+      "regressionReported": "P44(98) P43(98) P42(98) P41(97) P40(118) P39(77) P38(55) — green",
+      "keyInvariantsCarried": {
+        "entersAlphaScore": false,
+        "paperOnly": true,
+        "dryRunOnly": true,
+        "noActualMetrics": true,
+        "executedAt": "null",
+        "noRealExecution": true,
+        "rehearsalStepsTotal": 2,
+        "pipelineStepsCompleted": 5
+      },
+      "relationshipToP49Ledger": "P49 baseline includes P45 (98/98).",
+      "relationshipToP1AxisA": "Independent"
+    },
+    {
+      "phaseId": "P46",
+      "date": "2026-05-21",
+      "title": "Paper Simulation Dry-run Full Pipeline Rehearsal",
+      "classification": "P46_PAPER_SIMULATION_DRY_RUN_FULL_PIPELINE_REHEARSAL_READY",
+      "commit": "a5e475f",
+      "commitMessage": "P46: Add paper simulation dry-run full pipeline rehearsal",
+      "purpose": "Meta-layer over P45: rehearses the full pipeline by running runDryRunIntegrationRehearsal (P45) and buildRehearsalReport (P45) as 2 discrete full-pipeline rehearsal steps.",
+      "srcFilesProduced": [
+        "src/lib/onlineValidation/p46/ (full pipeline rehearsal module)"
+      ],
+      "outputArtifacts": [],
+      "testsReported": "98/98 PASS (11 groups)",
+      "regressionReported": "P45(98) P44(98) P43(98) P42(98) P41(97) P40(118) P39(77) P38(55) — green",
+      "keyInvariantsCarried": {
+        "entersAlphaScore": false,
+        "paperOnly": true,
+        "dryRunOnly": true,
+        "noActualMetrics": true,
+        "executedAt": "null",
+        "noRealExecution": true,
+        "fullPipelineRehearsalStepsTotal": 2,
+        "rehearsalStepsCompleted": 2,
+        "pipelineStepsCompleted": 5
+      },
+      "relationshipToP49Ledger": "P49 baseline includes P46 (98/98).",
+      "relationshipToP1AxisA": "Independent"
+    },
+    {
+      "phaseId": "P47",
+      "date": "2026-05-21",
+      "title": "Paper Simulation Dry-run Result Artifact Materialization",
+      "classification": "P47_PAPER_SIMULATION_DRY_RUN_RESULT_ARTIFACT_MATERIALIZATION_READY",
+      "commit": "7cd6b42",
+      "commitMessage": "P47: Add paper simulation dry-run result artifact materialization",
+      "purpose": "Materialize a frozen, deterministic dry-run result artifact from the full P39→P46 pipeline. Produces PaperSimulationDryRunResultArtifact with immutable snapshot semantics.",
+      "srcFilesProduced": [
+        "src/lib/onlineValidation/p47/PaperSimulationDryRunResultArtifact.ts",
+        "src/lib/onlineValidation/p47/PaperSimulationDryRunResultArtifactReport.ts"
+      ],
+      "outputArtifacts": [
+        "outputs/online_validation/p47_auth_gate_preflight_status.json",
+        "outputs/online_validation/p47_auth_gate_preflight_status.md",
+        "outputs/online_validation/p47_auth_gate_waiting_for_authorization.json",
+        "outputs/online_validation/p47_auth_gate_waiting_for_authorization.md",
+        "outputs/online_validation/p47_authorization_required_prompt_draft.md",
+        "outputs/online_validation/p47_dry_run_result_artifact_materialization_plan.json",
+        "outputs/online_validation/p47_test_baseline.json"
+      ],
+      "testsReported": "98/98 PASS (11 groups)",
+      "regressionReported": "935 chain regression — all green",
+      "authGateCommit": "092c155 (P48-AUTH-GATE: Waiting for authorization)",
+      "keyInvariantsCarried": {
+        "entersAlphaScore": false,
+        "paperOnly": true,
+        "dryRunOnly": true,
+        "noActualMetrics": true,
+        "executedAt": "null",
+        "noRealExecution": true,
+        "resultArtifactFrozen": true
+      },
+      "relationshipToP49Ledger": "P49 ledger baseline was derived from the full-suite run that confirmed P47 (and prior) chain. P47 schema-drift risk was identified as a motivation for P48.",
+      "relationshipToP1AxisA": "Independent"
+    },
+    {
+      "phaseId": "P48",
+      "date": "2026-05-23",
+      "title": "Paper Simulation Dry-run Result Artifact Golden Fixture Design",
+      "classification": "P48_GOLDEN_FIXTURE_DESIGN_READY",
+      "commit": "261cd369",
+      "commitMessage": "P48: Add paper simulation dry-run result artifact golden fixture design",
+      "purpose": "Design golden fixture + validator + schema for P47 result artifact. Pins expectations deterministically. Addresses schema-drift risk identified post-P47.",
+      "srcFilesProduced": [
+        "src/lib/onlineValidation/p48/P48GoldenFixtureValidator.ts",
+        "src/lib/onlineValidation/p48/goldenFixtures/P48GoldenFixture.ts",
+        "src/lib/onlineValidation/p48/goldenFixtures/P48GoldenFixtureSchema.ts"
+      ],
+      "outputArtifacts": [
+        "outputs/online_validation/p48_golden_fixture_design.md (x2 paths — duplicate)",
+        "outputs/online_validation/p48_golden_fixture_design.json"
+      ],
+      "testsReported": "100/100 PASS (11 groups)",
+      "regressionReported": "1035/1035 P38-P48 chain regression PASS",
+      "keyInvariantsCarried": {
+        "entersAlphaScore": false,
+        "paperOnly": true,
+        "dryRunOnly": true,
+        "noActualMetrics": true,
+        "noRealExecution": true,
+        "goldenFixtureDeterministic": true
+      },
+      "knownPreExistingFailures": [
+        "p26a_renderer_fix",
+        "p26a_batch_pipeline_wiring",
+        "p27_waiting_state_policy_guard",
+        "p29d_dropzone_scaffold"
+      ],
+      "note": "P48 self-reports 4 pre-existing failures. P49-LEDGER confirmed these as pre-existing via full-suite run (4842/4846 PASS). ledgerMatchesP48ClaimedSet=true.",
+      "relationshipToP49Ledger": "P48 is the HEAD at P49 ledger baseline capture. P49 ledger validates and pins P48's 4 pre-existing failure claim.",
+      "relationshipToP1AxisA": "P48 is the committed baseline from which P1 Axis A was implemented. P1 new files are untracked on top of P48 HEAD."
+    }
+  ],
+  "chainSummary": {
+    "phasesDocumented": 11,
+    "phaseRange": "P38–P48",
+    "axisB_consecutiveRounds": 11,
+    "totalSrcFilesProduced": "22+ (see individual phases)",
+    "totalTestsAtChainComplete": "1035/1035 P38-P48 chain",
+    "p49LedgerBaseline": "4842/4846 PASS (4 pre-existing failures pinned)",
+    "p1AxisAResult": "46/46 new P1 tests PASS; 221/221 affected modules PASS",
+    "axisAMonopolyRuleSatisfied": "P1 delivered Axis A research snapshot — anti-axis-monopoly rule satisfied",
+    "nextAxisBAuthorized": true
+  },
+  "manifestNote": "This manifest is GOVERNANCE DOCUMENTATION ONLY. No src/, no DB, no scoring, no optimizer, no real backtest, no corpus, no simulation execution."
+}

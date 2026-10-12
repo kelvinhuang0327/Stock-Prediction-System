@@ -1,0 +1,51 @@
+{
+  "phase": "P26A-HARDRESET",
+  "generatedAt": "2026-05-13T00:00:00.000Z",
+  "disclaimer": "Pre-flight gate for P26A. No investment recommendations. Research instrument only.",
+  "artifactChecks": {
+    "p5walkthrough_final_report.md": true,
+    "p5walkthrough_review.json": true,
+    "p8preflight_signal_reason_diagnosis.json": true,
+    "p12pit_feature_contract_final_report.md": true,
+    "p17monthly_revenue_final_report.md": true,
+    "p25post_migration_observability_final_report.md": true,
+    "p3active_scoring_historical_replay_corpus.jsonl": true,
+    "p19active_scoring_pit_replay_corpus.jsonl": true
+  },
+  "allArtifactsPresent": true,
+  "frozenCorpusLineCounts": {
+    "simulation_snapshot_corpus.jsonl": 60,
+    "p0hardreset_historical_replay_corpus.jsonl": 4500,
+    "p1baseline_historical_replay_corpus.jsonl": 9900,
+    "p3active_scoring_historical_replay_corpus.jsonl": 4500,
+    "p19active_scoring_pit_replay_corpus.jsonl": 4499
+  },
+  "frozenCorpusExpected": {
+    "simulation_snapshot_corpus.jsonl": 60,
+    "p0hardreset_historical_replay_corpus.jsonl": 4500,
+    "p1baseline_historical_replay_corpus.jsonl": 9900,
+    "p3active_scoring_historical_replay_corpus.jsonl": 4500,
+    "p19active_scoring_pit_replay_corpus.jsonl": 4500
+  },
+  "frozenCorpusNote": "p19 has 4499 lines (1 short of 4500). BY_DESIGN_BOUNDARY identical to P25 finding.",
+  "frozenCorpusStatus": "PASS_WITH_NOTE",
+  "p25ConclusionCheck": {
+    "finalClassification": "P25_POST_MIGRATION_OBSERVABILITY_COMPLETE",
+    "productionMigrationApplied": true,
+    "scoringFormulaUnchanged": true,
+    "status": "VERIFIED"
+  },
+  "codeBaselineSnapshot": {
+    "ActiveScoringSnapshotBuilder.ts": "063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d",
+    "note": "RuleBasedStockAnalyzer and SignalFusionEngine sha256 recorded at P26A start; must match end."
+  },
+  "p8GenericReasonSummary": {
+    "totalGenericCases": 24,
+    "TEMPLATE_TOO_GENERIC": 9,
+    "SNAPSHOT_CAPTURE_MISSING": 2,
+    "SCORING_ENGINE_UNDEROUTPUT": 9,
+    "FACTOR_EXPLANATION_MISSING": 4
+  },
+  "preflightClassification": "P26A_PREFLIGHT_PASS",
+  "verdict": "PROCEED_TO_PARTS_B_THROUGH_M"
+}

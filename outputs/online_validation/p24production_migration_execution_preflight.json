@@ -1,0 +1,225 @@
+{
+  "phase": "P24-HARDRESET",
+  "part": "A",
+  "description": "Production migration execution preflight",
+  "generatedAt": "2026-05-12T07:12:08.259Z",
+  "tokenStatus": "VERIFIED",
+  "requiredToken": "P23_APPROVE_PRODUCTION_MIGRATION_EXECUTION_ONLY",
+  "tokenVerified": true,
+  "gateTotal": 27,
+  "gatePassCount": 27,
+  "gateFailCount": 0,
+  "allPass": true,
+  "classification": "P24_PREFLIGHT_PASS_EXECUTION_AUTHORIZED",
+  "failedGates": [],
+  "gates": [
+    {
+      "id": "A01",
+      "description": "Execution token P23_APPROVE_PRODUCTION_MIGRATION_EXECUTION_ONLY present",
+      "pass": true,
+      "detail": "Token verified in prompt"
+    },
+    {
+      "id": "A02",
+      "description": "P23 artifact exists: p23production_migration_implementation_final_report.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "A03",
+      "description": "P23 artifact exists: p23production_migration_implementation_review.json",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "A04",
+      "description": "P23 artifact exists: p23production_execution_approval_request.json",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "A05",
+      "description": "P23 artifact exists: p23production_implementation_readiness_decision.json",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "A06",
+      "description": "P23 classification = P23_READY_TO_REQUEST_PRODUCTION_EXECUTION_APPROVAL",
+      "pass": true,
+      "detail": "P23_READY_TO_REQUEST_PRODUCTION_EXECUTION_APPROVAL"
+    },
+    {
+      "id": "A07",
+      "description": "P23 approvalGranted = false",
+      "pass": true,
+      "detail": "false"
+    },
+    {
+      "id": "A08",
+      "description": "P23 productionMigrationApplied = false",
+      "pass": true,
+      "detail": "false"
+    },
+    {
+      "id": "A09",
+      "description": "P23 requestedToken matches required token",
+      "pass": true,
+      "detail": "P23_APPROVE_PRODUCTION_MIGRATION_EXECUTION_ONLY"
+    },
+    {
+      "id": "A10",
+      "description": "P23 approvalAutoGranted = false",
+      "pass": true,
+      "detail": "false"
+    },
+    {
+      "id": "A11",
+      "description": "P22/P21 artifact exists: p22production_backup_restore_plan.json",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "A12",
+      "description": "P22/P21 artifact exists: p22production_migration_runbook.json",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "A13",
+      "description": "P22/P21 artifact exists: p22production_monitoring_checklist.json",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "A14",
+      "description": "P22/P21 artifact exists: p22production_migration_plan_decision.json",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "A15",
+      "description": "P22/P21 artifact exists: p21production_migration_approval_decision.json",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "A16",
+      "description": "prisma/schema.prisma contains releaseDate",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "A17",
+      "description": "prisma/schema.prisma contains releaseDateSource",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "A18",
+      "description": "prisma/schema.prisma contains releaseDateConfidence",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "A19",
+      "description": "Migration SQL exists: 20260512000000_monthly_revenue_release_date_pit_draft",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "A20",
+      "description": "MonthlyRevenueAvailability.ts exists",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "A21",
+      "description": "Migration SQL adds releaseDate, releaseDateSource, releaseDateConfidence",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "A22",
+      "description": "Migration SQL does not DROP any columns",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "A23",
+      "description": "Frozen corpus simulation_snapshot_corpus.jsonl = 60 lines",
+      "pass": true,
+      "detail": "actual=60"
+    },
+    {
+      "id": "A24",
+      "description": "Frozen corpus p0hardreset_historical_replay_corpus.jsonl = 4500 lines",
+      "pass": true,
+      "detail": "actual=4500"
+    },
+    {
+      "id": "A25",
+      "description": "Frozen corpus p1baseline_historical_replay_corpus.jsonl = 9900 lines",
+      "pass": true,
+      "detail": "actual=9900"
+    },
+    {
+      "id": "A26",
+      "description": "Frozen corpus p3active_scoring_historical_replay_corpus.jsonl = 4500 lines",
+      "pass": true,
+      "detail": "actual=4500"
+    },
+    {
+      "id": "A27",
+      "description": "Frozen corpus p19active_scoring_pit_replay_corpus.jsonl = 4500 lines",
+      "pass": true,
+      "detail": "actual=4500"
+    }
+  ],
+  "dbPreCheck": {
+    "dbFile": "prisma/dev.db",
+    "monthlyRevenueRowCount": 2143,
+    "dbFileHash": "a5cf277182c161dfe97ba05f9b81528d6c8e477dd5ac0bec6810ffbb8711c6f8",
+    "timestamp": "2026-05-12T07:12:08.259Z"
+  },
+  "frozenCorpora": [
+    {
+      "file": "simulation_snapshot_corpus.jsonl",
+      "expectedLines": 60,
+      "actualLines": 60,
+      "ok": true
+    },
+    {
+      "file": "p0hardreset_historical_replay_corpus.jsonl",
+      "expectedLines": 4500,
+      "actualLines": 4500,
+      "ok": true
+    },
+    {
+      "file": "p1baseline_historical_replay_corpus.jsonl",
+      "expectedLines": 9900,
+      "actualLines": 9900,
+      "ok": true
+    },
+    {
+      "file": "p3active_scoring_historical_replay_corpus.jsonl",
+      "expectedLines": 4500,
+      "actualLines": 4500,
+      "ok": true
+    },
+    {
+      "file": "p19active_scoring_pit_replay_corpus.jsonl",
+      "expectedLines": 4500,
+      "actualLines": 4500,
+      "ok": true
+    }
+  ],
+  "p23Summary": {
+    "classification": "P23_READY_TO_REQUEST_PRODUCTION_EXECUTION_APPROVAL",
+    "approvalGranted": false,
+    "productionMigrationApplied": false,
+    "requestedToken": "P23_APPROVE_PRODUCTION_MIGRATION_EXECUTION_ONLY",
+    "approvalAutoGranted": false
+  },
+  "disclaimer": "Does not constitute investment advice. Does not compute ROI, profit, alpha, win-rate, edge, or outperformance."
+}

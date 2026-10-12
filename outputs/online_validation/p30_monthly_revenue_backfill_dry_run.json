@@ -1,0 +1,19 @@
+{
+  "phase": "P30",
+  "capturedAt": "2026-05-20T00:00:00.000Z",
+  "dryRun": true,
+  "authorizationPhrase": "YES apply MonthlyRevenue releaseDate backfill",
+  "authorizationReceived": false,
+  "gate": "WAITING_FOR_USER_AUTHORIZATION",
+  "totalNullRows": 0,
+  "wouldUpdateRows": 0,
+  "safeToApply": true,
+  "applyCommand": "npx ts-node scripts/p29l_monthly_revenue_release_date_backfill.ts --apply",
+  "applyNote": "Do NOT run without explicit user authorization phrase",
+  "executionNote": "Dry-run queried dev.db directly via sqlite3. Total MonthlyRevenue rows: 2143. Rows with NULL releaseDate: 0. No rows require backfill — all releaseDate values are already populated.",
+  "dbQueryMethod": "sqlite3 prisma/dev.db 'SELECT COUNT(*) FROM MonthlyRevenue WHERE releaseDate IS NULL'",
+  "tsNodeCompileError": "ts-node compile failed due to Prisma client not regenerated (releaseDate field exists in schema but generated client is stale). DB was queried directly via sqlite3 as fallback.",
+  "totalMonthlyRevenueRows": 2143,
+  "entersAlphaScore": false,
+  "disclaimer": "Structural backfill dry-run only. Does not constitute investment advice. No profit, return, or investment performance claims. MonthlyRevenue entersAlphaScore = false. Results must not be used as buy/sell/hold signals."
+}

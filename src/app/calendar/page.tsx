@@ -11,15 +11,17 @@ export default function CalendarPage() {
     const [filter, setFilter] = useState<'all' | 'earnings' | 'dividend' | 'economic' | 'meeting'>('all');
 
     useEffect(() => {
-        loadEvents();
+        let active = true;
+        (async () => {
+            const data = await stockService.getEconomicEvents();
+            if (!active) return;
+            setEvents(data);
+            setLoading(false);
+        })();
+        return () => {
+            active = false;
+        };
     }, []);
-
-    const loadEvents = async () => {
-        setLoading(true);
-        const data = await stockService.getEconomicEvents();
-        setEvents(data);
-        setLoading(false);
-    };
 
     const filteredEvents = filter === 'all'
         ? events
@@ -58,6 +60,13 @@ export default function CalendarPage() {
         }
     };
 
+    const filterTabs: ReadonlyArray<{ value: typeof filter; label: string }> = [
+        { value: 'all', label: '全部事件' },
+        { value: 'earnings', label: '法說會' },
+        { value: 'dividend', label: '除權息' },
+        { value: 'economic', label: '經濟指標' },
+    ];
+
     return (
         <div className="space-y-6 max-w-6xl mx-auto">
             <div>
@@ -68,15 +77,10 @@ export default function CalendarPage() {
             {/* Filter Tabs */}
             <div className="bg-card rounded-xl shadow-sm border p-4">
                 <div className="flex gap-2 flex-wrap">
-                    {[
-                        { value: 'all', label: '全部事件' },
-                        { value: 'earnings', label: '法說會' },
-                        { value: 'dividend', label: '除權息' },
-                        { value: 'economic', label: '經濟指標' },
-                    ].map(tab => (
+                    {filterTabs.map(tab => (
                         <button
                             key={tab.value}
-                            onClick={() => setFilter(tab.value as any)}
+                            onClick={() => setFilter(tab.value)}
                             className={`px-4 py-2 rounded-md transition-colors ${filter === tab.value
                                     ? 'bg-primary text-primary-foreground'
                                     : 'bg-muted hover:bg-muted/80'

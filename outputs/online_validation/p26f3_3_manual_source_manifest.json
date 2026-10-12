@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-05-13T06:37:05.779Z",
+  "acceptedRows": 0,
+  "classification": "P26F3_3_SOURCE_NOT_PROVIDED_PACKAGE_READY",
+  "readyForP26F4": false,
+  "dryRunContract": {
+    "dbWriteAllowed": false,
+    "corpusWriteAllowed": false,
+    "scoringChangeAllowed": false
+  },
+  "rows": []
+}

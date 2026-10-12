@@ -1,0 +1,45 @@
+{
+  "tranche": "P173",
+  "description": "Active lint fourteenth tranche — local only",
+  "date": "2026-06-04",
+  "baseline_commit": "a739b6b",
+  "lint_before": {
+    "total_problems": 520,
+    "errors": 266,
+    "warnings": 254
+  },
+  "lint_after": {
+    "total_problems": 500,
+    "errors": 260,
+    "warnings": 240
+  },
+  "delta": {
+    "problems": -20,
+    "errors": -6,
+    "warnings": -14
+  },
+  "selected_tranche": {
+    "files": [
+      "src/lib/data/CoverageService.ts",
+      "src/lib/mockData.ts",
+      "src/lib/services/NewsService.ts",
+      "src/lib/services/SimpleCacheService.ts",
+      "src/lib/technicalIndicators.ts"
+    ],
+    "rules_targeted": [
+      "@typescript-eslint/no-unused-vars",
+      "@typescript-eslint/no-explicit-any"
+    ],
+    "issues_resolved": 20
+  },
+  "db_invariance_tests": {
+    "p26a_renderer_fix": "PASS",
+    "p26a_batch_pipeline_wiring": "PASS",
+    "p29d_dropzone_scaffold": "PASS"
+  },
+  "staged": false,
+  "committed": false,
+  "pushed": false,
+  "browser_review_allowed": false,
+  "final_classification": "P173_ACTIVE_LINT_TRANCHE_REPAIRED_CI_STILL_RED_PRODUCT_BEHAVIOR_OR_REMAINING_LINT_LOCAL_ONLY"
+}

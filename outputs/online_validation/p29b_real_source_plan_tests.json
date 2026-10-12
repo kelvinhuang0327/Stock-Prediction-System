@@ -1,0 +1,4 @@
+{"phase":"P29B","runs":[
+  {"command":"npx jest ...p29b_real_source_acquisition_plan.test.ts","result":"PASS","testsPassed":28,"suitesPassed":1},
+  {"command":"npx jest src/lib/onlineValidation/__tests__","result":"PASS","testsPassed":3055,"suitesPassed":102}
+],"verdict":"ALL_P29B_TESTS_PASS"}

@@ -1,0 +1,44 @@
+{
+  "phase": "P29B", "part": "F - PIT Gate / Validator Plan",
+  "generatedAt": "2026-05-24T00:00:00Z", "paperDesignOnly": true,
+  "financialReportValidator": {
+    "validatorName": "P29BFinancialReportSourceValidator",
+    "proposedFile": "src/lib/onlineValidation/P29BFinancialReportSourceValidator.ts (future)",
+    "gates": [
+      {"id":"FR-V01","name":"symbol_present","rule":"symbol field non-empty","severity":"ERROR"},
+      {"id":"FR-V02","name":"year_valid","rule":"year is integer 2000-2035","severity":"ERROR"},
+      {"id":"FR-V03","name":"quarter_valid","rule":"quarter is integer 1-4","severity":"ERROR"},
+      {"id":"FR-V04","name":"filingDate_present","rule":"filingDate field non-empty","severity":"ERROR"},
+      {"id":"FR-V05","name":"filingDate_format","rule":"filingDate is valid YYYY-MM-DD","severity":"ERROR"},
+      {"id":"FR-V06","name":"filingDate_after_period_end","rule":"filingDate > period end date (Q1: > Mar 31, Q2: > Jun 30, etc.)","severity":"ERROR"},
+      {"id":"FR-V07","name":"filingDate_within_window","rule":"filingDate within 18 months of period end (allows late filings)","severity":"WARN"},
+      {"id":"FR-V08","name":"eps_parseable","rule":"eps field parseable as float","severity":"ERROR"},
+      {"id":"FR-V09","name":"netIncome_parseable","rule":"netIncome field parseable as float","severity":"ERROR"},
+      {"id":"FR-V10","name":"sourceName_present","rule":"sourceName field non-empty","severity":"ERROR"},
+      {"id":"FR-V11","name":"no_outcome_fields","rule":"no outcomePrice / returnPct / realizedReturnClass field present","severity":"ERROR"},
+      {"id":"FR-V12","name":"no_duplicate_key","rule":"no duplicate (symbol, year, quarter) entries","severity":"ERROR"},
+      {"id":"FR-V13","name":"row_count_match","rule":"parsed row count matches manifest rowCount","severity":"ERROR"},
+      {"id":"FR-V14","name":"no_periodEndDate_as_gate","rule":"no column named periodEndDate used as filingDate substitute","severity":"ERROR"}
+    ]
+  },
+  "newsEventValidator": {
+    "validatorName": "P29BNewsEventSourceValidator",
+    "proposedFile": "src/lib/onlineValidation/P29BNewsEventSourceValidator.ts (future)",
+    "gates": [
+      {"id":"NE-V01","name":"eventId_present","rule":"eventId field non-empty","severity":"ERROR"},
+      {"id":"NE-V02","name":"publishedAt_present","rule":"publishedAt field non-empty","severity":"ERROR"},
+      {"id":"NE-V03","name":"publishedAt_format","rule":"publishedAt is valid ISO-8601","severity":"ERROR"},
+      {"id":"NE-V04","name":"publishedAt_not_future","rule":"publishedAt <= manifest preparedAt","severity":"ERROR"},
+      {"id":"NE-V05","name":"eventType_valid","rule":"eventType is a known taxonomy enum value","severity":"ERROR"},
+      {"id":"NE-V06","name":"verificationStatus_valid","rule":"verificationStatus in [VERIFIED_OFFICIAL, UNVERIFIED]","severity":"ERROR"},
+      {"id":"NE-V07","name":"sourceUrl_for_verified","rule":"sourceUrl non-empty if verificationStatus=VERIFIED_OFFICIAL","severity":"ERROR"},
+      {"id":"NE-V08","name":"no_ingestedAt_field","rule":"no ingestedAt field in source CSV","severity":"ERROR"},
+      {"id":"NE-V09","name":"no_outcome_fields","rule":"no outcomePrice / returnPct / realizedReturnClass","severity":"ERROR"},
+      {"id":"NE-V10","name":"no_sentiment_labels","rule":"eventType not in [BULLISH_EVENT, BEARISH_EVENT, BUY_SIGNAL, SELL_SIGNAL]","severity":"ERROR"},
+      {"id":"NE-V11","name":"no_duplicate_eventId","rule":"no duplicate eventId entries","severity":"ERROR"},
+      {"id":"NE-V12","name":"row_count_match","rule":"parsed row count matches manifest rowCount","severity":"ERROR"},
+      {"id":"NE-V13","name":"no_mock_events","rule":"no rows with sourceName containing 'mock' or 'Mock' unless explicitly attested as excluded","severity":"WARN"}
+    ]
+  },
+  "disclaimer": "Paper design only. Not investment advice."
+}

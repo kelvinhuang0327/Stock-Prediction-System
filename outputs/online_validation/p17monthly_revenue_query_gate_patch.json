@@ -1,0 +1,35 @@
+{
+  "phase": "P17-HARDRESET",
+  "task": "MonthlyRevenue releaseDate Query Gate Code Patch",
+  "date": "2026-05-12",
+  "disclaimer": "Does not constitute investment advice. Does not compute ROI, profit, alpha, win-rate, edge, or outperformance. Governance / PIT gate patch only.",
+  "productionApplyAllowed": false,
+  "patchedFiles": [
+    {
+      "file": "src/lib/fundamentals/StockFundamentalSnapshot.ts",
+      "change": "Added optional releaseDate/releaseDateSource/releaseDateConfidence to MonthlyRevenueLike interface",
+      "scoringFormulaChanged": false,
+      "alphaScoreChanged": false,
+      "recommendationBucketChanged": false
+    },
+    {
+      "file": "src/lib/analysis/RuleBasedStockAnalyzer.ts",
+      "change": "Import filterMonthlyRevenueAvailableAsOf; apply PIT filter to revenues after fetch; use revenuesPIT in YoY calc",
+      "scoringFormulaChanged": false,
+      "alphaScoreChanged": false,
+      "recommendationBucketChanged": false
+    },
+    {
+      "file": "src/lib/fundamentals/FundamentalResearchService.ts",
+      "change": "Import filterMonthlyRevenueAvailableAsOf; add asOf? to buildFundamentalResearchContextForSymbol input; apply PIT filter",
+      "scoringFormulaChanged": false,
+      "alphaScoreChanged": false,
+      "recommendationBucketChanged": false
+    }
+  ],
+  "pitGateRule": "releaseDate <= asOfDate",
+  "inferredFallback": "allowInferredReleaseDate=true → next-month-10th (INFERRED_NEXT_MONTH_10TH, LOW_TO_MEDIUM)",
+  "forbiddenOutcomeFields": ["outcomePrice","returnPct","realizedReturnClass","futurePrice","horizonReturnPct","outcomeDate","horizonDays","baselineResult","outcomeClose"],
+  "usedForbiddenOutcomeFields": false,
+  "patchStatus": "APPLIED"
+}

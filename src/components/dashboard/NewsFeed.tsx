@@ -16,7 +16,7 @@ export function NewsFeed() {
             <div className="p-4 border-b">
                 <h3 className="text-lg font-bold flex items-center gap-2">
                     即時新聞
-                    <Badge variant="secondary" className="text-xs font-normal">Live</Badge>
+                    <Badge variant="secondary" className="text-xs font-normal bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400">模擬數據</Badge>
                 </h3>
             </div>
             <div className="divide-y">

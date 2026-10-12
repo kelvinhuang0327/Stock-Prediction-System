@@ -1,0 +1,37 @@
+{
+  "phase": "P47",
+  "classification": "P47_PAPER_SIMULATION_DRY_RUN_RESULT_ARTIFACT_MATERIALIZATION_READY",
+  "testFile": "src/lib/onlineValidation/__tests__/p47_paper_simulation_dry_run_result_artifact_materialization.test.ts",
+  "totalTests": 98,
+  "passedTests": 98,
+  "failedTests": 0,
+  "testGroups": [
+    { "group": 1, "name": "governance invariants", "tests": 10 },
+    { "group": 2, "name": "materializeDryRunResultArtifact produces valid result", "tests": 16 },
+    { "group": 3, "name": "rejects invalid input", "tests": 8 },
+    { "group": 4, "name": "full pipeline rehearsal embedded correctly", "tests": 8 },
+    { "group": 5, "name": "result artifact report basic validation", "tests": 8 },
+    { "group": 6, "name": "result artifact report field correctness", "tests": 8 },
+    { "group": 7, "name": "no forbidden fields", "tests": 8 },
+    { "group": 8, "name": "boundary protection and error handling", "tests": 8 },
+    { "group": 9, "name": "constants and version strings", "tests": 8 },
+    { "group": 10, "name": "no forbidden exports from ResultArtifact module", "tests": 8 },
+    { "group": 11, "name": "full end-to-end pipeline verification", "tests": 8 }
+  ],
+  "regressionBaseline": {
+    "testPattern": "p3[89]|p4[0-7]",
+    "totalTests": 935,
+    "passedTests": 935,
+    "failedTests": 0,
+    "suites": 10
+  },
+  "governanceInvariants": {
+    "dryRunOnly": true,
+    "paperOnly": true,
+    "noActualMetrics": true,
+    "entersAlphaScore": false,
+    "noRealExecution": true,
+    "executedAt": null
+  },
+  "recordedAt": "2024-01-18T10:00:00.000Z"
+}

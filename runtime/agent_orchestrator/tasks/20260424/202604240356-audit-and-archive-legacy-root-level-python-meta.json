@@ -1,0 +1,21 @@
+{
+  "version": "1.0",
+  "task_id": 129,
+  "slug": "audit-and-archive-legacy-root-level-python",
+  "status": "COMPLETED",
+  "gate_verdict": "PASS",
+  "planner_provider": "codex",
+  "worker_provider": "copilot-daemon",
+  "created_at": "2026-04-24T03:56:03.876Z",
+  "updated_at": "2026-04-24T03:56:56.009Z",
+  "last_output_at": "2026-04-24T03:56:56.009Z",
+  "latest_progress_summary": "Worker finished task and gate passed.",
+  "planner_context": {
+    "taskType": "optimization_code_quality",
+    "game": null,
+    "regimeState": "OPTIMIZATION",
+    "dedupeKey": "code_quality__legacy_python_scripts",
+    "confidenceScore": null,
+    "regimeTaskType": "code_quality"
+  }
+}

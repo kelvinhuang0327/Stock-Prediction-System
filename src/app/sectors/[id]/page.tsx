@@ -17,17 +17,16 @@ export default function SectorDetailPage() {
     const sector = SECTORS.find(s => s.id === sectorId);
 
     useEffect(() => {
+        const loadStocks = async () => {
+            setLoading(true);
+            const data = await stockService.getStocksBySector(sectorId);
+            setStocks(data.sort((a, b) => b.changePercent - a.changePercent));
+            setLoading(false);
+        };
         if (sectorId) {
             loadStocks();
         }
     }, [sectorId]);
-
-    const loadStocks = async () => {
-        setLoading(true);
-        const data = await stockService.getStocksBySector(sectorId);
-        setStocks(data.sort((a, b) => b.changePercent - a.changePercent));
-        setLoading(false);
-    };
 
     if (!sector) {
         return (

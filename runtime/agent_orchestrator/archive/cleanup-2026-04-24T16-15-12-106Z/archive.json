@@ -1,0 +1,929 @@
+{
+  "version": "1.0",
+  "createdAt": "2026-04-24T16:15:12.130Z",
+  "reason": "Removed superseded failed orchestrator history after a later PASS for the same dedupeKey.",
+  "removedTaskIds": [
+    132,
+    133,
+    134,
+    135,
+    136,
+    137,
+    138,
+    139,
+    140,
+    142,
+    143
+  ],
+  "removedRunIds": [
+    "worker-1777046745691",
+    "worker-1777046700253",
+    "worker-1777046638958",
+    "worker-1777046577615",
+    "planner-1777046575546",
+    "worker-1777046571445",
+    "planner-1777046531433",
+    "worker-1777046434361",
+    "worker-1777046393597",
+    "worker-1777046332154",
+    "worker-1777046270786",
+    "planner-1777046224446",
+    "worker-1777045036491",
+    "worker-1777044974866",
+    "worker-1777044914912",
+    "worker-1777044913399",
+    "worker-1777044851981",
+    "worker-1777044790373",
+    "planner-1777044771182",
+    "worker-1777044767431",
+    "planner-1777044755627",
+    "worker-1777044172049",
+    "planner-1777044169670",
+    "worker-1777044048780",
+    "planner-1777044043107",
+    "worker-1777043802366",
+    "planner-1777043800590",
+    "worker-1777043617246",
+    "planner-1777043567810",
+    "worker-1777043240646",
+    "planner-1777043223938",
+    "worker-1777043203403",
+    "planner-1777043201544",
+    "worker-1777043136080",
+    "planner-1777043134762",
+    "worker-1777043111938",
+    "planner-1777043102969"
+  ],
+  "tasks": [
+    {
+      "taskId": 132,
+      "slug": "8-hour-multi-domain-optimization-sprint",
+      "dayKey": "20260424",
+      "status": "REPLAN_REQUIRED",
+      "gateVerdict": "WORKER_RUNTIME_FAILED",
+      "plannerProvider": "codex",
+      "workerProvider": "codex",
+      "createdAt": "2026-04-24T15:05:02.966Z",
+      "updatedAt": "2026-04-24T15:05:11.936Z",
+      "lastOutputAt": "2026-04-24T15:05:11.936Z",
+      "latestProgressSummary": "Worker finished task but gate=WORKER_RUNTIME_FAILED.",
+      "promptPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241505-8-hour-multi-domain-optimization-sprint-prompt.md",
+      "contractPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241505-8-hour-multi-domain-optimization-sprint-contract.json",
+      "completedPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241505-8-hour-multi-domain-optimization-sprint-completed.md",
+      "resultPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241505-8-hour-multi-domain-optimization-sprint-result.json",
+      "metaPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241505-8-hour-multi-domain-optimization-sprint-meta.json",
+      "workerLogPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241505-8-hour-multi-domain-optimization-sprint-worker-stdout.log",
+      "plannerContext": {
+        "taskType": "optimization_composite_8h",
+        "game": null,
+        "regimeState": "OPTIMIZATION",
+        "dedupeKey": "composite_8h_plan__2026-04-24",
+        "confidenceScore": null,
+        "regimeTaskType": "composite_8h_plan"
+      }
+    },
+    {
+      "taskId": 133,
+      "slug": "8-hour-multi-domain-optimization-sprint",
+      "dayKey": "20260424",
+      "status": "REPLAN_REQUIRED",
+      "gateVerdict": "WORKER_RUNTIME_FAILED",
+      "plannerProvider": "codex",
+      "workerProvider": "codex",
+      "createdAt": "2026-04-24T15:05:34.757Z",
+      "updatedAt": "2026-04-24T15:05:36.078Z",
+      "lastOutputAt": "2026-04-24T15:05:36.078Z",
+      "latestProgressSummary": "Worker finished task but gate=WORKER_RUNTIME_FAILED.",
+      "promptPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241505-8-hour-multi-domain-optimization-sprint-prompt.md",
+      "contractPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241505-8-hour-multi-domain-optimization-sprint-contract.json",
+      "completedPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241505-8-hour-multi-domain-optimization-sprint-completed.md",
+      "resultPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241505-8-hour-multi-domain-optimization-sprint-result.json",
+      "metaPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241505-8-hour-multi-domain-optimization-sprint-meta.json",
+      "workerLogPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241505-8-hour-multi-domain-optimization-sprint-worker-stdout.log",
+      "plannerContext": {
+        "taskType": "optimization_composite_8h",
+        "game": null,
+        "regimeState": "OPTIMIZATION",
+        "dedupeKey": "composite_8h_plan__2026-04-24",
+        "confidenceScore": null,
+        "regimeTaskType": "composite_8h_plan"
+      }
+    },
+    {
+      "taskId": 134,
+      "slug": "8-hour-multi-domain-optimization-sprint",
+      "dayKey": "20260424",
+      "status": "REPLAN_REQUIRED",
+      "gateVerdict": "WORKER_RUNTIME_FAILED",
+      "plannerProvider": "codex",
+      "workerProvider": "codex",
+      "createdAt": "2026-04-24T15:06:41.541Z",
+      "updatedAt": "2026-04-24T15:06:43.400Z",
+      "lastOutputAt": "2026-04-24T15:06:43.400Z",
+      "latestProgressSummary": "Worker finished task but gate=WORKER_RUNTIME_FAILED.",
+      "promptPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241506-8-hour-multi-domain-optimization-sprint-prompt.md",
+      "contractPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241506-8-hour-multi-domain-optimization-sprint-contract.json",
+      "completedPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241506-8-hour-multi-domain-optimization-sprint-completed.md",
+      "resultPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241506-8-hour-multi-domain-optimization-sprint-result.json",
+      "metaPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241506-8-hour-multi-domain-optimization-sprint-meta.json",
+      "workerLogPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241506-8-hour-multi-domain-optimization-sprint-worker-stdout.log",
+      "plannerContext": {
+        "taskType": "optimization_composite_8h",
+        "game": null,
+        "regimeState": "OPTIMIZATION",
+        "dedupeKey": "composite_8h_plan__2026-04-24",
+        "confidenceScore": null,
+        "regimeTaskType": "composite_8h_plan"
+      }
+    },
+    {
+      "taskId": 135,
+      "slug": "8-hour-multi-domain-optimization-sprint",
+      "dayKey": "20260424",
+      "status": "REPLAN_REQUIRED",
+      "gateVerdict": "WORKER_RUNTIME_FAILED",
+      "plannerProvider": "codex",
+      "workerProvider": "codex",
+      "createdAt": "2026-04-24T15:07:03.933Z",
+      "updatedAt": "2026-04-24T15:07:20.642Z",
+      "lastOutputAt": "2026-04-24T15:07:20.642Z",
+      "latestProgressSummary": "Worker finished task but gate=WORKER_RUNTIME_FAILED.",
+      "promptPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241507-8-hour-multi-domain-optimization-sprint-prompt.md",
+      "contractPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241507-8-hour-multi-domain-optimization-sprint-contract.json",
+      "completedPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241507-8-hour-multi-domain-optimization-sprint-completed.md",
+      "resultPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241507-8-hour-multi-domain-optimization-sprint-result.json",
+      "metaPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241507-8-hour-multi-domain-optimization-sprint-meta.json",
+      "workerLogPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241507-8-hour-multi-domain-optimization-sprint-worker-stdout.log",
+      "plannerContext": {
+        "taskType": "optimization_composite_8h",
+        "game": null,
+        "regimeState": "OPTIMIZATION",
+        "dedupeKey": "composite_8h_plan__2026-04-24",
+        "confidenceScore": null,
+        "regimeTaskType": "composite_8h_plan"
+      }
+    },
+    {
+      "taskId": 136,
+      "slug": "8-hour-multi-domain-optimization-sprint",
+      "dayKey": "20260424",
+      "status": "REPLAN_REQUIRED",
+      "gateVerdict": "WORKER_RUNTIME_FAILED",
+      "plannerProvider": "codex",
+      "workerProvider": "codex",
+      "createdAt": "2026-04-24T15:12:47.807Z",
+      "updatedAt": "2026-04-24T15:13:37.243Z",
+      "lastOutputAt": "2026-04-24T15:13:37.243Z",
+      "latestProgressSummary": "Worker finished task but gate=WORKER_RUNTIME_FAILED.",
+      "promptPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241512-8-hour-multi-domain-optimization-sprint-prompt.md",
+      "contractPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241512-8-hour-multi-domain-optimization-sprint-contract.json",
+      "completedPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241512-8-hour-multi-domain-optimization-sprint-completed.md",
+      "resultPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241512-8-hour-multi-domain-optimization-sprint-result.json",
+      "metaPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241512-8-hour-multi-domain-optimization-sprint-meta.json",
+      "workerLogPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241512-8-hour-multi-domain-optimization-sprint-worker-stdout.log",
+      "plannerContext": {
+        "taskType": "optimization_composite_8h",
+        "game": null,
+        "regimeState": "OPTIMIZATION",
+        "dedupeKey": "composite_8h_plan__2026-04-24",
+        "confidenceScore": null,
+        "regimeTaskType": "composite_8h_plan"
+      }
+    },
+    {
+      "taskId": 137,
+      "slug": "8-hour-multi-domain-optimization-sprint",
+      "dayKey": "20260424",
+      "status": "REPLAN_REQUIRED",
+      "gateVerdict": "WORKER_RUNTIME_FAILED",
+      "plannerProvider": "codex",
+      "workerProvider": "copilot-daemon",
+      "createdAt": "2026-04-24T15:16:40.587Z",
+      "updatedAt": "2026-04-24T15:16:42.363Z",
+      "lastOutputAt": "2026-04-24T15:16:42.363Z",
+      "latestProgressSummary": "Worker finished task but gate=WORKER_RUNTIME_FAILED.",
+      "promptPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241516-8-hour-multi-domain-optimization-sprint-prompt.md",
+      "contractPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241516-8-hour-multi-domain-optimization-sprint-contract.json",
+      "completedPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241516-8-hour-multi-domain-optimization-sprint-completed.md",
+      "resultPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241516-8-hour-multi-domain-optimization-sprint-result.json",
+      "metaPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241516-8-hour-multi-domain-optimization-sprint-meta.json",
+      "workerLogPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241516-8-hour-multi-domain-optimization-sprint-worker-stdout.log",
+      "plannerContext": {
+        "taskType": "optimization_composite_8h",
+        "game": null,
+        "regimeState": "OPTIMIZATION",
+        "dedupeKey": "composite_8h_plan__2026-04-24",
+        "confidenceScore": null,
+        "regimeTaskType": "composite_8h_plan"
+      }
+    },
+    {
+      "taskId": 138,
+      "slug": "8-hour-multi-domain-optimization-sprint",
+      "dayKey": "20260424",
+      "status": "REPLAN_REQUIRED",
+      "gateVerdict": "WORKER_RUNTIME_FAILED",
+      "plannerProvider": "codex",
+      "workerProvider": "copilot-daemon",
+      "createdAt": "2026-04-24T15:20:43.103Z",
+      "updatedAt": "2026-04-24T15:20:48.776Z",
+      "lastOutputAt": "2026-04-24T15:20:48.776Z",
+      "latestProgressSummary": "Worker finished task but gate=WORKER_RUNTIME_FAILED.",
+      "promptPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241520-8-hour-multi-domain-optimization-sprint-prompt.md",
+      "contractPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241520-8-hour-multi-domain-optimization-sprint-contract.json",
+      "completedPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241520-8-hour-multi-domain-optimization-sprint-completed.md",
+      "resultPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241520-8-hour-multi-domain-optimization-sprint-result.json",
+      "metaPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241520-8-hour-multi-domain-optimization-sprint-meta.json",
+      "workerLogPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241520-8-hour-multi-domain-optimization-sprint-worker-stdout.log",
+      "plannerContext": {
+        "taskType": "optimization_composite_8h",
+        "game": null,
+        "regimeState": "OPTIMIZATION",
+        "dedupeKey": "composite_8h_plan__2026-04-24",
+        "confidenceScore": null,
+        "regimeTaskType": "composite_8h_plan"
+      }
+    },
+    {
+      "taskId": 139,
+      "slug": "8-hour-multi-domain-optimization-sprint",
+      "dayKey": "20260424",
+      "status": "REPLAN_REQUIRED",
+      "gateVerdict": "WORKER_RUNTIME_FAILED",
+      "plannerProvider": "codex",
+      "workerProvider": "copilot-daemon",
+      "createdAt": "2026-04-24T15:22:49.666Z",
+      "updatedAt": "2026-04-24T15:22:52.046Z",
+      "lastOutputAt": "2026-04-24T15:22:52.046Z",
+      "latestProgressSummary": "Worker finished task but gate=WORKER_RUNTIME_FAILED.",
+      "promptPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241522-8-hour-multi-domain-optimization-sprint-prompt.md",
+      "contractPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241522-8-hour-multi-domain-optimization-sprint-contract.json",
+      "completedPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241522-8-hour-multi-domain-optimization-sprint-completed.md",
+      "resultPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241522-8-hour-multi-domain-optimization-sprint-result.json",
+      "metaPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241522-8-hour-multi-domain-optimization-sprint-meta.json",
+      "workerLogPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241522-8-hour-multi-domain-optimization-sprint-worker-stdout.log",
+      "plannerContext": {
+        "taskType": "optimization_composite_8h",
+        "game": null,
+        "regimeState": "OPTIMIZATION",
+        "dedupeKey": "composite_8h_plan__2026-04-24",
+        "confidenceScore": null,
+        "regimeTaskType": "composite_8h_plan"
+      }
+    },
+    {
+      "taskId": 140,
+      "slug": "8-hour-multi-domain-optimization-sprint",
+      "dayKey": "20260424",
+      "status": "FAILED_RATE_LIMIT",
+      "gateVerdict": "PROVIDER_RATE_LIMITED",
+      "plannerProvider": "codex",
+      "workerProvider": "copilot",
+      "createdAt": "2026-04-24T15:32:35.625Z",
+      "updatedAt": "2026-04-24T15:35:14.908Z",
+      "lastOutputAt": "2026-04-24T15:35:14.907Z",
+      "latestProgressSummary": "額度限制：copilot 遇到 rate limit。Requests  0 Premium (2m 35s)",
+      "promptPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241532-8-hour-multi-domain-optimization-sprint-prompt.md",
+      "contractPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241532-8-hour-multi-domain-optimization-sprint-contract.json",
+      "completedPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241532-8-hour-multi-domain-optimization-sprint-completed.md",
+      "resultPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241532-8-hour-multi-domain-optimization-sprint-result.json",
+      "metaPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241532-8-hour-multi-domain-optimization-sprint-meta.json",
+      "workerLogPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241532-8-hour-multi-domain-optimization-sprint-worker-stdout.log",
+      "plannerContext": {
+        "taskType": "optimization_composite_8h",
+        "game": null,
+        "regimeState": "OPTIMIZATION",
+        "dedupeKey": "composite_8h_plan__2026-04-24",
+        "confidenceScore": null,
+        "regimeTaskType": "composite_8h_plan"
+      }
+    },
+    {
+      "taskId": 142,
+      "slug": "true-exhausted-follow-up-diagnose-why-lear",
+      "dayKey": "20260424",
+      "status": "REPLAN_REQUIRED",
+      "gateVerdict": "POLICY_VIOLATION",
+      "plannerProvider": "codex",
+      "workerProvider": "copilot-daemon",
+      "createdAt": "2026-04-24T15:57:04.442Z",
+      "updatedAt": "2026-04-24T16:00:34.353Z",
+      "lastOutputAt": "2026-04-24T16:00:34.353Z",
+      "latestProgressSummary": "Worker finished task but gate=POLICY_VIOLATION.",
+      "promptPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241557-true-exhausted-follow-up-diagnose-why-lear-prompt.md",
+      "contractPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241557-true-exhausted-follow-up-diagnose-why-lear-contract.json",
+      "completedPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241557-true-exhausted-follow-up-diagnose-why-lear-completed.md",
+      "resultPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241557-true-exhausted-follow-up-diagnose-why-lear-result.json",
+      "metaPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241557-true-exhausted-follow-up-diagnose-why-lear-meta.json",
+      "workerLogPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241557-true-exhausted-follow-up-diagnose-why-lear-worker-stdout.log",
+      "plannerContext": {
+        "taskType": "true_exhausted_analysis",
+        "game": null,
+        "regimeState": "TRUE_EXHAUSTED",
+        "dedupeKey": "true_exhausted_analysis|GLOBAL|TRUE_EXHAUSTED"
+      }
+    },
+    {
+      "taskId": 143,
+      "slug": "true-exhausted-follow-up-diagnose-why-lear",
+      "dayKey": "20260424",
+      "status": "REPLAN_REQUIRED",
+      "gateVerdict": "WORKER_RUNTIME_FAILED",
+      "plannerProvider": "codex",
+      "workerProvider": "copilot-daemon",
+      "createdAt": "2026-04-24T16:02:11.429Z",
+      "updatedAt": "2026-04-24T16:05:45.686Z",
+      "lastOutputAt": "2026-04-24T16:05:45.686Z",
+      "latestProgressSummary": "Worker finished task but gate=WORKER_RUNTIME_FAILED.",
+      "promptPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241602-true-exhausted-follow-up-diagnose-why-lear-prompt.md",
+      "contractPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241602-true-exhausted-follow-up-diagnose-why-lear-contract.json",
+      "completedPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241602-true-exhausted-follow-up-diagnose-why-lear-completed.md",
+      "resultPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241602-true-exhausted-follow-up-diagnose-why-lear-result.json",
+      "metaPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241602-true-exhausted-follow-up-diagnose-why-lear-meta.json",
+      "workerLogPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241602-true-exhausted-follow-up-diagnose-why-lear-worker-stdout.log",
+      "plannerContext": {
+        "taskType": "true_exhausted_analysis",
+        "game": null,
+        "regimeState": "TRUE_EXHAUSTED",
+        "dedupeKey": "true_exhausted_analysis|GLOBAL|TRUE_EXHAUSTED"
+      }
+    }
+  ],
+  "runs": [
+    {
+      "runId": "worker-1777046745691",
+      "tickType": "worker",
+      "startedAt": "2026-04-24T16:02:22.438Z",
+      "finishedAt": "2026-04-24T16:05:45.691Z",
+      "status": "failed",
+      "reason": "Task #143 finalized with WORKER_RUNTIME_FAILED.",
+      "taskId": 143
+    },
+    {
+      "runId": "worker-1777046700253",
+      "tickType": "worker",
+      "startedAt": "2026-04-24T16:05:00.252Z",
+      "finishedAt": "2026-04-24T16:05:00.253Z",
+      "status": "skipped",
+      "reason": "Task #143 is already RUNNING.",
+      "taskId": 143
+    },
+    {
+      "runId": "worker-1777046638958",
+      "tickType": "worker",
+      "startedAt": "2026-04-24T16:03:58.957Z",
+      "finishedAt": "2026-04-24T16:03:58.958Z",
+      "status": "skipped",
+      "reason": "Task #143 is already RUNNING.",
+      "taskId": 143
+    },
+    {
+      "runId": "worker-1777046577615",
+      "tickType": "worker",
+      "startedAt": "2026-04-24T16:02:57.614Z",
+      "finishedAt": "2026-04-24T16:02:57.615Z",
+      "status": "skipped",
+      "reason": "Task #143 is already RUNNING.",
+      "taskId": 143
+    },
+    {
+      "runId": "planner-1777046575546",
+      "tickType": "planner",
+      "startedAt": "2026-04-24T16:02:55.545Z",
+      "finishedAt": "2026-04-24T16:02:55.546Z",
+      "status": "skipped",
+      "reason": "Latest task #143 is RUNNING.",
+      "taskId": 143
+    },
+    {
+      "runId": "worker-1777046571445",
+      "tickType": "worker",
+      "startedAt": "2026-04-24T16:02:51.445Z",
+      "finishedAt": "2026-04-24T16:02:51.445Z",
+      "status": "skipped",
+      "reason": "Task #143 is already RUNNING.",
+      "taskId": 143
+    },
+    {
+      "runId": "planner-1777046531433",
+      "tickType": "planner",
+      "startedAt": "2026-04-24T16:02:11.247Z",
+      "finishedAt": "2026-04-24T16:02:11.433Z",
+      "status": "success",
+      "reason": "Created task #143. [regime: TRUE_EXHAUSTED_FALLBACK@reason=fullTradeCount=4 < min=5]",
+      "taskId": 143
+    },
+    {
+      "runId": "worker-1777046434361",
+      "tickType": "worker",
+      "startedAt": "2026-04-24T15:57:12.099Z",
+      "finishedAt": "2026-04-24T16:00:34.361Z",
+      "status": "failed",
+      "reason": "Task #142 finalized with POLICY_VIOLATION.",
+      "taskId": 142
+    },
+    {
+      "runId": "worker-1777046393597",
+      "tickType": "worker",
+      "startedAt": "2026-04-24T15:59:53.596Z",
+      "finishedAt": "2026-04-24T15:59:53.597Z",
+      "status": "skipped",
+      "reason": "Task #142 is already RUNNING.",
+      "taskId": 142
+    },
+    {
+      "runId": "worker-1777046332154",
+      "tickType": "worker",
+      "startedAt": "2026-04-24T15:58:52.154Z",
+      "finishedAt": "2026-04-24T15:58:52.154Z",
+      "status": "skipped",
+      "reason": "Task #142 is already RUNNING.",
+      "taskId": 142
+    },
+    {
+      "runId": "worker-1777046270786",
+      "tickType": "worker",
+      "startedAt": "2026-04-24T15:57:50.785Z",
+      "finishedAt": "2026-04-24T15:57:50.786Z",
+      "status": "skipped",
+      "reason": "Task #142 is already RUNNING.",
+      "taskId": 142
+    },
+    {
+      "runId": "planner-1777046224446",
+      "tickType": "planner",
+      "startedAt": "2026-04-24T15:57:04.326Z",
+      "finishedAt": "2026-04-24T15:57:04.446Z",
+      "status": "success",
+      "reason": "Created task #142. [regime: TRUE_EXHAUSTED_FALLBACK@reason=fullTradeCount=4 < min=5]",
+      "taskId": 142
+    },
+    {
+      "runId": "worker-1777045036491",
+      "tickType": "worker",
+      "startedAt": "2026-04-24T15:37:16.490Z",
+      "finishedAt": "2026-04-24T15:37:16.491Z",
+      "status": "skipped",
+      "reason": "Worker provider copilot is rate limited until 2026-04-24T15:50:14.907Z. Requests  0 Premium (2m 35s)",
+      "taskId": 140
+    },
+    {
+      "runId": "worker-1777044974866",
+      "tickType": "worker",
+      "startedAt": "2026-04-24T15:36:14.865Z",
+      "finishedAt": "2026-04-24T15:36:14.866Z",
+      "status": "skipped",
+      "reason": "Worker provider copilot is rate limited until 2026-04-24T15:50:14.907Z. Requests  0 Premium (2m 35s)",
+      "taskId": 140
+    },
+    {
+      "runId": "worker-1777044914912",
+      "tickType": "worker",
+      "startedAt": "2026-04-24T15:32:37.156Z",
+      "finishedAt": "2026-04-24T15:35:14.912Z",
+      "status": "failed",
+      "reason": "Task #140 finalized with PROVIDER_RATE_LIMITED.",
+      "taskId": 140
+    },
+    {
+      "runId": "worker-1777044913399",
+      "tickType": "worker",
+      "startedAt": "2026-04-24T15:35:13.398Z",
+      "finishedAt": "2026-04-24T15:35:13.399Z",
+      "status": "skipped",
+      "reason": "Task #140 is already RUNNING.",
+      "taskId": 140
+    },
+    {
+      "runId": "worker-1777044851981",
+      "tickType": "worker",
+      "startedAt": "2026-04-24T15:34:11.980Z",
+      "finishedAt": "2026-04-24T15:34:11.981Z",
+      "status": "skipped",
+      "reason": "Task #140 is already RUNNING.",
+      "taskId": 140
+    },
+    {
+      "runId": "worker-1777044790373",
+      "tickType": "worker",
+      "startedAt": "2026-04-24T15:33:10.372Z",
+      "finishedAt": "2026-04-24T15:33:10.373Z",
+      "status": "skipped",
+      "reason": "Task #140 is already RUNNING.",
+      "taskId": 140
+    },
+    {
+      "runId": "planner-1777044771182",
+      "tickType": "planner",
+      "startedAt": "2026-04-24T15:32:51.180Z",
+      "finishedAt": "2026-04-24T15:32:51.182Z",
+      "status": "skipped",
+      "reason": "Latest task #140 is RUNNING.",
+      "taskId": 140
+    },
+    {
+      "runId": "worker-1777044767431",
+      "tickType": "worker",
+      "startedAt": "2026-04-24T15:32:47.430Z",
+      "finishedAt": "2026-04-24T15:32:47.431Z",
+      "status": "skipped",
+      "reason": "Task #140 is already RUNNING.",
+      "taskId": 140
+    },
+    {
+      "runId": "planner-1777044755627",
+      "tickType": "planner",
+      "startedAt": "2026-04-24T15:32:35.374Z",
+      "finishedAt": "2026-04-24T15:32:35.627Z",
+      "status": "success",
+      "reason": "Created task #140. [regime: OPTIMIZATION_MINER@composite_8h&domains=5&real=3&fallback=2]",
+      "taskId": 140
+    },
+    {
+      "runId": "worker-1777044172049",
+      "tickType": "worker",
+      "startedAt": "2026-04-24T15:22:52.038Z",
+      "finishedAt": "2026-04-24T15:22:52.049Z",
+      "status": "failed",
+      "reason": "Task #139 finalized with WORKER_RUNTIME_FAILED.",
+      "taskId": 139
+    },
+    {
+      "runId": "planner-1777044169670",
+      "tickType": "planner",
+      "startedAt": "2026-04-24T15:22:49.483Z",
+      "finishedAt": "2026-04-24T15:22:49.670Z",
+      "status": "success",
+      "reason": "Created task #139. [regime: OPTIMIZATION_MINER@composite_8h&domains=5&real=3&fallback=2]",
+      "taskId": 139
+    },
+    {
+      "runId": "worker-1777044048780",
+      "tickType": "worker",
+      "startedAt": "2026-04-24T15:20:48.769Z",
+      "finishedAt": "2026-04-24T15:20:48.780Z",
+      "status": "failed",
+      "reason": "Task #138 finalized with WORKER_RUNTIME_FAILED.",
+      "taskId": 138
+    },
+    {
+      "runId": "planner-1777044043107",
+      "tickType": "planner",
+      "startedAt": "2026-04-24T15:20:42.723Z",
+      "finishedAt": "2026-04-24T15:20:43.107Z",
+      "status": "success",
+      "reason": "Created task #138. [regime: OPTIMIZATION_MINER@composite_8h&domains=5&real=3&fallback=2]",
+      "taskId": 138
+    },
+    {
+      "runId": "worker-1777043802366",
+      "tickType": "worker",
+      "startedAt": "2026-04-24T15:16:42.356Z",
+      "finishedAt": "2026-04-24T15:16:42.366Z",
+      "status": "failed",
+      "reason": "Task #137 finalized with WORKER_RUNTIME_FAILED.",
+      "taskId": 137
+    },
+    {
+      "runId": "planner-1777043800590",
+      "tickType": "planner",
+      "startedAt": "2026-04-24T15:16:40.228Z",
+      "finishedAt": "2026-04-24T15:16:40.590Z",
+      "status": "success",
+      "reason": "Created task #137. [regime: OPTIMIZATION_MINER@composite_8h&domains=5&real=3&fallback=2]",
+      "taskId": 137
+    },
+    {
+      "runId": "worker-1777043617246",
+      "tickType": "worker",
+      "startedAt": "2026-04-24T15:13:37.235Z",
+      "finishedAt": "2026-04-24T15:13:37.246Z",
+      "status": "failed",
+      "reason": "Task #136 finalized with WORKER_RUNTIME_FAILED.",
+      "taskId": 136
+    },
+    {
+      "runId": "planner-1777043567810",
+      "tickType": "planner",
+      "startedAt": "2026-04-24T15:12:47.690Z",
+      "finishedAt": "2026-04-24T15:12:47.810Z",
+      "status": "success",
+      "reason": "Created task #136. [regime: OPTIMIZATION_MINER@composite_8h&domains=5&real=3&fallback=2]",
+      "taskId": 136
+    },
+    {
+      "runId": "worker-1777043240646",
+      "tickType": "worker",
+      "startedAt": "2026-04-24T15:07:05.226Z",
+      "finishedAt": "2026-04-24T15:07:20.646Z",
+      "status": "failed",
+      "reason": "Task #135 finalized with WORKER_RUNTIME_FAILED.",
+      "taskId": 135
+    },
+    {
+      "runId": "planner-1777043223938",
+      "tickType": "planner",
+      "startedAt": "2026-04-24T15:07:03.831Z",
+      "finishedAt": "2026-04-24T15:07:03.938Z",
+      "status": "success",
+      "reason": "Created task #135. [regime: OPTIMIZATION_MINER@composite_8h&domains=5&real=3&fallback=2]",
+      "taskId": 135
+    },
+    {
+      "runId": "worker-1777043203403",
+      "tickType": "worker",
+      "startedAt": "2026-04-24T15:06:42.856Z",
+      "finishedAt": "2026-04-24T15:06:43.403Z",
+      "status": "failed",
+      "reason": "Task #134 finalized with WORKER_RUNTIME_FAILED.",
+      "taskId": 134
+    },
+    {
+      "runId": "planner-1777043201544",
+      "tickType": "planner",
+      "startedAt": "2026-04-24T15:06:41.434Z",
+      "finishedAt": "2026-04-24T15:06:41.544Z",
+      "status": "success",
+      "reason": "Created task #134. [regime: OPTIMIZATION_MINER@composite_8h&domains=5&real=3&fallback=2]",
+      "taskId": 134
+    },
+    {
+      "runId": "worker-1777043136080",
+      "tickType": "worker",
+      "startedAt": "2026-04-24T15:05:36.069Z",
+      "finishedAt": "2026-04-24T15:05:36.080Z",
+      "status": "failed",
+      "reason": "Task #133 finalized with WORKER_RUNTIME_FAILED.",
+      "taskId": 133
+    },
+    {
+      "runId": "planner-1777043134762",
+      "tickType": "planner",
+      "startedAt": "2026-04-24T15:05:34.657Z",
+      "finishedAt": "2026-04-24T15:05:34.762Z",
+      "status": "success",
+      "reason": "Created task #133. [regime: OPTIMIZATION_MINER@composite_8h&domains=5&real=3&fallback=2]",
+      "taskId": 133
+    },
+    {
+      "runId": "worker-1777043111938",
+      "tickType": "worker",
+      "startedAt": "2026-04-24T15:05:11.931Z",
+      "finishedAt": "2026-04-24T15:05:11.938Z",
+      "status": "failed",
+      "reason": "Task #132 finalized with WORKER_RUNTIME_FAILED.",
+      "taskId": 132
+    },
+    {
+      "runId": "planner-1777043102969",
+      "tickType": "planner",
+      "startedAt": "2026-04-24T15:05:02.869Z",
+      "finishedAt": "2026-04-24T15:05:02.969Z",
+      "status": "success",
+      "reason": "Created task #132. [regime: OPTIMIZATION_MINER@composite_8h&domains=5&real=3&fallback=2]",
+      "taskId": 132
+    }
+  ],
+  "movedFiles": [
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241505-8-hour-multi-domain-optimization-sprint-prompt.md",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241505-8-hour-multi-domain-optimization-sprint-prompt.md"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241505-8-hour-multi-domain-optimization-sprint-contract.json",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241505-8-hour-multi-domain-optimization-sprint-contract.json"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241505-8-hour-multi-domain-optimization-sprint-completed.md",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241505-8-hour-multi-domain-optimization-sprint-completed.md"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241505-8-hour-multi-domain-optimization-sprint-result.json",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241505-8-hour-multi-domain-optimization-sprint-result.json"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241505-8-hour-multi-domain-optimization-sprint-meta.json",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241505-8-hour-multi-domain-optimization-sprint-meta.json"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241505-8-hour-multi-domain-optimization-sprint-worker-stdout.log",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241505-8-hour-multi-domain-optimization-sprint-worker-stdout.log"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241506-8-hour-multi-domain-optimization-sprint-prompt.md",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241506-8-hour-multi-domain-optimization-sprint-prompt.md"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241506-8-hour-multi-domain-optimization-sprint-contract.json",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241506-8-hour-multi-domain-optimization-sprint-contract.json"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241506-8-hour-multi-domain-optimization-sprint-completed.md",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241506-8-hour-multi-domain-optimization-sprint-completed.md"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241506-8-hour-multi-domain-optimization-sprint-result.json",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241506-8-hour-multi-domain-optimization-sprint-result.json"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241506-8-hour-multi-domain-optimization-sprint-meta.json",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241506-8-hour-multi-domain-optimization-sprint-meta.json"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241506-8-hour-multi-domain-optimization-sprint-worker-stdout.log",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241506-8-hour-multi-domain-optimization-sprint-worker-stdout.log"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241507-8-hour-multi-domain-optimization-sprint-prompt.md",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241507-8-hour-multi-domain-optimization-sprint-prompt.md"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241507-8-hour-multi-domain-optimization-sprint-contract.json",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241507-8-hour-multi-domain-optimization-sprint-contract.json"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241507-8-hour-multi-domain-optimization-sprint-completed.md",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241507-8-hour-multi-domain-optimization-sprint-completed.md"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241507-8-hour-multi-domain-optimization-sprint-result.json",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241507-8-hour-multi-domain-optimization-sprint-result.json"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241507-8-hour-multi-domain-optimization-sprint-meta.json",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241507-8-hour-multi-domain-optimization-sprint-meta.json"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241507-8-hour-multi-domain-optimization-sprint-worker-stdout.log",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241507-8-hour-multi-domain-optimization-sprint-worker-stdout.log"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241512-8-hour-multi-domain-optimization-sprint-prompt.md",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241512-8-hour-multi-domain-optimization-sprint-prompt.md"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241512-8-hour-multi-domain-optimization-sprint-contract.json",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241512-8-hour-multi-domain-optimization-sprint-contract.json"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241512-8-hour-multi-domain-optimization-sprint-completed.md",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241512-8-hour-multi-domain-optimization-sprint-completed.md"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241512-8-hour-multi-domain-optimization-sprint-result.json",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241512-8-hour-multi-domain-optimization-sprint-result.json"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241512-8-hour-multi-domain-optimization-sprint-meta.json",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241512-8-hour-multi-domain-optimization-sprint-meta.json"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241512-8-hour-multi-domain-optimization-sprint-worker-stdout.log",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241512-8-hour-multi-domain-optimization-sprint-worker-stdout.log"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241516-8-hour-multi-domain-optimization-sprint-prompt.md",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241516-8-hour-multi-domain-optimization-sprint-prompt.md"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241516-8-hour-multi-domain-optimization-sprint-contract.json",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241516-8-hour-multi-domain-optimization-sprint-contract.json"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241516-8-hour-multi-domain-optimization-sprint-completed.md",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241516-8-hour-multi-domain-optimization-sprint-completed.md"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241516-8-hour-multi-domain-optimization-sprint-result.json",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241516-8-hour-multi-domain-optimization-sprint-result.json"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241516-8-hour-multi-domain-optimization-sprint-meta.json",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241516-8-hour-multi-domain-optimization-sprint-meta.json"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241516-8-hour-multi-domain-optimization-sprint-worker-stdout.log",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241516-8-hour-multi-domain-optimization-sprint-worker-stdout.log"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241520-8-hour-multi-domain-optimization-sprint-prompt.md",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241520-8-hour-multi-domain-optimization-sprint-prompt.md"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241520-8-hour-multi-domain-optimization-sprint-contract.json",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241520-8-hour-multi-domain-optimization-sprint-contract.json"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241520-8-hour-multi-domain-optimization-sprint-completed.md",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241520-8-hour-multi-domain-optimization-sprint-completed.md"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241520-8-hour-multi-domain-optimization-sprint-result.json",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241520-8-hour-multi-domain-optimization-sprint-result.json"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241520-8-hour-multi-domain-optimization-sprint-meta.json",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241520-8-hour-multi-domain-optimization-sprint-meta.json"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241520-8-hour-multi-domain-optimization-sprint-worker-stdout.log",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241520-8-hour-multi-domain-optimization-sprint-worker-stdout.log"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241522-8-hour-multi-domain-optimization-sprint-prompt.md",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241522-8-hour-multi-domain-optimization-sprint-prompt.md"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241522-8-hour-multi-domain-optimization-sprint-contract.json",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241522-8-hour-multi-domain-optimization-sprint-contract.json"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241522-8-hour-multi-domain-optimization-sprint-completed.md",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241522-8-hour-multi-domain-optimization-sprint-completed.md"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241522-8-hour-multi-domain-optimization-sprint-result.json",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241522-8-hour-multi-domain-optimization-sprint-result.json"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241522-8-hour-multi-domain-optimization-sprint-meta.json",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241522-8-hour-multi-domain-optimization-sprint-meta.json"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241522-8-hour-multi-domain-optimization-sprint-worker-stdout.log",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241522-8-hour-multi-domain-optimization-sprint-worker-stdout.log"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241532-8-hour-multi-domain-optimization-sprint-prompt.md",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241532-8-hour-multi-domain-optimization-sprint-prompt.md"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241532-8-hour-multi-domain-optimization-sprint-contract.json",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241532-8-hour-multi-domain-optimization-sprint-contract.json"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241532-8-hour-multi-domain-optimization-sprint-completed.md",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241532-8-hour-multi-domain-optimization-sprint-completed.md"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241532-8-hour-multi-domain-optimization-sprint-result.json",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241532-8-hour-multi-domain-optimization-sprint-result.json"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241532-8-hour-multi-domain-optimization-sprint-meta.json",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241532-8-hour-multi-domain-optimization-sprint-meta.json"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241532-8-hour-multi-domain-optimization-sprint-worker-stdout.log",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241532-8-hour-multi-domain-optimization-sprint-worker-stdout.log"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241557-true-exhausted-follow-up-diagnose-why-lear-prompt.md",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241557-true-exhausted-follow-up-diagnose-why-lear-prompt.md"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241557-true-exhausted-follow-up-diagnose-why-lear-contract.json",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241557-true-exhausted-follow-up-diagnose-why-lear-contract.json"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241557-true-exhausted-follow-up-diagnose-why-lear-completed.md",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241557-true-exhausted-follow-up-diagnose-why-lear-completed.md"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241557-true-exhausted-follow-up-diagnose-why-lear-result.json",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241557-true-exhausted-follow-up-diagnose-why-lear-result.json"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241557-true-exhausted-follow-up-diagnose-why-lear-meta.json",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241557-true-exhausted-follow-up-diagnose-why-lear-meta.json"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241557-true-exhausted-follow-up-diagnose-why-lear-worker-stdout.log",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241557-true-exhausted-follow-up-diagnose-why-lear-worker-stdout.log"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241602-true-exhausted-follow-up-diagnose-why-lear-prompt.md",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241602-true-exhausted-follow-up-diagnose-why-lear-prompt.md"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241602-true-exhausted-follow-up-diagnose-why-lear-contract.json",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241602-true-exhausted-follow-up-diagnose-why-lear-contract.json"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241602-true-exhausted-follow-up-diagnose-why-lear-completed.md",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241602-true-exhausted-follow-up-diagnose-why-lear-completed.md"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241602-true-exhausted-follow-up-diagnose-why-lear-result.json",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241602-true-exhausted-follow-up-diagnose-why-lear-result.json"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241602-true-exhausted-follow-up-diagnose-why-lear-meta.json",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241602-true-exhausted-follow-up-diagnose-why-lear-meta.json"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260424/202604241602-true-exhausted-follow-up-diagnose-why-lear-worker-stdout.log",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-15-12-106Z/files/runtime/agent_orchestrator/tasks/20260424/202604241602-true-exhausted-follow-up-diagnose-why-lear-worker-stdout.log"
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+DO_NOT_IMPORT,THIS_IS_A_TEMPLATE_FILE_ONLY
+symbol,eventId,eventDate,publishedAt,eventType,eventTitle,eventSummary,sourceName,sourceUrl,sourceChecksum,verificationStatus,notes
+2330,EVT-TEMPLATE-001,2025-01-15,2025-01-15T09:30:00+08:00,EarningsAnnouncement,TEMPLATE: Q4 2024 Revenue Announcement,TEMPLATE ROW — Revenue for Q4 2024 announced.,TWSE Announcement,https://mops.twse.com.tw/,SHA256PLACEHOLDER,UNVERIFIED,TEMPLATE ROW — DO NOT IMPORT
+2317,EVT-TEMPLATE-002,2025-01-20,2025-01-20T14:00:00+08:00,MajorContract,TEMPLATE: Major AI Server Contract Secured,TEMPLATE ROW — Contract details.,MoneyDJ,https://www.moneydj.com/,SHA256PLACEHOLDER,UNVERIFIED,TEMPLATE ROW — DO NOT IMPORT

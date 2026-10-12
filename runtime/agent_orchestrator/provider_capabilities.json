@@ -1,0 +1,31 @@
+{
+  "generatedAt": "2026-05-04T06:40:10.668Z",
+  "checkMethod": "cli-help-dry-run",
+  "providers": {
+    "copilot-daemon": {
+      "provider": "copilot-daemon",
+      "checkedAt": "2026-05-04T06:40:10.668Z",
+      "cliVersion": "1.0.40",
+      "command": "/Users/kelvin/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/copilot",
+      "commandAvailable": true,
+      "supportsModelParam": true,
+      "modelParamFlag": "--model",
+      "supportsReasoningEffort": true,
+      "reasoningEffortFlag": "--effort",
+      "supportsModelDiscovery": false,
+      "actualModelDiscoverable": false,
+      "defaultDesiredModel": "gpt-5-mini",
+      "actualModelFallback": "provider-managed",
+      "classification": "WORKER_MODEL_PROPAGATION_READY",
+      "evidence": [
+        "copilot --help output (v1.0.40) contains: --model <model>  Set the AI model to use",
+        "copilot --help output (v1.0.40) contains: --effort / --reasoning-effort <level> (choices: low, medium, high, xhigh)",
+        "wrapper script orchestrator_worker_external.sh receives RESOLVED_MODEL via 6th arg but was not passing it to CLI",
+        "NOTE: previous B-101 comment '# NOTE: Copilot CLI does not expose a --model flag' was INCORRECT — based on older CLI version"
+      ],
+      "notes": "Copilot CLI v1.0.40 supports --model flag. The wrapper script should be updated to pass --model when RESOLVED_MODEL is non-empty. Actual model confirmed/returned by CLI is not discoverable at runtime (CLI does not echo which model ran), so actualModelDiscoverable remains false.",
+      "b101Impact": "B-101 classified provider as PROVIDER_MANAGED_MODEL_ONLY because --model flag was not observed. B-103 capability check confirms flag IS present in CLI v1.0.40. modelPropagationStatus should be updated from 'provider-managed' to 'propagated' once the wrapper script passes --model. The noTaskReason / attribution work from B-102 is unaffected.",
+      "actionRequired": "DONE — orchestrator_worker_external.sh updated to pass --model \"$RESOLVED_MODEL\" when RESOLVED_MODEL is non-empty (B-103)."
+    }
+  }
+}

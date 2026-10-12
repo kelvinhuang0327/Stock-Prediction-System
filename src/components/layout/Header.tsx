@@ -2,19 +2,18 @@
 
 import Link from "next/link";
 import { Search, Bell, Menu } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { useState } from "react";
 
 export function Header() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     return (
-        <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-            <div className="container flex h-14 items-center px-4 md:px-6">
+        <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/70 shadow-lg">
+            <div className="container flex h-16 items-center px-4 md:px-6">
                 <div className="mr-4 hidden md:flex">
                     <Link href="/" className="mr-6 flex items-center space-x-2">
                         <span className="hidden font-bold sm:inline-block">
-                            TW Stock AI
+                            Stock洞察平台
                         </span>
                     </Link>
                     <nav className="flex items-center space-x-6 text-sm font-medium">
@@ -22,37 +21,85 @@ export function Header() {
                             href="/"
                             className="transition-colors hover:text-foreground/80 text-foreground"
                         >
-                            Dashboard
+                            總覽
+                        </Link>
+                        <Link
+                            href="/research/strategy-lab"
+                            className="transition-colors hover:text-foreground/80 text-foreground/60"
+                        >
+                            策略研究
                         </Link>
                         <Link
                             href="/watchlist"
                             className="transition-colors hover:text-foreground/80 text-foreground/60"
                         >
-                            Watchlist
+                            自選股
+                        </Link>
+                        <Link
+                            href="/rankings"
+                            className="transition-colors hover:text-foreground/80 text-foreground/60"
+                        >
+                            排行
+                        </Link>
+                        <Link
+                            href="/institutional"
+                            className="transition-colors hover:text-foreground/80 text-foreground/60"
+                        >
+                            法人
+                        </Link>
+                        <Link
+                            href="/signals"
+                            className="transition-colors hover:text-foreground/80 text-foreground/60"
+                        >
+                            訊號
+                        </Link>
+                        <Link
+                            href="/backtest"
+                            className="transition-colors hover:text-foreground/80 text-foreground/60"
+                        >
+                            回測
                         </Link>
                         <Link
                             href="/screener"
                             className="transition-colors hover:text-foreground/80 text-foreground/60"
                         >
-                            Screener
+                            篩選
                         </Link>
                         <Link
                             href="/sectors"
                             className="transition-colors hover:text-foreground/80 text-foreground/60"
                         >
-                            Sectors
+                            類股
+                        </Link>
+                        <Link
+                            href="/asset-doubling"
+                            className="px-3 py-1.5 rounded-lg bg-primary/10 text-primary border border-primary/30 hover:bg-primary/20 transition-all hover:scale-105 hover:shadow-lg hover:shadow-primary/20"
+                        >
+                            資產翻倍
+                        </Link>
+                        <Link
+                            href="/alerts/daily"
+                            className="transition-colors hover:text-foreground/80 text-foreground/60"
+                        >
+                            每日提醒
+                        </Link>
+                        <Link
+                            href="/candidates"
+                            className="transition-colors hover:text-foreground/80 text-foreground/60"
+                        >
+                            候選股
+                        </Link>
+                        <Link
+                            href="/report/daily"
+                            className="transition-colors hover:text-foreground/80 text-foreground/60"
+                        >
+                            每日報告
                         </Link>
                         <Link
                             href="/analysis"
                             className="transition-colors hover:text-foreground/80 text-foreground/60"
                         >
-                            AI Analysis
-                        </Link>
-                        <Link
-                            href="/calendar"
-                            className="transition-colors hover:text-foreground/80 text-foreground/60"
-                        >
-                            Calendar
+                            AI 分析
                         </Link>
                     </nav>
                 </div>
@@ -72,7 +119,7 @@ export function Header() {
                             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                             <input
                                 type="search"
-                                placeholder="Search stocks..."
+                                placeholder="搜尋股票..."
                                 className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 pl-8 md:w-[200px] lg:w-[300px]"
                             />
                         </div>

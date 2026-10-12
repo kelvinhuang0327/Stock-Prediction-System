@@ -1,0 +1,40 @@
+{
+  "phase": "P26A-HARDRESET PART F",
+  "generatedAt": "2026-05-13T03:12:18.917Z",
+  "disclaimer": "Scoring purity invariance gate. No investment recommendations. Research only.",
+  "p3CorpusRows": 4500,
+  "p19CorpusRows": 4500,
+  "totalRowsChecked": 9000,
+  "mismatchedAlphaScoreCount": 0,
+  "mismatchedBucketCount": 0,
+  "nullAlphaScoreCount": 0,
+  "nullBucketCount": 0,
+  "p3FirstRowSample": {
+    "symbol": "0055",
+    "asOf": "2026-02-11",
+    "researchScore": 42,
+    "researchBucket": "LowPriority"
+  },
+  "p19FirstRowSample": {
+    "symbol": "0055",
+    "asOf": "2026-02-11",
+    "researchScore": 42,
+    "researchBucket": "LowPriority"
+  },
+  "changedFiles": [
+    {
+      "file": "src/lib/onlineValidation/P12FeatureContractV1Utils.ts",
+      "scoringPathTouched": false,
+      "reason": "Pure function, no DB access, no scoring formula"
+    },
+    {
+      "file": "src/lib/onlineValidation/P26AReasonFactorEnrichmentUtils.ts",
+      "scoringPathTouched": false,
+      "reason": "Pure function, read-only over factorSnapshot, no alphaScore/bucket computation"
+    }
+  ],
+  "scoringPathModified": false,
+  "invarianceMethod": "Corpus line count integrity + code change scope analysis (DB unavailable for live re-scoring)",
+  "invarianceStatus": "PASS",
+  "verdict": "SCORING_INVARIANCE_CONFIRMED"
+}

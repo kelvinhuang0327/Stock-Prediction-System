@@ -1,0 +1,27 @@
+{
+  "task": "T-05B",
+  "title": "Guardrail Validation",
+  "date": "2026-05-07",
+  "labels": ["T-05B", "observability-only", "no edge claim", "no production write", "no DB write", "no external API", "no LLM call", "no strategy mutation", "no H001-H012"],
+  "totalChecks": 14,
+  "passed": 14,
+  "failed": 0,
+  "warned": 0,
+  "forbiddenTermsChecked": ["buy", "sell", "signal", "roi", "win_rate", "alpha", "edge", "profit", "recommendation", "outperform", "H001", "H002", "H003", "H004", "H005", "H006", "H007", "H008", "H009", "H010", "H011", "H012"],
+  "checks": [
+    { "id": 1, "check": "no DB write", "result": "PASS", "evidence": "WalkForwardEngine.ts does not import @/lib/prisma. All functions are pure (no DB side effects). Verified by test '9. WalkForwardEngine.ts does not import prisma'." },
+    { "id": 2, "check": "no external API call", "result": "PASS", "evidence": "WalkForwardEngine.ts has no fetch(), axios, http.get, or https.get. Verified by test '9b'." },
+    { "id": 3, "check": "no LLM call", "result": "PASS", "evidence": "WalkForwardEngine.ts has no openai, anthropic, gpt-, or claude- references. Verified by test '9c'." },
+    { "id": 4, "check": "no production prediction overwrite", "result": "PASS", "evidence": "WalkForwardEngine.ts writes no DB records. Output is in-memory only. No Prediction table write." },
+    { "id": 5, "check": "no strategy behavior mutation", "result": "PASS", "evidence": "WalkForwardEngine.ts contains no strategy logic, no ranking by strategy metric, no H001-H012 references." },
+    { "id": 6, "check": "resolveCurrentDate() used", "result": "PASS", "evidence": "buildWalkForwardSkeleton() calls resolveCurrentDate(config.currentDate). getRegimeContextForDate() calls resolveCurrentDate(date). rankCandidatesRuleOnly() calls resolveCurrentDate(asofDate). Verified by test '1'." },
+    { "id": 7, "check": "no hardcoded TODAY_CAP", "result": "PASS", "evidence": "WalkForwardEngine.ts contains no TODAY_CAP string, no hardcoded date constant used as a cap. Verified by test '2'." },
+    { "id": 8, "check": "persisted MarketRegimeResult is read-only context", "result": "PASS", "evidence": "regimeContextMap is a function parameter (Map<string, PersistedRegimeContext>). getRegimeContextForDate() only reads from it; does not write. Safety contract field persistedRegimeResultReadOnly: true." },
+    { "id": 9, "check": "500-day lookback contract exists", "result": "PASS", "evidence": "T05B_LOOKBACK_DAYS = 500 exported from WalkForwardEngine.ts. buildWalkForwardSkeleton() defaults to T05B_LOOKBACK_DAYS. Verified by test '3'." },
+    { "id": 10, "check": "monthly rebalance skeleton exists", "result": "PASS", "evidence": "buildMonthlyRebalanceSchedule() exported and tested. Determinism verified by test '4'. Embedded in buildWalkForwardSkeleton() output." },
+    { "id": 11, "check": "JSON artifacts parse successfully", "result": "PASS", "evidence": "All 10 JSON artifacts created and validated. t05b_walk_forward_skeleton.json parseable. Verified by test '10'." },
+    { "id": 12, "check": "forbidden terms not used as output claims", "result": "PASS", "evidence": "Test '8' runs containsForbiddenKey() over full output. 45/45 tests PASS. Field names in safetyContract use noTradingClaims, noPerformanceClaims (not the forbidden words themselves)." },
+    { "id": 13, "check": "no legacy hypotheses emitted", "result": "PASS", "evidence": "WalkForwardEngine.ts has no H001-H012 references. JSON output checked by test '8b'. H_PATTERN = /H0(0[1-9]|1[0-2])\\b/ not found in output." },
+    { "id": 14, "check": "no performance conclusion (ROI / win-rate / alpha / edge / profit)", "result": "PASS", "evidence": "All placeholder metrics are null. observabilityNote fields contain no performance claims. Safety contract noPerformanceClaims: true." }
+  ]
+}

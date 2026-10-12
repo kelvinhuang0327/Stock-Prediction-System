@@ -1,0 +1,29 @@
+{
+  "phase": "P29X",
+  "task": "Mainline Consolidation and Merged Branch Archival",
+  "capturedAt": "2026-05-20T00:00:00.000Z",
+  "preflight": {
+    "head": "676266d4d57254863fdcbdb21d4beed50c7b32ba",
+    "currentBranch": "main",
+    "mainContainsP29G": true,
+    "p29gCommit": "676266d",
+    "p29hCommit": "53cbdd2",
+    "mainAheadOfOrigin": 175
+  },
+  "runtimeDirtyFiles": [
+    { "path": "prisma/dev.db", "classification": "runtime_side_effect", "stage": false },
+    { "path": "prisma/dev.db-shm", "classification": "runtime_side_effect", "stage": false },
+    { "path": "prisma/dev.db-wal", "classification": "runtime_side_effect", "stage": false },
+    { "path": "runtime/agent_orchestrator/llm_usage.jsonl", "classification": "runtime_side_effect", "stage": false },
+    { "path": "runtime/agent_orchestrator/pids/backend.pid", "classification": "runtime_side_effect", "stage": false },
+    { "path": "runtime/training_reports/tw_weekly_deep_research.json", "classification": "runtime_side_effect", "stage": false },
+    { "path": "logs/launchd/*", "classification": "runtime_side_effect", "stage": false }
+  ],
+  "recentLog": [
+    "676266d P29G: Paper Simulation Dry-run Runner — governance-enforced dry-run expansion",
+    "53cbdd2 P29H: Re-implement P29E paper simulation scaffold on main HEAD (Option B)",
+    "1c5a270 P29F-Repair: Fix Quote Chip PIT date normalization",
+    "0165d79 P29F: Audit Quote Regime Chip PIT validation",
+    "2da1203 P29C: Add backtest and simulation contract paper design"
+  ]
+}

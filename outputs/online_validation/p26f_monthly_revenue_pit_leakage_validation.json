@@ -1,0 +1,88 @@
+{
+  "phase": "P26F-HARDRESET",
+  "totalTests": 13,
+  "passedTests": 13,
+  "failedTests": 0,
+  "tests": [
+    {
+      "name": "releaseDate_before_asOf",
+      "passed": true,
+      "message": "isVisible=true, expected true",
+      "details": null
+    },
+    {
+      "name": "releaseDate_after_asOf",
+      "passed": true,
+      "message": "isVisible=false, expected false",
+      "details": null
+    },
+    {
+      "name": "releaseDate_equal_asOf",
+      "passed": true,
+      "message": "isVisible=true, expected true",
+      "details": null
+    },
+    {
+      "name": "releaseDate_null",
+      "passed": true,
+      "message": "isVisible=false, expected false",
+      "details": null
+    },
+    {
+      "name": "releaseDate_undefined",
+      "passed": true,
+      "message": "isVisible=false, expected false",
+      "details": null
+    },
+    {
+      "name": "old_year_month_future_releaseDate",
+      "passed": true,
+      "message": "isVisible=false, expected false (year/month do not grant visibility)",
+      "details": null
+    },
+    {
+      "name": "different_symbol",
+      "passed": true,
+      "message": "selected=null, expected null",
+      "details": null
+    },
+    {
+      "name": "duplicate_latest_selected",
+      "passed": true,
+      "message": "latestReleaseDate=2026-02-10, expected 2026-02-10",
+      "details": null
+    },
+    {
+      "name": "no_outcome_fields",
+      "passed": true,
+      "message": "forbidden fields found: []",
+      "details": null
+    },
+    {
+      "name": "enters_alpha_score_false",
+      "passed": true,
+      "message": "entersAlphaScore=false, expected false",
+      "details": null
+    },
+    {
+      "name": "read_only_true",
+      "passed": true,
+      "message": "readOnly=true, expected true",
+      "details": null
+    },
+    {
+      "name": "alpha_score_preserved",
+      "passed": true,
+      "message": "alphaScore=77, expected 77",
+      "details": null
+    },
+    {
+      "name": "bucket_preserved",
+      "passed": true,
+      "message": "researchBucket=HighPriority, expected HighPriority",
+      "details": null
+    }
+  ],
+  "allPassed": true,
+  "status": "PIT_LEAKAGE_VALIDATION_PASS"
+}

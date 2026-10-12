@@ -1,0 +1,20 @@
+{
+  "auditId": "P29K-FORBIDDEN-CLAIMS-SCAN",
+  "capturedAt": "2026-05-20T00:00:00.000Z",
+  "patternsChecked": [
+    "/guaranteed profit/i",
+    "/guaranteed return/i",
+    "/risk[- ]?free/i",
+    "/\\b(will|always) (profit|gain|double)\\b/i",
+    "/\\boutperform(s)? the market/i"
+  ],
+  "filesScanned": [
+    "src/lib/onlineValidation/p29k/MonthlyRevenueReleaseDatePolicy.ts",
+    "src/lib/onlineValidation/p29k/ChipAvailableAtReadinessPlan.ts",
+    "src/lib/onlineValidation/__tests__/p29k_monthly_revenue_release_date_repair.test.ts",
+    "outputs/online_validation/p29k_final_report.md"
+  ],
+  "violations": [],
+  "status": "CLEAN",
+  "note": "P29K disclaimers use 'No profit, return, or investment performance claims' — avoids the P29J T14 lesson where 'No ROI' matched /\\bROI\\b/ patterns. P29K patterns correctly scan for affirmative claims only."
+}

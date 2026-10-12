@@ -1,0 +1,66 @@
+{
+  "version": "2.0",
+  "objective": "Audit and archive legacy root-level Python scripts",
+  "background": "14 Python scripts at workspace root (ai_advisor.py, asset_doubling.py, asset_doubling_hunter.py, auto_optimizer.py, doubling_final_report.py). These appear to be legacy research scripts not integrated into the main pipeline.",
+  "trigger_reason": "OPTIMIZATION_MINER@source=code_quality&score=47",
+  "scope": [
+    "ai_advisor.py",
+    "asset_doubling.py",
+    "asset_doubling_hunter.py",
+    "auto_optimizer.py",
+    "doubling_final_report.py",
+    "major_players.py",
+    "rolling_backtest_engine.py",
+    "strategy_research_framework.py",
+    "super_surge_detector.py",
+    "validate_kelly.py",
+    "validate_kelly_backtest.py",
+    "validate_risk_defense.py",
+    "validate_walk_forward.py",
+    "verify_hunter.py"
+  ],
+  "constraints": [
+    "Do not delete any Python script without explicit approval in report",
+    "Do not modify scripts still referenced by cron or launchd",
+    "Do not modify trading thresholds or strategy parameters",
+    "Do not require live broker connection"
+  ],
+  "acceptance_tests": [
+    "Each Python script classified as: active (document usage), archiveable, or delete-candidate",
+    "Archiveable scripts moved to archive/ with an INVENTORY.md entry",
+    "Delete-candidates listed in report for operator approval",
+    "Write classification report to docs/reports/python_script_audit.md"
+  ],
+  "required_outputs": [
+    "Each Python script classified as: active (document usage), archiveable, or delete-candidate",
+    "Archiveable scripts moved to archive/ with an INVENTORY.md entry",
+    "Delete-candidates listed in report for operator approval",
+    "Write classification report to docs/reports/python_script_audit.md"
+  ],
+  "forbidden_changes": [
+    "Do not delete any Python script without explicit approval in report",
+    "Do not modify scripts still referenced by cron or launchd"
+  ],
+  "handoff_questions": [
+    "Did you verify each acceptance criterion with evidence?",
+    "Were any forbidden actions performed?",
+    "What artifacts were produced?"
+  ],
+  "expected_duration_hours": 4,
+  "target_files": [
+    "ai_advisor.py",
+    "asset_doubling.py",
+    "asset_doubling_hunter.py",
+    "auto_optimizer.py",
+    "doubling_final_report.py",
+    "major_players.py",
+    "rolling_backtest_engine.py",
+    "strategy_research_framework.py",
+    "super_surge_detector.py",
+    "validate_kelly.py",
+    "validate_kelly_backtest.py",
+    "validate_risk_defense.py",
+    "validate_walk_forward.py",
+    "verify_hunter.py"
+  ]
+}

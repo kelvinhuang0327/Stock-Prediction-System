@@ -1,0 +1,33 @@
+{
+  "evaluatedAt": "2026-05-05T04:35:00.000Z",
+  "status": "degraded",
+  "sufficientData": true,
+  "entriesAnalyzed": 10,
+  "signals": [
+    {
+      "label": "worker_unstable",
+      "description": "Expired lock count is rising — workers may be crashing before releasing lane locks.",
+      "recentAvg": 3.4,
+      "olderAvg": 0.6,
+      "windowSize": 10
+    }
+  ],
+  "recommendedActions": [
+    {
+      "signal": "worker_unstable",
+      "action": "Increase logging level to WARN for worker operations",
+      "severity": "warning"
+    },
+    {
+      "signal": "worker_unstable",
+      "action": "Mark system as degraded — monitor worker crash frequency closely",
+      "severity": "warning"
+    },
+    {
+      "signal": "worker_unstable",
+      "action": "[Future] Reduce worker concurrency to lower crash pressure",
+      "severity": "info",
+      "futureOnly": true
+    }
+  ]
+}

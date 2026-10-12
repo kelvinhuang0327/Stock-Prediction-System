@@ -1,0 +1,91 @@
+{
+  "candidateListId": "p32prep_golden_fixture_candidates",
+  "capturedAt": "2026-05-21T00:00:00.000Z",
+  "designOnly": true,
+  "fixtureDirectoryNote": "Proposed fixture paths are under outputs/online_validation/fixtures/ — DO NOT create fixture files until P32 explicitly authorizes fixture materialization.",
+  "disclaimer": "Design-only golden fixture candidate list. Does not constitute investment advice. No profit, return, or investment performance claims are made.",
+
+  "candidates": [
+    {
+      "candidateId": "GFC-01",
+      "sourceArtifactPath": "outputs/online_validation/p29i_pit_audit_scan.json",
+      "proposedFixturePath": "outputs/online_validation/fixtures/p29i_pit_audit_scan_fixture_v1.json",
+      "specAlignment": "pit-audit (p32prep_report_spec_v0_pit_audit)",
+      "reason": "The P29I PIT audit scan is the canonical PSR-01..15 rule-check baseline for Quote, Regime, and Chip. Its structure (sourceOutputs per source, ruleChecks array) is stable at HEAD a6fb753 and will only change if a new source is admitted or a rule is added. It serves as the regression anchor for all future pit-audit artifacts to verify they do not silently drop rule categories.",
+      "expectedStabilityCharacteristics": {
+        "changeDrivers": ["Addition of a new audited source", "PSR rule set extension beyond PSR-15"],
+        "stableUnder": ["Phase progression P32/P33 without new source admission", "DB migration with no source model changes", "Corpus expansion without new source types"],
+        "approximateStabilityWindow": "Until FinancialReport or NewsEvent source admission gate opens",
+        "schemaVersion": "p32prep_report_spec_v0_pit_audit v0"
+      },
+      "governanceNote": "entersAlphaScore=false in all sourceOutputs entries. Chip result is WARN_ASSUMPTION_REQUIRED — fixture must not change this to PASS_PIT_SAFE without a dedicated Chip lag evidence gate."
+    },
+    {
+      "candidateId": "GFC-02",
+      "sourceArtifactPath": "outputs/online_validation/p29i_source_path_inventory.json",
+      "proposedFixturePath": "outputs/online_validation/fixtures/p29i_source_path_inventory_fixture_v1.json",
+      "specAlignment": "source-gate (p32prep_report_spec_v0_source_gate)",
+      "reason": "The P29I source path inventory is the canonical map of all sources to their pipeline path, DB table, PIT gate status, and audit conclusion. It documents the structural relationship between source name, DB table, and alphaScore entry path. Fixtures derived from this artifact allow regression tests to verify that a new phase has not accidentally upgraded a blocked source (FinancialReport, NewsEvent) or changed the DB table for an approved source.",
+      "expectedStabilityCharacteristics": {
+        "changeDrivers": ["Addition of a new source (FinancialReport DB table creation)", "Renaming of DB table or date field", "Chip availableAt migration apply that changes asOfDateHandling"],
+        "stableUnder": ["MonthlyRevenue releaseDate policy changes (separate table)", "P32 dry-run execution (read-only against this inventory)", "Roadmap priority changes"],
+        "approximateStabilityWindow": "Until P30B Chip migration is applied or a new source gate is opened",
+        "schemaVersion": "p32prep_report_spec_v0_source_gate v0"
+      },
+      "governanceNote": "MonthlyRevenue entry must remain STRUCTURAL_PLACEHOLDER_ONLY or NOT_IN_ALPHA_SCORE_SOURCE_ABSENT; FinancialReport and NewsEvent must remain BLOCKED."
+    },
+    {
+      "candidateId": "GFC-03",
+      "sourceArtifactPath": "outputs/online_validation/p31_monthly_revenue_dry_run_sample.json",
+      "proposedFixturePath": "outputs/online_validation/fixtures/p31_monthly_revenue_dry_run_sample_fixture_v1.json",
+      "specAlignment": "dry-run-sample (p32prep_report_spec_v0_dry_run_sample)",
+      "reason": "The P31 dry-run sample is the flattest, most compact representation of a MonthlyRevenue source-present dry-run result. It is the primary output contract that P32 will use as its schema anchor. Pinning this as a fixture lets P32 regression tests assert that its own output artifact matches or supersedes the structural guarantees recorded here (same or better row counts, same governance flags, same enum values).",
+      "expectedStabilityCharacteristics": {
+        "changeDrivers": ["Row count change if new MonthlyRevenue data is synced", "Policy upgrade from INFERRED_NEXT_MONTH_10TH to a more precise policy"],
+        "stableUnder": ["P32 adding new optional fields to its output (additive change)", "Roadmap priority changes", "Chip schema migration apply"],
+        "approximateStabilityWindow": "Until new MonthlyRevenue sync adds rows beyond 2143 or policy confidence is upgraded",
+        "schemaVersion": "p32prep_report_spec_v0_dry_run_sample v0"
+      },
+      "governanceNote": "entersAlphaScore must remain false in any fixture and any P32 output derived from it. paperOnly=true and dryRun=true are hard constraints that must not be relaxed in fixture derivatives."
+    },
+    {
+      "candidateId": "GFC-04",
+      "sourceArtifactPath": "outputs/online_validation/p31_monthly_revenue_dry_run_gate_scan.json",
+      "proposedFixturePath": "outputs/online_validation/fixtures/p31_monthly_revenue_dry_run_gate_scan_fixture_v1.json",
+      "specAlignment": "dry-run-sample (p32prep_report_spec_v0_dry_run_sample)",
+      "reason": "The P31 gate scan provides the DB-level evidence for the P31 dry-run sample. Pinning it as a companion fixture to GFC-03 enables two-level regression: (a) structural (same fields, same governance flags) and (b) data-level (same totalRows=2143, same SQL pattern, same policy). It also documents the explicit DB query, making it an auditable record of what 'ready' meant at P31 HEAD.",
+      "expectedStabilityCharacteristics": {
+        "changeDrivers": ["New MonthlyRevenue rows synced (totalRows change)", "DB migration changing query method", "Policy upgrade"],
+        "stableUnder": ["P32 read-only gate scan reusing same SQL query", "Chip migration (different table)"],
+        "approximateStabilityWindow": "Until next MonthlyRevenue sync event or DB migration",
+        "schemaVersion": "p32prep_report_spec_v0_dry_run_sample v0"
+      },
+      "governanceNote": "blockedRows must remain 0 unless a genuine leakage-risk row is introduced. Any change to totalRows must be accompanied by a preflight audit explaining the delta."
+    },
+    {
+      "candidateId": "GFC-05",
+      "sourceArtifactPath": "outputs/online_validation/p29g_dry_run_sample_output.json",
+      "proposedFixturePath": "outputs/online_validation/fixtures/p29g_dry_run_sample_output_fixture_v1.json",
+      "specAlignment": "dry-run-sample (p32prep_report_spec_v0_dry_run_sample)",
+      "reason": "The P29G dry-run sample output is the earliest scaffold-level dry-run artifact and establishes the baseline simulation boundary semantics: scoringMutation=false, corpusMutation=false, optimizerExecuted=false, realBacktestExecuted=false, notInvestmentRecommendation=true. Pinning it as a fixture allows regression tests to assert that later dry-run artifacts (P31, P32) continue to assert the same simulation boundary flags without regression.",
+      "expectedStabilityCharacteristics": {
+        "changeDrivers": ["p29gContractVersion upgrade", "sourceClassifications list expansion with new source admission"],
+        "stableUnder": ["P32 execution with MonthlyRevenue source", "Chip migration apply", "Corpus expansion"],
+        "approximateStabilityWindow": "Until P29G contract version is superseded by a new simulation runner",
+        "schemaVersion": "p32prep_report_spec_v0_dry_run_sample v0"
+      },
+      "governanceNote": "sourceClassifications for FinancialReport and NewsEvent must remain HIGH_RISK_SOURCE_ABSENT unless those sources pass their dedicated admission gates."
+    }
+  ],
+
+  "summary": {
+    "totalCandidates": 5,
+    "bySpecAlignment": {
+      "pit-audit": 1,
+      "source-gate": 1,
+      "dry-run-sample": 3
+    },
+    "fixtureDirectoryStatus": "NOT_CREATED — design only; fixture materialization requires P32 authorization",
+    "antiDriftNote": "All candidates are stable under the most likely P32 execution path. Fixtures must be version-tagged and updated only via an explicit phase gate artifact, not silently overwritten."
+  }
+}

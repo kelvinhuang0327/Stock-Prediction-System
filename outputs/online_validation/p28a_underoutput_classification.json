@@ -1,0 +1,276 @@
+{
+  "classificationId": "p28a-underoutput-classification",
+  "generatedAt": "2026-05-15T03:33:14.256Z",
+  "totalCases": 9,
+  "distribution": {
+    "NO_TRIGGERED_FACTOR": 9,
+    "CONTRIBUTION_BELOW_REASON_THRESHOLD": 0,
+    "TEMPLATE_BRANCH_MISSING": 0,
+    "UNKNOWN_NEEDS_CODE_TRACE": 0
+  },
+  "primaryDriver": "NO_TRIGGERED_FACTOR",
+  "classifications": [
+    {
+      "caseId": "P5-CASE-010",
+      "symbol": "1710",
+      "asOfDate": "2025-12-15",
+      "horizon": 5,
+      "alphaScore": 68,
+      "bucket": "NEUTRAL",
+      "classification": "NO_TRIGGERED_FACTOR",
+      "reason": "Factors present (factorSnapshotCount=10) but reason collapsed to 1 token (技術偏多). Scoring is correct; reason serialization failed (renderer issue).",
+      "evidence": {
+        "hasFactorsTriggered": true,
+        "factorCount": 10,
+        "reasonTokenCount": 1,
+        "dataCoverageStatus": "limited",
+        "blockedByMonthlyRevenue": true,
+        "blockedByNewsEvent": false,
+        "blockedByFinancialReport": false,
+        "isRendererUnderoutput": true,
+        "factorSnapshotSample": [
+          "MA 趨勢: 多頭排列 (MA20(12.24) > MA60(12.19))",
+          "RSI(14): 60 (中性健康區間)",
+          "MACD: 0.01 (MACD > 0，多方動能)"
+        ]
+      },
+      "nextStepsRecommended": [
+        "Renderer fix: deserialize factorSnapshot for multi-factor reason generation",
+        "Source completion: P26F4 import for MonthlyRevenue missing data"
+      ]
+    },
+    {
+      "caseId": "P5-CASE-011",
+      "symbol": "00738U",
+      "asOfDate": "2025-12-19",
+      "horizon": 5,
+      "alphaScore": 63,
+      "bucket": "NEUTRAL",
+      "classification": "NO_TRIGGERED_FACTOR",
+      "reason": "Factors present (factorSnapshotCount=10) but reason collapsed to 1 token (技術偏多). Scoring is correct; reason serialization failed (renderer issue).",
+      "evidence": {
+        "hasFactorsTriggered": true,
+        "factorCount": 10,
+        "reasonTokenCount": 1,
+        "dataCoverageStatus": "limited",
+        "blockedByMonthlyRevenue": true,
+        "blockedByNewsEvent": false,
+        "blockedByFinancialReport": false,
+        "isRendererUnderoutput": true,
+        "factorSnapshotSample": [
+          "MA 趨勢: 多頭排列 (MA20(40.86) > MA60(38.08))",
+          "RSI(14): 57.58 (中性健康區間)",
+          "MACD: 0.91 (MACD > 0，多方動能)"
+        ]
+      },
+      "nextStepsRecommended": [
+        "Renderer fix: deserialize factorSnapshot for multi-factor reason generation",
+        "Source completion: P26F4 import for MonthlyRevenue missing data"
+      ]
+    },
+    {
+      "caseId": "P5-CASE-013",
+      "symbol": "1710",
+      "asOfDate": "2025-12-15",
+      "horizon": 5,
+      "alphaScore": 68,
+      "bucket": "NEUTRAL",
+      "classification": "NO_TRIGGERED_FACTOR",
+      "reason": "Factors present (factorSnapshotCount=10) but reason collapsed to 1 token (技術偏多). Scoring is correct; reason serialization failed (renderer issue).",
+      "evidence": {
+        "hasFactorsTriggered": true,
+        "factorCount": 10,
+        "reasonTokenCount": 1,
+        "dataCoverageStatus": "limited",
+        "blockedByMonthlyRevenue": true,
+        "blockedByNewsEvent": false,
+        "blockedByFinancialReport": false,
+        "isRendererUnderoutput": true,
+        "factorSnapshotSample": [
+          "MA 趨勢: 多頭排列 (MA20(12.24) > MA60(12.19))",
+          "RSI(14): 60 (中性健康區間)",
+          "MACD: 0.01 (MACD > 0，多方動能)"
+        ]
+      },
+      "nextStepsRecommended": [
+        "Renderer fix: deserialize factorSnapshot for multi-factor reason generation",
+        "Source completion: P26F4 import for MonthlyRevenue missing data"
+      ]
+    },
+    {
+      "caseId": "P5-CASE-023",
+      "symbol": "00891",
+      "asOfDate": "2025-11-12",
+      "horizon": 20,
+      "alphaScore": 63,
+      "bucket": "NEUTRAL",
+      "classification": "NO_TRIGGERED_FACTOR",
+      "reason": "Factors present (factorSnapshotCount=10) but reason collapsed to 1 token (技術偏多). Scoring is correct; reason serialization failed (renderer issue).",
+      "evidence": {
+        "hasFactorsTriggered": true,
+        "factorCount": 10,
+        "reasonTokenCount": 1,
+        "dataCoverageStatus": "limited",
+        "blockedByMonthlyRevenue": true,
+        "blockedByNewsEvent": false,
+        "blockedByFinancialReport": false,
+        "isRendererUnderoutput": true,
+        "factorSnapshotSample": [
+          "MA 趨勢: 空頭排列 (MA20(16.05) < MA60(16.58))",
+          "RSI(14): 54.92 (中性健康區間)",
+          "MACD: 0.12 (MACD > 0，多方動能)"
+        ]
+      },
+      "nextStepsRecommended": [
+        "Renderer fix: deserialize factorSnapshot for multi-factor reason generation",
+        "Source completion: P26F4 import for MonthlyRevenue missing data"
+      ]
+    },
+    {
+      "caseId": "P5-CASE-026",
+      "symbol": "00891",
+      "asOfDate": "2025-11-12",
+      "horizon": 20,
+      "alphaScore": 63,
+      "bucket": "NEUTRAL",
+      "classification": "NO_TRIGGERED_FACTOR",
+      "reason": "Factors present (factorSnapshotCount=10) but reason collapsed to 1 token (技術偏多). Scoring is correct; reason serialization failed (renderer issue).",
+      "evidence": {
+        "hasFactorsTriggered": true,
+        "factorCount": 10,
+        "reasonTokenCount": 1,
+        "dataCoverageStatus": "limited",
+        "blockedByMonthlyRevenue": true,
+        "blockedByNewsEvent": false,
+        "blockedByFinancialReport": false,
+        "isRendererUnderoutput": true,
+        "factorSnapshotSample": [
+          "MA 趨勢: 空頭排列 (MA20(16.05) < MA60(16.58))",
+          "RSI(14): 54.92 (中性健康區間)",
+          "MACD: 0.12 (MACD > 0，多方動能)"
+        ]
+      },
+      "nextStepsRecommended": [
+        "Renderer fix: deserialize factorSnapshot for multi-factor reason generation",
+        "Source completion: P26F4 import for MonthlyRevenue missing data"
+      ]
+    },
+    {
+      "caseId": "P5-CASE-037",
+      "symbol": "00891",
+      "asOfDate": "2025-10-15",
+      "horizon": 60,
+      "alphaScore": 63,
+      "bucket": "NEUTRAL",
+      "classification": "NO_TRIGGERED_FACTOR",
+      "reason": "Factors present (factorSnapshotCount=10) but reason collapsed to 1 token (技術偏多). Scoring is correct; reason serialization failed (renderer issue).",
+      "evidence": {
+        "hasFactorsTriggered": true,
+        "factorCount": 10,
+        "reasonTokenCount": 1,
+        "dataCoverageStatus": "limited",
+        "blockedByMonthlyRevenue": true,
+        "blockedByNewsEvent": false,
+        "blockedByFinancialReport": false,
+        "isRendererUnderoutput": true,
+        "factorSnapshotSample": [
+          "MA 趨勢: 空頭排列 (MA20(16.05) < MA60(16.58))",
+          "RSI(14): 54.92 (中性健康區間)",
+          "MACD: 0.12 (MACD > 0，多方動能)"
+        ]
+      },
+      "nextStepsRecommended": [
+        "Renderer fix: deserialize factorSnapshot for multi-factor reason generation",
+        "Source completion: P26F4 import for MonthlyRevenue missing data"
+      ]
+    },
+    {
+      "caseId": "P5-CASE-053",
+      "symbol": "00738U",
+      "asOfDate": "2025-12-19",
+      "horizon": 5,
+      "alphaScore": 63,
+      "bucket": "NEUTRAL",
+      "classification": "NO_TRIGGERED_FACTOR",
+      "reason": "Factors present (factorSnapshotCount=10) but reason collapsed to 1 token (技術偏多). Scoring is correct; reason serialization failed (renderer issue).",
+      "evidence": {
+        "hasFactorsTriggered": true,
+        "factorCount": 10,
+        "reasonTokenCount": 1,
+        "dataCoverageStatus": "limited",
+        "blockedByMonthlyRevenue": true,
+        "blockedByNewsEvent": false,
+        "blockedByFinancialReport": false,
+        "isRendererUnderoutput": true,
+        "factorSnapshotSample": [
+          "MA 趨勢: 多頭排列 (MA20(40.86) > MA60(38.08))",
+          "RSI(14): 57.58 (中性健康區間)",
+          "MACD: 0.91 (MACD > 0，多方動能)"
+        ]
+      },
+      "nextStepsRecommended": [
+        "Renderer fix: deserialize factorSnapshot for multi-factor reason generation",
+        "Source completion: P26F4 import for MonthlyRevenue missing data"
+      ]
+    },
+    {
+      "caseId": "P5-CASE-054",
+      "symbol": "00891",
+      "asOfDate": "2025-12-30",
+      "horizon": 5,
+      "alphaScore": 63,
+      "bucket": "NEUTRAL",
+      "classification": "NO_TRIGGERED_FACTOR",
+      "reason": "Factors present (factorSnapshotCount=10) but reason collapsed to 1 token (技術偏多). Scoring is correct; reason serialization failed (renderer issue).",
+      "evidence": {
+        "hasFactorsTriggered": true,
+        "factorCount": 10,
+        "reasonTokenCount": 1,
+        "dataCoverageStatus": "limited",
+        "blockedByMonthlyRevenue": true,
+        "blockedByNewsEvent": false,
+        "blockedByFinancialReport": false,
+        "isRendererUnderoutput": true,
+        "factorSnapshotSample": [
+          "MA 趨勢: 空頭排列 (MA20(16.05) < MA60(16.58))",
+          "RSI(14): 54.92 (中性健康區間)",
+          "MACD: 0.12 (MACD > 0，多方動能)"
+        ]
+      },
+      "nextStepsRecommended": [
+        "Renderer fix: deserialize factorSnapshot for multi-factor reason generation",
+        "Source completion: P26F4 import for MonthlyRevenue missing data"
+      ]
+    },
+    {
+      "caseId": "P5-CASE-055",
+      "symbol": "1710",
+      "asOfDate": "2025-12-15",
+      "horizon": 5,
+      "alphaScore": 68,
+      "bucket": "NEUTRAL",
+      "classification": "NO_TRIGGERED_FACTOR",
+      "reason": "Factors present (factorSnapshotCount=10) but reason collapsed to 1 token (技術偏多). Scoring is correct; reason serialization failed (renderer issue).",
+      "evidence": {
+        "hasFactorsTriggered": true,
+        "factorCount": 10,
+        "reasonTokenCount": 1,
+        "dataCoverageStatus": "limited",
+        "blockedByMonthlyRevenue": true,
+        "blockedByNewsEvent": false,
+        "blockedByFinancialReport": false,
+        "isRendererUnderoutput": true,
+        "factorSnapshotSample": [
+          "MA 趨勢: 多頭排列 (MA20(12.24) > MA60(12.19))",
+          "RSI(14): 60 (中性健康區間)",
+          "MACD: 0.01 (MACD > 0，多方動能)"
+        ]
+      },
+      "nextStepsRecommended": [
+        "Renderer fix: deserialize factorSnapshot for multi-factor reason generation",
+        "Source completion: P26F4 import for MonthlyRevenue missing data"
+      ]
+    }
+  ],
+  "disclaimer": "Observability only. No investment recommendations."
+}

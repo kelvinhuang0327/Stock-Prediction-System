@@ -1,0 +1,58 @@
+{
+  "phase": "P41",
+  "step": "Phase 6 — Test Baseline",
+  "timestamp": "2026-05-21T00:00:00+08:00",
+  "testResults": {
+    "p41Targeted": {
+      "suites": 1,
+      "tests": 97,
+      "passed": 97,
+      "failed": 0,
+      "result": "PASS"
+    },
+    "p40Regression": {
+      "suites": 1,
+      "tests": 118,
+      "passed": 118,
+      "failed": 0,
+      "result": "PASS"
+    },
+    "p39Regression": {
+      "suites": 1,
+      "tests": 77,
+      "passed": 77,
+      "failed": 0,
+      "result": "PASS"
+    },
+    "p38Regression": {
+      "suites": 1,
+      "tests": 55,
+      "passed": 55,
+      "failed": 0,
+      "result": "PASS"
+    }
+  },
+  "testGroups": [
+    "Group 1 — Dry-run governance invariants (14 tests)",
+    "Group 2 — runPaperSimulationDryRun accepts P40 framework plan (8 tests)",
+    "Group 3 — runPaperSimulationDryRun rejects invalid plans (6 tests)",
+    "Group 4 — stubResult = DRY_RUN_STUB_ONLY (8 tests)",
+    "Group 5 — assertNoDryRunExecution throws for forbidden fields (12 tests)",
+    "Group 6 — validateDryRunInput validates required fields (10 tests)",
+    "Group 7 — Version and disclaimer constants (11 tests)",
+    "Group 8 — FORBIDDEN_FIELDS constants (7 tests)",
+    "Group 9 — Result has no forbidden execution fields (8 tests)",
+    "Group 10 — Isolation: pure function, deterministic (5 tests)",
+    "Group 11 — No forbidden exports (8 tests)"
+  ],
+  "preExistingFailures": {
+    "count": 4,
+    "description": "Pre-existing DB hash drift failures in p26a/p27/p29d — not P41 related"
+  },
+  "forbiddenDiff": "CLEAN — only runtime files dirty",
+  "forbiddenClaimsScan": "CLEAN — all occurrences of forbidden terms are prohibition declarations only",
+  "noSimulationExecuted": true,
+  "noDBModified": true,
+  "noCorpusModified": true,
+  "noScoringFormulaModified": true
+}

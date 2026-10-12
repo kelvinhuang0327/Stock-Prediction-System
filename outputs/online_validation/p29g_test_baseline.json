@@ -1,0 +1,66 @@
+{
+  "phase": "P29G",
+  "description": "P29G dry-run runner test baseline",
+  "capturedAt": "2026-05-15T00:00:00.000Z",
+  "runner": "npx jest src/lib/onlineValidation/__tests__ --no-coverage",
+  "results": {
+    "testSuites": 108,
+    "tests": 3315,
+    "passed": 3315,
+    "failed": 0,
+    "skipped": 0
+  },
+  "delta": {
+    "from": "P29H baseline (107 suites / 3239 tests)",
+    "suitesDelta": "+1",
+    "testsDelta": "+76",
+    "newSuites": [
+      "src/lib/onlineValidation/__tests__/p29g_paper_simulation_dry_run_runner.test.ts"
+    ]
+  },
+  "p29gTestGroups": [
+    "P29G-T01: Input contract — paperOnly=true required",
+    "P29G-T02: Input contract — dryRun=true required",
+    "P29G-T03: Input contract — notInvestmentRecommendation=true required",
+    "P29G-T04: Forbidden action fields rejected from input",
+    "P29G-T05: Runner output — paperOnly enforced",
+    "P29G-T06: Runner output — dryRun enforced",
+    "P29G-T07: Runner output — all mutation flags are false",
+    "P29G-T08: Leakage gate — output passes runLeakageGatePlaceholder()",
+    "P29G-T09: No forbidden performance fields in output",
+    "P29G-T10: FinancialReport remains HIGH_RISK_SOURCE_ABSENT",
+    "P29G-T11: NewsEvent remains HIGH_RISK_SOURCE_ABSENT",
+    "P29G-T12: HIGH_RISK_SOURCE_ABSENT sources do not enter alphaScore",
+    "P29G-T13: Quote / Regime / Chip represented as PIT_SAFE_VERIFIED",
+    "P29G-T14: Output determinism",
+    "P29G-T15: Output serializability",
+    "P29G-T16: No DB / corpus write",
+    "P29G-T17: P29G source files — no forbidden imports",
+    "P29G-T18: P29G source files — no forbidden performance claims",
+    "P29G-T19: Report generation — no performance claims",
+    "P29G-T20: Report governance flags",
+    "P29G-T21: Source coverage summary in report",
+    "P29G-T22: resolveSourceClassifications merging",
+    "P29G-T23: Runner throws for null / invalid config",
+    "P29G-T24: Input validation — asOfDate format",
+    "P29G-T25: BLOCKED source must not enter alphaScore"
+  ],
+  "p29gTestCount": 76,
+  "status": "ALL_PASS",
+  "governanceEnforced": [
+    "paperOnly=true enforced at input contract",
+    "dryRun=true enforced at input contract",
+    "notInvestmentRecommendation=true enforced at input contract",
+    "buy/sell/hold/action/stake rejected at input",
+    "FinancialReport HIGH_RISK_SOURCE_ABSENT confirmed",
+    "NewsEvent HIGH_RISK_SOURCE_ABSENT confirmed",
+    "Quote/Regime/Chip PIT_SAFE_VERIFIED scaffold representation confirmed",
+    "Leakage gate passes on every fixture output",
+    "scoringMutation=false confirmed",
+    "corpusMutation=false confirmed",
+    "optimizerExecuted=false confirmed",
+    "realBacktestExecuted=false confirmed",
+    "No forbidden perf fields in output",
+    "No ROI/win-rate/alpha/edge/profit in report"
+  ]
+}

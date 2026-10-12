@@ -1,0 +1,21 @@
+{
+  "version": "1.0",
+  "task_id": 161,
+  "slug": "validate-trend-rebound-setup-classificatio",
+  "status": "PENDING_REVIEW",
+  "gate_verdict": "PASS",
+  "planner_provider": "codex",
+  "worker_provider": "copilot-daemon",
+  "created_at": "2026-04-25T01:14:42.048Z",
+  "updated_at": "2026-04-25T01:17:05.969Z",
+  "last_output_at": "2026-04-25T01:17:05.969Z",
+  "latest_progress_summary": "Auto-committed 2 file(s) (sha: c0c9dea). Awaiting CTO review.",
+  "planner_context": {
+    "taskType": "optimization_price_analysis_quality",
+    "game": null,
+    "regimeState": "OPTIMIZATION",
+    "dedupeKey": "price_analysis_quality__setup_classification_audit",
+    "confidenceScore": null,
+    "regimeTaskType": "price_analysis_quality"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "hypothesis_id": "STOCK_H012_RSI_REVERSION_PROBE",
+  "symbol": "1560",
+  "as_of_date": "2026-05-01",
+  "pipeline_version": "P3-11",
+  "seed": 1098523986,
+  "n_permutations": 500,
+  "bh_fdr_alpha": 0.1,
+  "tx_cost_bps": 10,
+  "safety_confirmations": {
+    "no_production_write": true,
+    "no_trade_execution": true,
+    "not_trading_advice": true,
+    "real_data_read_only": true,
+    "bh_fdr_corrected": true,
+    "pit_guard_enforced": true,
+    "no_random_split": true,
+    "no_auto_promotion": true,
+    "refinement_guard_passed": true
+  },
+  "run_ts": "2026-05-05T09:56:40.900665+00:00"
+}

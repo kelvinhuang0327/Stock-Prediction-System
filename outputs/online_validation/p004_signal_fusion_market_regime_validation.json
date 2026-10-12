@@ -1,0 +1,32 @@
+{
+  "task": "P0-04",
+  "title": "SignalFusionEngine / StrategyScreenEngine MarketRegime As-of Gate Validation",
+  "date": "2026-05-07",
+  "status": "COMPLETE",
+  "disclaimer": "research tool only — no auto trading — no precision prediction claim — no DB write — no external API — no LLM call — no strategy mutation — no regime logic mutation — no performance claim — no edge claim",
+  "signalFusionEngine": {
+    "file": "src/lib/alpha/SignalFusionEngine.ts",
+    "fuseSignals": {
+      "previousBehavior": "detectRegime() — no asOf passed",
+      "p004Behavior": "detectRegime(asOf) — asOf propagated from caller",
+      "gateStatus": "COMPLETE"
+    },
+    "fuseBatch": {
+      "previousBehavior": "detectRegime() — no asOf passed",
+      "p004Behavior": "detectRegime(asOf) — asOf propagated from caller",
+      "gateStatus": "COMPLETE"
+    },
+    "scoringWeightsModified": false,
+    "regimeJudgmentLogicModified": false
+  },
+  "strategyScreenEngine": {
+    "file": "src/lib/screen/StrategyScreenEngine.ts",
+    "previousBehavior": "detectRegime() — no asOf passed",
+    "p004Behavior": "detectRegime(asOf) — asOf from screenParams.asOf",
+    "gateStatus": "COMPLETE",
+    "scoringWeightsModified": false
+  },
+  "regimeOverridePattern": {
+    "note": "fuseBatch() calls detectRegime(asOf) once and passes result as regimeOverride to all fuseSignals() calls. This is efficient and correct — single gated regime call shared across batch."
+  }
+}

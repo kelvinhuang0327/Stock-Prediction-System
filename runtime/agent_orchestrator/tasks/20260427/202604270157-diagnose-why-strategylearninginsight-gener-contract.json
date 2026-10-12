@@ -1,0 +1,44 @@
+{
+  "version": "2.0",
+  "objective": "Diagnose why StrategyLearningInsight generation has stalled",
+  "background": "Last StrategyLearningInsight was 7 days ago. The learning pipeline appears stalled, preventing strategy adaptation.",
+  "trigger_reason": "OPTIMIZATION_MINER@source=system_health&score=76",
+  "scope": [
+    "src/lib/learning/",
+    "scripts/",
+    "src/lib/agent-orchestrator/signalStateClassifier.ts"
+  ],
+  "constraints": [
+    "Do not manually insert fake insight records",
+    "Do not change learning thresholds without approval",
+    "Do not modify trading thresholds or strategy parameters",
+    "Do not require live broker connection"
+  ],
+  "acceptance_tests": [
+    "Root cause of insight generation failure identified and documented",
+    "Learning pipeline health verified end-to-end",
+    "At least 1 new StrategyLearningInsight generated after fix (or confirmed blocked by data)",
+    "Write diagnosis report to docs/reports/learning_pipeline_health.md"
+  ],
+  "required_outputs": [
+    "Root cause of insight generation failure identified and documented",
+    "Learning pipeline health verified end-to-end",
+    "At least 1 new StrategyLearningInsight generated after fix (or confirmed blocked by data)",
+    "Write diagnosis report to docs/reports/learning_pipeline_health.md"
+  ],
+  "forbidden_changes": [
+    "Do not manually insert fake insight records",
+    "Do not change learning thresholds without approval"
+  ],
+  "handoff_questions": [
+    "Did you verify each acceptance criterion with evidence?",
+    "Were any forbidden actions performed?",
+    "What artifacts were produced?"
+  ],
+  "expected_duration_hours": 5,
+  "target_files": [
+    "src/lib/learning/",
+    "scripts/",
+    "src/lib/agent-orchestrator/signalStateClassifier.ts"
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "auditId": "P26A_BATCH_PIPELINE_WIRING_CONTRACT",
+  "generatedAt": "2026-05-13T21:42:46.306838Z",
+  "wiringContract": {
+    "fieldMappings": [
+      {
+        "from": "corpusRow.activeScoringSnapshot.factorSnapshot",
+        "to": "WalkthroughCaseInput.factorSnapshot",
+        "behavior": "pass-through if present, undefined if absent"
+      },
+      {
+        "from": "corpusRow.activeScoringSnapshot.usedSources",
+        "to": "WalkthroughCaseInput.usedSources",
+        "behavior": "pass-through if present, undefined if absent"
+      },
+      {
+        "from": "corpusRow.activeScoringSnapshot.missingSources",
+        "to": "WalkthroughCaseInput.missingSources",
+        "behavior": "pass-through if present, undefined if absent"
+      }
+    ],
+    "constraints": [
+      "No mutation of activeScoringSnapshot",
+      "No change to alphaScore/bucket/reasonSnapshot",
+      "No DB write",
+      "No corpus write",
+      "No external API call",
+      "No investment recommendation claims",
+      "All new fields are optional (backward compatible)"
+    ]
+  },
+  "adapterContract": {
+    "function": "corpusRowToWalkthroughCaseInput(row: CorpusRow): WalkthroughCaseInput",
+    "file": "src/lib/onlineValidation/P26ACorpusRowAdapter.ts",
+    "pureFunction": true,
+    "readOnly": true
+  }
+}

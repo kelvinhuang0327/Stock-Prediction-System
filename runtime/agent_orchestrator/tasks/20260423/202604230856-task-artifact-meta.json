@@ -1,0 +1,13 @@
+{
+  "version": "1.0",
+  "task_id": 117,
+  "slug": "task-artifact",
+  "status": "COMPLETED",
+  "gate_verdict": "PASS",
+  "planner_provider": "codex",
+  "worker_provider": "claude",
+  "created_at": "2026-04-23T08:56:52.404Z",
+  "updated_at": "2026-04-23T08:57:18.617Z",
+  "last_output_at": "2026-04-23T08:57:18.617Z",
+  "latest_progress_summary": "Worker finished task and gate passed."
+}

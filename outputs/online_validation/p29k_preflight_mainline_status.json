@@ -1,0 +1,36 @@
+{
+  "auditId": "P29K-PREFLIGHT",
+  "capturedAt": "2026-05-20T00:00:00.000Z",
+  "repo": "canonical",
+  "branch": "main",
+  "headCommit": "9b4baced51ad410208da9b2234c2e592fd9373d8",
+  "headCommitDescription": "P29J: Chip lag evidence audit (WARN) + MonthlyRevenue readiness audit (NEEDS_SCHEMA_REPAIR)",
+  "dirtyClassification": "BENIGN",
+  "forbiddenDirtyFiles": [],
+  "runtimeDirtyFiles": [
+    "logs/launchd/*",
+    "prisma/dev.db",
+    "prisma/dev.db-shm",
+    "prisma/dev.db-wal",
+    "runtime/agent_orchestrator/llm_usage.jsonl",
+    "runtime/agent_orchestrator/pids/backend.pid",
+    "runtime/training_reports/tw_weekly_deep_research.json"
+  ],
+  "preExistingOutputDirty": [
+    "outputs/online_validation/p26f3_5_dropzone_scan_result.json",
+    "outputs/online_validation/p26f3_5_dropzone_scan_result.md",
+    "outputs/online_validation/p28c_renderer_only_repair_9case_before_after.json",
+    "outputs/online_validation/p28d_preflight_mainline_status.json",
+    "outputs/online_validation/p28d_preflight_mainline_status.md"
+  ],
+  "untrackedBenign": [
+    "00-StockPlan/20260514/",
+    "00-StockPlan/20260515/",
+    "data/manual/",
+    "generate_artifacts.py",
+    "src/lib/onlineValidation/__tests__/p29d_dropzone_scaffold.test.ts"
+  ],
+  "stagedFiles": [],
+  "productionSourceMutations": "NONE",
+  "status": "PROCEED"
+}

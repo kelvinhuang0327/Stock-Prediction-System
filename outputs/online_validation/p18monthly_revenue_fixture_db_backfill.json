@@ -1,0 +1,186 @@
+{
+  "phase": "P18-HARDRESET",
+  "task": "MonthlyRevenue releaseDate fixture DB backfill",
+  "date": "2026-05-12",
+  "validationStatus": "PASS",
+  "passCount": 23,
+  "failCount": 0,
+  "total": 23,
+  "gates": [
+    {
+      "label": "SG1: Fixture DB exists from PART C",
+      "status": "PASS"
+    },
+    {
+      "label": "SG2: releaseDate column exists in fixture DB",
+      "status": "PASS"
+    },
+    {
+      "label": "S-Seed: 6 distinct rows seeded (duplicate S7 ignored)",
+      "status": "PASS"
+    },
+    {
+      "label": "S9: outcomePrice not in DB columns",
+      "status": "PASS"
+    },
+    {
+      "label": "S9: returnPct not in DB columns",
+      "status": "PASS"
+    },
+    {
+      "label": "S9: realizedReturnClass not in DB columns",
+      "status": "PASS"
+    },
+    {
+      "label": "S1: 2024-01 → releaseDate=2024-02-10",
+      "status": "PASS"
+    },
+    {
+      "label": "S1: releaseDateSource=INFERRED_NEXT_MONTH_10TH",
+      "status": "PASS"
+    },
+    {
+      "label": "S1: releaseDateConfidence=LOW_TO_MEDIUM",
+      "status": "PASS"
+    },
+    {
+      "label": "S2: 2024-12 → releaseDate=2025-01-10",
+      "status": "PASS"
+    },
+    {
+      "label": "S2: releaseDateSource=INFERRED_NEXT_MONTH_10TH",
+      "status": "PASS"
+    },
+    {
+      "label": "S3: explicit releaseDate=2024-04-15 preserved",
+      "status": "PASS"
+    },
+    {
+      "label": "S3: explicit releaseDateSource=EXPLICIT preserved",
+      "status": "PASS"
+    },
+    {
+      "label": "S8: 2026-06 → releaseDate=2026-07-10",
+      "status": "PASS"
+    },
+    {
+      "label": "S9: no forbidden outcome fields in DB row",
+      "status": "PASS"
+    },
+    {
+      "label": "S10: pre-existing releaseDateSource preserved (INFERRED_NEXT_MONTH_10TH)",
+      "status": "PASS"
+    },
+    {
+      "label": "S10: pre-existing releaseDate=2024-03-10 preserved",
+      "status": "PASS"
+    },
+    {
+      "label": "S4: inferReleaseDate(null,1) = null",
+      "status": "PASS"
+    },
+    {
+      "label": "S5: inferReleaseDate(2024,null) = null",
+      "status": "PASS"
+    },
+    {
+      "label": "S6: inferReleaseDate(2024,13) = null (invalid month)",
+      "status": "PASS"
+    },
+    {
+      "label": "S6b: inferReleaseDate(2024,0) = null (invalid month)",
+      "status": "PASS"
+    },
+    {
+      "label": "All inferred rows have releaseDateConfidence=LOW_TO_MEDIUM",
+      "status": "PASS"
+    },
+    {
+      "label": "productionDbWritten=false",
+      "status": "PASS"
+    }
+  ],
+  "fixtureDbPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/outputs/online_validation/fixture_db/p18_monthly_revenue_fixture.sqlite",
+  "productionApplyAllowed": false,
+  "dryRunOnly": true,
+  "productionDbWritten": false,
+  "backfillResults": [
+    {
+      "rowId": "s1",
+      "stockId": "2330",
+      "year": 2024,
+      "month": 1,
+      "action": "INFERRED",
+      "inferredReleaseDate": "2024-02-10",
+      "source": "INFERRED_NEXT_MONTH_10TH",
+      "confidence": "LOW_TO_MEDIUM"
+    },
+    {
+      "rowId": "s2",
+      "stockId": "2330",
+      "year": 2024,
+      "month": 12,
+      "action": "INFERRED",
+      "inferredReleaseDate": "2025-01-10",
+      "source": "INFERRED_NEXT_MONTH_10TH",
+      "confidence": "LOW_TO_MEDIUM"
+    },
+    {
+      "rowId": "s3",
+      "stockId": "2454",
+      "year": 2024,
+      "month": 3,
+      "action": "PRESERVED",
+      "releaseDate": "2024-04-15",
+      "source": "EXPLICIT",
+      "confidence": "HIGH"
+    },
+    {
+      "rowId": "s8",
+      "stockId": "6505",
+      "year": 2026,
+      "month": 6,
+      "action": "INFERRED",
+      "inferredReleaseDate": "2026-07-10",
+      "source": "INFERRED_NEXT_MONTH_10TH",
+      "confidence": "LOW_TO_MEDIUM"
+    },
+    {
+      "rowId": "s9",
+      "stockId": "3008",
+      "year": 2024,
+      "month": 4,
+      "action": "INFERRED",
+      "inferredReleaseDate": "2024-05-10",
+      "source": "INFERRED_NEXT_MONTH_10TH",
+      "confidence": "LOW_TO_MEDIUM"
+    },
+    {
+      "rowId": "s10",
+      "stockId": "1101",
+      "year": 2024,
+      "month": 2,
+      "action": "PRESERVED",
+      "releaseDate": "2024-03-10",
+      "source": "INFERRED_NEXT_MONTH_10TH",
+      "confidence": "LOW_TO_MEDIUM"
+    }
+  ],
+  "postBackfillRowCount": 6,
+  "inferredCount": 4,
+  "preservedCount": 2,
+  "skippedCount": 0,
+  "forbiddenOutcomeFieldsScanned": [
+    "outcomePrice",
+    "returnPct",
+    "realizedReturnClass",
+    "futurePrice",
+    "horizonReturnPct",
+    "outcomeDate",
+    "horizonDays",
+    "baselineResult",
+    "outcomeClose"
+  ],
+  "forbiddenOutcomeFieldsPersisted": false,
+  "disclaimer": "Does not constitute investment advice. Does not compute ROI, profit, alpha, win-rate, edge, or outperformance."
+}

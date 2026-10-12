@@ -1,0 +1,97 @@
+{
+  "generatedAt": "2025-05-15T00:00:00.000Z",
+  "phase": "P28D",
+  "part": "E - API/Display Backward Compatibility Audit",
+  "verdict": "BACKWARD_COMPATIBLE",
+  "classification": "P28D_API_DISPLAY_BACKWARD_COMPAT_PASS",
+  "summary": {
+    "breakingChanges": 0,
+    "addedFields": 5,
+    "removedFields": 0,
+    "renamedFields": 0,
+    "apiRoutesModified": 0,
+    "apiRoutesReferringToRenderer": 0,
+    "scriptsUsingRendererReadOnly": true
+  },
+  "caseReviewResultFieldsAdded": [
+    {
+      "field": "renderedReason",
+      "type": "string",
+      "additive": true,
+      "breaking": false,
+      "description": "Enriched reason text from P26ACorpusReasonRenderer v2"
+    },
+    {
+      "field": "renderedReasonFactorCount",
+      "type": "number",
+      "additive": true,
+      "breaking": false,
+      "description": "Number of factors used in enriched reason"
+    },
+    {
+      "field": "reasonRendererVersion",
+      "type": "string",
+      "additive": true,
+      "breaking": false,
+      "description": "Renderer version — always 'p26a-corpus-renderer-v2' after P28C"
+    },
+    {
+      "field": "reasonRendererOutcome",
+      "type": "string",
+      "additive": true,
+      "breaking": false,
+      "description": "One of: ENRICHED | ALREADY_RICH | FALLBACK_EMPTY"
+    },
+    {
+      "field": "dataAvailabilityNote",
+      "type": "string",
+      "additive": true,
+      "breaking": false,
+      "description": "Data coverage note built from usedSources / missingSources"
+    }
+  ],
+  "apiRoutesAudit": [
+    {
+      "route": "src/app/api/admin/data-quality/route.ts",
+      "referencesRenderer": false,
+      "referencesReasonSnapshot": false,
+      "referencesRenderedReason": false,
+      "referencesReasonRendererVersion": false,
+      "exposesRendererOutput": false,
+      "modified": false,
+      "note": "Only calls runQualityCheck() and resolveAsOfDate() — data coverage metrics only"
+    }
+  ],
+  "walkthroughCaseInputChanges": {
+    "addedField": "scoreSnapshot",
+    "type": "{ technicalScore: number; chipScore: number; [key: string]: number } | undefined",
+    "optional": true,
+    "additive": true,
+    "breaking": false,
+    "description": "Pass-through from corpus adapter to renderer enrichment; undefined = graceful fallback to { technicalScore: 0, chipScore: 0, ... }"
+  },
+  "scriptsUsingRenderer": [
+    {
+      "script": "scripts/run-p26a-batch-pipeline-wiring-validation.js",
+      "readonly": true,
+      "modifiedByP28C": false
+    },
+    {
+      "script": "scripts/run-p28a-active-scoring-smoke.js",
+      "readonly": true,
+      "modifiedByP28C": false
+    },
+    {
+      "script": "scripts/validate-p5-artifacts.js",
+      "readonly": true,
+      "modifiedByP28C": false
+    }
+  ],
+  "displayPathGuarantees": {
+    "alphaScoreNeverChangedByRenderer": true,
+    "bucketNeverChangedByRenderer": true,
+    "rendererOutputIsDisplayOnly": true,
+    "noInvestmentClaims": true,
+    "observationalNoteOnly": true
+  }
+}

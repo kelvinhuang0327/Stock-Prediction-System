@@ -1,0 +1,46 @@
+{
+  "auditId": "P26A_BATCH_PIPELINE_WIRING_INVARIANCE",
+  "generatedAt": "2026-05-13T21:47:07.119755Z",
+  "finalClassification": "P26A_BATCH_PIPELINE_WIRING_COMPLETE",
+  "invarianceChecks": {
+    "prisma_dev_db": {
+      "expected": "a5cf277182c161dfe97ba05f9b81528d6c8e477dd5ac0bec6810ffbb8711c6f8",
+      "status": "PASS"
+    },
+    "RuleBasedStockAnalyzer_ts": {
+      "expected": "bc3716cc8e74be304f2e262aac586a61760bb59d6c95e82a575c38e03ea7373d",
+      "status": "PASS"
+    },
+    "SignalFusionEngine_ts": {
+      "expected": "b8ce3fa3ae63fd7edf6b6067dd8ccea63c02741454b93792e87bfbc1e95d2bf4",
+      "status": "PASS"
+    },
+    "ActiveScoringSnapshotBuilder_ts": {
+      "expected": "063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d",
+      "status": "PASS"
+    },
+    "corpus_simulation_snapshot": {
+      "lineCount": 60,
+      "status": "PASS"
+    },
+    "corpus_p0hardreset": {
+      "lineCount": 4500,
+      "status": "PASS"
+    },
+    "corpus_p1baseline": {
+      "lineCount": 9900,
+      "status": "PASS"
+    },
+    "corpus_p3active_scoring": {
+      "lineCount": 4500,
+      "status": "PASS"
+    },
+    "corpus_p19active_scoring_pit": {
+      "lineCount": 4500,
+      "nonEmptyCanonical": true,
+      "status": "PASS"
+    }
+  },
+  "allInvariantsPassed": true,
+  "disclaimer": "Not investment advice."
+}

@@ -1,0 +1,82 @@
+{
+  "phase": "P29X",
+  "capturedAt": "2026-05-20T00:00:00.000Z",
+  "date": "20260520",
+  "archivePlan": [
+    {
+      "oldName": "claude/frosty-borg-e85827",
+      "newName": "merged/20260520/claude-frosty-borg-e85827",
+      "classification": "SUPERSEDED_BY_MAIN",
+      "tip": "51d15df",
+      "reason": "P29E original scaffold. Superseded by P29H+P29G on main.",
+      "worktreeRemoved": true,
+      "worktreePath": ".claude/worktrees/frosty-borg-e85827"
+    },
+    {
+      "oldName": "claude/frosty-visvesvaraya-ff0e3f",
+      "newName": "merged/20260520/claude-frosty-visvesvaraya-ff0e3f",
+      "classification": "MERGED_IN_MAIN",
+      "tip": "330b8ea",
+      "reason": "P25 observability. IS ancestor of main.",
+      "worktreeRemoved": true,
+      "worktreePath": ".claude/worktrees/frosty-visvesvaraya-ff0e3f"
+    },
+    {
+      "oldName": "claude/loving-mirzakhani-b7a453",
+      "newName": "merged/20260520/claude-loving-mirzakhani-b7a453",
+      "classification": "MERGED_IN_MAIN",
+      "tip": "675771a",
+      "reason": "P9 corpus work. IS ancestor of main.",
+      "worktreeRemoved": true,
+      "worktreePath": ".claude/worktrees/loving-mirzakhani-b7a453"
+    },
+    {
+      "oldName": "claude/objective-kalam-b00477",
+      "newName": "merged/20260520/claude-objective-kalam-b00477",
+      "classification": "SUPERSEDED_BY_MAIN",
+      "tip": "ecd5c86",
+      "reason": "P29D dropzone scaffold. User policy: no cherry-pick. Content present as untracked in main.",
+      "worktreeRemoved": true,
+      "worktreePath": ".claude/worktrees/objective-kalam-b00477"
+    },
+    {
+      "oldName": "claude/optimistic-spence-419897",
+      "newName": "merged/20260520/claude-optimistic-spence-419897",
+      "classification": "MERGED_IN_MAIN",
+      "tip": "5260be3",
+      "reason": "P27 governance audit. IS ancestor of main.",
+      "worktreeRemoved": true,
+      "worktreePath": ".claude/worktrees/optimistic-spence-419897"
+    },
+    {
+      "oldName": "claude/quirky-black-eb3d86",
+      "newName": "merged/20260520/claude-quirky-black-eb3d86",
+      "classification": "MERGED_IN_MAIN",
+      "tip": "2da1203",
+      "reason": "P29C contract. IS ancestor of main.",
+      "worktreeRemoved": true,
+      "worktreePath": ".claude/worktrees/quirky-black-eb3d86"
+    },
+    {
+      "oldName": "claude/stupefied-cray-62e312",
+      "newName": "merged/20260520/claude-stupefied-cray-62e312",
+      "classification": "MERGED_IN_MAIN",
+      "tip": "4c7cab7",
+      "reason": "P5 walkthrough. IS ancestor of main.",
+      "worktreeRemoved": true,
+      "worktreePath": ".claude/worktrees/stupefied-cray-62e312"
+    }
+  ],
+  "skipped": [],
+  "remoteProtected": [
+    "origin/main",
+    "origin/dependabot/github_actions/actions/checkout-6",
+    "origin/dependabot/github_actions/actions/labeler-6",
+    "origin/dependabot/github_actions/actions/setup-node-6",
+    "origin/dependabot/github_actions/actions/setup-python-6",
+    "origin/dependabot/github_actions/actions/upload-artifact-6",
+    "origin/dependabot/npm_and_yarn/development-f83df2a253",
+    "origin/dependabot/npm_and_yarn/production-7fb86c2007",
+    "origin/dependabot/npm_and_yarn/types/node-25.2.0"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "phase": "P26F4-or-P26A-FOLLOWUP-HARDRESET",
+  "generatedAt": "2026-05-14T10:00:00.000Z",
+  "dropzoneScan": {
+    "candidateSourceFiles": 0,
+    "classification": "P26F3_5_SOURCE_NOT_PROVIDED",
+    "dbWritePerformed": false
+  },
+  "approvalTokenProvided": false,
+  "approvalTokenRequired": "P26F4_APPROVE_HISTORICAL_MONTHLY_REVENUE_IMPORT_ONLY",
+  "routeDecision": "P26A_SCORING_UNDEROUTPUT_AUDIT",
+  "routeRationale": "candidateSourceFiles=0 in production drop-zone. No real source files. Routing to P26A 9-case read-only audit.",
+  "p26f4Blocked": true,
+  "p26f4BlockReason": "SOURCE_NOT_PROVIDED",
+  "p26aAuditRequired": true,
+  "dbWriteAllowed": false,
+  "corpusWriteAllowed": false,
+  "disclaimer": "Does not constitute investment advice."
+}

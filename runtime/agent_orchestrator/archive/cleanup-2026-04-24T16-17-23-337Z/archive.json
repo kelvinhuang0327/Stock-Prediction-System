@@ -1,0 +1,57 @@
+{
+  "version": "1.0",
+  "createdAt": "2026-04-24T16:17:23.346Z",
+  "reason": "Removed superseded failed orchestrator history after a later PASS for the same dedupeKey.",
+  "removedTaskIds": [
+    3
+  ],
+  "removedRunIds": [],
+  "tasks": [
+    {
+      "taskId": 3,
+      "slug": "task-artifact",
+      "dayKey": "20260422",
+      "status": "REPLAN_REQUIRED",
+      "gateVerdict": "WORKER_RUNTIME_FAILED",
+      "plannerProvider": "codex",
+      "workerProvider": "claude",
+      "createdAt": "2026-04-22T10:06:43.878Z",
+      "updatedAt": "2026-04-22T10:06:48.667Z",
+      "lastOutputAt": "2026-04-22T10:06:48.667Z",
+      "latestProgressSummary": "Worker finished task but gate=WORKER_RUNTIME_FAILED.",
+      "promptPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260422/202604221006-task-artifact-prompt.md",
+      "contractPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260422/202604221006-task-artifact-contract.json",
+      "completedPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260422/202604221006-task-artifact-completed.md",
+      "resultPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260422/202604221006-task-artifact-result.json",
+      "metaPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260422/202604221006-task-artifact-meta.json",
+      "workerLogPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260422/202604221006-task-artifact-worker-stdout.log"
+    }
+  ],
+  "runs": [],
+  "movedFiles": [
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260422/202604221006-task-artifact-prompt.md",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-17-23-337Z/files/runtime/agent_orchestrator/tasks/20260422/202604221006-task-artifact-prompt.md"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260422/202604221006-task-artifact-contract.json",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-17-23-337Z/files/runtime/agent_orchestrator/tasks/20260422/202604221006-task-artifact-contract.json"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260422/202604221006-task-artifact-completed.md",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-17-23-337Z/files/runtime/agent_orchestrator/tasks/20260422/202604221006-task-artifact-completed.md"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260422/202604221006-task-artifact-result.json",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-17-23-337Z/files/runtime/agent_orchestrator/tasks/20260422/202604221006-task-artifact-result.json"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260422/202604221006-task-artifact-meta.json",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-17-23-337Z/files/runtime/agent_orchestrator/tasks/20260422/202604221006-task-artifact-meta.json"
+    },
+    {
+      "from": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/tasks/20260422/202604221006-task-artifact-worker-stdout.log",
+      "to": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/runtime/agent_orchestrator/archive/cleanup-2026-04-24T16-17-23-337Z/files/runtime/agent_orchestrator/tasks/20260422/202604221006-task-artifact-worker-stdout.log"
+    }
+  ]
+}

@@ -1,0 +1,175 @@
+{
+  "phase": "P29F-HARDRESET",
+  "task": "Evidence-based PIT Classification",
+  "generatedAt": "2026-05-20T00:00:00Z",
+
+  "classifications": {
+    "Quote": {
+      "sourceName": "Quote",
+      "classification": "PIT_UNVERIFIED_NEEDS_REPAIR",
+      "riskLevel": "MEDIUM_HIGH",
+      "evidenceFiles": [
+        "src/lib/analysis/RuleBasedStockAnalyzer.ts",
+        "src/lib/services/syncService.ts",
+        "src/lib/api/twseApi.ts",
+        "src/lib/data/AsOfDataGate.ts"
+      ],
+      "keyEvidence": [
+        {
+          "finding": "PIT gate exists (date: { lte: asOfDb })",
+          "source": "RuleBasedStockAnalyzer.ts:L79",
+          "severity": "INFO"
+        },
+        {
+          "finding": "sync stores ISO format (parseTwseDateToIso in getDailyStocks)",
+          "source": "syncService.ts:L159 + twseApi.ts",
+          "severity": "ERROR"
+        },
+        {
+          "finding": "gate uses YYYYMMDD (asOf.replace(/-/g, '')) — mismatch with ISO storage",
+          "source": "RuleBasedStockAnalyzer.ts:L61",
+          "severity": "ERROR"
+        },
+        {
+          "finding": "same-year future ISO dates pass YYYYMMDD filter (latent risk)",
+          "source": "ASCII analysis",
+          "severity": "ERROR"
+        },
+        {
+          "finding": "no future-labeled fields in data schema",
+          "source": "prisma/schema.prisma",
+          "severity": "INFO"
+        },
+        {
+          "finding": "no confirmed future-data contamination in current DB",
+          "source": "syncService.ts (only syncs current-day data)",
+          "severity": "INFO"
+        }
+      ],
+      "reason": "PIT gate exists but may be ineffective due to date format mismatch between storage (ISO) and gate comparison (YYYYMMDD). Same-year future records would pass the gate if present. No confirmed contamination but latent risk.",
+      "riskSummary": "Gate is structurally present but potentially non-functional for same-year future data filtering. Repair required before any simulation use.",
+      "mayRemainInAlphaScore": true,
+      "mustBlockBeforeSimulation": true,
+      "simulationInputTag": "UNVERIFIED",
+      "recommendedAction": "Verify actual StockQuote.date format in DB. Fix gate to use consistent format. Add integration test for same-year future record exclusion."
+    },
+
+    "Regime": {
+      "sourceName": "Regime",
+      "classification": "PIT_SAFE_VERIFIED",
+      "riskLevel": "LOW",
+      "evidenceFiles": [
+        "src/lib/market/MarketRegimeEngine.ts",
+        "src/lib/services/syncService.ts",
+        "src/lib/alpha/SignalFusionEngine.ts",
+        "src/app/api/stocks/backtest/route.ts"
+      ],
+      "keyEvidence": [
+        {
+          "finding": "detectRegime(asOf) PIT gate: date: { lte: asOf } (ISO direct)",
+          "source": "MarketRegimeEngine.ts:L65-73",
+          "severity": "INFO"
+        },
+        {
+          "finding": "MarketIndex.date stored as ISO (from parseTwseDateToIso via openapiDate)",
+          "source": "syncService.ts:L260-290",
+          "severity": "INFO"
+        },
+        {
+          "finding": "ISO ≤ ISO comparison is correct — no format mismatch",
+          "source": "ANALYSIS",
+          "severity": "INFO"
+        },
+        {
+          "finding": "all calculations are backward-looking (MA50, MA200, momentum, volatility)",
+          "source": "MarketRegimeEngine.ts:L100-220",
+          "severity": "INFO"
+        },
+        {
+          "finding": "detectRegimeForPeriod is backtest-only, not in scoring path",
+          "source": "backtest/route.ts:L138",
+          "severity": "INFO"
+        },
+        {
+          "finding": "asOf correctly propagated through SignalFusionEngine",
+          "source": "SignalFusionEngine.ts:L236",
+          "severity": "INFO"
+        },
+        {
+          "finding": "no future-labeled fields in MarketIndex schema",
+          "source": "prisma/schema.prisma",
+          "severity": "INFO"
+        }
+      ],
+      "reason": "detectRegime(asOf) uses ISO asOf directly with ISO stored MarketIndex.date. Format is consistent — correct lexicographic comparison. All regime calculations are backward-looking from PIT-gated data. detectRegimeForPeriod is backtest-only.",
+      "riskSummary": "No PIT issues found in regime calculation path. Gate is correctly implemented and functional.",
+      "mayRemainInAlphaScore": true,
+      "mustBlockBeforeSimulation": false,
+      "simulationInputTag": "VERIFIED",
+      "recommendedAction": "Document ISO format assumption for MarketIndex.date. Add advisory note about detectRegimeForPeriod being backtest-only in P29A registry."
+    },
+
+    "Chip": {
+      "sourceName": "Chip",
+      "classification": "PIT_UNVERIFIED_NEEDS_REPAIR",
+      "riskLevel": "MEDIUM",
+      "evidenceFiles": [
+        "src/lib/analysis/RuleBasedStockAnalyzer.ts",
+        "src/lib/services/syncService.ts",
+        "prisma/schema.prisma"
+      ],
+      "keyEvidence": [
+        {
+          "finding": "PIT gate exists (date: { lte: asOfDb })",
+          "source": "RuleBasedStockAnalyzer.ts:L84-86",
+          "severity": "INFO"
+        },
+        {
+          "finding": "sync CONFIRMED to store ISO format (date: isoDate)",
+          "source": "syncService.ts:L395 (const isoDate = `${targetDate.slice(0,4)}-...`)",
+          "severity": "ERROR"
+        },
+        {
+          "finding": "schema comment 'YYYYMMDD' is WRONG — actual storage is ISO",
+          "source": "prisma/schema.prisma",
+          "severity": "ERROR"
+        },
+        {
+          "finding": "gate uses YYYYMMDD (asOf.replace(/-/g, '')) — same mismatch as Quote",
+          "source": "RuleBasedStockAnalyzer.ts:L61",
+          "severity": "ERROR"
+        },
+        {
+          "finding": "calculateChipStrength uses backward-looking aggregates only (totalBuy, foreignBuy, trustBuy)",
+          "source": "RuleBasedStockAnalyzer.ts:L395-420",
+          "severity": "INFO"
+        },
+        {
+          "finding": "publication lag: chip for T published at ~6pm T (end-of-day, industry standard)",
+          "source": "DOMAIN_KNOWLEDGE",
+          "severity": "WARNING"
+        },
+        {
+          "finding": "no confirmed future-data contamination in current DB",
+          "source": "syncService.ts (only syncs target date data)",
+          "severity": "INFO"
+        }
+      ],
+      "reason": "Same date format mismatch as Quote — sync stores ISO but gate uses YYYYMMDD. Schema comment is incorrect. Same-year future chip records would pass gate. Publication lag is acceptable for end-of-day scoring but should be documented.",
+      "riskSummary": "Gate is structurally present but may be non-functional for same-year future chip data filtering. Schema documentation is wrong. Repair required.",
+      "mayRemainInAlphaScore": true,
+      "mustBlockBeforeSimulation": true,
+      "simulationInputTag": "UNVERIFIED",
+      "recommendedAction": "1. Fix schema comment from YYYYMMDD to ISO. 2. Fix gate to use ISO asOf directly (same fix as Quote). 3. Document publication lag assumption. 4. Add integration test."
+    }
+  },
+
+  "overallVerdict": {
+    "allSafe": false,
+    "anyViolation": false,
+    "anyUnverified": true,
+    "trustRootBlockerRemains": true,
+    "simulationTrustRootStatus": "UNVERIFIED_NEEDS_REPAIR",
+    "finalClassification": "P29F_QUOTE_REGIME_CHIP_PIT_AUDIT_RISK_FOUND_NEEDS_REPAIR"
+  }
+}

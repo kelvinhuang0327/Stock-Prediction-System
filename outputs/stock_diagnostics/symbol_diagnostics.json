@@ -1,0 +1,98 @@
+{
+  "generated_at": "2026-05-05T09:58:35Z",
+  "batch_date": "20260501",
+  "symbol_diagnostics": [
+    {
+      "symbol": "0055",
+      "symbol_avg_roi": -0.0194,
+      "symbol_avg_sharpe": 0.2,
+      "symbol_signal_count": 1537,
+      "best_hypothesis": "STOCK_H006_LOW_VOL_BREAKOUT",
+      "best_hypothesis_avg_roi": 0.2462,
+      "worst_hypothesis": "STOCK_H004_MOM_VOL_CONFIRM",
+      "worst_hypothesis_avg_roi": -0.5544,
+      "data_insufficient_count": 5,
+      "is_unsuitable_for_current_hypotheses": false,
+      "hypothesis_roi_breakdown": {
+        "STOCK_H001_20D_MOMENTUM": -0.1778,
+        "STOCK_H002_RSI_REVERSION": 0.2309,
+        "STOCK_H003_VOLUME_BREAKOUT": -0.0433,
+        "STOCK_H004_MOM_VOL_CONFIRM": -0.5544,
+        "STOCK_H005_PULLBACK_UPTREND": 0.0489,
+        "STOCK_H006_LOW_VOL_BREAKOUT": 0.2462,
+        "STOCK_H008_ETF_DEF_MOMENTUM": -0.0331
+      }
+    },
+    {
+      "symbol": "00712",
+      "symbol_avg_roi": -0.2828,
+      "symbol_avg_sharpe": -1.6357,
+      "symbol_signal_count": 1014,
+      "best_hypothesis": "STOCK_H001_20D_MOMENTUM",
+      "best_hypothesis_avg_roi": 0.0594,
+      "worst_hypothesis": "STOCK_H002_RSI_REVERSION",
+      "worst_hypothesis_avg_roi": -0.5327,
+      "data_insufficient_count": 1,
+      "is_unsuitable_for_current_hypotheses": true,
+      "hypothesis_roi_breakdown": {
+        "STOCK_H001_20D_MOMENTUM": 0.0594,
+        "STOCK_H002_RSI_REVERSION": -0.5327,
+        "STOCK_H003_VOLUME_BREAKOUT": -0.4671
+      }
+    },
+    {
+      "symbol": "2317",
+      "symbol_avg_roi": 0.1613,
+      "symbol_avg_sharpe": 0.3721,
+      "symbol_signal_count": 974,
+      "best_hypothesis": "STOCK_H003_VOLUME_BREAKOUT",
+      "best_hypothesis_avg_roi": 0.4964,
+      "worst_hypothesis": "STOCK_H001_20D_MOMENTUM",
+      "worst_hypothesis_avg_roi": -0.2238,
+      "data_insufficient_count": 1,
+      "is_unsuitable_for_current_hypotheses": false,
+      "hypothesis_roi_breakdown": {
+        "STOCK_H001_20D_MOMENTUM": -0.2238,
+        "STOCK_H002_RSI_REVERSION": 0.379,
+        "STOCK_H003_VOLUME_BREAKOUT": 0.4964
+      }
+    },
+    {
+      "symbol": "2330",
+      "symbol_avg_roi": 0.3171,
+      "symbol_avg_sharpe": 2.7552,
+      "symbol_signal_count": 1094,
+      "best_hypothesis": "STOCK_H006_LOW_VOL_BREAKOUT",
+      "best_hypothesis_avg_roi": 2.0827,
+      "worst_hypothesis": "STOCK_H001_20D_MOMENTUM",
+      "worst_hypothesis_avg_roi": -0.2697,
+      "data_insufficient_count": 8,
+      "is_unsuitable_for_current_hypotheses": false,
+      "hypothesis_roi_breakdown": {
+        "STOCK_H001_20D_MOMENTUM": -0.2697,
+        "STOCK_H002_RSI_REVERSION": -0.2108,
+        "STOCK_H003_VOLUME_BREAKOUT": 0.6792,
+        "STOCK_H004_MOM_VOL_CONFIRM": 0.4393,
+        "STOCK_H005_PULLBACK_UPTREND": 0.2971,
+        "STOCK_H006_LOW_VOL_BREAKOUT": 2.0827
+      }
+    },
+    {
+      "symbol": "2454",
+      "symbol_avg_roi": -1.1765,
+      "symbol_avg_sharpe": -0.6505,
+      "symbol_signal_count": 961,
+      "best_hypothesis": "STOCK_H003_VOLUME_BREAKOUT",
+      "best_hypothesis_avg_roi": 0.6706,
+      "worst_hypothesis": "STOCK_H001_20D_MOMENTUM",
+      "worst_hypothesis_avg_roi": -1.7773,
+      "data_insufficient_count": 1,
+      "is_unsuitable_for_current_hypotheses": true,
+      "hypothesis_roi_breakdown": {
+        "STOCK_H001_20D_MOMENTUM": -1.7773,
+        "STOCK_H002_RSI_REVERSION": -1.4993,
+        "STOCK_H003_VOLUME_BREAKOUT": 0.6706
+      }
+    }
+  ]
+}

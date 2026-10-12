@@ -1,0 +1,20 @@
+{
+  "task": "P2-SHADOW-LEDGER-ACCUMULATION",
+  "runId": "p2-ledger-accumulation-20260511-001",
+  "asOfDate": "2026-05-11",
+  "dryRun": true,
+  "append": true,
+  "ledgerPath": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System/outputs/online_validation/shadow_prediction_ledger.jsonl",
+  "incomingCount": 2,
+  "appendedCount": 0,
+  "duplicateCount": 2,
+  "existingCount": 2,
+  "totalAfterAppend": 2,
+  "appendOnlyStatus": "FAIL",
+  "validationMessages": [
+    "DUPLICATE_KEY_BLOCKED: 2026-05-11|2330|MVP_CORE|p2-ledger-accumulation-20260511-001, 2026-05-11|2454|MVP_CORE|p2-ledger-accumulation-20260511-001"
+  ],
+  "productionWriteAllowed": false,
+  "generatedAt": "2026-05-11T04:29:34.183Z",
+  "classification": "P2_APPEND_ONLY_SHADOW_LEDGER_PARTIAL_DUPLICATE"
+}

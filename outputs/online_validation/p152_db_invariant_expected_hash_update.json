@@ -1,0 +1,27 @@
+{
+  "phase0": {
+    "repo": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System",
+    "branch": "main",
+    "start_head": "4c39b10",
+    "merge_base_exit": 0
+  },
+  "db_evidence": {
+    "current_hash": "2b021894fa22cd3b6a8911dcfd544c36f836848cf51e6baee17349f9420153f7",
+    "old_hash": "a5cf277182c161dfe97ba05f9b81528d6c8e477dd5ac0bec6810ffbb8711c6f8",
+    "integrity": "ok",
+    "rootpages": {
+      "Stock": 2,
+      "JobAlert": 13756,
+      "RecommendationHistory": 13761
+    }
+  },
+  "tests_updated": [
+    "src/lib/onlineValidation/__tests__/p26a_renderer_fix.test.ts",
+    "src/lib/onlineValidation/__tests__/p26a_batch_pipeline_wiring.test.ts",
+    "src/lib/onlineValidation/__tests__/p29d_dropzone_scaffold.test.ts"
+  ],
+  "test_results": "PASS",
+  "lint_results": "FAIL_AS_EXPECTED",
+  "classification": "P152_DB_INVARIANT_HASH_UPDATED_CI_STILL_RED_ACTIVE_LINT_OR_OTHER_CLUSTERS",
+  "p151_artifacts": "MISSING_UNTRACKED"
+}

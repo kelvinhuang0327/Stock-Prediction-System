@@ -1,0 +1,28 @@
+{
+  "phase": "P26D-HARDRESET",
+  "generatedAt": "2026-05-13",
+  "asOfDate": "2026-05-13",
+  "news": {
+    "total": 6,
+    "visible": 4,
+    "future": 1,
+    "invalid": 1,
+    "entersAlphaScore": false,
+    "fixture": "p26b_news_events_fixture.json",
+    "gate": "publishedAt"
+  },
+  "financial": {
+    "total": 8,
+    "visible": 5,
+    "future": 2,
+    "invalid": 0,
+    "noAvailabilityDate": 1,
+    "entersAlphaScore": false,
+    "fixture": "p26c_financial_reports_fixture.json",
+    "gate": "filingDate -> announcementDate -> publishedAt -> availableAt"
+  },
+  "contextsReadOnly": true,
+  "sourceMappingRequired": true,
+  "noOutcomeFieldsUsed": true,
+  "disclaimer": "No investment recommendations. No ROI/win-rate/profit/outperform/buy/sell claims."
+}

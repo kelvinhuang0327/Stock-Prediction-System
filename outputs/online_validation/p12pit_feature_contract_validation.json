@@ -1,0 +1,23 @@
+{
+  "generatedAt": "2026-05-12T00:00:00.000Z",
+  "disclaimer": "Contract validation only. No investment recommendations. No scoring changes. No corpus modifications.",
+  "phase": "P12-HARDRESET",
+  "contractVersion": "p12-pit-feature-contract-v0",
+  "corpusFile": "p3active_scoring_historical_replay_corpus.jsonl",
+  "validationStatus": "PASS",
+  "stats": {
+    "totalRows": 4500,
+    "passed": 4500,
+    "failed": 0,
+    "warnings": 0,
+    "failRate": "0.00%"
+  },
+  "violations": [],
+  "contractRequirementsTested": [
+    "PIT-001: No future data in scoring features (proxied via asOfDate existence)",
+    "PIT-002: pitGateDate == asOfDate in activeScoringSnapshot",
+    "PIT-004: No forbidden snapshot fields (outcomePrice, returnPct, realizedReturnClass, etc.) in activeScoringSnapshot",
+    "PIT-007: priceSource != mock-deterministic",
+    "scoringCompletenessStatus present"
+  ]
+}

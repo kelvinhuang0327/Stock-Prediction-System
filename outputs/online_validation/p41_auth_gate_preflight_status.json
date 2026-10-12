@@ -1,0 +1,61 @@
+{
+  "phase": "P41-AUTH-GATE",
+  "step": "Phase 0 — Governance Pre-flight",
+  "timestamp": "2026-05-21T00:00:00+08:00",
+  "canonicalRepo": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System",
+  "canonicalBranch": "main",
+  "actualRepo": "/Users/kelvin/Kelvin-WorkSpace/Stock-Prediction-System",
+  "actualBranch": "main",
+  "headCommit": "68dd283804a4b0253d152bfab85f3e4a114af0db",
+  "headMessage": "P40: Add paper simulation framework design gate",
+  "detachedHead": false,
+  "stagedFiles": 0,
+  "dirtyFiles": {
+    "runtime": [
+      "logs/launchd/backend.stderr.log",
+      "logs/launchd/backend.stdout.log",
+      "logs/launchd/main-service.stderr.log",
+      "logs/launchd/main-service.stdout.log",
+      "logs/launchd/planner-tick.stderr.log",
+      "logs/launchd/planner-tick.stdout.log",
+      "logs/launchd/smoke.log",
+      "logs/launchd/start_all.log",
+      "logs/launchd/stop_all.log",
+      "logs/launchd/worker-daemon.stderr.log",
+      "logs/launchd/worker-daemon.stdout.log",
+      "logs/launchd/worker-tick.stderr.log",
+      "logs/launchd/worker-tick.stdout.log",
+      "prisma/dev.db",
+      "prisma/dev.db-shm",
+      "prisma/dev.db-wal",
+      "runtime/agent_orchestrator/llm_usage.jsonl",
+      "runtime/agent_orchestrator/pids/backend.pid",
+      "runtime/training_reports/tw_weekly_deep_research.json"
+    ],
+    "nonRuntime": [
+      "00-StockPlan/roadmap/stock_roadmapPlan_20260504.md",
+      "outputs/online_validation/p26f3_5_dropzone_scan_result.json",
+      "outputs/online_validation/p26f3_5_dropzone_scan_result.md",
+      "outputs/online_validation/p28c_renderer_only_repair_9case_before_after.json",
+      "outputs/online_validation/p28d_9case_integrated_review_validation.json",
+      "outputs/online_validation/p28d_p3_p19_renderer_regression_sweep.json"
+    ]
+  },
+  "dirtyFilesClassification": "All dirty files are pre-existing runtime or prior-round output artifacts. None are P41-related. None are staged. Pre-flight PASS.",
+  "preflightResult": "PASS",
+  "stopConditions": {
+    "wrongRepo": false,
+    "wrongBranch": false,
+    "detachedHead": false,
+    "unrelatedDirtyFiles": false,
+    "stagedFiles": false,
+    "unclassifiedRuntimeDirty": false
+  },
+  "p40BaselineVerified": {
+    "commit": "68dd283",
+    "classification": "P40_PAPER_SIMULATION_FRAMEWORK_DESIGN_READY",
+    "frameworkStatus": "FRAMEWORK_READY",
+    "executionStatus": "EXECUTION_BLOCKED_PENDING_AUTH",
+    "tests": "118/118 PASS"
+  }
+}

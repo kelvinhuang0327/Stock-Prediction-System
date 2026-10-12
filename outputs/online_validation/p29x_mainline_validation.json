@@ -1,0 +1,23 @@
+{
+  "phase": "P29X",
+  "capturedAt": "2026-05-20T00:00:00.000Z",
+  "validation": {
+    "p29g_targeted": { "suites": 1, "tests": 76, "passed": 76, "failed": 0, "result": "PASS" },
+    "p29e_regression": { "suites": 1, "tests": 58, "passed": 58, "failed": 0, "result": "PASS" },
+    "p29g_p29e_combined": { "suites": 2, "tests": 134, "passed": 134, "failed": 0, "result": "PASS" },
+    "full_onlineValidation": { "suites": 108, "tests": 3315, "passed": 3315, "failed": 0, "result": "PASS" }
+  },
+  "forbiddenDiffScan": {
+    "prismaDevDb": { "dirty": true, "classification": "pre_existing_runtime_side_effect", "staged": false },
+    "llmUsageJsonl": { "dirty": true, "classification": "pre_existing_runtime_side_effect", "staged": false },
+    "ruleBasedStockAnalyzer": { "dirty": false },
+    "signalFusionEngine": { "dirty": false },
+    "activeScoringSnapshotBuilder": { "dirty": false }
+  },
+  "branchSanity": {
+    "branchesContaining676266d": ["main"],
+    "mainHead": "676266d",
+    "worktreeCount": 1
+  },
+  "result": "PASS"
+}

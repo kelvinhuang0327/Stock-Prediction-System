@@ -1,0 +1,48 @@
+{
+  "audit_id": "P29G-PREFLIGHT-forbidden-claims-scan",
+  "audit_date": "2026-05-20",
+  "timezone": "Asia/Taipei",
+  "auditor": "P29G-PREFLIGHT Senior Mainline Integration Audit Agent",
+  "head_sha": "1c5a270b0be185a9f06d870305ed93f07950c69b",
+
+  "scan_scope": "All P29G-PREFLIGHT output artifacts produced by this audit session",
+  "scan_targets": [
+    "outputs/online_validation/p29g_preflight_git_ancestry_audit.json",
+    "outputs/online_validation/p29g_preflight_git_ancestry_audit.md",
+    "outputs/online_validation/p29g_preflight_scaffold_inventory.json",
+    "outputs/online_validation/p29g_preflight_scaffold_inventory.md",
+    "outputs/online_validation/p29g_preflight_test_baseline.json",
+    "outputs/online_validation/p29g_preflight_test_baseline.md",
+    "outputs/online_validation/p29g_preflight_invariance_baseline.json",
+    "outputs/online_validation/p29g_preflight_invariance_baseline.md",
+    "outputs/online_validation/p29g_preflight_forbidden_claims_scan.json",
+    "outputs/online_validation/p29g_preflight_forbidden_claims_scan.md",
+    "outputs/online_validation/p29g_preflight_final_report.md",
+    "00-Plan/roadmap/p29g_preflight_decision.md"
+  ],
+
+  "forbidden_terms": [
+    "ROI", "win-rate", "win rate", "alpha", "edge", "profit",
+    "outperform", "buy", "sell", "guaranteed"
+  ],
+
+  "violations": [],
+  "violation_count": 0,
+
+  "boundary_check": {
+    "prisma_dev_db_modified_by_audit": false,
+    "corpus_jsonl_modified_by_audit": false,
+    "scoring_files_modified_by_audit": false,
+    "cherry_pick_performed": false,
+    "rebase_performed": false,
+    "merge_performed": false,
+    "p29g_runner_started": false,
+    "import_corpus_expansion_started": false,
+    "optimizer_started": false,
+    "real_backtest_started": false
+  },
+
+  "forbidden_claims_status": "PASS",
+  "boundary_violation_status": "NONE",
+  "verdict": "0 violations — all forbidden claim terms absent from audit output artifacts; all boundary constraints honored"
+}

@@ -1,0 +1,52 @@
+{
+  "phase": "P28C",
+  "part": "H",
+  "label": "FORBIDDEN_CLAIMS_SCAN",
+  "result": "CLEAN",
+  "scannedFiles": [
+    "src/lib/onlineValidation/P26ACorpusReasonRenderer.ts",
+    "src/lib/onlineValidation/P26AReasonFactorEnrichmentUtils.ts",
+    "src/lib/onlineValidation/P5WalkthroughReviewUtils.ts",
+    "src/lib/onlineValidation/P26ACorpusRowAdapter.ts"
+  ],
+  "forbiddenPatterns": [
+    "(?<!淨)買入",
+    "(?<!淨)賣出",
+    "ROI\\b",
+    "win[- ]?rate",
+    "\\balpha\\b(?!Score)",
+    "profit\\b",
+    "outperform",
+    "beat\\b",
+    "guaranteed",
+    "investment recommendation"
+  ],
+  "findings": [
+    {
+      "file": "src/lib/onlineValidation/P26AReasonFactorEnrichmentUtils.ts",
+      "lines": [13, 50, 54, 55, 59],
+      "context": "These are entries in the file's OWN forbidden-claims scanner regex array and JSDoc comment — not rendered output text",
+      "verdict": "FALSE_POSITIVE — pattern is a scanner definition, not an emitted string"
+    },
+    {
+      "file": "src/lib/onlineValidation/P5WalkthroughReviewUtils.ts",
+      "lines": [6, 517, 518, 519, 520],
+      "context": "These are entries in the file's OWN forbidden-claims scanner regex definitions and JSDoc — not rendered output",
+      "verdict": "FALSE_POSITIVE — scanner definition only"
+    },
+    {
+      "file": "src/lib/onlineValidation/P26ACorpusRowAdapter.ts",
+      "lines": [17],
+      "context": "JSDoc comment '- No buy/sell/ROI/alpha/edge claims'",
+      "verdict": "FALSE_POSITIVE — code comment only"
+    }
+  ],
+  "actualForbiddenClaimsInOutput": 0,
+  "allowedChinesePhrases": [
+    "外資淨買入 (factual chip data)",
+    "外資淨賣出 (factual chip data)"
+  ],
+  "mixedSignalNoteContainsForbiddenClaims": false,
+  "renderedTextContainsForbiddenClaims": false,
+  "scanResult": "CLEAN"
+}

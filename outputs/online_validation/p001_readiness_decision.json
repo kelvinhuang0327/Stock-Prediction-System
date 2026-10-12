@@ -1,0 +1,41 @@
+{
+  "task": "P0-01",
+  "taskName": "As-of Data Gate Readiness Decision",
+  "artifactType": "readiness_decision",
+  "date": "2026-05-07",
+  "asOfDate": "2026-05-07",
+  "safetyLabels": [
+    "P0-01", "as-of data gate", "future-date quarantine", "MVP universe lock",
+    "research tool only", "no auto trading", "no precision prediction claim",
+    "no DB write", "no external API", "no LLM call", "no strategy mutation",
+    "no performance claim", "no edge claim"
+  ],
+  "readinessChecks": [
+    { "check": "AsOfDataGate module created", "status": "PASS" },
+    { "check": "MvpUniverseLock module created", "status": "PASS" },
+    { "check": "83 tests pass (p001_as_of_data_gate + p001_mvp_universe_lock)", "status": "PASS" },
+    { "check": "resolveAsOfDate uses resolveCurrentDate by default (no hardcoded date)", "status": "PASS" },
+    { "check": "buildAsOfWhereClause handles YYYYMMDD DB format", "status": "PASS" },
+    { "check": "Future-date rows in StockQuote/MarketIndex can be excluded by gate", "status": "WARN" },
+    { "check": "Abnormal historical date detection implemented", "status": "PASS" },
+    { "check": "MVP universe tiers defined (TierA/WalkForward/Limited/Insufficient)", "status": "PASS" },
+    { "check": "All output artifacts created and parseable", "status": "PASS" },
+    { "check": "No forbidden performance terms in new artifacts", "status": "PASS" },
+    { "check": "No DB writes in gate modules", "status": "PASS" },
+    { "check": "No external API calls in gate modules", "status": "PASS" }
+  ],
+  "overallStatus": "WARN",
+  "warnReasons": [
+    "Future-date rows (2026-05-18) exist in StockQuote and MarketIndex. Query-layer gate is in place but DB data pipeline has not been corrected. Status WARN until source pipeline is fixed.",
+    "/api/strategy/screen and /api/stocks/[id]/detail do not yet integrate asOf gate (minimal integration deferred to reduce risk of strategy mutation).",
+    "/api/stocks/[id]/history uses external API (twseApi) — cannot add as-of gate in P0-01; listed as P0-02."
+  ],
+  "classification": "P001_AS_OF_DATA_GATE_COMPLETE",
+  "rationale": "Core as-of data gate and MVP universe lock are implemented with 83 passing tests. Future-date quarantine is operational at the query layer. WARN status reflects known data pipeline issues and deferred API integration, not implementation failures.",
+  "nextRound": {
+    "task": "P0-02",
+    "title": "Shadow Prediction Log Contract",
+    "description": "Each day: save candidate data coverage, scores, and reasons with asOfDate. No trading advice. No performance claims. Enable future posterior validation."
+  },
+  "observabilityNote": "P0-01 readiness decision. Research tool only. Not investment advice. Not a trading system."
+}

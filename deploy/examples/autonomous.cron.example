@@ -1,0 +1,21 @@
+# Autonomous System cron example
+# Replace /PATH/TO/Stock-Prediction-System with your real workspace path.
+# Make sure node/npm are available in the cron environment.
+#
+# Suggested logs:
+#   /PATH/TO/Stock-Prediction-System/logs/autonomous/daily.log
+#   /PATH/TO/Stock-Prediction-System/logs/autonomous/monitor.log
+#   /PATH/TO/Stock-Prediction-System/logs/autonomous/review.log
+#   /PATH/TO/Stock-Prediction-System/logs/autonomous/learning.log
+
+# Daily cycle: weekday after market close / after data sync
+20 18 * * 1-5 cd /PATH/TO/Stock-Prediction-System && /usr/bin/env bash -lc 'npm run autonomous:daily >> logs/autonomous/daily.log 2>&1'
+
+# Monitor cycle: every 30 minutes during market hours on weekdays
+*/30 9-13 * * 1-5 cd /PATH/TO/Stock-Prediction-System && /usr/bin/env bash -lc 'npm run autonomous:monitor >> logs/autonomous/monitor.log 2>&1'
+
+# Review cycle: weekday evening after data settles
+30 20 * * 1-5 cd /PATH/TO/Stock-Prediction-System && /usr/bin/env bash -lc 'npm run autonomous:review >> logs/autonomous/review.log 2>&1'
+
+# Learning cycle: Monday / Wednesday / Friday evening
+0 21 * * 1,3,5 cd /PATH/TO/Stock-Prediction-System && /usr/bin/env bash -lc 'npm run autonomous:learning >> logs/autonomous/learning.log 2>&1'

@@ -1,0 +1,204 @@
+{
+  "program": "Stock Prediction System",
+  "task": "P4-02 — PIT-Safe Cross-Table Data Foundation Expansion",
+  "workstream": "A — Cross-Table Availability Audit",
+  "generated_at": "2026-05-06T12:00:00Z",
+  "evidence_method": "Direct SQLite queries on prisma/dev.db",
+  "tables": {
+    "Stock": {
+      "row_count": 1358,
+      "date_column": "listingDate (string, optional)",
+      "min_date": null,
+      "max_date": null,
+      "distinct_stock_count": 1358,
+      "distinct_trading_day_count": null,
+      "symbols_ge500": null,
+      "symbols_ge200": null,
+      "freshness_gap": "static master table — not time-series",
+      "pit_safety_notes": "Reference table. Not time-series. PIT-safe as of any date assuming no survivorship issue.",
+      "usable_for_p4_03": true,
+      "usable_for_portfolio_walkforward": true,
+      "blockers": "274 stocks have no industry code (20.2%); 223 ETF heuristic via id LIKE '00%'",
+      "details": {
+        "with_industry": 1084,
+        "without_industry": 274,
+        "industry_coverage_pct": 79.8,
+        "etf_heuristic_count": 223,
+        "industry_support": "33 distinct codes mapped to sector groups via heuristic — sufficient for P4-03 sector grouping"
+      }
+    },
+    "StockQuote": {
+      "row_count": 129151,
+      "date_column": "date (ISO string YYYY-MM-DD)",
+      "min_date": "1970-12-04",
+      "effective_min_date": "2017-04-05",
+      "max_date": "2026-05-18",
+      "distinct_stock_count": 1357,
+      "distinct_trading_day_count": 803,
+      "symbols_ge500": 185,
+      "symbols_ge200": 245,
+      "freshness_gap_days": 0,
+      "iso_ratio_pct": 100.0,
+      "pit_safety_notes": "PIT_SAFE. All dates ISO. Use WHERE date <= asof_date for lookback. Do not use data after asof_date.",
+      "usable_for_p4_03": true,
+      "usable_for_portfolio_walkforward": true,
+      "blockers": "~1355 rows with date=1970-12-04 (ETF epoch anomaly, pre-existing); affects effective min_date",
+      "columns": ["stockId", "date", "open", "high", "low", "close", "volume", "tradeValue", "change", "transactions"]
+    },
+    "MarketIndex": {
+      "row_count": 2665,
+      "date_column": "date (ISO string YYYY-MM-DD)",
+      "min_date": "2017-12-01",
+      "max_date": "2026-05-05",
+      "distinct_stock_count": null,
+      "distinct_index_names": 75,
+      "taiex_count": 766,
+      "taiex_min_date": "2017-12-01",
+      "taiex_max_date": "2026-05-05",
+      "taiex_distinct_trading_days": 766,
+      "freshness_gap_days": 1,
+      "iso_ratio_pct": 100.0,
+      "pit_safety_notes": "PIT_SAFE. Join with StockQuote on date. If date missing in MarketIndex, fallback null — do not forward-fill future data.",
+      "usable_for_p4_03": true,
+      "usable_for_portfolio_walkforward": true,
+      "blockers": "None for P4-03. TAIEX 766 days > 500d requirement.",
+      "columns": ["name", "date", "value", "change", "changePercent"],
+      "sector_index_names_count": 75
+    },
+    "InstitutionalChip": {
+      "row_count": 291068,
+      "date_column": "date (ISO string YYYY-MM-DD)",
+      "min_date": "2025-05-02",
+      "max_date": "2026-05-05",
+      "distinct_stock_count": 1358,
+      "distinct_trading_day_count": 236,
+      "symbols_ge500": 0,
+      "symbols_ge200": 0,
+      "freshness_gap_days": 1,
+      "iso_ratio_pct": 100.0,
+      "pit_safety_notes": "PIT_SAFE_WITH_ASOF_LAG. Chip data available T+0 or T+1 (TWSE releases next morning). Use date <= asof_date with T+1 lag rule.",
+      "usable_for_p4_03": false,
+      "usable_for_portfolio_walkforward": false,
+      "blockers": "Only 236 distinct trading days (~1 year). P4-04 requires >=500. Chip backfill blocked by missing twstock module. PROTOTYPE_ONLY.",
+      "columns": ["stockId", "date", "foreignBuy", "trustBuy", "dealerBuy", "totalBuy", "holders400", "holders1000"],
+      "note": "foreignBuy / trustBuy / dealerBuy are NET values (can be negative). totalBuy appears to be a separate aggregate.",
+      "sq500_stocks_with_chip": 181
+    },
+    "MonthlyRevenue": {
+      "row_count": 2143,
+      "date_column": "year (INT) + month (INT) — no announcement date",
+      "min_period": "2026-02",
+      "max_period": "2026-03",
+      "distinct_stock_count": 881,
+      "distinct_period_count": 2,
+      "freshness_gap": "Only 2026-02 and 2026-03 data available",
+      "iso_ratio_pct": null,
+      "pit_safety_notes": "NOT_PIT_SAFE without asof lag. Schema has no announcement date. Must apply conservative lag: next_month + 15 days. E.g. 2026-03 revenue is available asof 2026-04-15 (conservative approximation).",
+      "usable_for_p4_03": false,
+      "usable_for_portfolio_walkforward": false,
+      "blockers": "Only 2026 data (2 months). Historical revenue trends need 12+ months. LIMITED_COVERAGE + INSUFFICIENT_HISTORY.",
+      "columns": ["stockId", "year", "month", "revenue", "yoyGrowth", "momGrowth"],
+      "asof_lag_rule": "conservative: year/month data available on (year, month+1, 15) i.e. ~45 days after month end",
+      "sq_stock_overlap": 881
+    },
+    "FinancialReport": {
+      "row_count": 957,
+      "date_column": "year (INT) + quarter (INT) — no announcement date",
+      "min_period": "2025-Q4",
+      "max_period": "2025-Q4",
+      "distinct_stock_count": 957,
+      "distinct_period_count": 1,
+      "freshness_gap": "Only 2025-Q4 available",
+      "iso_ratio_pct": null,
+      "pit_safety_notes": "NOT_PIT_SAFE without asof lag. Schema has no announcement date. Conservative lag: Q1 available May 15, Q2 available Aug 14, Q3 available Nov 14, Q4 available Mar 31 of next year.",
+      "usable_for_p4_03": false,
+      "usable_for_portfolio_walkforward": false,
+      "blockers": "Only 2025-Q4 data (1 quarter). Needs 8+ quarters for trend analysis. LIMITED_COVERAGE + INSUFFICIENT_HISTORY.",
+      "columns": ["stockId", "year", "quarter", "eps", "netIncome", "grossMargin", "operatingMargin"],
+      "asof_lag_rule": "conservative: Q4 available March 31 next year; Q1 May 15; Q2 Aug 14; Q3 Nov 14",
+      "sq_stock_overlap": 957
+    },
+    "StockMetrics": {
+      "row_count": 5356,
+      "date_column": "date (ISO string YYYY-MM-DD)",
+      "min_date": "2026-03-27",
+      "max_date": "2026-05-18",
+      "distinct_stock_count": 1074,
+      "distinct_trading_day_count": 1,
+      "symbols_ge500": 0,
+      "symbols_ge200": 0,
+      "freshness_gap_days": 0,
+      "iso_ratio_pct": 100.0,
+      "pit_safety_notes": "PIT_SAFE for available dates. Only 1 effective trading day of data (2026-03-27 only, effectively). PROTOTYPE_ONLY.",
+      "usable_for_p4_03": false,
+      "usable_for_portfolio_walkforward": false,
+      "blockers": "Effectively only 1 trading day of data. Cannot compute PE/PB trends. INSUFFICIENT_HISTORY.",
+      "columns": ["stockId", "date", "pe", "pb", "dividendYield"]
+    },
+    "WalkForwardResult": {
+      "row_count": 522,
+      "date_column": "evaluatedAt (DATETIME)",
+      "min_date": "2026-04-15",
+      "max_date": "2026-04-30",
+      "distinct_signal_types": 6,
+      "signal_types": ["chip_accumulation_signal", "regime_shift_signal", "risk_cluster_elevated", "strong_alpha_candidate", "theme_diffusing", "topic_surging"],
+      "pit_safety_notes": "DEPRECATED. All 6 signal types belong to H001-H012 (all retired 2026-05-05). Do not use for P4 analysis.",
+      "usable_for_p4_03": false,
+      "usable_for_portfolio_walkforward": false,
+      "blockers": "H001-H012 retired. Must redesign T-05 as portfolio walk-forward. DO NOT USE.",
+      "columns": ["experimentRunId", "signalType", "window", "hasSufficientData", "firstHalf", "secondHalf", "consistencyLabel", "hitRateDeviation", "classificationMatch", "excessReturnSignMatch", "limitations", "evaluatedAt"]
+    },
+    "JobRunLog": {
+      "row_count": 315,
+      "date_column": "startedAt (DATETIME unix ms), finishedAt",
+      "min_date": "2026-04-26",
+      "max_date": "2026-05-06",
+      "pit_safety_notes": "Operational log. Not used as feature source.",
+      "usable_for_p4_03": false,
+      "usable_for_portfolio_walkforward": false,
+      "blockers": "Not a data source — operational log only"
+    },
+    "SyncLog": {
+      "row_count": 423,
+      "date_column": "syncedAt (DATETIME unix ms)",
+      "min_date": "2026-04-15",
+      "max_date": "2026-05-06",
+      "pit_safety_notes": "Operational log. Not used as feature source.",
+      "usable_for_p4_03": false,
+      "usable_for_portfolio_walkforward": false,
+      "blockers": "Not a data source — operational log only"
+    }
+  },
+  "cross_table_overlaps": {
+    "stockquote_marketindex_date_overlap": {
+      "overlapping_dates": 727,
+      "taiex_dates_not_in_sq": 39,
+      "sq_dates_not_in_taiex": 76,
+      "join_safe": true
+    },
+    "stockquote_institutionalchip_stock_overlap": {
+      "overlapping_stocks": 1358,
+      "sq_ge500_stocks_with_chip": 181,
+      "note": "All stocks have chip data but only 236 trading days depth"
+    },
+    "stockquote_monthlyrevenue_stock_overlap": {
+      "overlapping_stocks": 881
+    },
+    "stockquote_financialreport_stock_overlap": {
+      "overlapping_stocks": 957
+    },
+    "stock_industry_support": {
+      "stocks_with_industry": 1084,
+      "coverage_pct": 79.8,
+      "etf_heuristic": "id LIKE '00%' → 223 ETFs"
+    }
+  },
+  "summary": {
+    "p4_03_ready_tables": ["StockQuote", "MarketIndex", "Stock"],
+    "p4_03_blocked_tables": ["InstitutionalChip", "MonthlyRevenue", "FinancialReport", "StockMetrics"],
+    "portfolio_walkforward_ready_tables": ["StockQuote", "MarketIndex", "Stock"],
+    "prototype_only_tables": ["InstitutionalChip", "StockMetrics"],
+    "blocked_tables": ["MonthlyRevenue", "FinancialReport"],
+    "deprecated_tables": ["WalkForwardResult"]
+  }
+}

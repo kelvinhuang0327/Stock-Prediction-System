@@ -1,0 +1,175 @@
+{
+  "program": "Stock Prediction System",
+  "task": "P4-03 Regime Classifier Contract",
+  "generated_at": "2026-05-06",
+  "version": "1.0",
+  "allowed_labels": [
+    "BULL",
+    "BEAR",
+    "SIDEWAYS",
+    "HIGH_VOLATILITY",
+    "LOW_CONFIDENCE"
+  ],
+  "confidence_range": "0.0 to 1.0",
+  "feature_set": "P4_03_READY only (price/OHLCV + market regime + industry/sector)",
+  "prohibited_features": [
+    "chip",
+    "revenue",
+    "financial"
+  ],
+  "pit_guarantee": "All rolling computations use only data with date <= asof_date",
+  "regimes": [
+    {
+      "label": "BULL",
+      "definition": "Market trending upward. TAIEX above MAs, positive momentum, moderate volatility, broad participation.",
+      "required_features": [
+        "taiex_close",
+        "taiex_ma50",
+        "taiex_ma200",
+        "taiex_return_20d",
+        "taiex_volatility_20d",
+        "market_breadth_proxy"
+      ],
+      "rule_conditions": [
+        "taiex_close > taiex_ma50",
+        "taiex_ma50 > taiex_ma200 (golden cross)",
+        "taiex_return_20d > 0",
+        "taiex_volatility_20d NOT in HIGH_VOLATILITY regime",
+        "market_breadth_proxy >= 0.50"
+      ],
+      "scoring": {
+        "price_vs_ma50": {
+          "weight": 2,
+          "bull": "close > ma50"
+        },
+        "price_vs_ma200": {
+          "weight": 3,
+          "bull": "close > ma200"
+        },
+        "ma50_vs_ma200": {
+          "weight": 2,
+          "bull": "ma50 > ma200"
+        },
+        "momentum_20d": {
+          "weight": 2,
+          "bull": "return > 0.02",
+          "bear": "return < -0.02"
+        },
+        "momentum_60d": {
+          "weight": 2,
+          "bull": "return > 0.05",
+          "bear": "return < -0.05"
+        },
+        "breadth": {
+          "weight": 2,
+          "bull": "breadth >= 0.50",
+          "bear": "breadth < 0.45"
+        }
+      },
+      "confidence_logic": "bullRatio = bull_score / max_score. BULL if bullRatio >= 0.70. confidence = bullRatio (0.0-1.0).",
+      "PIT_safety_rule": "All prices must come from rows WHERE date <= asof_date. Rolling windows from ascending-sorted historical slice only.",
+      "known_limitations": [
+        "HIGH_VOLATILITY overrides BULL when vol > 30% annualized",
+        "Without MA200 (< 200 TAIEX rows), confidence reduced by 40%",
+        "market_breadth_proxy coverage may be incomplete on partial trading dates"
+      ]
+    },
+    {
+      "label": "BEAR",
+      "definition": "Market trending downward. TAIEX below MAs, negative momentum, weak breadth.",
+      "required_features": [
+        "taiex_close",
+        "taiex_ma50",
+        "taiex_ma200",
+        "taiex_return_20d",
+        "market_breadth_proxy"
+      ],
+      "rule_conditions": [
+        "taiex_close < taiex_ma50",
+        "taiex_ma50 < taiex_ma200 (death cross)",
+        "taiex_return_20d < 0",
+        "market_breadth_proxy < 0.45"
+      ],
+      "confidence_logic": "bearRatio = bear_score / max_score. BEAR if bearRatio >= 0.70. confidence = bearRatio.",
+      "PIT_safety_rule": "No lookahead allowed. Same as BULL.",
+      "known_limitations": [
+        "HIGH_VOLATILITY and BEAR can co-occur; HIGH_VOLATILITY takes priority",
+        "Short-term pullback in long-term bull may score as SIDEWAYS"
+      ]
+    },
+    {
+      "label": "SIDEWAYS",
+      "definition": "No clear directional trend. Mixed MA signals, near-zero momentum, moderate breadth.",
+      "required_features": [
+        "taiex_close",
+        "taiex_ma50",
+        "taiex_return_20d",
+        "market_breadth_proxy"
+      ],
+      "rule_conditions": [
+        "Neither bullRatio >= 0.70 nor bearRatio >= 0.70",
+        "taiex_return_20d between -0.02 and +0.02",
+        "breadth between 0.45 and 0.55"
+      ],
+      "confidence_logic": "confidence = max(bullRatio, bearRatio) when SIDEWAYS. Reflects residual directional bias.",
+      "PIT_safety_rule": "Same as BULL.",
+      "known_limitations": [
+        "SIDEWAYS is a residual category when BULL/BEAR scores are below 0.70",
+        "May include transitional periods before a regime change"
+      ]
+    },
+    {
+      "label": "HIGH_VOLATILITY",
+      "definition": "Abnormal volatility regardless of trend. Override evaluated before BULL/BEAR/SIDEWAYS.",
+      "required_features": [
+        "taiex_volatility_20d"
+      ],
+      "rule_conditions": [
+        "taiex_volatility_20d (annualized) > 0.30 (30% annualized threshold)",
+        "Checked BEFORE other regimes; if triggered, returns HIGH_VOLATILITY"
+      ],
+      "threshold_basis": "Fixed conservative threshold: 30% annualized, matching existing MarketRegimeEngine.ts volatility penalty. No return-based optimization.",
+      "confidence_logic": "confidence = min(1.0, annualized_vol / 0.30). Higher vol relative to threshold = higher confidence.",
+      "PIT_safety_rule": "volatility_20d = std(daily_returns) over last 20 rows WHERE date <= asof_date. Annualized by * sqrt(252).",
+      "known_limitations": [
+        "Fixed 30% threshold is conservative; not tuned to historical returns",
+        "No strategy or signal claim is made based on HIGH_VOLATILITY label"
+      ]
+    },
+    {
+      "label": "LOW_CONFIDENCE",
+      "definition": "Insufficient data or missing MarketIndex prevents classification.",
+      "required_features": [],
+      "rule_conditions": [
+        "taiex_close is NULL for asof_date",
+        "taiex_ma50 cannot be computed (< 50 TAIEX rows up to asof_date)",
+        "max_score == 0"
+      ],
+      "confidence_logic": "confidence = 0.0 always.",
+      "PIT_safety_rule": "If MarketIndex missing for asof_date, output LOW_CONFIDENCE with null features. Do NOT forward-fill.",
+      "known_limitations": [
+        "Cannot be used in walk-forward regime conditioning without separate imputation policy",
+        "TAIEX gap dates produce LOW_CONFIDENCE rows"
+      ]
+    }
+  ],
+  "evaluation_order": [
+    "1. Check LOW_CONFIDENCE conditions (missing data, < 50 TAIEX rows)",
+    "2. Compute taiex_volatility_20d",
+    "3. Check HIGH_VOLATILITY (vol_20d > 0.30 annualized)",
+    "4. Compute full factor score (MA50, MA200, momentum, breadth)",
+    "5. BULL if bullRatio >= 0.70, BEAR if bearRatio >= 0.70, else SIDEWAYS",
+    "6. Reduce confidence x0.60 if MA200 unavailable"
+  ],
+  "confidence_normalization": "0.0 to 1.0 (note: existing TypeScript engine uses 0-100; Python script normalizes to 0.0-1.0)",
+  "prohibited_operations": [
+    "No backtest",
+    "No ROI",
+    "No win-rate",
+    "No buy/sell signal",
+    "No threshold optimization from returns",
+    "No chip/revenue/financial features",
+    "No forward-fill of missing TAIEX",
+    "No future date usage"
+  ]
+}

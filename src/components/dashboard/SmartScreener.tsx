@@ -10,7 +10,15 @@ const strategies = [
     { id: 'dividend', name: '定存好股', icon: Award, desc: '穩定配息、填息機率高', color: 'bg-green-100 text-green-700' },
 ];
 
-const mockResults: Record<string, any[]> = {
+interface MockResult {
+    symbol: string;
+    name: string;
+    price: number;
+    change: number;
+    reason: string;
+}
+
+const mockResults: Record<string, MockResult[]> = {
     value: [
         { symbol: '2330', name: '台積電', price: 580, change: 1.5, reason: '本益比 < 20' },
         { symbol: '2317', name: '鴻海', price: 105, change: 0.5, reason: '殖利率 > 5%' },
@@ -38,7 +46,8 @@ export function SmartScreener() {
             <div className="flex items-center justify-between mb-6">
                 <h3 className="font-bold text-lg flex items-center gap-2">
                     <Filter className="w-5 h-5 text-primary" />
-                    智慧選股 Smart Screener
+                    智慧選股
+                    <span className="text-xs bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 px-2 py-1 rounded">模擬數據</span>
                 </h3>
                 <button className="text-sm text-primary hover:underline flex items-center">
                     更多策略 <ChevronRight className="w-4 h-4" />

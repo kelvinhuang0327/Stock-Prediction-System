@@ -1,0 +1,101 @@
+{
+  "taskId": "P0-02A",
+  "taskName": "Guardrail Validation",
+  "date": "2026-05-07",
+  "observabilityOnly": true,
+  "noEdgeClaim": true,
+  "noProductionWrite": true,
+  "noDBWrite": true,
+  "noExternalAPI": true,
+  "noLLMCall": true,
+  "noStrategyMutation": true,
+  "forbiddenTermsChecked": ["buy", "sell", "signal", "roi", "win_rate", "alpha", "edge", "profit", "recommendation", "outperform", "guaranteed", "auto trading", "H001", "H002", "H003", "H004", "H005", "H006", "H007", "H008", "H009", "H010", "H011", "H012"],
+  "guardrails": [
+    {
+      "id": "G01",
+      "check": "No buy/sell/signal in new artifact output fields",
+      "status": "PASS",
+      "details": "New fields: asOfDate, asOfGateStatus, asOfGateNote, asOfReadiness — none contain forbidden terms"
+    },
+    {
+      "id": "G02",
+      "check": "No roi/win_rate/profit/edge in new API response sections",
+      "status": "PASS",
+      "details": "asOfReadiness summary contains: asOfDate, futureRowsDetected, mvpUniverseTierSummary, readinessStatus — no performance fields"
+    },
+    {
+      "id": "G03",
+      "check": "No H001-H012 in new artifacts",
+      "status": "PASS",
+      "details": "No hypothesis identifiers in any new output fields"
+    },
+    {
+      "id": "G04",
+      "check": "No DB write",
+      "status": "PASS",
+      "details": "All route changes are read-only. No prisma.create/update/delete calls added."
+    },
+    {
+      "id": "G05",
+      "check": "No external API calls",
+      "status": "PASS",
+      "details": "No new fetch() or external API calls. /api/stocks/[id]/history BLOCKED but pre-existing."
+    },
+    {
+      "id": "G06",
+      "check": "No LLM call",
+      "status": "PASS",
+      "details": "No AI/LLM calls in any modified or new files."
+    },
+    {
+      "id": "G07",
+      "check": "No strategy mutation — existing alphaScore/recommendationBucket preserved",
+      "status": "PASS",
+      "details": "Fields NOT renamed. Scoring weights NOT modified. StrategyScreenEngine logic NOT changed."
+    },
+    {
+      "id": "G08",
+      "check": "resolveAsOfDate() used as default (not hardcoded date)",
+      "status": "PASS",
+      "details": "All routes call resolveAsOfDate(raw ?? undefined) — no hardcoded TODAY_CAP."
+    },
+    {
+      "id": "G09",
+      "check": "Future rows excluded by gate — not returned in API response",
+      "status": "PASS",
+      "details": "stockQuote.findMany uses date lte asOfDateDb. Future rows not returned for screen/detail."
+    },
+    {
+      "id": "G10",
+      "check": "Future rows in DB trigger WARN not silent ignore",
+      "status": "PASS",
+      "details": "asOfReadiness.readinessStatus = WARN_FUTURE_ROWS_IN_DB when latestDate > asOfDateDb. Documented in API response."
+    },
+    {
+      "id": "G11",
+      "check": "No performance claims in new response fields",
+      "status": "PASS",
+      "details": "asOfGateNote explicitly says 'research tool only'. No ROI/win-rate/alpha/edge/profit."
+    },
+    {
+      "id": "G12",
+      "check": "P0-01 regression preserved",
+      "status": "PASS",
+      "details": "Full regression: 16 suites / 455 tests PASS. P0-01 tests: 83 PASS."
+    },
+    {
+      "id": "G13",
+      "check": "No auto trading claim",
+      "status": "PASS",
+      "details": "No auto trading language in any new artifact or API response."
+    },
+    {
+      "id": "G14",
+      "check": "BLOCKED APIs documented explicitly (not silently omitted)",
+      "status": "PASS",
+      "details": "/api/stocks/[id]/history and backtest routes documented as BLOCKED/AUDIT_ONLY with mitigation."
+    }
+  ],
+  "overallGuardrailStatus": "ALL_PASS",
+  "generatedAt": "2026-05-07T00:00:00.000Z"
+}

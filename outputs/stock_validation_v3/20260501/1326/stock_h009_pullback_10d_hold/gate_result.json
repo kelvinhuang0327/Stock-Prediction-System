@@ -1,0 +1,50 @@
+{
+  "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+  "base_hypothesis_id": "STOCK_H005_PULLBACK_UPTREND",
+  "symbol": "1326",
+  "as_of_date": "2026-05-01",
+  "status": "REJECTED",
+  "allowed_scope": "full_validation",
+  "promotion_allowed": false,
+  "window_results": [
+    {
+      "status": "DATA_INSUFFICIENT",
+      "window_days": 150,
+      "error": "insufficient_oos",
+      "n_oos": 4,
+      "symbol": "1326",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "pit_passed": true,
+      "pit_leakage": false,
+      "raw_p_value": 1.0,
+      "bh_fdr_q_value": 1.0,
+      "bh_fdr_pass": false
+    },
+    {
+      "status": "OK",
+      "window_days": 500,
+      "actual_rows": 500,
+      "n_signals": 47,
+      "n_oos": 10,
+      "mean_return": 0.054027,
+      "std_return": 0.056096,
+      "sharpe_annualized": 4.8348,
+      "roi_annualized": 1.36148,
+      "win_rate": 0.8,
+      "edge_pp": 30.0,
+      "tx_cost_bps": 10,
+      "p_value": 1.0,
+      "n_permutations": 500,
+      "one_tailed": true,
+      "forward_days": 10,
+      "symbol": "1326",
+      "hypothesis_id": "STOCK_H009_PULLBACK_10D_HOLD",
+      "pit_passed": true,
+      "pit_leakage": false,
+      "raw_p_value": 1.0,
+      "bh_fdr_q_value": 1.0,
+      "bh_fdr_pass": false
+    }
+  ],
+  "run_ts": "2026-05-05T09:56:40.900665+00:00"
+}

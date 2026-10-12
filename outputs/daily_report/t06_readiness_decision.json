@@ -1,0 +1,62 @@
+{
+  "task": "T-06 Readiness Decision",
+  "generated_at": "2026-05-06T14:18:00+08:00",
+  "decisions": {
+    "1_daily_report_section_complete": {
+      "answer": "YES",
+      "evidence": "t06_daily_report_section.json/md built, all fields present, guardrail PASS"
+    },
+    "2_daily_ops_report_complete": {
+      "answer": "YES",
+      "evidence": "t06_daily_ops_report.json/md built, do_not_interpret_as section complete"
+    },
+    "3_can_connect_to_daily_report_engine": {
+      "answer": "PARTIAL - Python artifact ready; TypeScript integration needs DailyReportEngine.ts addition",
+      "notes": "T-06 builder output can be read by DailyReportEngine as JSON sidecar file"
+    },
+    "4_needs_schema_migration": {
+      "answer": "NO for current artifact; YES if MarketRegimeResult DB table added"
+    },
+    "5_needs_db_write": {
+      "answer": "NO - T-06 builder is read-only; produces artifact files only"
+    },
+    "6_pit_leakage_risk": {
+      "answer": "LOW - all dates <= 2026-05-06, regime from PIT-safe P4-03"
+    },
+    "7_h001_h012_leakage_risk": {
+      "answer": "LOW - H001-H012 files exist in TS codebase but NOT used in T-06 Python outputs"
+    },
+    "8_buy_sell_signal_leakage_risk": {
+      "answer": "NONE - forbidden fields explicitly excluded; guardrail confirms clean"
+    },
+    "9_next_round_t01_t02_scheduler": {
+      "answer": "YES - P0 next step: integrate T-06 builder into T-01 lane-based scheduler"
+    },
+    "10_p4_04_still_blocked": {
+      "answer": "YES - chip needs 500+ trading days, revenue needs 12+ months"
+    }
+  },
+  "next_round_recommendations": {
+    "P0_immediate": [
+      "Integrate build-daily-regime-walkforward-report.py into T-01 scheduler (daily trigger)",
+      "Add regimeAwareWalkForwardSummary section to TypeScript DailyReportEngine.ts",
+      "Verify T-02 freshness guard triggers daily TAIEX + regime update"
+    ],
+    "P1_next": [
+      "Add MarketRegimeResult persistent DB table (schema from p4_03_market_regime_schema_proposal.md)",
+      "P4-04: Monitor InstitutionalChip row count toward 500 trading days",
+      "Build T-03 Daily Ops Report v1 automation"
+    ],
+    "P2_deferred": [
+      "Revenue feature integration (12+ months needed)",
+      "Financial feature integration (quarterly alignment + schema fixes)",
+      "Replace deterministic_alphabetical_mock with evidence-based candidate selection"
+    ],
+    "do_not_continue": [
+      "Do NOT design H013+ hypotheses",
+      "Do NOT compute ROI or win-rate",
+      "Do NOT claim portfolio edge from walk-forward skeleton",
+      "Do NOT use future TAIEX dates"
+    ]
+  }
+}

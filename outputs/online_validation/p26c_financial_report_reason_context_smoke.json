@@ -1,0 +1,58 @@
+{
+  "phase": "P26C-HARDRESET",
+  "generatedAt": "2026-05-13",
+  "totalChecks": 9,
+  "passed": 9,
+  "failed": 0,
+  "checks": [
+    {
+      "label": "CHECK 1: neutral description for no visible reports",
+      "pass": true,
+      "detail": "No financial reports with availability date on or before 2026-05-13 were found f"
+    },
+    {
+      "label": "CHECK 2: neutral description with visible reports",
+      "pass": true,
+      "detail": "2 financial report(s) with availability date on or before 2026-05-13 were record"
+    },
+    {
+      "label": "CHECK 3: empty context mentions asOfDate and symbol",
+      "pass": true,
+      "detail": "asOfDate=2026-05-13, symbol=2330"
+    },
+    {
+      "label": "CHECK 4: populated context mentions visible report count",
+      "pass": true,
+      "detail": "visibleCount=2"
+    },
+    {
+      "label": "CHECK 5: no factorScore/alphaContribution fields",
+      "pass": true,
+      "detail": "No factorScore/alphaContribution fields"
+    },
+    {
+      "label": "CHECK 6: scoreSnapshot not modified",
+      "pass": true,
+      "detail": "No scoreSnapshot in financialReportContext"
+    },
+    {
+      "label": "CHECK 7: readOnly=true",
+      "pass": true,
+      "detail": "readOnly=true"
+    },
+    {
+      "label": "CHECK 8: entersAlphaScore=false",
+      "pass": true,
+      "detail": "entersAlphaScore=false"
+    },
+    {
+      "label": "CHECK 9: no EPS/margin interpreted as investment judgment",
+      "pass": true,
+      "detail": "metrics not investment judgment"
+    }
+  ],
+  "classification": "REASON_CONTEXT_SMOKE_PASS",
+  "emptyContextDescription": "No financial reports with availability date on or before 2026-05-13 were found for 2330. Financial report context is read-only metadata.",
+  "populatedContextDescription": "2 financial report(s) with availability date on or before 2026-05-13 were recorded for 2330. Report types: quarterly, annual. Financial report context is read-only metadata and does not enter scoring.",
+  "disclaimer": "No investment recommendations. No ROI/win-rate/profit/outperform/buy/sell claims."
+}

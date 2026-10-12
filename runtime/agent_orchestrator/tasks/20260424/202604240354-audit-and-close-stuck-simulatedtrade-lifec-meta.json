@@ -1,0 +1,21 @@
+{
+  "version": "1.0",
+  "task_id": 127,
+  "slug": "audit-and-close-stuck-simulatedtrade-lifec",
+  "status": "COMPLETED",
+  "gate_verdict": "PASS",
+  "planner_provider": "codex",
+  "worker_provider": "copilot-daemon",
+  "created_at": "2026-04-24T03:54:08.832Z",
+  "updated_at": "2026-04-24T03:54:52.587Z",
+  "last_output_at": "2026-04-24T03:54:52.587Z",
+  "latest_progress_summary": "Worker finished task and gate passed.",
+  "planner_context": {
+    "taskType": "optimization_system_health",
+    "game": null,
+    "regimeState": "OPTIMIZATION",
+    "dedupeKey": "system_health__stuck_trades",
+    "confidenceScore": null,
+    "regimeTaskType": "system_health"
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "task": "P0-03",
+  "title": "Remaining API As-of Gap Closure — Audit",
+  "date": "2026-05-07",
+  "classification": "research_tool_only",
+  "noAutoTrading": true,
+  "noPrecisionPredictionClaim": true,
+  "noDBWrite": true,
+  "noExternalAPI": true,
+  "noLLMCall": true,
+  "noStrategyMutation": true,
+  "noPerformanceClaim": true,
+  "noEdgeClaim": true,
+  "routes": {
+    "/api/stocks/[id]/history": {
+      "status": "COMPLETE",
+      "note": "Route is external proxy to TWSE. Added response-level date filter: gatedHistory = history.filter(row => row.date <= asOfDate). Cannot gate at source. asOfGateStatus, futureRowsExcluded, limitation included in response.",
+      "mitigation": "Response-level filter enforced. limitation field documents permanent constraint."
+    },
+    "/api/stocks/backtest": {
+      "status": "COMPLETE",
+      "note": "Added asOfDate param to POST body and GET query. backtestFromDB and backtestFromDBRegimeAware now accept asOfDb and apply lte filter to stockQuote. asOfDate and asOfGateStatus included in response."
+    },
+    "/api/backtest/validate": {
+      "status": "COMPLETE",
+      "note": "Added resolveAsOfDate import. Added asOfDate to body destructuring. stockQuote.findMany now has lte: asOfDb. asOfDate and asOfGateStatus in response."
+    },
+    "/api/report/ops": {
+      "status": "COMPLETE",
+      "note": "Added asOfDate query param. Added asOfReadiness block with futureRowsDetected, futureRowsExcludedByGate, abnormalHistoricalRowsDetected, mvpUniverseTierSummary, readinessStatus."
+    },
+    "StrategyScreenEngine": {
+      "status": "COMPLETE",
+      "note": "Passes asOf from ScreenParams to fuseBatch(batchSymbols, asOf)."
+    },
+    "SignalFusionEngine/fuseBatch": {
+      "status": "COMPLETE",
+      "note": "fuseSignals and fuseBatch accept asOf?. Passes asOf to analyzeStock."
+    },
+    "RuleBasedStockAnalyzer": {
+      "status": "COMPLETE",
+      "note": "analyzeStock accepts asOf?. Gates stockQuote, institutionalChip with lte: asOfDb. Gates monthlyRevenue with year/month comparison."
+    },
+    "InstitutionalChip query path": {
+      "status": "COMPLETE",
+      "note": "institutionalChip.findMany gated with date: { lte: asOfDb } in RuleBasedStockAnalyzer."
+    },
+    "MarketIndex query path": {
+      "status": "AUDIT_ONLY",
+      "note": "MarketIndex is queried via MarketRegimeEngine / detectRegime() which is shared with T-09/T-10. Modifying it risks regression in existing suites. Documented as AUDIT_ONLY for P0-03. P0-04 to address."
+    }
+  },
+  "p002aGapsAddressed": [
+    "/api/stocks/[id]/history — was BLOCKED, now COMPLETE (response-level filter)",
+    "/api/stocks/backtest — was AUDIT_ONLY, now COMPLETE",
+    "/api/backtest/validate — was AUDIT_ONLY, now COMPLETE",
+    "/api/report/ops — was AUDIT_ONLY, now COMPLETE",
+    "StrategyScreenEngine asOf propagation — COMPLETE",
+    "SignalFusionEngine / fuseBatch asOf propagation — COMPLETE",
+    "InstitutionalChip date gate — COMPLETE",
+    "RuleBasedStockAnalyzer asOf gate — COMPLETE"
+  ],
+  "remainingGaps": [
+    "MarketIndex via MarketRegimeEngine — AUDIT_ONLY, defer to P0-04"
+  ]
+}

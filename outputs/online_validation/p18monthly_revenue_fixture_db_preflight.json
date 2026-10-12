@@ -1,0 +1,38 @@
+{
+  "phase": "P18-HARDRESET",
+  "task": "MonthlyRevenue ReleaseDate Backfill Dry-Run with Local Fixture DB",
+  "date": "2026-05-12",
+  "preflightStatus": "PASS",
+  "disclaimer": "Does not constitute investment advice. Does not compute ROI, profit, alpha, win-rate, edge, or outperformance.",
+  "p17ArtifactsPresent": {
+    "p17monthly_revenue_final_report.md": true,
+    "p17monthly_revenue_patch_preflight.json": true,
+    "p17monthly_revenue_schema_patch.json": true,
+    "p17monthly_revenue_query_gate_patch.json": true,
+    "p17monthly_revenue_query_gate_validation.json": true
+  },
+  "p17SchemaPatch": {
+    "productionApplyAllowed": false,
+    "addedFieldsCount": 3,
+    "fields": ["releaseDate", "releaseDateSource", "releaseDateConfidence"]
+  },
+  "migrationDraftExists": true,
+  "migrationDraftPath": "prisma/migrations/20260512000000_monthly_revenue_release_date_pit_draft/migration.sql",
+  "helperExists": true,
+  "helperPath": "src/lib/onlineValidation/MonthlyRevenueAvailability.ts",
+  "p17FinalClassification": "P17_MONTHLY_REVENUE_SCHEMA_QUERY_GATE_PATCH_COMPLETE",
+  "p17ValidationScript": "18/18 PASS",
+  "p17Tests": "59+1493+118=1670 PASS",
+  "frozenCorpusCheck": {
+    "simulation_snapshot_corpus.jsonl": { "expected": 60, "actual": 60, "status": "FROZEN" },
+    "p0hardreset_historical_replay_corpus.jsonl": { "expected": 4500, "actual": 4500, "status": "FROZEN" },
+    "p1baseline_historical_replay_corpus.jsonl": { "expected": 9900, "actual": 9900, "status": "FROZEN" },
+    "p3active_scoring_historical_replay_corpus.jsonl": { "expected": 4500, "actual": 4500, "status": "FROZEN" }
+  },
+  "productionApplyAllowed": false,
+  "productionDbWritten": false,
+  "sqliteCliBin": "/usr/bin/sqlite3",
+  "sqliteCliVersion": "3.51.0",
+  "fixtureDbPath": "outputs/online_validation/fixture_db/p18_monthly_revenue_fixture.sqlite",
+  "approach": "sqlite3 CLI via child_process — no additional npm packages required"
+}

@@ -1,0 +1,61 @@
+{
+  "contractVersion": "v1",
+  "phase": "P26F-HARDRESET",
+  "generatedAt": "2026-05-13T00:00:00.000Z",
+  "pitGateField": "releaseDate",
+  "pitRules": {
+    "visibilityGate": "releaseDate <= asOfDate",
+    "nullReleaseDateIsNotVisible": true,
+    "yearMonthAreNotVisibilityGates": true,
+    "createdAtIsNotVisibilityGate": true,
+    "releaseDateSourceIsNotVisibilityGate": true,
+    "releaseDateConfidenceIsNotVisibilityGate": true
+  },
+  "sourceFields": {
+    "symbol": "stockId",
+    "year": "year",
+    "month": "month",
+    "revenue": "revenue",
+    "yoyGrowth": "yoyGrowth",
+    "momGrowth": "momGrowth",
+    "releaseDate": "releaseDate",
+    "releaseDateSource": "releaseDateSource",
+    "releaseDateConfidence": "releaseDateConfidence",
+    "createdAt": "createdAt"
+  },
+  "joinRules": {
+    "corpusJoinKey": "symbol",
+    "sourceJoinKey": "stockId",
+    "joinDescription": "corpusRow.symbol === monthlyRevenue.stockId (Stock.id = symbol)",
+    "joinType": "LEFT_JOIN_EXACT_SYMBOL",
+    "caseSensitive": true
+  },
+  "observabilityOnlyFields": ["createdAt", "releaseDateSource", "releaseDateConfidence", "year", "month"],
+  "candidateOutputContract": {
+    "outputType": "CANDIDATE_DRY_RUN_ONLY",
+    "overwritesFrozenCorpus": false,
+    "entersAlphaScore": false,
+    "readOnly": true,
+    "contextFieldName": "p26fMonthlyRevenueContext",
+    "scoringChangeAllowed": false,
+    "optimizerAllowed": false,
+    "forbiddenOutputFields": ["outcomePrice", "returnPct", "realizedReturnClass"]
+  },
+  "excludedScope": {
+    "noROI": true,
+    "noBuy": true,
+    "noSell": true,
+    "noProfit": true,
+    "noOutperform": true,
+    "noWinRate": true,
+    "noAlphaClaim": true,
+    "noEdgeClaim": true,
+    "noGuarantee": true,
+    "noInvestmentRecommendation": true,
+    "noScoringFormulaChange": true,
+    "noOptimizerAuthorization": true,
+    "noFormalCorpusReplacement": true,
+    "noCandidateToProductionPromotion": true
+  },
+  "disclaimer": "No investment recommendations. No ROI/win-rate/profit/outperform/buy/sell claims. Candidate dry-run only."
+}
