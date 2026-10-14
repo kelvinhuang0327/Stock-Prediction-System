@@ -10,7 +10,7 @@ jobs:
   lint:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       
       - name: Setup Node.js
         uses: actions/setup-node@v6
@@ -27,7 +27,7 @@ jobs:
   test-node:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       
       - name: Setup Node.js
         uses: actions/setup-node@v6
@@ -73,7 +73,7 @@ jobs:
   test-python:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       
       - name: Setup Python
         uses: actions/setup-python@v6
@@ -103,7 +103,7 @@ jobs:
     runs-on: macos-latest
     needs: [lint, test-node]
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       
       - name: Setup Node.js
         uses: actions/setup-node@v6
@@ -121,7 +121,7 @@ jobs:
     runs-on: macos-latest
     needs: [build]
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       
       - name: Setup Node.js
         uses: actions/setup-node@v6
