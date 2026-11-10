@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { stockService } from '@/lib/stockService';
 import {
     ScatterChart,
@@ -29,11 +29,7 @@ export function SectorRotationMap() {
     const [sectors, setSectors] = useState<SectorRotationData[]>([]);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        loadData();
-    }, []);
-
-    const loadData = async () => {
+    const loadData = useCallback(async () => {
         setLoading(true);
         try {
             const data = await stockService.getSectors();
@@ -43,7 +39,11 @@ export function SectorRotationMap() {
         } finally {
             setLoading(false);
         }
-    };
+    }, []);
+
+    useEffect(() => {
+        void loadData();
+    }, [loadData]);
 
     if (loading) {
         return (

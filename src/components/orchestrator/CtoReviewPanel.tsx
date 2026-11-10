@@ -431,8 +431,8 @@ export function CtoReviewPanel({ schedulerEnabled, signalState, latestRun }: Rea
     }
   }
 
-  async function addToBacklog(candidate: Candidate) {
-    const findingId = candidate.finding_id ?? `${selectedRun?.run.runId}-${candidate.proposalId ?? candidate.symbol ?? Date.now()}`;
+  async function addToBacklog(candidate: Candidate, reviewIndex: number) {
+    const findingId = candidate.finding_id ?? `${selectedRun?.run.runId}-${candidate.proposalId ?? candidate.symbol ?? reviewIndex}`;
     setBacklogMsg((prev) => ({ ...prev, [findingId]: '加入中…' }));
     const resp = await fetch('/api/orchestrator/cto/backlog', {
       method:  'POST',
@@ -453,16 +453,18 @@ export function CtoReviewPanel({ schedulerEnabled, signalState, latestRun }: Rea
 
   async function batchAddHighPriority() {
     if (!selectedRun) return;
-    const highPrio = selectedRun.reviews.filter((c) =>
-      c.decision === 'REJECTED_ADJUST_SIGNAL' || c.decision === 'DEFERRED_REGIME_MISMATCH',
-    );
-    const findings = highPrio.map((c) => ({
-      finding_id:      c.finding_id ?? `${selectedRun.run.runId}-${c.proposalId ?? c.symbol ?? Math.random()}`,
-      severity:        c.decision?.startsWith('REJECTED') ? 'HIGH' : 'MEDIUM',
-      impact_score:    c.conviction ? Math.round(c.conviction * 100) : 70,
+    const highPrio = selectedRun.reviews
+      .map((candidate, reviewIndex) => ({ candidate, reviewIndex }))
+      .filter(({ candidate }) =>
+        candidate.decision === 'REJECTED_ADJUST_SIGNAL' || candidate.decision === 'DEFERRED_REGIME_MISMATCH',
+      );
+    const findings = highPrio.map(({ candidate, reviewIndex }) => ({
+      finding_id:      candidate.finding_id ?? `${selectedRun.run.runId}-${candidate.proposalId ?? candidate.symbol ?? reviewIndex}`,
+      severity:        candidate.decision?.startsWith('REJECTED') ? 'HIGH' : 'MEDIUM',
+      impact_score:    candidate.conviction ? Math.round(candidate.conviction * 100) : 70,
       urgency:         'SOON',
       category:        'signal',
-      suggested_action: c.decisionReason ?? null,
+      suggested_action: candidate.decisionReason ?? null,
     }));
     setStatus(`批次加入 ${findings.length} 筆…`);
     const resp = await fetch('/api/orchestrator/cto/backlog/batch', {
@@ -758,7 +760,7 @@ export function CtoReviewPanel({ schedulerEnabled, signalState, latestRun }: Rea
                       <span className="text-xs text-slate-400">backlog: {backlogItem.status}</span>
                     ) : (
                       <button
-                        onClick={() => void addToBacklog(c)}
+                        onClick={() => void addToBacklog(c, i)}
                         className="text-xs px-2 py-0.5 rounded bg-blue-800 text-blue-200 hover:bg-blue-700 transition-colors"
                       >
                         {msg ?? '＋ 加入 backlog'}
