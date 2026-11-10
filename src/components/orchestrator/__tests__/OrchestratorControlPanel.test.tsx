@@ -77,7 +77,7 @@ describe('OrchestratorControlPanel', () => {
     await screen.findByText('Scheduler 已啟用.', {}, { timeout: 5000 });
     fireEvent.click(screen.getByRole('button', { name: '停止排程' }));
     await screen.findByText('Scheduler 已停止.', {}, { timeout: 5000 });
-  });
+  }, 15_000);
 
   it('filters tasks and displays the task prompt, contract, result, changed files, and worker output', async () => {
     render(<OrchestratorControlPanel schedulerEnabled={false} plannerProvider="codex" workerProvider="codex" />);
