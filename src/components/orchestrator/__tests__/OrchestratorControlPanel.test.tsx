@@ -73,8 +73,10 @@ describe('OrchestratorControlPanel', () => {
     await waitFor(() => expect(screen.getByRole('button', { name: 'Worker 立即執行' })).toBeEnabled());
     fireEvent.click(screen.getByRole('button', { name: 'Worker 立即執行' }));
     await screen.findByText('Run worker queued.');
+    await waitFor(() => expect(screen.getByRole('button', { name: '啟用排程' })).toBeEnabled());
     fireEvent.click(screen.getByRole('button', { name: '啟用排程' }));
     await screen.findByText('Scheduler 已啟用.', {}, { timeout: 5000 });
+    await waitFor(() => expect(screen.getByRole('button', { name: '停止排程' })).toBeEnabled());
     fireEvent.click(screen.getByRole('button', { name: '停止排程' }));
     await screen.findByText('Scheduler 已停止.', {}, { timeout: 5000 });
   }, 15_000);

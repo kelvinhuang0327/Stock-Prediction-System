@@ -140,14 +140,16 @@ describe('StrategyLabClient', () => {
     await screen.findByText('refresh completed');
     expect(fetchMock).toHaveBeenCalledWith('/api/research/strategy-lab', { cache: 'no-store' });
 
+    await waitFor(() => expect(screen.getByRole('button', { name: '更新結果' })).toBeEnabled());
     fetchMock.mockResolvedValueOnce({ ok: false, status: 503, json: async () => ({}) });
     fireEvent.click(screen.getByRole('button', { name: '更新結果' }));
     await screen.findByText('HTTP 503');
 
+    await waitFor(() => expect(screen.getByRole('button', { name: '更新結果' })).toBeEnabled());
     fetchMock.mockRejectedValueOnce(new Error('network offline'));
     fireEvent.click(screen.getByRole('button', { name: '更新結果' }));
     await screen.findByText('network offline');
-  });
+  }, 15_000);
 
   it('runs refit, updates its snapshot, and summarizes valid and plain-text output', async () => {
     const snapshot = withRefitEnabled(await readStrategyLabSnapshot());
