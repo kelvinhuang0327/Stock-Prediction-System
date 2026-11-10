@@ -1,4 +1,5 @@
 import type { EconomicEvent, Stock } from '@/types/stock';
+import type { SectorData } from './services/SectorAnalysisService';
 import {
     POPULAR_STOCKS,
     SECTORS,
@@ -70,10 +71,10 @@ class ClientStockService {
         return POPULAR_STOCKS.find(stock => stock.symbol === symbol) || null;
     }
 
-    async getSectors(): Promise<unknown[]> {
+    async getSectors(): Promise<SectorData[]> {
         try {
             const res = await fetch('/api/sectors');
-            if (res.ok) return await res.json();
+            if (res.ok) return await res.json() as SectorData[];
         } catch (error) {
             console.error(error);
         }
