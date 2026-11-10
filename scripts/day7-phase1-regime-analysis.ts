@@ -3,9 +3,9 @@
  * Verify if poor Nov-Dec trend performance was regime-driven
  */
 
-import { PrismaClient } from '@prisma/client';
+import { createPrismaClient } from '../src/lib/prismaClientFactory.cjs';
 
-const prisma = new PrismaClient();
+const prisma = createPrismaClient();
 
 async function main() {
   console.log('\n========== DAY 7 PHASE 1: REGIME ANALYSIS ==========\n');

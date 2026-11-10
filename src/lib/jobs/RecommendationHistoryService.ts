@@ -230,7 +230,7 @@ export class RecommendationHistoryService {
           ? existing.occurrenceCount + 1
           : existing.occurrenceCount
         : 1;
-      const nextMetadata = {
+      const nextMetadata: Record<string, unknown> = {
         ...(existing ? existingMetadata : {}),
         ...metadata,
       };
@@ -340,12 +340,13 @@ export class RecommendationHistoryService {
     if (filter.recommendationType) where.recommendationType = filter.recommendationType;
     if (filter.status && filter.status !== 'all') where.status = filter.status;
 
+    const sortDirection = filter.sortDir ?? 'desc';
     const orderBy =
       filter.sortBy === 'occurrenceCount'
-        ? [{ occurrenceCount: (filter.sortDir ?? 'desc') as const }, { lastDetectedAt: 'desc' as const }]
+        ? [{ occurrenceCount: sortDirection }, { lastDetectedAt: 'desc' as const }]
         : filter.sortBy === 'firstDetectedAt'
-          ? [{ firstDetectedAt: (filter.sortDir ?? 'desc') as const }, { lastDetectedAt: 'desc' as const }]
-          : [{ lastDetectedAt: (filter.sortDir ?? 'desc') as const }, { createdAt: 'desc' as const }];
+          ? [{ firstDetectedAt: sortDirection }, { lastDetectedAt: 'desc' as const }]
+          : [{ lastDetectedAt: sortDirection }, { createdAt: 'desc' as const }];
 
     const rows = await prisma.recommendationHistory.findMany({
       where,

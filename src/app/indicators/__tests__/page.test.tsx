@@ -72,7 +72,7 @@ function setupFetch(options: {
     }
     return { ok: false, status: 404, statusText: 'Not found', json: async () => ({}) };
   });
-  global.fetch = fetchMock;
+  Object.defineProperty(globalThis, 'fetch', { configurable: true, value: fetchMock });
   return fetchMock;
 }
 

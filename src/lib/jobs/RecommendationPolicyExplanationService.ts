@@ -357,7 +357,6 @@ export class RecommendationPolicyExplanationService {
             limit: 20,
             offset: 0,
           },
-          now,
         ),
         this.trendService.build(
           {

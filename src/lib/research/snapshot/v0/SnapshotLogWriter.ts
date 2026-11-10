@@ -149,7 +149,7 @@ export function serializeEmitResult(
  * @internal
  */
 function assertNoForbiddenFieldsInRecord(record: SnapshotLogRecord): void {
-  const keys = Object.keys(record as Record<string, unknown>);
+  const keys = Object.keys(record);
   for (const field of SNAPSHOT_FORBIDDEN_FIELDS) {
     if (keys.includes(field)) {
       throw new Error(

@@ -3,8 +3,8 @@
  * Fetches TWSE T86 institutional chip data for each missing trading day.
  * Current gap: 2026-03-18 → today (31 days stale)
  */
-const { PrismaClient } = require('@prisma/client');
-const p = new PrismaClient({ log: [] });
+const { createPrismaClient } = require('../src/lib/prismaClientFactory.cjs');
+const p = createPrismaClient({ log: [] });
 
 // Date helpers
 function addDays(dateStr, n) {

@@ -1,4 +1,5 @@
-import type { AutonomousAlertPolicyConfig, AutonomousAlertPolicyState } from './AutonomousAlertPolicyStore';
+import type { AutonomousAlertPolicyState } from './AutonomousAlertPolicyStore';
+import type { AutonomousAlertPolicyConfig } from './AutonomousAlertPolicyConfig';
 import type { PolicyRecommendationResult, PolicyRecommendationType } from './PolicyRecommendationEngine';
 import type { PolicyRollbackHintResult } from './PolicyRollbackHintService';
 import type { RecommendationPolicyExplanationResult } from './RecommendationPolicyExplanationService';

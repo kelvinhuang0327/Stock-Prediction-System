@@ -2,9 +2,9 @@
 
 const fs = require('fs');
 const path = require('path');
-const { PrismaClient } = require('@prisma/client');
+const { createPrismaClient } = require('../src/lib/prismaClientFactory.cjs');
 
-const prisma = new PrismaClient({ log: [] });
+const prisma = createPrismaClient({ log: [] });
 
 function parseJsonSafe(value, fallback = {}) {
   if (!value) return fallback;

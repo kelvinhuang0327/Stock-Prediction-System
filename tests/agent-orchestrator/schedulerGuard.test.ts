@@ -19,12 +19,13 @@ test('isGlobalSchedulerEnabled returns true when schedulerEnabled is true', asyn
     loadSchedulerState: jest.fn(async () => ({ state: { schedulerEnabled: true } })),
   }));
 
-  let isGlobalSchedulerEnabled: typeof SchedulerGuardType.isGlobalSchedulerEnabled | null = null;
+  const schedulerGuard: { isGlobalSchedulerEnabled?: typeof SchedulerGuardType.isGlobalSchedulerEnabled } = {};
   jest.isolateModules(() => {
     const mod = jest.requireActual('../../src/lib/agent-orchestrator/schedulerGuard') as typeof SchedulerGuardType;
-    isGlobalSchedulerEnabled = mod.isGlobalSchedulerEnabled;
+    schedulerGuard.isGlobalSchedulerEnabled = mod.isGlobalSchedulerEnabled;
   });
 
+  const isGlobalSchedulerEnabled = schedulerGuard.isGlobalSchedulerEnabled;
   if (!isGlobalSchedulerEnabled) {
     throw new Error('Module failed to load');
   }
@@ -43,12 +44,13 @@ describe('disabled scheduler scenario', () => {
       loadSchedulerState: jest.fn(async () => ({ state: { schedulerEnabled: false } })),
     }));
 
-    let isGlobalSchedulerEnabled2: typeof SchedulerGuardType.isGlobalSchedulerEnabled | null = null;
+    const schedulerGuard: { isGlobalSchedulerEnabled?: typeof SchedulerGuardType.isGlobalSchedulerEnabled } = {};
     jest.isolateModules(() => {
       const mod = jest.requireActual('../../src/lib/agent-orchestrator/schedulerGuard') as typeof SchedulerGuardType;
-      isGlobalSchedulerEnabled2 = mod.isGlobalSchedulerEnabled;
+      schedulerGuard.isGlobalSchedulerEnabled = mod.isGlobalSchedulerEnabled;
     });
 
+    const isGlobalSchedulerEnabled2 = schedulerGuard.isGlobalSchedulerEnabled;
     if (!isGlobalSchedulerEnabled2) {
       throw new Error('Module failed to load');
     }

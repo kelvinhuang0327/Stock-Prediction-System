@@ -202,7 +202,7 @@ export function validateHistoricalSourceNoOutcomeFields(scanResults: HistoricalS
 export function validateHistoricalSourceReadOnly(scanResults: HistoricalSourceScanResult): { valid: boolean; violations: string[] } {
   // Scan is always read-only — just verify no write markers
   const violations: string[] = [];
-  if ((scanResults as Record<string, unknown>)["dbWritePerformed"]) {
+  if (Reflect.get(scanResults, 'dbWritePerformed') === true) {
     violations.push("Unexpected dbWritePerformed flag detected");
   }
   return { valid: violations.length === 0, violations };

@@ -478,8 +478,8 @@ describe('summarizeFixtureDbDryRun', () => {
   it('returns valid summary with productionDbWritten=false', () => {
     const summary = summarizeFixtureDbDryRun({
       migrationApplied: true,
-      backfillRowsUpdated: 3,
-      rollbackPossible: true,
+      backfillRowCount: 3,
+      rollbackApplied: true,
     });
     expect(summary.productionDbWritten).toBe(false);
     expect(summary.productionApplyAllowed).toBe(false);

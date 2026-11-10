@@ -5,15 +5,17 @@ import {
     buildManualReviewSurfaceContract,
     validateManualReviewSurfaceContract,
 } from '../ManualReviewSurfaceContract';
+import type { ManualReviewWorkflowBinding, WorkflowStatusCard } from '../ManualReviewWorkflowBinding';
+import type { ManualReviewActionSchema } from '../ManualReviewActionSchema';
 
 function loadJson<T>(filePath: string): T {
     return JSON.parse(fs.readFileSync(filePath, 'utf8')) as T;
 }
 
 describe('ManualReviewSurfaceContract — P17', () => {
-    const workflowBinding = loadJson(path.resolve(process.cwd(), 'outputs/online_validation/p16_manual_review_workflow_binding.json'));
-    const actionSchema = loadJson(path.resolve(process.cwd(), 'outputs/online_validation/p16_manual_review_action_schema.json'));
-    const statusCards = loadJson(path.resolve(process.cwd(), 'outputs/online_validation/p16_manual_review_status_cards.json'));
+    const workflowBinding = loadJson<ManualReviewWorkflowBinding>(path.resolve(process.cwd(), 'outputs/online_validation/p16_manual_review_workflow_binding.json'));
+    const actionSchema = loadJson<ManualReviewActionSchema>(path.resolve(process.cwd(), 'outputs/online_validation/p16_manual_review_action_schema.json'));
+    const statusCards = loadJson<Record<string, WorkflowStatusCard>>(path.resolve(process.cwd(), 'outputs/online_validation/p16_manual_review_status_cards.json'));
     const surface = buildManualReviewSurfaceContract(
         { workflowBinding, actionSchema, statusCards },
         {

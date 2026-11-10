@@ -1,7 +1,7 @@
 'use strict';
 
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient({ log: [] });
+const { createPrismaClient } = require('../src/lib/prismaClientFactory.cjs');
+const prisma = createPrismaClient({ log: [] });
 
 const START = '2025-11-18';
 const END = '2025-12-17';

@@ -128,7 +128,7 @@ function pickTrendBucket(window: '7d' | '14d' | '30d'): 'day' | 'week' {
   return window === '30d' ? 'week' : 'day';
 }
 
-function trendTone(direction: 'improving' | 'worsening' | 'stable' | 'insufficient'): string {
+function trendTone(direction: 'improving' | 'worsening' | 'stable' | 'oscillating' | 'insufficient'): string {
   if (direction === 'improving') return 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30';
   if (direction === 'worsening') return 'bg-red-500/10 text-red-300 border-red-500/30';
   if (direction === 'stable') return 'bg-cyan-500/10 text-cyan-300 border-cyan-500/30';
@@ -1058,6 +1058,7 @@ export default async function AutonomousAlertsPage({
   const recommendationLifecycleService = new RecommendationLifecycleService();
   const recommendationEngine = new PolicyRecommendationEngine();
   const status = parseStatus(firstValue(searchParams.status));
+  const recommendationStatus = status === 'suppressed' ? undefined : status;
   const severity = parseSeverity(firstValue(searchParams.severity));
   const recommendationType = parseRecommendationType(firstValue(searchParams.recommendationType));
   const jobName = parseString(firstValue(searchParams.jobName));
@@ -1116,7 +1117,7 @@ export default async function AutonomousAlertsPage({
     {
       recommendationType,
       targetJob: jobName ?? undefined,
-      status,
+      status: recommendationStatus,
     },
     pickTrendWindow(days),
     pickTrendBucket(pickTrendWindow(days)),
@@ -1127,7 +1128,7 @@ export default async function AutonomousAlertsPage({
       recommendationKey: firstValue(searchParams.recommendationKey) ?? undefined,
       recommendationType,
       targetJob: jobName ?? undefined,
-      status,
+      status: recommendationStatus,
       limit: jobName ? 12 : 8,
     },
     new Date(),

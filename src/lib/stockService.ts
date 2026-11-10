@@ -1,5 +1,6 @@
 // Stock Service - Hybrid implementation (Prisma + Fallback)
 import { prisma } from './prisma';
+import type { SectorData } from './services/SectorAnalysisService';
 import {
     Stock,
     EconomicEvent
@@ -144,12 +145,12 @@ class StockService {
     }
 
     // Get all sectors - Hybrid
-    async getSectors(): Promise<unknown[]> {
+    async getSectors(): Promise<SectorData[]> {
         // Client: Use API
         if (typeof window !== 'undefined') {
             try {
                 const res = await fetch('/api/sectors');
-                if (res.ok) return await res.json();
+                if (res.ok) return await res.json() as SectorData[];
             } catch (e) { console.error(e); }
         } else {
             // Server: Dynamic Import
@@ -165,10 +166,20 @@ class StockService {
 
     // Get stocks by sector
     async getStocksBySector(sectorId: string): Promise<Stock[]> {
-        // Find industry name from static list to match DB string
-        const sectorName = SECTORS.find(s => s.id === sectorId)?.name;
+        let normalizedSector = sectorId;
+        try {
+            normalizedSector = decodeURIComponent(sectorId);
+        } catch {
+            // Keep malformed or already-decoded route values as-is.
+        }
 
-        if (sectorName) {
+        const matchedSector = SECTORS.find(
+            sector => sector.id === normalizedSector || sector.name === normalizedSector,
+        );
+        const normalizedSectorId = matchedSector?.id ?? normalizedSector;
+        const sectorName = matchedSector?.name;
+
+        if (matchedSector) {
             try {
                 const stocks = await prisma.stock.findMany({
                     where: { industry: sectorName },
@@ -181,7 +192,9 @@ class StockService {
             } catch { }
         }
 
-        return POPULAR_STOCKS.filter(s => s.sector === sectorId);
+        return POPULAR_STOCKS.filter(
+            stock => stock.sector === normalizedSectorId || stock.industry === (sectorName ?? normalizedSector),
+        );
     }
 
     // Filter stocks - Complex, implementation limited for now

@@ -273,14 +273,12 @@ export function validateNoOutcomeFieldsInEventNewsContext(contextSnapshot: Event
 } {
   const forbidden = ['outcomePrice', 'returnPct', 'realizedReturnClass'];
   const found: string[] = [];
-  const snapshot = contextSnapshot as Record<string, unknown>;
   for (const key of forbidden) {
-    if (key in snapshot) found.push(key);
+    if (Object.hasOwn(contextSnapshot, key)) found.push(key);
   }
   for (const evt of contextSnapshot.events) {
-    const e = evt as Record<string, unknown>;
     for (const key of forbidden) {
-      if (key in e && !found.includes(key)) found.push(key);
+      if (Object.hasOwn(evt, key) && !found.includes(key)) found.push(key);
     }
   }
   return { valid: found.length === 0, foundForbiddenFields: found };

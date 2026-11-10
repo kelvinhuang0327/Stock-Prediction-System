@@ -52,13 +52,15 @@ function hasForbiddenKey(obj: unknown, keyPath = ''): string[] {
 function makeRegimeContext(date: string): PersistedRegimeContext {
   return {
     date,
-    regimeLabel: 'NEUTRAL',
+    regimeLabel: 'SIDEWAYS',
     confidence: 0.7,
     taiexClose: null,
     source: 'test',
     version: '1.0',
     freshnessStatus: 'FRESH',
     freshnessLagDays: 0,
+    warning: null,
+    isAvailable: true,
   };
 }
 

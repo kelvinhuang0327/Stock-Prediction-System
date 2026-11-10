@@ -1,10 +1,11 @@
 import { PrismaClient } from '@prisma/client';
+import { createPrismaClient } from './prismaClientFactory.cjs';
 
 const globalForPrisma = global as unknown as { prisma: PrismaClient };
 
 export const prisma =
     globalForPrisma.prisma ||
-    new PrismaClient({
+    createPrismaClient({
         log: ['query', 'error', 'warn'],
     });
 

@@ -63,7 +63,7 @@ describe('SecondDateSnapshotBatchFactory', () => {
     it('batch validation rejects dryRun=false', () => {
         const seed = buildSecondDateSnapshotSeed();
         const batch = buildSecondDateSimulationSnapshotBatch(seed);
-        const result = validateSecondDateSnapshotBatch({ ...batch, dryRun: false } as typeof batch);
+        const result = validateSecondDateSnapshotBatch({ ...batch, dryRun: false } as unknown as typeof batch);
         expect(result.valid).toBe(false);
         expect(result.status).toBe('FAIL');
     });

@@ -3,9 +3,9 @@
  * Analyze insight progression and check if trend has recovered
  */
 
-import { PrismaClient } from '@prisma/client';
+import { createPrismaClient } from '../src/lib/prismaClientFactory.cjs';
 
-const prisma = new PrismaClient();
+const prisma = createPrismaClient();
 
 function parseJson(str: string | null) {
   if (!str) return null;

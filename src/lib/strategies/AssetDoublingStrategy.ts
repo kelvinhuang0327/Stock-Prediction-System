@@ -78,12 +78,12 @@ export class AssetDoublingStrategy implements Strategy {
                     sma: [5, this.config.maShort, this.config.maLong],
                 });
                 const lastIdx = indicators.length - 1;
-                const last = indicators[lastIdx] as Record<string, number>;
+                const last = indicators[lastIdx];
                 currentClose = last.close;
 
                 // Simple technical score: Price above MA Short and MA Short > MA Long
-                const maShortVal = last[`ma${this.config.maShort}`] || 0;
-                const maLongVal = last[`ma${this.config.maLong}`] || 0;
+                const maShortVal = Number(Reflect.get(last, `ma${this.config.maShort}`) ?? 0);
+                const maLongVal = Number(Reflect.get(last, `ma${this.config.maLong}`) ?? 0);
 
                 if (last.close > maShortVal) technicalScore += 25;
                 if (maShortVal > maLongVal) technicalScore += 25;
@@ -126,7 +126,7 @@ export class AssetDoublingStrategy implements Strategy {
                     potentialLabel = "⚠️ 過熱警戒 (已漲多)";
                 } else if (isVolumeSpike && climbPercent < 20) {
                     potentialLabel = "🚀 強勢發動 (爆量起漲)";
-                } else if (climbPercent < 15 && latestRev.yoyGrowth >= minRev) {
+                } else if (climbPercent < 15 && typeof latestRev.yoyGrowth === 'number' && latestRev.yoyGrowth >= minRev) {
                     potentialLabel = "💎 潛力珍珠 (低基期)";
                 } else if (climbPercent < 30) {
                     potentialLabel = "📈 多頭排列";
@@ -176,7 +176,9 @@ export class AssetDoublingStrategy implements Strategy {
             // 8. Chip Anomaly Detection (New Phase 21)
             let anomalyData = undefined;
             try {
-                const chipsAsc = [...(stock.institutionalChips || [])].reverse();
+                const chipsAsc = [...(stock.institutionalChips || [])]
+                    .reverse()
+                    .map((chip) => ({ ...chip, stockId: stock.stockId }));
                 const signals = await chipAnomalyScanner.scanStock(stock.stockId, chipsAsc);
 
                 if (signals.length > 0) {

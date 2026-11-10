@@ -28,6 +28,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Generate Prisma client
+        run: npx prisma generate
+
       - name: Assert DB SHA unchanged (local-only guard)
         run: |
           EXPECTED="2bc7d615ac8c01817d1bef32a727624980384a4210f1a693785e433062742400"
@@ -62,6 +65,9 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Generate Prisma client
+        run: npx prisma generate
 
       - name: Run research suite
         run: npx jest src/lib/research/__tests__ --no-coverage --forceExit

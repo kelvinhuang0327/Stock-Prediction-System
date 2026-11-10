@@ -1,3 +1,5 @@
+export {};
+
 /**
  * T-04 Safety Guard Route Integration Test
  * Tests that the daily-sync cron route correctly integrates SafetyGuard.
@@ -66,11 +68,12 @@ const makeReq = (opts: {
 
 describe('T-04 daily-sync route SafetyGuard integration', () => {
   let GET: typeof import('../route').GET;
-  let runAllSyncs: jest.Mock;
+  let runAllSyncs: jest.MockedFunction<typeof import('@/lib/data/SyncScheduler').runAllSyncs>;
 
   beforeAll(async () => {
     ({ GET } = await import('../route'));
-    ({ runAllSyncs } = await import('@/lib/data/SyncScheduler') as { runAllSyncs: jest.Mock });
+    const scheduler = await import('@/lib/data/SyncScheduler');
+    runAllSyncs = jest.mocked(scheduler.runAllSyncs);
   });
 
   beforeEach(() => {

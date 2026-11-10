@@ -24,6 +24,42 @@ import {
 import { reviewCase, type WalkthroughCaseInput } from '../P5WalkthroughReviewUtils';
 import { corpusRowToWalkthroughCaseInput, type CorpusRow } from '../P26ACorpusRowAdapter';
 import { inferDirectionFromMATrend } from '../P26AReasonFactorEnrichmentUtils';
+import {
+    ACTIVE_SCORING_BUILDER_VERSION,
+    ACTIVE_SCORING_ENGINE_SOURCE,
+    ACTIVE_SCORING_MODE,
+    type ActiveScoringSnapshot,
+} from '../ActiveScoringSnapshotBuilder';
+
+type SnapshotSeed = Pick<
+    ActiveScoringSnapshot,
+    'symbol' | 'asOfDate' | 'researchBucket' | 'alphaScore' | 'reasonSnapshot' | 'factorSnapshot' | 'scoreSnapshot'
+>;
+
+function makeRendererSnapshot<T extends SnapshotSeed>(seed: T): ActiveScoringSnapshot {
+    return {
+        builderVersion: ACTIVE_SCORING_BUILDER_VERSION,
+        symbol: seed.symbol,
+        asOfDate: seed.asOfDate,
+        scoringMode: ACTIVE_SCORING_MODE,
+        scoringEngineSource: ACTIVE_SCORING_ENGINE_SOURCE,
+        researchBucket: seed.researchBucket,
+        alphaScore: seed.alphaScore,
+        scoreSnapshot: seed.scoreSnapshot,
+        signalSnapshot: [],
+        factorSnapshot: seed.factorSnapshot,
+        reasonSnapshot: seed.reasonSnapshot,
+        limitations: [],
+        dataCoverage: 'limited',
+        dataPoints: 0,
+        usedSources: [],
+        missingSources: [],
+        pitGateDate: seed.asOfDate,
+        scoringAvailable: true,
+        completenessStatus: 'PARTIAL',
+        scoringNote: 'Renderer test fixture',
+    };
+}
 
 // ─── Shared fixtures ──────────────────────────────────────────────────────────
 
@@ -148,7 +184,7 @@ describe('TR-03: inferDirectionFromMATrend', () => {
 // ─── TR-01: renderReasonFromCorpusSnapshot — scoreSnapshot_zero_label fix ────
 
 describe('TR-01: renderReasonFromCorpusSnapshot with real scoreSnapshot', () => {
-    const snapshot1710 = {
+    const snapshot1710 = makeRendererSnapshot({
         symbol: '1710',
         asOfDate: '2026-01-15',
         horizonDays: 20,
@@ -162,7 +198,7 @@ describe('TR-01: renderReasonFromCorpusSnapshot with real scoreSnapshot', () => 
         missingSources: ['MonthlyRevenue'],
         completenessStatus: 'PARTIAL',
         stableHashKey: 'test-1710',
-    } as Parameters<typeof renderReasonFromCorpusSnapshot>[0];
+    });
 
     test('outcome is ENRICHED (not FALLBACK_EMPTY)', () => {
         const result = renderReasonFromCorpusSnapshot(snapshot1710);
@@ -199,7 +235,7 @@ describe('TR-01: renderReasonFromCorpusSnapshot with real scoreSnapshot', () => 
 // ─── Family 2: mixed_signals_no_template — 00891 ─────────────────────────────
 
 describe('00891 mixed-signal rendering', () => {
-    const snapshot00891 = {
+    const snapshot00891 = makeRendererSnapshot({
         symbol: '00891',
         asOfDate: '2026-02-11',
         horizonDays: 20,
@@ -213,7 +249,7 @@ describe('00891 mixed-signal rendering', () => {
         missingSources: ['MonthlyRevenue'],
         completenessStatus: 'PARTIAL',
         stableHashKey: 'test-00891',
-    } as Parameters<typeof renderReasonFromCorpusSnapshot>[0];
+    });
 
     test('outcome is ENRICHED', () => {
         const result = renderReasonFromCorpusSnapshot(snapshot00891);
@@ -354,7 +390,7 @@ describe('Frozen invariant — renderer never changes alphaScore or bucket', () 
 
     for (const token of allSingleTokens) {
         test(`${token}: alphaScoreUnchanged=true`, () => {
-            const snap = {
+            const snap = makeRendererSnapshot({
                 symbol: 'TEST',
                 asOfDate: '2026-01-01',
                 horizonDays: 20,
@@ -368,7 +404,7 @@ describe('Frozen invariant — renderer never changes alphaScore or bucket', () 
                 missingSources: [],
                 completenessStatus: 'PARTIAL',
                 stableHashKey: 'test',
-            } as Parameters<typeof renderReasonFromCorpusSnapshot>[0];
+            });
             const r = renderReasonFromCorpusSnapshot(snap);
             expect(r.alphaScoreUnchanged).toBe(true);
             expect(r.bucketUnchanged).toBe(true);
@@ -380,7 +416,7 @@ describe('Frozen invariant — renderer never changes alphaScore or bucket', () 
 
 describe('Boundary: FALLBACK_EMPTY when factorSnapshot is empty', () => {
     test('returns FALLBACK_EMPTY when factorSnapshot is empty', () => {
-        const snap = {
+        const snap = makeRendererSnapshot({
             symbol: 'NODATA',
             asOfDate: '2026-01-01',
             horizonDays: 20,
@@ -394,7 +430,7 @@ describe('Boundary: FALLBACK_EMPTY when factorSnapshot is empty', () => {
             missingSources: [],
             completenessStatus: 'EMPTY',
             stableHashKey: 'test-nodata',
-        } as Parameters<typeof renderReasonFromCorpusSnapshot>[0];
+        });
         const r = renderReasonFromCorpusSnapshot(snap);
         expect(r.outcome).toBe('FALLBACK_EMPTY');
     });
@@ -406,7 +442,7 @@ describe('No forbidden claims in rendered outputs', () => {
     const FORBIDDEN_REGEX = /(?<!淨)買入|(?<!淨)賣出|ROI\b|win[- ]?rate|\balpha\b(?!Score)|profit\b|outperform|guaranteed|investment recommendation/i;
 
     test('1710 bullish case: no forbidden claims', () => {
-        const snap = {
+        const snap = makeRendererSnapshot({
             symbol: '1710',
             asOfDate: '2026-01-15',
             horizonDays: 20,
@@ -420,13 +456,13 @@ describe('No forbidden claims in rendered outputs', () => {
             missingSources: [],
             completenessStatus: 'PARTIAL',
             stableHashKey: 'test',
-        } as Parameters<typeof renderReasonFromCorpusSnapshot>[0];
+        });
         const r = renderReasonFromCorpusSnapshot(snap);
         expect(FORBIDDEN_REGEX.test(r.renderedText)).toBe(false);
     });
 
     test('00891 mixed-signal case: no forbidden claims', () => {
-        const snap = {
+        const snap = makeRendererSnapshot({
             symbol: '00891',
             asOfDate: '2026-02-11',
             horizonDays: 20,
@@ -440,7 +476,7 @@ describe('No forbidden claims in rendered outputs', () => {
             missingSources: [],
             completenessStatus: 'PARTIAL',
             stableHashKey: 'test',
-        } as Parameters<typeof renderReasonFromCorpusSnapshot>[0];
+        });
         const r = renderReasonFromCorpusSnapshot(snap);
         expect(FORBIDDEN_REGEX.test(r.renderedText)).toBe(false);
     });

@@ -481,7 +481,8 @@ export async function runWalkForwardObservability(
     regimeContextMap = deps.preloadedRegimeContextMap;
   } else if (deps.regimePrismaClient) {
     regimeContextMap = await loadRegimeContextMap(
-      { startDate: config.startDate, endDate: config.endDate },
+      config.startDate,
+      config.endDate,
       deps.regimePrismaClient,
     );
   } else {

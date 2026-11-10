@@ -6,6 +6,7 @@ const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
   {
+    files: ["**/*.{js,jsx,ts,tsx}"],
     rules: {
       // Existing data-loading effects synchronously set their loading state before awaiting requests.
       // Keep these diagnostics visible while allowing the current patterns during the dependency upgrade.

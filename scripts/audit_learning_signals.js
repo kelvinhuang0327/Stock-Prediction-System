@@ -1,7 +1,7 @@
 /* eslint-disable */
 // Learning signal audit — run with: node scripts/audit_learning_signals.js
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const { createPrismaClient } = require('../src/lib/prismaClientFactory.cjs');
+const prisma = createPrismaClient();
 
 async function main() {
   const trades = await prisma.simulatedTrade.findMany({ orderBy: { id: 'desc' } });

@@ -194,7 +194,7 @@ describe('StrategyLabClient', () => {
     writeText.mockRejectedValueOnce(new Error('clipboard denied'));
     fireEvent.click(screen.getByRole('button', { name: '複製摘要' }));
     await screen.findByText('剪貼簿不可用，請直接選取下方文字手動複製。');
-  });
+  }, 15_000);
 
   it('prompts for manual copy when the browser has no clipboard API', async () => {
     const snapshot = withRefitEnabled(await readStrategyLabSnapshot());

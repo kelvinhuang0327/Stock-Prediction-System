@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { createPrismaClient } from '../src/lib/prismaClientFactory.cjs';
 import { runAutonomousCycle } from '../src/lib/autonomous/AutonomousOrchestrator';
 import {
   buildStrategyLearningInsight,
@@ -7,7 +7,7 @@ import {
 import { buildFundamentalResearchContextForSymbol } from '../src/lib/fundamentals/FundamentalResearchService';
 import { getEventSummaryForSymbol } from '../src/lib/events/EventSummaryEngine';
 
-const prisma = new PrismaClient();
+const prisma = createPrismaClient();
 
 const START_DATE = '2026-01-15';
 const END_DATE = '2026-04-17';

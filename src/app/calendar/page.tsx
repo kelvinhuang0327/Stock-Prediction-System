@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { Calendar as CalendarIcon, TrendingUp, DollarSign, AlertCircle } from 'lucide-react';
-import { stockService } from '@/lib/stockService';
+import { stockService } from '@/lib/stockService.client';
 import { EconomicEvent } from '@/lib/mockData';
 
 export default function CalendarPage() {

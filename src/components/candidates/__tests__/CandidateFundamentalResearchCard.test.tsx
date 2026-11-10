@@ -7,6 +7,7 @@ import type { CashflowLeverageOverlay } from '@/lib/fundamental/CashflowLeverage
 import type { CapitalEfficiencyOverlay } from '@/lib/fundamental/CapitalEfficiencyOverlayEngine';
 import type { FinancialStructurePeerComparison } from '@/lib/fundamental/FinancialStructurePeerComparisonEngine';
 import type { FullFundamentalComparisonMatrix } from '@/lib/fundamental/FullFundamentalComparisonMatrixBuilder';
+import type { PeerPercentileDetailTable } from '@/lib/fundamental/types';
 
 const baseFundamentals: StockFundamentalSnapshot = {
   kind: 'stock',
@@ -158,7 +159,7 @@ const baseFundamentalMatrix: FullFundamentalComparisonMatrix = {
   },
 };
 
-const basePeerPercentileDetailTable = {
+const basePeerPercentileDetailTable: PeerPercentileDetailTable = {
   basis: 'industry',
   peerSampleSize: 6,
   limitations: ['同組樣本有限，解讀已保守處理。'],

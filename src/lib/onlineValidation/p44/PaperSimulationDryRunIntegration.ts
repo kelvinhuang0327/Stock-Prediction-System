@@ -26,7 +26,7 @@
  *   YES design paper simulation dry-run lifecycle runner integration for P44
  */
 
-import type { PaperSimulationInputBundle } from "../p39/PaperSimulationInputContractBuilder";
+import type { PaperSimulationInputBundle } from "../p39/PaperSimulationInputContract";
 import { createPaperSimulationFrameworkPlan } from "../p40/PaperSimulationFrameworkBoundary";
 import { runPaperSimulationDryRun } from "../p41/PaperSimulationDryRunRunner";
 import { DRY_RUN_STUB_RESULT } from "../p41/PaperSimulationDryRunContract";

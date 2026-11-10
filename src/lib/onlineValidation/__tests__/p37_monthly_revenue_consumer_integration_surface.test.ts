@@ -142,7 +142,7 @@ describe("P37 — 2. Payload validation — forbidden fields", () => {
   test("2.2 payload with alphaScore field fails validation", () => {
     const batch = makeBatchResult();
     const payload = buildMonthlyRevenueConsumerPayload(batch, makePayloadRows());
-    (payload as Record<string, unknown>)["alphaScore"] = 0.5;
+    Object.assign(payload, { alphaScore: 0.5 });
     const result = validateMonthlyRevenueConsumerPayload(payload);
     expect(result.valid).toBe(false);
     expect(result.violations.some((v) => v.includes("alphaScore"))).toBe(true);
@@ -151,7 +151,7 @@ describe("P37 — 2. Payload validation — forbidden fields", () => {
   test("2.3 payload with prediction field fails validation", () => {
     const batch = makeBatchResult();
     const payload = buildMonthlyRevenueConsumerPayload(batch, makePayloadRows());
-    (payload as Record<string, unknown>)["prediction"] = "UP";
+    Object.assign(payload, { prediction: "UP" });
     const result = validateMonthlyRevenueConsumerPayload(payload);
     expect(result.valid).toBe(false);
     expect(result.violations.some((v) => v.includes("prediction"))).toBe(true);
@@ -160,7 +160,7 @@ describe("P37 — 2. Payload validation — forbidden fields", () => {
   test("2.4 payload with recommendation field fails validation", () => {
     const batch = makeBatchResult();
     const payload = buildMonthlyRevenueConsumerPayload(batch, makePayloadRows());
-    (payload as Record<string, unknown>)["recommendation"] = "BUY";
+    Object.assign(payload, { recommendation: "BUY" });
     const result = validateMonthlyRevenueConsumerPayload(payload);
     expect(result.valid).toBe(false);
     expect(result.violations.some((v) => v.includes("recommendation"))).toBe(true);
@@ -169,7 +169,7 @@ describe("P37 — 2. Payload validation — forbidden fields", () => {
   test("2.5 payload with signal field fails validation", () => {
     const batch = makeBatchResult();
     const payload = buildMonthlyRevenueConsumerPayload(batch, makePayloadRows());
-    (payload as Record<string, unknown>)["signal"] = "BULLISH";
+    Object.assign(payload, { signal: "BULLISH" });
     const result = validateMonthlyRevenueConsumerPayload(payload);
     expect(result.valid).toBe(false);
   });
@@ -177,7 +177,7 @@ describe("P37 — 2. Payload validation — forbidden fields", () => {
   test("2.6 payload with buy field fails validation", () => {
     const batch = makeBatchResult();
     const payload = buildMonthlyRevenueConsumerPayload(batch, makePayloadRows());
-    (payload as Record<string, unknown>)["buy"] = true;
+    Object.assign(payload, { buy: true });
     const result = validateMonthlyRevenueConsumerPayload(payload);
     expect(result.valid).toBe(false);
   });
@@ -185,7 +185,7 @@ describe("P37 — 2. Payload validation — forbidden fields", () => {
   test("2.7 payload with sell field fails validation", () => {
     const batch = makeBatchResult();
     const payload = buildMonthlyRevenueConsumerPayload(batch, makePayloadRows());
-    (payload as Record<string, unknown>)["sell"] = true;
+    Object.assign(payload, { sell: true });
     const result = validateMonthlyRevenueConsumerPayload(payload);
     expect(result.valid).toBe(false);
   });
@@ -193,7 +193,7 @@ describe("P37 — 2. Payload validation — forbidden fields", () => {
   test("2.8 payload with hold field fails validation", () => {
     const batch = makeBatchResult();
     const payload = buildMonthlyRevenueConsumerPayload(batch, makePayloadRows());
-    (payload as Record<string, unknown>)["hold"] = true;
+    Object.assign(payload, { hold: true });
     const result = validateMonthlyRevenueConsumerPayload(payload);
     expect(result.valid).toBe(false);
   });
@@ -201,7 +201,7 @@ describe("P37 — 2. Payload validation — forbidden fields", () => {
   test("2.9 payload with winRate field fails validation", () => {
     const batch = makeBatchResult();
     const payload = buildMonthlyRevenueConsumerPayload(batch, makePayloadRows());
-    (payload as Record<string, unknown>)["winRate"] = 0.6;
+    Object.assign(payload, { winRate: 0.6 });
     const result = validateMonthlyRevenueConsumerPayload(payload);
     expect(result.valid).toBe(false);
   });
@@ -210,7 +210,7 @@ describe("P37 — 2. Payload validation — forbidden fields", () => {
     const batch = makeBatchResult();
     const payload = buildMonthlyRevenueConsumerPayload(batch, makePayloadRows());
     // Force mutation for test
-    (payload as Record<string, unknown>)["entersAlphaScore"] = true;
+    Object.assign(payload, { entersAlphaScore: true });
     const result = validateMonthlyRevenueConsumerPayload(payload);
     expect(result.valid).toBe(false);
     expect(result.violations.some((v) => v.includes("entersAlphaScore"))).toBe(true);

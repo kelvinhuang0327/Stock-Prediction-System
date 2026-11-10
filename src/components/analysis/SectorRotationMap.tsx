@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useCallback, useEffect, useState } from 'react';
-import { stockService } from '@/lib/stockService';
+import type { SectorData } from '@/lib/services/SectorAnalysisService';
+import { stockService } from '@/lib/stockService.client';
 import {
     ScatterChart,
     Scatter,
@@ -14,15 +15,9 @@ import {
     ZAxis
 } from 'recharts';
 
-interface SectorRotationData {
+interface SectorRotationData extends SectorData {
     id: string;
-    name: string;
-    changePercent: number;
-    relativeStrength: number;
-    momentum: number;
-    volume?: number;
-    size?: number;
-    topStockId?: string;
+    size: number;
 }
 
 export function SectorRotationMap() {
@@ -33,7 +28,7 @@ export function SectorRotationMap() {
         setLoading(true);
         try {
             const data = await stockService.getSectors();
-            setSectors(data);
+            setSectors(data.map((sector) => ({ ...sector, id: sector.name, size: sector.volume })));
         } catch (err) {
             console.error("Failed to load sector data", err);
         } finally {
@@ -144,7 +139,7 @@ export function SectorRotationMap() {
 
             <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-3">
                 {sectors.slice(0, 4).map((sector) => (
-                    <div key={sector.id} className="bg-muted/50 rounded p-2 text-sm">
+                    <div key={sector.name} className="bg-muted/50 rounded p-2 text-sm">
                         <div className="font-medium">{sector.name}</div>
                         <div className={sector.changePercent >= 0 ? 'text-red-600' : 'text-green-600'}>
                             {sector.changePercent > 0 ? '+' : ''}{sector.changePercent.toFixed(2)}%

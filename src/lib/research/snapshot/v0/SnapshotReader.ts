@@ -189,7 +189,7 @@ export function readSnapshot(
  * Pure function — used in tests and runtime guards.
  */
 export function checkReadoutForbiddenFields(readout: SnapshotReadout): string[] {
-  const keys = Object.keys(readout as Record<string, unknown>);
+  const keys = Object.keys(readout);
   return keys.filter((k) =>
     (SNAPSHOT_FORBIDDEN_FIELDS as readonly string[]).includes(k)
   );

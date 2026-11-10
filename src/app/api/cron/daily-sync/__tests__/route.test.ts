@@ -1,3 +1,5 @@
+export {};
+
 type RuntimeGlobals = typeof globalThis & {
   Request?: unknown;
   Response?: unknown;

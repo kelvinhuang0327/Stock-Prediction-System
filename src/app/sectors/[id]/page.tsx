@@ -4,29 +4,55 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { ArrowLeft, TrendingUp, TrendingDown } from 'lucide-react';
 import Link from 'next/link';
-import { stockService } from '@/lib/stockService';
+import { stockService } from '@/lib/stockService.client';
 import { Stock, SECTORS } from '@/lib/mockData';
+import type { SectorData } from '@/lib/services/SectorAnalysisService';
 
 export default function SectorDetailPage() {
     const params = useParams();
     const sectorId = params.id as string;
 
     const [stocks, setStocks] = useState<Stock[]>([]);
+    const [sector, setSector] = useState<SectorData | null>(null);
     const [loading, setLoading] = useState(true);
 
-    const sector = SECTORS.find(s => s.id === sectorId);
-
     useEffect(() => {
-        const loadStocks = async () => {
+        const loadSector = async () => {
             setLoading(true);
-            const data = await stockService.getStocksBySector(sectorId);
-            setStocks(data.sort((a, b) => b.changePercent - a.changePercent));
-            setLoading(false);
+            try {
+                const staticSector = SECTORS.find((item) => item.id === sectorId);
+                let sectorName = staticSector?.name ?? sectorId;
+                try {
+                    sectorName = decodeURIComponent(sectorName);
+                } catch {
+                    // Keep the route value if it is already decoded or malformed.
+                }
+                const [sectorData, stockData] = await Promise.all([
+                    stockService.getSectors(),
+                    stockService.getStocksBySector(sectorId),
+                ]);
+                const matchedSector = sectorData.find((item) => item.name === sectorName);
+                setSector(matchedSector ?? (staticSector ? {
+                    name: staticSector.name,
+                    changePercent: staticSector.changePercent,
+                    relativeStrength: 50,
+                    momentum: 0,
+                    volume: 0,
+                    stockCount: stockData.length,
+                } : null));
+                setStocks(stockData.sort((a, b) => b.changePercent - a.changePercent));
+            } finally {
+                setLoading(false);
+            }
         };
         if (sectorId) {
-            loadStocks();
+            void loadSector();
         }
     }, [sectorId]);
+
+    if (loading) {
+        return <div className="py-12 text-center text-muted-foreground">載入類股資料中…</div>;
+    }
 
     if (!sector) {
         return (

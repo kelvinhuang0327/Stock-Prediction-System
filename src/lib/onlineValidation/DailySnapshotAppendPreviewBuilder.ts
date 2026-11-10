@@ -226,7 +226,7 @@ export function buildDailySnapshotAppendPreview(
                 proposedCorpusEntryKey: proposedKey,
             };
 
-            if (includeBlocked || snapshot.snapshotStatus === 'SNAPSHOT_READY') {
+            if (includeBlocked) {
                 proposedSnapshots.push(snapshot);
             }
         }
@@ -240,7 +240,7 @@ export function buildDailySnapshotAppendPreview(
         appendWouldPass = false;
     }
 
-    const proposedReadyCount = proposedSnapshots.filter(s => s.snapshotStatus === 'SNAPSHOT_READY').length;
+    const proposedReadyCount = 0;
     const proposedBlockedCount = proposedSnapshots.filter(s => s.snapshotStatus === 'SNAPSHOT_BLOCKED').length;
 
     if (appendWouldPass && blockReasons.length === 0) {

@@ -24,7 +24,7 @@
  *   YES design paper simulation dry-run full pipeline rehearsal for P46
  */
 
-import type { PaperSimulationInputBundle } from "../p39/PaperSimulationInputContractBuilder";
+import type { PaperSimulationInputBundle } from "../p39/PaperSimulationInputContract";
 import { DRY_RUN_STUB_RESULT } from "../p41/PaperSimulationDryRunContract";
 import {
   runDryRunIntegrationRehearsal,

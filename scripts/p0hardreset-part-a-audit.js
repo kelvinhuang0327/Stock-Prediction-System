@@ -11,7 +11,7 @@
 
 'use strict';
 
-const { PrismaClient } = require('@prisma/client');
+const { createPrismaClient } = require('../src/lib/prismaClientFactory.cjs');
 const fs = require('fs');
 const path = require('path');
 
@@ -49,7 +49,7 @@ function addTwseTradingDays(startDate, n) {
 }
 
 async function main() {
-  const p = new PrismaClient({ log: [] });
+  const p = createPrismaClient({ log: [] });
   
   try {
     // A.1 stockQuote coverage

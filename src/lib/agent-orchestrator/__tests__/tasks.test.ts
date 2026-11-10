@@ -27,7 +27,7 @@ describe('tasks exported functions', () => {
       const input = {
         objective: 'My Objective',
         promptMarkdown: 'md',
-        contract: { version: '1.0', objective: 'o', scope: [], constraints: [], acceptance_tests: [], required_outputs: [], forbidden_changes: [], handoff_questions: [] },
+        contract: { version: '1.0' as const, objective: 'o', scope: [], constraints: [], acceptance_tests: [], required_outputs: [], forbidden_changes: [], handoff_questions: [] },
         plannerContext: null,
         plannerProvider: 'codex' as const,
         workerProvider: 'codex' as const,

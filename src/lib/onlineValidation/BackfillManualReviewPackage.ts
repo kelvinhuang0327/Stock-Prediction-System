@@ -264,7 +264,8 @@ export function validateBackfillManualReviewPackage(
     const messages: string[] = [];
     let status: 'PASS' | 'WARN' | 'FAIL' = 'PASS';
 
-    if (pkg.reviewStatus === 'PRODUCTION_READY') {
+    const reviewStatus: string = pkg.reviewStatus;
+    if (reviewStatus === 'PRODUCTION_READY') {
         messages.push('FAIL: reviewStatus must not be PRODUCTION_READY');
         status = 'FAIL';
     }

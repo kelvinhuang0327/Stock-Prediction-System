@@ -4,7 +4,7 @@ import type { Stock } from '@/lib/mockData';
 
 const mockFilterStocks = jest.fn();
 
-jest.mock('@/lib/stockService', () => ({
+jest.mock('@/lib/stockService.client', () => ({
   stockService: { filterStocks: (...args: unknown[]) => mockFilterStocks(...args) },
 }));
 
@@ -114,6 +114,6 @@ describe('ScreenerPage', () => {
 
     expect(createObjectURL).toHaveBeenCalledWith(expect.any(Blob));
     expect(click).toHaveBeenCalled();
-    expect((click.mock.instances[0] as HTMLAnchorElement).download).toMatch(/^stock-screener-\d{4}-\d{2}-\d{2}\.csv$/);
+    expect((click.mock.contexts[0] as HTMLAnchorElement).download).toMatch(/^stock-screener-\d{4}-\d{2}-\d{2}\.csv$/);
   });
 });

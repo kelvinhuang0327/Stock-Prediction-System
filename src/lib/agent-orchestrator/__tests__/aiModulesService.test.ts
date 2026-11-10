@@ -7,18 +7,10 @@ describe('aiModulesService.buildPolicyBlockedWorkerOutput', () => {
     const input: WorkerExecutionInput = {
       workerProvider: 'copilot',
       taskId: 1,
-      completedPath: '/tmp/c.md',
-      resultPath: '/tmp/r.json',
-      contract: {
-        version: '1.0',
-        objective: 'test',
-        scope: [],
-        constraints: [],
-        acceptance_tests: [],
-        required_outputs: [],
-        forbidden_changes: [],
-        handoff_questions: [],
-      },
+      promptPath: '/tmp/p.md',
+      contractPath: '/tmp/contract.json',
+      objective: 'test',
+      profile: {} as WorkerExecutionInput['profile'],
     };
     const out = buildPolicyBlockedWorkerOutput(input, 'PROVIDER_NOT_IN_ALLOWLIST');
 
@@ -26,5 +18,11 @@ describe('aiModulesService.buildPolicyBlockedWorkerOutput', () => {
     expect(out.runtimeErrorMessage).toBe(getPolicySkipMessage('PROVIDER_NOT_IN_ALLOWLIST'));
     expect(out.acceptanceResults[0].passed).toBe(false);
     expect(out.errorMarkersHit).toContain('execution_policy_block');
+  });
+
+  it('keeps the Codex worker disabled reason distinct', () => {
+    expect(getPolicySkipMessage('CODEX_WORKER_NOT_ENABLED')).toBe(
+      'CODEX_WORKER_NOT_ENABLED — skip execution',
+    );
   });
 });

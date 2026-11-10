@@ -27,6 +27,42 @@ import {
   detectMixedSignal,
   CORPUS_REASON_RENDERER_VERSION,
 } from '../P26ACorpusReasonRenderer';
+import {
+  ACTIVE_SCORING_BUILDER_VERSION,
+  ACTIVE_SCORING_ENGINE_SOURCE,
+  ACTIVE_SCORING_MODE,
+  type ActiveScoringSnapshot,
+} from '../ActiveScoringSnapshotBuilder';
+
+type SnapshotSeed = Pick<
+  ActiveScoringSnapshot,
+  'symbol' | 'asOfDate' | 'researchBucket' | 'alphaScore' | 'reasonSnapshot' | 'factorSnapshot' | 'scoreSnapshot'
+>;
+
+function makeRendererSnapshot<T extends SnapshotSeed>(seed: T): ActiveScoringSnapshot {
+  return {
+    builderVersion: ACTIVE_SCORING_BUILDER_VERSION,
+    symbol: seed.symbol,
+    asOfDate: seed.asOfDate,
+    scoringMode: ACTIVE_SCORING_MODE,
+    scoringEngineSource: ACTIVE_SCORING_ENGINE_SOURCE,
+    researchBucket: seed.researchBucket,
+    alphaScore: seed.alphaScore,
+    scoreSnapshot: seed.scoreSnapshot,
+    signalSnapshot: [],
+    factorSnapshot: seed.factorSnapshot,
+    reasonSnapshot: seed.reasonSnapshot,
+    limitations: [],
+    dataCoverage: 'limited',
+    dataPoints: 0,
+    usedSources: [],
+    missingSources: [],
+    pitGateDate: seed.asOfDate,
+    scoringAvailable: true,
+    completenessStatus: 'PARTIAL',
+    scoringNote: 'Renderer test fixture',
+  };
+}
 
 // ─── Fixture factory ──────────────────────────────────────────────────────────
 
@@ -41,7 +77,6 @@ function makeCorpusRow(
   return {
     symbol,
     originalAsOfDate: '2025-10-01',
-    horizonDays: 20,
     researchBucket: bucket,
     outcomeSnapshot: { horizonDays: 20, returnPct: null },
     scoringCompletenessStatus: 'COMPLETE',
@@ -359,7 +394,7 @@ describe('P28D PART D: P3/P19 corpus regression sweep', () => {
   function parseCorpus(filePath: string) {
     const raw = fs.readFileSync(filePath, 'utf-8');
     const lines = raw.trim().split('\n').filter(l => l.trim().length > 0);
-    return { lines, count: lines.count ?? lines.length };
+    return { lines, count: lines.length };
   }
 
   type SweepResult = {
@@ -437,21 +472,22 @@ describe('P28D PART D: P3/P19 corpus regression sweep', () => {
           // The renderer (renderReasonFromCorpusSnapshot) does NOT receive returnPct
           // Verify: renderer input has no returnPct
           const snap = row.activeScoringSnapshot;
-          const rendererInput = {
+          const rendererInput = makeRendererSnapshot({
             reasonSnapshot: snap?.reasonSnapshot ?? '',
             factorSnapshot: snap?.factorSnapshot ?? [],
             alphaScore: snap?.alphaScore ?? 0,
             researchBucket: snap?.researchBucket ?? '',
             symbol: row.symbol,
             asOfDate: row.originalAsOfDate,
-            horizonDays: row.outcomeSnapshot.horizonDays,
-            usedSources: snap?.usedSources ?? [],
-            missingSources: snap?.missingSources ?? [],
-            completenessStatus: row.scoringCompletenessStatus ?? 'UNKNOWN',
-            scoreSnapshot: wc.scoreSnapshot ?? { technicalScore: 0, chipScore: 0, momentumScore: 0, revenueScore: 0 },
-            signalTags: [],
-            stableHashKey: '',
-          };
+            scoreSnapshot: {
+              technicalScore: wc.scoreSnapshot?.technicalScore ?? 0,
+              chipScore: wc.scoreSnapshot?.chipScore ?? 0,
+              researchScore: snap?.alphaScore ?? 0,
+              confidenceScore: 0,
+              fundamentalScore: 0,
+              marketAdjustment: 0,
+            },
+          });
           // returnPct is NOT in rendererInput → no leakage
           // If returnPct somehow in rendererInput, flag it
           if ('returnPct' in rendererInput) {
@@ -464,25 +500,26 @@ describe('P28D PART D: P3/P19 corpus regression sweep', () => {
         if (!snap) continue;
 
         const wc = corpusRowToWalkthroughCaseInput(row);
-        const rendererInput = {
+        const rendererInput = makeRendererSnapshot({
           reasonSnapshot: snap.reasonSnapshot ?? '',
           factorSnapshot: snap.factorSnapshot ?? [],
           alphaScore: snap.alphaScore ?? 0,
           researchBucket: snap.researchBucket ?? '',
           symbol: row.symbol,
           asOfDate: row.originalAsOfDate,
-          horizonDays: row.outcomeSnapshot.horizonDays,
-          usedSources: snap.usedSources ?? [],
-          missingSources: snap.missingSources ?? [],
-          completenessStatus: row.scoringCompletenessStatus ?? 'UNKNOWN',
-          scoreSnapshot: wc.scoreSnapshot ?? { technicalScore: 0, chipScore: 0, momentumScore: 0, revenueScore: 0 },
-          signalTags: [],
-          stableHashKey: '',
-        };
+          scoreSnapshot: {
+            technicalScore: wc.scoreSnapshot?.technicalScore ?? 0,
+            chipScore: wc.scoreSnapshot?.chipScore ?? 0,
+            researchScore: snap.alphaScore ?? 0,
+            confidenceScore: 0,
+            fundamentalScore: 0,
+            marketAdjustment: 0,
+          },
+        });
 
         let rendered: ReturnType<typeof renderReasonFromCorpusSnapshot>;
         try {
-          rendered = renderReasonFromCorpusSnapshot(rendererInput as Parameters<typeof renderReasonFromCorpusSnapshot>[0]);
+          rendered = renderReasonFromCorpusSnapshot(rendererInput);
         } catch {
           rendererErrorCount++;
           continue;
@@ -503,7 +540,7 @@ describe('P28D PART D: P3/P19 corpus regression sweep', () => {
         // Determinism check: same input → same output
         if (determinismSample === null) {
           determinismSample = rendered.renderedText;
-          const rendered2 = renderReasonFromCorpusSnapshot(rendererInput as Parameters<typeof renderReasonFromCorpusSnapshot>[0]);
+          const rendered2 = renderReasonFromCorpusSnapshot(rendererInput);
           determinismSampleRepeat = rendered2.renderedText;
         }
       }

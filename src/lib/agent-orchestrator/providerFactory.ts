@@ -56,6 +56,7 @@ export function getEffectiveWorkerAllowlist(): ReadonlyArray<string> {
 export function resolveProviderForRole(role: 'planner', requestedProvider: PlannerProvider): ProviderResolution;
 export function resolveProviderForRole(role: 'worker' | 'ai_service', requestedProvider: WorkerProvider): ProviderResolution;
 export function resolveProviderForRole(role: 'cto_review', requestedProvider?: string | null): ProviderResolution;
+export function resolveProviderForRole(role: ProviderRole, requestedProvider?: string | null): ProviderResolution;
 export function resolveProviderForRole(role: ProviderRole, requestedProvider: string | null = null): ProviderResolution {
   const normalized = requestedProvider ?? '';
 
