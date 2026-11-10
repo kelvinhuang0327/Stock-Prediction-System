@@ -41,7 +41,7 @@ export function StockTabs({ symbol, historicalData }: { symbol: string, historic
             <TabsContent value="overview" className="space-y-6 mt-6">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div className="lg:col-span-2">
-                        <StockChart symbol={symbol} />
+                        <StockChart />
                     </div>
                     <div className="space-y-6">
                         {/* Quick Technical Summary */}

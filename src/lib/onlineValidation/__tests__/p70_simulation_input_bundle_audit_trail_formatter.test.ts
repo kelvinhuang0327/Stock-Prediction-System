@@ -36,13 +36,13 @@ import {
   SIMULATION_INPUT_BUNDLE_AUDIT_TRAIL_FORMATTER_GOVERNANCE,
   formatSimulationInputBundleAuditTrail,
   validateSimulationInputBundleAuditTrailForFormatting,
-  type SimulationInputBundleAuditTrail,
   type SimulationInputBundleAuditTrailFormatterResponse,
 } from "../p70/SimulationInputBundleAuditTrailFormatter";
 
 import {
   buildSimulationInputBundleAuditTrail,
 } from "../p69/SimulationInputBundleAuditTrail";
+import type { SimulationInputBundleAuditTrail } from "../p69/SimulationInputBundleAuditTrail";
 
 import {
   buildSimulationInputBundlePreview,

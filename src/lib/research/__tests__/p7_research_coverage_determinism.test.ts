@@ -272,7 +272,7 @@ describe('P7.4 — Governance and anti-advice invariants', () => {
   it('P7.T4.1 — no coverage item has an alphaScore field', () => {
     const report = buildResearchGapsReport(makeInput());
     for (const item of report.items) {
-      expect((item as Record<string, unknown>)['alphaScore']).toBeUndefined();
+      expect(Object.hasOwn(item, 'alphaScore')).toBe(false);
     }
   });
 

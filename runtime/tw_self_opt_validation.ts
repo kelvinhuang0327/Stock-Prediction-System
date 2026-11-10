@@ -2,17 +2,19 @@ const fs = require('fs');
 const path = require('path');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
-const { updateOrchestratorScheduler } = require('../src/lib/agent-orchestrator/service');
-const { getLlmPolicyState } = require('../src/lib/agent-orchestrator/llmExecutionPolicy');
-const {
+import { updateOrchestratorScheduler } from '../src/lib/agent-orchestrator/service';
+import { getLlmPolicyState } from '../src/lib/agent-orchestrator/llmExecutionPolicy';
+import {
   runTrainingTaiwanOptimizationMiner,
   runTrainingTaiwanWorkerCycle,
   runTrainingTaiwanInsightIngest,
   runTrainingTaiwanWeeklyDeepResearch,
   runTrainingTaiwanSelfAudit,
-} = require('../src/lib/jobs/autonomousJobRunners');
-const { loadProjectProfile } = require('../src/lib/agent-orchestrator/profile');
-const { loadSchedulerState, loadTaskIndex } = require('../src/lib/agent-orchestrator/storage');
+} from '../src/lib/jobs/autonomousJobRunners';
+import { loadProjectProfile } from '../src/lib/agent-orchestrator/profile';
+import { loadSchedulerState, loadTaskIndex } from '../src/lib/agent-orchestrator/storage';
+import type { JobExecutionResult } from '../src/lib/jobs/types';
+import type { TaskRecord } from '../src/lib/agent-orchestrator/types';
 
 const eventLogPath = path.join(process.cwd(), 'runtime/agent_orchestrator/llm_execution_events.jsonl');
 const schedulerStatePath = path.join(process.cwd(), 'runtime/agent_orchestrator/scheduler_state.json');
@@ -23,20 +25,20 @@ function eventCount() {
   return raw ? raw.split(/\n+/).filter(Boolean).length : 0;
 }
 
-function artifactExists(filePath) {
+function artifactExists(filePath: string | null | undefined) {
   if (!filePath) return false;
   const absolute = path.isAbsolute(filePath) ? filePath : path.join(process.cwd(), filePath);
   return fs.existsSync(absolute);
 }
 
-async function latestRun(jobName, id) {
-  if (id) {
+async function latestRun(jobName: string, id?: number) {
+  if (id !== undefined) {
     return prisma.jobRunLog.findUnique({ where: { id } });
   }
   return prisma.jobRunLog.findFirst({ where: { jobName }, orderBy: { createdAt: 'desc' } });
 }
 
-async function summarize(execResult) {
+async function summarize(execResult: JobExecutionResult<unknown>) {
   const row = await latestRun(execResult.jobRun.jobName, execResult.jobRun.id);
   return {
     result: {
@@ -104,9 +106,12 @@ async function main() {
   await updateOrchestratorScheduler(true);
   const { paths } = await loadSchedulerState(profile);
   const taskIndexBefore = await loadTaskIndex(paths);
-  const maxTaskIdBefore = taskIndexBefore.tasks.reduce((max, task) => Math.max(max, task.taskId || 0), 0);
+  const maxTaskIdBefore = taskIndexBefore.tasks.reduce(
+    (max: number, task: TaskRecord) => Math.max(max, task.taskId || 0),
+    0,
+  );
 
-  const manual = {};
+  const manual: Record<string, Awaited<ReturnType<typeof summarize>>> = {};
   manual.workerCycle = await summarize(await runTrainingTaiwanWorkerCycle({
     triggerSource: 'local_scheduler',
     scheduledFor: new Date('2026-04-30T08:55:00.000Z'),

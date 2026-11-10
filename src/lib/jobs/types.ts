@@ -137,6 +137,7 @@ export type AutonomousJobName =
   | 'training:tw-optimization-miner'
   | 'training:tw-worker-cycle'
   | 'training:tw-insight-ingest'
+  | 'training:tw-q1-financial-ingest-check'
   | 'training:tw-weekly-deep-research'
   | 'training:tw-self-audit';
 

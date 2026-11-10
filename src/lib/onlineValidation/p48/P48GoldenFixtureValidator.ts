@@ -250,10 +250,9 @@ export function validateAgainstGoldenFixture(
 
   // ── Forbidden fields ──────────────────────────────────────────────────────
 
-  const rec = artifact as Record<string, unknown>;
   for (const field of fixture.forbiddenFields) {
     checked.push(`forbidden:${field}`);
-    if (rec[field] !== undefined) {
+    if (Object.hasOwn(artifact, field)) {
       violations.push(`forbidden field present: "${field}"`);
     }
   }

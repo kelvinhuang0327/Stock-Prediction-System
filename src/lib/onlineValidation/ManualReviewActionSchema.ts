@@ -232,7 +232,7 @@ export function validateManualReviewActionSchema(
         }
     }
 
-    const requiredDisabled = [
+    const requiredDisabled: ManualReviewActionId[] = [
         'APPROVE_PRODUCTION_BACKFILL',
         'APPROVE_CORPUS_WRITE',
         'APPROVE_OPTIMIZER',

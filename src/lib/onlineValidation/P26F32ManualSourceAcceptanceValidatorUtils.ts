@@ -179,7 +179,7 @@ export function classifyManualSourceAcceptance(rows: AcceptedManualRevenueRow[])
 export function validateAcceptedRowsNoOutcomeFields(rows: AcceptedManualRevenueRow[]): { pass: boolean; violations: string[] } {
   const violations: string[] = [];
   for (const r of rows) {
-    const forbidden = P26F3_2_FORBIDDEN_FIELDS.filter(f => f in r && (r as Record<string,unknown>)[f] != null);
+    const forbidden = P26F3_2_FORBIDDEN_FIELDS.filter(f => Object.hasOwn(r, f) && Reflect.get(r, f) != null);
     if (forbidden.length > 0) violations.push(`Row ${r.stockId}:${r.year}:${r.month} has forbidden fields: ${forbidden.join(", ")}`);
   }
   return { pass: violations.length === 0, violations };

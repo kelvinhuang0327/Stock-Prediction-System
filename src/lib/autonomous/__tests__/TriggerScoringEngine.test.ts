@@ -255,7 +255,7 @@ describe('TriggerScoringEngine', () => {
       declining[24] = { ...declining[24], close: 90, volume: 0 };
       const event = scoreTriggerReadiness(
         makeProposal({ setupType: 'event' }), declining,
-        makeSnapshot({ marketState: 'defensive', dataCoverage: 'none', riskSignals: [] }),
+        makeSnapshot({ marketState: 'defensive', dataCoverage: 'insufficient', riskSignals: [] }),
       );
       expect(event.components.find((component) => component.name === 'risk_signals_present')?.met).toBe(false);
       expect(event.components.find((component) => component.name === 'not_deeply_negative')?.met).toBe(false);
@@ -263,7 +263,7 @@ describe('TriggerScoringEngine', () => {
 
       const fundamental = scoreTriggerReadiness(
         makeProposal({ setupType: 'fundamental', conviction: 'low' }), declining,
-        makeSnapshot({ dataCoverage: 'none' }),
+        makeSnapshot({ dataCoverage: 'insufficient' }),
       );
       expect(fundamental.components.find((component) => component.name === 'high_conviction')?.score).toBe(0);
       expect(fundamental.components.find((component) => component.name === 'data_coverage_full')?.score).toBe(0);

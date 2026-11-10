@@ -40,6 +40,8 @@ function emptyBundle(): IngestedEventBundle {
     events: [],
     rawCount: 0,
     dedupedCount: 0,
+    rssCount: 0,
+    mockCount: 0,
     sourceBreakdown: {},
     trustLevelSummary: {
       official: 0,

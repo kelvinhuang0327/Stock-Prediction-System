@@ -39,7 +39,7 @@ export function mapSourceToSimulationInputReadiness(
   facts: SourceReadinessFacts
 ): SimulationInputReadinessEntry {
   // Guard: check for forbidden fields in input object (runtime safety)
-  const inputKeys = Object.keys(facts as Record<string, unknown>);
+  const inputKeys = Object.keys(facts);
   const foundForbidden = inputKeys.filter((k) =>
     (SIMULATION_INPUT_FORBIDDEN_FIELDS as readonly string[]).includes(k)
   );

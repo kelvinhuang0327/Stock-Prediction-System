@@ -373,7 +373,8 @@ export function validateManualReviewWorkflowBinding(
     const messages: string[] = [];
     let status: 'PASS' | 'WARN' | 'FAIL' = 'PASS';
 
-    if (binding.workflowStatus === 'PRODUCTION_READY' || binding.workflowStatus === 'APPROVED') {
+    const workflowStatus: string = binding.workflowStatus;
+    if (workflowStatus === 'PRODUCTION_READY' || workflowStatus === 'APPROVED') {
         messages.push('FAIL: workflowStatus must not be production-ready or approved');
         status = 'FAIL';
     }

@@ -174,7 +174,6 @@ export class RecommendationTrendService {
         limit: 500,
         offset: 0,
       },
-      now,
     );
 
     const buckets = createEmptyBuckets(windowStart, bucketCount, bucketSizeDays, bucket);

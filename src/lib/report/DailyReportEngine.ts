@@ -33,6 +33,7 @@ import {
 } from '@/lib/signals/SignalEffectivenessEngine';
 import { buildAllSignalHistories } from '@/lib/signals/SignalHistoryBuilder';
 import type { SignalEffectivenessSummary } from '@/lib/signals/types';
+import type { FullFundamentalComparisonMatrix } from '@/lib/fundamental/FullFundamentalComparisonMatrixBuilder';
 
 // ─── Types ───────────────────────────────────────────────────────
 
@@ -51,6 +52,26 @@ export interface DailyReport {
   comparison: DailyComparison | null;
   disclaimer: string;
   last_updated: string;
+}
+
+export interface FundamentalObservationItem {
+  symbol: string;
+  name: string;
+  riskLevel: 'low' | 'elevated';
+  summary: string;
+  strengths: string[];
+  pressures: string[];
+}
+
+export interface FundamentalObservationSummary {
+  summary: string;
+  dataCoverage: 'full' | 'limited' | 'insufficient';
+  matrixSections: FullFundamentalComparisonMatrix['sections'];
+  strongItems: FundamentalObservationItem[];
+  pressureItems: FundamentalObservationItem[];
+  cashflowPressureItems: FundamentalObservationItem[];
+  capitalEfficiencyItems: FundamentalObservationItem[];
+  limitations: string[];
 }
 
 export interface EventSummary {

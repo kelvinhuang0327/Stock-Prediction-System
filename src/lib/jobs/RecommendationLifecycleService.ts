@@ -104,7 +104,6 @@ export class RecommendationLifecycleService {
         limit,
         offset: 0,
       },
-      now,
     );
 
     if (filter.recommendationKey) {
@@ -121,7 +120,6 @@ export class RecommendationLifecycleService {
             limit: 500,
             offset: 0,
           },
-          now,
         );
         rows = allRows.filter((row) => row.recommendationKey === filter.recommendationKey);
       }

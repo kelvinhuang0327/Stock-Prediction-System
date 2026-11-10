@@ -21,12 +21,12 @@ export interface RawFinancialReport {
   fiscalYear?: number | string;
   fiscalQuarter?: string;
   reportType?: string;
-  periodStartDate?: string;
-  periodEndDate?: string;
-  filingDate?: string;
-  announcementDate?: string;
-  publishedAt?: string;
-  availableAt?: string;
+  periodStartDate?: string | null;
+  periodEndDate?: string | null;
+  filingDate?: string | null;
+  announcementDate?: string | null;
+  publishedAt?: string | null;
+  availableAt?: string | null;
   source?: string;
   sourceHash?: string;
   ingestedAt?: string;

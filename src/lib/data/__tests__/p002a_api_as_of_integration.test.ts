@@ -79,23 +79,23 @@ describe('P0-02A: API as-of gate integration', () => {
 
     it('B2: converts YYYY-MM-DD to YYYYMMDD correctly', () => {
       const clause = buildAsOfWhereClause('StockQuote', '2024-01-15');
-      expect(clause.prismaWhere.date.lte).toBe('20240115');
+      expect(clause.prismaWhere.date!.lte).toBe('20240115');
     });
 
     it('B3: prismaWhere enforces <= asOfDate (not <)', () => {
       const clause = buildAsOfWhereClause('StockQuote', VALID_DATE);
-      expect(clause.prismaWhere.date).toHaveProperty('lte');
-      expect(clause.prismaWhere.date).not.toHaveProperty('lt');
+      expect(clause.prismaWhere.date!).toHaveProperty('lte');
+      expect(clause.prismaWhere.date!).not.toHaveProperty('lt');
     });
 
     it('B4: no gte in prismaWhere (only upper bound)', () => {
       const clause = buildAsOfWhereClause('MarketIndex', VALID_DATE);
-      expect(clause.prismaWhere.date).not.toHaveProperty('gte');
+      expect(clause.prismaWhere.date!).not.toHaveProperty('gte');
     });
 
     it('B5: future date produces future lte (gate allows explicit future asOf)', () => {
       const clause = buildAsOfWhereClause('InstitutionalChip', FUTURE_DATE);
-      expect(clause.prismaWhere.date.lte).toBe('20261231');
+      expect(clause.prismaWhere.date!.lte).toBe('20261231');
     });
 
     it('B6: tableName is preserved in return value', () => {
@@ -120,7 +120,7 @@ describe('P0-02A: API as-of gate integration', () => {
       expect(asOfDateDb).toBe('20260501');
       // Verify this matches what buildAsOfWhereClause produces
       const clause = buildAsOfWhereClause('StockQuote', '2026-05-01');
-      expect(clause.prismaWhere.date.lte).toBe(asOfDateDb);
+      expect(clause.prismaWhere.date!.lte).toBe(asOfDateDb);
     });
 
     it('C3: future rows are excluded when asOfDateDb is set', () => {
@@ -239,7 +239,7 @@ describe('P0-02A: API as-of gate integration', () => {
   describe('P0-01 regression preserved', () => {
     it('R1: InvalidAsOfDateError is exported from AsOfDataGate', () => {
       expect(InvalidAsOfDateError).toBeDefined();
-      const err = new InvalidAsOfDateError('test', 'bad');
+      const err = new InvalidAsOfDateError('bad');
       expect(err).toBeInstanceOf(Error);
       expect(err).toBeInstanceOf(InvalidAsOfDateError);
     });
@@ -251,8 +251,8 @@ describe('P0-02A: API as-of gate integration', () => {
     });
 
     it('R3: buildAsOfWhereClause strips hyphens to get YYYYMMDD in prismaWhere', () => {
-      expect(buildAsOfWhereClause('StockQuote', '2026-01-01').prismaWhere.date.lte).toBe('20260101');
-      expect(buildAsOfWhereClause('MarketIndex', '2024-12-25').prismaWhere.date.lte).toBe('20241225');
+      expect(buildAsOfWhereClause('StockQuote', '2026-01-01').prismaWhere.date!.lte).toBe('20260101');
+      expect(buildAsOfWhereClause('MarketIndex', '2024-12-25').prismaWhere.date!.lte).toBe('20241225');
     });
   });
 });

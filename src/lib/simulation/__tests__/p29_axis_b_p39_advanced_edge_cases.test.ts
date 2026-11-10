@@ -134,7 +134,7 @@ describe("P29 — Group 27: notSimulationExecution/notOptimizer/paperOnly/dryRun
   it("T27.1 — notSimulationExecution=false → valid=false; error mentions 'notSimulationExecution'", () => {
     const bundle = buildDefaultPaperSimulationInputBundle({ asOfDate: FIXED_DATE_B });
     const tampered: Record<string, unknown> = {
-      ...(bundle as Record<string, unknown>),
+      ...bundle,
       notSimulationExecution: false,
     };
     const result = validatePaperSimulationInputBundle(tampered);
@@ -145,7 +145,7 @@ describe("P29 — Group 27: notSimulationExecution/notOptimizer/paperOnly/dryRun
   it("T27.2 — notOptimizer=false → valid=false; error mentions 'notOptimizer'", () => {
     const bundle = buildDefaultPaperSimulationInputBundle({ asOfDate: FIXED_DATE_B });
     const tampered: Record<string, unknown> = {
-      ...(bundle as Record<string, unknown>),
+      ...bundle,
       notOptimizer: false,
     };
     const result = validatePaperSimulationInputBundle(tampered);
@@ -156,7 +156,7 @@ describe("P29 — Group 27: notSimulationExecution/notOptimizer/paperOnly/dryRun
   it("T27.3 — paperOnly=false at bundle root → valid=false; error mentions 'paperOnly'", () => {
     const bundle = buildDefaultPaperSimulationInputBundle({ asOfDate: FIXED_DATE_B });
     const tampered: Record<string, unknown> = {
-      ...(bundle as Record<string, unknown>),
+      ...bundle,
       paperOnly: false,
     };
     const result = validatePaperSimulationInputBundle(tampered);
@@ -167,7 +167,7 @@ describe("P29 — Group 27: notSimulationExecution/notOptimizer/paperOnly/dryRun
   it("T27.4 — dryRunOnly=false → valid=false; error mentions 'dryRunOnly'", () => {
     const bundle = buildDefaultPaperSimulationInputBundle({ asOfDate: FIXED_DATE_B });
     const tampered: Record<string, unknown> = {
-      ...(bundle as Record<string, unknown>),
+      ...bundle,
       dryRunOnly: false,
     };
     const result = validatePaperSimulationInputBundle(tampered);
@@ -178,7 +178,7 @@ describe("P29 — Group 27: notSimulationExecution/notOptimizer/paperOnly/dryRun
   it("T27.5 — notSimulationExecution=false + notOptimizer=false + dryRunOnly=false → errors.length >= 3", () => {
     const bundle = buildDefaultPaperSimulationInputBundle({ asOfDate: FIXED_DATE_B });
     const tampered: Record<string, unknown> = {
-      ...(bundle as Record<string, unknown>),
+      ...bundle,
       notSimulationExecution: false,
       notOptimizer: false,
       dryRunOnly: false,
@@ -208,7 +208,7 @@ describe("P29 — Group 28: blocked source names in eligibleSources rejection", 
       payloadSummary: "fixture-only — governance test for blocked-source injection",
     };
     const tampered: Record<string, unknown> = {
-      ...(bundle as Record<string, unknown>),
+      ...bundle,
       eligibleSources: [fakeEntry],
     };
     const result = validatePaperSimulationInputBundle(tampered);
@@ -230,7 +230,7 @@ describe("P29 — Group 28: blocked source names in eligibleSources rejection", 
       payloadSummary: "fixture-only — governance test for blocked-source injection",
     };
     const tampered: Record<string, unknown> = {
-      ...(bundle as Record<string, unknown>),
+      ...bundle,
       eligibleSources: [fakeEntry],
     };
     const result = validatePaperSimulationInputBundle(tampered);
@@ -252,7 +252,7 @@ describe("P29 — Group 28: blocked source names in eligibleSources rejection", 
       payloadSummary: "fixture-only — governance test for blocked-source injection",
     };
     const tampered: Record<string, unknown> = {
-      ...(bundle as Record<string, unknown>),
+      ...bundle,
       eligibleSources: [fakeEntry],
     };
     const result = validatePaperSimulationInputBundle(tampered);
@@ -274,7 +274,7 @@ describe("P29 — Group 28: blocked source names in eligibleSources rejection", 
       payloadSummary: "fixture-only — governance test for blocked-source injection",
     });
     const tampered: Record<string, unknown> = {
-      ...(bundle as Record<string, unknown>),
+      ...bundle,
       eligibleSources: [
         makeEntry("NewsEvent"),
         makeEntry("FinancialReport"),
@@ -300,7 +300,7 @@ describe("P29 — Group 28: blocked source names in eligibleSources rejection", 
       payloadSummary: "fixture-only — governance test",
     };
     const tampered: Record<string, unknown> = {
-      ...(bundle as Record<string, unknown>),
+      ...bundle,
       eligibleSources: [fakeEntry],
     };
     const result = validatePaperSimulationInputBundle(tampered);
@@ -332,7 +332,7 @@ describe("P29 — Group 29: warnings array stability and result shape invariants
   it("T29.3 — invalid bundle (mode tampered) → warnings is still an array (not undefined)", () => {
     const bundle = buildDefaultPaperSimulationInputBundle({ asOfDate: FIXED_DATE_B });
     const tampered: Record<string, unknown> = {
-      ...(bundle as Record<string, unknown>),
+      ...bundle,
       mode: "bad-mode",
     };
     const result = validatePaperSimulationInputBundle(tampered);
@@ -364,7 +364,7 @@ describe("P29 — Group 30: null/undefined governance flag tamper", () => {
   it("T30.1 — paperOnly=null → valid=false; error mentions 'paperOnly'", () => {
     const bundle = buildDefaultPaperSimulationInputBundle({ asOfDate: FIXED_DATE_B });
     const tampered: Record<string, unknown> = {
-      ...(bundle as Record<string, unknown>),
+      ...bundle,
       paperOnly: null,
     };
     const result = validatePaperSimulationInputBundle(tampered);
@@ -375,7 +375,7 @@ describe("P29 — Group 30: null/undefined governance flag tamper", () => {
   it("T30.2 — dryRunOnly=null → valid=false; error mentions 'dryRunOnly'", () => {
     const bundle = buildDefaultPaperSimulationInputBundle({ asOfDate: FIXED_DATE_B });
     const tampered: Record<string, unknown> = {
-      ...(bundle as Record<string, unknown>),
+      ...bundle,
       dryRunOnly: null,
     };
     const result = validatePaperSimulationInputBundle(tampered);
@@ -386,7 +386,7 @@ describe("P29 — Group 30: null/undefined governance flag tamper", () => {
   it("T30.3 — noInvestmentAdvice=null → valid=false; error mentions 'noInvestmentAdvice'", () => {
     const bundle = buildDefaultPaperSimulationInputBundle({ asOfDate: FIXED_DATE_B });
     const tampered: Record<string, unknown> = {
-      ...(bundle as Record<string, unknown>),
+      ...bundle,
       noInvestmentAdvice: null,
     };
     const result = validatePaperSimulationInputBundle(tampered);
@@ -397,7 +397,7 @@ describe("P29 — Group 30: null/undefined governance flag tamper", () => {
   it("T30.4 — noBuySellActionSemantics=undefined → valid=false; error mentions 'noBuySellActionSemantics'", () => {
     const bundle = buildDefaultPaperSimulationInputBundle({ asOfDate: FIXED_DATE_B });
     const tampered: Record<string, unknown> = {
-      ...(bundle as Record<string, unknown>),
+      ...bundle,
       noBuySellActionSemantics: undefined,
     };
     const result = validatePaperSimulationInputBundle(tampered);
@@ -408,7 +408,7 @@ describe("P29 — Group 30: null/undefined governance flag tamper", () => {
   it("T30.5 — entersAlphaScore=null → valid=false; error mentions 'entersAlphaScore'", () => {
     const bundle = buildDefaultPaperSimulationInputBundle({ asOfDate: FIXED_DATE_B });
     const tampered: Record<string, unknown> = {
-      ...(bundle as Record<string, unknown>),
+      ...bundle,
       entersAlphaScore: null,
     };
     const result = validatePaperSimulationInputBundle(tampered);

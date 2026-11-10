@@ -100,7 +100,7 @@ export function validateReleaseDateCandidateNoOutcomeFields(
   const violations: string[] = [];
   const forbidden = ["outcomePrice", "returnPct", "realizedReturnClass"];
   for (const f of forbidden) {
-    if (f in (candidate as Record<string, unknown>)) {
+    if (Object.hasOwn(candidate, f)) {
       violations.push(`Forbidden outcome field found: ${f}`);
     }
   }
@@ -136,7 +136,7 @@ export function summarizeReleaseDatePopulationBatch(candidates: ReleaseDateCandi
   const allDryRunOnly = candidates.every((c) => c.dryRunOnly === true);
   const allProductionWriteDisabled = candidates.every((c) => c.productionWriteAllowed === false);
   const noOutcomeFields = candidates.every((c) => {
-    const keys = Object.keys(c as Record<string, unknown>);
+    const keys = Object.keys(c);
     return !keys.includes("outcomePrice") && !keys.includes("returnPct") && !keys.includes("realizedReturnClass");
   });
   const validDates = candidates

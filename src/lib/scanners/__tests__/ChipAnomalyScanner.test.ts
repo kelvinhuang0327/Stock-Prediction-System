@@ -28,7 +28,8 @@ describe('ChipAnomalyScanner', () => {
                     totalBuy: 100,
                     holders400: null,
                     holders1000: null,
-                    createdAt: new Date()
+                    createdAt: new Date(),
+                    availableAt: null
                 });
             }
 
@@ -44,7 +45,8 @@ describe('ChipAnomalyScanner', () => {
                     totalBuy: 300,
                     holders400: null,
                     holders1000: null,
-                    createdAt: new Date()
+                    createdAt: new Date(),
+                    availableAt: null
                 });
             }
 
@@ -71,7 +73,8 @@ describe('ChipAnomalyScanner', () => {
                     totalBuy: 100,
                     holders400: null,
                     holders1000: null,
-                    createdAt: new Date()
+                    createdAt: new Date(),
+                    availableAt: null
                 });
             }
 
@@ -97,7 +100,8 @@ describe('ChipAnomalyScanner', () => {
                     totalBuy: 100 + i * 10,
                     holders400: null,
                     holders1000: null,
-                    createdAt: new Date()
+                    createdAt: new Date(),
+                    availableAt: null
                 });
             }
 
@@ -124,7 +128,8 @@ describe('ChipAnomalyScanner', () => {
                     totalBuy: -50,
                     holders400: null,
                     holders1000: null,
-                    createdAt: new Date()
+                    createdAt: new Date(),
+                    availableAt: null
                 });
             }
 

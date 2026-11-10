@@ -147,8 +147,8 @@ describe('GET /api/system/health', () => {
     expect(status).toBe(200);
     expect(body.overallStatus).toBe('ok');
     expect(body.dbSizeMb).toBe('1.00 MB');
-    expect(body.dataSources.map((source: { grade: string }) => source.grade)).toEqual(['A', 'A', 'A', 'A']);
-    expect(body.snapshots.map((snapshot: { fresh: boolean }) => snapshot.fresh)).toEqual([true, true, true]);
+    expect(body.dataSources!.map((source: { grade: string }) => source.grade)).toEqual(['A', 'A', 'A', 'A']);
+    expect(body.snapshots!.map((snapshot: { fresh: boolean }) => snapshot.fresh)).toEqual([true, true, true]);
     expect(body.recentSync).toEqual([
       { jobType: 'quotes', lastRun: '2026-11-10T12:00:00.000Z', status: 'failed' },
       { jobType: 'indices', lastRun: '2026-11-08T00:00:00.000Z', status: 'failed' },
@@ -168,7 +168,7 @@ describe('GET /api/system/health', () => {
     setCounts(10, 600, 101, 51);
     mockExists.mockReturnValue(false);
     const medium = await getBody();
-    expect(medium.body.dataSources.map((source: { grade: string }) => source.grade)).toEqual(['B', 'B', 'B', 'B']);
+    expect(medium.body.dataSources!.map((source: { grade: string }) => source.grade)).toEqual(['B', 'B', 'B', 'B']);
     expect(medium.body.dbSizeMb).toBe('unknown');
 
     setCounts(0, 1, 1, 1);
@@ -177,15 +177,15 @@ describe('GET /api/system/health', () => {
     mockDb.dailyWatchlistSnapshot.findFirst.mockResolvedValue(null);
     mockDb.stockQuote.aggregate.mockResolvedValue({ _min: { date: null }, _max: { date: null } });
     const low = await getBody();
-    expect(low.body.dataSources.map((source: { grade: string }) => source.grade)).toEqual(['D', 'C', 'C', 'C']);
+    expect(low.body.dataSources!.map((source: { grade: string }) => source.grade)).toEqual(['D', 'C', 'C', 'C']);
     expect(low.body.overallStatus).toBe('degraded');
 
     setCounts(0, 0, 0, 0);
     const empty = await getBody();
-    expect(empty.body.dataSources.map((source: { grade: string }) => source.grade)).toEqual(['D', 'D', 'D', 'D']);
+    expect(empty.body.dataSources!.map((source: { grade: string }) => source.grade)).toEqual(['D', 'D', 'D', 'D']);
     expect(empty.body.overallStatus).toBe('critical');
     expect(empty.body.knownLimitations).toHaveLength(3);
-    expect(empty.body.notificationChannels.every((channel: { configured: boolean }) => !channel.configured)).toBe(true);
+    expect(empty.body.notificationChannels!.every((channel: { configured: boolean }) => !channel.configured)).toBe(true);
   });
 
   test('marks missing snapshots and recent delivery failures as degraded', async () => {

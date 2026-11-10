@@ -23,6 +23,7 @@ function makeSignalInput(overrides: Partial<SignalOverlayInput> = {}): SignalOve
 function makeEventSourceQuality(label: EventSourceQuality['qualityLabel']): EventSourceQuality {
   return {
     qualityLabel: label,
+    explanation: 'Test source-quality explanation.',
     confidenceAdjustment: 'NONE',
     rssRatio: label === 'LIVE_CONFIDENT' ? 1 : 0.5,
     mockRatio: label === 'SIMULATION_DOMINATED' ? 0.8 : 0.2,
@@ -31,7 +32,6 @@ function makeEventSourceQuality(label: EventSourceQuality['qualityLabel']): Even
     totalEvents: 5,
     limitations: [],
     trustLevelBreakdown: { official: 2, mainstream: 2, secondary: 1, unknown: 0 },
-    sourceTypeTracked: true,
   };
 }
 

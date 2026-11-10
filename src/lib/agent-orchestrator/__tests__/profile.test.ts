@@ -10,7 +10,7 @@ describe('profile validation', () => {
   it('rejects invalid shapes', () => {
     const res = validateProjectProfileShape({});
     expect(res.ok).toBe(false);
-    expect(res.errors.length).toBeGreaterThan(0);
+    if (!res.ok) expect(res.errors.length).toBeGreaterThan(0);
   });
 
   it('accepts a minimal valid profile and loadProjectProfile resolves', async () => {

@@ -433,9 +433,8 @@ describe("T8: No action semantics emitted", () => {
         regimeFacts: makeEligibleRegimeFacts(),
       })
     );
-    const snapAsRecord = snap as Record<string, unknown>;
     for (const field of actionFields) {
-      expect(snapAsRecord[field]).toBeUndefined();
+      expect(Object.hasOwn(snap, field)).toBe(false);
     }
   });
 
@@ -469,7 +468,7 @@ describe("T9: No scoring formula access", () => {
     const snap = buildControlledResearchSnapshot(
       makeBaseInput({ monthlyRevenueFacts: makeEligibleMRFacts() })
     );
-    expect((snap as Record<string, unknown>).alphaScore).toBeUndefined();
+    expect(Object.hasOwn(snap, 'alphaScore')).toBe(false);
   });
 
   it("T9.3 entersAlphaScore is always false in built snapshot", () => {

@@ -19,7 +19,7 @@ import { NextRequest } from 'next/server';
 // ─── Mocks ────────────────────────────────────────────────────────
 
 jest.mock('@/lib/data/AsOfDataGate', () => ({
-  resolveAsOfDate: jest.fn((input?: string) => input ?? '2026-05-07'),
+  resolveAsOfDate: jest.fn((input?: string | null) => input ?? '2026-05-07'),
   buildAsOfWhereClause: jest.fn((asOf: string) => ({
     date: { lte: asOf.replace(/-/g, '') },
   })),
@@ -62,7 +62,6 @@ jest.mock('next/server', () => {
 
 import { resolveAsOfDate } from '@/lib/data/AsOfDataGate';
 import { runScreen } from '@/lib/screen/StrategyScreenEngine';
-import { NextRequest } from 'next/server';
 
 const mockResolveAsOfDate = resolveAsOfDate as jest.MockedFunction<typeof resolveAsOfDate>;
 const mockRunScreen = runScreen as jest.MockedFunction<typeof runScreen>;
@@ -84,7 +83,7 @@ function makePostRequest(body: object): NextRequest {
 describe('P0-02A: /api/strategy/screen as-of gate', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    mockResolveAsOfDate.mockImplementation((input?: string) => input ?? '2026-05-07');
+  mockResolveAsOfDate.mockImplementation((input?: string | null) => input ?? '2026-05-07');
   });
 
   // ── GET ─────────────────────────────────────────────────────────
@@ -115,7 +114,7 @@ describe('P0-02A: /api/strategy/screen as-of gate', () => {
       mockResolveAsOfDate.mockReturnValue('2026-04-01');
       const req = makeGetRequest({ asOfDate: '2026-04-01' });
       await GET(req);
-      const call = mockRunScreen.mock.calls[0][0];
+      const call = mockRunScreen.mock.calls[0]![0]!;
       expect(call.asOf).toBe('20260401');
       // Verify it's not a future date (asOf should be <= today's gate date)
       expect(call.asOf! <= '20260507').toBe(true);
@@ -125,7 +124,7 @@ describe('P0-02A: /api/strategy/screen as-of gate', () => {
       mockResolveAsOfDate.mockReturnValue('2026-05-07');
       const req = makeGetRequest();
       const res = await GET(req) as { json: () => Promise<unknown> };
-      const body = await res.json();
+      const body = await res.json() as Record<string, unknown>;
       expect(body.asOfDate).toBe('2026-05-07');
       expect(body.asOfGateStatus).toBe('ACTIVE');
     });
@@ -133,7 +132,7 @@ describe('P0-02A: /api/strategy/screen as-of gate', () => {
     it('T6: response includes asOfGateNote', async () => {
       const req = makeGetRequest();
       const res = await GET(req) as { json: () => Promise<unknown> };
-      const body = await res.json();
+      const body = await res.json() as Record<string, unknown>;
       expect(body.asOfGateNote).toBeDefined();
       expect(typeof body.asOfGateNote).toBe('string');
     });
@@ -141,7 +140,7 @@ describe('P0-02A: /api/strategy/screen as-of gate', () => {
     it('T7: response does not include forbidden fields', async () => {
       const req = makeGetRequest();
       const res = await GET(req) as { json: () => Promise<unknown> };
-      const body = await res.json();
+      const body = await res.json() as Record<string, unknown>;
       const bodyStr = JSON.stringify(body);
       const forbidden = ['buy', 'sell', 'roi', 'win_rate', 'edge', 'profit', 'guaranteed', 'auto trading'];
       for (const term of forbidden) {
@@ -178,7 +177,7 @@ describe('P0-02A: /api/strategy/screen as-of gate', () => {
       mockResolveAsOfDate.mockReturnValue('2026-05-07');
       const req = makePostRequest({ maxResults: 10 });
       const res = await POST(req) as { json: () => Promise<unknown> };
-      const body = await res.json();
+      const body = await res.json() as Record<string, unknown>;
       expect(body.asOfDate).toBe('2026-05-07');
       expect(body.asOfGateStatus).toBe('ACTIVE');
     });
@@ -197,7 +196,7 @@ describe('P0-02A: /api/strategy/screen as-of gate', () => {
     it('T13: does not modify existing scoring logic parameters in runScreen call', async () => {
       const req = makePostRequest({ minAlphaScore: 70, minConfidence: 0.8 });
       await POST(req);
-      const call = mockRunScreen.mock.calls[0][0];
+      const call = mockRunScreen.mock.calls[0]![0]!;
       // existing scoring params preserved
       expect(call.minAlphaScore).toBe(70);
       expect(call.minConfidence).toBe(0.8);
@@ -207,7 +206,7 @@ describe('P0-02A: /api/strategy/screen as-of gate', () => {
       mockResolveAsOfDate.mockReturnValue('2026-05-07');
       const req = makeGetRequest();
       await GET(req);
-      const call = mockRunScreen.mock.calls[0][0];
+      const call = mockRunScreen.mock.calls[0]![0]!;
       expect(call.asOf).toMatch(/^\d{8}$/);
     });
   });

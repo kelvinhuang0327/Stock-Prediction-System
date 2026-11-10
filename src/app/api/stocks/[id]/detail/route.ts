@@ -53,8 +53,8 @@ import {
 } from '@/lib/fundamental/FullFundamentalComparisonMatrixBuilder';
 import {
   buildPeerPercentileDetailTable,
-  type PeerPercentileDetailTable,
 } from '@/lib/fundamental/PeerPercentileDetailTableBuilder';
+import type { PeerPercentileDetailTable } from '@/lib/fundamental/types';
 
 // ─── Response Types ─────────────────────────────────────────────
 

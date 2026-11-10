@@ -127,7 +127,7 @@ describe('DailyAlertEngine — generateDailyAlerts()', () => {
     mockPrisma.institutionalChip.count.mockResolvedValue(50);
     mockPrisma.marketIndex.count.mockResolvedValue(200);
     mockFuseBatch.mockResolvedValue([]);
-    mockGenerateEventAlerts.mockResolvedValue({ summary: 'no events', alerts: [], limitations: [] });
+    mockGenerateEventAlerts.mockResolvedValue({ summary: 'no events', alerts: [], limitations: [], generatedAt: TODAY });
     mockDetectRegime.mockResolvedValue({ regime: 'Bull', confidence: 75 } as never);
   });
 
@@ -172,13 +172,16 @@ describe('DailyAlertEngine — generateDailyAlerts()', () => {
       // Today's runScreen returns 2330 as Strong Candidate
       mockRunScreen.mockResolvedValueOnce({
         candidates: [{
-          symbol: '2330', name: '台積電', screenBucket: 'Strong Candidate',
+          symbol: '2330', name: '台積電', isETF: false, screenBucket: 'Strong Candidate',
+          recommendationBucket: 'Strong Candidate', technicalScore: 75, chipScore: 70,
+          fundamentalScore: 65, marketAdjustment: 5,
           alphaScore: 80, confidence: 65, priceChangePercent: 2.1, closePrice: 580,
           riskLevel: 'medium' as const, whyIncluded: '技術指標強勢', topFactors: [],
-          limitations: [], dataCoverage: 'full' as const,
+          keyRisks: [], limitations: [], dataCoverage: 'full' as const,
+          usedSources: [], missingSources: [], summary: '測試候選',
         }],
         excluded: [], excludedCount: 0, totalScanned: 200,
-        regime: { regime: 'Bull' as const, confidence: 75, factors: [], dataCoverage: 'full' as const, samplePeriod: '2024-01-01 ~ 2025-01-01', dataPoints: 250, last_updated: '2025-01-01', limitations: [] },
+        regime: 'Bull',
         regimeConfidence: 75,
         dataCoverageSummary: { full: 1, limited: 0, insufficient: 0 },
         screenParams: { minAlphaScore: 40, minConfidence: 15, respectMarketRegime: true, appliedRegimeAdjustment: '無調整' },

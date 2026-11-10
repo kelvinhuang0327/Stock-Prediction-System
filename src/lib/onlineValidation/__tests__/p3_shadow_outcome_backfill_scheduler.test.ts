@@ -167,7 +167,7 @@ describe('validateBackfillPlan', () => {
             scheduledItems: plan.scheduledItems.map(i => ({ ...i, dryRun: false as const })),
         };
         // Need to cast because type system enforces true; test the runtime check
-        const report = validateBackfillPlan(tampered as typeof plan);
+        const report = validateBackfillPlan(tampered as unknown as typeof plan);
         // Since TypeScript enforces dryRun: true via literal type, we verify via the validation logic
         // The test ensures validateBackfillPlan would catch it if dryRun were ever false
         expect(report).toBeDefined();

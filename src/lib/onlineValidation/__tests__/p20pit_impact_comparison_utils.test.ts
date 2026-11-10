@@ -258,8 +258,8 @@ describe('compareScoreSnapshot', () => {
     const pre = makeP3Row();
     const post = makeP19Row();
     // Adding returnPct to row should not affect the comparison
-    (pre as Record<string, unknown>).returnPct = 0.15;
-    (post as Record<string, unknown>).returnPct = 0.30;
+    Object.assign(pre, { returnPct: 0.15 });
+    Object.assign(post, { returnPct: 0.30 });
     const result = compareScoreSnapshot(pre, post);
     // Still same score, so no change
     expect(result.changed).toBe(false);
@@ -374,8 +374,8 @@ describe('classifyPitImpactChange', () => {
     const pre = makeP3Row();
     const post = makeP19Row();
     // Attach returnPct — should not cause SCORE_CHANGED
-    (pre as Record<string, unknown>).returnPct = 0.15;
-    (post as Record<string, unknown>).returnPct = 0.30;
+    Object.assign(pre, { returnPct: 0.15 });
+    Object.assign(post, { returnPct: 0.30 });
     const classes = classifyPitImpactChange(pre, post);
     expect(classes).not.toContain('SCORE_CHANGED');
   });
@@ -383,8 +383,8 @@ describe('classifyPitImpactChange', () => {
   test('does NOT use outcomeSnapshot in classification', () => {
     const pre = makeP3Row();
     const post = makeP19Row();
-    (pre as Record<string, unknown>).outcomeSnapshot = { returnPct: 0.10 };
-    (post as Record<string, unknown>).outcomeSnapshot = { returnPct: 0.20 };
+    Object.assign(pre, { outcomeSnapshot: { returnPct: 0.10 } });
+    Object.assign(post, { outcomeSnapshot: { returnPct: 0.20 } });
     const classes = classifyPitImpactChange(pre, post);
     expect(classes).not.toContain('SCORE_CHANGED');
   });

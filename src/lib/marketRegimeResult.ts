@@ -52,7 +52,7 @@ export interface PersistedRegimeContext {
 
 export interface MissingRegimeContext {
   isAvailable: false;
-  freshnessStatus: 'MISSING';
+  freshnessStatus: 'MISSING' | 'FUTURE_DATE_ERROR';
   freshnessLagDays: -1;
   warning: string;
 }

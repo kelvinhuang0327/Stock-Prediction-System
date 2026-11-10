@@ -37,47 +37,65 @@ import { StockAnalysisResult } from '@/lib/analysis/RuleBasedStockAnalyzer';
 
 function makeAnalysisResult(overrides?: Partial<StockAnalysisResult>): StockAnalysisResult {
     return {
-        symbol: '2330',
+        stockId: '2330',
         name: 'TSMC',
+        closePrice: 100,
+        priceChangePercent: 1,
         overallScore: 72,
         technicalScore: 68,
         chipStrength: 75,
+        revenueYoY: null,
+        eps: 0,
+        isETF: false,
+        momentumScore: 70,
+        calculatedScore: 72,
         recommendation: '偏多',
         factors: [
-            { name: 'MA 趨勢', value: '多頭', note: 'MA20>MA60' },
-            { name: 'RSI(14)', value: '55.2', note: '偏多' },
+            { name: 'MA 趨勢', value: '多頭', impact: 'positive', note: 'MA20>MA60' },
+            { name: 'RSI(14)', value: '55.2', impact: 'positive', note: '偏多' },
         ],
         limitations: [],
         dataCoverage: 'full',
         dataPoints: 500,
+        samplePeriod: '2025-01-01 to 2025-06-01',
+        last_updated: null,
         usedSources: ['StockQuote', 'InstitutionalChip'],
         missingSources: [],
         reason: '技術偏多',
         summary: '多頭格局',
         riskScore: 30,
-        riskLevel: 'low',
+        riskLevel: 'Low',
         ...overrides,
     };
 }
 
 function makeEmptyResult(overrides?: Partial<StockAnalysisResult>): StockAnalysisResult {
     return {
-        symbol: '9999',
+        stockId: '9999',
         name: 'TestCo',
+        closePrice: 0,
+        priceChangePercent: 0,
         overallScore: 0,
         technicalScore: 0,
         chipStrength: 0,
+        revenueYoY: null,
+        eps: 0,
+        isETF: false,
+        momentumScore: 0,
+        calculatedScore: 0,
         recommendation: '資料不足',
         factors: [],
         limitations: ['No data'],
         dataCoverage: 'insufficient',
         dataPoints: 0,
+        samplePeriod: 'No data',
+        last_updated: null,
         usedSources: [],
         missingSources: ['StockQuote', 'InstitutionalChip'],
         reason: '',
         summary: '',
         riskScore: 0,
-        riskLevel: 'unknown',
+        riskLevel: 'Medium',
         ...overrides,
     };
 }
@@ -250,8 +268,8 @@ describe('ActiveScoringSnapshotBuilder — P3-HARDRESET PART F', () => {
         it('builds factorSnapshot as "name: value (note)" strings', async () => {
             const mockResult = makeAnalysisResult({
                 factors: [
-                    { name: 'MA 趨勢', value: '多頭', note: 'MA20>MA60' },
-                    { name: 'RSI(14)', value: '55.2', note: '偏多' },
+                    { name: 'MA 趨勢', value: '多頭', impact: 'positive', note: 'MA20>MA60' },
+                    { name: 'RSI(14)', value: '55.2', impact: 'positive', note: '偏多' },
                 ],
             });
             const mockAnalyzer = jest.fn().mockResolvedValue(mockResult);
@@ -267,8 +285,8 @@ describe('ActiveScoringSnapshotBuilder — P3-HARDRESET PART F', () => {
         it('builds signalSnapshot as factor names only', async () => {
             const mockResult = makeAnalysisResult({
                 factors: [
-                    { name: 'MA 趨勢', value: '多頭', note: 'MA20>MA60' },
-                    { name: 'RSI(14)', value: '55.2', note: '偏多' },
+                    { name: 'MA 趨勢', value: '多頭', impact: 'positive', note: 'MA20>MA60' },
+                    { name: 'RSI(14)', value: '55.2', impact: 'positive', note: '偏多' },
                 ],
             });
             const mockAnalyzer = jest.fn().mockResolvedValue(mockResult);
@@ -284,7 +302,7 @@ describe('ActiveScoringSnapshotBuilder — P3-HARDRESET PART F', () => {
             const mockResult = makeAnalysisResult({
                 overallScore: 72,
                 recommendation: '偏多',
-                factors: [{ name: 'MA', value: '多頭', note: 'note' }],
+                factors: [{ name: 'MA', value: '多頭', impact: 'positive', note: 'note' }],
             });
             const mockAnalyzer = jest.fn().mockResolvedValue(mockResult);
 

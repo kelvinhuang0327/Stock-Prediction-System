@@ -34,7 +34,7 @@ import type { PaperSimulationFrameworkPlan } from "../p40/PaperSimulationFramewo
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 function makeValidBundle() {
-  return buildDefaultPaperSimulationInputBundle({ generatedAt: "2026-05-21T00:00:00.000Z" });
+  return buildDefaultPaperSimulationInputBundle({ asOfDate: "2026-05-21T00:00:00.000Z" });
 }
 
 function makeValidPlan(): PaperSimulationFrameworkPlan {
@@ -564,62 +564,62 @@ describe("Group 11 — Forbidden outputs and uses constants", () => {
 describe("Group 12 — No forbidden outputs appear as plan result fields", () => {
   test("12.1 plan does not have 'prediction' field with a result value", () => {
     const plan = makeValidPlan();
-    expect((plan as Record<string, unknown>)["prediction"]).toBeUndefined();
+    expect(Object.hasOwn(plan, "prediction")).toBe(false);
   });
 
   test("12.2 plan does not have 'recommendation' field", () => {
     const plan = makeValidPlan();
-    expect((plan as Record<string, unknown>)["recommendation"]).toBeUndefined();
+    expect(Object.hasOwn(plan, "recommendation")).toBe(false);
   });
 
   test("12.3 plan does not have 'pnl' field", () => {
     const plan = makeValidPlan();
-    expect((plan as Record<string, unknown>)["pnl"]).toBeUndefined();
+    expect(Object.hasOwn(plan, "pnl")).toBe(false);
   });
 
   test("12.4 plan does not have 'winRate' field", () => {
     const plan = makeValidPlan();
-    expect((plan as Record<string, unknown>)["winRate"]).toBeUndefined();
+    expect(Object.hasOwn(plan, "winRate")).toBe(false);
   });
 
   test("12.5 plan does not have 'returnPct' field", () => {
     const plan = makeValidPlan();
-    expect((plan as Record<string, unknown>)["returnPct"]).toBeUndefined();
+    expect(Object.hasOwn(plan, "returnPct")).toBe(false);
   });
 
   test("12.6 plan does not have 'ROI' field", () => {
     const plan = makeValidPlan();
-    expect((plan as Record<string, unknown>)["ROI"]).toBeUndefined();
+    expect(Object.hasOwn(plan, "ROI")).toBe(false);
   });
 
   test("12.7 plan does not have 'buy' field", () => {
     const plan = makeValidPlan();
-    expect((plan as Record<string, unknown>)["buy"]).toBeUndefined();
+    expect(Object.hasOwn(plan, "buy")).toBe(false);
   });
 
   test("12.8 plan does not have 'sell' field", () => {
     const plan = makeValidPlan();
-    expect((plan as Record<string, unknown>)["sell"]).toBeUndefined();
+    expect(Object.hasOwn(plan, "sell")).toBe(false);
   });
 
   test("12.9 plan does not have 'hold' field", () => {
     const plan = makeValidPlan();
-    expect((plan as Record<string, unknown>)["hold"]).toBeUndefined();
+    expect(Object.hasOwn(plan, "hold")).toBe(false);
   });
 
   test("12.10 plan does not have 'optimizerScore' field", () => {
     const plan = makeValidPlan();
-    expect((plan as Record<string, unknown>)["optimizerScore"]).toBeUndefined();
+    expect(Object.hasOwn(plan, "optimizerScore")).toBe(false);
   });
 
   test("12.11 plan does not have 'backtestResult' field", () => {
     const plan = makeValidPlan();
-    expect((plan as Record<string, unknown>)["backtestResult"]).toBeUndefined();
+    expect(Object.hasOwn(plan, "backtestResult")).toBe(false);
   });
 
   test("12.12 plan does not have 'profit' field", () => {
     const plan = makeValidPlan();
-    expect((plan as Record<string, unknown>)["profit"]).toBeUndefined();
+    expect(Object.hasOwn(plan, "profit")).toBe(false);
   });
 });
 

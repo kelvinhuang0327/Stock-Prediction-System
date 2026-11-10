@@ -214,11 +214,11 @@ describe("T16: sourceTrace auditability", () => {
         monthlyRevenueFacts: makeEligibleMRFacts("p36-consumer-v1"),
       })
     );
-    const keys = Object.keys(snap as Record<string, unknown>);
+    const keys = Object.keys(snap);
     // sourceTrace appears once (the snapshot-level field) but not the per-source value
     expect(snap.sourceTrace).toBe("ControlledResearchSnapshotBuilder-v0");
     // No extra field carrying the facts.sourceTrace value
-    const allValues = Object.values(snap as Record<string, unknown>);
+    const allValues = Object.values(snap);
     // The value "p36-consumer-v1" must not appear as a top-level value in the snapshot
     // (it lives inside the facts which are not part of the snapshot output)
     expect(allValues.includes("p36-consumer-v1")).toBe(false);
@@ -562,7 +562,7 @@ describe("T18: PIT metadata state + sourceTrace preserved across all readiness s
       ),
     ];
     for (const snap of snaps) {
-      const keys = Object.keys(snap as Record<string, unknown>);
+      const keys = Object.keys(snap);
       const found = keys.filter((k) =>
         (SNAPSHOT_FORBIDDEN_FIELDS as readonly string[]).includes(k)
       );

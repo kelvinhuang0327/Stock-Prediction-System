@@ -364,35 +364,35 @@ describe("P48 — Group 7: forbidden fields absent in real artifact", () => {
   });
 
   it("no pnl field", () => {
-    expect((result as Record<string, unknown>)["pnl"]).toBeUndefined();
+    expect(Object.hasOwn(result, "pnl")).toBe(false);
   });
 
   it("no roi field", () => {
-    expect((result as Record<string, unknown>)["roi"]).toBeUndefined();
+    expect(Object.hasOwn(result, "roi")).toBe(false);
   });
 
   it("no ROI field", () => {
-    expect((result as Record<string, unknown>)["ROI"]).toBeUndefined();
+    expect(Object.hasOwn(result, "ROI")).toBe(false);
   });
 
   it("no winRate field", () => {
-    expect((result as Record<string, unknown>)["winRate"]).toBeUndefined();
+    expect(Object.hasOwn(result, "winRate")).toBe(false);
   });
 
   it("no alphaScore field", () => {
-    expect((result as Record<string, unknown>)["alphaScore"]).toBeUndefined();
+    expect(Object.hasOwn(result, "alphaScore")).toBe(false);
   });
 
   it("no recommendation field", () => {
-    expect((result as Record<string, unknown>)["recommendation"]).toBeUndefined();
+    expect(Object.hasOwn(result, "recommendation")).toBe(false);
   });
 
   it("no prediction field", () => {
-    expect((result as Record<string, unknown>)["prediction"]).toBeUndefined();
+    expect(Object.hasOwn(result, "prediction")).toBe(false);
   });
 
   it("no backtestResult field", () => {
-    expect((result as Record<string, unknown>)["backtestResult"]).toBeUndefined();
+    expect(Object.hasOwn(result, "backtestResult")).toBe(false);
   });
 });
 

@@ -208,7 +208,7 @@ describe('P13MonthlyRevenuePitUtils', () => {
 
     it('Contract missing pitSafetyRequirements fails', () => {
       const bad = { contractVersion: 'test', nonGoals: [] };
-      const v = validateMonthlyRevenuePitContract(bad as Parameters<typeof validateMonthlyRevenuePitContract>[0]);
+      const v = validateMonthlyRevenuePitContract(bad as unknown as Parameters<typeof validateMonthlyRevenuePitContract>[0]);
       expect(v.valid).toBe(false);
     });
   });

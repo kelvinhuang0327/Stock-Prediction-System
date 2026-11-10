@@ -109,10 +109,18 @@ export class BacktestRunner {
         return stocks.map(s => ({
             stockId: s.id,
             name: s.name,
-            quotes: s.quotes,
-            monthlyRevenues: s.monthlyRevenues,
-            financialReports: s.financialReports,
-            institutionalChips: s.institutionalChips,
+            quotes: s.quotes.map(({ date, open, high, low, close, volume }) => ({
+                date, open, high, low, close, volume,
+            })),
+            monthlyRevenues: s.monthlyRevenues.map(({ year, month, revenue, yoyGrowth }) => ({
+                year, month, revenue, yoyGrowth: yoyGrowth ?? undefined,
+            })),
+            financialReports: s.financialReports.map(({ year, quarter, eps }) => ({
+                year, quarter, eps,
+            })),
+            institutionalChips: s.institutionalChips.map(({ date, foreignBuy, trustBuy, totalBuy, dealerBuy }) => ({
+                date, foreignBuy, trustBuy, totalBuy, dealerBuy,
+            })),
             capital: s.capital ? Number(s.capital) : undefined
         }));
     }

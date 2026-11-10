@@ -79,7 +79,7 @@ export function AssetDoublingPlan() {
     const [isAnalyzing, setIsAnalyzing] = useState(false);
     const [analysisResult, setAnalysisResult] = useState<ScreeningResult | null>(null);
     const [analysisError, setAnalysisError] = useState<string | null>(null);
-    const [historyData, setHistoryData] = useState<{ date: string; value?: number }[]>([]);
+    const [historyData, setHistoryData] = useState<{ date: string; value: number }[]>([]);
     const [sentimentResult, setSentimentResult] = useState<{ score: number; label: string; headline: string; factors: string[] } | null>(null);
     const [isAdded, setIsAdded] = useState(false);
     const [filterType, setFilterType] = useState<'all' | 'gems' | 'momentum'>('all');
@@ -175,9 +175,12 @@ export function AssetDoublingPlan() {
             // Fetch 6 months history for chart
             const historyResponse = await fetch(`/api/stocks/${symbol.trim()}/history?months=6`);
             if (historyResponse.ok) {
-                const history = await historyResponse.json();
-                setHistoryData(history.map((h: { date: string }) => ({
-                    date: h.date,
+                const historyResult = await historyResponse.json() as {
+                    data?: Array<{ date: string; close: number }>;
+                };
+                setHistoryData((historyResult.data ?? []).map(({ date, close }) => ({
+                    date,
+                    value: close,
                 })));
             }
 

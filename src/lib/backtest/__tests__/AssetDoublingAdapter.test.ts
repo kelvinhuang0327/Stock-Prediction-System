@@ -80,18 +80,19 @@ describe('AssetDoublingAdapter', () => {
   });
 
   it('keeps simple MA and RSI benchmarks deterministic', () => {
+    const position = { entryDate: '2026-11-01', entryPrice: 100, rawEntryPrice: 100, stopLoss: 90, shares: 10, capitalUsed: 1000, holdingDays: 5 };
     expect(SimpleMABenchmark.shouldEnter(context())).toBe(true);
     expect(SimpleMABenchmark.shouldEnter(context({ close: 100 }))).toBe(false);
     expect(SimpleMABenchmark.shouldEnter(context({ indicators: { ma10: 0, ma60: 100, rsi: 0 } }))).toBe(false);
-    expect(SimpleMABenchmark.shouldExit(context({ indicators: { ...context().indicators, ma10: 90, ma60: 100 } }))).toBe(true);
-    expect(SimpleMABenchmark.shouldExit(context())).toBe(false);
+    expect(SimpleMABenchmark.shouldExit(context({ indicators: { ...context().indicators, ma10: 90, ma60: 100 } }), position)).toBe(true);
+    expect(SimpleMABenchmark.shouldExit(context(), position)).toBe(false);
     expect(SimpleMABenchmark.calculateStopLoss(context())).toBeCloseTo(102.3);
     expect(SimpleMABenchmark.positionSizeFraction(context(), 100)).toBe(0.2);
 
     expect(RSIBenchmark.shouldEnter(context({ indicators: { ...context().indicators, rsi: 29 } }))).toBe(true);
     expect(RSIBenchmark.shouldEnter(context({ indicators: { ...context().indicators, rsi: 30 } }))).toBe(false);
-    expect(RSIBenchmark.shouldExit(context({ indicators: { ...context().indicators, rsi: 71 } }))).toBe(true);
-    expect(RSIBenchmark.shouldExit(context())).toBe(false);
+    expect(RSIBenchmark.shouldExit(context({ indicators: { ...context().indicators, rsi: 71 } }), position)).toBe(true);
+    expect(RSIBenchmark.shouldExit(context(), position)).toBe(false);
     expect(RSIBenchmark.calculateStopLoss(context())).toBeCloseTo(102.3);
     expect(RSIBenchmark.positionSizeFraction(context(), 100)).toBe(0.2);
   });

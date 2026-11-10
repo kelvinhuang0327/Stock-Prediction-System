@@ -340,10 +340,10 @@ describe("6. Output integrity", () => {
 
   it("6.4 Batch result does not contain forbidden output fields", () => {
     const rows = [makeRow()];
-    const result = evaluateBatchConsumerReadiness(rows) as Record<string, unknown>;
+    const result = evaluateBatchConsumerReadiness(rows);
     const forbidden = ["alphaScore", "prediction", "recommendation", "buy", "sell", "hold", "profit", "winRate"];
     for (const field of forbidden) {
-      expect(result[field]).toBeUndefined();
+      expect(Object.hasOwn(result, field)).toBe(false);
     }
   });
 });

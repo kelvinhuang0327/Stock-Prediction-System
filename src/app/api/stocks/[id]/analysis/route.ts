@@ -4,9 +4,9 @@ import { strategyScreeningService } from '@/lib/services/StrategyScreeningServic
 
 export async function GET(
     request: Request,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
-    const id = params.id;
+    const { id } = await params;
     const { searchParams } = new URL(request.url);
     const date = searchParams.get('date') || undefined;
 

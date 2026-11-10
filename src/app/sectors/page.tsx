@@ -4,11 +4,11 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { TrendingUp, TrendingDown, ArrowRight } from 'lucide-react';
 import { stockService } from '@/lib/stockService';
-import { Sector } from '@/lib/mockData';
 import { ResponsiveContainer, Treemap, Tooltip } from 'recharts';
+import type { SectorData } from '@/lib/services/SectorAnalysisService';
 
-const CustomContent = (props: { depth: number; x: number; y: number; width: number; height: number; payload?: { changePercent?: number }; name: string }) => {
-    const { depth, x, y, width, height, payload, name } = props;
+const CustomContent = (props: { depth?: number; x?: number; y?: number; width?: number; height?: number; payload?: { changePercent?: number }; name?: string }) => {
+    const { depth = 0, x = 0, y = 0, width = 0, height = 0, payload, name = '' } = props;
 
     if (!payload) return null;
 
@@ -54,7 +54,7 @@ const CustomContent = (props: { depth: number; x: number; y: number; width: numb
 };
 
 export default function SectorsPage() {
-    const [sectors, setSectors] = useState<Sector[]>([]);
+    const [sectors, setSectors] = useState<SectorData[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -173,15 +173,15 @@ export default function SectorsPage() {
 
                     return (
                         <Link
-                            key={sector.id}
-                            href={`/sectors/${sector.id}`}
+                            key={sector.name}
+                            href={`/sectors/${encodeURIComponent(sector.name)}`}
                             className={`block rounded-xl p-6 border hover:shadow-lg transition-all ${bgClass}`}
                         >
                             <div className="flex items-center justify-between mb-4">
                                 <div>
                                     <h3 className="text-xl font-bold mb-1">{sector.name}</h3>
                                     <div className="text-sm text-muted-foreground">
-                                        {sector.stocks} 檔股票
+                                        {sector.stockCount} 檔股票
                                     </div>
                                 </div>
                                 <div className={`text-right ${colorClass}`}>
@@ -199,10 +199,9 @@ export default function SectorsPage() {
 
                             <div className="grid grid-cols-2 gap-4 text-sm">
                                 <div>
-                                    <div className="text-muted-foreground mb-1">漲跌點數</div>
+                                    <div className="text-muted-foreground mb-1">相對強度</div>
                                     <div className={`font-bold ${colorClass}`}>
-                                        {sector.change > 0 ? '+' : ''}
-                                        {sector.change.toFixed(2)}
+                                        {sector.relativeStrength.toFixed(1)}
                                     </div>
                                 </div>
                                 <div>

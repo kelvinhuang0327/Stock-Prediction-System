@@ -647,11 +647,11 @@ describe("Group 12: Isolation and governance", () => {
     const b1 = buildDefaultPaperSimulationInputBundle({
       asOfDate: "2026-05-21T00:00:00.000Z",
     });
-    (b1 as Record<string, unknown>)["__tampered"] = true;
+    Object.assign(b1, { __tampered: true });
     const b2 = buildDefaultPaperSimulationInputBundle({
       asOfDate: "2026-05-21T00:00:00.000Z",
     });
-    expect((b2 as Record<string, unknown>)["__tampered"]).toBeUndefined();
+    expect(Object.hasOwn(b2, "__tampered")).toBe(false);
   });
 
   test("12.4 eligible source entries never contain forbidden fields", () => {

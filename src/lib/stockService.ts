@@ -1,5 +1,6 @@
 // Stock Service - Hybrid implementation (Prisma + Fallback)
 import { prisma } from './prisma';
+import type { SectorData } from './services/SectorAnalysisService';
 import {
     Stock,
     EconomicEvent
@@ -144,12 +145,12 @@ class StockService {
     }
 
     // Get all sectors - Hybrid
-    async getSectors(): Promise<unknown[]> {
+    async getSectors(): Promise<SectorData[]> {
         // Client: Use API
         if (typeof window !== 'undefined') {
             try {
                 const res = await fetch('/api/sectors');
-                if (res.ok) return await res.json();
+                if (res.ok) return await res.json() as SectorData[];
             } catch (e) { console.error(e); }
         } else {
             // Server: Dynamic Import
@@ -166,7 +167,7 @@ class StockService {
     // Get stocks by sector
     async getStocksBySector(sectorId: string): Promise<Stock[]> {
         // Find industry name from static list to match DB string
-        const sectorName = SECTORS.find(s => s.id === sectorId)?.name;
+        const sectorName = SECTORS.find(s => s.id === sectorId)?.name ?? decodeURIComponent(sectorId);
 
         if (sectorName) {
             try {
@@ -181,7 +182,7 @@ class StockService {
             } catch { }
         }
 
-        return POPULAR_STOCKS.filter(s => s.sector === sectorId);
+        return POPULAR_STOCKS.filter(s => s.sector === sectorId || s.sector === sectorName);
     }
 
     // Filter stocks - Complex, implementation limited for now

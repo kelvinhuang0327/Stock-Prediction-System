@@ -122,6 +122,7 @@ function runCli(arguments_: readonly string[]): SpawnSyncReturns<string> {
     cwd: ROOT,
     encoding: "utf8",
     env: {
+      NODE_ENV: 'test',
       PATH: "/usr/bin:/bin:/usr/sbin:/sbin",
       NODE_PATH: nodeModulesRoot,
       TS_NODE_COMPILER_OPTIONS: JSON.stringify({

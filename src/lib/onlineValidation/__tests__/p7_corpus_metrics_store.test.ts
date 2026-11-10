@@ -77,13 +77,13 @@ function toCorpusEntries(): CorpusEntry[] {
     const p7Snapshots = buildSecondDateSimulationSnapshots(buildSecondDateSnapshotSeed());
     return [
         ...p5LikeSnapshots.map(snapshot =>
-            normalizeSnapshotForCorpus(snapshot, {
+            normalizeSnapshotForCorpus({ ...snapshot }, {
                 corpusRunId: 'p6-corpus-20260511-001',
                 ingestionDate: '2026-05-11',
             }),
         ),
         ...p7Snapshots.map(snapshot =>
-            normalizeSnapshotForCorpus(snapshot, {
+            normalizeSnapshotForCorpus({ ...snapshot }, {
                 corpusRunId: 'p7-corpus-20260512-001',
                 ingestionDate: '2026-05-12',
             }),
