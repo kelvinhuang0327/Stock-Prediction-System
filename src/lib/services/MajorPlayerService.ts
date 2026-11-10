@@ -28,7 +28,7 @@ export class MajorPlayerService {
                 orderBy: { date: 'desc' },
                 take: 60
             }),
-            (prisma as any).institutionalChip.findMany({
+            prisma.institutionalChip.findMany({
                 where: {
                     stockId,
                     date: dateFilter
@@ -49,8 +49,8 @@ export class MajorPlayerService {
         let dealerTotal = 0;
 
         // Match chips with quotes by date
-        chips.forEach((chip: any) => {
-            const quote = quotes.find((q: any) => q.date === chip.date);
+        chips.forEach((chip) => {
+            const quote = quotes.find((q) => q.date === chip.date);
             if (quote && chip.totalBuy > 0) {
                 totalBuyingValue += (chip.totalBuy * quote.close);
                 totalBuyingVolume += chip.totalBuy;
@@ -81,13 +81,13 @@ export class MajorPlayerService {
 
         // Predict Target Price
         const recentChips = chips.slice(0, 10);
-        const netBuyTrend = recentChips.reduce((acc: number, curr: any) => acc + curr.totalBuy, 0);
+        const netBuyTrend = recentChips.reduce((acc, curr) => acc + curr.totalBuy, 0);
 
         let margin = 0.10;
         if (netBuyTrend > 5000) margin = 0.20;
         else if (netBuyTrend > 2000) margin = 0.15;
 
-        const sixtyDayHigh = Math.max(...quotes.map((q: any) => q.high));
+        const sixtyDayHigh = Math.max(...quotes.map((quote) => quote.high));
         const projectedTarget = averageCost * (1 + margin);
         const finalTarget = (projectedTarget + sixtyDayHigh) / 2;
 

@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
     ShieldAlert,
     Sword,
@@ -39,45 +39,27 @@ export function ProTraderDashboard({ marketStatus, candidates, onClose }: ProTra
     const [maxDrawdown, setMaxDrawdown] = useState<number>(10); // 10%
     const [style, setStyle] = useState<TradeStyle>('TREND');
 
-    // Analysis State
-    const [phase, setPhase] = useState<TradePhase>('RECON');
-    const [isTradeable, setIsTradeable] = useState<boolean>(false);
     const [activeTab, setActiveTab] = useState<'LIVE' | 'SIMULATION'>('LIVE');
 
-    // Derived Logic
-    useEffect(() => {
-        if (!marketStatus) return;
+    const { phase, isTradeable } = useMemo(() => {
+        if (!marketStatus) return { phase: 'RECON' as TradePhase, isTradeable: false };
 
         const regime = marketStatus.regime || 'NEUTRAL';
         const qualityCandidates = candidates.filter(c => c.technicalScore > 70 && c.chipStrength > 50).length;
 
-        // 1. Determine Tradeability and Phase
-        if (regime === 'BEAR' && qualityCandidates === 0) {
-            setIsTradeable(false);
-            setPhase('DEFENSE');
-        } else if (regime === 'CORRECTION') {
-            setIsTradeable(false); // Pro traders don't catch falling knives usually, or trade very lightly
-            if (qualityCandidates > 2) {
-                setIsTradeable(true);
-                setPhase('RECON'); // Tentative
-            } else {
-                setPhase('DEFENSE');
-            }
-        } else if (regime === 'NEUTRAL') {
-            setIsTradeable(true);
-            setPhase('RECON');
-        } else if (regime === 'BULL') {
-            setIsTradeable(true);
-            if (qualityCandidates >= 3) {
-                setPhase('EXPANSION');
-            } else {
-                setPhase('RECON'); // Bull but no good stocks? Caution.
-            }
+        if (regime === 'BEAR') return { phase: 'DEFENSE' as TradePhase, isTradeable: false };
+        if (regime === 'CORRECTION') {
+            return qualityCandidates > 2
+                ? { phase: 'RECON' as TradePhase, isTradeable: true }
+                : { phase: 'DEFENSE' as TradePhase, isTradeable: false };
         }
-
-        // Harvest Check: If market is overextended (e.g. huge scaling factor but starting to turn?)
-        // For now, simple regime mapping is safer.
-
+        if (regime === 'BULL') {
+            return {
+                phase: qualityCandidates >= 3 ? 'EXPANSION' as TradePhase : 'RECON' as TradePhase,
+                isTradeable: true,
+            };
+        }
+        return { phase: 'RECON' as TradePhase, isTradeable: true };
     }, [marketStatus, candidates]);
 
     const formatCurrency = (val: number) => {

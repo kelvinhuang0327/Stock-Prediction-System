@@ -8,6 +8,8 @@
  * entersAlphaScore = false. paperOnly = true. dryRunOnly = true.
  */
 
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 import {
   buildDefaultPaperSimulationInputBundle,
   buildPaperSimulationInputBundle,
@@ -626,11 +628,9 @@ describe("Group 11: Forbidden fields and uses constants", () => {
 // ─── Group 12: Isolation and governance ───────────────────────────────────────
 
 describe("Group 12: Isolation and governance", () => {
-  test("12.1 no Prisma import in builder module (import check via require path)", () => {
-    // This test verifies the module can be imported without Prisma dependency.
-    // If Prisma was imported, it would throw during test setup.
-    const builder = require("../p39/PaperSimulationInputContractBuilder");
-    expect(builder).toBeDefined();
+  test("12.1 builder module does not import Prisma", () => {
+    const source = fs.readFileSync(path.join(__dirname, '../p39/PaperSimulationInputContractBuilder.ts'), 'utf8');
+    expect(source).not.toMatch(/from ['"]@\/lib\/prisma['"]/);
   });
 
   test("12.2 builder functions are pure — no shared mutable state", () => {

@@ -2,9 +2,9 @@
 // DISCLAIMER: Does not constitute investment advice.
 // READ-ONLY. No DB write. No corpus write. No external API. No Math.random.
 
-const fs = require("fs") as typeof import("fs");
-const path = require("path") as typeof import("path");
-const crypto = require("crypto") as typeof import("crypto");
+import * as fs from 'node:fs';
+import * as path from 'node:path';
+import * as crypto from 'node:crypto';
 
 export type InventoryClassification = "SOURCE_FILES_PRESENT" | "SOURCE_NOT_PROVIDED" | "UNSUPPORTED_FILES_ONLY";
 

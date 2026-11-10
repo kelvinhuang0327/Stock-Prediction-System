@@ -27,7 +27,7 @@ const ALLOWED_CLAIMS = /disclaimer|alphaScore|forbidden claim/i;
 
 const BASELINE_SHA256: Record<string, string> = {
   'ActiveScoringSnapshotBuilder.ts': '063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d',
-  'RuleBasedStockAnalyzer.ts': '4f6434a31fd211b6122408ee5e977e41f4cd45aee45cec586ec988b2c009e8e2',
+  'RuleBasedStockAnalyzer.ts': '25cdca9a8a823e61a2bb3a2a3ddd49574b8a3c56e2080f9678a2e6778628cc8e',
   'SignalFusionEngine.ts': 'b8ce3fa3ae63fd7edf6b6067dd8ccea63c02741454b93792e87bfbc1e95d2bf4',
 };
 const SCORING_FILES: Record<string, string> = {

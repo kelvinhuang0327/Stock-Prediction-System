@@ -117,4 +117,90 @@ describe('buildPeerPercentileDetailTable', () => {
     expect(table.rows.some((row) => row.interpretation.includes('ETF'))).toBe(true);
     expect(table.limitations[0]).toContain('ETF');
   });
+
+  it('uses conservative defaults when neither peer source is available', () => {
+    const table = buildPeerPercentileDetailTable({
+      fundamentals: { ...fundamentals, limitations: undefined } as unknown as StockFundamentalSnapshot,
+      peerComparison: null,
+      financialStructurePeerComparison: null,
+    });
+
+    expect(table.basis).toBe('none');
+    expect(table.peerSampleSize).toBeNull();
+    expect(table.rows).toHaveLength(14);
+    expect(table.rows.every((row) => row.percentile === null && row.interpretation === '資料不足，暫不做同組比較。')).toBe(true);
+    expect(table.rows.every((row) => row.limitations?.length === 0)).toBe(true);
+    expect(table.limitations).toEqual(['資料不足，暫不做明確同組百分位判讀。']);
+  });
+
+  it('keeps partial peer values, uses sector fallback, and explains null percentiles', () => {
+    const partialPeerComparison: StockPeerComparison = {
+      ...peerComparison,
+      basis: 'sector',
+      peerCount: 0,
+      metrics: [{
+        key: 'revenueYoY',
+        label: '營收 YoY',
+        targetValue: null,
+        peerMedian: null,
+        percentile: null,
+        interpretation: '資料不足',
+      }],
+      limitations: [],
+    };
+    const partialStructure: FinancialStructurePeerComparison = {
+      ...financialStructurePeerComparison,
+      basis: 'sector',
+      peerSampleSize: 0,
+      metrics: {
+        debtRatio: { value: null, median: null, percentile: null, interpretation: '資料不足' },
+      },
+      limitations: [],
+    };
+    const table = buildPeerPercentileDetailTable({
+      fundamentals: { ...fundamentals, limitations: [] },
+      peerComparison: partialPeerComparison,
+      financialStructurePeerComparison: partialStructure,
+    });
+
+    expect(table.basis).toBe('sector');
+    expect(table.peerSampleSize).toBe(0);
+    expect(table.rows[0]).toMatchObject({
+      basis: 'sector', peerSampleSize: 0, median: null, percentile: null,
+      interpretation: '資料不足，暫不做同組比較。',
+      limitations: ['資料不足，暫不做同組比較'],
+    });
+    expect(table.rows[6]).toMatchObject({
+      basis: 'sector', peerSampleSize: 0, value: null, median: null, percentile: null,
+      limitations: ['資料不足，暫不做同組比較'],
+    });
+  });
+
+  it('deduplicates empty limitation entries and caps the combined list', () => {
+    const table = buildPeerPercentileDetailTable({
+      fundamentals: { ...fundamentals, limitations: ['shared', 'fundamental'] },
+      peerComparison: { ...peerComparison, limitations: ['shared', '', 'peer'] },
+      financialStructurePeerComparison: { ...financialStructurePeerComparison, limitations: ['structure'] },
+      fundamentalMatrix: {
+        ...fundamentalMatrix,
+        limitations: ['matrix-1', 'matrix-2', 'matrix-3', 'matrix-4', 'matrix-5', 'matrix-6', 'matrix-7', 'matrix-8'],
+      },
+    });
+
+    expect(table.limitations).toEqual([
+      'matrix-1', 'matrix-2', 'matrix-3', 'matrix-4', 'matrix-5', 'matrix-6', 'matrix-7', 'matrix-8',
+    ]);
+  });
+
+  it('uses non-ETF fallback wording and a caller-provided limitation', () => {
+    const defaultTable = buildUnknownPeerPercentileDetailTable();
+    const customTable = buildUnknownPeerPercentileDetailTable({ isETF: false, limitation: 'Custom limitation.' });
+
+    expect(defaultTable.limitations).toEqual([
+      '資料不足，暫不做同組百分位判讀。',
+      '同組百分位資料不足，已降級為保守觀察。',
+    ]);
+    expect(defaultTable.rows.every((row) => row.interpretation === '資料不足，暫不做同組比較。')).toBe(true);
+    expect(customTable.limitations).toEqual(['資料不足，暫不做同組百分位判讀。', 'Custom limitation.']);
+  });
 });

@@ -4,8 +4,8 @@
 
 import { P26F3_2_ACCEPTED_FORMATS, P26F3_2_FORBIDDEN_FIELDS, P26F3_2_CLASSIFICATIONS } from "./P26F32ManualSourceAcquisitionContractUtils";
 
-const fs = require("fs") as typeof import("fs");
-const path = require("path") as typeof import("path");
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 
 export type ManualSourceFormat = "csv" | "json" | "jsonl" | "unknown";
 

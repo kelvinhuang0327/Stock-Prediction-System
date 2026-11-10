@@ -72,6 +72,32 @@ interface LlmUsageData {
   byRole: Record<string, LlmRoleSummary>;
 }
 
+interface LlmAuditPanelData {
+  today: AuditTodayData | null;
+  recent: AuditRecord[] | null;
+  usage: LlmUsageData | null;
+}
+
+async function fetchLlmAuditPanelData(): Promise<LlmAuditPanelData> {
+  const [todayRes, recentRes, usageRes] = await Promise.all([
+    fetch('/api/orchestrator/llm-audit/today'),
+    fetch('/api/orchestrator/llm-audit/recent?limit=30'),
+    fetch('/api/orchestrator/llm-usage/today'),
+  ]);
+
+  const [todayData, recentData, usageData] = await Promise.all([
+    todayRes.ok ? todayRes.json() as Promise<AuditTodayData & { ok: boolean }> : null,
+    recentRes.ok ? recentRes.json() as Promise<{ ok: boolean; records: AuditRecord[] }> : null,
+    usageRes.ok ? usageRes.json() as Promise<LlmUsageData & { ok: boolean }> : null,
+  ]);
+
+  return {
+    today: todayData?.ok ? todayData : null,
+    recent: recentData?.ok ? recentData.records : null,
+    usage: usageData?.ok ? usageData : null,
+  };
+}
+
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 function fmtTime(iso: string): string {
@@ -134,6 +160,12 @@ export function LlmAuditPanel({ llmMode, schedulerEnabled }: Readonly<LlmAuditPa
   const [llmUsageLoading, setLlmUsageLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const applyData = useCallback((data: LlmAuditPanelData) => {
+    if (data.today) setAuditToday(data.today);
+    if (data.recent) setAuditRecent(data.recent);
+    if (data.usage) setLlmUsage(data.usage);
+  }, []);
+
   const load = useCallback(async () => {
     setError(null);
     setAuditTodayLoading(true);
@@ -141,40 +173,35 @@ export function LlmAuditPanel({ llmMode, schedulerEnabled }: Readonly<LlmAuditPa
     setLlmUsageLoading(true);
 
     try {
-      const [todayRes, recentRes, usageRes] = await Promise.all([
-        fetch('/api/orchestrator/llm-audit/today'),
-        fetch('/api/orchestrator/llm-audit/recent?limit=30'),
-        fetch('/api/orchestrator/llm-usage/today'),
-      ]);
-
-      if (todayRes.ok) {
-        const data = await todayRes.json() as AuditTodayData & { ok: boolean };
-        if (data.ok) setAuditToday(data);
-      }
-      setAuditTodayLoading(false);
-
-      if (recentRes.ok) {
-        const data = await recentRes.json() as { ok: boolean; records: AuditRecord[] };
-        if (data.ok) setAuditRecent(data.records);
-      }
-      setAuditRecentLoading(false);
-
-      if (usageRes.ok) {
-        const data = await usageRes.json() as LlmUsageData & { ok: boolean };
-        if (data.ok) setLlmUsage(data);
-      }
-      setLlmUsageLoading(false);
+      applyData(await fetchLlmAuditPanelData());
     } catch (e) {
       setError(e instanceof Error ? e.message : '載入失敗');
+    } finally {
       setAuditTodayLoading(false);
       setAuditRecentLoading(false);
       setLlmUsageLoading(false);
     }
-  }, []);
+  }, [applyData]);
 
   useEffect(() => {
-    void load();
-  }, [load]);
+    let isActive = true;
+    fetchLlmAuditPanelData()
+      .then((data) => {
+        if (!isActive) return;
+        applyData(data);
+        setAuditTodayLoading(false);
+        setAuditRecentLoading(false);
+        setLlmUsageLoading(false);
+      })
+      .catch((e: unknown) => {
+        if (!isActive) return;
+        setError(e instanceof Error ? e.message : '載入失敗');
+        setAuditTodayLoading(false);
+        setAuditRecentLoading(false);
+        setLlmUsageLoading(false);
+      });
+    return () => { isActive = false; };
+  }, [applyData]);
 
   const modeColor =
     llmMode === 'hard-off'
@@ -202,7 +229,13 @@ export function LlmAuditPanel({ llmMode, schedulerEnabled }: Readonly<LlmAuditPa
           </span>
         </div>
         <button
-          onClick={() => { void load(); }}
+          onClick={() => {
+            setError(null);
+            setAuditTodayLoading(true);
+            setAuditRecentLoading(true);
+            setLlmUsageLoading(true);
+            void load();
+          }}
           className="ml-auto px-3 py-1 text-xs rounded bg-slate-700 hover:bg-slate-600 text-slate-300 transition-colors"
         >
           重新整理

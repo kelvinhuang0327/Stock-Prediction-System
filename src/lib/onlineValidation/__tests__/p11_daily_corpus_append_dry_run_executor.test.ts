@@ -396,7 +396,7 @@ describe('validateDailyCorpusAppendDryRunResult', () => {
             ...DEFAULT_OPTIONS(tmpPath),
             append: false,
         });
-        (result as any).dryRun = false;
+        Reflect.set(result, 'dryRun', false);
 
         const validation = validateDailyCorpusAppendDryRunResult(result);
         expect(validation.validationStatus).toBe('FAIL');
@@ -413,7 +413,7 @@ describe('validateDailyCorpusAppendDryRunResult', () => {
             ...DEFAULT_OPTIONS(tmpPath),
             append: false,
         });
-        (result as any).injectedClaim = 'guaranteed outperform profit';
+        Reflect.set(result, 'injectedClaim', 'guaranteed outperform profit');
 
         const validation = validateDailyCorpusAppendDryRunResult(result);
         expect(validation.validationStatus).toBe('FAIL');

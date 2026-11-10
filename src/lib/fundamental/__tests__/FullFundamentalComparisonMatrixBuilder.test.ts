@@ -139,4 +139,123 @@ describe('FullFundamentalComparisonMatrixBuilder', () => {
     expect(fundamentalMatrixStatusLabel('pressure')).toBe('承壓');
     expect(fundamentalMatrixStatusLabel('unknown')).toBe('資料不足');
   });
+
+  it('returns unknown sections when company growth, valuation, and peer data are absent', () => {
+    const matrix = buildFullFundamentalComparisonMatrix({
+      fundamentals: {
+        ...fundamentals,
+        revenue: { ...fundamentals.revenue, yoyGrowth: null },
+        profitability: { ...fundamentals.profitability, eps: null, epsQoQDelta: null },
+        valuation: { ...fundamentals.valuation, pe: null, pb: null },
+      },
+      peerComparison: null,
+      overlay: { ...overlay, riskLevel: 'unknown', strengths: [], pressures: [] },
+      cashflowLeverageOverlay: { ...cashflowLeverageOverlay, riskLevel: 'unknown' },
+      capitalEfficiencyOverlay: { ...capitalEfficiencyOverlay, riskLevel: 'unknown' },
+      financialStructurePeerComparison: null,
+    });
+
+    expect(matrix.sections.growth.status).toBe('unknown');
+    expect(matrix.sections.valuation.status).toBe('unknown');
+    expect(matrix.sections.peerPosition).toMatchObject({
+      status: 'unknown', basis: undefined,
+      limitations: ['缺少可靠 peer group，暫無法建立同組位置矩陣。'],
+    });
+    expect(matrix.overallSummary).toContain('資料不足');
+  });
+
+  it('summarizes an all-strong matrix and handles a peer comparison without a usable group label', () => {
+    const matrix = buildFullFundamentalComparisonMatrix({
+      fundamentals: {
+        ...fundamentals,
+        revenue: { ...fundamentals.revenue, yoyGrowth: 20 },
+        profitability: { ...fundamentals.profitability, epsQoQDelta: 1 },
+      },
+      peerComparison: {
+        ...peerComparison,
+        strengths: ['EPS 同組表現偏強'],
+        cautions: [],
+      },
+      overlay: { ...overlay, riskLevel: 'low', pressures: [], strengths: ['營收成長', '估值相對合理'] },
+      cashflowLeverageOverlay: { ...cashflowLeverageOverlay, riskLevel: 'low' },
+      capitalEfficiencyOverlay: { ...capitalEfficiencyOverlay, riskLevel: 'low' },
+      financialStructurePeerComparison: {
+        ...financialStructurePeerComparison,
+        basis: 'none', groupLabel: '', strengths: ['穩健'], pressures: [],
+      },
+    });
+
+    expect(matrix.sections.growth.status).toBe('strong');
+    expect(matrix.sections.valuation.status).toBe('strong');
+    expect(matrix.sections.financialStructure).toMatchObject({ status: 'strong', basis: undefined });
+    expect(matrix.sections.peerPosition.status).toBe('unknown');
+    expect(matrix.overallSummary).toContain('偏強');
+  });
+
+  it('summarizes an all-pressure matrix and preserves pressure warnings', () => {
+    const matrix = buildFullFundamentalComparisonMatrix({
+      fundamentals: {
+        ...fundamentals,
+        revenue: { ...fundamentals.revenue, yoyGrowth: -3 },
+        profitability: { ...fundamentals.profitability, epsQoQDelta: -1 },
+        keyRisks: ['營收下滑', 'EPS 轉弱'],
+      },
+      peerComparison: {
+        ...peerComparison,
+        strengths: [],
+        cautions: ['PE 偏高', '殖利率偏低'],
+      },
+      overlay: { ...overlay, riskLevel: 'high', pressures: ['營收成長轉弱', '估值偏高'], strengths: [] },
+      cashflowLeverageOverlay: { ...cashflowLeverageOverlay, riskLevel: 'high' },
+      capitalEfficiencyOverlay: { ...capitalEfficiencyOverlay, riskLevel: 'elevated' },
+      financialStructurePeerComparison: {
+        ...financialStructurePeerComparison,
+        strengths: [], pressures: ['槓桿偏高'],
+      },
+    });
+
+    expect(matrix.sections.growth.status).toBe('pressure');
+    expect(matrix.sections.valuation.status).toBe('pressure');
+    expect(matrix.sections.peerPosition.status).toBe('pressure');
+    expect(matrix.overallSummary).toContain('承壓');
+  });
+
+  it('uses the neutral overall summary when all available sections are balanced', () => {
+    const matrix = buildFullFundamentalComparisonMatrix({
+      fundamentals: {
+        ...fundamentals,
+        revenue: { ...fundamentals.revenue, yoyGrowth: 5 },
+        profitability: { ...fundamentals.profitability, epsQoQDelta: 0 },
+        keySignals: [], keyRisks: [],
+        valuation: { ...fundamentals.valuation, pe: null, pb: null },
+      },
+      peerComparison: null,
+      overlay: { ...overlay, riskLevel: 'moderate', strengths: [], pressures: [] },
+      cashflowLeverageOverlay: { ...cashflowLeverageOverlay, riskLevel: 'moderate' },
+      capitalEfficiencyOverlay: { ...capitalEfficiencyOverlay, riskLevel: 'moderate' },
+      financialStructurePeerComparison: {
+        ...financialStructurePeerComparison,
+        basis: 'sector', groupLabel: '電子業', dataCoverage: 'full',
+        strengths: ['中性觀察'], pressures: ['中性觀察'],
+      },
+    });
+
+    expect(matrix.sections.growth.status).toBe('neutral');
+    expect(matrix.sections.valuation.status).toBe('unknown');
+    expect(matrix.sections.peerPosition.status).toBe('neutral');
+    expect(matrix.overallSummary).toContain('多數面向中性');
+  });
+
+  it('uses the ETF summary when building a full ETF matrix', () => {
+    const matrix = buildFullFundamentalComparisonMatrix({
+      fundamentals: { ...fundamentals, kind: 'etf' },
+      peerComparison: null,
+      overlay,
+      cashflowLeverageOverlay,
+      capitalEfficiencyOverlay,
+      financialStructurePeerComparison: null,
+    });
+    expect(matrix.sections.growth.status).toBe('unknown');
+    expect(matrix.overallSummary).toContain('ETF');
+  });
 });

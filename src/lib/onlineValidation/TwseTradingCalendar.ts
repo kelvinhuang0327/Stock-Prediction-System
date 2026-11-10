@@ -102,6 +102,10 @@ const HOLIDAY_SET = new Set<string>(TWSE_STATIC_HOLIDAYS);
 
 function assertIsoDate(input: string): void {
     if (!ISO_DATE_RE.test(input)) throw new InvalidTwseDateError(input);
+    const parsed = new Date(`${input}T12:00:00Z`);
+    if (!Number.isFinite(parsed.getTime()) || parsed.toISOString().slice(0, 10) !== input) {
+        throw new InvalidTwseDateError(input);
+    }
 }
 
 /** Returns day-of-week: 0=Sun, 1=Mon, ..., 6=Sat */
@@ -155,7 +159,7 @@ export function isTwseTradingDay(date: string): boolean {
  */
 export function addTwseTradingDays(startDate: string, tradingDays: number): string {
     assertIsoDate(startDate);
-    if (tradingDays <= 0) throw new InvalidHorizonError(tradingDays);
+    if (!Number.isInteger(tradingDays) || tradingDays <= 0) throw new InvalidHorizonError(tradingDays);
 
     let count = 0;
     let current = startDate;
@@ -207,7 +211,7 @@ export function buildOutcomeTargetDatePlan(
     const targets: OutcomeTargetDate[] = [];
 
     for (const h of horizons) {
-        if (h <= 0) {
+        if (!Number.isInteger(h) || h <= 0) {
             messages.push(`FAIL: horizonDays must be > 0, got ${h}`);
             continue;
         }

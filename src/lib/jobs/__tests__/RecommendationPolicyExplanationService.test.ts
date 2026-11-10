@@ -519,4 +519,114 @@ describe('RecommendationPolicyExplanationService', () => {
     expect(result.explanations).toHaveLength(0);
     expect(result.limitations.some((item) => item.includes('No recommendation explanation could be derived'))).toBe(true);
   });
+
+  test('explains every recommendation type and summarizes severities and repeated jobs', async () => {
+    const types = [
+      'cooldown_increase',
+      'cooldown_decrease',
+      'review_monitor_frequency',
+      'review_scheduler_reliability',
+      'consider_severity_escalation',
+      'consider_severity_downgrade',
+      'no_change_recommended',
+    ] as const;
+    const severities = ['critical', 'warning', 'info', 'critical', 'warning', 'info', 'warning'] as const;
+    const jobs = ['autonomous:monitor', 'autonomous:monitor', 'daily', 'weekly', 'monthly', 'quarterly', 'yearly'];
+    const { service } = makeService({
+      recommendations: types.map((recommendationType, index) => makeRecommendation({
+        recommendationType,
+        severity: severities[index],
+        targetJob: jobs[index],
+      })),
+    });
+
+    const result = await service.build({ limit: 10 });
+
+    expect(result.explanations).toHaveLength(5);
+    expect(result.summary).toMatchObject({
+      total: 5,
+      critical: 2,
+      warning: 2,
+      info: 1,
+      byType: Object.fromEntries(types.slice(0, 5).map((type) => [type, 1])),
+    });
+    expect(result.summary.topJobs).toHaveLength(4);
+    expect(result.summary.topJobs[0]).toEqual({ jobName: 'autonomous:monitor', explanationCount: 2 });
+    expect(result.explanations.find((item) => item.recommendationType === 'cooldown_decrease')?.evidence[0].key)
+      .toBe('limited_signal');
+
+    const { service: remainingService } = makeService({
+      recommendations: types.slice(5).map((recommendationType, index) => makeRecommendation({
+        recommendationType,
+        severity: severities[index + 5],
+        targetJob: jobs[index + 5],
+      })),
+    });
+    const remaining = await remainingService.build({ limit: 2 });
+    expect(remaining.explanations.map((item) => item.recommendationType)).toEqual(types.slice(5));
+  });
+
+  test('covers cadence, severity, and no-change evidence for sparse or oscillating histories', async () => {
+    const { service } = makeService({
+      recommendations: [
+        makeRecommendation({ recommendationType: 'review_monitor_frequency' }),
+        makeRecommendation({ recommendationType: 'no_change_recommended', targetJob: 'daily', severity: 'info' }),
+        makeRecommendation({ recommendationType: 'consider_severity_escalation', targetJob: 'weekly', severity: 'critical' }),
+      ],
+      historyRows: [{ targetFamily: 'delayed_run', occurrenceCount: 1, status: 'resolved', lastDetectedAt: '2026-03-31T10:00:00.000Z' }],
+      trendDirection: 'oscillating',
+      lifecycleRows: [{ currentStatus: 'resolved', resolvedCount: 0, occurrenceCount: 1, reoccurCount: 0, lifecycleSummary: 'Resolved once.' }],
+      noisyBreakdown: {
+        topFamily: { family: 'delayed_run', familyLabel: 'Delayed run', avgResolveTimeHours: 4, criticalRatio: 0.75, noisyScore: 11 },
+        limitations: ['noisy fixture limitation'],
+      },
+    });
+
+    const result = await service.build();
+    const byType = new Map(result.explanations.map((item) => [item.recommendationType, item]));
+
+    expect(byType.get('review_monitor_frequency')?.evidence.map((item) => item.key)).toEqual(
+      expect.arrayContaining(['cadence_mismatch', 'missed_or_delayed']),
+    );
+    expect(byType.get('no_change_recommended')?.evidence.map((item) => item.key)).toEqual(
+      expect.arrayContaining(['acceptable_noise', 'low_repeat']),
+    );
+    expect(byType.get('consider_severity_escalation')?.evidence.map((item) => item.key)).toEqual(
+      expect.arrayContaining(['critical_heavy', 'slow_recovery']),
+    );
+    expect(byType.get('consider_severity_escalation')?.limitations).toContain('noisy fixture limitation');
+  });
+
+  test('uses policy and health fallbacks when optional data providers fail', async () => {
+    const { service, policyLoader, jobHealthService, noisySourceBreakdownService } = makeService({
+      recommendations: [makeRecommendation({ recommendationType: 'cooldown_decrease' })],
+      historyRows: [],
+      trendDirection: 'insufficient',
+      lifecycleRows: [],
+    });
+    policyLoader.mockRejectedValue(new Error('policy unavailable'));
+    jobHealthService.evaluate.mockRejectedValue(new Error('health unavailable'));
+    noisySourceBreakdownService.build.mockRejectedValue(new Error('noise unavailable'));
+
+    const result = await service.build({ limit: 0 });
+
+    expect(result.explanations).toHaveLength(1);
+    expect(result.explanations[0].evidence).toEqual([
+      expect.objectContaining({ key: 'limited_signal', tone: 'neutral' }),
+    ]);
+    expect(result.explanations[0].status).toBe('active');
+    expect(result.explanations[0].lastSeenAt).toBe(result.generatedAt);
+    expect(result.policy.source).toBe('persisted');
+  });
+
+  test('clamps recommendation limits before calling the recommendation engine', async () => {
+    const { service, recommendationEngine } = makeService();
+
+    await service.build({ limit: 0 });
+    await service.build({ limit: 2.9 });
+    await service.build({ limit: 99 });
+    await service.build({ limit: Number.POSITIVE_INFINITY });
+
+    expect(recommendationEngine.build.mock.calls.map(([input]) => input.limit)).toEqual([1, 2, 5, 4]);
+  });
 });

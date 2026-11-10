@@ -9,16 +9,10 @@ import {
   saveAutonomousAlertPolicyState,
 } from '../AutonomousAlertPolicyStore';
 
-const hasSystemSettingPersistence = Boolean(
-  prisma.systemSetting?.findUnique && prisma.systemSetting?.upsert && prisma.systemSetting?.delete,
-);
-
 async function cleanup() {
-  if (prisma.systemSetting?.deleteMany) {
-    await prisma.systemSetting.deleteMany({
-      where: { key: AUTONOMOUS_ALERT_POLICY_SETTING_KEY },
-    });
-  }
+  await prisma.orchestratorSetting.deleteMany({
+    where: { key: AUTONOMOUS_ALERT_POLICY_SETTING_KEY },
+  });
 }
 
 describe('AutonomousAlertPolicyStore', () => {
@@ -66,15 +60,10 @@ describe('AutonomousAlertPolicyStore', () => {
     expect(saved.config.recoveryResetEnabled).toBe(false);
 
     const loaded = await loadAutonomousAlertPolicyState();
-    if (hasSystemSettingPersistence) {
-      expect(loaded.source).toBe('persisted');
-      expect(loaded.config.severityCooldownHours.critical).toBe(4);
-      expect(loaded.config.severityCooldownHours.warning).toBe(4);
-      expect(loaded.config.infoNotificationEnabled).toBe(true);
-    } else {
-      expect(loaded.source).toBe('default');
-      expect(loaded.config).toEqual(DEFAULT_AUTONOMOUS_ALERT_POLICY);
-    }
+    expect(loaded.source).toBe('persisted');
+    expect(loaded.config.severityCooldownHours.critical).toBe(4);
+    expect(loaded.config.severityCooldownHours.warning).toBe(4);
+    expect(loaded.config.infoNotificationEnabled).toBe(true);
   });
 
   test('resets settings to defaults', async () => {

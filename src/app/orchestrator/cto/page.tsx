@@ -8,6 +8,8 @@ import { getExecutionPolicyMode } from '@/lib/agent-orchestrator/executionPolicy
 import { classifySignalState } from '@/lib/agent-orchestrator/signalStateClassifier';
 import { prisma } from '@/lib/prisma';
 
+export const dynamic = 'force-dynamic';
+
 const CTO_FLOW = [
   {
     step: '1. Intake',

@@ -208,7 +208,7 @@ describe('P26F32 Manual MonthlyRevenue Source Scanner Utils', () => {
     });
     it('source does not use external npm imports', () => {
       const src = fs.readFileSync(path.join(__dirname, '../P26F32ManualMonthlyRevenueSourceScannerUtils.ts'), 'utf8');
-      expect(src).not.toMatch(/^import\s+.*from\s+['"][^.]/m);
+      expect(src).not.toMatch(/^import\s+.*from\s+['"](?!\.|node:)/m);
     });
     it('source does not write to DB', () => {
       const src = fs.readFileSync(path.join(__dirname, '../P26F32ManualMonthlyRevenueSourceScannerUtils.ts'), 'utf8');

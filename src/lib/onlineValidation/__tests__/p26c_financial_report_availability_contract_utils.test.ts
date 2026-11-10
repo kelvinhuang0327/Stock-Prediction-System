@@ -1,3 +1,4 @@
+import * as fs from 'node:fs';
 import {
   buildFinancialReportPitContractV0,
   validateFinancialReportContractV0,
@@ -150,12 +151,12 @@ describe('P26C FinancialReport Availability Contract v0', () => {
 
   describe('source file purity', () => {
     it('contract source has no Math.random calls', () => {
-      const src = require('fs').readFileSync('src/lib/onlineValidation/P26CFinancialReportAvailabilityContractUtils.ts', 'utf8');
+      const src = fs.readFileSync('src/lib/onlineValidation/P26CFinancialReportAvailabilityContractUtils.ts', 'utf8');
       expect(src).not.toMatch(/Math\.random\(\)/);
     });
 
     it('contract source has no external imports', () => {
-      const src = require('fs').readFileSync('src/lib/onlineValidation/P26CFinancialReportAvailabilityContractUtils.ts', 'utf8');
+      const src = fs.readFileSync('src/lib/onlineValidation/P26CFinancialReportAvailabilityContractUtils.ts', 'utf8');
       expect(src).not.toMatch(/^import.*from ['"][^.]/m);
     });
   });

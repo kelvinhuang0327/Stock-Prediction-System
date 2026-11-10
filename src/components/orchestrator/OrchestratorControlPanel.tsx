@@ -144,23 +144,21 @@ function fmtDateTime(iso?: string | null): string {
 }
 
 function useCountdown(nextRunAt: string | null | undefined): string {
-  const [display, setDisplay] = useState('—');
+  const [now, setNow] = useState(() => Date.now());
 
   useEffect(() => {
-    if (!nextRunAt) { setDisplay('—'); return; }
-    const tick = () => {
-      const diff = new Date(nextRunAt).getTime() - Date.now();
-      if (diff <= 0) { setDisplay('即將執行'); return; }
-      const m = Math.floor(diff / 60000);
-      const s = Math.floor((diff % 60000) / 1000);
-      setDisplay(`${m}m ${String(s).padStart(2, '0')}s`);
-    };
-    tick();
-    const id = setInterval(tick, 1000);
+    if (!nextRunAt) return;
+    const id = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(id);
   }, [nextRunAt]);
 
-  return display;
+  if (!nextRunAt) return '—';
+  const diff = new Date(nextRunAt).getTime() - now;
+  if (!Number.isFinite(diff)) return '—';
+  if (diff <= 0) return '即將執行';
+  const minutes = Math.floor(diff / 60000);
+  const seconds = Math.floor((diff % 60000) / 1000);
+  return `${minutes}m ${String(seconds).padStart(2, '0')}s`;
 }
 
 // ── Collapsible section helper ────────────────────────────────────────────────

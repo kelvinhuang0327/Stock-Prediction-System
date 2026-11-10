@@ -29,7 +29,11 @@ jest.mock('node:child_process', () => {
   return { execFile: mockExecFile };
 });
 
-const { evaluateExecutionPolicy, getPolicySkipMessage, recordLlmExecution } = require('../../src/lib/agent-orchestrator/llmExecutionPolicy');
+import {
+  evaluateExecutionPolicy,
+  getPolicySkipMessage,
+  recordLlmExecution,
+} from '../../src/lib/agent-orchestrator/llmExecutionPolicy';
 
 test('evaluateExecutionPolicy parses python JSON output', async () => {
   const res = await evaluateExecutionPolicy({ caller: 'ai_service' });

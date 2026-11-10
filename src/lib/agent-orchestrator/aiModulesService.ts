@@ -2,7 +2,7 @@ import { getPolicySkipMessage, type LlmSkipReason } from './llmExecutionPolicy';
 import type { WorkerExecutionInput, WorkerExecutionOutput } from './providers';
 
 export function buildPolicyBlockedWorkerOutput(
-  input: WorkerExecutionInput,
+  input: Pick<WorkerExecutionInput, 'workerProvider' | 'taskId'>,
   skipReason: LlmSkipReason | null,
 ): WorkerExecutionOutput {
   const message = getPolicySkipMessage(skipReason);

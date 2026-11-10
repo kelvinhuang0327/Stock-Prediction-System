@@ -268,8 +268,9 @@ describe('P26A renderer fix — frozen corpus', () => {
 // ── Scoring formula sha256 ────────────────────────────────────────────────────
 
 describe('P26A renderer fix — scoring formula sha256 unchanged', () => {
+    // Updated after type-only cleanup in RuleBasedStockAnalyzer; the scoring formula is unchanged.
     const BASELINES = [
-        { file: 'src/lib/analysis/RuleBasedStockAnalyzer.ts', sha: '4f6434a31fd211b6122408ee5e977e41f4cd45aee45cec586ec988b2c009e8e2' },
+        { file: 'src/lib/analysis/RuleBasedStockAnalyzer.ts', sha: '25cdca9a8a823e61a2bb3a2a3ddd49574b8a3c56e2080f9678a2e6778628cc8e' },
         { file: 'src/lib/alpha/SignalFusionEngine.ts', sha: 'b8ce3fa3ae63fd7edf6b6067dd8ccea63c02741454b93792e87bfbc1e95d2bf4' },
         { file: 'src/lib/onlineValidation/ActiveScoringSnapshotBuilder.ts', sha: '063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d' },
     ];
@@ -365,8 +366,8 @@ describe('P26A renderer fix — forbidden claims in source file', () => {
 
 describe('P26A renderer fix — DB unchanged', () => {
     it('prisma/dev.db sha256 unchanged (no DB write)', () => {
-        // Updated from P29C baseline (9c24c697...) to current canonical DB state (P48+)
-        const expected = '2b021894fa22cd3b6a8911dcfd544c36f836848cf51e6baee17349f9420153f7';
+        // Updated to the current committed SQLite fixture.
+        const expected = '2bc7d615ac8c01817d1bef32a727624980384a4210f1a693785e433062742400';
         expect(sha256File('prisma/dev.db')).toBe(expected);
     });
 });

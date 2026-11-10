@@ -92,6 +92,16 @@ function calculateEMA(values: number[], period: number): number {
   return ema;
 }
 
+function calculateEMASeries(values: number[], period: number): number[] {
+  if (values.length === 0) return [];
+  const k = 2 / (period + 1);
+  const result = [values[0]];
+  for (let i = 1; i < values.length; i++) {
+    result.push(values[i] * k + result[i - 1] * (1 - k));
+  }
+  return result;
+}
+
 function calculateKD(
   closes: number[],
   highs: number[],
@@ -161,10 +171,11 @@ export function calculateTechnicalSignals(
   const rsi = calculateRSI(closes, 14);
 
   // MACD
-  const ema12 = calculateEMA(closes, 12);
-  const ema26 = calculateEMA(closes, 26);
-  const macdLine = ema12 - ema26;
-  const signalLine = calculateEMA(closes.slice(-9).map(() => macdLine), 9);
+  const ema12 = calculateEMASeries(closes, 12);
+  const ema26 = calculateEMASeries(closes, 26);
+  const macdSeries = ema12.map((value, index) => value - ema26[index]);
+  const macdLine = macdSeries[macdSeries.length - 1] ?? 0;
+  const signalLine = calculateEMA(macdSeries.slice(-9), 9);
   const macdHistogram = macdLine - signalLine;
 
   // Bollinger Bands (20-day, 2σ)
@@ -270,14 +281,23 @@ export function calculateTechnicalSignals(
   else if (bullishCount > bearishCount) signal = 'WATCH';
 
   // ── Support / Resistance ──
-  const supports = [bbLower, ma60, ma20].filter((v): v is number => v !== null).sort((a, b) => b - a);
-  const supportPrice = supports.find(s => s < currentPrice) ?? currentPrice * 0.95;
+  const supports = [
+    { price: bbLower, label: '布林下軌' },
+    ...(ma60 !== null ? [{ price: ma60, label: 'MA60' }] : []),
+    { price: ma20, label: 'MA20' },
+  ].filter(level => level.price < currentPrice).sort((a, b) => b.price - a.price);
+  const supportLevel = supports[0];
+  const supportPrice = supportLevel?.price ?? currentPrice * 0.95;
+  const supportLabel = supportLevel?.label ?? 'MA20';
 
-  const resistances = [bbUpper, ma20, ma60].filter((v): v is number => v !== null).sort((a, b) => a - b);
-  const resistPrice = resistances.find(res => res > currentPrice) ?? currentPrice * 1.05;
-
-  const supportLabel = ma60 && supportPrice === r(ma60) ? 'MA60' : supportPrice === r(bbLower) ? '布林下軌' : 'MA20';
-  const resistLabel = resistPrice === r(bbUpper) ? '布林上軌' : 'MA';
+  const resistances = [
+    { price: bbUpper, label: '布林上軌' },
+    { price: ma20, label: 'MA' },
+    ...(ma60 !== null ? [{ price: ma60, label: 'MA' }] : []),
+  ].filter(level => level.price > currentPrice).sort((a, b) => a.price - b.price);
+  const resistanceLevel = resistances[0];
+  const resistPrice = resistanceLevel?.price ?? currentPrice * 1.05;
+  const resistLabel = resistanceLevel?.label ?? 'MA';
 
   return {
     symbol,

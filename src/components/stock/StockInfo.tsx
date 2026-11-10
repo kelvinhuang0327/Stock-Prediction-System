@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { ArrowUp, ArrowDown, DollarSign, PieChart, Activity, Bell, Plus, Check, RefreshCw } from 'lucide-react';
 import { PriceAlertDialog, PriceAlert } from '@/components/watchlist/PriceAlertDialog';
@@ -30,13 +30,16 @@ export interface StockInfoProps {
     } | null;
 }
 
+type StockStats = NonNullable<StockInfoProps['data']> & { symbol: string };
+
 export function StockInfo({ symbol, data }: StockInfoProps) {
-    // Initial state from props (Snapshot)
-    const [stats, setStats] = useState(data ? { ...data, symbol } : null);
+    const snapshot = useMemo<StockStats | null>(() => data ? { ...data, symbol } : null, [data, symbol]);
+    const [realtimeStats, setRealtimeStats] = useState<{ symbol: string; stats: StockStats } | null>(null);
     const [isLive, setIsLive] = useState(false);
     const [lastUpdated, setLastUpdated] = useState<string | null>(null);
 
     // Initial fallback
+    const stats = realtimeStats?.symbol === symbol ? realtimeStats.stats : snapshot;
     const displayStats = stats || {
         symbol: symbol,
         name: 'Loading...',
@@ -58,12 +61,6 @@ export function StockInfo({ symbol, data }: StockInfoProps) {
 
     // Polling effect
     useEffect(() => {
-        // If initial data provided, set stats
-        if (data) {
-            setStats({ ...data, symbol });
-            setLastUpdated(new Date().toLocaleTimeString());
-        }
-
         const fetchRealTime = async () => {
             try {
                 const res = await fetch(`/api/stocks/${symbol}/realtime`);
@@ -75,28 +72,32 @@ export function StockInfo({ symbol, data }: StockInfoProps) {
                     setIsLive(true);
                     setLastUpdated(rt.tradeTime || new Date().toLocaleTimeString());
 
-                    setStats(prev => {
-                        if (!prev) return prev;
+                    setRealtimeStats(current => {
+                        const previous = current?.symbol === symbol ? current.stats : snapshot;
+                        if (!previous) return current;
                         // Calculate change based on previous close (if available from snapshot)
                         // Note: MIS API 'z' might be 0 if no recent trade, handle that
-                        const currentPrice = rt.close > 0 ? rt.close : (rt.bestBidPrice?.[0] || prev.price);
+                        const currentPrice = rt.close > 0 ? rt.close : (rt.bestBidPrice?.[0] || previous.price);
 
                         // If we have no price, don't update
-                        if (currentPrice <= 0) return prev;
+                        if (currentPrice <= 0) return current;
 
-                        const change = currentPrice - prev.prevClose;
-                        const changePercent = prev.prevClose > 0 ? (change / prev.prevClose) * 100 : 0;
+                        const change = currentPrice - previous.prevClose;
+                        const changePercent = previous.prevClose > 0 ? (change / previous.prevClose) * 100 : 0;
 
                         return {
-                            ...prev,
-                            price: currentPrice,
-                            change: change,
-                            changePercent: changePercent,
+                            symbol,
+                            stats: {
+                                ...previous,
+                                price: currentPrice,
+                                change,
+                                changePercent,
                             // Volume in MIS is accumulated total volume
-                            volume: Math.round(rt.volume / 1000), // Convert to Sheets (Zhang)?? Wait, check unit. Usually MIS v is shares.
-                            open: rt.open > 0 ? rt.open : prev.open,
-                            high: rt.high > 0 ? rt.high : prev.high,
-                            low: rt.low > 0 ? rt.low : prev.low,
+                                volume: Math.round(rt.volume / 1000), // Convert to Sheets (Zhang)?? Wait, check unit. Usually MIS v is shares.
+                                open: rt.open > 0 ? rt.open : previous.open,
+                                high: rt.high > 0 ? rt.high : previous.high,
+                                low: rt.low > 0 ? rt.low : previous.low,
+                            },
                         };
                     });
                 }
@@ -113,7 +114,7 @@ export function StockInfo({ symbol, data }: StockInfoProps) {
         fetchRealTime();
 
         return () => clearInterval(timer);
-    }, [symbol, data]); // Reset when symbol changes
+    }, [symbol, snapshot]); // Reset when symbol or snapshot changes
 
     const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
     const [isInWatchlist, setIsInWatchlist] = useState(false);

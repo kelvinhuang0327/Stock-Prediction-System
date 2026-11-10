@@ -2,33 +2,34 @@ import { useState, useEffect } from 'react';
 import { fetchStockData } from '@/lib/api';
 
 export function useStockData(symbol: string) {
-    const [data, setData] = useState<any>(null);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<Error | null>(null);
+    const [result, setResult] = useState<{ symbol: string; data: unknown; error: Error | null } | null>(null);
 
     useEffect(() => {
         let isMounted = true;
-        setLoading(true);
         fetchStockData(symbol)
-            .then((result) => {
+            .then((data) => {
                 if (isMounted) {
-                    setData(result);
-                    setError(null);
+                    setResult({ symbol, data, error: null });
                 }
             })
             .catch((err) => {
                 if (isMounted) {
-                    setError(err);
-                    setData(null);
+                    setResult({
+                        symbol,
+                        data: null,
+                        error: err instanceof Error ? err : new Error(String(err)),
+                    });
                 }
             })
-            .finally(() => {
-                if (isMounted) setLoading(false);
-            });
         return () => {
             isMounted = false;
         };
     }, [symbol]);
 
-    return { data, loading, error };
+    const currentResult = result?.symbol === symbol ? result : null;
+    return {
+        data: currentResult?.data ?? null,
+        loading: currentResult === null,
+        error: currentResult?.error ?? null,
+    };
 }

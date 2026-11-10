@@ -134,6 +134,6 @@ describe('P26F3MonthlyRevenueHistoricalSourceScannerUtils', () => {
       path.join(__dirname, '../P26F3MonthlyRevenueHistoricalSourceScannerUtils.ts'),
       'utf8'
     );
-    expect(src).not.toMatch(/^import\s+.*from\s+['"][^.]/m);
+    expect(src).not.toMatch(/^import\s+.*from\s+['"](?!\.|node:)/m);
   });
 });

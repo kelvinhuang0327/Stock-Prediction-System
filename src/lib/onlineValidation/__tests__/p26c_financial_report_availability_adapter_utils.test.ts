@@ -1,3 +1,4 @@
+import * as fs from 'node:fs';
 import {
   normalizeFinancialReport,
   resolveFinancialReportAvailabilityDate,
@@ -360,14 +361,14 @@ describe('P26C FinancialReport Availability Adapter Utils', () => {
 
   describe('no Math.random', () => {
     it('adapter source has no Math.random calls', () => {
-      const src = require('fs').readFileSync('src/lib/onlineValidation/P26CFinancialReportAvailabilityAdapterUtils.ts', 'utf8');
+      const src = fs.readFileSync('src/lib/onlineValidation/P26CFinancialReportAvailabilityAdapterUtils.ts', 'utf8');
       expect(src).not.toMatch(/Math\.random\(\)/);
     });
   });
 
   describe('no external imports', () => {
     it('adapter source has no external package imports', () => {
-      const src = require('fs').readFileSync('src/lib/onlineValidation/P26CFinancialReportAvailabilityAdapterUtils.ts', 'utf8');
+      const src = fs.readFileSync('src/lib/onlineValidation/P26CFinancialReportAvailabilityAdapterUtils.ts', 'utf8');
       expect(src).not.toMatch(/^import.*from ['"][^.]/m);
     });
   });

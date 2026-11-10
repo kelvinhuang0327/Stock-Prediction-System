@@ -68,12 +68,12 @@ describe('ManualReviewSurfaceContract — P17', () => {
     });
 
     it('PRODUCTION_READY rejected', () => {
-        const mutated = { ...surface, surfaceStatus: 'PRODUCTION_READY' as any };
+        const mutated = { ...surface, surfaceStatus: 'PRODUCTION_READY' as never };
         expect(validateManualReviewSurfaceContract(mutated).validationStatus).toBe('FAIL');
     });
 
     it('APPROVED rejected', () => {
-        const mutated = { ...surface, surfaceStatus: 'APPROVED' as any };
+        const mutated = { ...surface, surfaceStatus: 'APPROVED' as never };
         expect(validateManualReviewSurfaceContract(mutated).validationStatus).toBe('FAIL');
     });
 

@@ -189,7 +189,7 @@ export async function runCtoReviewTick(input: CtoReviewRunInput): Promise<CtoRev
       skipReason: null,
       taskId: null,
       noTaskReason: null,
-    } as any);
+    });
   } catch {
     // swallow logging errors
   }

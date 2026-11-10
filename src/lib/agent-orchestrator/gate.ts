@@ -50,9 +50,13 @@ export async function evaluateGate(input: GateInput): Promise<TaskResult> {
   const acceptanceFailed = input.acceptanceResults.some((item) => !item.passed);
 
   // Check ingest_contract for native price-analysis reports
-  const ingestability = { required: false, status: 'NOT_APPLICABLE', reportPath: null as string | null };
+  const ingestability: NonNullable<TaskResult['ingestability']> = {
+    required: false,
+    status: 'NOT_APPLICABLE',
+    reportPath: null,
+  };
   try {
-    const ingest = (input.contract && (input.contract as any).ingest_contract) || null;
+    const ingest = input.contract.ingest_contract ?? null;
     if (ingest && ingest.kind === 'price_analysis_native_report') {
       ingestability.required = true;
       const reportPath = ingest.reportPath as string;
