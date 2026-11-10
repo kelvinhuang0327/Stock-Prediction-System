@@ -1,9 +1,9 @@
-import { PrismaClient } from '@prisma/client';
+import { createPrismaClient } from '../src/lib/prismaClientFactory.cjs';
 import { readFileSync, existsSync } from 'node:fs';
 import nodePath from 'node:path';
 import { classifyQuoteFreshness } from '../src/lib/market/twTradingCalendar';
 
-const prisma = new PrismaClient();
+const prisma = createPrismaClient();
 
 async function main() {
   const now = new Date();

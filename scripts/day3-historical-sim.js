@@ -14,8 +14,8 @@
  *   - 1560 (long trend): +26% over 90 days → should hit target
  */
 
-const { PrismaClient } = require('@prisma/client');
-const p = new PrismaClient({ log: [] });
+const { createPrismaClient } = require('../src/lib/prismaClientFactory.cjs');
+const p = createPrismaClient({ log: [] });
 
 const ENTRY_DATE = '2026-01-15'; // 90+ days before latest quote
 const SLIPPAGE_PCT = 0.0016;

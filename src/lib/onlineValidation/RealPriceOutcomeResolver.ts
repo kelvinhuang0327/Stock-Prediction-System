@@ -18,7 +18,8 @@
  * Not investment advice. Not a trading system.
  */
 
-import { PrismaClient } from '@prisma/client';
+import type { PrismaClient } from '@prisma/client';
+import { createPrismaClient } from '../prismaClientFactory.cjs';
 import { addTwseTradingDays, CALENDAR_VERSION } from './TwseTradingCalendar';
 
 // ─── Constants ─────────────────────────────────────────────────────────────
@@ -172,7 +173,7 @@ export async function resolveEntryPrice(
         );
     }
 
-    const prisma = options?.prisma ?? new PrismaClient();
+    const prisma = options?.prisma ?? createPrismaClient();
     const shouldDisconnect = !options?.prisma;
 
     try {
@@ -268,7 +269,7 @@ export async function resolveOutcomePrice(
         };
     }
 
-    const prisma = options?.prisma ?? new PrismaClient();
+    const prisma = options?.prisma ?? createPrismaClient();
     const shouldDisconnect = !options?.prisma;
 
     try {
@@ -347,7 +348,7 @@ export async function buildRealPriceOutcomeBatch(
         );
     }
 
-    const prisma = options?.prisma ?? new PrismaClient();
+    const prisma = options?.prisma ?? createPrismaClient();
     const shouldDisconnect = !options?.prisma;
     const batchMessages: string[] = [];
     const entries: RealPriceOutcomeEntry[] = [];

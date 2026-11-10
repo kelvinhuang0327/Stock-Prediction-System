@@ -1,6 +1,6 @@
 // Day 3 baseline snapshot
-const { PrismaClient } = require('@prisma/client');
-const p = new PrismaClient({ log: [] });
+const { createPrismaClient } = require('../src/lib/prismaClientFactory.cjs');
+const p = createPrismaClient({ log: [] });
 
 async function main() {
   const [latestQuote, openTrades, closedFull, shadowClosed, reviews, insights, fullClosed] = await Promise.all([

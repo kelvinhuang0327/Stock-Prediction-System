@@ -9,8 +9,8 @@
  */
 'use strict';
 
-const { PrismaClient } = require('@prisma/client');
-const p = new PrismaClient({ log: [] });
+const { createPrismaClient } = require('../src/lib/prismaClientFactory.cjs');
+const p = createPrismaClient({ log: [] });
 
 async function main() {
   console.log('=== Phase 1: Contamination Cleanup ===\n');

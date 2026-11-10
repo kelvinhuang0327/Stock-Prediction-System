@@ -1,10 +1,10 @@
 const fs = require('fs');
 const path = require('path');
-const { PrismaClient } = require('@prisma/client');
+const { createPrismaClient } = require('../src/lib/prismaClientFactory.cjs');
 
 // Use local dev DB if DATABASE_URL not provided
 process.env.DATABASE_URL = process.env.DATABASE_URL || 'file:./prisma/dev.db';
-const p = new PrismaClient({ log: [] });
+const p = createPrismaClient({ log: [] });
 
 function normalizeDateStr(d) {
   if (!d) return null;

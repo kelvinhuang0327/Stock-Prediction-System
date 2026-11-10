@@ -1,8 +1,8 @@
 /**
  * Day 5 Phase 0 — Baseline Snapshot
  */
-const { PrismaClient } = require('@prisma/client');
-const p = new PrismaClient({ log: [] });
+const { createPrismaClient } = require('../src/lib/prismaClientFactory.cjs');
+const p = createPrismaClient({ log: [] });
 
 async function main() {
   console.log('\n=== DAY 5 PHASE 0: BASELINE SNAPSHOT ===\n');

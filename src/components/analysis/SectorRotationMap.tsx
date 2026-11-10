@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useState } from 'react';
-import { stockService } from '@/lib/stockService';
+import { stockService } from '@/lib/stockService.client';
 import {
     ScatterChart,
     Scatter,

@@ -4,7 +4,7 @@ import type { Stock } from '@/lib/mockData';
 
 const mockFilterStocks = jest.fn();
 
-jest.mock('@/lib/stockService', () => ({
+jest.mock('@/lib/stockService.client', () => ({
   stockService: { filterStocks: (...args: unknown[]) => mockFilterStocks(...args) },
 }));
 

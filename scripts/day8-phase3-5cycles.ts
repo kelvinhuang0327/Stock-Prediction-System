@@ -4,8 +4,8 @@
  * Confirm each cycle produces snapshot.candidateStocks > 0
  */
 import { runAutonomousCycle } from '../src/lib/autonomous/AutonomousOrchestrator';
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
+import { createPrismaClient } from '../src/lib/prismaClientFactory.cjs';
+const prisma = createPrismaClient();
 
 const SIM_DATES = [
   '2025-12-18',

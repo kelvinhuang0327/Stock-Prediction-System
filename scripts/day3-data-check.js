@@ -1,5 +1,5 @@
-const { PrismaClient } = require('@prisma/client');
-const p = new PrismaClient({ log: [] });
+const { createPrismaClient } = require('../src/lib/prismaClientFactory.cjs');
+const p = createPrismaClient({ log: [] });
 (async () => {
   const quoteCount = await p.stockQuote.count();
   const latestQ = await p.stockQuote.findFirst({ orderBy: { date: 'desc' }, select: { date: true, stockId: true } });

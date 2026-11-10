@@ -1,5 +1,5 @@
-const { PrismaClient } = require('@prisma/client');
-const p = new PrismaClient({ log: [] });
+const { createPrismaClient } = require('../src/lib/prismaClientFactory.cjs');
+const p = createPrismaClient({ log: [] });
 (async () => {
   // Find stocks with most quotes (most data)
   const stocks = await p.stockQuote.groupBy({

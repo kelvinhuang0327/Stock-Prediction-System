@@ -1,8 +1,8 @@
 /**
  * Day 4 Phase 0 — Full Baseline + Learning Quality Audit
  */
-const { PrismaClient } = require('@prisma/client');
-const p = new PrismaClient({ log: [] });
+const { createPrismaClient } = require('../src/lib/prismaClientFactory.cjs');
+const p = createPrismaClient({ log: [] });
 
 async function main() {
   console.log('\n=== PHASE 0a: DB SNAPSHOT ===\n');

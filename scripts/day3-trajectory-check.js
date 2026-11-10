@@ -2,8 +2,8 @@
  * Check price trajectories for historical trades:
  * When does each stock first hit shadow stop (-4.5% trend, -3.8% rebound) or target (+6% trend, +4.5% rebound)?
  */
-const { PrismaClient } = require('@prisma/client');
-const p = new PrismaClient({ log: [] });
+const { createPrismaClient } = require('../src/lib/prismaClientFactory.cjs');
+const p = createPrismaClient({ log: [] });
 
 const ENTRY_DATE = '2026-01-15';
 const CHECKS = [

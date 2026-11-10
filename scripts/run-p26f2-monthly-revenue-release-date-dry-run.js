@@ -2,7 +2,7 @@
 // Reads ALL MonthlyRevenue rows from DB, builds candidateReleaseDate for each.
 // NO writes to DB. NO corpus generation. NO scoring change.
 
-const { PrismaClient } = require('@prisma/client');
+const { createPrismaClient } = require('../src/lib/prismaClientFactory.cjs');
 const fs = require('fs');
 const path = require('path');
 
@@ -20,7 +20,7 @@ function inferCandidateReleaseDate(year, month) {
 }
 
 async function main() {
-  const prisma = new PrismaClient();
+  const prisma = createPrismaClient();
 
   let rows;
   try {
@@ -58,7 +58,7 @@ async function main() {
   console.log(`[P26F2] Wrote ${candidates.length} candidate rows to ${JSONL_OUT}`);
 
   // Verify DB row count unchanged (re-query)
-  const prisma2 = new PrismaClient();
+  const prisma2 = createPrismaClient();
   let afterCount;
   try {
     afterCount = await prisma2.monthlyRevenue.count();

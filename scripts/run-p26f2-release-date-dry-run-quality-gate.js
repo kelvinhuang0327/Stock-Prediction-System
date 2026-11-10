@@ -1,7 +1,7 @@
 // P26F2-HARDRESET: Dry-run Quality Gate Script
 // Validates all candidate outputs. Uses PrismaClient only for read (count).
 
-const { PrismaClient } = require('@prisma/client');
+const { createPrismaClient } = require('../src/lib/prismaClientFactory.cjs');
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
@@ -70,7 +70,7 @@ async function main() {
   let dbMonthlyRevenueCountUnchanged = false;
   let dbCountAfter = null;
   let dbWriteDetected = false;
-  const prisma = new PrismaClient();
+  const prisma = createPrismaClient();
   try {
     dbCountAfter = await prisma.monthlyRevenue.count();
     dbMonthlyRevenueCountUnchanged = dbCountAfter === PREFLIGHT_COUNT;

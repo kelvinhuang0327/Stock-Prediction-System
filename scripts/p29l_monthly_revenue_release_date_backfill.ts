@@ -20,7 +20,7 @@
  *   npx ts-node scripts/p29l_monthly_revenue_release_date_backfill.ts --apply  # actual write (requires CTO auth)
  */
 
-import { PrismaClient } from '@prisma/client';
+import { createPrismaClient } from '../src/lib/prismaClientFactory.cjs';
 import {
   computeBackfillRows,
   MONTHLY_REVENUE_BACKFILL_VERSION,
@@ -29,7 +29,7 @@ import {
   type NullReleaseDateRow,
 } from '../src/lib/onlineValidation/p29l/MonthlyRevenueBackfillReadiness';
 
-const prisma = new PrismaClient();
+const prisma = createPrismaClient();
 
 export interface BackfillRunOptions {
   /**

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { ArrowUp, ArrowDown, Activity, TrendingUp } from 'lucide-react';
-import { stockService } from '@/lib/stockService';
+import { stockService } from '@/lib/stockService.client';
 
 interface BreadthData {
     advancing: number;

@@ -2,8 +2,8 @@
  * Day 4 Phase 0b — Learning Quality Audit
  * Reads last 4 StrategyLearningInsights in full and assesses contamination.
  */
-const { PrismaClient } = require('@prisma/client');
-const p = new PrismaClient({ log: [] });
+const { createPrismaClient } = require('../src/lib/prismaClientFactory.cjs');
+const p = createPrismaClient({ log: [] });
 
 async function main() {
   console.log('\n=== PHASE 0b: LEARNING QUALITY AUDIT ===\n');

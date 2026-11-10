@@ -2,8 +2,8 @@
  * Day 8 Phase 0: Baseline check (5 min max)
  * Confirm the contradiction: proposals exist BUT snapshot.candidates = 0
  */
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
+import { createPrismaClient } from '../src/lib/prismaClientFactory.cjs';
+const prisma = createPrismaClient();
 
 async function main() {
   console.log('\n===== DAY 8 PHASE 0: BASELINE =====\n');

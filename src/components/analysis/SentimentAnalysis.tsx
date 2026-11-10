@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { TrendingUp, TrendingDown, AlertCircle, Smile, Frown, Meh } from 'lucide-react';
-import { stockService } from '@/lib/stockService';
+import { stockService } from '@/lib/stockService.client';
 
 interface SentimentData {
     fearGreedIndex: number;

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { ArrowLeft, TrendingUp, TrendingDown } from 'lucide-react';
 import Link from 'next/link';
-import { stockService } from '@/lib/stockService';
+import { stockService } from '@/lib/stockService.client';
 import { Stock, SECTORS } from '@/lib/mockData';
 
 export default function SectorDetailPage() {

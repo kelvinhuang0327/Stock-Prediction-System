@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { TrendingUp, TrendingDown, ArrowRight } from 'lucide-react';
-import { stockService } from '@/lib/stockService';
+import { stockService } from '@/lib/stockService.client';
 import { Sector } from '@/lib/mockData';
 import { ResponsiveContainer, Treemap, Tooltip } from 'recharts';
 
