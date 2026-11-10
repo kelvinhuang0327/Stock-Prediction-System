@@ -167,7 +167,7 @@ class StockService {
     // Get stocks by sector
     async getStocksBySector(sectorId: string): Promise<Stock[]> {
         // Find industry name from static list to match DB string
-        const sectorName = SECTORS.find(s => s.id === sectorId)?.name ?? decodeURIComponent(sectorId);
+        const sectorName = SECTORS.find(s => s.id === sectorId)?.name;
 
         if (sectorName) {
             try {
@@ -182,7 +182,7 @@ class StockService {
             } catch { }
         }
 
-        return POPULAR_STOCKS.filter(s => s.sector === sectorId || s.sector === sectorName);
+        return POPULAR_STOCKS.filter(s => s.sector === sectorId);
     }
 
     // Filter stocks - Complex, implementation limited for now

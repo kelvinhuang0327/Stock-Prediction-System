@@ -335,7 +335,7 @@ export class SchedulerStateEngine {
     }
 
     const policy = BACKFILL_POLICIES[jobName];
-    if (!policy || !BACKFILL_RUNNERS[jobName]) {
+    if (!policy) {
       return { decision: 'skip', reason: 'backfill_runner_not_configured' };
     }
     if (!policy.autoBackfill) {
@@ -351,6 +351,10 @@ export class SchedulerStateEngine {
           reason: `missed_too_old: age=${Math.round(ageMs / 60_000)}min > limit=${Math.round(policy.maxMissedAgeMs / 60_000)}min`,
         };
       }
+    }
+
+    if (!BACKFILL_RUNNERS[jobName]) {
+      return { decision: 'skip', reason: 'backfill_runner_not_configured' };
     }
 
     return { decision: 'backfill' };
