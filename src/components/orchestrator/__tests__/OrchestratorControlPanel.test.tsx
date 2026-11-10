@@ -70,6 +70,7 @@ describe('OrchestratorControlPanel', () => {
     fireEvent.click(screen.getByRole('button', { name: '套用' }));
     await screen.findByText('Providers updated.');
 
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Worker 立即執行' })).toBeEnabled());
     fireEvent.click(screen.getByRole('button', { name: 'Worker 立即執行' }));
     await screen.findByText('Run worker queued.');
     fireEvent.click(screen.getByRole('button', { name: '啟用排程' }));
