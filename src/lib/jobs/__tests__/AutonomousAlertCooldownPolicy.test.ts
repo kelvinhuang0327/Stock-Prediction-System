@@ -161,7 +161,10 @@ describe('AutonomousAlertCooldownPolicy', () => {
   test('respects configurable severity and job overrides', () => {
     const customPolicy = new AutonomousAlertCooldownPolicy({
       severityCooldownHours: { critical: 4, warning: 6, info: 0 },
-      jobCooldownHours: { 'autonomous:review': { warning: 24 } },
+      jobCooldownHours: {
+        'autonomous:review': { warning: 24 },
+        'autonomous:unused': undefined,
+      },
       allowInfoAlerts: true,
     });
 
@@ -205,6 +208,18 @@ describe('AutonomousAlertCooldownPolicy', () => {
     expect(warningDecision.reason).toBe('cooldown');
     expect(infoDecision.shouldNotify).toBe(true);
     expect(infoDecision.reason).toBe('new');
+    const summaryOverrides = customPolicy.getPolicySummary().jobOverrides;
+    expect(summaryOverrides).toMatchObject({
+      'autonomous:monitor': { critical: 1, warning: 1 },
+      'autonomous:review': { warning: 24 },
+    });
+    expect(summaryOverrides).not.toHaveProperty('autonomous:unused');
+  });
+
+  test('summarizes defaults when no job overrides are supplied', () => {
+    expect(new AutonomousAlertCooldownPolicy().getPolicySummary().jobOverrides).toEqual({
+      'autonomous:monitor': { critical: 1, warning: 1 },
+    });
   });
 
   test('can disable escalation and recovery reset via config', () => {

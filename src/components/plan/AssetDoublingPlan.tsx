@@ -176,9 +176,9 @@ export function AssetDoublingPlan() {
             const historyResponse = await fetch(`/api/stocks/${symbol.trim()}/history?months=6`);
             if (historyResponse.ok) {
                 const historyResult = await historyResponse.json() as {
-                    data?: Array<{ date: string; close: number }>;
+                    data: Array<{ date: string; close: number }>;
                 };
-                setHistoryData((historyResult.data ?? []).map(({ date, close }) => ({
+                setHistoryData(historyResult.data.map(({ date, close }) => ({
                     date,
                     value: close,
                 })));

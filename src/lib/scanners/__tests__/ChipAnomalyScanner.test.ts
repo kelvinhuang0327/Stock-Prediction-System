@@ -2,7 +2,7 @@
  * Unit Tests for Chip Anomaly Scanner
  */
 
-import { ChipAnomalyScanner } from '../ChipAnomalyScanner';
+import { ChipAnomalyScanner, type InstitutionalChipObservation } from '../ChipAnomalyScanner';
 import type { InstitutionalChip } from '@prisma/client';
 
 describe('ChipAnomalyScanner', () => {
@@ -81,6 +81,19 @@ describe('ChipAnomalyScanner', () => {
             const result = scanner.detectConcentrationSurge(chipHistory);
 
             expect(result).toBeNull();
+        });
+
+        it('treats a missing dealer total as zero', () => {
+            const chipHistory: InstitutionalChipObservation[] = Array.from({ length: 20 }, (_, index) => ({
+                stockId: '2330',
+                date: `202601${String(index + 1).padStart(2, '0')}`,
+                foreignBuy: index < 15 ? 50 : 150,
+                trustBuy: index < 15 ? 30 : 90,
+            }));
+
+            const result = scanner.detectConcentrationSurge(chipHistory);
+
+            expect(result?.anomalyType).toBe('CONCENTRATION_SURGE');
         });
     });
 

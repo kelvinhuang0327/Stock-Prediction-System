@@ -19,4 +19,10 @@ describe('aiModulesService.buildPolicyBlockedWorkerOutput', () => {
     expect(out.acceptanceResults[0].passed).toBe(false);
     expect(out.errorMarkersHit).toContain('execution_policy_block');
   });
+
+  it('keeps the Codex worker disabled reason distinct', () => {
+    expect(getPolicySkipMessage('CODEX_WORKER_NOT_ENABLED')).toBe(
+      'CODEX_WORKER_NOT_ENABLED — skip execution',
+    );
+  });
 });

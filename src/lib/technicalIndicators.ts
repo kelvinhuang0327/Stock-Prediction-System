@@ -115,8 +115,7 @@ export const calculateMACD = (data: StockDataWithIndicators[]): StockDataWithInd
     const withSignal = calculateEMA(withDif, 9, 'dif' as keyof StockDataPoint);
 
     return withSignal.map(d => {
-        const ema9 = Reflect.get(d, 'ema9');
-        const ema9Value = typeof ema9 === 'number' ? ema9 : undefined;
+        const ema9Value = Reflect.get(d, 'ema9') as number | undefined;
         return {
             ...d,
             dem: ema9Value,
