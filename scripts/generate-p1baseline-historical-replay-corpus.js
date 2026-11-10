@@ -53,7 +53,7 @@ async function main() {
         BASELINE_WRITER_VERSION,
     } = require('../src/lib/onlineValidation/NaiveBaselineShadowWriter');
 
-    const { PrismaClient } = require('@prisma/client');
+    const { createPrismaClient } = require('../src/lib/prismaClientFactory.cjs');
 
     // ── Paths ──────────────────────────────────────────────────────────────────
     const OUTPUTS_DIR = path.resolve(__dirname, '../outputs/online_validation');
@@ -97,7 +97,7 @@ async function main() {
 
     // ── Prisma ─────────────────────────────────────────────────────────────────
     console.log('[P1-PART-C] Connecting to database...');
-    const prisma = new PrismaClient();
+    const prisma = createPrismaClient();
 
     const today = new Date().toISOString().slice(0, 10);
     console.log(`[P1-PART-C] Today: ${today}`);

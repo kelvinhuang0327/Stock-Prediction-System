@@ -3,7 +3,7 @@
 // NO DB WRITE. NO CORPUS OVERWRITE. DRY-RUN ONLY.
 
 'use strict';
-const { PrismaClient } = require('@prisma/client');
+const { createPrismaClient } = require('../src/lib/prismaClientFactory.cjs');
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
@@ -76,7 +76,7 @@ async function runQualityGate() {
     `real=${realSourceRows.length}, template=${templateOnlyRows.length}`);
 
   // 8. DB row count unchanged (re-query via Prisma)
-  const prisma = new PrismaClient();
+  const prisma = createPrismaClient();
   try {
     const dbCount = await prisma.monthlyRevenue.count();
     check("DB row count unchanged (2143)", dbCount === 2143, `actual=${dbCount}`);

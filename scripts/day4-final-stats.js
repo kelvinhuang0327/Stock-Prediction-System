@@ -1,5 +1,5 @@
-const { PrismaClient } = require('@prisma/client');
-const p = new PrismaClient({ log: [] });
+const { createPrismaClient } = require('../src/lib/prismaClientFactory.cjs');
+const p = createPrismaClient({ log: [] });
 async function main() {
   const total = await p.simulatedTrade.count();
   const open = await p.simulatedTrade.count({ where: { status: { in: ['open','shadow-open'] } } });

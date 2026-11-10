@@ -9,7 +9,7 @@
  */
 'use strict';
 
-const { PrismaClient } = require('@prisma/client');
+const { createPrismaClient } = require('../src/lib/prismaClientFactory.cjs');
 const fs = require('fs');
 const path = require('path');
 
@@ -101,7 +101,7 @@ function readJSONL(filePath) {
 async function main() {
   console.log('[P26F] MonthlyRevenue Candidate Corpus Builder starting...');
 
-  const prisma = new PrismaClient();
+  const prisma = createPrismaClient();
   let dbRows;
   try {
     dbRows = await prisma.monthlyRevenue.findMany();

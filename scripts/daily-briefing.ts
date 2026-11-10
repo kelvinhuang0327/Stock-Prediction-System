@@ -1,5 +1,5 @@
 
-import { PrismaClient } from '@prisma/client';
+import { createPrismaClient } from '../src/lib/prismaClientFactory.cjs';
 import { AssetDoublingStrategy } from '../src/lib/strategies/AssetDoublingStrategy';
 import { StrategyScreeningService } from '../src/lib/services/StrategyScreeningService';
 import { SectorAnalysisService } from '../src/lib/services/SectorAnalysisService';
@@ -7,7 +7,7 @@ import { newsSentimentService } from '../src/lib/services/NewsSentimentService';
 import { notificationService } from '../src/lib/services/NotificationService';
 
 
-const prisma = new PrismaClient();
+const prisma = createPrismaClient();
 const strategy = new AssetDoublingStrategy();
 const screener = new StrategyScreeningService();
 

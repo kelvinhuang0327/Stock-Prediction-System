@@ -2,8 +2,8 @@
  * Day 8 Phase 1: Diagnose WHY runScreen returns 0 candidates
  * Answer Q1/Q2/Q3 and probe the screening pipeline
  */
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
+import { createPrismaClient } from '../src/lib/prismaClientFactory.cjs';
+const prisma = createPrismaClient();
 
 async function main() {
   console.log('\n===== DAY 8 PHASE 1: ROOT CAUSE DIAGNOSIS =====\n');

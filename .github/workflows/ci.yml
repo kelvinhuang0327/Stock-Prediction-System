@@ -60,9 +60,9 @@ jobs:
         run: |
           npx prisma generate
           node <<'NODE'
-          const { PrismaClient } = require('@prisma/client');
+          const { createPrismaClient } = require('./src/lib/prismaClientFactory.cjs');
           (async () => {
-            const p = new PrismaClient();
+            const p = createPrismaClient();
             await Promise.all([
               p.strategyProposal.findMany({ take: 0, select: { ctoDecision: true, ctoDecisionReason: true } }),
               p.institutionalChip.findMany({ take: 0, select: { availableAt: true } }),
@@ -84,12 +84,12 @@ jobs:
           });
           NODE
         env:
-          DATABASE_URL: file:./dev.test.db
+          DATABASE_URL: file:./prisma/dev.test.db
       
       - name: Run Jest tests
         run: npm run test:coverage -- --runInBand
         env:
-          DATABASE_URL: file:./dev.test.db
+          DATABASE_URL: file:./prisma/dev.test.db
       
       - name: Upload coverage
         uses: actions/upload-artifact@v7
@@ -178,7 +178,7 @@ jobs:
       - name: Run Playwright tests
         run: npm run test:e2e
         env:
-          DATABASE_URL: file:./dev.test.db
+          DATABASE_URL: file:./prisma/dev.test.db
       
       - name: Upload test results
         uses: actions/upload-artifact@v7

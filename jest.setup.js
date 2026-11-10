@@ -1,5 +1,9 @@
 // Learn more: https://github.com/testing-library/jest-dom
+import { TextDecoder, TextEncoder } from 'node:util';
 import '@testing-library/jest-dom'
+
+globalThis.TextDecoder ??= TextDecoder;
+globalThis.TextEncoder ??= TextEncoder;
 
 // Mock Next.js router
 jest.mock('next/navigation', () => ({

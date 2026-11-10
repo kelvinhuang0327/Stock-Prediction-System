@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useCallback, useEffect, useState } from 'react';
-import { stockService } from '@/lib/stockService';
 import type { SectorData } from '@/lib/services/SectorAnalysisService';
+import { stockService } from '@/lib/stockService.client';
 import {
     ScatterChart,
     Scatter,

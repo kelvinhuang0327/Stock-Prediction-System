@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Search, Plus, X } from 'lucide-react';
-import { stockService } from '@/lib/stockService';
+import { stockService } from '@/lib/stockService.client';
 import { Stock } from '@/lib/mockData';
 
 export function StockComparison({ baseSymbol }: { baseSymbol: string }) {

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Search, Filter, Download, Plus } from 'lucide-react';
-import { stockService, StockFilter } from '@/lib/stockService';
+import { stockService, type StockFilter } from '@/lib/stockService.client';
 import { Stock, SECTORS } from '@/lib/mockData';
 
 export default function ScreenerPage() {

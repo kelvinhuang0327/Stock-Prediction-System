@@ -7,7 +7,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
-const { PrismaClient } = require('@prisma/client');
+const { createPrismaClient } = require('../src/lib/prismaClientFactory.cjs');
 
 const ROOT = path.resolve(__dirname, '..');
 const OUT = path.join(ROOT, 'outputs/online_validation');
@@ -51,7 +51,7 @@ async function main() {
   const checks = [];
 
   // 1. DB row count
-  const prisma = new PrismaClient();
+  const prisma = createPrismaClient();
   let dbRowCount = -1;
   try {
     dbRowCount = await prisma.monthlyRevenue.count();

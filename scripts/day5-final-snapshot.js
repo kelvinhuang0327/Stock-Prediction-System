@@ -1,6 +1,6 @@
 'use strict';
-const { PrismaClient } = require('@prisma/client');
-const p = new PrismaClient({ log: [] });
+const { createPrismaClient } = require('../src/lib/prismaClientFactory.cjs');
+const p = createPrismaClient({ log: [] });
 async function main() {
   const total = await p.simulatedTrade.count();
   const closed = await p.simulatedTrade.count({ where: { status: { in: ['shadow-closed', 'closed', 'pending-closed'] } } });

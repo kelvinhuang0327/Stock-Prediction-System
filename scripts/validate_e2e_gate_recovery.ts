@@ -7,7 +7,7 @@
  * Run: npx ts-node --transpile-only scripts/validate_e2e_gate_recovery.ts
  */
 
-import { PrismaClient } from '@prisma/client';
+import { createPrismaClient } from '../src/lib/prismaClientFactory.cjs';
 import {
   runTieredGuardrail,
   TIER_SOFT_MAX,
@@ -45,7 +45,7 @@ import {
 } from '../src/lib/autonomous/GateRecoveryEngine';
 import type { AutonomousResearchSnapshot, StrategyProposal } from '../src/lib/autonomous/types';
 
-const prisma = new PrismaClient();
+const prisma = createPrismaClient();
 
 // ─── ANSI Colors ──────────────────────────────────────────────────────────────
 const G = '\x1b[32m';   // green
