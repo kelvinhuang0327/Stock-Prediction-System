@@ -1,6 +1,7 @@
 import type { EconomicEvent, Stock } from '@/types/stock';
 import {
     POPULAR_STOCKS,
+    SECTORS,
     generateEconomicEvents,
     generatePriceHistory,
 } from './mockData';
@@ -80,7 +81,22 @@ class ClientStockService {
     }
 
     async getStocksBySector(sectorId: string): Promise<Stock[]> {
-        return POPULAR_STOCKS.filter(stock => stock.sector === sectorId);
+        let normalizedSector = sectorId;
+        try {
+            normalizedSector = decodeURIComponent(sectorId);
+        } catch {
+            // Keep malformed or already-decoded route values as-is.
+        }
+
+        const matchedSector = SECTORS.find(
+            sector => sector.id === normalizedSector || sector.name === normalizedSector,
+        );
+        const normalizedSectorId = matchedSector?.id ?? normalizedSector;
+        const industryName = matchedSector?.name ?? normalizedSector;
+
+        return POPULAR_STOCKS.filter(
+            stock => stock.sector === normalizedSectorId || stock.industry === industryName,
+        );
     }
 
     async filterStocks(filter: StockFilter): Promise<Stock[]> {

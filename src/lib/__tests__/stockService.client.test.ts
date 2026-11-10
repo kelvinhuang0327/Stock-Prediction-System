@@ -70,6 +70,8 @@ describe('StockService client paths', () => {
     expect(await stockService.getStock('missing')).toBeNull();
 
     expect(await stockService.getStocksBySector('semiconductor')).toHaveLength(4);
+    expect(await stockService.getStocksBySector('半導體')).toHaveLength(4);
+    expect(await stockService.getStocksBySector(encodeURIComponent('半導體'))).toHaveLength(4);
     expect(await stockService.filterStocks({})).toHaveLength(POPULAR_STOCKS.length);
     expect(await stockService.filterStocks({ sector: 'semiconductor' })).toHaveLength(4);
     expect(await stockService.filterStocks({ sector: 'missing' })).toEqual([]);
