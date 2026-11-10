@@ -45,7 +45,7 @@ import type {
 
 function makeValidPlan() {
   const bundle = buildDefaultPaperSimulationInputBundle({
-    generatedAt: "2026-05-21T00:00:00.000Z",
+    asOfDate: "2026-05-21T00:00:00.000Z",
   });
   return createPaperSimulationFrameworkPlan(bundle, {
     generatedAt: "2026-05-21T00:00:00.000Z",

@@ -144,7 +144,7 @@ export class NoisySourceBreakdownService {
     const rows: JobAlertRecord[] = persistedHistory.length > 0
       ? persistedHistory
       : report?.alerts
-        ? buildSyntheticRecords(jobName, report.alerts, now)
+        ? buildSyntheticRecords(jobName, report.alerts)
         : [];
     const source: NoisySourceBreakdownSummary['source'] = persistedHistory.length > 0
       ? 'persisted'
@@ -169,7 +169,7 @@ export class NoisySourceBreakdownService {
       resolveHoursCount: number;
     };
 
-    const aggregate = grouped.reduce<Record<AlertFamily, FamilyAccumulator>>((acc, item) => {
+    const aggregate = grouped.reduce<Partial<Record<AlertFamily, FamilyAccumulator>>>((acc, item) => {
       const key = item.family.family;
       const existing = acc[key] ?? {
         ...item.family,
@@ -211,7 +211,7 @@ export class NoisySourceBreakdownService {
 
       acc[key] = existing;
       return acc;
-    }, {} as Record<AlertFamily, NoisySourceFamilyRow>);
+    }, {});
 
     const families = Object.values(aggregate)
       .map((family) => {

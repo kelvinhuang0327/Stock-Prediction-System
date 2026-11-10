@@ -128,21 +128,21 @@ describe('T02 Row Gate — BLOCKED cases', () => {
   });
 
   test('checkRowDryRunGate blocks row that has returnPct field (leakage field)', () => {
-    const row = makeRow({ returnPct: 0.05 } as MonthlyRevenueRowMetadata);
+    const row = Object.assign(makeRow(), { returnPct: 0.05 });
     const result = checkRowDryRunGate(row);
     expect(result.passes).toBe(false);
     expect(result.classification).toBe('MONTHLY_REVENUE_DRY_RUN_BLOCKED_LEAKAGE_RISK');
   });
 
   test('checkRowDryRunGate blocks row that has outcomePrice field', () => {
-    const row = makeRow({ outcomePrice: 100 } as MonthlyRevenueRowMetadata);
+    const row = Object.assign(makeRow(), { outcomePrice: 100 });
     const result = checkRowDryRunGate(row);
     expect(result.passes).toBe(false);
     expect(result.classification).toBe('MONTHLY_REVENUE_DRY_RUN_BLOCKED_LEAKAGE_RISK');
   });
 
   test('checkRowDryRunGate blocks row that has realizedReturn field', () => {
-    const row = makeRow({ realizedReturn: 0.1 } as MonthlyRevenueRowMetadata);
+    const row = Object.assign(makeRow(), { realizedReturn: 0.1 });
     const result = checkRowDryRunGate(row);
     expect(result.passes).toBe(false);
     expect(result.classification).toBe('MONTHLY_REVENUE_DRY_RUN_BLOCKED_LEAKAGE_RISK');

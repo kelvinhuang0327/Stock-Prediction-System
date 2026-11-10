@@ -40,26 +40,26 @@ export interface ManualReviewOpsSurfaceAudit {
     checkedSections: string[];
     actionAudit: {
         enabledActionCount: number;
-        allEnabledActionsRequireHuman: true;
-        allEnabledActionsWritePathEffectNone: true;
-        allEnabledActionsProductionWriteFalse: true;
-        allEnabledActionsCorpusWriteFalse: true;
-        allEnabledActionsOptimizerFalse: true;
+        allEnabledActionsRequireHuman: boolean;
+        allEnabledActionsWritePathEffectNone: boolean;
+        allEnabledActionsProductionWriteFalse: boolean;
+        allEnabledActionsCorpusWriteFalse: boolean;
+        allEnabledActionsOptimizerFalse: boolean;
     };
     disabledActionAudit: {
-        productionBackfillDisabled: true;
-        corpusWriteDisabled: true;
-        optimizerDisabled: true;
-        tradingActionDisabled: true;
-        autoPromoteDisabled: true;
+        productionBackfillDisabled: boolean;
+        corpusWriteDisabled: boolean;
+        optimizerDisabled: boolean;
+        tradingActionDisabled: boolean;
+        autoPromoteDisabled: boolean;
     };
     guardrailAudit: {
-        allGuardrailsLocked: true;
-        allowedNextStepIsManualReviewOnly: true;
-        manualReviewOnly: true;
-        noProductionExecution: true;
-        noCorpusWrite: true;
-        noOptimizerTrigger: true;
+        allGuardrailsLocked: boolean;
+        allowedNextStepIsManualReviewOnly: boolean;
+        manualReviewOnly: boolean;
+        noProductionExecution: boolean;
+        noCorpusWrite: boolean;
+        noOptimizerTrigger: boolean;
     };
     forbiddenTokenAudit: {
         pass: boolean;

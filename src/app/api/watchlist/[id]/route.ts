@@ -5,10 +5,10 @@ import { apiCache } from '@/lib/cache';
 
 export async function DELETE(
     request: Request,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        const stockId = params.id;
+        const { id: stockId } = await params;
 
         await prisma.watchlist.delete({
             where: { stockId }

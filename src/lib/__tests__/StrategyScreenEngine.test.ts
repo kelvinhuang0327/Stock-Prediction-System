@@ -11,6 +11,7 @@
 
 import { runScreen } from '../screen/StrategyScreenEngine';
 import { fuseBatch } from '../alpha/SignalFusionEngine';
+import type { FusionResult } from '../alpha/SignalFusionEngine';
 import { detectRegime } from '../market/MarketRegimeEngine';
 import { prisma } from '../prisma';
 
@@ -44,7 +45,7 @@ function makeFusionResult(overrides: Partial<ReturnType<typeof baseFusion>> = {}
   return { ...baseFusion(), ...overrides };
 }
 
-function baseFusion() {
+function baseFusion(): FusionResult {
   return {
     symbol: '2330',
     name: '台積電',

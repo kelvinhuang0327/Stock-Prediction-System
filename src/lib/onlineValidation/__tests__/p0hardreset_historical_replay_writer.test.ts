@@ -157,7 +157,7 @@ describe('ShadowPredictionHistoricalReplayWriter', () => {
 
     beforeEach(() => {
         tmpDir = makeTmpDir();
-        mockPrisma = buildMockPrismaForWriter(buildTestDb()) as unknown as ResolverOptions['prisma'];
+        mockPrisma = buildMockPrismaForWriter(buildTestDb());
         resolverOptions = {
             prisma: mockPrisma as unknown as ResolverOptions['prisma'],
             today: '2025-01-01', // far future — all test dates in the past

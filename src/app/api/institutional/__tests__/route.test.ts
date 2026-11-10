@@ -25,6 +25,14 @@ const chipModel = (prisma as unknown as { institutionalChip: {
   groupBy: jest.Mock;
   findMany: jest.Mock;
 } }).institutionalChip;
+const stockModels = prisma as unknown as {
+  stock: { findMany: jest.Mock };
+  stockQuote: { findFirst: jest.Mock };
+};
+const mockedChipAnomalyScanner = chipAnomalyScanner as unknown as {
+  scanStock: jest.Mock;
+  calculateAnomalyScore: jest.Mock;
+};
 
 function request(query = '') {
   return {
@@ -54,10 +62,10 @@ describe('GET /api/institutional', () => {
     chipModel.count.mockResolvedValue(0);
     chipModel.groupBy.mockResolvedValue([]);
     chipModel.findMany.mockResolvedValue([]);
-    prisma.stock.findMany.mockResolvedValue([]);
-    prisma.stockQuote.findFirst.mockResolvedValue(null);
-    chipAnomalyScanner.scanStock.mockResolvedValue([]);
-    chipAnomalyScanner.calculateAnomalyScore.mockReturnValue(42);
+    stockModels.stock.findMany.mockResolvedValue([]);
+    stockModels.stockQuote.findFirst.mockResolvedValue(null);
+    mockedChipAnomalyScanner.scanStock.mockResolvedValue([]);
+    mockedChipAnomalyScanner.calculateAnomalyScore.mockReturnValue(42);
     jest.spyOn(console, 'error').mockImplementation(() => {});
   });
 
@@ -90,17 +98,17 @@ describe('GET /api/institutional', () => {
       coverage: { stocksWithChipData: 1, totalChipRows: 19, limitations: ['僅 1 檔股票有籌碼資料 (需 ≥20 天才可分析)'] },
     });
 
-    prisma.stock.findMany.mockResolvedValueOnce([{ id: '2330', name: '台積電', industry: null }]);
+    stockModels.stock.findMany.mockResolvedValueOnce([{ id: '2330', name: '台積電', industry: null }]);
     chipModel.findMany.mockResolvedValueOnce(chipRows(10).slice(0, 19));
     const tooShort = await GET(request());
     expect(await json(tooShort)).toMatchObject({ data: [], source: 'empty' });
-    expect(chipAnomalyScanner.scanStock).not.toHaveBeenCalled();
+    expect(mockedChipAnomalyScanner.scanStock).not.toHaveBeenCalled();
 
     chipModel.count.mockResolvedValue(100);
     chipModel.groupBy.mockResolvedValue(Array.from({ length: 20 }, (_, index) => ({ stockId: String(index) })));
-    prisma.stock.findMany.mockResolvedValueOnce([{ id: '2330', name: '台積電', industry: null }]);
+    stockModels.stock.findMany.mockResolvedValueOnce([{ id: '2330', name: '台積電', industry: null }]);
     chipModel.findMany.mockResolvedValueOnce(chipRows(10));
-    chipAnomalyScanner.scanStock.mockResolvedValueOnce([]);
+    mockedChipAnomalyScanner.scanStock.mockResolvedValueOnce([]);
     const noSignals = await GET(request());
     expect(await json(noSignals)).toMatchObject({
       data: [], source: 'empty', coverage: { stocksWithChipData: 20, totalChipRows: 100, limitations: [] },
@@ -110,7 +118,7 @@ describe('GET /api/institutional', () => {
   it('maps anomaly signals, estimates all phases, applies severity filtering, sorting, and limits', async () => {
     chipModel.count.mockResolvedValue(100);
     chipModel.groupBy.mockResolvedValue(Array.from({ length: 20 }, (_, index) => ({ stockId: String(index) })));
-    prisma.stock.findMany.mockResolvedValue([
+    stockModels.stock.findMany.mockResolvedValue([
       { id: 'SURGE', name: '急速集中', industry: '半導體' },
       { id: 'TRUST', name: '投信佈局', industry: null },
       { id: 'SELL', name: '近期賣超', industry: '電子' },
@@ -121,17 +129,17 @@ describe('GET /api/institutional', () => {
       .mockResolvedValueOnce(chipRows(10))
       .mockResolvedValueOnce(chipRows(-10))
       .mockResolvedValueOnce(chipRows(0));
-    chipAnomalyScanner.scanStock
+    mockedChipAnomalyScanner.scanStock
       .mockResolvedValueOnce([signal('CONCENTRATION_SURGE')])
       .mockResolvedValueOnce([signal('TRUST_ACCUMULATION')])
       .mockResolvedValueOnce([signal('CONCENTRATION_SURGE')])
       .mockResolvedValueOnce([signal('COLD_BROKER_BUY', 'LOW')]);
-    chipAnomalyScanner.calculateAnomalyScore
+    mockedChipAnomalyScanner.calculateAnomalyScore
       .mockReturnValueOnce(95)
       .mockReturnValueOnce(85)
       .mockReturnValueOnce(75)
       .mockReturnValueOnce(10);
-    prisma.stockQuote.findFirst
+    stockModels.stockQuote.findFirst
       .mockResolvedValueOnce({ close: 120, change: 2, volume: 1000 })
       .mockResolvedValueOnce(null)
       .mockResolvedValueOnce({ close: 30, change: -1, volume: 200 })
@@ -151,23 +159,23 @@ describe('GET /api/institutional', () => {
     expect(data[2]).toMatchObject({ name: '近期賣超', industry: '電子', price: 30, phase: '可能出貨期' });
     expect(data[3]).toMatchObject({ name: '持續觀察', phase: '觀察中', price: null });
     expect(chipModel.findMany).toHaveBeenCalledWith(expect.objectContaining({ where: { stockId: 'SURGE' }, take: 60 }));
-    expect(chipAnomalyScanner.calculateAnomalyScore).toHaveBeenCalledTimes(4);
+    expect(mockedChipAnomalyScanner.calculateAnomalyScore).toHaveBeenCalledTimes(4);
   });
 
   it('filters severity after scanning and orders results before applying the requested limit', async () => {
     chipModel.count.mockResolvedValue(100);
     chipModel.groupBy.mockResolvedValue([{ stockId: 'A' }, { stockId: 'B' }, { stockId: 'C' }]);
-    prisma.stock.findMany.mockResolvedValue([
+    stockModels.stock.findMany.mockResolvedValue([
       { id: 'A', name: 'A', industry: 'A' },
       { id: 'B', name: 'B', industry: 'B' },
       { id: 'C', name: 'C', industry: 'C' },
     ]);
     chipModel.findMany.mockResolvedValue(chipRows(1));
-    chipAnomalyScanner.scanStock
+    mockedChipAnomalyScanner.scanStock
       .mockResolvedValueOnce([signal('COLD_BROKER_BUY', 'LOW')])
       .mockResolvedValueOnce([signal('COLD_BROKER_BUY', 'HIGH')])
       .mockResolvedValueOnce([signal('COLD_BROKER_BUY', 'HIGH')]);
-    chipAnomalyScanner.calculateAnomalyScore.mockReturnValueOnce(30).mockReturnValueOnce(95).mockReturnValueOnce(80);
+    mockedChipAnomalyScanner.calculateAnomalyScore.mockReturnValueOnce(30).mockReturnValueOnce(95).mockReturnValueOnce(80);
 
     const res = await GET(request('?severity=HIGH&limit=1'));
     expect((await json(res)).data).toMatchObject([

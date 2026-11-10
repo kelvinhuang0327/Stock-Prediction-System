@@ -88,7 +88,7 @@ describe('TaiwanStockJobOrchestrator', () => {
     syncMock.syncMetrics.mockRejectedValueOnce(new Error('metrics unavailable'));
     syncEventsMock.mockRejectedValueOnce('feed down');
     const result = await runTaiwanStockTask({
-      taskName: 'twstock:data_sync_health', triggerSource: 'scheduler', force: true,
+      taskName: 'twstock:data_sync_health', triggerSource: 'local_scheduler', force: true,
     });
     expect(result).toMatchObject({ skipped: false, jobRun: completedRecord });
     expect(result.outcome).toEqual(expect.arrayContaining([
@@ -96,7 +96,7 @@ describe('TaiwanStockJobOrchestrator', () => {
       { name: 'stock_metrics', status: 'rejected' },
       { name: 'event_sync', status: 'rejected' },
     ]));
-    expect(startRun).toHaveBeenCalledWith(expect.objectContaining({ triggerSource: 'scheduler', force: true }));
+    expect(startRun).toHaveBeenCalledWith(expect.objectContaining({ triggerSource: 'local_scheduler', force: true }));
     expect(completeRun).toHaveBeenCalledWith(41, expect.objectContaining({
       summary: '資料同步完成：5/7 成功，2 失敗', metadata: expect.objectContaining({ totalJobs: 7, success: 5, failed: 2 }),
     }));

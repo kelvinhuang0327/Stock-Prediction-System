@@ -189,8 +189,7 @@ describe('validateContractV1', () => {
 
     it('fails if contractVersion is not v1', () => {
         const contract = buildP12ContractV1('2026-05-13T00:00:00.000Z');
-        // @ts-expect-error intentional wrong version for test
-        contract.contractVersion = 'p12-pit-feature-contract-v0';
+        Object.assign(contract, { contractVersion: 'p12-pit-feature-contract-v0' });
         const result = validateContractV1(contract);
         expect(result.valid).toBe(false);
         expect(result.errors.some(e => e.includes('contractVersion'))).toBe(true);
@@ -206,7 +205,6 @@ describe('validateContractV1', () => {
     it('fails if MonthlyRevenue status is not REPAIRED', () => {
         const contract = buildP12ContractV1('2026-05-13T00:00:00.000Z');
         const mr = contract.featureSources.find(s => s.sourceName === 'MonthlyRevenue')!;
-        // @ts-expect-error intentional wrong status for test
         mr.pitStatus = 'ALREADY_PIT_GATED';
         const result = validateContractV1(contract);
         expect(result.valid).toBe(false);
@@ -215,8 +213,7 @@ describe('validateContractV1', () => {
     it('warns if FinancialReport is not HIGH_RISK', () => {
         const contract = buildP12ContractV1('2026-05-13T00:00:00.000Z');
         const fr = contract.featureSources.find(s => s.sourceName === 'FinancialReport')!;
-        // @ts-expect-error intentional wrong status for test
-        fr.pitStatus = 'ALREADY_PIT_GATED';
+        Object.assign(fr, { pitStatus: 'ALREADY_PIT_GATED' });
         const result = validateContractV1(contract);
         expect(result.warnings.some(w => w.includes('FinancialReport'))).toBe(true);
     });

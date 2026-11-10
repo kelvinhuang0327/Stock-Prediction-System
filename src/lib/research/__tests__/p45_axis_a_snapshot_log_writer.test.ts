@@ -414,7 +414,7 @@ describe("T45.8 — No SNAPSHOT_FORBIDDEN_FIELDS as own keys in record", () => {
   for (const field of SNAPSHOT_FORBIDDEN_FIELDS) {
     it(`T45.8 — "${field}" is NOT a key in the SnapshotLogRecord`, () => {
       const record = serializeEmitResult(makeReadyEmit(), FIXED_LOGGED_AT);
-      const keys = Object.keys(record as Record<string, unknown>);
+      const keys = Object.keys(record);
       expect(keys).not.toContain(field);
     });
   }

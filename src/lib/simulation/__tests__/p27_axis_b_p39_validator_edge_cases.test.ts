@@ -104,11 +104,11 @@ describe("P27 — Group 21: per-source governance flag injection rejection", () 
   it("T21.1 — validator rejects eligibleSources entry with entersAlphaScore=true; error mentions sourceName", () => {
     const bundle = buildDefaultPaperSimulationInputBundle({ asOfDate: FIXED_DATE_A });
     const tamperedSrc: Record<string, unknown> = {
-      ...(bundle.eligibleSources[0]! as Record<string, unknown>),
+      ...bundle.eligibleSources[0]!,
       entersAlphaScore: true,
     };
     const result = validatePaperSimulationInputBundle({
-      ...(bundle as Record<string, unknown>),
+      ...bundle,
       eligibleSources: [tamperedSrc, ...bundle.eligibleSources.slice(1)],
     });
     expect(result.valid).toBe(false);
@@ -120,11 +120,11 @@ describe("P27 — Group 21: per-source governance flag injection rejection", () 
   it("T21.2 — validator rejects eligibleSources entry with paperOnly=false; error mentions sourceName", () => {
     const bundle = buildDefaultPaperSimulationInputBundle({ asOfDate: FIXED_DATE_A });
     const tamperedSrc: Record<string, unknown> = {
-      ...(bundle.eligibleSources[0]! as Record<string, unknown>),
+      ...bundle.eligibleSources[0]!,
       paperOnly: false,
     };
     const result = validatePaperSimulationInputBundle({
-      ...(bundle as Record<string, unknown>),
+      ...bundle,
       eligibleSources: [tamperedSrc, ...bundle.eligibleSources.slice(1)],
     });
     expect(result.valid).toBe(false);
@@ -136,7 +136,7 @@ describe("P27 — Group 21: per-source governance flag injection rejection", () 
   it("T21.3 — validator rejects bundle with notRealBacktest=false; error mentions 'notRealBacktest'", () => {
     const bundle = buildDefaultPaperSimulationInputBundle({ asOfDate: FIXED_DATE_A });
     const tampered: Record<string, unknown> = {
-      ...(bundle as Record<string, unknown>),
+      ...bundle,
       notRealBacktest: false,
     };
     const result = validatePaperSimulationInputBundle(tampered);
@@ -147,7 +147,7 @@ describe("P27 — Group 21: per-source governance flag injection rejection", () 
   it("T21.4 — validator rejects bundle with noInvestmentAdvice=false; error mentions 'noInvestmentAdvice'", () => {
     const bundle = buildDefaultPaperSimulationInputBundle({ asOfDate: FIXED_DATE_A });
     const tampered: Record<string, unknown> = {
-      ...(bundle as Record<string, unknown>),
+      ...bundle,
       noInvestmentAdvice: false,
     };
     const result = validatePaperSimulationInputBundle(tampered);
@@ -158,7 +158,7 @@ describe("P27 — Group 21: per-source governance flag injection rejection", () 
   it("T21.5 — validator rejects bundle with noBuySellActionSemantics=false; error mentions 'noBuySellActionSemantics'", () => {
     const bundle = buildDefaultPaperSimulationInputBundle({ asOfDate: FIXED_DATE_A });
     const tampered: Record<string, unknown> = {
-      ...(bundle as Record<string, unknown>),
+      ...bundle,
       noBuySellActionSemantics: false,
     };
     const result = validatePaperSimulationInputBundle(tampered);
@@ -286,7 +286,7 @@ describe("P27 — Group 24: null/mode tamper and validator type safety", () => {
   it("T24.2 — bundle with wrong mode string → valid=false; error mentions 'mode'", () => {
     const bundle = buildDefaultPaperSimulationInputBundle({ asOfDate: FIXED_DATE_A });
     const tampered: Record<string, unknown> = {
-      ...(bundle as Record<string, unknown>),
+      ...bundle,
       mode: "wrong-mode",
     };
     const result = validatePaperSimulationInputBundle(tampered);
@@ -297,7 +297,7 @@ describe("P27 — Group 24: null/mode tamper and validator type safety", () => {
   it("T24.3 — bundle with entersAlphaScore=true at root → error mentions 'entersAlphaScore'", () => {
     const bundle = buildDefaultPaperSimulationInputBundle({ asOfDate: FIXED_DATE_A });
     const tampered: Record<string, unknown> = {
-      ...(bundle as Record<string, unknown>),
+      ...bundle,
       entersAlphaScore: true,
     };
     const result = validatePaperSimulationInputBundle(tampered);
@@ -308,7 +308,7 @@ describe("P27 — Group 24: null/mode tamper and validator type safety", () => {
   it("T24.4 — bundle with disclaimer=undefined → valid=false; error mentions 'disclaimer'", () => {
     const bundle = buildDefaultPaperSimulationInputBundle({ asOfDate: FIXED_DATE_A });
     const tampered: Record<string, unknown> = {
-      ...(bundle as Record<string, unknown>),
+      ...bundle,
       disclaimer: undefined,
     };
     const result = validatePaperSimulationInputBundle(tampered);
@@ -319,7 +319,7 @@ describe("P27 — Group 24: null/mode tamper and validator type safety", () => {
   it("T24.5 — bundle with disclaimer shorter than 10 chars → valid=false; error mentions 'disclaimer'", () => {
     const bundle = buildDefaultPaperSimulationInputBundle({ asOfDate: FIXED_DATE_A });
     const tampered: Record<string, unknown> = {
-      ...(bundle as Record<string, unknown>),
+      ...bundle,
       disclaimer: "short",
     };
     const result = validatePaperSimulationInputBundle(tampered);
@@ -381,7 +381,7 @@ describe("P27 — Group 25: repeated stability, empty source list, full flag tam
   it("T25.5 — default bundle with eligibleSources=[] → valid=true (empty list is not a contract violation)", () => {
     const bundle = buildDefaultPaperSimulationInputBundle({ asOfDate: FIXED_DATE_A });
     const emptyBundle: Record<string, unknown> = {
-      ...(bundle as Record<string, unknown>),
+      ...bundle,
       eligibleSources: [],
     };
     const result = validatePaperSimulationInputBundle(emptyBundle);

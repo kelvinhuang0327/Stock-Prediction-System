@@ -73,6 +73,7 @@ export interface InstitutionalChipData {
     foreignBuy: number;
     trustBuy: number;
     totalBuy: number;
+    dealerBuy?: number;
 }
 
 export interface MarketDataPoint {

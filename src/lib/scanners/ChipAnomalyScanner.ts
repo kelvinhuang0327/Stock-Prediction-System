@@ -8,7 +8,13 @@
  * 3. 追蹤主力建倉軌跡
  */
 
-import type { InstitutionalChip } from '@prisma/client';
+export interface InstitutionalChipObservation {
+    stockId: string;
+    date: string;
+    foreignBuy: number;
+    trustBuy: number;
+    dealerBuy?: number;
+}
 
 export interface ChipAnomalySignal {
     stockId: string;
@@ -33,7 +39,7 @@ export class ChipAnomalyScanner {
      * 策略：計算過去 5/10/20 天集中度的斜率與加速度
      */
     detectConcentrationSurge(
-        chipHistory: InstitutionalChip[],
+        chipHistory: InstitutionalChipObservation[],
         windowDays: number = 20
     ): ChipAnomalySignal | null {
 
@@ -44,7 +50,7 @@ export class ChipAnomalyScanner {
         // 計算集中度趨勢
         const recent = chipHistory.slice(-windowDays);
         const concentrations = recent.map(chip =>
-            Math.abs(chip.foreignBuy) + Math.abs(chip.trustBuy) + Math.abs(chip.dealerBuy)
+            Math.abs(chip.foreignBuy) + Math.abs(chip.trustBuy) + Math.abs(chip.dealerBuy ?? 0)
         );
 
         // 計算斜率 (簡化版：最後 5 天平均 vs 前 15 天平均)
@@ -79,7 +85,7 @@ export class ChipAnomalyScanner {
      * 策略：投信連續 N 天買超視為「認養」訊號
      */
     detectTrustAccumulation(
-        chipHistory: InstitutionalChip[],
+        chipHistory: InstitutionalChipObservation[],
         minDays: number = 3
     ): ChipAnomalySignal | null {
 
@@ -129,7 +135,7 @@ export class ChipAnomalyScanner {
      */
     async scanStock(
         stockId: string,
-        chipHistory: InstitutionalChip[]
+        chipHistory: InstitutionalChipObservation[]
     ): Promise<ChipAnomalySignal[]> {
 
         const signals: ChipAnomalySignal[] = [];

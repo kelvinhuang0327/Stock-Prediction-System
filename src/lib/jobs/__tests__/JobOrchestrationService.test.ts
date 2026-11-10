@@ -164,7 +164,7 @@ describe('JobOrchestrationService', () => {
       scheduledFor: day2,
       triggerSource: 'api',
     });
-    await service.failJobRun(day2Run.run.id ?? 0, new Error('fail'));
+    await service.failJobRun(day2Run.run.id ?? 0, { error: new Error('fail') });
 
     const missed = await service.findMissedRuns(missJob, [day1, day2, day3]);
     expect(missed).toHaveLength(2);

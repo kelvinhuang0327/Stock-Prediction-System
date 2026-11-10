@@ -325,6 +325,7 @@ function defaultDataSource(): PolicyAuditDataSource {
         jobName: row.jobName,
         severity: row.severity as JobAlertRecord['severity'],
         message: row.message,
+        detectedAt: row.firstDetectedAt.toISOString(),
         alertKey: row.alertKey,
         status: row.status as JobAlertRecord['status'],
         firstDetectedAt: row.firstDetectedAt.toISOString(),

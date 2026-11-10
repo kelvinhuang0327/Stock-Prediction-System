@@ -178,7 +178,7 @@ export function BacktestPanel({ symbol }: { symbol: string }) {
                                     <YAxis tick={{ fontSize: 10 }} />
                                     <Tooltip
                                         contentStyle={{ background: 'hsl(220 20% 12%)', border: '1px solid hsl(217 32.6% 20%)', borderRadius: '8px' }}
-                                        formatter={(value: number) => [`${value.toFixed(2)}`, '資金']}
+                                        formatter={(value) => [`${Number(value ?? 0).toFixed(2)}`, '資金']}
                                     />
                                     <ReferenceLine y={100} stroke="rgba(255,255,255,0.3)" strokeDasharray="3 3" />
                                     <Line

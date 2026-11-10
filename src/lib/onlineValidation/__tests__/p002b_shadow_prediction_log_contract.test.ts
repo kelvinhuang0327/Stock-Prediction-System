@@ -124,13 +124,13 @@ describe('P0-02B sanitizeResearchCandidateForShadowLog', () => {
     it('maps alphaScore to researchScore', () => {
         const sanitized = sanitizeResearchCandidateForShadowLog(makeCandidate());
         expect(sanitized.researchScore).toBe(78.5);
-        expect((sanitized as Record<string, unknown>).alphaScore).toBeUndefined();
+        expect(Object.hasOwn(sanitized, 'alphaScore')).toBe(false);
     });
 
     it('maps recommendationBucket to researchBucket', () => {
         const sanitized = sanitizeResearchCandidateForShadowLog(makeCandidate());
         expect(sanitized.researchBucket).toBe('Strong');
-        expect((sanitized as Record<string, unknown>).recommendationBucket).toBeUndefined();
+        expect(Object.hasOwn(sanitized, 'recommendationBucket')).toBe(false);
     });
 
     it('removes forbidden fields — no buy/sell/alpha/edge/profit keys', () => {

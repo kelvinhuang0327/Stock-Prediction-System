@@ -230,7 +230,12 @@ export function validateMonthlyRevenueSchemaPostMigration(schema: unknown): Sche
 
   const cols = schema as SchemaColumn[];
   const presentNames = cols
-    .map(c => (typeof c === 'object' && c !== null && typeof (c as Record<string, unknown>).name === 'string' ? (c as Record<string, unknown>).name as string : ''))
+    .map((column) => {
+      const name = typeof column === 'object' && column !== null
+        ? Reflect.get(column, 'name')
+        : undefined;
+      return typeof name === 'string' ? name : '';
+    })
     .filter(n => n.length > 0);
 
   const presentColumns: string[] = [];
@@ -623,7 +628,7 @@ export function compareSmokeSnapshotToExpectedContract(
 
   // Check P12 contract satisfied (MonthlyRevenue PIT risk repaired)
   const p12ContractSatisfied = contract.p12MonthlyRevenuePitRepaired === true ||
-    (contract.contractVersion && String(contract.contractVersion).includes('p12'));
+    (typeof contract.contractVersion === 'string' && contract.contractVersion.includes('p12'));
 
   // Check P17 query gate
   const p17QueryGatePresent = snapshot.p17QueryGatePresent === true ||

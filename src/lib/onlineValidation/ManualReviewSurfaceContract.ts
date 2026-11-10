@@ -296,7 +296,8 @@ export function validateManualReviewSurfaceContract(
     const messages: string[] = [];
     let status: 'PASS' | 'WARN' | 'FAIL' = 'PASS';
 
-    if (contract.surfaceStatus === 'APPROVED' || contract.surfaceStatus === 'PRODUCTION_READY') {
+    const surfaceStatus: string = contract.surfaceStatus;
+    if (surfaceStatus === 'APPROVED' || surfaceStatus === 'PRODUCTION_READY') {
         messages.push('FAIL: surfaceStatus must not be approved or production ready');
         status = 'FAIL';
     }

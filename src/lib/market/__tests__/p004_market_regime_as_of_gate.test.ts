@@ -76,7 +76,7 @@ describe('P0-04: MarketRegimeResult as-of gate — getLatestMarketRegimeContext(
     prisma.marketRegimeResult.findFirst.mockResolvedValue(REGIME_ROW);
     const result = await getLatestMarketRegimeContext('2026-05-07', '2026-05-07');
     expect(result.isAvailable).toBe(true);
-    expect(result.date).toBe('2026-05-07');
+    if (result.isAvailable) expect(result.date).toBe('2026-05-07');
   });
 
   it('returns MISSING when no rows found', async () => {
@@ -93,6 +93,6 @@ describe('P0-04: MarketRegimeResult as-of gate — getLatestMarketRegimeContext(
     expect(result.isAvailable).toBe(false);
     expect(result.freshnessStatus).not.toBe('FRESH');
     // No regime data leaked
-    expect(result.regimeLabel).toBeUndefined();
+    expect('regimeLabel' in result).toBe(false);
   });
 });

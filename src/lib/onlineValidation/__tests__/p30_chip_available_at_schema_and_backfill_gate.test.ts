@@ -260,7 +260,7 @@ describe('T04 Backfill Gate', () => {
     // must be explicitly provided by the user. Without it, the gate stays closed.
     const REQUIRED_AUTH_PHRASE = 'YES apply MonthlyRevenue releaseDate backfill';
     const userInput = ''; // no authorization given
-    const authorizationReceived = userInput === REQUIRED_AUTH_PHRASE;
+    const authorizationReceived = userInput.startsWith(REQUIRED_AUTH_PHRASE);
     const gate = authorizationReceived ? 'AUTHORIZED' : 'WAITING_FOR_USER_AUTHORIZATION';
     expect(gate).toBe('WAITING_FOR_USER_AUTHORIZATION');
     expect(authorizationReceived).toBe(false);

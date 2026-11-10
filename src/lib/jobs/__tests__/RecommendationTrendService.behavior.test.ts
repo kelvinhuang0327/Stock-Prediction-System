@@ -54,7 +54,7 @@ describe('RecommendationTrendService timeline and window behavior', () => {
       sortDir: 'desc',
       limit: 500,
       offset: 0,
-    }, NOW);
+    });
     expect(result).toMatchObject({
       recommendationType: 'cooldown_increase',
       targetJob: 'autonomous:monitor',

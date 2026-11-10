@@ -127,13 +127,23 @@ export class AutonomousAlertCooldownPolicy {
   }
 
   getPolicySummary(): AutonomousAlertPolicySummary {
+    const jobCooldownOverrides = { ...DEFAULT_AUTONOMOUS_ALERT_POLICY.jobCooldownOverrides };
+    for (const [jobName, overrides] of Object.entries(this.config.jobCooldownHours ?? {})) {
+      if (overrides) {
+        jobCooldownOverrides[jobName] = {
+          ...jobCooldownOverrides[jobName],
+          ...overrides,
+        };
+      }
+    }
+
     return getAutonomousAlertPolicySummary({
       severityCooldownHours: {
         critical: this.getSeverityCooldownHours('critical'),
         warning: this.getSeverityCooldownHours('warning'),
         info: this.getSeverityCooldownHours('info'),
       },
-      jobCooldownOverrides: this.config.jobCooldownHours ?? DEFAULT_AUTONOMOUS_ALERT_POLICY.jobCooldownOverrides,
+      jobCooldownOverrides,
       infoNotificationEnabled: this.shouldNotifyInfoAlerts(),
       escalationEnabled: this.isEscalationEnabled(),
       recoveryResetEnabled: this.isRecoveryResetEnabled(),

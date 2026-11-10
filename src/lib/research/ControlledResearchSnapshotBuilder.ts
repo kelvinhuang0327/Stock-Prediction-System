@@ -89,7 +89,7 @@ export function buildControlledResearchSnapshot(
   }
 
   // ── Step 2: Forbidden-field guard on input keys ───────────────────────────
-  const inputKeys = Object.keys(input as Record<string, unknown>);
+  const inputKeys = Object.keys(input);
   for (const key of inputKeys) {
     if ((SNAPSHOT_FORBIDDEN_FIELDS as readonly string[]).includes(key)) {
       blockingReasons.push(`FORBIDDEN_FIELD_IN_INPUT: "${key}"`);

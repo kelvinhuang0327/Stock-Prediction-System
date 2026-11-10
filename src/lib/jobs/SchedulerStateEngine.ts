@@ -180,6 +180,11 @@ const BACKFILL_POLICIES: Record<AutonomousJobName, BackfillPolicy> = {
     maxMissedAgeMs: 24 * 60 * 60 * 1000,
     mostRecentOnly: true,
   },
+  'training:tw-q1-financial-ingest-check': {
+    autoBackfill: true,
+    maxMissedAgeMs: 24 * 60 * 60 * 1000,
+    mostRecentOnly: true,
+  },
   'training:tw-weekly-deep-research': {
     autoBackfill: true,
     maxMissedAgeMs: 2 * 24 * 60 * 60 * 1000,
@@ -192,7 +197,7 @@ const BACKFILL_POLICIES: Record<AutonomousJobName, BackfillPolicy> = {
   },
 };
 
-const BACKFILL_RUNNERS: Record<AutonomousJobName, BackfillRunner> = {
+const BACKFILL_RUNNERS: Partial<Record<AutonomousJobName, BackfillRunner>> = {
   'autonomous:daily': runAutonomousDailyCycle,
   'autonomous:monitor': runAutonomousMonitorCycle,
   'autonomous:review': runAutonomousReviewCycle,
@@ -258,7 +263,9 @@ export class SchedulerStateEngine {
     jobName: AutonomousJobName,
     scheduledFor: Date,
   ): Promise<{ runId: number | undefined; error?: string }> {
-    const result = await BACKFILL_RUNNERS[jobName](this.buildBackfillRunContext(scheduledFor));
+    // evaluateBackfill only selects jobs with a configured runner.
+    const runner = BACKFILL_RUNNERS[jobName]!;
+    const result = await runner(this.buildBackfillRunContext(scheduledFor));
     const error = getResultError(result, jobName);
 
     return {
@@ -331,6 +338,9 @@ export class SchedulerStateEngine {
     }
 
     const policy = BACKFILL_POLICIES[jobName];
+    if (!BACKFILL_RUNNERS[jobName]) {
+      return { decision: 'skip', reason: 'backfill_runner_not_configured' };
+    }
     if (!policy.autoBackfill) {
       return { decision: 'skip', reason: 'policy_disabled' };
     }

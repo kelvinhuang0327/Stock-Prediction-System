@@ -115,7 +115,7 @@ export const calculateMACD = (data: StockDataWithIndicators[]): StockDataWithInd
     const withSignal = calculateEMA(withDif, 9, 'dif' as keyof StockDataPoint);
 
     return withSignal.map(d => {
-        const ema9Value = (d as Record<string, unknown>).ema9 as number | undefined; // Dynamic property access
+        const ema9Value = Reflect.get(d, 'ema9') as number | undefined;
         return {
             ...d,
             dem: ema9Value,

@@ -13,6 +13,7 @@
 import { fuseSignals } from '../alpha/SignalFusionEngine';
 import { analyzeStock } from '../analysis/RuleBasedStockAnalyzer';
 import { detectRegime } from '../market/MarketRegimeEngine';
+import type { StockAnalysisResult } from '../analysis/RuleBasedStockAnalyzer';
 
 jest.mock('../analysis/RuleBasedStockAnalyzer');
 jest.mock('../market/MarketRegimeEngine');
@@ -49,7 +50,7 @@ function makeAnalysis(overrides: Partial<ReturnType<typeof baseAnalysis>> = {}) 
   return { ...baseAnalysis(), ...overrides };
 }
 
-function baseAnalysis() {
+function baseAnalysis(): StockAnalysisResult {
   return {
     stockId: '2330',
     name: '台積電',

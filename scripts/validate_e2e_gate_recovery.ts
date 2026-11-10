@@ -151,32 +151,53 @@ function makeTrendingQuotes(n = 30): QuoteRow[] {
 // ─── Snapshot Fixture ─────────────────────────────────────────────────────────
 
 const SNAPSHOT: AutonomousResearchSnapshot = {
+  generatedAt: NOW.toISOString(),
+  snapshotDate: NOW.toISOString().slice(0, 10),
   marketState: 'trending',
+  marketRegime: 'trending',
+  marketRegimeConfidence: 0.8,
+  sectorStrength: [],
   candidateStocks: [
-    { symbol: 'AAPL', setupType: 'trend',     alphaScore: 0.88, rationale: 'momentum' },
-    { symbol: 'MSFT', setupType: 'trend',     alphaScore: 0.82, rationale: 'momentum' },
-    { symbol: 'TSLA', setupType: 'rebound',   alphaScore: 0.75, rationale: 'oversold' },
-    { symbol: 'GOOG', setupType: 'event',     alphaScore: 0.70, rationale: 'earnings' },
-    { symbol: 'NVDA', setupType: 'fundamental', alphaScore: 0.65, rationale: 'valuation' },
+    { symbol: 'AAPL', name: 'Apple', screenBucket: 'momentum', setupType: 'trend', alphaScore: 0.88, recommendationBucket: 'strong', confidence: 0.88, priceChangePercent: 0.02, conviction: 'high', thesis: 'momentum', supportingSignals: ['momentum'], riskFactors: [] },
+    { symbol: 'MSFT', name: 'Microsoft', screenBucket: 'momentum', setupType: 'trend', alphaScore: 0.82, recommendationBucket: 'strong', confidence: 0.82, priceChangePercent: 0.015, conviction: 'high', thesis: 'momentum', supportingSignals: ['momentum'], riskFactors: [] },
+    { symbol: 'TSLA', name: 'Tesla', screenBucket: 'rebound', setupType: 'rebound', alphaScore: 0.75, recommendationBucket: 'watch', confidence: 0.75, priceChangePercent: -0.01, conviction: 'mid', thesis: 'oversold', supportingSignals: ['oversold'], riskFactors: [] },
+    { symbol: 'GOOG', name: 'Alphabet', screenBucket: 'event', setupType: 'event', alphaScore: 0.70, recommendationBucket: 'watch', confidence: 0.7, priceChangePercent: 0.01, conviction: 'mid', thesis: 'earnings', supportingSignals: ['earnings'], riskFactors: [] },
+    { symbol: 'NVDA', name: 'NVIDIA', screenBucket: 'fundamental', setupType: 'fundamental', alphaScore: 0.65, recommendationBucket: 'watch', confidence: 0.65, priceChangePercent: 0.01, conviction: 'mid', thesis: 'valuation', supportingSignals: ['valuation'], riskFactors: [] },
   ],
-  timestamp: NOW.toISOString(),
-  dataVersion: 'e2e-test',
+  riskSignals: [],
+  topInsights: [],
+  dataCoverage: 'full',
+  limitations: [],
 };
 
 const TREND_PROPOSAL: StrategyProposal = {
   symbol: 'AAPL',
   setupType: 'trend',
-  alphaScore: 0.88,
-  rationale: 'momentum test',
-  proposedAt: NOW.toISOString(),
+  thesis: 'momentum test',
+  entryCondition: 'trend confirms',
+  invalidationCondition: 'trend breaks',
+  stopLossRule: 'below support',
+  takeProfitRule: 'at target',
+  positionSizing: 0.05,
+  conviction: 'high',
+  supportingSignals: ['momentum'],
+  riskFactors: [],
+  state: 'proposed',
 };
 
 const REBOUND_PROPOSAL: StrategyProposal = {
   symbol: 'TSLA',
   setupType: 'rebound',
-  alphaScore: 0.75,
-  rationale: 'oversold test',
-  proposedAt: NOW.toISOString(),
+  thesis: 'oversold test',
+  entryCondition: 'reversal confirms',
+  invalidationCondition: 'price makes a new low',
+  stopLossRule: 'below recent low',
+  takeProfitRule: 'at resistance',
+  positionSizing: 0.03,
+  conviction: 'mid',
+  supportingSignals: ['oversold'],
+  riskFactors: [],
+  state: 'proposed',
 };
 
 // ─── Seeding ──────────────────────────────────────────────────────────────────

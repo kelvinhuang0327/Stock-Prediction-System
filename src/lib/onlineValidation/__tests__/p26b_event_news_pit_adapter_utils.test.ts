@@ -313,8 +313,7 @@ describe('validateNoOutcomeFieldsInEventNewsContext', () => {
   });
 
   it('detects outcomePrice if injected', () => {
-    const snap = buildEventNewsContextSnapshot([], ASSET_DATE, SYMBOL);
-    (snap as Record<string, unknown>)['outcomePrice'] = 100;
+    const snap = Object.assign(buildEventNewsContextSnapshot([], ASSET_DATE, SYMBOL), { outcomePrice: 100 });
     const { valid, foundForbiddenFields } = validateNoOutcomeFieldsInEventNewsContext(snap);
     expect(valid).toBe(false);
     expect(foundForbiddenFields).toContain('outcomePrice');

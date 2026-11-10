@@ -208,7 +208,7 @@ export function validateSnapshotInvariants(
   }
 
   // Check no forbidden fields present at object top level
-  const keys = Object.keys(snapshot as Record<string, unknown>);
+  const keys = Object.keys(snapshot);
   for (const key of keys) {
     if ((SNAPSHOT_FORBIDDEN_FIELDS as readonly string[]).includes(key)) {
       violations.push(

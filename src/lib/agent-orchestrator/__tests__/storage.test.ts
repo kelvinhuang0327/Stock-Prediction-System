@@ -12,7 +12,7 @@ describe('storage helpers (pure)', () => {
     const latest = getLatestTask(index);
     expect(latest?.taskId).toBe(3);
 
-    const empty = getLatestTask({ tasks: [] });
+    const empty = getLatestTask({ version: '1.0', tasks: [] });
     expect(empty).toBeNull();
   });
 

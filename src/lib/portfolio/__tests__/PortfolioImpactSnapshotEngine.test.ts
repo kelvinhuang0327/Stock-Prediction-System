@@ -35,15 +35,18 @@ jest.mock('@/lib/prisma', () => ({
           store[idx] = { ...store[idx], ...(update as typeof store[number]) };
           return store[idx];
         }
-        const row = { id: idSeq++, ...(create as typeof store[number]) };
+        const row = { ...(create as typeof store[number]), id: idSeq++ };
         store.push(row);
         return row;
       }),
       findFirst: jest.fn(async ({ where, orderBy }: { where?: { scope?: string; snapshotDate?: { lt?: string } | string }; orderBy?: { snapshotDate?: 'asc' | 'desc' } }) => {
         let rows = [...store];
         if (where?.scope) rows = rows.filter((s) => s.scope === where.scope);
-        if (where?.snapshotDate?.lt) rows = rows.filter((s) => s.snapshotDate < where.snapshotDate.lt);
-        if (typeof where?.snapshotDate === 'string') rows = rows.filter((s) => s.snapshotDate === where.snapshotDate);
+        const snapshotDateFilter = where?.snapshotDate;
+        if (typeof snapshotDateFilter === 'object' && snapshotDateFilter !== null && snapshotDateFilter.lt) {
+          rows = rows.filter((s) => s.snapshotDate < snapshotDateFilter.lt!);
+        }
+        if (typeof snapshotDateFilter === 'string') rows = rows.filter((s) => s.snapshotDate === snapshotDateFilter);
         rows.sort((a, b) => (orderBy?.snapshotDate === 'desc' ? b.snapshotDate.localeCompare(a.snapshotDate) : a.snapshotDate.localeCompare(b.snapshotDate)));
         return rows[0] ?? null;
       }),

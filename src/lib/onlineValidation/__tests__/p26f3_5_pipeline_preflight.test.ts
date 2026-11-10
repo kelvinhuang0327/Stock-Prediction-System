@@ -316,7 +316,7 @@ describe('P26F3-5: Pipeline rejects malformed input', () => {
 
   it('validator rejects row with non-numeric revenue', () => {
     const revenue = 'abc';
-    const isValid = !isNaN(Number(revenue)) && revenue !== '';
+    const isValid = !isNaN(Number(revenue)) && revenue.length > 0;
     expect(isValid).toBe(false);
   });
 

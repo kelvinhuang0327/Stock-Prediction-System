@@ -58,7 +58,7 @@ import type {
 
 function makeDryRunResult(): PaperSimulationDryRunResult {
   const bundle = buildDefaultPaperSimulationInputBundle({
-    generatedAt: "2026-05-21T00:00:00.000Z",
+    asOfDate: "2026-05-21T00:00:00.000Z",
   });
   const plan = createPaperSimulationFrameworkPlan(bundle, {
     generatedAt: "2026-05-21T00:00:00.000Z",

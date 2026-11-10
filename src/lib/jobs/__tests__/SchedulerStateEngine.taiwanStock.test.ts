@@ -20,6 +20,7 @@ jest.mock('../autonomousJobRunners', () => ({
   runTrainingTaiwanSnapshot: jest.fn(),
   runTrainingTaiwanScreen: jest.fn(),
   runTrainingTaiwanReport: jest.fn(),
+  runTrainingTaiwanWeeklyDeepResearch: jest.fn(),
 }));
 
 import { prisma } from '../../prisma';
@@ -156,7 +157,10 @@ describe('SchedulerStateEngine Taiwan stock automation', () => {
   test('skips too-old weekly deep research windows during reconciliation', async () => {
     mockFindUnique.mockImplementation(({ where: { idempotencyKey } }: { where: { idempotencyKey: string } }) =>
       Promise.resolve(
-        idempotencyKey.includes('training:tw-weekly-deep-research') ? null : { status: 'success' },
+        idempotencyKey.includes('training:tw-weekly-deep-research')
+          || idempotencyKey.includes('training:tw-q1-financial-ingest-check')
+          ? null
+          : { status: 'success' },
       ));
 
     const result = await engine.reconcile(new Date('2026-04-30T09:06:52.000Z'));
@@ -169,5 +173,13 @@ describe('SchedulerStateEngine Taiwan stock automation', () => {
       backfilled: false,
     });
     expect(weeklyDeepResearch?.skipReason).toMatch(/^missed_too_old: age=\d+min > limit=2880min$/);
+
+    const q1FinancialIngest = result.find((entry) => entry.jobName === 'training:tw-q1-financial-ingest-check');
+    expect(q1FinancialIngest).toMatchObject({
+      classification: 'never_ran',
+      backfillDecision: 'skip',
+      backfilled: false,
+      skipReason: 'backfill_runner_not_configured',
+    });
   });
 });
