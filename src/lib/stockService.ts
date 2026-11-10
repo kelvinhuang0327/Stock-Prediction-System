@@ -177,9 +177,9 @@ class StockService {
             sector => sector.id === normalizedSector || sector.name === normalizedSector,
         );
         const normalizedSectorId = matchedSector?.id ?? normalizedSector;
-        const sectorName = matchedSector?.name ?? normalizedSector;
+        const sectorName = matchedSector?.name;
 
-        if (sectorName) {
+        if (matchedSector) {
             try {
                 const stocks = await prisma.stock.findMany({
                     where: { industry: sectorName },
@@ -193,7 +193,7 @@ class StockService {
         }
 
         return POPULAR_STOCKS.filter(
-            stock => stock.sector === normalizedSectorId || stock.industry === sectorName,
+            stock => stock.sector === normalizedSectorId || stock.industry === (sectorName ?? normalizedSector),
         );
     }
 
