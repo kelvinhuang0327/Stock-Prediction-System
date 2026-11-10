@@ -142,15 +142,23 @@ jobs:
       
       - name: Install dependencies
         run: npm ci
+
+      - name: Prepare deterministic SQLite DB state
+        run: |
+          test -f prisma/dev.db
+          cp prisma/dev.db prisma/dev.test.db
+          sqlite3 prisma/dev.test.db < prisma/migrations/20260601040000_p144_add_job_alert_and_recommendation_history/migration.sql
       
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps chromium firefox webkit
       
       - name: Build application
         run: npm run build
       
       - name: Run Playwright tests
         run: npm run test:e2e
+        env:
+          DATABASE_URL: file:./dev.test.db
       
       - name: Upload test results
         uses: actions/upload-artifact@v6
