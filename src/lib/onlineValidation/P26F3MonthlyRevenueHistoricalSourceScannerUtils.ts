@@ -2,6 +2,9 @@
 // DISCLAIMER: Does not constitute investment advice. Read-only filesystem scan.
 // No DB write. No corpus overwrite. No scoring formula change. Dry-run only.
 
+import * as fs from 'node:fs';
+import * as path from 'node:path';
+
 export interface HistoricalSourceScanResult {
   scannedPaths: string[];
   totalFilesScanned: number;
@@ -31,8 +34,6 @@ const REVENUE_KEYWORDS = /revenue|monthly|twse|月營收|營收/i;
 const OUTCOME_FIELDS = ["outcomePrice","returnPct","realizedReturnClass"];
 
 export function scanLocalMonthlyRevenueHistoricalSources(workspaceRoot: string): HistoricalSourceScanResult {
-  const fs = require("fs") as typeof import("fs");
-  const path = require("path") as typeof import("path");
   const scannedPaths: string[] = [];
   const realSourceCandidates: SourceCandidate[] = [];
   const templateOnlyCandidates: SourceCandidate[] = [];

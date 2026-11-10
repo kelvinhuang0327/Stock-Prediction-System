@@ -93,6 +93,6 @@ describe('P26ESourceMappingScannerUtils', () => {
   it('source file has no external imports', () => {
     const filePath = path.join(__dirname, '..', 'P26ESourceMappingScannerUtils.ts');
     const src = fs.readFileSync(filePath, 'utf8');
-    expect(src).not.toMatch(/^import\s+.*from\s+['"][^.]/m);
+    expect(src).not.toMatch(/^import\s+.*from\s+['"](?!\.|node:)/m);
   });
 });

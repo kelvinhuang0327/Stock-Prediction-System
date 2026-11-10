@@ -535,7 +535,8 @@ def run_batch_pipeline(args: argparse.Namespace) -> Dict[str, Any]:
 
     print(f"  Symbols: {symbols}\n")
 
-    output_dir_date = OUTPUT_BATCH_BASE / as_of_date.replace("-", "")
+    output_base = Path(getattr(args, "output_dir", OUTPUT_BATCH_BASE))
+    output_dir_date = output_base / as_of_date.replace("-", "")
     output_dir_date.mkdir(parents=True, exist_ok=True)
 
     runner = GateRunner()
@@ -1006,6 +1007,8 @@ def main() -> None:
     parser.add_argument("--registry", type=str, default=None,
                         help="Path to hypothesis registry JSON (default: stock_hypothesis_registry.json). "
                              "Use 'research/stock_hypothesis_registry_v2.json' for P3-08 v2 hypotheses.")
+    parser.add_argument("--output-dir", type=Path, default=OUTPUT_BATCH_BASE,
+                        help="Directory for generated validation artifacts (default: outputs/stock_validation_real_batch).")
     args = parser.parse_args()
 
     if not args.dry_run:

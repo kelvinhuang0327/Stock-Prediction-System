@@ -368,7 +368,7 @@ describe('validateDashboardMetricsContract', () => {
     it('FAIL: PRODUCTION_READY in contract is rejected', () => {
         const contract = buildDashboardMetricsContract(DATA_LIMITED_INPUT, DEFAULT_OPTIONS);
         // Manually inject forbidden status
-        (contract.readinessCards.finalDashboardReadiness as any).status = 'PRODUCTION_READY';
+        Reflect.set(contract.readinessCards.finalDashboardReadiness, 'status', 'PRODUCTION_READY');
         const result = validateDashboardMetricsContract(contract);
         expect(result.validationStatus).toBe('FAIL');
         expect(result.validationMessages.join(' ')).toMatch(/PRODUCTION_READY/);
@@ -376,7 +376,7 @@ describe('validateDashboardMetricsContract', () => {
 
     it('FAIL: disabled guardrail is rejected', () => {
         const contract = buildDashboardMetricsContract(DATA_LIMITED_INPUT, DEFAULT_OPTIONS);
-        (contract.guardrailCards as any).noProductionWrite = false;
+        Reflect.set(contract.guardrailCards, 'noProductionWrite', false);
         const result = validateDashboardMetricsContract(contract);
         expect(result.validationStatus).toBe('FAIL');
         expect(result.validationMessages.join(' ')).toMatch(/guardrail/i);

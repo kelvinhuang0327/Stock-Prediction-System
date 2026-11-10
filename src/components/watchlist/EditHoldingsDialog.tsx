@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { X, Save } from 'lucide-react';
 import { Stock } from '@/lib/mockData';
 
@@ -13,26 +13,35 @@ interface EditHoldingsDialogProps {
 }
 
 export function EditHoldingsDialog({ isOpen, onClose, stock, currentHoldings, onSave }: EditHoldingsDialogProps) {
-    const [avgCost, setAvgCost] = useState('');
-    const [quantity, setQuantity] = useState('');
+    if (!isOpen || !stock) return null;
 
-    useEffect(() => {
-        if (isOpen && currentHoldings) {
-            setAvgCost(currentHoldings.avgCost.toString());
-            setQuantity(currentHoldings.quantity.toString());
-        } else {
-            setAvgCost('');
-            setQuantity('');
-        }
-    }, [isOpen, currentHoldings]);
+    const formKey = JSON.stringify([stock.symbol, currentHoldings?.avgCost, currentHoldings?.quantity]);
+    return (
+        <EditHoldingsForm
+            key={formKey}
+            stock={stock}
+            currentHoldings={currentHoldings}
+            onClose={onClose}
+            onSave={onSave}
+        />
+    );
+}
+
+type EditHoldingsFormProps = Omit<EditHoldingsDialogProps, 'isOpen' | 'stock'> & { stock: Stock };
+
+function EditHoldingsForm({
+    stock,
+    currentHoldings,
+    onClose,
+    onSave,
+}: EditHoldingsFormProps) {
+    const [avgCost, setAvgCost] = useState(() => currentHoldings?.avgCost.toString() ?? '');
+    const [quantity, setQuantity] = useState(() => currentHoldings?.quantity.toString() ?? '');
 
     const handleSave = () => {
-        if (!stock) return;
         onSave(stock.symbol, Number(avgCost), Number(quantity));
         onClose();
     };
-
-    if (!isOpen || !stock) return null;
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={onClose}>

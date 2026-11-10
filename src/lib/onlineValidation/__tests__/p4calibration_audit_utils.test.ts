@@ -190,14 +190,14 @@ describe('extractPrimaryScore', () => {
 
     it('falls back to scoreSnapshot.researchScore when no activeScoringSnapshot', () => {
         const row = makeRow({ researchScore: 50 });
-        delete (row as any).activeScoringSnapshot;
+        Reflect.deleteProperty(row, 'activeScoringSnapshot');
         expect(extractPrimaryScore(row)).toBe(50);
     });
 
     it('returns 0 when both are missing', () => {
         const row = makeRow({});
-        delete (row as any).activeScoringSnapshot;
-        delete (row as any).scoreSnapshot;
+        Reflect.deleteProperty(row, 'activeScoringSnapshot');
+        Reflect.deleteProperty(row, 'scoreSnapshot');
         expect(extractPrimaryScore(row)).toBe(0);
     });
 });

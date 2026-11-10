@@ -40,6 +40,7 @@ function makeEngine(overrides: {
   breakdown?: unknown;
   familyTrend?: unknown;
   resolveDistribution?: unknown;
+  policyLoaderError?: boolean;
 } = {}) {
   const historyService = {
     buildSummary: jest.fn().mockResolvedValue(
@@ -198,7 +199,9 @@ function makeEngine(overrides: {
       },
     ),
   };
-  const policyLoader = jest.fn().mockResolvedValue(makePolicyState());
+  const policyLoader = overrides.policyLoaderError
+    ? jest.fn().mockRejectedValue(new Error('policy store unavailable'))
+    : jest.fn().mockResolvedValue(makePolicyState());
 
   const engine = new PolicyRecommendationEngine(
     historyService as never,
@@ -210,6 +213,52 @@ function makeEngine(overrides: {
   );
 
   return { engine, historyService, healthService, breakdownService, familyTrendService, resolveDistributionService, policyLoader };
+}
+
+function makeFamilyAnalytics(options: {
+  family?: string | null;
+  trend?: string;
+  count?: number;
+  reoccurRate?: number;
+  avgResolveTimeHours?: number | null;
+  unresolvedRatio?: number | null;
+  criticalCount?: number;
+  warningCount?: number;
+  criticalRatio?: number;
+  noisyScore?: number;
+  source?: string;
+} = {}) {
+  const family = options.family === undefined ? 'warning' : options.family;
+  const row = family ? {
+    family,
+    familyLabel: `${family} label`,
+    count: options.count ?? 5,
+    reoccurRate: options.reoccurRate ?? 0,
+    avgResolveTimeHours: options.avgResolveTimeHours ?? null,
+    criticalCount: options.criticalCount ?? 0,
+    warningCount: options.warningCount ?? 0,
+    criticalRatio: options.criticalRatio ?? 0,
+    noisyScore: options.noisyScore ?? 0,
+  } : null;
+  return {
+    breakdown: {
+      jobName: 'autonomous:monitor',
+      families: row ? [row] : [],
+      topFamily: row,
+      summary: { source: options.source ?? 'persisted' },
+      limitations: [],
+    },
+    familyTrend: {
+      jobName: 'autonomous:monitor',
+      families: row ? [{ family, trendDirection: options.trend ?? 'stable', limitations: [] }] : [],
+      limitations: [],
+    },
+    resolveDistribution: {
+      jobName: 'autonomous:monitor',
+      families: row ? [{ family, avgResolveTimeHours: options.avgResolveTimeHours ?? null, unresolvedRatio: options.unresolvedRatio ?? null }] : [],
+      limitations: [],
+    },
+  };
 }
 
 describe('PolicyRecommendationEngine', () => {
@@ -504,5 +553,68 @@ describe('PolicyRecommendationEngine', () => {
 
     expect(result.recommendations[0].recommendationType).toBe('no_change_recommended');
     expect(result.recommendations[0].severity).toBe('info');
+  });
+
+  test('separates oscillating missed runs into a monitor-frequency recommendation', async () => {
+    const { engine } = makeEngine(makeFamilyAnalytics({ family: 'missed_run', trend: 'oscillating' }));
+    const result = await engine.build({ jobName: 'autonomous:monitor', limit: 1 });
+    expect(result.recommendations[0].recommendationType).toBe('review_monitor_frequency');
+    expect(result.recommendations[0].category).toBe('monitoring');
+  });
+
+  test('recommends severity downgrade for quickly resolving warning-heavy families', async () => {
+    const { engine } = makeEngine(makeFamilyAnalytics({
+      family: 'warning', trend: 'stable', count: 10, warningCount: 6,
+      criticalCount: 1, criticalRatio: 0.1, noisyScore: 8, avgResolveTimeHours: 1.5,
+    }));
+    const result = await engine.build({ jobName: 'autonomous:monitor', limit: 1 });
+    expect(result.recommendations[0]).toMatchObject({
+      recommendationType: 'consider_severity_downgrade', category: 'severity', severity: 'warning',
+    });
+  });
+
+  test('recommends a shorter cooldown for sparse but slow critical alerts', async () => {
+    const { engine } = makeEngine(makeFamilyAnalytics({
+      family: 'sparse_critical', count: 2, criticalCount: 1, criticalRatio: 0.5,
+      reoccurRate: 0, avgResolveTimeHours: 4.5, unresolvedRatio: 0.1,
+    }));
+    const result = await engine.build({ jobName: 'autonomous:monitor', limit: 1 });
+    expect(result.recommendations[0]).toMatchObject({
+      recommendationType: 'cooldown_decrease', category: 'policy', severity: 'warning',
+    });
+  });
+
+  test('escalates slow recovery in critical alerts and checks health when no family is isolated', async () => {
+    const criticalRecovery = makeEngine(makeFamilyAnalytics({
+      family: 'slow_critical', count: 8, criticalCount: 5, criticalRatio: 0.6,
+      avgResolveTimeHours: 8, unresolvedRatio: 0.4,
+    }));
+    const escalated = await criticalRecovery.engine.build({ jobName: 'autonomous:monitor', limit: 1 });
+    expect(escalated.recommendations[0].recommendationType).toBe('consider_severity_escalation');
+
+    const noFamily = makeEngine({
+      ...makeFamilyAnalytics({ family: null, source: 'empty' }),
+      health: { jobs: [{ jobName: 'autonomous:monitor', healthStatus: 'failed' }] },
+    });
+    const monitor = await noFamily.engine.build({ jobName: 'autonomous:monitor', limit: 1 });
+    expect(monitor.recommendations[0].recommendationType).toBe('review_monitor_frequency');
+  });
+
+  test('falls back to default policy and reports empty-source limitations after service errors', async () => {
+    const { engine } = makeEngine({
+      ...makeFamilyAnalytics({ family: null, source: 'empty' }),
+      historySummary: { total: 0, topNoisyJobs: [] },
+      health: { jobs: [] },
+      policyLoaderError: true,
+    });
+    const result = await engine.build({ limit: Number.NaN, severity: 'critical' });
+    expect(result.recommendations).toEqual([]);
+    expect(result.summary).toMatchObject({ total: 0, jobCount: 0 });
+    expect(result.policy.source).toBe('default');
+    expect(result.limitations).toEqual(expect.arrayContaining([
+      'No alert history was available, so recommendations are limited.',
+      'No job health data was available.',
+      'No actionable recommendation could be derived from the current signal.',
+    ]));
   });
 });

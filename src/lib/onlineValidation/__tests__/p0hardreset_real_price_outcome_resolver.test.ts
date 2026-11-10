@@ -367,7 +367,7 @@ describe('validateRealPriceOutcomeBatch', () => {
                     symbol: '2330',
                     asOfDate: '2024-06-03',
                     entryClose: 850,
-                    priceSource: 'mock-deterministic' as any,
+                    priceSource: 'mock-deterministic' as never,
                     entryAvailable: true,
                     pitGateDate: '2024-06-03',
                     resolverVersion: RESOLVER_VERSION,

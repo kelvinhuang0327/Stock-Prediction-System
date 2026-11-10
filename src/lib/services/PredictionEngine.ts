@@ -3,7 +3,25 @@ import { calculateAllIndicators } from '../technicalIndicators';
 import { llmAnalyzer } from './LLMAnalyzer';
 import { majorPlayerService, MajorPlayerAnalysis } from './MajorPlayerService';
 import { newsService } from './NewsService';
-import { StockDataPoint } from '@/types/stock';
+import { StockDataPoint, StockDataWithIndicators } from '@/types/stock';
+
+interface PredictionFactors {
+    techFactors: string;
+    newsCount: number;
+    newsAnalysis: string;
+    chipStrength?: number;
+}
+
+type NewsAnalysisInput = { title: string; summary: string | null };
+
+function isRelatedNews(relatedSymbols: string, stockId: string): boolean {
+    try {
+        const symbols: unknown = JSON.parse(relatedSymbols);
+        return Array.isArray(symbols) && symbols.some(symbol => symbol === stockId);
+    } catch {
+        return false;
+    }
+}
 
 export interface PredictionResult {
     stockId: string;
@@ -11,7 +29,7 @@ export interface PredictionResult {
     newsScore: number;
     totalScore: number;
     signal: 'BUY' | 'SELL' | 'HOLD' | 'CAUTION';
-    factors: any;
+    factors: PredictionFactors;
     confidence: number;
     majorPlayer?: MajorPlayerAnalysis;
 }
@@ -36,33 +54,34 @@ export class PredictionEngine {
             take: 60
         });
 
-        const db = prisma as any;
-
         // Fetch news: Use live news only if asOfDate is today or null
         const isToday = !asOfDate || asOfDate === new Date().toISOString().split('T')[0].replace(/-/g, '');
 
-        let news;
+        let news: NewsAnalysisInput[];
         if (isToday) {
             const liveNews = await newsService.fetchLatestNews(stockId, 5);
-            news = liveNews.length > 0 ? liveNews : await db.newsEvent.findMany({
-                where: { stockId },
+            const storedNews = liveNews.length > 0 ? [] : await prisma.newsEvent.findMany({
+                where: { relatedSymbols: { contains: JSON.stringify(stockId) } },
                 orderBy: { publishedAt: 'desc' },
                 take: 10
             });
+            news = liveNews.length > 0
+                ? liveNews
+                : storedNews.filter(item => isRelatedNews(item.relatedSymbols, stockId));
         } else {
             // For backtesting, we must use stored news records from that time
             // Normalize asOfDate to YYYY-MM-DD for consistency
             const normalizedDate = asOfDate.includes('-') ? asOfDate : `${asOfDate.slice(0, 4)}-${asOfDate.slice(4, 6)}-${asOfDate.slice(6, 8)}`;
             const contextDate = new Date(`${normalizedDate}T23:59:59Z`);
 
-            news = await db.newsEvent.findMany({
+            news = await prisma.newsEvent.findMany({
                 where: {
-                    stockId,
+                    relatedSymbols: { contains: JSON.stringify(stockId) },
                     publishedAt: { lte: contextDate }
                 },
                 orderBy: { publishedAt: 'desc' },
                 take: 10
-            });
+            }).then(items => items.filter(item => isRelatedNews(item.relatedSymbols, stockId)));
         }
 
         const techScore = this.calculateTechnicalScore(quotes.reverse());
@@ -93,11 +112,12 @@ export class PredictionEngine {
         };
     }
 
-    private calculateTechnicalScore(quotes: any[]): number {
+    private calculateTechnicalScore(quotes: StockDataPoint[]): number {
         if (quotes.length < 20) return 50;
 
         const indicators = calculateAllIndicators(quotes);
-        const last: any = indicators[indicators.length - 1];
+        const last: StockDataWithIndicators | undefined = indicators[indicators.length - 1];
+        if (!last) return 50;
 
         let score = 50;
 
@@ -109,8 +129,8 @@ export class PredictionEngine {
         }
 
         // MACD contribution
-        if (last.macd !== undefined && last.macdSignal !== undefined) {
-            if (last.macd > last.macdSignal) score += 10;
+        if (last.dif !== undefined && last.dem !== undefined) {
+            if (last.dif > last.dem) score += 10;
             else score -= 10;
         }
 
@@ -123,14 +143,14 @@ export class PredictionEngine {
         return Math.min(100, Math.max(0, score));
     }
 
-    private async calculateNewsScore(news: any[]): Promise<number> {
+    private async calculateNewsScore(news: NewsAnalysisInput[]): Promise<number> {
         if (news.length === 0) return 50;
 
         const results = await Promise.all(
-            news.map(item => llmAnalyzer.analyzeNews(item.title, item.summary || ""))
+            news.map(item => llmAnalyzer.analyzeNews(item.title, item.summary ?? ""))
         );
 
-        const averageSentiment = results.reduce((acc: number, curr: any) => acc + curr.sentiment, 0) / results.length;
+        const averageSentiment = results.reduce((sum, result) => sum + result.sentiment, 0) / results.length;
 
         return (averageSentiment + 1) * 50;
     }

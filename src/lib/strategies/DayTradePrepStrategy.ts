@@ -1,11 +1,11 @@
-import { Strategy, StockData, StrategyResult } from './types';
+import { Strategy, StockData, StrategyResult, MarketDataPoint } from './types';
 import { calculateAllIndicators } from '../technicalIndicators';
 
 export class DayTradePrepStrategy implements Strategy {
     name = 'Day Trade Prep (當沖預備)';
     description = 'High volatility candidates for next-day intraday trading.';
 
-    async screen(data: StockData[], marketData?: any[]): Promise<StrategyResult[]> {
+    async screen(data: StockData[], marketData?: MarketDataPoint[]): Promise<StrategyResult[]> {
         const results: StrategyResult[] = [];
 
         // Pre-filter: Focus on high volume first to save calculation time
@@ -49,7 +49,7 @@ export class DayTradePrepStrategy implements Strategy {
 
             // Chip context
             const chips = stock.institutionalChips || [];
-            const recentBuy = chips.slice(0, 1).reduce((acc: number, c: any) => acc + (c.totalBuy || 0), 0);
+            const recentBuy = chips.slice(0, 1).reduce((acc, chip) => acc + (chip.totalBuy || 0), 0);
             if (recentBuy > 0) score += 10; // Main players active
 
             // Previous day change amplitude

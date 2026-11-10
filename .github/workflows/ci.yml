@@ -46,23 +46,34 @@ jobs:
           rm -f prisma/dev.db-wal prisma/dev.db-shm
           sqlite3 prisma/dev.db "PRAGMA integrity_check;"
           sqlite3 prisma/dev.db "SELECT name, rootpage FROM sqlite_master WHERE type='table' AND name IN ('JobAlert','RecommendationHistory') ORDER BY name;"
+          cp prisma/dev.db prisma/dev.test.db
+
+      - name: Apply latest additive schema migration to test database
+        run: sqlite3 prisma/dev.test.db < prisma/migrations/20260601040000_p144_add_job_alert_and_recommendation_history/migration.sql
 
       - name: Generate Prisma client and verify delegates
         run: |
           npx prisma generate
           node <<'NODE'
           const { PrismaClient } = require('@prisma/client');
-          const p = new PrismaClient();
-          console.log(Boolean(p.jobAlert), Boolean(p.recommendationHistory));
-          p.$disconnect();
+          (async () => {
+            const p = new PrismaClient();
+            await p.jobAlert.count();
+            await p.recommendationHistory.count();
+            console.log('JobAlert and RecommendationHistory tables are available.');
+            await p.$disconnect();
+          })().catch((error) => {
+            console.error(error);
+            process.exitCode = 1;
+          });
           NODE
         env:
-          DATABASE_URL: file:./dev.db
+          DATABASE_URL: file:./dev.test.db
       
       - name: Run Jest tests
-        run: npm run test:coverage
+        run: npm run test:coverage -- --runInBand
         env:
-          DATABASE_URL: file:./dev.db
+          DATABASE_URL: file:./dev.test.db
       
       - name: Upload coverage
         uses: actions/upload-artifact@v6

@@ -4,6 +4,8 @@
  * Disclaimer: No investment recommendations. No ROI/win-rate/profit/outperform/buy/sell claims.
  */
 
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 import {
   buildEventNewsPitContractV0,
   validateContractV0,
@@ -186,16 +188,16 @@ describe('P26B Event/News PIT Contract v0', () => {
 
   describe('no forbidden claims in source code pattern', () => {
     it('has no Math.random reference', () => {
-      const source = require('fs').readFileSync(
-        require('path').join(__dirname, '../P26BEventNewsPitContractUtils.ts'),
+      const source = fs.readFileSync(
+        path.join(__dirname, '../P26BEventNewsPitContractUtils.ts'),
         'utf8'
       );
       expect(source).not.toMatch(/Math\.random\(\)/);
     });
 
     it('has no external API call', () => {
-      const source = require('fs').readFileSync(
-        require('path').join(__dirname, '../P26BEventNewsPitContractUtils.ts'),
+      const source = fs.readFileSync(
+        path.join(__dirname, '../P26BEventNewsPitContractUtils.ts'),
         'utf8'
       );
       expect(source).not.toMatch(/fetch\(|axios\.|https?\.(get|post)\(/);

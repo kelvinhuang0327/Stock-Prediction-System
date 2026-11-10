@@ -506,3 +506,136 @@ describe('Constants', () => {
     expect(EXPECTED_RELEASE_DATE_CONFIDENCE).toBe('LOW_TO_MEDIUM');
   });
 });
+
+describe('compareSmokeSnapshotToExpectedContract', () => {
+  it('rejects a null snapshot with a stable error result', () => {
+    const result = compareSmokeSnapshotToExpectedContract(
+      null as unknown as Record<string, unknown>,
+      {},
+    );
+
+    expect(result.valid).toBe(false);
+    expect(result.errors).toEqual(['snapshot must be a non-null object']);
+    expect(result.warnings).toEqual([]);
+    expect(result.forbiddenSnapshotFieldsClean).toBe(false);
+  });
+
+  it('accepts evidence recorded directly in the smoke snapshot', () => {
+    const result = compareSmokeSnapshotToExpectedContract({
+      p17QueryGatePresent: true,
+      p24MigrationStatus: 'PASS',
+      p25DistributionStatus: 'PASS',
+      p25QueryGateStatus: 'PASS',
+      p25ActiveScoringStatus: 'PASS',
+      corpusModified: false,
+      scoringFormulaModified: false,
+    }, { p12MonthlyRevenuePitRepaired: true });
+
+    expect(result).toMatchObject({
+      valid: true,
+      p12ContractSatisfied: true,
+      p17QueryGatePresent: true,
+      p24MigrationValid: true,
+      p25DistributionPass: true,
+      p25QueryGatePass: true,
+      p25ActiveScoringPass: true,
+      forbiddenSnapshotFieldsClean: true,
+      corpusUnmodified: true,
+      scoringFormulaUnmodified: true,
+      errors: [],
+      warnings: [],
+    });
+  });
+
+  it('accepts evidence supplied by the migration contract', () => {
+    const result = compareSmokeSnapshotToExpectedContract({
+      queryGatePatch: 'PRESENT',
+      corpusModified: false,
+      scoringFormulaModified: false,
+    }, {
+      contractVersion: 'p12-monthly-revenue-pit-v1',
+      p17QueryGatePatched: true,
+      p24MigrationApplied: true,
+      p25DistributionAudit: 'PASS',
+      p25QueryGateSmoke: 'PASS',
+      p25ActiveScoringSmoke: 'PASS',
+    });
+
+    expect(result.valid).toBe(true);
+    expect(result.p12ContractSatisfied).toBe(true);
+    expect(result.p17QueryGatePresent).toBe(true);
+    expect(result.p24MigrationValid).toBe(true);
+    expect(result.p25DistributionPass).toBe(true);
+    expect(result.p25QueryGatePass).toBe(true);
+    expect(result.p25ActiveScoringPass).toBe(true);
+  });
+
+  it('accepts a partial scoring smoke and records unconfirmed contract evidence as warnings', () => {
+    const partial = compareSmokeSnapshotToExpectedContract({
+      p24MigrationStatus: 'PASS',
+      p25ActiveScoringStatus: 'PARTIAL',
+    }, {});
+    expect(partial.p25ActiveScoringPass).toBe(true);
+    expect(partial.warnings).toHaveLength(4);
+
+    const contractPartial = compareSmokeSnapshotToExpectedContract({
+      p24MigrationStatus: 'PASS',
+      p25ActiveScoringStatus: 'FAIL',
+    }, { p25ActiveScoringSmoke: 'PARTIAL' });
+    expect(contractPartial.p25ActiveScoringPass).toBe(true);
+  });
+
+  it('reports missing migration evidence and forbidden or modified artifacts', () => {
+    const missing = compareSmokeSnapshotToExpectedContract({}, {});
+    expect(missing.valid).toBe(false);
+    expect(missing.warnings).toHaveLength(4);
+    expect(missing.errors).toContain('P24 migration not confirmed valid in snapshot/contract');
+
+    const violated = compareSmokeSnapshotToExpectedContract({
+      outcomePrice: 12,
+      corpusModified: true,
+      scoringFormulaModified: true,
+    }, {});
+    expect(violated.valid).toBe(false);
+    expect(violated.forbiddenSnapshotFieldsClean).toBe(false);
+    expect(violated.corpusUnmodified).toBe(false);
+    expect(violated.scoringFormulaUnmodified).toBe(false);
+    expect(violated.errors).toEqual(expect.arrayContaining([
+      'Contract snapshot contains forbidden field: outcomePrice',
+      'Corpus modification detected',
+      'Scoring formula modification detected',
+      'P24 migration not confirmed valid in snapshot/contract',
+    ]));
+  });
+});
+
+describe('buildPostMigrationObservabilitySummary', () => {
+  const healthy = {
+    preflight: 'PASS',
+    schemaValidation: 'PASS',
+    distributionAudit: 'PASS',
+    queryGateSmoke: 'PASS',
+    activeScoringSmoke: 'PASS',
+    contractValidation: 'PASS',
+  } as const;
+
+  it.each([
+    [{ ...healthy, preflight: 'FAIL' }, 'P25_POST_MIGRATION_BLOCKED_BY_ARTIFACTS'],
+    [{ ...healthy, queryGateSmoke: 'FAIL' }, 'P25_QUERY_GATE_SMOKE_FAILED'],
+    [{ ...healthy, distributionAudit: 'FAIL' }, 'P25_DISTRIBUTION_AUDIT_FAILED'],
+    [{ ...healthy, contractValidation: 'FAIL' }, 'P25_CONTRACT_VALIDATION_FAILED'],
+    [{ ...healthy, activeScoringSmoke: 'PARTIAL' }, 'P25_ACTIVE_SCORING_SMOKE_PARTIAL'],
+    [{ ...healthy, activeScoringSmoke: 'FAIL' }, 'P25_DISTRIBUTION_AUDIT_FAILED'],
+    [{ ...healthy, schemaValidation: 'FAIL' }, 'P25_ACTIVE_SCORING_SMOKE_PARTIAL'],
+    [healthy, 'P25_POST_MIGRATION_OBSERVABILITY_COMPLETE'],
+  ] as Array<[Parameters<typeof buildPostMigrationObservabilitySummary>[0], string]>)('classifies %j', (inputs, classification) => {
+    const result = buildPostMigrationObservabilitySummary(inputs);
+
+    expect(result.classification).toBe(classification);
+    expect(result.phase).toBe('P25-HARDRESET');
+    expect(Number.isNaN(Date.parse(result.generatedAt))).toBe(false);
+    expect(result.productionDbWritten).toBe(false);
+    expect(result.corpusModified).toBe(false);
+    expect(result.scoringFormulaModified).toBe(false);
+  });
+});

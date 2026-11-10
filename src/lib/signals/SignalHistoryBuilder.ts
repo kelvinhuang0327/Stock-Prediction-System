@@ -331,7 +331,7 @@ async function buildStrongAlphaCandidateHistory(days: number): Promise<SignalHis
     signalType: 'strong_alpha_candidate',
     observations: rows.map((row) => ({
       signalType: 'strong_alpha_candidate',
-      symbol: row.symbol.toUpperCase(),
+      symbol: row.symbol.trim().toUpperCase(),
       date: normalizeDate(row.snapshotDate),
       context: {
         confidence: row.confidence,
@@ -380,7 +380,7 @@ async function buildChipAccumulationHistory(days: number): Promise<SignalHistory
     signalType: 'chip_accumulation_signal',
     observations: rows.map((row) => ({
       signalType: 'chip_accumulation_signal',
-      symbol: row.stockId.toUpperCase(),
+      symbol: row.stockId.trim().toUpperCase(),
       date: normalizeDate(row.date),
       context: {
         metadata: {

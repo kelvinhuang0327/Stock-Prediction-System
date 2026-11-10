@@ -192,7 +192,7 @@ export async function buildAutonomousResearchSnapshot(options?: {
     ];
     const riskFactors = [
       ...(candidate.keyRisks ?? []).slice(0, 2),
-      ...(context?.fundamentals.keyRisks ?? []).slice(0, 2) ?? [],
+      ...(context?.fundamentals.keyRisks ?? []).slice(0, 2),
     ];
       return {
         symbol,

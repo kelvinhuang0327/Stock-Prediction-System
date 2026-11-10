@@ -8,6 +8,7 @@ writing to production systems.
 
 from __future__ import annotations
 
+import argparse
 import json
 import os
 import sys
@@ -535,13 +536,13 @@ def build_recommendations(
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
-def main() -> dict:
+def main(batch_dir: Path = BATCH_DIR, output_dir: Path = OUT_DIR) -> dict:
     # Find latest batch date
-    latest = _latest_batch_date(BATCH_DIR)
+    latest = _latest_batch_date(batch_dir)
     if not latest:
-        raise FileNotFoundError(f"No batch output found under {BATCH_DIR}")
+        raise FileNotFoundError(f"No batch output found under {batch_dir}")
 
-    batch_root = BATCH_DIR / latest
+    batch_root = batch_dir / latest
     print(f"[diagnostics] Using batch: {batch_root}")
 
     # Load registries
@@ -615,26 +616,26 @@ def main() -> dict:
     ]
 
     # Write outputs
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
-    _write_json(OUT_DIR / "hypothesis_failure_diagnostics.json", diag_json)
-    (OUT_DIR / "hypothesis_failure_diagnostics.md").write_text(
+    output_dir.mkdir(parents=True, exist_ok=True)
+    _write_json(output_dir / "hypothesis_failure_diagnostics.json", diag_json)
+    (output_dir / "hypothesis_failure_diagnostics.md").write_text(
         "\n".join(diag_md_lines), encoding="utf-8"
     )
-    _write_json(OUT_DIR / "symbol_diagnostics.json", {
+    _write_json(output_dir / "symbol_diagnostics.json", {
         "generated_at": diag_json["generated_at"],
         "batch_date": latest,
         "symbol_diagnostics": sym_diags,
     })
-    _write_json(OUT_DIR / "feature_diagnostics.json", {
+    _write_json(output_dir / "feature_diagnostics.json", {
         "generated_at": diag_json["generated_at"],
         "batch_date": latest,
         "feature_diagnostics": feat_diags,
     })
-    (OUT_DIR / "hypothesis_improvement_recommendations.md").write_text(
+    (output_dir / "hypothesis_improvement_recommendations.md").write_text(
         rec_md, encoding="utf-8"
     )
 
-    print(f"[diagnostics] Outputs written to {OUT_DIR}")
+    print(f"[diagnostics] Outputs written to {output_dir}")
     for fname in [
         "hypothesis_failure_diagnostics.json",
         "hypothesis_failure_diagnostics.md",
@@ -648,7 +649,13 @@ def main() -> dict:
 
 
 if __name__ == "__main__":
-    result = main()
+    parser = argparse.ArgumentParser(description="Analyze stock hypothesis failures without modifying source data.")
+    parser.add_argument("--batch-dir", type=Path, default=BATCH_DIR,
+                        help="Root directory containing dated validation batches.")
+    parser.add_argument("--output-dir", type=Path, default=OUT_DIR,
+                        help="Directory for generated diagnostics (default: outputs/stock_diagnostics).")
+    args = parser.parse_args()
+    result = main(batch_dir=args.batch_dir, output_dir=args.output_dir)
     print("\n[diagnostics] Failure Summary:")
     for hid, reason in result["failure_summary"].items():
         print(f"  {hid}: {reason}")

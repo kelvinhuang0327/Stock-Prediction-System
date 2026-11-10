@@ -176,7 +176,7 @@ function filterAndSortRows(
 ): WatchlistRowViewModel[] {
     let filtered = rows;
     if (query.trim()) {
-        const q = query.toLowerCase();
+        const q = query.trim().toLowerCase();
         filtered = rows.filter(r =>
             r.symbol.toLowerCase().includes(q) || r.name.toLowerCase().includes(q),
         );

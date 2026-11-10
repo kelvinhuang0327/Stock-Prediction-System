@@ -156,6 +156,15 @@ export interface TaskContract {
   target_files?: string[];
   /** Statistical requirement expressions for gate validation. */
   statistical_requirements?: string[];
+  ingest_contract?: {
+    kind: 'price_analysis_native_report';
+    dedupeKey: string;
+    reportPath: string;
+    insightTypeCandidate: string;
+    requiredScopeField: string;
+    requiredTopLevelFields: string[];
+    noThresholdChanges: boolean;
+  };
 }
 
 export interface AcceptanceResult {

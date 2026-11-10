@@ -192,7 +192,7 @@ describe('P26F33 Dropzone Inventory Utils', () => {
     });
     it('source does not use external npm imports', () => {
       const src = fs.readFileSync(path.join(__dirname, '../P26F33DropzoneInventoryUtils.ts'), 'utf8');
-      expect(src).not.toMatch(/^import\s+.*from\s+['"][^.]/m);
+      expect(src).not.toMatch(/^import\s+.*from\s+['"](?!\.|node:)/m);
     });
     it('source does not write to DB', () => {
       const src = fs.readFileSync(path.join(__dirname, '../P26F33DropzoneInventoryUtils.ts'), 'utf8');

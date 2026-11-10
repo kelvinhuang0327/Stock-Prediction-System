@@ -32,21 +32,19 @@ export function InstitutionalChips({ symbol }: { symbol: string }) {
     const [viewMode, setViewMode] = useState<'daily' | 'cumulative' | 'insider'>('daily');
 
     const processedData = useMemo(() => {
-        let accForeign = 0;
-        let accTrust = 0;
-        let accDealer = 0;
-
-        return rawData.map(item => {
-            accForeign += item.foreign;
-            accTrust += item.trust;
-            accDealer += item.dealer;
-            return {
+        return rawData.reduce<Array<(typeof rawData)[number] & {
+            accForeign: number;
+            accTrust: number;
+            accDealer: number;
+        }>>((items, item) => {
+            const previous = items[items.length - 1];
+            return [...items, {
                 ...item,
-                accForeign,
-                accTrust,
-                accDealer
-            };
-        });
+                accForeign: (previous?.accForeign ?? 0) + item.foreign,
+                accTrust: (previous?.accTrust ?? 0) + item.trust,
+                accDealer: (previous?.accDealer ?? 0) + item.dealer,
+            }];
+        }, []);
     }, []);
 
     // Calculate last 5 days sum for summary cards

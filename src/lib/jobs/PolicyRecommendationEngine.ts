@@ -187,7 +187,7 @@ function buildRecommendationFromBundle(bundle: JobAnalyticsBundle): PolicyRecomm
 
   const missedWorsening =
     (familyName === 'missed_run' || familyName === 'delayed_run') &&
-    (trend === 'worsening' || trend === 'oscillating');
+    trend === 'worsening';
 
   const monitorFrequencyMismatch =
     (familyName === 'missed_run' || familyName === 'delayed_run') &&

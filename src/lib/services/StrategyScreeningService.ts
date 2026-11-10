@@ -10,6 +10,13 @@ import { simpleCacheService } from './SimpleCacheService';
 
 export type { ScreeningResult };
 
+export interface MetricRanking {
+    stockId: string;
+    name: string;
+    value: number | undefined;
+    label: string | undefined;
+}
+
 export interface ScreeningCriteria {
     minRevenueYoY?: number;
     requirePositiveEPS?: boolean;
@@ -52,17 +59,17 @@ export class StrategyScreeningService {
 
             if (cachedSignals.length > 0) {
                 console.log(`[Database] Found ${cachedSignals.length} pre-calculated signals for ${cleanDate}`);
-                return cachedSignals.map((s: any) => {
-                    const metadata = s.metadata ? JSON.parse(s.metadata) : {};
+                return cachedSignals.map((signal) => {
+                    const metadata: Record<string, number> = signal.metadata ? JSON.parse(signal.metadata) : {};
                     return {
-                        stockId: s.stockId,
-                        name: s.stockId, // Name not stored in signal for space, client can fetch or use ID
+                        stockId: signal.stockId,
+                        name: signal.stockId, // Name not stored in signal for space, client can fetch or use ID
                         revenueYoY: metadata.revenueYoY || 0,
                         eps: 0,
                         chipStrength: 0,
-                        technicalScore: s.score || 0,
-                        reason: s.reason || '',
-                        potentialLabel: s.label || '',
+                        technicalScore: signal.score || 0,
+                        reason: signal.reason || '',
+                        potentialLabel: signal.label || '',
                         climbPercent: metadata.climbPercent || 0,
                         rsScore: metadata.rsScore || 0,
                         closePrice: 0 // Placeholder
@@ -156,7 +163,12 @@ export class StrategyScreeningService {
             stockId: s.id,
             name: s.name,
             quotes: s.quotes,
-            monthlyRevenues: s.monthlyRevenues,
+            monthlyRevenues: s.monthlyRevenues.map(revenue => ({
+                year: revenue.year,
+                month: revenue.month,
+                revenue: revenue.revenue,
+                yoyGrowth: revenue.yoyGrowth ?? undefined
+            })),
             financialReports: s.financialReports,
             institutionalChips: s.institutionalChips,
             capital: s.capital ? Number(s.capital) : undefined
@@ -169,7 +181,7 @@ export class StrategyScreeningService {
         const selectedStrategy = this.getStrategy(criteria.strategy);
         const results = await selectedStrategy.screen(stockData, marketIndex, {
             scalingFactor: marketStatus.scalingFactor,
-            regime: marketStatus.regime as any
+            regime: marketStatus.regime
         });
 
         // 3. Deep Analysis for Evidence (2-Stage Fetch)
@@ -207,7 +219,12 @@ export class StrategyScreeningService {
                 stockId: s.id,
                 name: s.name,
                 quotes: s.quotes,
-                monthlyRevenues: s.monthlyRevenues,
+                monthlyRevenues: s.monthlyRevenues.map(revenue => ({
+                    year: revenue.year,
+                    month: revenue.month,
+                    revenue: revenue.revenue,
+                    yoyGrowth: revenue.yoyGrowth ?? undefined
+                })),
                 financialReports: s.financialReports,
                 institutionalChips: s.institutionalChips
             }));
@@ -215,7 +232,7 @@ export class StrategyScreeningService {
             // Re-run strategy screen on deep data (this efficiently calculates evidence too)
             const deepResults = await selectedStrategy.screen(deepStockData, marketIndex, {
                 scalingFactor: marketStatus.scalingFactor,
-                regime: marketStatus.regime as any
+                regime: marketStatus.regime
             });
 
             // Replace shallow results with deep results
@@ -259,7 +276,12 @@ export class StrategyScreeningService {
             stockId: stock.id,
             name: stock.name,
             quotes: stock.quotes,
-            monthlyRevenues: stock.monthlyRevenues,
+            monthlyRevenues: stock.monthlyRevenues.map(revenue => ({
+                year: revenue.year,
+                month: revenue.month,
+                revenue: revenue.revenue,
+                yoyGrowth: revenue.yoyGrowth ?? undefined
+            })),
             financialReports: stock.financialReports,
             institutionalChips: stock.institutionalChips
         };
@@ -271,9 +293,9 @@ export class StrategyScreeningService {
     /**
      * Gets top rankings for a specific metric
      */
-    async getMetricRankings(metric: string, limit: number = 3, asOfDate?: string): Promise<any[]> {
+    async getMetricRankings(metric: string, limit: number = 3, asOfDate?: string): Promise<MetricRanking[]> {
         const cacheKey = `rankings:${metric}:${asOfDate || 'latest'}`;
-        const cached = simpleCacheService.get<any[]>(cacheKey);
+        const cached = simpleCacheService.get<MetricRanking[]>(cacheKey);
         if (cached) return cached;
 
         // Perform screening with skipFilters for broader rankings

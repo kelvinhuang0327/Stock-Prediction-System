@@ -54,11 +54,11 @@ const SAFE_MIGRATION_INPUTS: MigrationSafetyInputs = {
 };
 
 const SAFE_ROLLBACK_INPUTS: RollbackSafetyInputs = {
-  p18Rollback: { passCount: 27, validationStatus: 'PASS' } as any,
+  p18Rollback: { passCount: 27, validationStatus: 'PASS' } as unknown as RollbackSafetyInputs['p18Rollback'],
 };
 
 const SAFE_QUERY_GATE_INPUTS: QueryGateSafetyInputs = {
-  p18QueryGate: { passCount: 22, totalCount: 22 } as any,
+  p18QueryGate: { passCount: 22, totalCount: 22 } as unknown as QueryGateSafetyInputs['p18QueryGate'],
   p17QueryGateValidation: { validationStatus: 'PASS', passCount: 18, failCount: 0 },
 };
 
@@ -233,7 +233,7 @@ describe('evaluateQueryGateSafety', () => {
   it('returns safe=false if P18 pass count is zero', () => {
     const result = evaluateQueryGateSafety({
       ...SAFE_QUERY_GATE_INPUTS,
-      p18QueryGate: { passCount: 0, totalCount: 22 } as any,
+      p18QueryGate: { passCount: 0, totalCount: 22 } as unknown as QueryGateSafetyInputs['p18QueryGate'],
     });
     expect(result.safe).toBe(false);
     expect(result.p18ValidationPass).toBe(false);

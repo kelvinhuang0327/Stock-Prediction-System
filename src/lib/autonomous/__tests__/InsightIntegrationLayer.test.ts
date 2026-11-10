@@ -28,6 +28,7 @@ import {
   applyStrongInsightRankingPenalty,
   formatInsightsAsLimitations,
   loadActiveInsights,
+  persistInsights,
   type OptimizationInsightRecord,
 } from '../InsightIntegrationLayer';
 import type { TieredFilteredInsights } from '../InsightGuardrailLayer';
@@ -120,6 +121,89 @@ describe('extractInsightsFromTaskOutput', () => {
       someField: 123,
     });
     expect(insights).toHaveLength(0);
+  });
+
+  it('extracts setup imbalance severity and rejects insufficient trade samples', () => {
+    const [insight] = extractInsightsFromTaskOutput(
+      'price_analysis_quality__setup_classification_audit',
+      { dominantPct: 0.96, totalTrades: 20, dominantSetupType: 'trend', uniqueSetupTypes: 3 },
+    );
+
+    expect(insight).toMatchObject({
+      insightType: 'setup_imbalance',
+      severity: 'high',
+      confidence: 1,
+      affectedSetupTypes: ['trend'],
+    });
+    expect(insight.evidence).toEqual(expect.arrayContaining([
+      expect.stringContaining('Unique setup types: 3'),
+    ]));
+    expect(extractInsightsFromTaskOutput(
+      'price_analysis_quality__setup_classification_audit',
+      { dominantPct: 0.95, totalTrades: 4 },
+    )).toEqual([]);
+  });
+
+  it('extracts time-exit dominance only when both rate and sample thresholds are met', () => {
+    const [insight] = extractInsightsFromTaskOutput(
+      'price_analysis_quality__mfe_mae_audit',
+      { timeExitPct: 0.6, sampleCount: 15, mfePct: 2.345 },
+    );
+
+    expect(insight).toMatchObject({ insightType: 'time_exit_dominance', severity: 'medium', confidence: 0.5 });
+    expect(insight.evidence).toEqual(expect.arrayContaining([expect.stringContaining('Avg MFE: 2.35%')]));
+    expect(extractInsightsFromTaskOutput(
+      'price_analysis_quality__mfe_mae_audit',
+      { timeExitPct: 0.7, sampleCount: 4 },
+    )).toEqual([]);
+  });
+
+  it('reports zero-volume rows even when no quote is stale', () => {
+    const [insight] = extractInsightsFromTaskOutput(
+      'price_analysis_quality__data_audit',
+      { staleQuoteAge: 0, zeroVolumeCount: 3, symbolCount: 5, stalestSymbol: '2330' },
+    );
+
+    expect(insight).toMatchObject({
+      insightType: 'data_quality_issue',
+      severity: 'low',
+      confidence: 0.7,
+      affectedSymbols: ['2330'],
+    });
+    expect(insight.evidence).toEqual(expect.arrayContaining([
+      'Zero-volume rows: 3',
+      'Symbols affected: 5',
+    ]));
+  });
+
+  it('limits indicator examples in evidence and affected symbols', () => {
+    const examples = Array.from({ length: 12 }, (_, index) => `S${index}`);
+    const [insight] = extractInsightsFromTaskOutput(
+      'price_analysis_quality__indicator_history_check',
+      { symbolsBelowThreshold: 5, thresholdBars: 280, examples },
+    );
+
+    expect(insight).toMatchObject({ insightType: 'indicator_insufficient', severity: 'high', confidence: 1 });
+    expect(insight.evidence[0]).toContain('280-bar threshold');
+    expect(insight.evidence[1]).toContain('S0, S1, S2');
+    expect(insight.affectedSymbols).toEqual(examples.slice(0, 10));
+  });
+
+  it('classifies sector conflict rates and handles insufficient comparison samples', () => {
+    const [insight] = extractInsightsFromTaskOutput(
+      'price_analysis_quality__sector_context_audit',
+      { conflictCount: 4, sampleCount: 10, dominantMarketDirection: 'Bear' },
+    );
+
+    expect(insight).toMatchObject({ insightType: 'sector_misalignment', severity: 'medium', confidence: 2 / 3 });
+    expect(insight.evidence).toEqual(expect.arrayContaining([
+      '4/10 proposals conflict with market direction',
+      'Market: Bear',
+    ]));
+    expect(extractInsightsFromTaskOutput(
+      'price_analysis_quality__sector_context_audit',
+      { conflictCount: 3, sampleCount: 2 },
+    )).toEqual([]);
   });
 });
 
@@ -306,6 +390,82 @@ describe('loadActiveInsights', () => {
     mockPrisma.optimizationInsightRecord.findMany.mockRejectedValue(new Error('DB error'));
     const results = await loadActiveInsights();
     expect(results).toEqual([]);
+  });
+
+  it('uses empty scope arrays when a stored scope is malformed', async () => {
+    const now = new Date();
+    mockPrisma.optimizationInsightRecord.findMany.mockResolvedValue([
+      {
+        id: 2,
+        insightType: 'indicator_insufficient',
+        sourceTaskId: 'price_analysis_quality__indicator_history_check',
+        evidence: '[]',
+        confidence: 0.7,
+        severity: 'medium',
+        affectedScope: 'not-json',
+        expiresAt: new Date(Date.now() + 86400000),
+        createdAt: now,
+        updatedAt: now,
+        regimeContext: null,
+      },
+    ]);
+
+    const [result] = await loadActiveInsights();
+
+    expect(result.affectedSetupTypes).toEqual([]);
+    expect(result.affectedSymbols).toEqual([]);
+    expect(result.regimeContext).toBeUndefined();
+  });
+});
+
+describe('persistInsights', () => {
+  beforeEach(() => {
+    mockPrisma.optimizationInsightRecord.upsert.mockReset();
+    mockPrisma.optimizationInsightRecord.upsert.mockResolvedValue({});
+  });
+
+  it('serializes insight fields and stores regime context through the upsert adapter', async () => {
+    const expiresAt = '2026-12-01T00:00:00.000Z';
+    const insights: OptimizationInsightRecord[] = [
+      {
+        insightType: 'setup_imbalance',
+        sourceTaskId: 'task-1',
+        evidence: ['dominant setup is trend'],
+        confidence: 0.9,
+        severity: 'high',
+        affectedSetupTypes: ['trend'],
+        affectedSymbols: ['2330'],
+        expiresAt,
+        regimeContext: 'Bear',
+      },
+      {
+        insightType: 'data_quality_issue',
+        sourceTaskId: 'task-2',
+        evidence: ['zero volume rows'],
+        confidence: 0.7,
+        severity: 'medium',
+        affectedSetupTypes: [],
+        affectedSymbols: [],
+        expiresAt,
+      },
+    ];
+
+    await persistInsights(insights);
+
+    expect(mockPrisma.optimizationInsightRecord.upsert).toHaveBeenCalledTimes(2);
+    expect(mockPrisma.optimizationInsightRecord.upsert).toHaveBeenNthCalledWith(1, expect.objectContaining({
+      where: { sourceTaskId_insightType: { sourceTaskId: 'task-1', insightType: 'setup_imbalance' } },
+      update: expect.objectContaining({
+        evidence: '["dominant setup is trend"]',
+        affectedScope: '{"setupTypes":["trend"],"symbols":["2330"]}',
+        regimeContext: 'Bear',
+        expiresAt: new Date(expiresAt),
+      }),
+      create: expect.objectContaining({ insightType: 'setup_imbalance', sourceTaskId: 'task-1' }),
+    }));
+    expect(mockPrisma.optimizationInsightRecord.upsert).toHaveBeenNthCalledWith(2, expect.objectContaining({
+      update: expect.objectContaining({ regimeContext: null }),
+    }));
   });
 });
 
