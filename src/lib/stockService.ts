@@ -166,8 +166,18 @@ class StockService {
 
     // Get stocks by sector
     async getStocksBySector(sectorId: string): Promise<Stock[]> {
-        // Find industry name from static list to match DB string
-        const sectorName = SECTORS.find(s => s.id === sectorId)?.name;
+        let normalizedSector = sectorId;
+        try {
+            normalizedSector = decodeURIComponent(sectorId);
+        } catch {
+            // Keep malformed or already-decoded route values as-is.
+        }
+
+        const matchedSector = SECTORS.find(
+            sector => sector.id === normalizedSector || sector.name === normalizedSector,
+        );
+        const normalizedSectorId = matchedSector?.id ?? normalizedSector;
+        const sectorName = matchedSector?.name ?? normalizedSector;
 
         if (sectorName) {
             try {
@@ -182,7 +192,9 @@ class StockService {
             } catch { }
         }
 
-        return POPULAR_STOCKS.filter(s => s.sector === sectorId);
+        return POPULAR_STOCKS.filter(
+            stock => stock.sector === normalizedSectorId || stock.industry === sectorName,
+        );
     }
 
     // Filter stocks - Complex, implementation limited for now
