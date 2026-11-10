@@ -56,7 +56,15 @@ function setupFetch() {
     if (input === '/api/strategy/screen') return { ok: true, json: async () => screenPayload };
     if (input === '/api/strategy/analyze') return { ok: true, json: async () => makeCandidate() };
     if (input.includes('/history?months=6')) {
-      return { ok: true, json: async () => [{ date: '2026-01-01' }, { date: '2026-02-01' }] };
+      return {
+        ok: true,
+        json: async () => ({
+          data: [
+            { date: '2026-01-01', close: 100 },
+            { date: '2026-02-01', close: 105 },
+          ],
+        }),
+      };
     }
     if (input.startsWith('/api/sentiment/analyze')) {
       return { ok: true, json: async () => ({ score: 25, label: 'Positive', headline: 'Demand is improving', factors: ['Revenue growth'] }) };
