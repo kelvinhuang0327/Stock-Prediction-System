@@ -24,6 +24,10 @@ export interface RealTimeQuote {
     isWhale?: boolean; // True if current Tick Volume > 50
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+    return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
 export class RealTimeService {
     private cache: Map<string, { data: RealTimeQuote; expires: number }> = new Map();
     private readonly CACHE_TTL = 5000; // 5 seconds (Respecting userDelay: 5000 from API)
@@ -64,10 +68,11 @@ export class RealTimeService {
             const res = await fetch(url);
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-            const json = await res.json() as any;
+            const json: unknown = await res.json();
+            const msgArray = isRecord(json) ? json.msgArray : null;
 
-            if (json.msgArray && Array.isArray(json.msgArray)) {
-                for (const item of json.msgArray) {
+            if (Array.isArray(msgArray)) {
+                for (const item of msgArray) {
                     const quote = this.parseMisItem(item);
                     if (quote) {
                         results.push(quote);
@@ -86,8 +91,10 @@ export class RealTimeService {
         return results;
     }
 
-    private parseMisItem(item: any): RealTimeQuote | null {
+    private parseMisItem(input: unknown): RealTimeQuote | null {
         try {
+            if (!isRecord(input)) return null;
+            const item = input;
             // "z": Recent Trade Price
             // "tv": Trade Volume (Tick)
             // "v": Accumulated Volume
@@ -96,8 +103,11 @@ export class RealTimeService {
             // "f": Best Ask Volumes
             // "g": Best Bid Volumes
 
-            const code = item.c;
-            const name = item.n;
+            const code = this.parseText(item.c);
+            const name = this.parseText(item.n);
+            const target = this.parseText(item.ch);
+            const tradeTime = this.parseText(item.t);
+            if (!code || !name || !target) return null;
             const tradePrice = this.parseNum(item.z);
 
             // If no trade price (e.g. pre-market), use yesterday close (y) or open (o)
@@ -123,9 +133,9 @@ export class RealTimeService {
 
             return {
                 code,
-                target: item.ch,
+                target,
                 name,
-                tradeTime: item.t,
+                tradeTime,
                 tradePrice: finalPrice,
                 tradeVolume,
                 accumulatedVolume: this.parseNum(item.v),
@@ -136,7 +146,7 @@ export class RealTimeService {
                 bestBidVolume,
                 bestAskPrice,
                 bestAskVolume,
-                timestamp: parseInt(item.tlong || Date.now().toString()),
+                timestamp: this.parseNum(item.tlong) || Date.now(),
                 bidAskImbalance: imbalance,
                 isWhale
             };
@@ -145,14 +155,19 @@ export class RealTimeService {
         }
     }
 
-    private parseNum(val: string): number {
-        if (!val || val === '-') return 0;
-        return parseFloat(val);
+    private parseText(value: unknown): string {
+        return typeof value === 'string' ? value : '';
     }
 
-    private parseList(val: string): number[] {
-        if (!val) return [];
-        return val.split('_').filter(x => x).map(x => parseFloat(x));
+    private parseNum(value: unknown): number {
+        if (typeof value !== 'string' && typeof value !== 'number') return 0;
+        const parsed = Number.parseFloat(String(value));
+        return Number.isFinite(parsed) ? parsed : 0;
+    }
+
+    private parseList(value: unknown): number[] {
+        if (typeof value !== 'string' || !value) return [];
+        return value.split('_').filter(Boolean).map((part) => this.parseNum(part));
     }
 }
 

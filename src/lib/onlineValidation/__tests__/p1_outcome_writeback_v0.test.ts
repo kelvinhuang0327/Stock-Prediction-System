@@ -103,7 +103,7 @@ describe('planOutcomeWriteBackTargets', () => {
     });
 
     it('blocks entry with guardrailStatus != PASS', () => {
-        const entry = makeEntry({ guardrailStatus: 'FAIL' } as any);
+        const entry = makeEntry({ guardrailStatus: 'FAIL' } as never);
         const targets = planOutcomeWriteBackTargets([entry], 5);
         expect(targets[0].outcomeStatus).toBe('BLOCKED');
     });
@@ -303,20 +303,20 @@ describe('validateOutcomeWriteBackBatch', () => {
     });
 
     it('FAIL if dryRun is not true', async () => {
-        const batch = await makeBatch({ dryRun: false as any });
+        const batch = await makeBatch({ dryRun: false as never });
         const result = validateOutcomeWriteBackBatch(batch);
         expect(result.status).toBe('FAIL');
     });
 
     it('FAIL if writeMode is not OUTCOME_ARTIFACT_ONLY', async () => {
-        const batch = await makeBatch({ writeMode: 'PRODUCTION_WRITE' as any });
+        const batch = await makeBatch({ writeMode: 'PRODUCTION_WRITE' as never });
         const result = validateOutcomeWriteBackBatch(batch);
         expect(result.status).toBe('FAIL');
     });
 
     it('FAIL if any outcome has writeBackAllowed=true', async () => {
         const batch = await makeBatch();
-        batch.outcomes[0] = { ...batch.outcomes[0], writeBackAllowed: true as any };
+        batch.outcomes[0] = { ...batch.outcomes[0], writeBackAllowed: true as never };
         const result = validateOutcomeWriteBackBatch(batch);
         expect(result.status).toBe('FAIL');
     });

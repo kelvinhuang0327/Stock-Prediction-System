@@ -1,6 +1,9 @@
 import {
   applyPriorityScores,
+  bucketCandidatesByDomain,
+  buildCompositeDraft,
   candidateToDraft,
+  compositeDedupeKey,
   deduplicateAgainstState,
   enforceQuota,
   validateCandidate,
@@ -354,6 +357,15 @@ describe('Autonomous Optimization Miner — pure function tests', () => {
       const draft = candidateToDraft(candidate, MOCK_PROFILE);
       expect(draft.contract.forbidden_changes).toContain('Do not delete documents without archiving');
     });
+
+    it('uses a problem-statement scope when no suggested files are provided', () => {
+      const candidate = makeCandidate({ suggestedFiles: [], evidence: [], acceptanceCriteria: [], forbiddenActions: [] });
+      const draft = candidateToDraft(candidate, MOCK_PROFILE);
+
+      expect(draft.promptMarkdown).toContain('- (see problem statement)');
+      expect(draft.contract.scope).toEqual(['(see problem statement)']);
+      expect(draft.contract.acceptance_tests).toEqual([]);
+    });
   });
 
   // ── Test 6: price_analysis_quality candidate behaviour ────────────────────
@@ -448,6 +460,74 @@ describe('Autonomous Optimization Miner — pure function tests', () => {
         'Write native insight report JSON to docs/reports/price_data_quality.json',
         'No threshold changes — diagnostics only, using existing thresholds',
       ]));
+    });
+  });
+
+  describe('composite optimization drafts', () => {
+    it('groups source candidates, sorts them by priority, and picks at most two per domain', () => {
+      const buckets = bucketCandidatesByDomain([
+        makeCandidate({ sourceType: 'system_health', priorityScore: 30, dedupeKey: 'system-30' }),
+        makeCandidate({ sourceType: 'code_quality', priorityScore: 90, dedupeKey: 'code-90' }),
+        makeCandidate({ sourceType: 'test_coverage', priorityScore: 80, dedupeKey: 'coverage-80' }),
+        makeCandidate({ sourceType: 'wiki_docs', priorityScore: 40, dedupeKey: 'wiki-40' }),
+        makeCandidate({ sourceType: 'ui_ux', priorityScore: 20, dedupeKey: 'ui-20' }),
+      ]);
+
+      expect(buckets).toHaveLength(5);
+      expect(buckets.find(bucket => bucket.domain.key === 'system')).toMatchObject({
+        usedFallback: false,
+        picks: [expect.objectContaining({ priorityScore: 90 }), expect.objectContaining({ priorityScore: 80 })],
+      });
+      expect(buckets.find(bucket => bucket.domain.key === 'feature')).toMatchObject({
+        usedFallback: false,
+        picks: [expect.objectContaining({ priorityScore: 40 }), expect.objectContaining({ priorityScore: 20 })],
+      });
+      expect(buckets.filter(bucket => bucket.usedFallback).map(bucket => bucket.domain.key)).toEqual([
+        'simulation', 'real_trading', 'self_learning',
+      ]);
+    });
+
+    it('builds all fallback phases and tags their outputs by domain', () => {
+      const buckets = bucketCandidatesByDomain([]);
+      const draft = buildCompositeDraft(buckets, MOCK_PROFILE, compositeDedupeKey(new Date('2026-11-10T23:00:00.000Z')));
+
+      expect(draft.objective).toContain('8-Hour Multi-Domain Optimization Sprint');
+      expect(draft.promptMarkdown).toContain('5 domains (0 miner-sourced, 5 fallback)');
+      expect(draft.promptMarkdown).toContain('Phase 1: 系統優化');
+      expect(draft.promptMarkdown).toContain('No miner candidate found for this domain today');
+      expect(draft.contract.trigger_reason).toContain('domains=system,feature,simulation,real_trading,self_learning&mined=0');
+      expect(draft.contract.acceptance_tests).toEqual(expect.arrayContaining([
+        expect.stringContaining('[system] Verify StockQuote'),
+        expect.stringContaining('[feature] List every src/app route'),
+        expect.stringContaining('[simulation] Audit open/pending SimulatedTrade'),
+        expect.stringContaining('[real_trading] Summarize trigger distribution'),
+        expect.stringContaining('[self_learning] Report the age of the most recent'),
+      ]));
+      expect(draft.contract.expected_duration_hours).toBe(8);
+      expect(draft.plannerContext.taskType).toBe('optimization_composite_8h');
+      expect(draft.plannerContext.dedupeKey).toBe('composite_8h_plan__2026-11-10');
+    });
+
+    it('includes real evidence and file scopes while rendering empty sections safely', () => {
+      const realCandidate = makeCandidate({
+        sourceType: 'wiki_docs',
+        problem: 'Review the content boundary.',
+        evidence: [],
+        suggestedFiles: [],
+        acceptanceCriteria: [],
+        forbiddenActions: [],
+        priorityScore: 50,
+      });
+      const buckets = bucketCandidatesByDomain([realCandidate]);
+      const draft = buildCompositeDraft(buckets, MOCK_PROFILE, compositeDedupeKey(new Date('2026-11-10T00:00:00.000Z')));
+
+      expect(draft.promptMarkdown).toContain('**Problem 1 — wiki_docs.** Review the content boundary.');
+      expect(draft.promptMarkdown).toContain('**Suggested Files:**\n- (see problem statement)');
+      expect(draft.promptMarkdown).toContain('**Acceptance Criteria:**\n- [ ] (see fallback spec)');
+      expect(draft.promptMarkdown).toContain('**Forbidden Actions:**\n- ⛔ (none specific — general constraints below)');
+      expect(draft.contract.scope).toEqual(expect.arrayContaining(['src/lib/sync/', 'src/lib/lifecycle/']));
+      expect(draft.contract.forbidden_changes).toContain('Do not require live broker connection');
+      expect(draft.plannerContext.regimeTaskType).toBe('composite_8h_plan');
     });
   });
 

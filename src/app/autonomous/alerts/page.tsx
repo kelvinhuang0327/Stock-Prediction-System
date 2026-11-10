@@ -15,6 +15,8 @@ import type { PolicyRecommendationType } from '@/lib/jobs/PolicyRecommendationEn
 import type { JobAlertRecord, JobAlertSeverity } from '@/lib/jobs/types';
 import { ArrowLeft, AlertTriangle, Clock3, Database, ShieldAlert, RotateCw, TrendingUp } from 'lucide-react';
 
+export const dynamic = 'force-dynamic';
+
 type SearchParams = Record<string, string | string[] | undefined>;
 
 function firstValue(value: string | string[] | undefined): string | undefined {

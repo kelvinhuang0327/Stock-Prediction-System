@@ -90,6 +90,7 @@ export async function GET(request: Request) {
           jobName: alert.jobName,
           severity: alert.severity,
           message: alert.message,
+          detectedAt: alert.detectedAt,
           alertKey: alert.jobName,
           status: 'active' as const,
           firstDetectedAt: alert.detectedAt,

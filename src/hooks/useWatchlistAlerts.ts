@@ -17,7 +17,16 @@ export function useWatchlistAlerts() {
         }
     }, []);
 
-    useEffect(() => { fetchAlerts(); }, [fetchAlerts]);
+    useEffect(() => {
+        let isActive = true;
+        fetch('/api/alerts')
+            .then(async (res) => res.ok ? await res.json() as PriceAlert[] : null)
+            .then((data) => {
+                if (isActive && data) setAlerts(data);
+            })
+            .catch((e: unknown) => console.error('Failed to fetch alerts', e));
+        return () => { isActive = false; };
+    }, []);
 
     const saveAlert = useCallback(async (alert: PriceAlert) => {
         try {

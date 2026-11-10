@@ -8,6 +8,7 @@
 
 import { prisma } from '@/lib/prisma';
 import { filterMonthlyRevenueAvailableAsOf } from '@/lib/onlineValidation/MonthlyRevenueAvailability';
+import type { InstitutionalChip } from '@prisma/client';
 
 // ─── Public Types ───────────────────────────────────────────────
 
@@ -421,11 +422,14 @@ function calculateRisk(
 
 // ─── Chip Strength ──────────────────────────────────────────────
 
-function calculateChipStrength(chips: any[], factors: AnalysisFactor[]): number {
+function calculateChipStrength(
+    chips: Pick<InstitutionalChip, 'totalBuy' | 'foreignBuy' | 'trustBuy'>[],
+    factors: AnalysisFactor[],
+): number {
     const recentChips = chips.slice(0, 10);
-    const totalNetBuy = recentChips.reduce((s: number, c: any) => s + (c.totalBuy || 0), 0);
-    const foreignNetBuy = recentChips.reduce((s: number, c: any) => s + (c.foreignBuy || 0), 0);
-    const trustNetBuy = recentChips.reduce((s: number, c: any) => s + (c.trustBuy || 0), 0);
+    const totalNetBuy = recentChips.reduce((sum, chip) => sum + (chip.totalBuy || 0), 0);
+    const foreignNetBuy = recentChips.reduce((sum, chip) => sum + (chip.foreignBuy || 0), 0);
+    const trustNetBuy = recentChips.reduce((sum, chip) => sum + (chip.trustBuy || 0), 0);
 
     const netBuyScore = 50 + clamp(Math.sign(totalNetBuy) * Math.min(Math.abs(totalNetBuy) / 1000, 30), -30, 30);
 

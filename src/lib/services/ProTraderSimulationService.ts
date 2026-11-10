@@ -31,8 +31,33 @@ interface Position {
     stopLoss: number;
 }
 
+interface Opportunity {
+    stockId: string;
+    returnPercent: number;
+}
+
+interface ActivePosition {
+    stockId: string;
+    investedAmount: number;
+    expectedReturn: number;
+    daysHeld: number;
+}
+
+export interface ProTraderSimulationResult {
+    history: DailyState[];
+    logs: string[];
+    finalEquity: number;
+    returnPercent: number;
+    maxDrawdown: number;
+    metrics: {
+        sharpeRatio: number;
+        winRate: number;
+        totalTrades: number;
+    };
+}
+
 export class ProTraderSimulationService {
-    async runSimulation(config: SimulationConfig): Promise<any> {
+    async runSimulation(config: SimulationConfig): Promise<ProTraderSimulationResult> {
         // 1. Get History of Regimes
         const regimes = await marketStatusService.getRegimeHistory(365); // 1 Year Default
 
@@ -41,7 +66,7 @@ export class ProTraderSimulationService {
         const rawSignals = await doublingBacktestService.runBacktest(365, 60); // 365 days, 60 days max hold
 
         // Convert signals to a map by date for easy lookup
-        const opportunitiesByDate: Record<string, any[]> = {};
+        const opportunitiesByDate: Record<string, Opportunity[]> = {};
         // The rawSignals from DoublingBacktestService are 'Windows'. 
         // We actually need the raw trade list. 
         // But DoublingBacktestService.runBacktest returns windows...
@@ -80,7 +105,7 @@ export class ProTraderSimulationService {
         let invested = 0;
         let equity = config.initialCapital;
         const history: DailyState[] = [];
-        const activePositions: any[] = [];
+        const activePositions: ActivePosition[] = [];
         const logs: string[] = [];
         let maxEquity = equity;
 
@@ -195,12 +220,18 @@ export class ProTraderSimulationService {
         // Final Metrics Calculation
         const finalEquity = equity;
         const totalReturn = ((finalEquity - config.initialCapital) / config.initialCapital) * 100;
-        const maxDrawdown = Math.max(...history.map(h => h.drawdown));
+        const maxDrawdown = history.length > 0
+            ? Math.max(...history.map(h => h.drawdown))
+            : 0;
 
         // Sharpe Ratio (Simplified: Daily Returns vs Risk Free)
         const dailyReturns = history.map((h, i) => i === 0 ? 0 : (h.equity - history[i - 1].equity) / history[i - 1].equity);
-        const avgDailyRet = dailyReturns.reduce((a, b) => a + b, 0) / dailyReturns.length;
-        const stdDev = Math.sqrt(dailyReturns.reduce((sum, val) => sum + Math.pow(val - avgDailyRet, 2), 0) / dailyReturns.length);
+        const avgDailyRet = dailyReturns.length > 0
+            ? dailyReturns.reduce((a, b) => a + b, 0) / dailyReturns.length
+            : 0;
+        const stdDev = dailyReturns.length > 0
+            ? Math.sqrt(dailyReturns.reduce((sum, val) => sum + Math.pow(val - avgDailyRet, 2), 0) / dailyReturns.length)
+            : 0;
         const sharpeRatio = stdDev === 0 ? 0 : (avgDailyRet * 252) / (stdDev * Math.sqrt(252)); // Annualized
 
         // Trades Analysis

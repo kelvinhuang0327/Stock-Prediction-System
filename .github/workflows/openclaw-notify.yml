@@ -13,9 +13,16 @@ jobs:
   notify-ci:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'workflow_run' }}
+    env:
+      OPENCLAW_WEBHOOK_URL: ${{ secrets.OPENCLAW_WEBHOOK_URL }}
     steps:
       - name: Notify CI Result
         run: |
+          if [ -z "$OPENCLAW_WEBHOOK_URL" ]; then
+            echo "OPENCLAW_WEBHOOK_URL is unavailable; skipping optional notification."
+            exit 0
+          fi
+
           STATUS="${{ github.event.workflow_run.conclusion }}"
           if [ "$STATUS" = "failure" ]; then
             EMOJI="❌"
@@ -25,7 +32,7 @@ jobs:
             MSG="CI Passed"
           fi
           
-          curl -X POST "${{ secrets.OPENCLAW_WEBHOOK_URL }}" \
+          curl -X POST "$OPENCLAW_WEBHOOK_URL" \
             -H "Content-Type: application/json" \
             -d "{
               \"event\": \"ci_$STATUS\",
@@ -39,10 +46,17 @@ jobs:
   notify-issue:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'issues' }}
+    env:
+      OPENCLAW_WEBHOOK_URL: ${{ secrets.OPENCLAW_WEBHOOK_URL }}
     steps:
       - name: Notify New Issue
         run: |
-          curl -X POST "${{ secrets.OPENCLAW_WEBHOOK_URL }}" \
+          if [ -z "$OPENCLAW_WEBHOOK_URL" ]; then
+            echo "OPENCLAW_WEBHOOK_URL is unavailable; skipping optional notification."
+            exit 0
+          fi
+
+          curl -X POST "$OPENCLAW_WEBHOOK_URL" \
             -H "Content-Type: application/json" \
             -d "{
               \"event\": \"new_issue\",
@@ -56,9 +70,16 @@ jobs:
   notify-pr:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request' }}
+    env:
+      OPENCLAW_WEBHOOK_URL: ${{ secrets.OPENCLAW_WEBHOOK_URL }}
     steps:
       - name: Notify PR Event
         run: |
+          if [ -z "$OPENCLAW_WEBHOOK_URL" ]; then
+            echo "OPENCLAW_WEBHOOK_URL is unavailable; skipping optional notification."
+            exit 0
+          fi
+
           ACTION="${{ github.event.action }}"
           if [ "$ACTION" = "opened" ]; then
             MSG="🔀 New PR #${{ github.event.pull_request.number }}: ${{ github.event.pull_request.title }}"
@@ -68,7 +89,7 @@ jobs:
             MSG="🔒 PR #${{ github.event.pull_request.number }} closed"
           fi
           
-          curl -X POST "${{ secrets.OPENCLAW_WEBHOOK_URL }}" \
+          curl -X POST "$OPENCLAW_WEBHOOK_URL" \
             -H "Content-Type: application/json" \
             -d "{
               \"event\": \"pr_$ACTION\",

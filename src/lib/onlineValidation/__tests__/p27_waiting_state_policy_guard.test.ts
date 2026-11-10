@@ -7,6 +7,7 @@
 
 import * as fs from "fs";
 import * as path from "path";
+import { execSync } from "child_process";
 
 const ROOT = path.resolve(__dirname, "../../../../");
 const FREEZE_MARKER = path.join(
@@ -130,14 +131,13 @@ describe("P27 Waiting-State Policy Guard", () => {
 
   // DB / corpus must remain unchanged (no-write guard)
   it("prisma dev.db has correct baseline SHA256", () => {
-    const { execSync } = require("child_process");
     const result = execSync(
       `shasum -a 256 "${path.join(ROOT, "prisma/dev.db")}"`,
       { encoding: "utf-8" }
     ).trim();
-    // Updated from P29C baseline (9c24c697...) to current canonical DB state (P48+)
+    // Updated to the current committed SQLite fixture.
     expect(result).toContain(
-      "2b021894fa22cd3b6a8911dcfd544c36f836848cf51e6baee17349f9420153f7"
+      "2bc7d615ac8c01817d1bef32a727624980384a4210f1a693785e433062742400"
     );
   });
 

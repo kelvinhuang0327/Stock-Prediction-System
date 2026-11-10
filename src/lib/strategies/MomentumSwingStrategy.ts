@@ -1,11 +1,11 @@
-import { Strategy, StockData, StrategyResult, StockQuote } from './types';
+import { Strategy, StockData, StrategyResult, StockQuote, MarketDataPoint } from './types';
 import { calculateAllIndicators } from '../technicalIndicators';
 
 export class MomentumSwingStrategy implements Strategy {
     name = 'Momentum Swing (波段快攻)';
     description = 'Short-term swing trading strategy targeting 3-10 day moves based on technical momentum (MA5/10) and volume.';
 
-    async screen(data: StockData[], marketData?: any[]): Promise<StrategyResult[]> {
+    async screen(data: StockData[], marketData?: MarketDataPoint[]): Promise<StrategyResult[]> {
         const results: StrategyResult[] = [];
 
         for (const stock of data) {
@@ -33,7 +33,7 @@ export class MomentumSwingStrategy implements Strategy {
             if (currentClose < ma20) continue; // Must be above monthly trend
 
             // 2. Volume Spike
-            const avgVol5 = indicators.slice(-6, -1).reduce((sum: number, d: any) => sum + d.volume, 0) / 5;
+            const avgVol5 = indicators.slice(-6, -1).reduce((sum, day) => sum + day.volume, 0) / 5;
             const volRatio = (avgVol5 > 0) ? last.volume / avgVol5 : 0;
 
             // Design Choice: Need active volume but not necessarily "Super Explosion" which might be climax
@@ -50,7 +50,7 @@ export class MomentumSwingStrategy implements Strategy {
             // 4. Chip Flow (Optional but good)
             const chips = stock.institutionalChips || [];
             const recentChips = chips.slice(0, 3); // Last 3 days
-            const chipBuy = recentChips.reduce((acc: number, c: any) => acc + (c.totalBuy || 0), 0);
+            const chipBuy = recentChips.reduce((acc, chip) => acc + (chip.totalBuy || 0), 0);
             const chipStrength = Math.min(100, Math.max(0, (chipBuy / 1000) * 100 + 50)); // Normalize
 
             // Scoring

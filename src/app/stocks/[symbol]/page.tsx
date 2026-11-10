@@ -1185,6 +1185,7 @@ function MultiAgentResearchSection({
   const [result, setResult] = React.useState<MAResearchResult | null>(null);
   const [loadedEventSignature, setLoadedEventSignature] = React.useState<string | null>(null);
   const [loading, setLoading] = React.useState(false);
+  const loadingRef = React.useRef(false);
   const [err, setErr] = React.useState<string | null>(null);
   const [expandedAgent, setExpandedAgent] = React.useState<string | null>(null);
 
@@ -1197,12 +1198,13 @@ function MultiAgentResearchSection({
           summary: eventSummary.catalystSummary,
         })
       : 'null';
-    if (loading) return;
+    if (loadingRef.current) return;
     if (result && loadedEventSignature === currentEventSignature) return;
     if (!data.fusion && data.dataPoints < 20) {
       setErr('資料不足 20 天，無法執行多 Agent 研究分析');
       return;
     }
+    loadingRef.current = true;
     setLoading(true);
     setErr(null);
     try {
@@ -1237,9 +1239,10 @@ function MultiAgentResearchSection({
     } catch (e: unknown) {
       setErr(e instanceof Error ? e.message : '研究委員會分析暫時不可用');
     } finally {
+      loadingRef.current = false;
       setLoading(false);
     }
-  }, [data, result, loading, eventSummary, loadedEventSignature]);
+  }, [data, result, eventSummary, loadedEventSignature]);
 
   // Auto-load on mount
   React.useEffect(() => { load(); }, [load]);

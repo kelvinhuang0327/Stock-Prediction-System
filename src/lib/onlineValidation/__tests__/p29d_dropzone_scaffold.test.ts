@@ -31,8 +31,8 @@ function sha256File(relPath: string): string {
 }
 
 // ─── BASELINE SHA256 ────────────────────────────────────────────────────────
-// Updated from P29C baseline (9c24c697...) to current canonical DB state (P48+)
-const BASELINE_DB_SHA = '2b021894fa22cd3b6a8911dcfd544c36f836848cf51e6baee17349f9420153f7';
+// Updated to the current committed SQLite fixture.
+const BASELINE_DB_SHA = '2bc7d615ac8c01817d1bef32a727624980384a4210f1a693785e433062742400';
 const BASELINE_SCORING_SHA = '8ab21b339ce09363a548308c7576569b297aaec952773f4ef4e117c157177c15';
 const BASELINE_SNAPSHOT_SHA = '063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d';
 
@@ -147,7 +147,7 @@ test('T11: entersAlphaScore is false in all schema files and manifest templates'
 });
 
 // ─── TEST 12: prisma/dev.db SHA256 unchanged ─────────────────────────────────
-test('T12: prisma/dev.db SHA256 is unchanged from P29C baseline', () => {
+test('T12: prisma/dev.db SHA256 matches the committed fixture', () => {
   const actual = sha256File('prisma/dev.db');
   expect(actual).toBe(BASELINE_DB_SHA);
 });

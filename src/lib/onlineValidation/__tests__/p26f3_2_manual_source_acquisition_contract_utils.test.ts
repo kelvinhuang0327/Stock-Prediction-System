@@ -1,3 +1,5 @@
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 import {
   P26F3_2_TARGET_PERIODS,
   P26F3_2_TARGET_SYMBOLS,
@@ -153,13 +155,11 @@ describe('P26F32 Manual Source Acquisition Contract Utils', () => {
 
   describe('No forbidden implementation patterns', () => {
     it('source file does not use Math.random()', () => {
-      const fs = require('fs');
-      const src = fs.readFileSync(require('path').join(__dirname, '../P26F32ManualSourceAcquisitionContractUtils.ts'), 'utf8');
+      const src = fs.readFileSync(path.join(__dirname, '../P26F32ManualSourceAcquisitionContractUtils.ts'), 'utf8');
       expect(src).not.toMatch(/Math\.random\(\)/);
     });
     it('source file does not use external imports', () => {
-      const fs = require('fs');
-      const src = fs.readFileSync(require('path').join(__dirname, '../P26F32ManualSourceAcquisitionContractUtils.ts'), 'utf8');
+      const src = fs.readFileSync(path.join(__dirname, '../P26F32ManualSourceAcquisitionContractUtils.ts'), 'utf8');
       expect(src).not.toMatch(/^import\s+.*from\s+['"][^.]/m);
     });
   });

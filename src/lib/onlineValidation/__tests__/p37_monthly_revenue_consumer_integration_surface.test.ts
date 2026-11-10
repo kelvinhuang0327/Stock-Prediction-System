@@ -15,6 +15,8 @@
  * DISCLAIMER: Test-only. Structural audit tests only. No investment advice.
  */
 
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 import {
   buildMonthlyRevenueConsumerPayload,
   validateMonthlyRevenueConsumerPayload,
@@ -515,15 +517,13 @@ describe("P37 — 8. Field list integrity", () => {
 
 describe("P37 — 9. Isolation — no DB / Prisma / scoring mutation", () => {
   test("9.1 adapter module does not import prisma client", () => {
-    // The adapter imports only from p36 and p37 surface — no prisma
-    const adapterModule = require("../p37/MonthlyRevenueControlledConsumerAdapter");
-    // If Prisma were imported, it would throw during jest module load in test env
-    expect(adapterModule).toBeDefined();
+    const source = fs.readFileSync(path.join(__dirname, '../p37/MonthlyRevenueControlledConsumerAdapter.ts'), 'utf8');
+    expect(source).not.toMatch(/from ['"]@\/lib\/prisma['"]/);
   });
 
   test("9.2 surface module does not import prisma client", () => {
-    const surfaceModule = require("../p37/MonthlyRevenueConsumerIntegrationSurface");
-    expect(surfaceModule).toBeDefined();
+    const source = fs.readFileSync(path.join(__dirname, '../p37/MonthlyRevenueConsumerIntegrationSurface.ts'), 'utf8');
+    expect(source).not.toMatch(/from ['"]@\/lib\/prisma['"]/);
   });
 
   test("9.3 evaluator functions are pure — do not mutate input rows", () => {

@@ -18,7 +18,9 @@ const getSignal = (indicator: string, value: number): SignalType => {
             if (value < 20) return 'Oversold';
             return 'Neutral';
         case 'MACD':
-            return value > 0 ? 'Bullish' : 'Bearish';
+            if (value > 0) return 'Bullish';
+            if (value < 0) return 'Bearish';
+            return 'Neutral';
         case 'Williams %R':
             if (value > -20) return 'Overbought';
             if (value < -80) return 'Oversold';
@@ -52,50 +54,62 @@ export function TechnicalIndicators({ symbol, data }: { symbol: string, data?: S
         return [
             {
                 name: 'RSI (14)',
-                value: latest.rsi?.toFixed(2) || 'N/A',
-                signal: (latest.rsi ? getSignal('RSI', latest.rsi) : 'Neutral') as SignalType,
+                value: latest.rsi != null ? latest.rsi.toFixed(2) : 'N/A',
+                signal: (latest.rsi != null ? getSignal('RSI', latest.rsi) : 'Neutral') as SignalType,
                 numValue: latest.rsi
             },
             {
                 name: 'MACD',
-                value: latest.dif?.toFixed(2) || 'N/A',
-                signal: (latest.dif ? getSignal('MACD', latest.dif) : 'Neutral') as SignalType,
+                value: latest.dif != null ? latest.dif.toFixed(2) : 'N/A',
+                signal: (latest.dif != null ? getSignal('MACD', latest.dif) : 'Neutral') as SignalType,
                 numValue: latest.dif
             },
             {
                 name: 'MA (20)',
-                value: latest.ma20?.toFixed(2) || 'N/A',
-                signal: ((latest.ma20 && latest.close > latest.ma20) ? 'Bullish' : 'Bearish') as SignalType,
+                value: latest.ma20 != null ? latest.ma20.toFixed(2) : 'N/A',
+                signal: (latest.ma20 == null
+                    ? 'Neutral'
+                    : latest.close > latest.ma20
+                        ? 'Bullish'
+                        : latest.close < latest.ma20
+                            ? 'Bearish'
+                            : 'Neutral') as SignalType,
                 numValue: latest.ma20
             },
             {
                 name: 'MA (60)',
-                value: latest.ma60?.toFixed(2) || 'N/A',
-                signal: ((latest.ma60 && latest.close > latest.ma60) ? 'Bullish' : 'Bearish') as SignalType,
+                value: latest.ma60 != null ? latest.ma60.toFixed(2) : 'N/A',
+                signal: (latest.ma60 == null
+                    ? 'Neutral'
+                    : latest.close > latest.ma60
+                        ? 'Bullish'
+                        : latest.close < latest.ma60
+                            ? 'Bearish'
+                            : 'Neutral') as SignalType,
                 numValue: latest.ma60
             },
             {
                 name: 'KD',
-                value: `K:${latest.k?.toFixed(1) || 'N/A'} D:${latest.d?.toFixed(1) || 'N/A'}`,
-                signal: (latest.k ? getSignal('KD', latest.k) : 'Neutral') as SignalType,
+                value: `K:${latest.k != null ? latest.k.toFixed(1) : 'N/A'} D:${latest.d != null ? latest.d.toFixed(1) : 'N/A'}`,
+                signal: (latest.k != null ? getSignal('KD', latest.k) : 'Neutral') as SignalType,
                 numValue: latest.k
             },
             {
                 name: 'ATR (14)',
-                value: latest.atr?.toFixed(2) || 'N/A',
+                value: latest.atr != null ? latest.atr.toFixed(2) : 'N/A',
                 signal: 'Neutral' as SignalType,
                 numValue: latest.atr
             },
             {
                 name: 'Williams %R',
-                value: latest.williamsR?.toFixed(2) || 'N/A',
-                signal: (latest.williamsR ? getSignal('Williams %R', latest.williamsR) : 'Neutral') as SignalType,
+                value: latest.williamsR != null ? latest.williamsR.toFixed(2) : 'N/A',
+                signal: (latest.williamsR != null ? getSignal('Williams %R', latest.williamsR) : 'Neutral') as SignalType,
                 numValue: latest.williamsR
             },
             {
                 name: 'CCI (20)',
-                value: latest.cci?.toFixed(2) || 'N/A',
-                signal: (latest.cci ? getSignal('CCI', latest.cci) : 'Neutral') as SignalType,
+                value: latest.cci != null ? latest.cci.toFixed(2) : 'N/A',
+                signal: (latest.cci != null ? getSignal('CCI', latest.cci) : 'Neutral') as SignalType,
                 numValue: latest.cci
             }
         ];

@@ -67,14 +67,16 @@ export class AssetDoublingStrategy implements Strategy {
             if (latestQuotes.length < 20) continue;
 
             // 1. Revenue Filter
-            if (!this.config.skipFilters && !skipFilters && (latestRev.yoyGrowth || 0) < this.config.minRevenueYoY) continue;
+            if (!this.config.skipFilters && !skipFilters && (latestRev.yoyGrowth || 0) < minRev) continue;
 
             // 2. Technical Filter
             let technicalScore = 50;
             let currentClose = 0;
 
             if (latestQuotes.length >= 20) {
-                const indicators = calculateAllIndicators(latestQuotes);
+                const indicators = calculateAllIndicators(latestQuotes, {
+                    sma: [5, this.config.maShort, this.config.maLong],
+                });
                 const lastIdx = indicators.length - 1;
                 const last = indicators[lastIdx] as Record<string, number>;
                 currentClose = last.close;
@@ -88,7 +90,7 @@ export class AssetDoublingStrategy implements Strategy {
             }
 
             // Bullish trend requirement
-            if (!this.config.skipFilters && !skipFilters && technicalScore < this.config.minTechnicalScore) continue;
+            if (!this.config.skipFilters && !skipFilters && technicalScore < minTech) continue;
 
             // 3. Chip Strength
             const chipAccumulation = (stock.institutionalChips || []).reduce((acc: number, curr: InstitutionalChipData) => acc + curr.totalBuy, 0);
@@ -102,7 +104,7 @@ export class AssetDoublingStrategy implements Strategy {
                 const close = last.close;
                 const atrRatio = (atr / close) * 100;
 
-                if (!this.config.skipFilters && !skipFilters && atrRatio > this.config.atrFilterRatio && chipStrength < 60) continue;
+                if (!this.config.skipFilters && !skipFilters && atrRatio > this.config.atrFilterRatio && chipStrength < minChip) continue;
             }
 
             // 5. Potential Label (Refined for Ignition)
@@ -124,7 +126,7 @@ export class AssetDoublingStrategy implements Strategy {
                     potentialLabel = "⚠️ 過熱警戒 (已漲多)";
                 } else if (isVolumeSpike && climbPercent < 20) {
                     potentialLabel = "🚀 強勢發動 (爆量起漲)";
-                } else if (climbPercent < 15 && latestRev.yoyGrowth >= this.config.minRevenueYoY) {
+                } else if (climbPercent < 15 && latestRev.yoyGrowth >= minRev) {
                     potentialLabel = "💎 潛力珍珠 (低基期)";
                 } else if (climbPercent < 30) {
                     potentialLabel = "📈 多頭排列";

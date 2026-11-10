@@ -174,12 +174,12 @@ export async function runQualityCheck(): Promise<QualityReport> {
 
   // === InstitutionalChip ===
   try {
-    const chipCount = await (prisma as any).institutionalChip.count();
-    const chipDates = await (prisma as any).institutionalChip.findMany({ select: { date: true }, distinct: ['date'] });
-    const chipStocksGroups = await (prisma as any).institutionalChip.groupBy({ by: ['stockId'] });
+    const chipCount = await prisma.institutionalChip.count();
+    const chipDates = await prisma.institutionalChip.findMany({ select: { date: true }, distinct: ['date'] });
+    const chipStocksGroups = await prisma.institutionalChip.groupBy({ by: ['stockId'] });
     const chipStocks = chipStocksGroups.length;
-    const dateFormats = countDateFormats((chipDates as { date: string }[]).map((r: { date: string }) => r.date));
-    const latestDate = findLatestDate((chipDates as { date: string }[]).map((r: { date: string }) => r.date));
+    const dateFormats = countDateFormats(chipDates.map(r => r.date));
+    const latestDate = findLatestDate(chipDates.map(r => r.date));
     const staleDays = latestDate ? daysSince(latestDate) : 999;
 
     const issues: string[] = [];
@@ -231,8 +231,8 @@ export async function runQualityCheck(): Promise<QualityReport> {
   try {
     const totalStocks = await prisma.stock.count();
     const quoteGroups = await prisma.stockQuote.groupBy({ by: ['stockId'], _count: { _all: true } });
-    const chipGroups = await (prisma as any).institutionalChip.groupBy({ by: ['stockId'] });
-    const chipSet = new Set((chipGroups as { stockId: string }[]).map((g: { stockId: string }) => g.stockId));
+    const chipGroups = await prisma.institutionalChip.groupBy({ by: ['stockId'] });
+    const chipSet = new Set(chipGroups.map(g => g.stockId));
 
     const stocksGe20 = quoteGroups.filter(g => g._count._all >= 20);
     const stocksGe60 = quoteGroups.filter(g => g._count._all >= 60);
@@ -243,7 +243,7 @@ export async function runQualityCheck(): Promise<QualityReport> {
     const marketIndexCount = await prisma.marketIndex.count({ where: { name: 'TAIEX' } });
     const latestIndexRow = await prisma.marketIndex.findFirst({ where: { name: 'TAIEX' }, orderBy: { date: 'desc' } });
     const latestQuoteRow = await prisma.stockQuote.findFirst({ orderBy: { date: 'desc' } });
-    const latestChipRow = await (prisma as any).institutionalChip.findFirst({ orderBy: { date: 'desc' } });
+    const latestChipRow = await prisma.institutionalChip.findFirst({ orderBy: { date: 'desc' } });
 
     coverageSummary.totalStocks = totalStocks;
     coverageSummary.stocksWithQuotes = quoteGroups.length;
@@ -252,7 +252,7 @@ export async function runQualityCheck(): Promise<QualityReport> {
     coverageSummary.stocksGe60Days = stocksGe60.length;
     coverageSummary.stocksGe20Days = stocksGe20.length;
     coverageSummary.chipCoveredStocks = chipGroups.length;
-    coverageSummary.chipDatesAvailable = (await (prisma as any).institutionalChip.findMany({ select: { date: true }, distinct: ['date'] })).length;
+    coverageSummary.chipDatesAvailable = (await prisma.institutionalChip.findMany({ select: { date: true }, distinct: ['date'] })).length;
     coverageSummary.marketIndexDays = marketIndexCount;
     coverageSummary.taiexLatestDate = latestIndexRow?.date ?? null;
     coverageSummary.quoteLatestDate = latestQuoteRow?.date ?? null;

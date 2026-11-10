@@ -203,7 +203,7 @@ describe('buildDailyRealMarketSnapshotSeed', () => {
             const seed = buildDailyRealMarketSnapshotSeed({
                 asOfDate: VALID_TRADING_DAY,
                 reviewDate: VALID_REVIEW_DATE,
-                sourceMode: 'UNKNOWN_MODE' as any,
+                sourceMode: 'UNKNOWN_MODE' as never,
             });
             expect(seed.validationStatus).toBe('FAIL');
             expect(seed.validationMessages.join(' ')).toMatch(/invalid sourceMode/);
@@ -295,7 +295,7 @@ describe('validateDailyRealMarketSnapshotSeed', () => {
             asOfDate: VALID_TRADING_DAY,
             reviewDate: VALID_REVIEW_DATE,
         });
-        (seed as any).sourceMode = 'INVALID';
+        Reflect.set(seed, 'sourceMode', 'INVALID');
         const result = validateDailyRealMarketSnapshotSeed(seed);
         expect(result.validationStatus).toBe('FAIL');
     });
@@ -305,7 +305,7 @@ describe('validateDailyRealMarketSnapshotSeed', () => {
             asOfDate: VALID_TRADING_DAY,
             reviewDate: VALID_REVIEW_DATE,
         });
-        (seed as any).customField = 'guaranteed profit edge confirmed';
+        Reflect.set(seed, 'customField', 'guaranteed profit edge confirmed');
         const result = validateDailyRealMarketSnapshotSeed(seed);
         expect(result.validationStatus).toBe('FAIL');
         expect(result.validationMessages.join(' ')).toMatch(/forbidden claim/i);

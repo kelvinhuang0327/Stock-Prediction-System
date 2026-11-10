@@ -8,6 +8,8 @@ import {
   listOrchestratorTasks,
 } from '@/lib/agent-orchestrator/service';
 
+export const dynamic = 'force-dynamic';
+
 const ORCHESTRATION_FLOW = [
   {
     step: '1. Planner',

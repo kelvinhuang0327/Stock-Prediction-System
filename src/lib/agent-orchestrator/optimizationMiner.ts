@@ -1595,8 +1595,7 @@ export function candidateToDraft(candidate: OptimizationTaskCandidate, profile: 
   if (candidate.sourceType === 'price_analysis_quality') {
     // Attach ingest_contract metadata so downstream gate can validate report ingestability
     // and workers know where to write the native JSON report.
-    // Note: TaskContract type is extended dynamically here for practical testing and gate checks.
-    (contract as any).ingest_contract = {
+    contract.ingest_contract = {
       kind: 'price_analysis_native_report',
       dedupeKey: candidate.dedupeKey,
       reportPath: 'docs/reports/price_data_quality.json',

@@ -49,10 +49,15 @@ EXPECTED_HYPOTHESES = {
 # Fixtures
 # ---------------------------------------------------------------------------
 @pytest.fixture(scope="module")
-def run_diagnostics():
+def diagnostics_output_dir(tmp_path_factory):
+    return tmp_path_factory.mktemp("stock-diagnostics")
+
+
+@pytest.fixture(scope="module")
+def run_diagnostics(diagnostics_output_dir):
     """Run the diagnostics script once for the module."""
     result = subprocess.run(
-        [sys.executable, str(SCRIPT)],
+        [sys.executable, str(SCRIPT), "--output-dir", str(diagnostics_output_dir)],
         capture_output=True,
         text=True,
         cwd=str(REPO_ROOT),
@@ -61,24 +66,24 @@ def run_diagnostics():
 
 
 @pytest.fixture(scope="module")
-def diag_json(run_diagnostics):
-    path = OUT_DIR / "hypothesis_failure_diagnostics.json"
+def diag_json(run_diagnostics, diagnostics_output_dir):
+    path = diagnostics_output_dir / "hypothesis_failure_diagnostics.json"
     assert path.exists(), f"Missing output: {path}"
     with open(path) as f:
         return json.load(f)
 
 
 @pytest.fixture(scope="module")
-def symbol_json(run_diagnostics):
-    path = OUT_DIR / "symbol_diagnostics.json"
+def symbol_json(run_diagnostics, diagnostics_output_dir):
+    path = diagnostics_output_dir / "symbol_diagnostics.json"
     assert path.exists(), f"Missing output: {path}"
     with open(path) as f:
         return json.load(f)
 
 
 @pytest.fixture(scope="module")
-def feature_json(run_diagnostics):
-    path = OUT_DIR / "feature_diagnostics.json"
+def feature_json(run_diagnostics, diagnostics_output_dir):
+    path = diagnostics_output_dir / "feature_diagnostics.json"
     assert path.exists(), f"Missing output: {path}"
     with open(path) as f:
         return json.load(f)
@@ -98,8 +103,8 @@ class TestScriptExecution:
             f"STDERR: {run_diagnostics.stderr}"
         )
 
-    def test_script_produces_output_directory(self, run_diagnostics):
-        assert OUT_DIR.exists(), f"Output directory not created: {OUT_DIR}"
+    def test_script_produces_output_directory(self, run_diagnostics, diagnostics_output_dir):
+        assert diagnostics_output_dir.exists(), f"Output directory not created: {diagnostics_output_dir}"
 
 
 # ---------------------------------------------------------------------------

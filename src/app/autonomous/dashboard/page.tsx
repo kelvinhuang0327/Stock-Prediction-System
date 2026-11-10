@@ -16,6 +16,8 @@ import {
   AlertTriangle,
 } from 'lucide-react';
 
+export const dynamic = 'force-dynamic';
+
 function formatCount(value: number): string {
   return new Intl.NumberFormat('en-US').format(value);
 }

@@ -5,6 +5,7 @@
  * profit, alpha, win-rate, edge, or outperformance. Test / governance only.
  */
 
+import * as fs from 'node:fs';
 import {
   validateDryRunApprovalToken,
   buildDryRunMigrationSpec,
@@ -97,7 +98,7 @@ describe('buildDryRunMigrationSpec', () => {
   it('migrationTarget must be fixture/temp/isolated', () => {
     expect(() =>
       buildDryRunMigrationSpec(p14Draft, {
-        migrationTarget: 'production' as any,
+        migrationTarget: 'production' as never,
         approvalToken: EXPECTED_APPROVAL_TOKEN,
       })
     ).toThrow();
@@ -164,7 +165,7 @@ describe('applyMigrationToFixtureSchema', () => {
       approvalToken: EXPECTED_APPROVAL_TOKEN,
     });
     expect(() =>
-      applyMigrationToFixtureSchema(baseSchema, { ...spec, productionApplyAllowed: true as any })
+      applyMigrationToFixtureSchema(baseSchema, { ...spec, productionApplyAllowed: true as never })
     ).toThrow();
   });
 });
@@ -209,7 +210,7 @@ describe('applyRollbackToFixtureSchema', () => {
   it('throws if productionApplyAllowed is not false on rollback', () => {
     const rollSpec = buildDryRunRollbackSpec({ tableName: 'MonthlyRevenue' }, { migrationTarget: 'fixture' });
     expect(() =>
-      applyRollbackToFixtureSchema(baseSchema, { ...rollSpec, productionApplyAllowed: true as any })
+      applyRollbackToFixtureSchema(baseSchema, { ...rollSpec, productionApplyAllowed: true as never })
     ).toThrow();
   });
 });
@@ -347,7 +348,6 @@ describe('validateDryRunBackfill', () => {
 
   it('does not modify P0/P1/P3/P4 corpus (structural — no file writes)', () => {
     // validateDryRunBackfill is a pure function that does not write files
-    const fs = require('fs');
     const spy = jest.spyOn(fs, 'writeFileSync').mockImplementation(() => {});
     validateDryRunBackfill([{ stockId: 'X', year: 2024, month: 1, releaseDate: null }]);
     expect(spy).not.toHaveBeenCalled();

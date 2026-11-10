@@ -1,7 +1,14 @@
 import { prisma } from '@/lib/prisma';
 import { JobAlertHistoryService } from '../JobAlertHistoryService';
 
-const jobNames = ['autonomous:daily', 'autonomous:monitor', 'autonomous:review', 'autonomous:learning'] as const;
+const historyJobName = 'test:job-alert-history';
+const jobNames = [
+  'autonomous:daily',
+  'autonomous:monitor',
+  'autonomous:review',
+  'autonomous:learning',
+  historyJobName,
+] as const;
 
 async function cleanup() {
   await prisma.jobAlert.deleteMany({
@@ -28,10 +35,10 @@ describe('JobAlertHistoryService', () => {
 
     await prisma.jobAlert.create({
       data: {
-        jobName: 'autonomous:daily',
+        jobName: historyJobName,
         severity: 'critical',
         message: 'autonomous:daily is missing a successful run in the today window.',
-        alertKey: 'autonomous:daily',
+        alertKey: `${historyJobName}:daily-active`,
         status: 'active',
         firstDetectedAt: base,
         lastDetectedAt: base,
@@ -44,10 +51,10 @@ describe('JobAlertHistoryService', () => {
 
     await prisma.jobAlert.create({
       data: {
-        jobName: 'autonomous:monitor',
+        jobName: historyJobName,
         severity: 'warning',
         message: 'autonomous:monitor is missing a successful run in the recent 60 minutes window.',
-        alertKey: 'autonomous:monitor',
+        alertKey: `${historyJobName}:monitor-active`,
         status: 'active',
         firstDetectedAt: new Date('2026-03-31T11:20:00.000Z'),
         lastDetectedAt: base,
@@ -60,10 +67,10 @@ describe('JobAlertHistoryService', () => {
 
     await prisma.jobAlert.create({
       data: {
-        jobName: 'autonomous:review',
+        jobName: historyJobName,
         severity: 'critical',
         message: 'autonomous:review has recovered and was resolved recently.',
-        alertKey: 'autonomous:review',
+        alertKey: `${historyJobName}:review-resolved`,
         status: 'resolved',
         firstDetectedAt: new Date('2026-03-30T11:00:00.000Z'),
         lastDetectedAt: new Date('2026-03-30T12:00:00.000Z'),
@@ -76,10 +83,10 @@ describe('JobAlertHistoryService', () => {
 
     await prisma.jobAlert.create({
       data: {
-        jobName: 'autonomous:learning',
+        jobName: historyJobName,
         severity: 'critical',
         message: 'autonomous:learning is missing a successful run in the current week.',
-        alertKey: 'autonomous:learning',
+        alertKey: `${historyJobName}:learning-active`,
         status: 'active',
         firstDetectedAt: new Date('2026-03-29T12:00:00.000Z'),
         lastDetectedAt: base,
@@ -90,28 +97,38 @@ describe('JobAlertHistoryService', () => {
       },
     });
 
+    for (const alertKey of [`${historyJobName}:training-daily`, `${historyJobName}:training-financial`]) {
+      await prisma.jobAlert.create({
+        data: {
+          jobName: historyJobName,
+          severity: 'critical',
+          message: `${alertKey} is missing a successful run in the current window.`,
+          alertKey,
+          status: 'active',
+          firstDetectedAt: base,
+          lastDetectedAt: base,
+          resolvedAt: null,
+          occurrenceCount: 1,
+          latestJobRunLogId: null,
+          metadata: null,
+        },
+      });
+    }
+
     const [summary, alerts] = await Promise.all([
-      historyService.buildSummary({ days: 14 }, base),
-      historyService.listHistory({ includeResolved: true }, base),
+      historyService.buildSummary({ days: 14, jobName: historyJobName }, base),
+      historyService.listHistory({ includeResolved: true, jobName: historyJobName }, base),
     ]);
 
     expect(alerts).toHaveLength(6);
     expect(alerts).toEqual(
       expect.arrayContaining([
-        expect.objectContaining({ jobName: 'autonomous:daily', severity: 'critical', status: 'active' }),
-        expect.objectContaining({ jobName: 'autonomous:monitor', severity: 'warning', status: 'active' }),
-        expect.objectContaining({ jobName: 'autonomous:review', severity: 'critical', status: 'resolved' }),
-        expect.objectContaining({ jobName: 'autonomous:learning', severity: 'critical', status: 'active' }),
-        expect.objectContaining({
-          jobName: 'training:daily_cycle',
-          severity: 'critical',
-          status: 'active',
-        }),
-        expect.objectContaining({
-          jobName: 'training:tw-q1-financial-ingest-check',
-          severity: 'critical',
-          status: 'active',
-        }),
+        expect.objectContaining({ alertKey: `${historyJobName}:daily-active`, severity: 'critical', status: 'active' }),
+        expect.objectContaining({ alertKey: `${historyJobName}:monitor-active`, severity: 'warning', status: 'active' }),
+        expect.objectContaining({ alertKey: `${historyJobName}:review-resolved`, severity: 'critical', status: 'resolved' }),
+        expect.objectContaining({ alertKey: `${historyJobName}:learning-active`, severity: 'critical', status: 'active' }),
+        expect.objectContaining({ alertKey: `${historyJobName}:training-daily`, severity: 'critical', status: 'active' }),
+        expect.objectContaining({ alertKey: `${historyJobName}:training-financial`, severity: 'critical', status: 'active' }),
       ]),
     );
     expect(summary.total).toBe(alerts.length);

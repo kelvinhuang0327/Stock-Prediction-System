@@ -179,13 +179,13 @@ describe('ManualReviewWorkflowBinding — P16', () => {
     });
 
     it('PRODUCTION_READY rejected', () => {
-        const mutated = { ...binding, workflowStatus: 'PRODUCTION_READY' as any };
+        const mutated = { ...binding, workflowStatus: 'PRODUCTION_READY' as never };
         const result = validateManualReviewWorkflowBinding(mutated);
         expect(result.validationStatus).toBe('FAIL');
     });
 
     it('APPROVED rejected', () => {
-        const mutated = { ...binding, workflowStatus: 'APPROVED' as any };
+        const mutated = { ...binding, workflowStatus: 'APPROVED' as never };
         const result = validateManualReviewWorkflowBinding(mutated as typeof binding);
         expect(result.validationStatus).toBe('FAIL');
     });

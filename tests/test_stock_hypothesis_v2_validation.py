@@ -230,6 +230,7 @@ def test_v2_batch_summary_parseable(tmp_path):
             "--as-of-date", "2026-05-01",
             "--min-rows", "300",
             "--permutations", "10",
+            "--output-dir", str(tmp_path),
         ],
         capture_output=True,
         text=True,
@@ -238,7 +239,7 @@ def test_v2_batch_summary_parseable(tmp_path):
     assert result.returncode == 0, f"Script failed:\n{result.stderr}"
 
     # Find and parse batch_summary.json
-    batch_dir = Path(__file__).parent.parent / "outputs" / "stock_validation_real_batch" / "20260501"
+    batch_dir = tmp_path / "20260501"
     summary_file = batch_dir / "batch_summary.json"
     assert summary_file.exists(), "batch_summary.json not created"
     summary = json.loads(summary_file.read_text())
@@ -260,16 +261,14 @@ def test_v2_batch_data_lineage_present(tmp_path):
             "--as-of-date", "2026-05-01",
             "--min-rows", "300",
             "--permutations", "10",
+            "--output-dir", str(tmp_path),
         ],
         capture_output=True,
         text=True,
         cwd=str(Path(__file__).parent.parent),
     )
     assert result.returncode == 0, f"Script failed:\n{result.stderr}"
-    out_base = (
-        Path(__file__).parent.parent
-        / "outputs" / "stock_validation_real_batch" / "20260501" / "2330"
-    )
+    out_base = tmp_path / "20260501" / "2330"
     if out_base.exists():
         for hyp_dir in out_base.iterdir():
             lineage_file = hyp_dir / "data_lineage.json"

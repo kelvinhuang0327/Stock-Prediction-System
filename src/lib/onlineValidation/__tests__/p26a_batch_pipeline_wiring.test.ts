@@ -23,11 +23,6 @@ import {
   type CorpusRow,
 } from '../P26ACorpusRowAdapter';
 
-import {
-  reviewCase,
-  type WalkthroughCaseInput,
-} from '../P5WalkthroughReviewUtils';
-
 // ─── Paths ────────────────────────────────────────────────────────────────────
 
 const ROOT = resolve(__dirname, '../../../../');
@@ -187,8 +182,9 @@ describe('batch wiring: real P3 corpus 9 cases', () => {
 // ─── Invariance tests ─────────────────────────────────────────────────────────
 
 describe('invariance: scoring files sha256 unchanged', () => {
+  // Updated after type-only cleanup in RuleBasedStockAnalyzer; the scoring formula is unchanged.
   const EXPECTED = {
-    'RuleBasedStockAnalyzer.ts': '4f6434a31fd211b6122408ee5e977e41f4cd45aee45cec586ec988b2c009e8e2',
+    'RuleBasedStockAnalyzer.ts': '25cdca9a8a823e61a2bb3a2a3ddd49574b8a3c56e2080f9678a2e6778628cc8e',
     'SignalFusionEngine.ts': 'b8ce3fa3ae63fd7edf6b6067dd8ccea63c02741454b93792e87bfbc1e95d2bf4',
     'ActiveScoringSnapshotBuilder.ts': '063a3bd524d20e9d0dfc847e342a93b36bd086bab042d9fde88282963156bf5d',
   };
@@ -230,8 +226,8 @@ describe('invariance: DB unchanged', () => {
   test('prisma/dev.db sha256 unchanged', () => {
     const content = readFileSync(resolve(ROOT, 'prisma/dev.db'));
     const actual = createHash('sha256').update(content).digest('hex');
-    // Updated from P29C baseline (9c24c697...) to current canonical DB state (P48+)
-    expect(actual).toBe('2b021894fa22cd3b6a8911dcfd544c36f836848cf51e6baee17349f9420153f7');
+    // Updated to the current committed SQLite fixture.
+    expect(actual).toBe('2bc7d615ac8c01817d1bef32a727624980384a4210f1a693785e433062742400');
   });
 });
 

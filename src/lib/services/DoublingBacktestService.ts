@@ -4,9 +4,16 @@ import { AssetDoublingStrategy } from '../strategies/AssetDoublingStrategy';
 export interface BacktestWindow {
     startDate: string;
     endDate: string;
-    candidates: any[];
+    candidates: BacktestCandidate[];
     averageReturn: number;
     successRate: number; // % of stocks with positive return
+}
+
+export interface BacktestCandidate {
+    stockId: string;
+    returnPercent: number;
+    reason: string;
+    exitReason: string;
 }
 
 export class DoublingBacktestService {
@@ -72,7 +79,7 @@ export class DoublingBacktestService {
                 averageReturn: totalReturn / windowTrades.length,
                 successRate: (wins / windowTrades.length) * 100
             };
-        }).filter(Boolean) as BacktestWindow[];
+        }).filter((window): window is BacktestWindow => window !== null);
 
         // Sort by date desc
         return windows.sort((a, b) => b.startDate.localeCompare(a.startDate));

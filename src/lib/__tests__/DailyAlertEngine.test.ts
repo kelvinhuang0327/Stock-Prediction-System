@@ -11,6 +11,9 @@
 
 import { generateDailyAlerts } from '../notify/DailyAlertEngine';
 import { prisma } from '../prisma';
+import { detectRegime } from '../market/MarketRegimeEngine';
+import { fuseBatch } from '../alpha/SignalFusionEngine';
+import { generateEventAlerts } from '../events/EventAlertEngine';
 
 jest.mock('../prisma', () => ({
   prisma: {
@@ -57,6 +60,11 @@ jest.mock('../market/MarketRegimeEngine', () => ({
   }),
 }));
 
+jest.mock('../alpha/SignalFusionEngine', () => ({ fuseBatch: jest.fn().mockResolvedValue([]) }));
+jest.mock('../events/EventAlertEngine', () => ({
+  generateEventAlerts: jest.fn().mockResolvedValue({ summary: 'no events', alerts: [], limitations: [] }),
+}));
+
 import { runScreen } from '../screen/StrategyScreenEngine';
 
 type MockPrismaType = {
@@ -77,6 +85,9 @@ const mockCandidateFindMany = mockPrisma.dailyCandidateSnapshot.findMany;
 const mockWatchlistFindMany = mockPrisma.watchlist.findMany;
 const mockWatchlistSnapFindMany = mockPrisma.dailyWatchlistSnapshot.findMany;
 const mockRunScreen = runScreen as jest.MockedFunction<typeof runScreen>;
+const mockDetectRegime = detectRegime as jest.MockedFunction<typeof detectRegime>;
+const mockFuseBatch = fuseBatch as jest.MockedFunction<typeof fuseBatch>;
+const mockGenerateEventAlerts = generateEventAlerts as jest.MockedFunction<typeof generateEventAlerts>;
 
 
 // ─── Fixtures ────────────────────────────────────────────────────
@@ -100,37 +111,6 @@ function makeMarketSnapshot(date: string, regime = 'Bull', confidence = 75) {
   };
 }
 
-function makeCandidateSnapshot(date: string, overrides = {}) {
-  return {
-    snapshotDate: date,
-    generatedAt: new Date().toISOString(),
-    candidates: JSON.stringify([
-      {
-        symbol: '2330',
-        name: '台積電',
-        screenBucket: 'Strong Candidate',
-        alphaScore: 80,
-        confidence: 65,
-        priceChangePercent: 2.1,
-        closePrice: 580,
-        riskLevel: 'medium',
-        factors: [],
-        limitations: [],
-        analysisNote: '技術強勢',
-        regime: 'Bull',
-      },
-    ]),
-    regime: 'Bull',
-    regimeConfidence: 80,
-    totalScanned: 200,
-    candidateCount: 1,
-    exclusionSummary: '{}',
-    comparisonAvailable: false,
-    previousSnapshotDate: null,
-    ...overrides,
-  };
-}
-
 // ─── Tests ───────────────────────────────────────────────────────
 
 describe('DailyAlertEngine — generateDailyAlerts()', () => {
@@ -146,6 +126,9 @@ describe('DailyAlertEngine — generateDailyAlerts()', () => {
     mockPrisma.stockQuote.count.mockResolvedValue(100);
     mockPrisma.institutionalChip.count.mockResolvedValue(50);
     mockPrisma.marketIndex.count.mockResolvedValue(200);
+    mockFuseBatch.mockResolvedValue([]);
+    mockGenerateEventAlerts.mockResolvedValue({ summary: 'no events', alerts: [], limitations: [] });
+    mockDetectRegime.mockResolvedValue({ regime: 'Bull', confidence: 75 } as never);
   });
 
   describe('no prior snapshot available', () => {
@@ -241,18 +224,138 @@ describe('DailyAlertEngine — generateDailyAlerts()', () => {
 
   describe('regime_changed severity', () => {
     it('regime change from Bull → Bear produces warning-level alert', async () => {
-      // Prior: Bull; now detect Bear in today's candidate snapshot
       mockMarketFindFirst.mockResolvedValue(makeMarketSnapshot(YESTERDAY, 'Bull', 75));
-      mockCandidateFindFirst
-        .mockResolvedValueOnce(makeCandidateSnapshot(TODAY, { regime: 'Bear', regimeConfidence: 70 }))
-        .mockResolvedValueOnce(makeCandidateSnapshot(YESTERDAY, { regime: 'Bull', regimeConfidence: 75 }));
+      mockDetectRegime.mockResolvedValue({ regime: 'Bear', confidence: 30 } as never);
 
       const result = await generateDailyAlerts();
 
       const regimeAlert = result.alerts.find(a => a.type === 'market_regime_changed');
-      if (regimeAlert) {
-        expect(['warning', 'caution']).toContain(regimeAlert.severity);
-      }
+      expect(regimeAlert).toMatchObject({ severity: 'warning', previousValue: 'Bull', currentValue: 'Bear' });
+      expect(regimeAlert?.body).toContain('偏低');
+      expect(regimeAlert?.body).toContain('建議保守解讀所有訊號');
+    });
+
+    it.each([
+      ['Bull', 'Sideways', 50, 'warning', '中等', '震盪環境'],
+      ['Bull', 'Unknown', 80, 'warning', '較高', '環境不明'],
+      ['Bear', 'Bull', 40, 'info', '中等', '偏多環境'],
+    ])('uses the conservative message for %s → %s', async (previous, current, confidence, severity, confidenceLabel, tone) => {
+      mockMarketFindFirst.mockResolvedValue(makeMarketSnapshot(YESTERDAY, previous, 75));
+      mockDetectRegime.mockResolvedValue({ regime: current, confidence } as never);
+      const result = await generateDailyAlerts({ includeDataWarnings: false, includeWatchlist: false, includeEventAlerts: false });
+      const regimeAlert = result.alerts.find((alert) => alert.type === 'market_regime_changed');
+      expect(regimeAlert?.severity).toBe(severity);
+      expect(regimeAlert?.body).toContain(confidenceLabel);
+      expect(regimeAlert?.body).toContain(tone);
+    });
+
+    it('omits the comparison alert when regime detection fails', async () => {
+      mockMarketFindFirst.mockResolvedValue(makeMarketSnapshot(YESTERDAY));
+      mockDetectRegime.mockRejectedValueOnce(new Error('market data unavailable'));
+      const result = await generateDailyAlerts({ includeDataWarnings: false, includeWatchlist: false, includeEventAlerts: false });
+      expect(result.alerts.some((alert) => alert.type === 'market_regime_changed')).toBe(false);
+    });
+  });
+
+  describe('comparison changes and data coverage', () => {
+    it('reports candidate upgrades, downgrades, alpha changes, and newly insufficient data', async () => {
+      mockMarketFindFirst.mockResolvedValue(makeMarketSnapshot(YESTERDAY));
+      mockCandidateFindMany.mockResolvedValue([
+        { symbol: 'UP', screenBucket: 'Watch', alphaScore: 50 },
+        { symbol: 'DOWN', screenBucket: 'Strong Candidate', alphaScore: 70 },
+        { symbol: 'FLAT', screenBucket: 'Neutral', alphaScore: 30 },
+        { symbol: 'DATA', screenBucket: 'Watch', alphaScore: 40 },
+        { symbol: 'EXCLUDED', screenBucket: 'Excluded', alphaScore: 20 },
+      ]);
+      mockRunScreen.mockResolvedValueOnce({
+        candidates: [
+          { symbol: 'UP', name: '升級', screenBucket: 'Strong Candidate', alphaScore: 60, whyIncluded: 'strength', dataCoverage: 'full' },
+          { symbol: 'DOWN', name: '降級', screenBucket: 'Excluded', alphaScore: 60, whyIncluded: '', dataCoverage: 'limited' },
+          { symbol: 'FLAT', name: '改善', screenBucket: 'Neutral', alphaScore: 36, whyIncluded: '', dataCoverage: 'full' },
+          { symbol: 'DATA', name: '資料不足', screenBucket: 'Watch', alphaScore: 40, whyIncluded: '', dataCoverage: 'insufficient' },
+          { symbol: 'EXCLUDED', name: '排除', screenBucket: 'Watch', alphaScore: 20, whyIncluded: '', dataCoverage: 'insufficient' },
+        ],
+      } as never);
+
+      const result = await generateDailyAlerts({ includeDataWarnings: false, includeWatchlist: false, includeEventAlerts: false });
+      expect(result.alerts.map((alert) => alert.type)).toEqual(expect.arrayContaining([
+        'candidate_upgraded', 'candidate_downgraded', 'alpha_improved', 'alpha_dropped', 'newly_insufficient_data',
+      ]));
+      expect(result.alerts.find((alert) => alert.type === 'candidate_downgraded')?.severity).toBe('caution');
+      expect(result.alerts.filter((alert) => alert.type === 'newly_insufficient_data')).toHaveLength(1);
+    });
+
+    it('keeps going when candidate screening or snapshot lookups fail', async () => {
+      mockMarketFindFirst.mockResolvedValue(makeMarketSnapshot(YESTERDAY));
+      mockCandidateFindMany.mockRejectedValueOnce(new Error('snapshot unavailable'));
+      mockPrisma.stockQuote.count.mockRejectedValueOnce(new Error('quotes unavailable'));
+      mockPrisma.institutionalChip.count.mockRejectedValueOnce(new Error('chips unavailable'));
+      mockPrisma.marketIndex.count.mockRejectedValueOnce(new Error('index unavailable'));
+      mockRunScreen.mockRejectedValueOnce(new Error('screen failed'));
+      const result = await generateDailyAlerts({ includeWatchlist: false, includeEventAlerts: false });
+      expect(result.limitations).toContain('StrategyScreenEngine 無法執行，候選升降級提醒略過。');
+      expect(result.alerts.map((alert) => alert.type)).toContain('data_quality_warning');
+    });
+
+    it('emits stock-quote and market-index warnings, and honors disabled data warnings', async () => {
+      mockPrisma.stockQuote.count.mockResolvedValue(0);
+      mockPrisma.institutionalChip.count.mockResolvedValue(0);
+      mockPrisma.marketIndex.count.mockResolvedValue(99);
+      const missingQuotes = await generateDailyAlerts({ includeWatchlist: false, includeEventAlerts: false });
+      expect(missingQuotes.alerts.filter((alert) => alert.type === 'data_quality_warning')).toHaveLength(2);
+      expect(missingQuotes.overallSeverity).toBe('warning');
+
+      mockPrisma.stockQuote.count.mockResolvedValue(10);
+      const missingChips = await generateDailyAlerts({ includeWatchlist: false, includeEventAlerts: false });
+      expect(missingChips.alerts.some((alert) => alert.title === '法人籌碼資料缺失')).toBe(true);
+
+      const withoutWarnings = await generateDailyAlerts({ includeDataWarnings: false, includeWatchlist: false, includeEventAlerts: false });
+      expect(mockPrisma.stockQuote.count).toHaveBeenCalledTimes(2);
+      expect(withoutWarnings.alerts.some((alert) => alert.type === 'data_quality_warning')).toBe(false);
+    });
+  });
+
+  describe('watchlist and event reminders', () => {
+    it('reports watchlist risk escalation and newly insufficient scoring', async () => {
+      mockMarketFindFirst.mockResolvedValue(makeMarketSnapshot(YESTERDAY));
+      mockWatchlistSnapFindMany.mockResolvedValue([
+        { symbol: '2330', alphaScore: null, riskLevel: null, recommendationBucket: null },
+        { symbol: '2317', alphaScore: null, riskLevel: 'low', recommendationBucket: 'Watch' },
+      ]);
+      mockWatchlistFindMany.mockResolvedValue([
+        { stockId: '2330', stock: { name: '台積電' } },
+        { stockId: '2317', stock: null },
+      ]);
+      mockFuseBatch.mockResolvedValue([
+        { symbol: '2330', alphaScore: 30, recommendationBucket: 'Insufficient Data' },
+        { symbol: '2317', alphaScore: 50, recommendationBucket: 'Strong Candidate' },
+      ] as never);
+
+      const result = await generateDailyAlerts({ includeDataWarnings: false, includeEventAlerts: false });
+      expect(result.alerts.map((alert) => alert.type)).toContain('watchlist_risk_escalated');
+      expect(result.alerts.some((alert) => alert.type === 'newly_insufficient_data' && alert.symbol === '2330')).toBe(true);
+      expect(result.alerts.find((alert) => alert.type === 'watchlist_risk_escalated')?.body).toContain('?');
+    });
+
+    it('deduplicates and sorts event alerts, and degrades when the event engine fails', async () => {
+      mockGenerateEventAlerts
+        .mockResolvedValueOnce({ summary: 'market summary', alerts: [{ type: 'market_event_increase', severity: 'warning', title: 'same', message: 'market' }], limitations: ['m'] } as never)
+        .mockResolvedValueOnce({ summary: 'watch summary', alerts: [{ type: 'market_event_increase', severity: 'info', title: 'same', message: 'duplicate' }, { type: 'catalyst_watch', severity: 'caution', title: 'watch', message: 'watch' }], limitations: ['w'] } as never)
+        .mockResolvedValueOnce({ summary: 'candidate summary', alerts: [], limitations: ['c'] } as never);
+      mockMarketFindFirst.mockResolvedValue(makeMarketSnapshot(YESTERDAY));
+      mockDetectRegime.mockResolvedValue({ regime: 'Bear', confidence: 75 } as never);
+      const result = await generateDailyAlerts({ includeDataWarnings: false, includeWatchlist: false, minSeverity: 'info', maxItems: 1 });
+      expect(result.eventAlertSummary).toBe('market summary；watch summary；candidate summary');
+      expect(result.eventAlerts.map((alert) => alert.title)).toEqual(['same', 'watch']);
+      expect(result.eventAlerts[0].severity).toBe('warning');
+      expect(result.limitations).toEqual(expect.arrayContaining(['[event/market] m', '[event/watchlist] w', '[event/candidates] c']));
+      expect(result.alerts).toHaveLength(1);
+
+      mockGenerateEventAlerts.mockRejectedValueOnce(new Error('event service down'));
+      const degraded = await generateDailyAlerts({ includeDataWarnings: false, includeWatchlist: false });
+      expect(degraded.eventAlertSummary).toBe('事件提醒暫時不可用（已降級）');
+      expect(degraded.limitations).toContain('事件提醒引擎不可用，已降級略過 event alerts');
+      expect(degraded.eventAlerts).toEqual([]);
     });
   });
 });

@@ -9,6 +9,7 @@ import {
 } from '../TriggerScoringEngine';
 import type { QuoteRow } from '../TriggerScoringEngine';
 import type { AutonomousResearchSnapshot, StrategyProposal } from '../types';
+import type { OptimizationInsightRecord } from '../InsightIntegrationLayer';
 
 function makeQuotes(count: number, overrides?: Partial<QuoteRow>[]): QuoteRow[] {
   const base: QuoteRow[] = [];
@@ -58,6 +59,20 @@ function makeProposal(overrides: Partial<StrategyProposal> = {}): StrategyPropos
     supportingSignals: ['technical'],
     riskFactors: ['volatility'],
     state: 'proposed',
+    ...overrides,
+  };
+}
+
+function makeInsight(confidence: number, overrides: Partial<OptimizationInsightRecord> = {}): OptimizationInsightRecord {
+  return {
+    insightType: 'score_bias',
+    sourceTaskId: 'task-1',
+    evidence: ['narrow score range', 'small sample'],
+    confidence,
+    severity: 'high',
+    affectedSetupTypes: ['trend'],
+    affectedSymbols: ['2330'],
+    expiresAt: '2099-01-01T00:00:00.000Z',
     ...overrides,
   };
 }
@@ -185,6 +200,94 @@ describe('TriggerScoringEngine', () => {
       );
       expect(result.finalScore).toBeLessThanOrEqual(1.0);
       expect(result.rawScore).toBeLessThanOrEqual(1.0);
+    });
+
+    it('covers recovery and range-bound regime multipliers and defaults unknown setups to fundamental scoring', () => {
+      const quotes = makeQuotes(25);
+      const proposal = makeProposal({ setupType: 'trend' });
+      const recovery = scoreTriggerReadiness(proposal, quotes, makeSnapshot({ marketState: 'recovery' }));
+      const rangeBound = scoreTriggerReadiness(proposal, quotes, makeSnapshot({ marketState: '震盪' }));
+      expect(recovery.regimeMultiplier).toBe(0.9);
+      expect(rangeBound.regimeMultiplier).toBe(0.8);
+
+      const unknownSetup = scoreTriggerReadiness(
+        makeProposal({ setupType: 'unknown' as StrategyProposal['setupType'], conviction: 'mid' }),
+        quotes,
+        makeSnapshot({ dataCoverage: 'limited' }),
+      );
+      expect(unknownSetup.components.map((component) => component.name)).toContain('high_conviction');
+      expect(unknownSetup.components.find((component) => component.name === 'data_coverage_full')?.score).toBe(0.1);
+    });
+
+    it('scores marginal and declining trend inputs with and without volume confirmation', () => {
+      const positive = makeQuotes(25);
+      positive[24] = { ...positive[24], volume: 40_000 };
+      const confirmed = scoreTriggerReadiness(makeProposal(), positive, makeSnapshot());
+      expect(confirmed.components.find((component) => component.name === 'volume_confirmation')?.met).toBe(true);
+
+      const declining = makeQuotes(25);
+      declining[24] = { ...declining[24], close: 108, volume: 1 };
+      const weak = scoreTriggerReadiness(makeProposal(), declining, makeSnapshot({ marketState: 'defensive' }));
+      expect(weak.components.find((component) => component.name === 'price_above_ma20')?.score).toBeGreaterThanOrEqual(0);
+      expect(weak.components.find((component) => component.name === 'ret5_positive')?.met).toBe(false);
+      expect(weak.components.find((component) => component.name === 'volume_confirmation')?.met).toBe(false);
+    });
+
+    it('covers rebound strict, relaxed, and failed thresholds', () => {
+      const relaxedQuotes = makeQuotes(25);
+      for (let index = 20; index < 25; index++) relaxedQuotes[index] = { ...relaxedQuotes[index], low: 100 };
+      relaxedQuotes[24] = { ...relaxedQuotes[24], close: 100.6 };
+      const relaxed = scoreTriggerReadiness(makeProposal({ setupType: 'rebound' }), relaxedQuotes, makeSnapshot());
+      expect(relaxed.components.find((component) => component.name === 'bounce_from_low')?.score).toBe(0.15);
+
+      const extendedQuotes = makeQuotes(25);
+      for (let index = 20; index < 25; index++) {
+        extendedQuotes[index] = { ...extendedQuotes[index], close: 120, low: 120, volume: 0 };
+      }
+      const extended = scoreTriggerReadiness(makeProposal({ setupType: 'rebound' }), extendedQuotes, makeSnapshot());
+      expect(extended.components.find((component) => component.name === 'bounce_from_low')?.score).toBe(0);
+      expect(extended.components.find((component) => component.name === 'drawdown_contained')?.met).toBe(false);
+      expect(extended.components.find((component) => component.name === 'volume_recovery')?.met).toBe(false);
+    });
+
+    it('scores missing event/fundamental evidence conservatively', () => {
+      const declining = makeQuotes(25);
+      declining[24] = { ...declining[24], close: 90, volume: 0 };
+      const event = scoreTriggerReadiness(
+        makeProposal({ setupType: 'event' }), declining,
+        makeSnapshot({ marketState: 'defensive', dataCoverage: 'none', riskSignals: [] }),
+      );
+      expect(event.components.find((component) => component.name === 'risk_signals_present')?.met).toBe(false);
+      expect(event.components.find((component) => component.name === 'not_deeply_negative')?.met).toBe(false);
+      expect(event.components.find((component) => component.name === 'data_coverage')?.met).toBe(false);
+
+      const fundamental = scoreTriggerReadiness(
+        makeProposal({ setupType: 'fundamental', conviction: 'low' }), declining,
+        makeSnapshot({ dataCoverage: 'none' }),
+      );
+      expect(fundamental.components.find((component) => component.name === 'high_conviction')?.score).toBe(0);
+      expect(fundamental.components.find((component) => component.name === 'data_coverage_full')?.score).toBe(0);
+    });
+
+    it('applies strong insight sizing and gates matching critical setups', () => {
+      const proposal = makeProposal({ setupType: 'trend' });
+      const quotes = makeQuotes(25);
+      const snapshot = makeSnapshot();
+      const adjusted = scoreTriggerReadiness(proposal, quotes, snapshot, { insights: [makeInsight(0.8)] });
+      expect(adjusted.gated).toBe(false);
+      expect(adjusted.insightSizingMultiplier).toBe(0.5);
+      expect(adjusted.components.some((component) => component.name === 'insight_adjustment')).toBe(true);
+
+      const gated = scoreTriggerReadiness(proposal, quotes, snapshot, { insights: [makeInsight(0.99)] });
+      expect(gated.gated).toBe(true);
+      expect(gated.tradeMode).toBe('none');
+      expect(gated.gatingReason).toContain('[HARD GATE] score_bias');
+
+      const otherSetup = scoreTriggerReadiness(
+        makeProposal({ setupType: 'event' }), quotes, snapshot,
+        { insights: [makeInsight(0.99)] },
+      );
+      expect(otherSetup.gated).toBe(false);
     });
   });
 
