@@ -48,8 +48,13 @@ jobs:
           sqlite3 prisma/dev.db "SELECT name, rootpage FROM sqlite_master WHERE type='table' AND name IN ('JobAlert','RecommendationHistory') ORDER BY name;"
           cp prisma/dev.db prisma/dev.test.db
 
-      - name: Apply latest additive schema migration to test database
-        run: sqlite3 prisma/dev.test.db < prisma/migrations/20260601040000_p144_add_job_alert_and_recommendation_history/migration.sql
+      - name: Apply additive schema migrations to test database
+        run: |
+          sqlite3 prisma/dev.test.db < prisma/migrations/20260501000000_strategy_proposal_cto_decision/migration.sql
+          sqlite3 prisma/dev.test.db < prisma/migrations/20260501000001_cto_review_run_signal_backlog/migration.sql
+          sqlite3 prisma/dev.test.db < prisma/migrations/20260520000000_add_chip_available_at/migration.sql
+          sqlite3 prisma/dev.test.db < prisma/migrations/20260601040000_p144_add_job_alert_and_recommendation_history/migration.sql
+          sqlite3 prisma/dev.test.db < prisma/migrations/20261110000000_add_orchestrator_policy_persistence/migration.sql
 
       - name: Generate Prisma client and verify delegates
         run: |
@@ -58,9 +63,20 @@ jobs:
           const { PrismaClient } = require('@prisma/client');
           (async () => {
             const p = new PrismaClient();
-            await p.jobAlert.count();
-            await p.recommendationHistory.count();
-            console.log('JobAlert and RecommendationHistory tables are available.');
+            await Promise.all([
+              p.strategyProposal.findMany({ take: 0, select: { ctoDecision: true, ctoDecisionReason: true } }),
+              p.institutionalChip.findMany({ take: 0, select: { availableAt: true } }),
+              p.ctoReviewRun.count(),
+              p.ctoIntentSignal.count(),
+              p.ctoBacklogItem.findMany({ take: 0, select: { lastSelectedAt: true, selectionCount: true } }),
+              p.adaptivePolicyState.count(),
+              p.executionPolicyState.count(),
+              p.policyChangeHistory.count(),
+              p.orchestratorSetting.findMany({ take: 0, select: { key: true, value: true } }),
+              p.jobAlert.count(),
+              p.recommendationHistory.count(),
+            ]);
+            console.log('Prisma delegates and additive schema migrations are available.');
             await p.$disconnect();
           })().catch((error) => {
             console.error(error);
@@ -147,7 +163,11 @@ jobs:
         run: |
           test -f prisma/dev.db
           cp prisma/dev.db prisma/dev.test.db
+          sqlite3 prisma/dev.test.db < prisma/migrations/20260501000000_strategy_proposal_cto_decision/migration.sql
+          sqlite3 prisma/dev.test.db < prisma/migrations/20260501000001_cto_review_run_signal_backlog/migration.sql
+          sqlite3 prisma/dev.test.db < prisma/migrations/20260520000000_add_chip_available_at/migration.sql
           sqlite3 prisma/dev.test.db < prisma/migrations/20260601040000_p144_add_job_alert_and_recommendation_history/migration.sql
+          sqlite3 prisma/dev.test.db < prisma/migrations/20261110000000_add_orchestrator_policy_persistence/migration.sql
       
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium firefox webkit

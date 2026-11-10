@@ -7,7 +7,8 @@ import {
   loadAutonomousAlertPolicyState,
   type AutonomousAlertPolicyState,
 } from './AutonomousAlertPolicyStore';
-import type { JobAlertSeverity, JobHealthReport } from './types';
+import type { JobAlertSeverity } from './types';
+import type { JobHealthReport } from './JobHealthService';
 
 export type PolicyRecommendationType =
   | 'cooldown_increase'

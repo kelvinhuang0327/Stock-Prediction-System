@@ -568,6 +568,8 @@ model StrategyProposal {
   researchSnapshotId    Int?
   state                 String
   decisionMeta          String?
+  ctoDecision           String?
+  ctoDecisionReason     String?
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
 
@@ -577,6 +579,7 @@ model StrategyProposal {
   @@index([snapshotId])
   @@index([symbol])
   @@index([state])
+  @@index([ctoDecision])
 }
 
 model SimulatedTrade {
@@ -668,6 +671,115 @@ model StrategyLearningInsight {
   limitations           String?
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
+}
+
+model CtoReviewRun {
+  id              Int               @id @default(autoincrement())
+  runId           String            @unique
+  frequencyMode   String
+  startedAt       DateTime
+  completedAt     DateTime
+  durationSeconds Int
+  candidateCount  Int
+  acceptedCount   Int
+  rejectedCount   Int
+  deferredCount   Int
+  reflectedCount  Int
+  summary         String
+  reportJson      String
+  isManual        Boolean
+  runIntent       String?
+  parentRunId     String?
+  createdAt       DateTime          @default(now())
+  intentSignals   CtoIntentSignal[]
+
+  @@index([createdAt])
+}
+
+model CtoIntentSignal {
+  id             Int          @id @default(autoincrement())
+  runId          String
+  runIntent      String
+  outcome        String
+  candidateCount Int
+  acceptedCount  Int
+  rejectedCount  Int
+  deferredCount  Int
+  createdAt      DateTime     @default(now())
+  run            CtoReviewRun @relation(fields: [runId], references: [runId], onDelete: Restrict, onUpdate: Cascade)
+
+  @@index([runId])
+}
+
+model CtoBacklogItem {
+  id              Int      @id @default(autoincrement())
+  findingId       String   @unique
+  ctoRunId        String?
+  source          String
+  severity        String
+  impactScore     Float
+  urgency         String
+  category        String
+  suggestedAction String?
+  proposalId      Int?
+  status          String   @default("open")
+  priorityScore   Float
+  priorityLevel   String
+  agingBonus      Int      @default(0)
+  rank            Int?
+  lastSelectedAt  DateTime?
+  selectionCount  Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([status])
+  @@index([priorityScore])
+  @@index([ctoRunId])
+}
+
+model AdaptivePolicyState {
+  id                    Int      @id @default(autoincrement())
+  resubmitMergeRate     Float
+  compareApproveRate    Float
+  forceLearningRate     Float
+  overallAcceptRate     Float
+  categoryPriorityBoosts String
+  suggestions           String
+  policyConfidence      String
+  runsAnalyzed          Int
+  computedAt            DateTime @default(now())
+
+  @@index([computedAt])
+}
+
+model ExecutionPolicyState {
+  id                        Int      @id @default(autoincrement())
+  mode                      String
+  consecutiveCategory       String?
+  consecutiveCategoryCount  Int      @default(0)
+  updatedAt                 DateTime @updatedAt
+}
+
+model PolicyChangeHistory {
+  id                       Int      @id @default(autoincrement())
+  policyKey                String
+  changedAt                DateTime
+  changedBy                String
+  oldValue                 String?
+  newValue                 String
+  changedFields            String
+  reason                   String?
+  guardrailCount           Int      @default(0)
+  guardrailSummary         String?
+  requiresConfirmation     Boolean  @default(false)
+  guardrailDetails         String?
+  highestGuardrailSeverity String?
+  metadata                 String?
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
+
+  @@index([policyKey, changedAt])
+  @@index([changedAt])
 }
 
 model OptimizationInsightRecord {

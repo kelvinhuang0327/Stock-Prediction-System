@@ -46,8 +46,8 @@ function buildState(
 }
 
 export async function loadAutonomousAlertPolicyState(): Promise<AutonomousAlertPolicyState> {
-  const row = prisma.systemSetting?.findUnique
-    ? await prisma.systemSetting.findUnique({
+  const row = prisma.orchestratorSetting?.findUnique
+    ? await prisma.orchestratorSetting.findUnique({
         where: { key: AUTONOMOUS_ALERT_POLICY_SETTING_KEY },
       }).catch(() => null)
     : null;
@@ -79,17 +79,15 @@ export async function saveAutonomousAlertPolicyState(
     },
   });
 
-  if (prisma.systemSetting?.upsert) {
-    await prisma.systemSetting.upsert({
+  if (prisma.orchestratorSetting?.upsert) {
+    await prisma.orchestratorSetting.upsert({
       where: { key: AUTONOMOUS_ALERT_POLICY_SETTING_KEY },
       create: {
         key: AUTONOMOUS_ALERT_POLICY_SETTING_KEY,
         value: JSON.stringify(merged),
-        description: 'Autonomous alert cooldown and suppression policy',
       },
       update: {
         value: JSON.stringify(merged),
-        description: 'Autonomous alert cooldown and suppression policy',
       },
     }).catch(() => null);
   }
@@ -98,8 +96,8 @@ export async function saveAutonomousAlertPolicyState(
 }
 
 export async function resetAutonomousAlertPolicyState(): Promise<AutonomousAlertPolicyState> {
-  if (prisma.systemSetting?.delete) {
-    await prisma.systemSetting.delete({
+  if (prisma.orchestratorSetting?.delete) {
+    await prisma.orchestratorSetting.delete({
       where: { key: AUTONOMOUS_ALERT_POLICY_SETTING_KEY },
     }).catch(() => null);
   }

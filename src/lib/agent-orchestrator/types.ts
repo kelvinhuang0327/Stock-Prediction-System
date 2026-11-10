@@ -190,6 +190,11 @@ export interface TaskResult {
   missing_required_outputs: string[];
   forbidden_change_violations: string[];
   acceptance_results: AcceptanceResult[];
+  ingestability?: {
+    required: boolean;
+    status: 'NOT_APPLICABLE' | 'INGESTABLE' | 'NON_INGESTABLE';
+    reportPath: string | null;
+  };
   next_action: string;
 }
 
